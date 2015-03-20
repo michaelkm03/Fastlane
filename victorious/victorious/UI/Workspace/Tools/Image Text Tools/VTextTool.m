@@ -25,6 +25,7 @@
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 static NSString * const kSubtoolsKey = @"subtools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
@@ -32,7 +33,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @interface VTextTool ()
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, assign) NSInteger renderIndex;
 @property (nonatomic, strong) NSArray *subTools;
 @property (nonatomic, strong) id <VWorkspaceTool> activeTextTool;
@@ -42,6 +42,9 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @end
 
 @implementation VTextTool
+
+@synthesize selectedIcon = _selectedIcon;
+@synthesize icon = _icon;
 
 #pragma mark - VHasManagedDependancies
 
@@ -62,7 +65,11 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         dataSource.tools = _subTools;
         _toolPicker.dataSource = dataSource;
         _canvasToolViewController = [VTextToolViewController textToolViewController];
-        _icon = [UIImage imageNamed:@"textIcon"];
+        _icon = [dependencyManager imageForKey:kIconKey];
+        _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
+        
+#warning FIX
+//        [_toolPicker setTools:_subTools];
     }
     return self;
 }

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>hiddenWorkspace</key>
+	<string>VWorkspaceFlowController</string>
 	<key>translucent.background</key>
 	<string>VTranslucentBackground</string>
 	<key>blurredImage.background</key>
@@ -37,7 +39,7 @@
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>workspace</key>
-	<string>VWorkspaceFlowController</string>
+	<string>VWorkspaceShimDestination</string>
 	<key>workspaceText</key>
 	<string>VTextWorkspaceFlowController</string>
 	<key>sideMenu.scaffold</key>
@@ -46,13 +48,19 @@
 	<string>VTabMenuViewController</string>
 	<key>simple.menu</key>
 	<string>VMenuController</string>
+	<key>tab.menu</key>
+	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>standard.contentView</key>
+	<string>VNewContentViewController</string>
+	<key>animated.voteType</key>
+	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
-	<key>groupedStream.screen</key>
+	<key>showcase.screen</key>
 	<string>VGroupedStreamCollectionViewController</string>
-	<key>directory.screen</key>
+	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
@@ -72,5 +80,13 @@
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
+	<key>lightweight.contentView</key>
+	<string>VLightweightContentViewController</string>
+	<key>inset.streamCell</key>
+	<string>VInsetStreamCellFactory</string>
+	<key>sleek.streamCell</key>
+	<string>VSleekStreamCellFactory</string>
+	<key>titleOverlay.streamCell</key>
+	<string>VTitleOverlayStreamCellFactory</string>
 </dict>
 </plist>

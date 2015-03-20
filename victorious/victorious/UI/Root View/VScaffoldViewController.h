@@ -8,10 +8,9 @@
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
-
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VSequence, VAuthorization;
 
 /**
  The key that identifies the menu component in VDependencyManager
@@ -27,6 +26,11 @@ extern NSString * const VScaffoldViewControllerContentViewComponentKey;
  The key that identifies the profile view component in VDependencyManager
  */
 extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
+
+/**
+ The key that identifies the welcome view component in the VDependencyManager
+ */
+extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
 
 /**
  Abstract base class for view controllers that act as "scaffolding",
@@ -50,7 +54,12 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
 /**
  Initializes the receiver with an instance of VDependencyManager
  */
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ Initializes the receiver with a nib name and an instance of VDependencyManager
+ */
+//- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName NS_DESIGNATED_INITIALIZER;
 
 /**
  Presents a content view for the specified VSequence object.

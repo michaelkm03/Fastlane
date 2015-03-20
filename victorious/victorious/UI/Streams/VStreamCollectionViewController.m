@@ -10,10 +10,9 @@
 #import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
+#import "VStreamCellFactory.h"
 #import "VStreamCollectionCell.h"
-#import "VStreamCollectionCellPoll.h"
 #import "VMarqueeCollectionCell.h"
-#import "VStreamCollectionCellWebContent.h"
 
 #warning Temporary
 #import "VRootViewController.h"
@@ -25,7 +24,6 @@
 #import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
@@ -58,32 +56,40 @@
 
 //Categories
 #import "NSArray+VMap.h"
+#import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "UIViewController+VLayoutInsets.h"
 
+#import "VWorkspacePresenter.h"
 #import "VConstants.h"
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
+#import "VAuthorizedAction.h"
+
+#import "VInsetStreamCellFactory.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
+
+static const CGFloat kCreateButtonHeight = 44.0f;
 
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
-static CGFloat const kTemplateCLineSpacing = 8.0f;
-static CGFloat const kExtraPaddingForTemplateC = 10.0f;
+static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 
-NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
+NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
+NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 
-@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, VWorkspaceFlowControllerDelegate, UICollectionViewDelegateFlowLayout>
+@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VMarqueeController *marquee;
+@property (nonatomic, strong) id<VStreamCellFactory> streamCellFactory;
 
 @property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 @property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
@@ -92,6 +98,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 @property (nonatomic, assign) BOOL canAddContent;
+
+@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
 @end
 
@@ -113,8 +121,10 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    NSString *urlPathKey = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
-    VStream *stream = [VStream streamForPath:urlPathKey inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
+    NSString *path = [url v_pathComponent];
+    
+    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
@@ -127,19 +137,40 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         streamCollectionVC.shouldDisplayMarquee = YES;
     }
     
-    if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
-    {
-        [streamCollectionVC addCreateSequenceButton];
-        [streamCollectionVC addUploadProgressView];
-    }
-    
-    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"stream_atf_view_threshold"];
+    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
     {
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
     return streamCollectionVC;
+}
+
+#pragma mark - Init
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    self.canShowContent = YES;
 }
 
 #pragma mark - View Heirarchy
@@ -157,17 +188,15 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     
     self.hasRefreshed = NO;
     self.sequenceActionController = [[VSequenceActionController alloc] init];
+    self.sequenceActionController.dependencyManager = self.dependencyManager;
     
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
-    [self.collectionView registerNib:[VStreamCollectionCell nibForCell]
-          forCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]];
-    [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
-          forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
-    [self.collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
-          forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
     
-    self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
+    [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
+    
+    self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     if ( self.streamDataSource == nil )
     {
@@ -203,6 +232,14 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
          */
         [self.marquee enableTimer];
     }
+
+    for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
+    {
+        if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
+        {
+            [(VStreamCollectionCell *)cell reloadCommentsCount];
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -213,7 +250,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [self updateCurrentlyPlayingMediaAsset];
     
 #warning TESTING ONLY: Jumpts right to text workspace
-    [self presentCreateFlowWithTextOnly];
+    //[self presentCreateFlowWithTextOnly];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -248,6 +285,9 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     {
         VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
+        
+        //The top of the template C hack
+        _marquee.isTemplateC = [self.streamCellFactory isKindOfClass:[VInsetStreamCellFactory class]];
         _marquee.delegate = self;
     }
     return _marquee;
@@ -284,105 +324,66 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 #pragma mark - Sequence Creation
 
-- (void)addCreateSequenceButton
+- (BOOL)isUserPostAllowedInStream:(VStream *)stream withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
-    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-    self.navigationItem.rightBarButtonItem = barButton;
+    const BOOL isUserPostAllowedByTemplate = [[dependencyManager numberForKey:kCanAddContentKey] boolValue];
+    const BOOL isUserPostAllowedByStream = stream.isUserPostAllowed.boolValue;
+    
+    return isUserPostAllowedByTemplate || isUserPostAllowedByStream;
 }
 
-- (IBAction)createSequenceAction:(id)sender
+- (void)updateUserPostAllowed
+{
+    [super updateUserPostAllowed];
+    
+    BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];
+    if ( userPostAllowed )
+    {
+        [self addUploadProgressView];
+    }
+    
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleViewControllerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+    }
+    [self installCreateButtonOnNavigationItem:navigationItem
+                             initiallyVisible:userPostAllowed];
+    
+    navigationItem.rightBarButtonItem.customView.hidden = !userPostAllowed;
+}
+
+- (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
+                           initiallyVisible:(BOOL)initiallyVisible
+{
+    if (!self.canShowContent)
+    {
+        return;
+    }
+    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+    UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
+    createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
+    [createbutton setImage:image forState:UIControlStateNormal];
+    [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
+    createbutton.hidden = !initiallyVisible;
+    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
+    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
+    [navigationItem setRightBarButtonItem:barButton animated:NO];
+}
+
+- (void)createSequenceAction:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    [self showContentTypeSelection];
-}
-
-- (void)showContentTypeSelection
-{
-    VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
-    [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateCancelSelected];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Text Post", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
-                                   [self presentCreateFlowWithTextOnly];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
-                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
-                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
-                                                    handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
-                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
-                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
-                                   VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
-                                   [self.navigationController pushViewController:createViewController animated:YES];
-                               }]];
-    [alertControler presentInViewController:self animated:YES completion:nil];
-}
-
-- (void)presentCreateFlowWithTextOnly
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
-    
-    NSDictionary *dependencies;// = self.dependencyManager templateValueOfType:[NSDictionary class] forKey:<#(NSString *)#>
-    VTextWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VTextWorkspaceFlowController class]
-                                                                                             forKey:VDependencyManagerTextWorkspaceFlowKey
-                                                                              withAddedDependencies:dependencies];
-    
-    [self presentViewController:workspaceFlowController.flowRootViewController animated:YES completion:nil];
-}
-
-- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
-                           initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
-                        andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
-    
-    NSDictionary *dependencies = @{ VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
-                                    VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
-                                    VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit) };
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                             forKey:VDependencyManagerWorkspaceFlowKey
-                                                                              withAddedDependencies:dependencies];
-    workspaceFlowController.videoEnabled = YES;
-    workspaceFlowController.delegate = self;
-    
-    [self presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
-}
-
-- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
-{
-    [self presentCreateFlowWithInitialCaptureState:initialCaptureState
-                             initialImageEditState:VImageToolControllerInitialImageEditStateText
-                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
+    __weak typeof(self) weakSelf = self;
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^void
+     {
+         weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
+         [weakSelf.workspacePresenter present];
+     }];
 }
 
 #pragma mark - VMarqueeDelegate
@@ -420,7 +421,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         return;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
@@ -458,27 +459,16 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     {
         return [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
-    
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll]
-        &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    else
     {
-        return [VStreamCollectionCellPoll actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
+        VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+        return [self.streamCellFactory sizeWithCollectionViewBounds:collectionView.bounds ofCellForStreamItem:sequence];
     }
-    else if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll])
-    {
-        return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
-    }
-    else if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return [VStreamCollectionCell actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
-    }
-    return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kTemplateCLineSpacing : 0;
+    return [self.streamCellFactory minimumLineSpacing];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
@@ -512,29 +502,13 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    VStreamCollectionCell *cell;
+    VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamCellFactory collectionView:self.collectionView cellForStreamItem:sequence atIndexPath:indexPath];
     
-    if ([sequence isPoll])
+
+    if ( [cell conformsToProtocol:@protocol(VSequenceActionsSender)] )
     {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
-                                                              forIndexPath:indexPath];
+        cell.sequenceActionsDelegate = self.actionDelegate ?: self;
     }
-    else if ([sequence isPreviewWebContent])
-    {
-        NSString *identifier = [VStreamCollectionCellWebContent suggestedReuseIdentifier];
-        VStreamCollectionCellWebContent *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                                                               forIndexPath:indexPath];
-        cell.sequence = sequence;
-        return cell;
-    }
-    else
-    {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
-                                                              forIndexPath:indexPath];
-    }
-    cell.delegate = self.actionDelegate ?: self;
-    cell.sequence = sequence;
-    
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
@@ -569,12 +543,14 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
-#warning Hacktastic
     [self.sequenceActionController showRemixOnViewController:self
                                                 withSequence:sequence
-                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager];
+                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager
+                                              preloadedImage:nil
+                                            defaultVideoEdit:defaultEdit
+                                                  completion:nil];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -599,8 +575,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (BOOL)hasRepostedSequence:(VSequence *)sequence
 {
-    const BOOL userHasRepostedSequence = [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];
-    return userHasRepostedSequence;
+    return [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];;
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -629,13 +604,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 #pragma mark - Actions
 
 - (void)setBackgroundImageWithURL:(NSURL *)url
-{
-    //Don't set the background image for template c
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return;
-    }
-    
+{    
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
@@ -657,6 +626,11 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (void)addUploadProgressView
 {
+    if ( self.uploadProgressViewController != nil )
+    {
+        return;
+    }
+    
     self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
     self.uploadProgressViewController.delegate = self;
     [self addChildViewController:self.uploadProgressViewController];
@@ -775,15 +749,17 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         insetsFromSuper = [super collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
     }
     
-    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] && !self.streamDataSource.hasHeaderCell )
-    {
-        insetsFromSuper.top += kExtraPaddingForTemplateC;
-        return insetsFromSuper;
-    }
-    else
+    if ( self.streamDataSource.hasHeaderCell && section == 0 )
     {
         return insetsFromSuper;
     }
+    
+    UIEdgeInsets insetsFromCellFactory = [self.streamCellFactory sectionInsets];
+    UIEdgeInsets totalInsets = UIEdgeInsetsMake(insetsFromSuper.top + insetsFromCellFactory.top,
+                                                insetsFromSuper.left + insetsFromCellFactory.left,
+                                                insetsFromSuper.bottom + insetsFromCellFactory.bottom,
+                                                insetsFromSuper.right + insetsFromCellFactory.right);
+    return totalInsets;
 }
 
 #pragma mark - VUploadProgressViewControllerDelegate methods
@@ -877,20 +853,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     {
         [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream sequence:cell.sequence];
     }
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

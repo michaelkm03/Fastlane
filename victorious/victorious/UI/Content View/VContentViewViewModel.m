@@ -14,6 +14,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
+#import "VVoteType.h"
 #import "VNode+Fetcher.h"
 
 // Model Categories
@@ -112,7 +113,7 @@
             _type = VContentViewTypeImage;
         }
         
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
 
         _currentNode = [sequence firstNode];
         
@@ -131,7 +132,7 @@
 
 - (id)init
 {
-    NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
+    NSAssert(false, @"-init is not allowed. Use the designated initializer: \"-initWithSequence:\"");
     return nil;
 }
 
@@ -279,7 +280,7 @@
     }
     
     VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-    endCardModel.videoTitle = self.sequence.sequenceDescription;
+    endCardModel.videoTitle = self.sequence.name;
     endCardModel.nextSequenceId = nextSequence.remoteId;
     endCardModel.nextVideoTitle = nextSequence.sequenceDescription;
     endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewImagesObject];
@@ -627,6 +628,8 @@
                 shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
                 break;
             case VContentViewTypeGIFVideo:
+                shareText = NSLocalizedString(@"UGCShareGIFFormat", nil);
+                break;
             case VContentViewTypeVideo:
                 shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
                 break;
@@ -851,7 +854,6 @@
      }
                                      failBlock:^(NSOperation *operation, NSError *error)
      {
-         //
          completion(NO, error);
      }];
 }

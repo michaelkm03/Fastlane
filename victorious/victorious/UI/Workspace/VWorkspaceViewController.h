@@ -9,17 +9,10 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
-#import "VToolController.h"
 
-@class VToolController, VCanvasView, VWorkspaceViewController;
+@class VToolController, VCanvasView;
 
-@protocol VWorkspaceDelegate <NSObject>
-
-@required
-- (void)workspaceDidPublish:(VWorkspaceViewController *)workspaceViewController;
-- (void)workspaceDidClose:(VWorkspaceViewController *)workspaceViewController;
-
-@end
+typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL);
 
 /**
  
@@ -30,25 +23,24 @@
  A toolbar - Representing the currently selected top level tool. For images these are: Text, Filters, and crop.
  
  */
-@interface VWorkspaceViewController : UIViewController <VHasManagedDependancies, VToolControllerDelegate>
+@interface VWorkspaceViewController : UIViewController <VHasManagedDependancies>
 
 @property (nonatomic, copy) NSString *continueText;
-@property (nonatomic, assign) BOOL showCloseButton;
-
-@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion. PreviewImage and RenderedMediaURL will be nil if unsuccessful.
 
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
 
-@property (nonatomic, strong) VToolController *toolController; ///< The toolController
-
-@property (nonatomic, assign) BOOL disabledToolbarWhileKeyboardIsVisible;
+@property (nonatomic, readonly) VToolController *toolController; ///< The toolController
 
 @property (nonatomic, assign) BOOL shouldConfirmCancels; ///< The workspace will show a "discard" action sheet before calling it's completion block
 
 @property (nonatomic, weak, readonly) VCanvasView *canvasView;
 
-@property (nonatomic, strong) id<VWorkspaceDelegate> delegate;
+/**
+ *  The initial edit state. (since dependency injection doesn't inherit from parent to child).
+ */
+@property (nonatomic, strong) NSNumber *initalEditState;
 
 - (void)bringTopChromeOutOfView;
 - (void)bringBottomChromeOutOfView;

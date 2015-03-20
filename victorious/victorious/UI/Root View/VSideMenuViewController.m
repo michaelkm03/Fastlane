@@ -20,6 +20,7 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
+#import "UIView+AutoLayout.h"
 
 @interface VSideMenuViewController ()
 
@@ -36,7 +37,7 @@
 
 #pragma mark - Initializers
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName
 {
     self = [super initWithDependencyManager:dependencyManager];
     if ( self != nil )
@@ -82,6 +83,11 @@
     }
 }
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [self initWithDependencyManager:dependencyManager nibName:nil];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -90,9 +96,12 @@
 - (void)loadView
 {
     self.view = [[UIView alloc] init];
-
-    self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
-                            applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+    
+    UINib *launchScreenNib = [UINib nibWithNibName:@"Launch Screen" bundle:nil];
+    UIView *launchScreenView = [[launchScreenNib instantiateWithOwner:nil options:nil] firstObject];
+    launchScreenView.frame = self.view.bounds;
+    launchScreenView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    [self.view addSubview:launchScreenView];
     
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     
@@ -110,21 +119,25 @@
         _contentViewInPortraitOffsetCenterX  = CGRectGetWidth(self.view.frame) + 30.f;
     }
     
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.backgroundImageView = ({
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-        imageView.image = self.backgroundImage;
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        imageView;
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        self.backgroundImage = [self blurredSnapshotOfView:launchScreenView];
+        self.backgroundImageView = ({
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+            imageView.image = self.backgroundImage;
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            imageView;
+        });
+        [self.view insertSubview:self.backgroundImageView atIndex:0];
+        [launchScreenView removeFromSuperview];
     });
+    
     self.contentButton = ({
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectNull];
         [button addTarget:self action:@selector(hideMenuViewController) forControlEvents:UIControlEventTouchUpInside];
         button;
     });
-    
-    [self.view addSubview:self.backgroundImageView];
     
     [self addChildViewController:self.menuViewController];
     self.menuViewController.view.frame = self.view.bounds;
@@ -207,13 +220,21 @@
 
 #pragma mark -
 
+- (UIImage *)blurredSnapshotOfView:(UIView *)view
+{
+    UIGraphicsBeginImageContext(view.bounds.size);
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return [image applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+}
+
 - (void)presentMenuViewController
 {
     self.menuViewController.view.transform = CGAffineTransformIdentity;
     if (self.scaleBackgroundImageView)
     {
         self.backgroundImageView.transform = CGAffineTransformIdentity;
-        self.backgroundImageView.frame = self.view.bounds;
     }
     self.menuViewController.view.frame = self.view.bounds;
     self.menuViewController.view.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
@@ -305,11 +326,14 @@
 
 - (void)navigateToDestination:(id)navigationDestination completion:(void (^)())completion
 {
-    if ( self.visible )
-    {
-        [self hideMenuViewController];
-    }
-    [super navigateToDestination:navigationDestination completion:completion];
+    [super navigateToDestination:navigationDestination completion:^void
+     {
+         if ( self.visible )
+         {
+             [self hideMenuViewController];
+         }
+         completion();
+     }];
 }
 
 - (void)displayResultOfNavigation:(UIViewController *)viewController
@@ -374,15 +398,6 @@
 }
 
 #pragma mark - Setters
-
-- (void)setBackgroundImage:(UIImage *)backgroundImage
-{
-    _backgroundImage = backgroundImage;
-    if (self.backgroundImageView)
-    {
-        self.backgroundImageView.image = backgroundImage;
-    }
-}
 
 - (void)setContentViewController:(VNavigationController *)contentViewController
 {

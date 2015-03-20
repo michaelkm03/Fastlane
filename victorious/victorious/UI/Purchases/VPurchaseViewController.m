@@ -15,16 +15,18 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VPurchaseStringMaker.h"
+#import "VCreatorInfoHelper.h"
+#import "VDependencyManager.h"
 
 @interface VPurchaseViewController ()
 
 @property (strong, nonatomic) VPurchaseManager *purchaseManager;
 @property (strong, nonatomic) VProduct *product;
 @property (strong, nonatomic) VPurchaseStringMaker *stringMaker;
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
+@property (weak, nonatomic) IBOutlet VCreatorInfoHelper *creatorInfoHelper;
 @property (weak, nonatomic) IBOutlet UILabel *productTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *creatorSalutationLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *creatorAvatarImageView;
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UIView *unlockLoadingView;
@@ -40,12 +42,12 @@
 
 #pragma mark - Initialization
 
-+ (VPurchaseViewController *)purchaseViewControllerWithVoteType:(VVoteType *)voteType
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Purchases" bundle:[NSBundle mainBundle]];
     VPurchaseViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    viewController.voteType = voteType;
+    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -55,15 +57,15 @@
 {
     [super viewDidLoad];
     
+    NSAssert( self.voteType != nil, @"A valid VVoteType should be populated before loading. See `voteType` property." );
+    
     self.purchaseManager = [VPurchaseManager sharedInstance];
     self.stringMaker = [[VPurchaseStringMaker alloc] init];
     self.product = [self.purchaseManager purchaseableProductForProductIdentifier:self.voteType.productIdentifier];
     
-    self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
-    self.creatorAvatarImageView.layer.borderWidth = 1.0f;
-    self.creatorAvatarImageView.layer.masksToBounds = YES;
-    
     [self resetLoadingState];
+    
+    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -83,7 +85,6 @@
     UIColor *linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     NSString *fontNameRegular = @"MuseoSans-300";
-    NSString *fontNameBold = @"MuseoSans-500";
     
     self.unlockButton.primaryColor = linkColor;
     self.unlockButton.titleLabel.font = [UIFont fontWithName:fontNameRegular size:18.0f];
@@ -93,22 +94,9 @@
     self.restoreButton.titleLabel.font = [UIFont fontWithName:fontNameRegular size:15.0f];
     self.restoreButton.style = VButtonStyleSecondary;
     
-    self.productDescriptionTextView.font = [UIFont fontWithName:fontNameRegular size:17.0f];
+    self.productDescriptionTextView.font = [UIFont fontWithName:fontNameRegular size:16.0f];
     
     self.productTitleLabel.font = [UIFont fontWithName:fontNameRegular size:20.0f];
-    
-    self.creatorSalutationLabel.font = [UIFont fontWithName:fontNameBold size:11.0f];
-    
-    self.creatorAvatarImageView.layer.borderColor = linkColor.CGColor;
-}
-
-- (void)populateDataFromBundle
-{
-    NSBundle *bundle = [NSBundle mainBundle];
-    
-    NSString *salutation = [bundle objectForInfoDictionaryKey:@"CreatorSalutation"];
-    self.creatorSalutationLabel.text = [NSString stringWithFormat:@"–%@", salutation];
-    self.creatorAvatarImageView.image = [UIImage imageNamed:@"creator-avatar"];
 }
 
 - (void)populateDataWithVoteType:(VVoteType *)voteType
@@ -167,7 +155,7 @@
     
     [self populateDataWithProduct:self.product];
     [self populateDataWithVoteType:self.voteType];
-    [self populateDataFromBundle];
+    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
     [self applyTheme];
 }
 
@@ -197,7 +185,8 @@
 
 - (IBAction)close:(id)sender
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPurchase];
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : self.voteType.productIdentifier ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPurchase parameters:params];
     
     [self.delegate purchaseDidFinish:NO];
 }

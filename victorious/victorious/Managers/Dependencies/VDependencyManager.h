@@ -111,9 +111,9 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 /**
  Returns the NSArray with the specified key. If the array
  elements contain configuration dictionaries for dependant
- objects, those configuration dictionaries can be passed
- into -objectFromDictionary to instantiate a new object.
- */
+ objects, those objects will be instantiated and added to
+ the array.
+*/
 - (NSArray *)arrayForKey:(NSString *)key;
 
 /**
@@ -131,6 +131,33 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  be returned again.
  */
 - (NSArray *)arrayOfSingletonValuesOfType:(Class)expectedType forKey:(NSString *)key;
+
+/**
+ Returns an NSArray with the specified key. The array
+ will be filtered for objects conforming to the
+ specified protocol.
+ */
+- (NSArray *)arrayOfValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns an NSArray with the specified key. The array
+ will be filtered for objects conforming to the
+ specified protocol. If any of the array elements have
+ been previously returned, the previous value will
+ be returned again.
+ */
+- (NSArray *)arrayOfSingletonValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns an NSArray of NSString objects for the specified key. These 
+ NSString objects will contain URLs pointing to images.
+ */
+- (NSArray *)arrayOfImageURLsForKey:(NSString *)key;
+
+/**
+ Returns an array of all image URLs that appear in the template.
+ */
+- (NSArray *)arrayOfAllImageURLs;
 
 /**
  Returns the value stored for the specified key in the configuration
@@ -152,6 +179,26 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  extra dependencies will be added to it.
  */
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
+
+/**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param expectedType if the value found at key does not conform 
+                     to this protocol, of class, we return nil.
+ */
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param protocol If the value found at key does not conform to this protocol, we return nil.
+ @param dependencies If the returned object conforms to VHasManagedDependencies,
+                     a new instance of VDependencyManager will be provided to it, and these
+                     extra dependencies will be added to it.
+ */
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
 
 /**
  Returns a singleton object stored for the specified key in the configuration

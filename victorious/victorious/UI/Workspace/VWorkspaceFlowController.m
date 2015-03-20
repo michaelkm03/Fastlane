@@ -25,6 +25,7 @@
 // Category
 #import "NSURL+MediaType.h"
 #import "UIActionSheet+VBlocks.h"
+#import "VWorkspacePresenter.h"
 
 // ViewControllers
 #import "VCameraViewController.h"
@@ -63,7 +64,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     VWorkspaceFlowControllerStatePublish
 };
 
-@interface VWorkspaceFlowController () <UINavigationControllerDelegate, VVideoToolControllerDelegate, VWorkspaceDelegate>
+@interface VWorkspaceFlowController () <UINavigationControllerDelegate, VVideoToolControllerDelegate>
 
 @property (nonatomic, assign) VWorkspaceFlowControllerState state;
 
@@ -80,6 +81,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+
 @end
 
 @implementation VWorkspaceFlowController
@@ -88,7 +91,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
     VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
     VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:VDependencyManagerWorkspaceFlowKey
+                                                                                              forKey:@"defaultWorkspaceDestination"
                                                                                withAddedDependencies:injectedDependencies];
     return workspaceFlowController;
 }
@@ -245,10 +248,15 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 #pragma mark - VNavigationDestination
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (VAuthorizationContext)authorizationContext
 {
-    VWorkspaceFlowController *newFlowController = [[VWorkspaceFlowController alloc] initWithDependencyManager:self.dependencyManager];
-    [[VRootViewController rootViewController] presentViewController:newFlowController.flowRootViewController animated:YES completion:nil];
+    return VAuthorizationContextCreatePost;
+}
+
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
+{
+    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]];
+    [self.workspacePresenter present];
     return NO;
 }
 
@@ -344,18 +352,22 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     if ([self.capturedMediaURL v_hasImageExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
     }
     else if ([self.capturedMediaURL v_hasVideoExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+        workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VVideoToolControllerInitalVideoEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
+        
         VVideoToolController *videoToolController = (VVideoToolController *)workspaceViewController.toolController;
         videoToolController.videoToolControllerDelegate = self;
         videoToolController.mediaURL = self.capturedMediaURL;
     }
     
-    workspaceViewController.disabledToolbarWhileKeyboardIsVisible = YES;
+#warning FIX
+    // workspaceViewController.disabledToolbarWhileKeyboardIsVisible = YES;
     
     UIImage *preloadedImage = [self.dependencyManager imageForKey:VWorkspaceFlowControllerPreloadedImageKey];
     if (preloadedImage != nil)
@@ -366,7 +378,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     id remixItem = [self.dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];
     BOOL isRemix = (remixItem != nil);
     workspaceViewController.shouldConfirmCancels = !isRemix;
-    workspaceViewController.delegate = self;
+    
+#warning FIX
+    // workspaceViewController.delegate = self;
     
     BOOL selectedFromAssetsLibraryOrSearch = self.cameraViewController.didSelectFromWebSearch || self.cameraViewController.didSelectAssetFromLibrary;
     BOOL shouldShowPublish = YES;
@@ -500,7 +514,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     imageToolController.defaultImageTool = VImageToolControllerInitialImageEditStateText;
     
     imageWorkspaceViewController.continueText = NSLocalizedString(@"Publish", nil);
-    imageWorkspaceViewController.delegate = self;
+#warning FIX
+    // imageWorkspaceViewController.delegate = self;
     [self.flowNavigationController pushViewController:imageWorkspaceViewController animated:YES];
 }
 

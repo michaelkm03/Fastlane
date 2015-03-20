@@ -10,6 +10,7 @@
 #import "VObjectManager+Private.h"
 #import "VTrackingURLRequest.h"
 #import "VURLMacroReplacement.h"
+#import "NSCharacterSet+VURLParts.h"
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
@@ -21,6 +22,7 @@ static NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
 static NSString * const kMacroShareDestination       = @"%%SHARE_DEST%%";
 static NSString * const kMacroNotificationID         = @"%%NOTIF_ID%%";
 static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
+static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
@@ -54,7 +56,8 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
                                     VTrackingKeyVoteCount          : kMacroBallisticsCount,
                                     VTrackingKeyShareDestination   : kMacroShareDestination,
                                     VTrackingKeyNotificationId     : kMacroNotificationID,
-                                    VTrackingKeySessionTime        : kMacroSessionTime };
+                                    VTrackingKeySessionTime        : kMacroSessionTime,
+                                    VTrackingKeyLoadTime           : kMacroLoadTime };
         _macroReplacement = [[VURLMacroReplacement alloc] init];
     }
     return self;

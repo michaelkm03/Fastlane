@@ -22,7 +22,7 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
     VTextWorkspaceFlowStateTypePublish
 };
 
-@interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VWorkspaceDelegate>
+@interface VTextWorkspaceFlowController() <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -47,8 +47,10 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
         
         _editTextWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
         _editTextWorkspaceViewController.continueText = NSLocalizedString( @"Publish", @"" );
-        _editTextWorkspaceViewController.showCloseButton = YES;
-        _editTextWorkspaceViewController.delegate = self;
+#warning FIX
+        // _editTextWorkspaceViewController.showCloseButton = YES;
+#warning FIX
+        // _editTextWorkspaceViewController.delegate = self;
         
         _editTextToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
         NSDictionary *editTextWorkspace = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"editTextWorkspace"];
@@ -57,8 +59,10 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
         VTextToolController *toolController = [[VTextToolController alloc] initWithTools:workspaceTools];
         toolController.delegate = _editTextWorkspaceViewController;
         toolController.text = [self randomSampleText];
-        toolController.dependencyManager = _editTextWorkspaceViewController.dependencyManager;
-        _editTextWorkspaceViewController.toolController = toolController;
+#warning FIX
+        // toolController.dependencyManager = _editTextWorkspaceViewController.dependencyManager;
+#warning FIX
+        // _editTextWorkspaceViewController.toolController = toolController;
         
         [toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
          {

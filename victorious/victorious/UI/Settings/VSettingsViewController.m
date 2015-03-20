@@ -8,6 +8,7 @@
 
 @import MessageUI;
 
+#import "VDependencyManager.h"
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
@@ -33,8 +34,9 @@ static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
 static const NSInteger kPushNotificationsButtonIndex = 3;
-static const NSInteger kServerEnvironmentButtonIndex = 4;
-static const NSInteger kResetPurchasesButtonIndex    = 5;
+static const NSInteger kResetPurchasesButtonIndex    = 4;
+static const NSInteger kServerEnvironmentButtonIndex = 5;
+static const NSInteger kTrackingButtonIndex          = 6;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
@@ -48,6 +50,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 @property (nonatomic, assign) BOOL showChromeCastButton;
 @property (nonatomic, assign) BOOL showEnvironmentSetting;
+@property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
 
@@ -55,6 +58,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
 
 @property (nonatomic, weak) IBOutlet VVideoSettings *videoSettings;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -64,7 +68,9 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    VSettingsViewController *settingsViewController = (VSettingsViewController *)[[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    settingsViewController.dependencyManager = dependencyManager;
+    return settingsViewController;
 }
 
 - (void)dealloc
@@ -80,11 +86,11 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+         label.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
      }];
     [self.rightLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+         label.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
      }];
     
     NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
@@ -94,7 +100,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 #endif
     
     self.versionString.text = appVersionString;
-    self.versionString.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.versionString.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -113,6 +119,12 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     self.showEnvironmentSetting = NO;
 #else
     self.showEnvironmentSetting = YES;
+#endif
+    
+#ifdef V_NO_TRACKING_ALERTS
+    self.showTrackingAlertSetting = NO;
+#else
+    self.showTrackingAlertSetting = YES;
 #endif
     
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
@@ -181,8 +193,8 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 - (void)updateLogoutButtonState
 {
-    self.logoutButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.logoutButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.logoutButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
@@ -212,7 +224,10 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     else
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+        [self presentViewController:navigationController animated:YES completion:nil];
     }
     
     [self.tableView beginUpdates];
@@ -223,11 +238,15 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    VWebContentViewController  *viewController = segue.destinationViewController;
+    UIViewController *viewController = segue.destinationViewController;
     
     if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
         viewController.title = NSLocalizedString(@"ToSText", @"");
+    }
+    if ( [viewController respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        [(id<VHasManagedDependancies>)viewController setDependencyManager:self.dependencyManager];
     }
 }
 
@@ -280,6 +299,17 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     else if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
     {
         if (self.showPurchaseSettings)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (kSettingsSectionIndex == indexPath.section && kTrackingButtonIndex == indexPath.row)
+    {
+        if (self.showEnvironmentSetting)
         {
             return self.tableView.rowHeight;
         }
@@ -371,6 +401,13 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - VNavigationDestination
+
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
+{
+    return YES;
 }
 
 @end

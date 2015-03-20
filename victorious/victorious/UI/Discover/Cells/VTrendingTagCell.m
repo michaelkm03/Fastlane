@@ -14,6 +14,7 @@
 #import "VConstants.h"
 #import "VHashtag.h"
 #import "VFollowHashtagControl.h"
+#import "VDependencyManager.h"
 
 static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
 
@@ -67,13 +68,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     return kTrendingTagCellRowHeight;
 }
 
-- (void)applyTheme
-{
-    self.hashTagLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.hashTagLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    self.hashTagLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-}
-
 - (void)setHashtag:(VHashtag *)hashtag
 {
     _hashtag = hashtag;
@@ -83,8 +77,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
 
     [self.hashTagLabel setText:text];
-
-    [self applyTheme];
 
     if (self.isSubscribedToTag)
     {
@@ -141,10 +133,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     }
     else
     {
-        // Disable the control
-        self.followHashtagControl.userInteractionEnabled = NO;
-        [self disableSubscriptionIcon:nil];
-
         self.shouldAnimateSubscription = YES;
         if (self.subscribeToTagAction != nil)
         {
@@ -157,8 +145,17 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 {
     self.shouldCellRespond = YES;
     self.isSubscribedToTag = NO;
-    self.userInteractionEnabled = YES;
+    self.followHashtagControl.userInteractionEnabled = YES;
     self.followHashtagControl.alpha = 1.0f;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.hashTagLabel.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.hashTagLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.hashTagLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
+    self.followHashtagControl.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 #pragma mark - Disable / Enable Tag Subscription Button

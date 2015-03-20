@@ -13,8 +13,9 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 
-extern NSString * const VStreamCollectionViewControllerStreamURLPathKey; ///< The key that identifies the stream URL path in VDependencyManager
+extern NSString * const VStreamCollectionViewControllerStreamURLKey; ///< The key that identifies the stream URL path in VDependencyManager
 extern NSString * const VStreamCollectionViewControllerCreateSequenceIconKey; ///< The key that identifies the create sequence icon in VDependencyManager
+extern NSString * const VStreamCollectionViewControllerCellComponentKey; ///< A VDependencyManager key for the stream cell component
 
 @class VStreamCollectionViewDataSource;
 
@@ -24,6 +25,8 @@ extern NSString * const VStreamCollectionViewControllerCreateSequenceIconKey; //
 @property (nonatomic) BOOL shouldDisplayMarquee;
 @property (nonatomic, strong) UIView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, assign) BOOL canShowContent; // Defaults to YES
 
 /**
  *  Creates a new stream collection view controller

@@ -17,6 +17,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIAlertView+VBlocks.h"
 #import "UIActionSheet+VBlocks.h"
+#import "VWorkspaceToolButton.h"
 
 // Keyboard
 #import "VKeyboardNotificationManager.h"
@@ -31,18 +32,19 @@
 // ToolControllers
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
-#import "VTextToolController.h"
 
 // Video
 #import "VVideoWorkspaceTool.h"
 
 @import AVFoundation;
 
-@interface VWorkspaceViewController ()
+static CGFloat const kWorkspaceToolButtonSize = 44.0f;
+
+@interface VWorkspaceViewController () <VToolControllerDelegate>
 
 @property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
 
-@property (nonatomic, readwrite) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
@@ -50,15 +52,15 @@
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *continueButton;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *backButton;
+@property (nonatomic, strong) NSArray *workspaceToolButtons;
+
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @property (nonatomic, strong) VKeyboardNotificationManager *keyboardManager;
 
-@property (nonatomic, strong) NSDictionary *toolForBarButtonItemMap;
-@property (nonatomic, strong) NSDictionary *barButtonItemForToolMap;
+@property (nonatomic, strong, readwrite) VToolController *toolController;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopBarToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBottomBarToContainer;
@@ -110,126 +112,75 @@
     
     [self.continueButton setTitle:self.continueText];
     
-    NSString *imageName = self.showCloseButton ? @"cameraButtonClose" : @"cameraButtonBack";
-    [self.backButton setImage:[UIImage imageNamed:imageName]];
-    
     self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     self.toolController.canvasView = self.canvasView;
     
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.previewImage
-                                                  placeholderImage:nil
-                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+    if (self.previewImage != nil)
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.previewImage
+                                                      placeholderImage:nil
+                                                             tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+    }
     
-    NSMutableArray *barButtonItemsForTools = [[NSMutableArray alloc] init];
+    NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
+    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                          target:nil
+                                                                          action:nil]];
     
-    NSMutableDictionary *barButtonItemForToolMap = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *toolForBarButtonItemMap = [[NSMutableDictionary alloc] init];
+    NSMutableArray *workspaceToolButtons = [[NSMutableArray alloc] init];
     [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
-    {
-        UIBarButtonItem *itemForTool;
-        if ( [tool respondsToSelector:@selector(icon)] && tool.icon != nil )
-        {
-            itemForTool = [[UIBarButtonItem alloc] initWithImage:[tool icon]
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(selectedBarButtonItem:)];
-            [itemForTool setBackButtonBackgroundImage:[tool icon] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        }
-        if ( [tool respondsToSelector:@selector(title)] && tool.title != nil )
-        {
-            itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(selectedBarButtonItem:)];
-        }
-        
-        if ( itemForTool != nil )
-        {
-            itemForTool.tag = idx;
-            
-            itemForTool.tintColor = [UIColor whiteColor];
-            [barButtonItemsForTools addObject:itemForTool];
-            itemForTool.tag = idx;
-            
-            [barButtonItemForToolMap setObject:itemForTool
-                                        forKey:[tool description]];
-            [toolForBarButtonItemMap setObject:tool
-                                        forKey:[itemForTool description]];
-            
-            if (tool != self.toolController.tools.lastObject)
-            {
-                UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                            target:nil
-                                                                                            action:nil];
-                fixedSpace.width = 20.0f;
-                [barButtonItemsForTools addObject:fixedSpace];
-            }
-        }
-    }];
-    
-    if ( barButtonItemsForTools.count > 0 )
-    {
-        self.toolForBarButtonItemMap = toolForBarButtonItemMap;
-        self.barButtonItemForToolMap = barButtonItemForToolMap;
-        
-        NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
-        UIBarButtonItem *spaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        spaceLeft.tag = -1;
-        [toolBarItems addObject:spaceLeft];
-        
-        [barButtonItemsForTools enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+     {
+         VWorkspaceToolButton *workspaceToolButton = [[VWorkspaceToolButton alloc] initWithFrame:CGRectMake(0, 0, kWorkspaceToolButtonSize, kWorkspaceToolButtonSize)];
+         workspaceToolButton.selectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+         workspaceToolButton.unselectedColor = [UIColor colorWithRed:40/255.0f green:45/255.0f blue:48/255.0f alpha:1.0f];
+         workspaceToolButton.selected = NO;
+         workspaceToolButton.tool = tool;
+         [workspaceToolButton addTarget:self action:@selector(selectedButton:) forControlEvents:UIControlEventTouchUpInside];
+         [workspaceToolButtons addObject:workspaceToolButton];
+         
+         UIBarButtonItem *itemForTool = [[UIBarButtonItem alloc] initWithCustomView:workspaceToolButton];
+         
+         [toolBarItems addObject:itemForTool];
+         itemForTool.tag = idx;
+         
+         if (tool != self.toolController.tools.lastObject)
          {
-             [toolBarItems addObject:item];
-         }];
-        
-        UIBarButtonItem *spaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        spaceRight.tag = -1;
-        [toolBarItems addObject:spaceRight];
-        
-        self.bottomToolbar.items = toolBarItems;
-    }
-    else
-    {
-        self.bottomToolbar.hidden = YES;
-    }
+             UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                         target:nil
+                                                                                         action:nil];
+             fixedSpace.width = 20.0f;
+             [toolBarItems addObject:fixedSpace];
+         }
+     }];
+    self.workspaceToolButtons = [workspaceToolButtons copy];
     
-    [self setupCanvasNotification];
+    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+    self.bottomToolbar.items = toolBarItems;
     
-    [self setupKeyboardManager];
-}
-
-- (void)setupCanvasNotification
-{
     if ([self.toolController isKindOfClass:[VImageToolController class]])
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(canvasViewDidUpdateAsset:)
-                                                     name:VCanvasViewAssetSizeBecameAvailableNotification
-                                                   object:self.canvasView];
-        [self.canvasView setSourceURL:self.mediaURL withPreloadedImage:self.previewImage];
+        [self.canvasView setSourceURL:self.mediaURL
+                   withPreloadedImage:self.previewImage];
     }
-}
-
-- (void)setupKeyboardManager
-{
+    
     __weak typeof(self) welf = self;
     self.keyboardManager = [[VKeyboardNotificationManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
-    {
-
-        [welf keyboardWillShowWithFrameBegin:keyboardFrameBegin
-                                    frameEnd:keyboardFrameEnd
-                           animationDuration:animationDuration
-                              animationCurve:animationCurve];
-    }
-                                                                     willHideBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
-    {
-        [welf keyboardWillHideWithFrameBegin:keyboardFrameBegin
-                                    frameEnd:keyboardFrameEnd
-                           animationDuration:animationDuration
-                              animationCurve:animationCurve];
-    }
-                                                              willChangeFrameBlock:nil];
+                            {
+                                
+                                [welf keyboardWillShowWithFrameBegin:keyboardFrameBegin
+                                                            frameEnd:keyboardFrameEnd
+                                                   animationDuration:animationDuration
+                                                      animationCurve:animationCurve];
+                            }
+                                                                                 willHideBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
+                            {
+                                [welf keyboardWillHideWithFrameBegin:keyboardFrameBegin
+                                                            frameEnd:keyboardFrameEnd
+                                                   animationDuration:animationDuration
+                                                      animationCurve:animationCurve];
+                            }
+                                                                          willChangeFrameBlock:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -237,8 +188,14 @@
     [super viewWillAppear:animated];
     
     [self.toolController setupDefaultTool];
-    
-    [self setSelectedBarButtonItem:[self.barButtonItemForToolMap objectForKey:[self.toolController.selectedTool description]]];
+    [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VWorkspaceToolButton *toolButton, NSUInteger idx, BOOL *stop)
+     {
+         if (self.toolController.selectedTool == toolButton.tool)
+         {
+             [self setSelectedButton:toolButton];
+             *stop = YES;
+         }
+     }];
     
     self.keyboardManager.stopCallingHandlerBlocks = NO;
 }
@@ -250,7 +207,6 @@
     self.keyboardManager.stopCallingHandlerBlocks = YES;
 }
 
-#warning MOVE THIS SHIT TO WORKSPACE FLOW CONTROLLER!!
 - (void)setMediaURL:(NSURL *)mediaURL
 {
     _mediaURL = mediaURL;
@@ -258,29 +214,39 @@
     if ([mediaURL v_hasImageExtension])
     {
         VImageToolController *imageToolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
-        NSNumber *initialImageEditStateNumber = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
-        if (initialImageEditStateNumber != nil)
+        if (self.initalEditState != nil)
         {
-             imageToolController.defaultImageTool = [initialImageEditStateNumber integerValue];
+            imageToolController.defaultImageTool = [self.initalEditState integerValue];
         }
         self.toolController = imageToolController;
     }
     else if ([mediaURL v_hasVideoExtension])
     {
         VVideoToolController *videoToolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
-        NSNumber *initialVideoEditStateValue = [self.dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
-        if (initialVideoEditStateValue != nil)
+        if (self.initalEditState != nil)
         {
-            videoToolController.defaultVideoTool = [initialVideoEditStateValue integerValue];
+            videoToolController.defaultVideoTool = [self.initalEditState integerValue];
         }
         self.toolController = videoToolController;
     }
-    
     __weak typeof(self) welf = self;
     self.toolController.canRenderAndExportChangeBlock = ^void(BOOL canRenderAndExport)
     {
         welf.continueButton.enabled = canRenderAndExport;
     };
+    self.toolController.snapshotImageBecameAvailable = ^void(UIImage *snapshotImage)
+    {
+        if (welf.blurredBackgroundImageView.image != nil)
+        {
+            return;
+        }
+        welf.previewImage = snapshotImage;
+        [welf.blurredBackgroundImageView setBlurredImageWithClearImage:snapshotImage
+                                                      placeholderImage:nil
+                                                             tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
+                                                               animate:YES];
+    };
+    self.toolController.mediaURL = mediaURL;
     self.toolController.delegate = self;
 }
 
@@ -288,31 +254,63 @@
 
 - (IBAction)close:(id)sender
 {
-    [self.delegate workspaceDidClose:self];
+    if (self.shouldConfirmCancels)
+    {
+        __weak typeof(self) welf = self;
+        UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
+                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                                      onCancelButton:nil
+                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
+                                                                 onDestructiveButton:^
+                                                 {
+                                                     welf.completionBlock(NO, nil, nil);
+                                                 }
+                                                          otherButtonTitlesAndBlocks:nil, nil];
+        [confirmExitActionSheet showInView:self.view];
+        return;
+    }
+    self.completionBlock(NO, nil, nil);
 }
 
 - (IBAction)publish:(id)sender
 {
-    [self.delegate workspaceDidPublish:self];
+    MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
+                                                     animated:YES];
+    hudForView.labelText = NSLocalizedString(@"Rendering...", @"");
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishWorkspaceEdits];
+    
+    __weak typeof(self) welf = self;
+    [self.toolController exportWithSourceAsset:self.mediaURL
+                                withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error)
+     {
+         [hudForView hide:YES];
+         if (error != nil)
+         {
+             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Render failure", @"")
+                                                                  message:error.localizedDescription
+                                                        cancelButtonTitle:NSLocalizedString(@"ok", @"")
+                                                           onCancelButton:nil
+                                               otherButtonTitlesAndBlocks:nil, nil];
+             [errorAlert show];
+         }
+         else
+         {
+             if (welf.completionBlock != nil)
+             {
+                 welf.completionBlock(YES, previewImage, renderedMediaURL);
+             }
+         }
+     }];
 }
 
-- (void)selectedBarButtonItem:(UIBarButtonItem *)sender
+- (void)selectedButton:(VWorkspaceToolButton *)button
 {
-    self.toolController.selectedTool = [self.toolForBarButtonItemMap objectForKey:sender.description];
-    [self setSelectedBarButtonItem:sender];
+    self.toolController.selectedTool = button.tool;
+    [self setSelectedButton:button];
     
     NSDictionary *params = @{ VTrackingKeyName : self.toolController.selectedTool.title ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTool parameters:params];
-}
-
-#pragma mark - Notification Handlers
-
-- (void)canvasViewDidUpdateAsset:(NSNotification *)notification
-{
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.canvasView.asset
-                                                  placeholderImage:nil
-                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
-                                                           animate:YES];
 }
 
 #pragma mark - VWorkspaceToolControllerDelegate
@@ -355,11 +353,6 @@
     [self.continueButton setTitle:continueText];
 }
 
-- (void)setShowCloseButton:(BOOL)showCloseButton
-{
-    _showCloseButton = showCloseButton;
-}
-
 #pragma mark - Public Methods
 
 - (void)bringTopChromeOutOfView
@@ -382,7 +375,13 @@
 {
     self.verticalSpaceTopBarToContainer.constant = 0.0f;
     self.verticalSpaceBottomBarToContainer.constant = 0.0f;
-
+    
+    // We are returning from being below the top of the nav stack show the image view
+    if (self.blurredBackgroundImageView.image != nil)
+    {
+        self.blurredBackgroundImageView.alpha = 1.0f;
+    }
+    
     [self.view layoutIfNeeded];
 }
 
@@ -409,14 +408,10 @@
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
         self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
         self.inspectorToolViewController.view.frame = inspectorFrame;
-        
-        if ( self.disabledToolbarWhileKeyboardIsVisible )
+        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
          {
-             [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-              {
-                  [item setEnabled:NO];
-              }];
-         }
+             [item setEnabled:NO];
+         }];
         [self.view layoutIfNeeded];
     };
     
@@ -442,15 +437,11 @@
     void (^animations)() = ^()
     {
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
-        
-        if ( self.disabledToolbarWhileKeyboardIsVisible )
-        {
-            [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-             {
-                 [item setEnabled:YES];
-             }];
-        }
         [self.view layoutIfNeeded];
+        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+         {
+             [item setEnabled:YES];
+         }];
     };
     
     [UIView animateWithDuration:animationDuration
@@ -460,33 +451,13 @@
                      completion:nil];
 }
 
-- (void)setSelectedBarButtonItem:(UIBarButtonItem *)selectedItem
+- (void)setSelectedButton:(VWorkspaceToolButton *)button
 {
-    [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+    [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VWorkspaceToolButton *toolButton, NSUInteger idx, BOOL *stop)
      {
-         if ( item.tag >= 0 )
-         {
-             id<VWorkspaceTool> tool = self.toolController.tools[ item.tag ];
-             
-             if ( [item isEqual:selectedItem] )
-             {
-                 item.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-                 if ( [tool respondsToSelector:@selector(iconSelected)] && tool.iconSelected != nil )
-                 {
-                     item.image = tool.iconSelected;
-                 }
-             }
-             else
-             {
-                 item.tintColor = [UIColor whiteColor];
-                 if ( tool.icon != nil )
-                 {
-                     item.image = tool.icon;
-                 }
-             }
-         }
+         toolButton.selected = NO;
      }];
-    
+    button.selected = YES;
 }
 
 - (void)removeToolViewController:(UIViewController *)toolViewController

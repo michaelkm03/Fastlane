@@ -12,6 +12,8 @@
 
 @property (nonatomic, assign) BOOL subscribed;
 
+@property (nonatomic, strong) UIColor *fillColor;
+
 - (void)setSubscribed:(BOOL)subscribed
              animated:(BOOL)animated;
 

@@ -30,8 +30,9 @@
 #import "VSettingManager.h"
 #import "VStreamItem+Fetcher.h"
 #import "UIColor+VBrightness.h"
+#import "NSString+VParseHelp.h"
 
-static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kItemColor = @"itemColor";
 static NSString * const kBackgroundColor = @"backgroundColor";
 
@@ -63,7 +64,7 @@ static CGFloat const kDirectoryInset = 5.0f;
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    VStream *stream = [VStream streamForPath:[[dependencyManager stringForKey:kStreamURLKey] v_pathComponent] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
@@ -74,7 +75,7 @@ static CGFloat const kDirectoryInset = 5.0f;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [self.dependencyManager colorForKey:@"color.background"];
+    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     NSString *identifier = [VDirectoryGroupCell suggestedReuseIdentifier];

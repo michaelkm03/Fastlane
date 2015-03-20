@@ -17,7 +17,7 @@
     dispatch_once(&onceToken, ^(void)
                   {
                       NSMutableCharacterSet *mutableCharacterSet = [[NSCharacterSet URLPathAllowedCharacterSet] mutableCopy];
-                      [mutableCharacterSet removeCharactersInRange:NSMakeRange('/', 1)];
+                      [mutableCharacterSet removeCharactersInString:@"/@"];
                       pathPartCharacterSet = [mutableCharacterSet copy];
                   });
     return pathPartCharacterSet;
@@ -30,7 +30,7 @@
     dispatch_once(&onceToken, ^(void)
                   {
                       NSMutableCharacterSet *mutableCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
-                      [mutableCharacterSet removeCharactersInString:@"?&="];
+                      [mutableCharacterSet removeCharactersInString:@"?&=@"];
                       queryPartCharacterSet = [mutableCharacterSet copy];
                   });
     return queryPartCharacterSet;

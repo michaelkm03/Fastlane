@@ -14,6 +14,7 @@
 #import "VObjectManager+Discover.h"
 #import "VUser+RestKit.h"
 #import "VDiscoverConstants.h"
+#import "VAuthorizedAction.h"
 
 static NSString * const kSuggestedPersonCellIdentifier          = @"VSuggestedPersonCollectionViewCell";
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
@@ -207,42 +208,38 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueSuggestedPeople forSessionParameterWithKey:VTrackingKeyContext];
     
-    if ([VObjectManager sharedManager].authorized)
-    {
-        [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-             
-             user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue - 1];
-             self.userToAnimate = user;
-             [self.collectionView reloadData];
-         } failBlock:nil];
-    }
-    else if ( self.delegate != nil )
-    {
-        [self.delegate didAttemptActionThatRequiresLogin];
-    }
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:[self.delegate componentRootViewController] context:VAuthorizationContextFollowUser completion:^
+     {
+         [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+          {
+              [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+              
+              user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue - 1];
+              self.userToAnimate = user;
+              [self.collectionView reloadData];
+          } failBlock:nil];
+     }];
 }
 
 - (void)followPerson:(VUser *)user
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueSuggestedPeople forSessionParameterWithKey:VTrackingKeyContext];
     
-    if ([VObjectManager sharedManager].authorized)
-    {
-        [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-             
-             user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue + 1];
-             self.userToAnimate = user;
-             [self.collectionView reloadData];
-         } failBlock:nil];
-    }
-    else if ( self.delegate != nil )
-    {
-        [self.delegate didAttemptActionThatRequiresLogin];
-    }
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:[self.delegate componentRootViewController] context:VAuthorizationContextFollowUser completion:^
+     {
+         [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+          {
+              [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+              
+              user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue + 1];
+              self.userToAnimate = user;
+              [self.collectionView reloadData];
+          } failBlock:nil];
+     }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -263,7 +260,19 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
         self.userToAnimate = nil;
     }
     cell.delegate = self;
+    cell.dependencyManager = self.dependencyManager;
     return cell;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VSuggestedPersonCollectionViewCell *cell, NSUInteger idx, BOOL *stop)
+    {
+        
+        cell.dependencyManager = dependencyManager;
+        
+    }];
 }
 
 #pragma mark - UICollectionViewDelegate

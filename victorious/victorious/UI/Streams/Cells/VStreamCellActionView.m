@@ -8,10 +8,12 @@
 
 #import "VStreamCellActionView.h"
 
+#import "VSequenceActionsDelegate.h"
 #import "VSequence+Fetcher.h"
-#import "VThemeManager.h"
 
 #import "VConstants.h"
+
+#import "VDependencyManager.h"
 
 static CGFloat const kGreyBackgroundColor       = 0.94509803921;
 static CGFloat const kActionButtonBuffer        = 15;
@@ -49,6 +51,14 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
         return;
     }
 
+    CGFloat totalButtonWidths = 0.0f;
+    for ( UIButton *button in self.actionButtons )
+    {
+        totalButtonWidths += CGRectGetWidth(button.bounds);
+    }
+    
+    CGFloat separatorSpace = ( CGRectGetWidth(self.bounds) - totalButtonWidths - kActionButtonBuffer * 2 ) / ( self.actionButtons.count - 1 );
+    
     for (NSUInteger i = 0; i < self.actionButtons.count; i++)
     {
         UIButton *button = self.actionButtons[i];
@@ -63,14 +73,29 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
         }
         else
         {
-            //Count up all the available space (minus buttons and the buffers)
-            CGFloat leftOvers = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) * self.actionButtons.count - kActionButtonBuffer * 2;
-            //Left overs per button. 
-            CGFloat leftoversPerButton = leftOvers / (self.actionButtons.count - 1);
-            
-            frame.origin.x = kActionButtonBuffer + (leftoversPerButton + CGRectGetWidth(button.bounds)) * i;
+            UIButton *lastButton = self.actionButtons[i - 1];
+            frame.origin.x = CGRectGetMaxX(lastButton.frame) + separatorSpace;
         }
         button.frame = frame;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    UIColor *borderColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    if ( borderColor != nil )
+    {
+        self.layer.borderColor = borderColor.CGColor;
+    }
+    
+    UIColor *textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    if ( textColor != nil )
+    {
+        for ( UIButton *button in self.actionButtons )
+        {
+            [button setTintColor:textColor];
+        }
     }
 }
 
@@ -91,9 +116,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 - (void)shareAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(willShareSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willShareSequence:fromView:)])
     {
-        [self.delegate willShareSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willShareSequence:self.sequence fromView:self];
     }
 }
 
@@ -107,9 +132,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
-    if ([self.delegate respondsToSelector:@selector(willRemixSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
-        [self.delegate willRemixSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditGIF];
     }
 }
 
@@ -119,9 +144,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     [self.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
     
     BOOL hasRespoted = NO;
-    if ( [self.delegate respondsToSelector:@selector(hasRepostedSequence:)] )
+    if ( [self.sequenceActionsDelegate respondsToSelector:@selector(hasRepostedSequence:)] )
     {
-        hasRespoted = [self.delegate hasRepostedSequence:self.sequence];
+        hasRespoted = [self.sequenceActionsDelegate hasRepostedSequence:self.sequence];
     }
     
     self.repostButton.alpha = hasRespoted ? kRepostedDisabledAlpha : 1.0f;
@@ -131,20 +156,20 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 - (void)repostAction:(id)sender
 {
-    if ( ![self.delegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)] ||
-         ![self.delegate respondsToSelector:@selector(hasRepostedSequence:)] )
+    if ( ![self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)] ||
+         ![self.sequenceActionsDelegate respondsToSelector:@selector(hasRepostedSequence:)] )
     {
         return;
     }
     
-    if ( [self.delegate hasRepostedSequence:self.sequence] )
+    if ( [self.sequenceActionsDelegate hasRepostedSequence:self.sequence] )
     {
         return;
     }
     
     self.repostButton.alpha = kRepostedDisabledAlpha;
     
-    [self.delegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
+    [self.sequenceActionsDelegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
      {
          self.isAnimatingButton = YES;
          [self.repostButton setImage:[UIImage imageNamed:@"repostIcon-success-C"] forState:UIControlStateNormal];
@@ -188,9 +213,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
     
     // TODO: Currently, this "More" button is just skipping ahead to the "Flag" actionsheet confirmation.  This may need to be sorted out in the future.
-    if ([self.delegate respondsToSelector:@selector(willFlagSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willFlagSequence:fromView:)])
     {
-        [self.delegate willFlagSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willFlagSequence:self.sequence fromView:self];
     }
 }
 
@@ -199,7 +224,7 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     button.frame = CGRectMake(0, 0, CGRectGetHeight(self.bounds), CGRectGetHeight(self.bounds));
-    button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    button.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     [self addSubview:button];
     [self.actionButtons addObject:button];
     return button;

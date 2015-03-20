@@ -7,15 +7,14 @@
 //
 
 #import "VThemeManager.h"
-
+#import "VDependencyManager.h"
 #import "VSettingManager.h"
 
 #pragma mark - new theme constants
 
 NSString * const   kVCreatorName                       =   @"creator.name";
 
-NSString * const   kVMenuBackgroundImage               =   @"Default";
-NSString * const   kVMenuBackgroundImage5              =   @"Default-568h";
+NSString * const   kVMenuBackgroundImage               =   @"LaunchImage";
 NSString * const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
 
 #pragma mark - Fonts
@@ -73,127 +72,33 @@ static CGFloat const kGreyBackgroundColor = 0.94509803921;
     return sharedThemeManager;
 }
 
-- (instancetype)init
-{
-    self    =   [super init];
-    if (self)
-    {
-        NSURL  *defaultThemeURL =   [[NSBundle mainBundle] URLForResource:@"defaultTheme" withExtension:@"plist"];
-        [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultThemeURL]];
-    }
-    
-    return self;
-}
-
-#pragma mark -
-
-- (void)setTheme:(NSDictionary *)dictionary
-{
-    [[NSUserDefaults standardUserDefaults] setObject:dictionary forKey:kVNewThemeKey];
-    [self updateToNewTheme];
-}
-
-- (void)updateToNewTheme
-{
-    NSDictionary *newTheme = [[NSUserDefaults standardUserDefaults] objectForKey:kVNewThemeKey];
-    
-    [newTheme enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-     {
-         BOOL valid = YES;
-         if ([obj respondsToSelector:@selector(length)])
-         {
-             valid = ((NSString *)obj).length;
-         }
-         
-         if (obj && valid)
-         {
-             [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
-         }
-     }];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kVNewThemeKey];
-}
-
 #pragma mark - Primitives
 
 - (id)themedValueForKey:(NSString *)key
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:key] ?: [NSNull null];
+    return [self.dependencyManager templateValueOfType:[NSObject class] forKey:key] ?: [NSNull null];
 }
 
 - (NSString *)themedStringForKey:(NSString *)key
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:key] ?: @"";
-}
-
-- (NSURL *)themedURLForKey:(NSString *)key
-{
-    return [[NSUserDefaults standardUserDefaults] URLForKey:key] ?: [NSURL URLWithString:@""];
+    return [self.dependencyManager stringForKey:key] ?: @"";
 }
 
 #pragma mark - Other
 
 - (UIColor *)preferredBackgroundColor
 {
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return [UIColor colorWithWhite:kGreyBackgroundColor alpha:1];
-    }
-    else
-    {
-        return [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
-    }
+    return [self themedColorForKey:kVBackgroundColor];
 }
 
 - (UIImage *)themedBackgroundImageForDevice
 {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone &&
-        [[UIScreen mainScreen] bounds].size.height == 568.0f)
-    {
-        return [self themedImageForKey:kVMenuBackgroundImage5];
-    }
-    else
-    {
-        return [self themedImageForKey:kVMenuBackgroundImage];
-    }
+    return [self themedImageForKey:kVMenuBackgroundImage];
 }
 
 - (UIColor *)themedColorForKey:(NSString *)key
 {
-    NSDictionary   *colorDictionary =   [self themedValueForKey:key];
-    if (nil == colorDictionary)
-    {
-        return [UIColor clearColor];
-    }
-
-    CGFloat         red             =   [colorDictionary[@"red"] doubleValue] / 255.0;
-    CGFloat         green           =   [colorDictionary[@"green"] doubleValue] / 255.0;
-    CGFloat         blue            =   [colorDictionary[@"blue"] doubleValue] / 255.0;
-    CGFloat         alpha           =   [colorDictionary[@"alpha"] doubleValue];
-    UIColor        *color           =   [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-    
-    return color;
-}
-
-- (UIColor *)themedTranslucencyColorForKey:(NSString *)key
-{
-    UIColor *color = [self themedColorForKey:key];
-
-    // From https://github.com/kgn/UIColorCategories
-    CGFloat hue = 0, saturation = 0, brightness = 0, alpha = 0;
-
-    [color getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
-    return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
-}
-
-- (NSURL *)themedImageURLForKey:(NSString *)key
-{
-    NSURL  *url =   [self themedURLForKey:key];
-    if (!url)
-    {
-        url = [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
-    }
-    return url ?: [NSURL URLWithString:@""];
+    return [self.dependencyManager colorForKey:key];
 }
 
 - (UIImage *)themedImageForKey:(NSString *)key
@@ -214,24 +119,7 @@ static CGFloat const kGreyBackgroundColor = 0.94509803921;
 
 - (UIFont *)themedFontForKey:(NSString *)key
 {
-    NSDictionary   *fontDictionary = [self themedValueForKey:key];
-    NSString       *fontName    =   fontDictionary[@"fontName"];
-    CGFloat         fontSize    =   [fontDictionary[@"fontSize"] doubleValue];
-    
-    if (0 == fontSize)
-    {
-        fontSize = [UIFont systemFontSize];
-    }
-    
-    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
-    if (font)
-    {
-        return font;
-    }
-    else
-    {
-        return [UIFont systemFontOfSize:fontSize];
-    }
+    return [self.dependencyManager fontForKey:key];
 }
 
 @end

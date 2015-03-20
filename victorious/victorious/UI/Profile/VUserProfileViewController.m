@@ -31,11 +31,21 @@
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
 
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorizedAction.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
 #import "VSettingManager.h"
 #import <FBKVOController.h>
 #import <MBProgressHUD.h>
+#import "VDependencyManager.h"
+#import "VBaseCollectionViewCell.h"
+
+#import "VDependencyManager+VScaffoldViewController.h"
+
+// Authorization
+#import "VNotAuthorizedDataSource.h"
+#import "VNotAuthorizedProfileCollectionViewCell.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -46,8 +56,10 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
  */
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 static NSString * const kUserKey = @"user";
+static NSString * const kUserRemoteIdKey = @"remoteId";
+NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
 
 @property   (nonatomic, strong) VUser                  *profile;
 @property (nonatomic, strong) NSNumber *remoteId;
@@ -68,15 +80,26 @@ static NSString * const kUserKey = @"user";
 
 @property (nonatomic, assign) CGFloat defaultMBProgressHUDMargin;
 
+@property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
+
 @end
 
 @implementation VUserProfileViewController
 
-+ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId
+#warning Incredibly hacky
++ (instancetype)rootDependencyProfileWithRemoteId:(NSNumber *)remoteId
+{
+    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithRemoteId:remoteId];
+}
+
++ (instancetype)rootDependencyProfileWithUser:(VUser *)user
+{
+    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithUser:user];
+}
+
++ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    
-    viewController.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
     
     VUser *mainUser = [VObjectManager sharedManager].mainUser;
     BOOL isMe = (remoteId.integerValue == mainUser.remoteId.integerValue);
@@ -90,10 +113,11 @@ static NSString * const kUserKey = @"user";
         viewController.profile = mainUser;
     }
     
+    viewController.dependencyManager = dependencyManager != nil ? dependencyManager : [[VRootViewController rootViewController] dependencyManager];
     return viewController;
 }
 
-+ (instancetype)userProfileWithUser:(VUser *)aUser
++ (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.profile = aUser;
@@ -109,18 +133,50 @@ static NSString * const kUserKey = @"user";
         viewController.title = aUser.name ?: @"Profile";
     }
     
-    viewController.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
+    viewController.dependencyManager = dependencyManager != nil ? dependencyManager : [[VRootViewController rootViewController] dependencyManager];
     return viewController;
 }
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:kUserKey];
-    if (user != nil)
+    if ( user != nil )
     {
-        return [self userProfileWithUser:user];
+        return [self userProfileWithUser:user andDependencyManager:dependencyManager];
     }
+    
+    NSNumber *remoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:kUserRemoteIdKey];
+    if ( remoteId != nil )
+    {
+        return [self userProfileWithRemoteId:remoteId andDependencyManager:dependencyManager];
+    }
+    
     return nil;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        [self userProfileSharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
+    {
+        [self userProfileSharedInit];
+    }
+    return self;
+}
+
+- (void)userProfileSharedInit
+{
+    self.canShowContent = NO;
 }
 
 #pragma mark - LifeCycle
@@ -128,18 +184,26 @@ static NSString * const kUserKey = @"user";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusChanged:) name:kLoggedInChangedNotification object:nil];
 
+    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
+                                 pushAccessoryMenuItemsOn:self.navigationController];
+    
     self.streamDataSource.hasHeaderCell = YES;
     self.collectionView.alwaysBounceVertical = YES;
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
-    UIColor *backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? [UIColor clearColor] : [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
     
     if (![VObjectManager sharedManager].mainUser)
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(loginStateDidChange:)
+                                                     name:kLoggedInChangedNotification
+                                                   object:nil];
     }
     
     [self.KVOController observe:self.currentStream
@@ -149,30 +213,7 @@ static NSString * const kUserKey = @"user";
     
     [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
     
-    UIImage    *defaultBackgroundImage;
-    if (self.backgroundImageView.image)
-    {
-        defaultBackgroundImage = self.backgroundImageView.image;
-    }
-    else
-    {
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
-    }
-    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
-                                    placeholderImage:defaultBackgroundImage
-                                           tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
-    
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        self.collectionView.backgroundView = self.backgroundImageView;
-    }
-    else
-    {
-        [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
-    }
+    [self updateCollectionViewDataSource];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -190,7 +231,26 @@ static NSString * const kUserKey = @"user";
                                                                                  target:self
                                                                                  action:@selector(composeMessage:)];
     }
-
+    
+    UIImage    *defaultBackgroundImage;
+    if (self.backgroundImageView.image)
+    {
+        defaultBackgroundImage = self.backgroundImageView.image;
+    }
+    else
+    {
+        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
+    }
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
+                                    placeholderImage:defaultBackgroundImage
+                                           tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.view.backgroundColor = backgroundColor;
+    
+    [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
+    
     NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
     if (![self.backgroundImageView.sd_imageURL isEqual:pictureURL])
     {
@@ -247,7 +307,7 @@ static NSString * const kUserKey = @"user";
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
          //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
-         self.navigationItem.title = @"Profile load failed!";
+         self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
          self.retryHUD.mode = MBProgressHUDModeCustomView;
          self.retryHUD.customView = self.retryProfileLoadButton;
          self.retryHUD.margin = 0.0f;
@@ -291,6 +351,7 @@ static NSString * const kUserKey = @"user";
     VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newView];
     headerView.user = self.profile;
     headerView.delegate = self;
+    headerView.dependencyManager = self.dependencyManager;
     _profileHeaderView = headerView;
     return _profileHeaderView;
 }
@@ -311,7 +372,12 @@ static NSString * const kUserKey = @"user";
 
 - (void)dealloc
 {
-    [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
+    if (self.currentStream != nil)
+    {
+        [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
+    }
+    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
     if (self.profile != nil)
     {
@@ -337,8 +403,8 @@ static NSString * const kUserKey = @"user";
 
 - (void)addFriendsButton
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    UIImage *findFriendsIcon = isTemplateC ? [UIImage imageNamed:@"findFriendsIconC"] : [UIImage imageNamed:@"findFriendsIcon"];
+    //Previously was C_findFriendsIcon in template C
+    UIImage *findFriendsIcon = [self.dependencyManager imageForKey:VUserProfileFindFriendsIconKey];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
@@ -347,17 +413,16 @@ static NSString * const kUserKey = @"user";
 
 - (IBAction)findFriendsAction:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
     
-    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
-    [ffvc setShouldAutoselectNewFriends:NO];
-    [self.navigationController pushViewController:ffvc animated:YES];
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+     {
+         VFindFriendsViewController *ffvc = [VFindFriendsViewController newWithDependencyManager:self.dependencyManager];
+         [ffvc setShouldAutoselectNewFriends:NO];
+         [self.navigationController pushViewController:ffvc animated:YES];
+     }];
 }
 
 #pragma mark - Accessors
@@ -451,62 +516,76 @@ static NSString * const kUserKey = @"user";
 
 - (void)refreshWithCompletion:(void (^)(void))completionBlock
 {
-    if ( self.profile != nil )
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
-        void (^fullCompletionBlock)(void) = ^void(void)
+        if (completionBlock)
         {
-            if (self.streamDataSource.count)
+            completionBlock();
+        }
+        return;
+    }
+    else
+    {
+        if ( self.profile != nil )
+        {
+            void (^fullCompletionBlock)(void) = ^void(void)
             {
-                [self shrinkHeaderAnimated:YES];
-            }
-            if (completionBlock)
-            {
-                completionBlock();
-            }
-        };
-        [super refreshWithCompletion:fullCompletionBlock];
+                if (self.streamDataSource.count)
+                {
+                    [self shrinkHeaderAnimated:YES];
+                }
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            };
+            [super refreshWithCompletion:fullCompletionBlock];
+        }
     }
 }
 
 - (IBAction)composeMessage:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
-                           animated:YES
-                         completion:NULL];
-        return;
-    }
-
-    VMessageContainerViewController    *composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
-    composeController.presentingFromProfile = YES;
-    
-    if ([self.navigationController.viewControllers containsObject:composeController])
-    {
-        [self.navigationController popToViewController:composeController animated:YES];
-    }
-    else
-    {
-        [self.navigationController pushViewController:composeController animated:YES];
-    }
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+     {
+         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
+         composeController.presentingFromProfile = YES;
+         
+         if ([self.navigationController.viewControllers containsObject:composeController])
+         {
+             [self.navigationController popToViewController:composeController animated:YES];
+         }
+         else
+         {
+             [self.navigationController pushViewController:composeController animated:YES];
+         }
+     }];
 }
 
 - (void)editProfileHandler
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
     
-    if (self.isMe)
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
-        
-        [self performSegueWithIdentifier:@"toEditProfile" sender:self];
-        return;
-    }
-    
+    VAuthorizationContext context = self.isMe ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:context completion:^
+     {
+         if ( self.isMe )
+         {
+             [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+         }
+         else
+         {
+             [self toggleFollowUser];
+         }
+     }];
+}
+
+- (void)toggleFollowUser
+{
     VUserProfileHeaderView *header = self.profileHeaderView;
     header.editProfileButton.enabled = NO;
     
@@ -553,6 +632,16 @@ static NSString * const kUserKey = @"user";
 - (void)followerHandler
 {
     [self performSegueWithIdentifier:@"toFollowers" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+    
+    if ( [segue.destinationViewController respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        [segue.destinationViewController setDependencyManager:self.dependencyManager];
+    }
 }
 
 - (void)followingHandler
@@ -610,13 +699,19 @@ static NSString * const kUserKey = @"user";
         self.currentProfileCell.hidden = self.profile == nil;
         return self.currentProfileCell;
     }
-    return [super dataSource:dataSource cellForIndexPath:indexPath];
+    VBaseCollectionViewCell *cell = (VBaseCollectionViewCell *)[super dataSource:dataSource cellForIndexPath:indexPath];
+    cell.dependencyManager = self.dependencyManager;
+    return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    {
+        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return self.currentProfileSize;
@@ -625,12 +720,42 @@ static NSString * const kUserKey = @"user";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+{    
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return;
     }
     [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+}
+
+- (void)updateCollectionViewDataSource
+{
+    if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
+    {
+        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
+        self.notLoggedInDataSource.delegate = self;
+        self.collectionView.dataSource = self.notLoggedInDataSource;
+        [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
+                                               placeholderImage:nil
+                                                      tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
+        [self.refreshControl removeFromSuperview];
+    }
+    else
+    {
+        self.collectionView.dataSource = self.streamDataSource;
+        [self.collectionView addSubview:self.refreshControl];
+    }
+}
+
+#pragma mark - Notification
+
+- (void)loginStatusChanged:(NSNotification *)notification
+{
+    if (self.representsMainUser)
+    {
+        self.profile = [VObjectManager sharedManager].mainUser;
+        [self updateCollectionViewDataSource];
+    }
 }
 
 #pragma mark - KVO
@@ -663,16 +788,46 @@ static NSString * const kUserKey = @"user";
                             forKeyPath:NSStringFromSelector(@selector(streamItems))];
 }
 
+#pragma mark - VAbstractStreamCollectionViewController
+
+- (void)refresh:(UIRefreshControl *)sender
+{
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    {
+        return;
+    }
+    else
+    {
+        [super refresh:sender];
+    }
+}
+
+#pragma mark - VNotAuthorizedDataSourceDelegate
+
+- (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource
+{
+    VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
 @end
 
 #pragma mark -
 
 @implementation VDependencyManager (VUserProfileViewControllerAdditions)
 
-- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key
+- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
 {
-    NSAssert(user != nil, @"user can't be nil");
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:key withAddedDependencies:@{ kUserKey: user }];
+    NSAssert(user != nil, @"user cannot be nil");
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserKey: user }];
+}
+
+- (VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId
+{
+    NSAssert(remoteId != nil, @"remoteId cannot be nil");
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserRemoteIdKey: remoteId }];
 }
 
 @end

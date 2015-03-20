@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDependencyManager;
+
 #pragma mark - New Theme Constants
 extern NSString * const kVCreatorName;
 
 // Images
 
 extern NSString * const kVMenuBackgroundImage;
-extern NSString * const kVMenuBackgroundImage5;
 extern NSString * const VThemeManagerHomeHeaderImageKey;
 
 //Fonts
@@ -49,18 +50,15 @@ extern NSString * const kVSecondaryLinkColor;
 
 @interface VThemeManager : NSObject
 
-+ (VThemeManager *)sharedThemeManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-- (void)setTheme:(NSDictionary *)dictionary;
-- (void)updateToNewTheme;
++ (VThemeManager *)sharedThemeManager;
 
 - (UIImage *)themedBackgroundImageForDevice;
 - (UIColor *)preferredBackgroundColor;
 
 - (NSString *)themedStringForKey:(NSString *)key;
 - (UIColor *)themedColorForKey:(NSString *)key;
-- (NSURL *)themedURLForKey:(NSString *)key;
-- (NSURL *)themedImageURLForKey:(NSString *)key;
 - (UIImage *)themedImageForKey:(NSString *)key;
 - (UIFont *)themedFontForKey:(NSString *)key;
 

@@ -8,12 +8,16 @@
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
+#import "VSolidColorBackground.h"
+#import "VURLMacroReplacement.h"
 
 #if CGFLOAT_IS_DOUBLE
 #define CGFLOAT_VALUE doubleValue
 #else
 #define CGFLOAT_VALUE floatValue
 #endif
+
+typedef BOOL (^TypeTest)(Class);
 
 static NSString * const kTemplateClassesFilename = @"TemplateClasses";
 static NSString * const kPlistFileExtension = @"plist";
@@ -69,11 +73,17 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 // Keys for Workspace
-NSString * const VDependencyManagerWorkspaceFlowKey = @"workspaceFlow";
+NSString * const VDependencyManagerWorkspaceFlowKey = @"defaultWorkspaceDestination";
 NSString * const VDependencyManagerTextWorkspaceFlowKey = @"workspaceFlowText";
 NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
 NSString * const VDependencyManagerEditTextWorkspaceKey = @"editTextWorkspace";
 NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
+
+// Keys for image URLs
+static NSString * const kImageCountKey = @"imageCount";
+static NSString * const kImageMacroKey = @"imageMacro";
+static NSString * const kScaleKey = @"scale";
+static NSString * const kMacroReplacement = @"XXXXX";
 
 @interface VDependencyManager ()
 
@@ -82,6 +92,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 @property (nonatomic, copy) NSDictionary *classesByTemplateName;
 @property (nonatomic, strong) NSMutableDictionary *singletonsByID; ///< This dictionary should only be accessed from the privateQueue
 @property (nonatomic, strong) NSMutableDictionary *childDependencyManagersByID; ///< This dictionary should only be accessed from the privateQueue
+@property (nonatomic, strong) NSMutableArray *imageURLs; ///< This array should only be accessed from the privateQueue
 @property (nonatomic) dispatch_queue_t privateQueue;
 
 @end
@@ -98,17 +109,25 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         _parentManager = parentManager;
         _configuration = [self preparedConfigurationWithUnpreparedDictionary:configuration];
         _privateQueue = dispatch_queue_create("com.getvictorious.VDependencyManager", DISPATCH_QUEUE_CONCURRENT);
-        [self createChildDependencyManagersFromDictionary:_configuration];
         
         if (_parentManager == nil)
         {
             _singletonsByID = [[NSMutableDictionary alloc] init];
             _childDependencyManagersByID = [[NSMutableDictionary alloc] init];
+            _imageURLs = [[NSMutableArray alloc] init];
         }
+        [self scanConfiguration:_configuration];
         
         if (classesByTemplateName == nil)
         {
-            _classesByTemplateName = [self defaultDictionaryOfClassesByTemplateName];
+            if ( _parentManager == nil )
+            {
+                _classesByTemplateName = [self defaultDictionaryOfClassesByTemplateName];
+            }
+            else
+            {
+                _classesByTemplateName = _parentManager.classesByTemplateName ?: [self defaultDictionaryOfClassesByTemplateName];
+            }
         }
         else
         {
@@ -122,6 +141,16 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (UIColor *)colorForKey:(NSString *)key
 {
+    // TODO: special case: we switched from using a background color key to a background component,
+    //       but not everything has been updated to use it yet. Until everything is updated,
+    //       we return a background color extracted from the background component to anyone who
+    //       asks for the old background color key.
+    if ( [key isEqualToString:VDependencyManagerBackgroundColorKey] )
+    {
+        VSolidColorBackground *background = [self templateValueOfType:[VSolidColorBackground class] forKey:VDependencyManagerBackgroundKey];
+        return background.backgroundColor;
+    }
+    
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     if (![colorDictionary isKindOfClass:[NSDictionary class]])
@@ -132,6 +161,12 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     NSNumber *green = colorDictionary[kGreenKey];
     NSNumber *blue = colorDictionary[kBlueKey];
     NSNumber *alpha = colorDictionary[kAlphaKey];
+    
+    // Work around a bug in the back-end
+    if ( alpha.doubleValue == 1.0 )
+    {
+        alpha = @255;
+    }
     
     if (![red isKindOfClass:[NSNumber class]] ||
         ![green isKindOfClass:[NSNumber class]] ||
@@ -144,7 +179,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] / 255.0f
                                      green:[green CGFLOAT_VALUE] / 255.0f
                                       blue:[blue CGFLOAT_VALUE] / 255.0f
-                                     alpha:[alpha CGFLOAT_VALUE]];
+                                     alpha:[alpha CGFLOAT_VALUE] / 255.0f];
     return color;
 }
 
@@ -216,21 +251,45 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key
 {
-    return [self arrayOfValuesOfType:expectedType
-                              forKey:key
-                withTranslationBlock:^id(__unsafe_unretained Class expectedType, VDependencyManager *dependencyManager)
+    TypeTest typeTest = [self typeTestForType:expectedType];
+    return [self arrayOfValuesWhereTypePassesTest:typeTest
+                                           forKey:key
+                             withTranslationBlock:^id(VDependencyManager *dependencyManager)
     {
-        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }];
 }
 
 - (NSArray *)arrayOfSingletonValuesOfType:(Class)expectedType forKey:(NSString *)key
 {
-    return [self arrayOfValuesOfType:expectedType
-                              forKey:key
-                withTranslationBlock:^id(__unsafe_unretained Class expectedType, VDependencyManager *dependencyManager)
+    TypeTest typeTest = [self typeTestForType:expectedType];
+    return [self arrayOfValuesWhereTypePassesTest:typeTest
+                                           forKey:key
+                             withTranslationBlock:^id(VDependencyManager *dependencyManager)
     {
-        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
+    }];
+}
+
+- (NSArray *)arrayOfValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key
+{
+    TypeTest typeTest = ^(Class type) { return [type conformsToProtocol:protocol]; };
+    return [self arrayOfValuesWhereTypePassesTest:typeTest
+                                           forKey:key
+                             withTranslationBlock:^id(VDependencyManager *dependencyManager)
+    {
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
+    }];
+}
+
+- (NSArray *)arrayOfSingletonValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key
+{
+    TypeTest typeTest = ^(Class type) { return [type conformsToProtocol:protocol]; };
+    return [self arrayOfValuesWhereTypePassesTest:typeTest
+                                           forKey:key
+                             withTranslationBlock:^id(VDependencyManager *dependencyManager)
+    {
+        return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }];
 }
 
@@ -238,10 +297,11 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
  Returns an array of dependent objects created from a JSON array
  
  @param array An array pulled straight from within the template configuration
- @param translation A block that, given an expected type and a dependency manager instance, will return an object generated with that dependency manager
+ @param translation A block that, given a dependency manager instance, will return an object generated with that dependency manager
  */
-- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key withTranslationBlock:(id(^)(Class, VDependencyManager *))translation
+- (NSArray *)arrayOfValuesWhereTypePassesTest:(TypeTest)typeTest forKey:(NSString *)key withTranslationBlock:(id(^)(VDependencyManager *))translation
 {
+    NSParameterAssert(typeTest != nil);
     NSParameterAssert(translation != nil);
     NSArray *templateArray = [self arrayForKey:key];
     
@@ -259,11 +319,11 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kReferenceIDKey]];
         }
-        else if ( ![expectedType isSubclassOfClass:[NSDictionary class]] && [templateObject isKindOfClass:[NSDictionary class]] )
+        else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] )
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kIDKey]];
         }
-        else if ( [templateObject isKindOfClass:expectedType] )
+        else if ( typeTest([templateObject class]) )
         {
             [returnValue addObject:templateObject];
             continue;
@@ -271,7 +331,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         
         if ( dependencyManager != nil )
         {
-            id realObject = translation(expectedType, dependencyManager);
+            id realObject = translation(dependencyManager);
             if ( realObject != nil )
             {
                 [returnValue addObject:realObject];
@@ -281,28 +341,80 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     return [returnValue copy];
 }
 
+- (NSArray *)arrayOfImageURLsForKey:(NSString *)key
+{
+    NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    if ( imageDictionary == nil )
+    {
+        return nil;
+    }
+    return [self arrayOfImageURLsWithDictionary:imageDictionary];
+}
+
+- (NSArray *)arrayOfImageURLsWithDictionary:(NSDictionary *)imageDictionary
+{
+    NSNumber *imageCount = imageDictionary[kImageCountKey];
+    NSString *macro = imageDictionary[kImageMacroKey];
+    
+    if ( ![imageCount isKindOfClass:[NSNumber class]] || ![macro isKindOfClass:[NSString class]] )
+    {
+        return nil;
+    }
+    
+    NSMutableArray *imageURLs = [[NSMutableArray alloc] initWithCapacity:[imageCount unsignedIntegerValue]];
+    VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
+    for (NSUInteger n = 0; n < [imageCount unsignedIntegerValue]; n++)
+    {
+        NSString *macroReplacementString = [NSString stringWithFormat:@"%.5lu", (unsigned long)n];
+        [imageURLs addObject:[macroReplacement urlByReplacingMacrosFromDictionary:@{ kMacroReplacement: macroReplacementString}
+                                                                      inURLString:macro]];
+    }
+    
+    return imageURLs;
+}
+
+- (NSArray *)arrayOfAllImageURLs
+{
+    if ( self.imageURLs == nil )
+    {
+        return [self.parentManager arrayOfAllImageURLs];
+    }
+    
+    __block NSArray *allImageURLs;
+    dispatch_sync(self.privateQueue, ^(void)
+    {
+        allImageURLs = [self.imageURLs copy];
+    });
+    return allImageURLs;
+}
+
 #pragma mark - Singleton dependencies
 
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
+{
+    return [self singletonObjectWhereTypePassesTest:[self typeTestForType:expectedType] forKey:key];
+}
+
+- (id)singletonObjectWhereTypePassesTest:(TypeTest)typeTest forKey:(NSString *)key
 {
     id value = self.configuration[key];
     
     if (value == nil)
     {
-        return [self.parentManager singletonObjectOfType:expectedType forKey:key];
+        return [self.parentManager singletonObjectWhereTypePassesTest:typeTest forKey:key];
     }
     
     if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
-        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ( ![expectedType isSubclassOfClass:[NSDictionary class]] && [value isKindOfClass:[NSDictionary class]] )
+    else if ( !typeTest([NSDictionary class]) && [value isKindOfClass:[NSDictionary class]] )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value valueForKey:kIDKey]];
-        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ([value isKindOfClass:expectedType])
+    else if ( typeTest([value class]) )
     {
         return value;
     }
@@ -314,7 +426,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
  
  @seealso -singletonObjectForID:
  */
-- (id)singletonObjectOfType:(Class)expectedType withDependencyManager:(VDependencyManager *)dependencyManager
+- (id)singletonObjectWhereTypePassesTest:(TypeTest)typeTest withDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *objectID = [dependencyManager stringForKey:kIDKey];
     if ( objectID == nil )
@@ -325,7 +437,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     
     if ( singleton == nil )
     {
-        singleton = [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        singleton = [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
         if ( singleton != nil )
         {
             [self setSingletonObject:singleton forID:objectID];
@@ -391,28 +503,48 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
 {
+    return [self templateValueWhereTypePassesTest:[self typeTestForType:expectedType]
+                                           forKey:key
+                            withAddedDependencies:dependencies];
+}
+
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key
+{
+    return [self templateValueConformingToProtocol:protocol forKey:key withAddedDependencies:nil];
+}
+
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
+{
+    return [self templateValueWhereTypePassesTest:^(Class type) { return [type conformsToProtocol:protocol]; }
+                                           forKey:key
+                            withAddedDependencies:dependencies];
+}
+
+- (id)templateValueWhereTypePassesTest:(TypeTest)typeTest forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
+{
+    NSParameterAssert(typeTest != nil);
     id value = self.configuration[key];
     
     if (value == nil)
     {
-        return [self.parentManager templateValueOfType:expectedType forKey:key withAddedDependencies:dependencies];
+        return [self.parentManager templateValueWhereTypePassesTest:typeTest forKey:key withAddedDependencies:dependencies];
     }
     
     if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
-        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ( [value isKindOfClass:[NSDictionary class]] && ![expectedType isSubclassOfClass:[NSDictionary class]] )
+    else if ( [value isKindOfClass:[NSDictionary class]] && !typeTest([NSDictionary class]) )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:kIDKey]];
         if ( dependencies != nil )
         {
             dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dependencies];
         }
-        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ( [value isKindOfClass:expectedType] )
+    else if ( typeTest([value class]) )
     {
         return value;
     }
@@ -422,9 +554,15 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (id)objectOfType:(Class)expectedType withDependencyManager:(VDependencyManager *)dependencyManager
 {
+    return [self objectWhereTypePassesTest:[self typeTestForType:expectedType] withDependencyManager:dependencyManager];
+}
+
+- (id)objectWhereTypePassesTest:(TypeTest)typeTest withDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSParameterAssert(typeTest != nil);
     Class templateClass = [self classWithTemplateName:[dependencyManager stringForKey:kClassNameKey]];
     
-    if ([templateClass isSubclassOfClass:expectedType])
+    if (typeTest(templateClass))
     {
         id object;
         
@@ -451,13 +589,37 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     return nil;
 }
 
+/**
+ Returns a block that accepts a type and returns 
+ YES if that type matches an expected type
+ */
+- (BOOL(^)(Class))typeTestForType:(Class)expectedType
+{
+    return ^BOOL(Class type)
+    {
+        if ( [type isSubclassOfClass:[NSDictionary class]] )
+        {
+            // NSDictionary should only pass the test if it's explicitly asked for (i.e. if expectedType is NSObject and type is NSDictionary, we want to return NO)
+            return [expectedType isSubclassOfClass:[NSDictionary class]];
+        }
+        else
+        {
+            return [type isSubclassOfClass:expectedType];
+        }
+    };
+}
+
 #pragma mark - Helpers
 
 /**
- Finds all component definitions in the given dictionary
- and creates child dependency managers for them.
+ Scans and analyzes the configuration dictionary in the following ways:
+ 
+ 1. Finds all component definitions, creates child dependency
+    managers for them, and adds those child DMs to the 
+    self.childDependencyManagersByID dictionary
+ 2. Finds all image URLs and adds them to the self.imageURLs array
  */
-- (void)createChildDependencyManagersFromDictionary:(NSDictionary *)dictionary
+- (void)scanConfiguration:(NSDictionary *)dictionary
 {
     for ( id key in dictionary )
     {
@@ -472,9 +634,14 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
                     [self setChildDependencyManager:childDependencyManager forID:value[kIDKey]];
                 }
             }
+            else if ( value[kImageMacroKey] != nil )
+            {
+                NSArray *images = [self arrayOfImageURLsWithDictionary:value];
+                [self addImageURLsWithArray:images];
+            }
             else
             {
-                [self createChildDependencyManagersFromDictionary:value];
+                [self scanConfiguration:value];
             }
         }
         else if ( [value isKindOfClass:[NSArray class]] )
@@ -504,7 +671,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
             }
             else
             {
-                [self createChildDependencyManagersFromDictionary:dictionary];
+                [self scanConfiguration:dictionary];
             }
         }
         else if ( [dictionary isKindOfClass:[NSArray class]] )
@@ -543,6 +710,32 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         childDependencyManager = self.childDependencyManagersByID[objectID];
     });
     return childDependencyManager;
+}
+
+- (void)addImageURL:(NSString *)imageURL
+{
+    if ( self.imageURLs == nil )
+    {
+        [self.parentManager addImageURL:imageURL];
+        return;
+    }
+    dispatch_barrier_async(self.privateQueue, ^(void)
+    {
+        [self.imageURLs addObject:imageURL];
+    });
+}
+
+- (void)addImageURLsWithArray:(NSArray *)imageArray
+{
+    if ( self.imageURLs == nil )
+    {
+        [self.parentManager addImageURLsWithArray:imageArray];
+        return;
+    }
+    dispatch_barrier_async(self.privateQueue, ^(void)
+    {
+        [self.imageURLs addObjectsFromArray:imageArray];
+    });
 }
 
 /**

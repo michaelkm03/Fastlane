@@ -122,6 +122,7 @@ UserDidSelectItemFromStream,Backend mapping: cell-click
 UserDidSelectItemFromMarquee,Backend mapping: cell-click
 UserDidViewHashtagStream,Params: Hashtag
 UserDidViewStream,"Params: StreamName, Context, StreamId, CurrentSection"
+FirstTimeUserVideoPlayed,
 ,
 UserDidVoteSequence,
 UserDidRepost,"Params: SequenceId, TimeCurrent"

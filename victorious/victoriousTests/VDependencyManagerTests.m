@@ -16,10 +16,20 @@ static NSString * const kTestViewControllerInitMethodTemplateName = @"testInitMe
 static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMethod";
 static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
+#pragma mark - VTestProtocol
+
+@protocol VTestProtocol <NSObject>
+
+@required
+- (void)testMethod;
+
+@end
+
 #pragma mark - VTestViewControllerWithInitMethod
 
-@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependancies>
+@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependancies, VTestProtocol>
 
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL calledInitMethod;
 
 @end
@@ -32,8 +42,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     if (self)
     {
         _calledInitMethod = YES;
+        _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (void)testMethod
+{
 }
 
 @end
@@ -89,11 +104,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     self.dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
                                                 kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod",
-                                                kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty"
+                                                kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty",
+                                                @"solidColor.background": @"VSolidColorBackground",
                                             };
     
-    // The presence of this "base" dependency manager (with an empty configuration dictionary) exposed a bug in a previous iteration of VDependencyManager.
-    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                    configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
+                                                                dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
@@ -106,13 +123,20 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testColor
 {
     UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
-    UIColor *actual = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    UIColor *actual = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testParentColor
 {
     UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
+    UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testBackgroundColor
+{
+    UIColor *expected = [UIColor colorWithRed:0.6 green:0.2 blue:0.4 alpha:1];
     UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
@@ -187,6 +211,34 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertNotNil(obj.dependencyManager);
 }
 
+#pragma mark - Protocols
+
+- (void)testValueConformingToProtocol
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"ivc"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+    XCTAssert([(VTestViewControllerWithInitMethod *)viewController calledInitMethod]);
+}
+
+- (void)testValueDoesNotConformToProtocol
+{
+    id viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"nvc"];
+    XCTAssertNil(viewController);
+}
+
+- (void)testValueConformingToProtocolWithExtraDependencies
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"ivc" withAddedDependencies:@{ @"hi": @"world" }];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+    XCTAssertEqualObjects([[(VTestViewControllerWithInitMethod *)viewController dependencyManager] stringForKey:@"hi"], @"world");
+}
+
+- (void)testValueDoesNotConformToProtocolWithExtraDependencies
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"nvc" withAddedDependencies:@{ @"hi": @"world" }];
+    XCTAssertNil(viewController);
+}
+
 #pragma mark - Objects
 
 - (void)testNSObjectInstantiation
@@ -216,23 +268,32 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testArraysOfNSObjects
 {
     NSArray *array = [self.dependencyManager arrayOfValuesOfType:[NSObject class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(array.count, 4u);
+    XCTAssertEqual(array.count, 5u);
     
     XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
     XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[4] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
 }
 
 - (void)testArraysOfSingletonNSObjects
 {
     NSArray *array = [self.dependencyManager arrayOfSingletonValuesOfType:[NSObject class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(array.count, 4u);
+    XCTAssertEqual(array.count, 5u);
     
     XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
     XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[4] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+}
+
+- (void)testRootObject
+{
+    id viewController = [self.dependencyManager viewControllerForKey:@"rootComponent"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([viewController calledNewMethod]);
 }
 
 #pragma mark - Strings, numbers, arrays
@@ -319,6 +380,27 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     VTestViewControllerWithNewMethod *otherSingletonReference = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonViewControllerForKey:@"otherNVC"];
     XCTAssertEqual(otherArray[2], otherSingletonReference);
+}
+
+- (void)testArrayOfProtocols
+{
+    NSArray *array = [self.dependencyManager arrayOfValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] conformsToProtocol:@protocol(VTestProtocol)]);
+    XCTAssert([array[1] conformsToProtocol:@protocol(VTestProtocol)]);
+}
+
+- (void)testSingletonArrayOfProtocols
+{
+    NSArray *array = [self.dependencyManager arrayOfSingletonValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] conformsToProtocol:@protocol(VTestProtocol)]);
+    XCTAssert([array[1] conformsToProtocol:@protocol(VTestProtocol)]);
+
+    NSArray *otherArray = [self.dependencyManager arrayOfSingletonValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(otherArray.count, 2u);
+    XCTAssertEqual(array[0], otherArray[0]);
+    XCTAssertEqual(array[1], otherArray[1]);
 }
 
 #pragma mark - Images

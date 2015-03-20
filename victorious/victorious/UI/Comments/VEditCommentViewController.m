@@ -187,6 +187,9 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
 
 - (IBAction)onCancel:(id)sender
 {
+    // Tracking
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelEditComment];
+    
     [self dismiss];
 }
 

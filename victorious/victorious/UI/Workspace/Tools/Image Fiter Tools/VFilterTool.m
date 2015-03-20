@@ -24,11 +24,12 @@
 static NSString * const kTitleKey = @"title";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
+static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 
 @interface VFilterTool ()
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
 @property (nonatomic, strong) VFilterTypeTool *selectedFilter;
 @property (nonatomic, strong) VCanvasView *canvasView;
@@ -39,6 +40,8 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @synthesize renderIndex = _renderIndex;
 @synthesize selected = _selected;
+@synthesize selectedIcon = _selectedIcon;
+@synthesize icon = _icon;
 
 #pragma mark - VHasManagedDependencies
 
@@ -50,7 +53,8 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _title = [dependencyManager stringForKey:kTitleKey];
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
-        _icon = [UIImage imageNamed:@"filterIcon"];
+        _icon = [dependencyManager imageForKey:kIconKey];
+        _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
         
         NSURL *filterFileURL = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
         NSArray *photoFilters = [VPhotoFilterSerialization filtersFromPlistFile:filterFileURL];

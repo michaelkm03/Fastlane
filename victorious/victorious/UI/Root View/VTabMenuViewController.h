@@ -8,8 +8,6 @@
 
 #import "VScaffoldViewController.h"
 
-extern NSString * const VTabMenuViewControllerMenuAppearanceKey;
-
 @interface VTabMenuViewController : VScaffoldViewController
 
 @end

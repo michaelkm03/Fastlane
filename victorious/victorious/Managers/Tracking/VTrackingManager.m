@@ -9,8 +9,9 @@
 #import "VTrackingManager.h"
 #import "VTrackingEvent.h"
 
-#define TRACKING_LOGGING_ENABLED 0
-#define TRACKING_ALERTS_ENABLED 0
+#define TRACKING_LOGGING_ENABLED 1
+#define TRACKING_EVENT_ALERTS_ENABLED 0
+#define TRACKING_START_END_ALERTS_ENABLED 0
 #define TRACKING_QUEUE_LOGGING_ENABLED 0
 #define TRACKING_SESSION_PARAMETER_LOGGING_ENABLED 0
 #define TRACKING_VIEW_SESSION_LOGGING_ENABLED 0
@@ -64,16 +65,50 @@
         id value = dictionary[key];
         if ( [value isKindOfClass:[NSArray class]] )
         {
-            value = [NSString stringWithFormat:@"(%@)", @(((NSArray *)value).count)];
+            NSArray *arrayValue = (NSArray *)value;
+            NSString *stringValue = [NSString stringWithFormat:@"%@", arrayValue.firstObject];
+            for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+            {
+                stringValue = [@" " stringByAppendingString:stringValue];
+            }
+            output = [output stringByAppendingFormat:@"\n\t%@:%@", key, stringValue];
+            for ( NSUInteger i = 1; i < arrayValue.count; i++ )
+            {
+                id itemValue = arrayValue[i];
+                for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+                {
+                    output = [output stringByAppendingString:@" "];
+                }
+                output = [output stringByAppendingFormat:@"\n\t%@", itemValue];
+            }
         }
-        NSString *stringValue = [NSString stringWithFormat:@"%@", value];
-        for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+        else
         {
-            stringValue = [@" " stringByAppendingString:stringValue];
+            NSString *stringValue = [NSString stringWithFormat:@"%@", value];
+            for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+            {
+                stringValue = [@" " stringByAppendingString:stringValue];
+            }
+            output = [output stringByAppendingFormat:@"\n\t%@:%@", key, stringValue];
         }
-        output = [output stringByAppendingFormat:@"\n\t%@:%@", key, stringValue];
     }
     return output;
+}
+
+- (BOOL)showTrackingEventAlerts
+{
+#if TRACKING_EVENT_ALERTS_ENABLED
+    return YES;
+#endif
+    return _showTrackingEventAlerts;
+}
+
+- (BOOL)showTrackingStartEndAlerts
+{
+#if TRACKING_START_END_ALERTS_ENABLED
+    return YES;
+#endif
+    return _showTrackingStartEndAlerts;
 }
 
 #pragma mark - Session Parameters
@@ -113,17 +148,14 @@
     NSLog( @"*** TRACKING (%lu delegates) ***\n>>> %@ <<< %@\n", (unsigned long)self.delegates.count, eventName, [self stringFromDictionary:completeParams] );
 #endif
     
-#if TRACKING_ALERTS_ENABLED
-    NSString *message = @"";
-    for ( NSString *key in completeParams )
+    if ( self.showTrackingEventAlerts )
     {
-        message = [message stringByAppendingFormat:@"\n%@: %@", key, completeParams[key]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [[[UIAlertView alloc] initWithTitle:eventName message:[self stringFromDictionary:completeParams]
+                                                      delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                       });
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                   {
-                       [[[UIAlertView alloc] initWithTitle:eventName message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-                   });
-#endif
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
      {
@@ -201,9 +233,14 @@
 {
     [self endEvent:eventName];
     
-#if TRACKING_VIEW_SESSION_LOGGING_ENABLED
-    NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
-#endif
+    if ( self.showTrackingStartEndAlerts )
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [[[UIAlertView alloc] initWithTitle:@"Event Started" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                       });
+        NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+    }
     
     VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:parameters eventId:nil];
     self.durationEvents[ eventName ] = event;
@@ -222,9 +259,15 @@
     __block VTrackingEvent *event = self.durationEvents[ eventName ];
     if ( event )
     {
-#if TRACKING_VIEW_SESSION_LOGGING_ENABLED
-        NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
-#endif
+        if ( self.showTrackingStartEndAlerts )
+        {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                           {
+                               [[[UIAlertView alloc] initWithTitle:@"Event Ended" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                           });
+            NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+        }
+        
         __block NSTimeInterval duration = abs( [event.dateCreated timeIntervalSinceNow] );
         [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
          {

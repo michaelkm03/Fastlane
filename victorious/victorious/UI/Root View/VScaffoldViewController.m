@@ -10,6 +10,7 @@
 #import "VContentViewViewModel.h"
 #import "VDeeplinkHandler.h"
 #import "VDependencyManager+VObjectManager.h"
+#import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
 #import "VNavigationDestinationsProvider.h"
 #import "VNewContentViewController.h"
@@ -20,18 +21,22 @@
 #import "VComment.h"
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
+#import "VLightweightContentViewController.h"
 #import "VNavigationController.h"
+#import "VFirstTimeInstallHelper.h"
+#import "VAuthorizedAction.h"
 
 #import <MBProgressHUD.h>
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
 NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
+NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
-@interface VScaffoldViewController () <VNewContentViewControllerDelegate>
+@interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLightweightContentViewControllerDelegate>
 
 @end
 
@@ -48,6 +53,50 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     return self;
 }
 
+#pragma mark - Lifecyle Methods
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self showFirstTimeUserExperience];
+}
+
+#pragma mark - First Time User Experience
+
+- (void)showFirstTimeUserExperience
+{
+    VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
+
+    if ( ![firstTimeInstallHelper hasBeenShown] )
+    {
+        VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
+                                                                                                       forKey:VScaffoldViewControllerFirstTimeContentKey];
+        lightweightContentVC.delegate = self;
+        if ( lightweightContentVC != nil )
+        {
+            [self presentViewController:lightweightContentVC animated:YES completion:^(void)
+            {
+                [firstTimeInstallHelper savePlaybackDefaults];
+                [self trackFirstTimeContentView];
+            }];
+        }
+    }
+}
+
+- (void)trackFirstTimeContentView
+{
+    // Tracking
+    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
+    
+    NSArray *trackingUrlArray = [childDependencyManager trackingURLsForKey:VTrackingStartKey];
+    if ( trackingUrlArray != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
+    }
+}
+
 #pragma mark - Content View
 
 - (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage
@@ -57,20 +106,22 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         [self showWebContentWithSequence:sequence];
         return;
     }
-    
+
     if ( self.presentedViewController )
     {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
-    
+
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence depenencyManager:self.dependencyManager];
     contentViewModel.deepLinkCommentId = commentId;
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
-                                                                                                   dependencyManager:self.dependencyManager];
-    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
+    VNewContentViewController *contentViewController = [self.dependencyManager contentViewControllerForKey:VScaffoldViewControllerContentViewComponentKey withViewModel:contentViewModel];
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
     
+    if ( contentViewController == nil )
+    {
+        return;
+    }
     VNavigationController *contentNav = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     contentNav.innerNavigationController.viewControllers = @[contentViewController];
     contentNav.innerNavigationController.navigationBarHidden = YES;
@@ -102,6 +153,18 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
 }
 
+#pragma mark - VLightweightContentViewControllerDelegate
+
+- (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)failedToLoadSequenceInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Deeplinks
 
 - (void)navigateToDeeplinkURL:(NSURL *)url
@@ -114,7 +177,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         }];
         return;
     }
-    
+
     if ( [self displayContentViewForDeeplinkURL:url] )
     {
         return;
@@ -134,7 +197,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                 [self navigateToDestination:viewController];
             }
         };
-        
+
         NSArray *possibleHandlers = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
         for (id<VDeeplinkHandler> handler in possibleHandlers)
         {
@@ -153,7 +216,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 /**
  Displays a content view for deeplink URLs that point to content views.
- 
+
  @return YES if the given URL was a content URL, or NO if it was
          some other kind of deep link.
  */
@@ -163,17 +226,17 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         return NO;
     }
-    
+
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
+
     NSString *sequenceID = [url v_firstNonSlashPathComponent];
     if ( sequenceID == nil )
     {
         return NO;
     }
-    
+
     NSNumber *commentId = @([url v_pathComponentAtIndex:2].integerValue);
-    
+
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -192,7 +255,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                                               otherButtonTitles:nil];
         [alert show];
     }];
-    
+
     return YES;
 }
 
@@ -215,35 +278,53 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion
 {
-    void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
-    {
-        NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-        [self displayResultOfNavigation:viewController];
-        
-        if ( completion != nil )
-        {
-            completion();
-        }
-    };
-    
-    if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    void (^performNavigation)(UIViewController *) = ^(UIViewController *viewController)
     {
         UIViewController *alternateDestination = nil;
-        if ( [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination] )
+        BOOL shouldNavigateToAlternateDestination = NO;
+
+        if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
         {
-            if ( alternateDestination == nil )
+            shouldNavigateToAlternateDestination = [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination];
+            if (!shouldNavigateToAlternateDestination)
             {
-                goTo(navigationDestination);
-            }
-            else
-            {
-                [self navigateToDestination:alternateDestination completion:completion];
+                if (completion != nil)
+                {
+                    completion();
+                }
+                return;
             }
         }
+
+        if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
+        {
+            [self navigateToDestination:alternateDestination completion:completion];
+        }
+        else
+        {
+            NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+            [self displayResultOfNavigation:viewController];
+
+            if ( completion != nil )
+            {
+                completion();
+            }
+        }
+    };
+
+    if ([navigationDestination respondsToSelector:@selector(authorizationContext)] )
+    {
+        VAuthorizationContext context = [navigationDestination authorizationContext];
+        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                        dependencyManager:self.dependencyManager];
+        [authorizedAction performFromViewController:self context:context completion:^
+         {
+            performNavigation(navigationDestination);
+        }];
     }
     else
     {
-        goTo(navigationDestination);
+        performNavigation(navigationDestination);
     }
 }
 

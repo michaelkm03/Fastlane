@@ -49,9 +49,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamViewWillAppearWithStream:(VStream *)stream
 {
-    NSString *context = [stream isHashtagStream] ? VTrackingValueHashtagStream : VTrackingValueStream;
-    [[VTrackingManager sharedInstance] setValue:context forSessionParameterWithKey:VTrackingKeyContext];
-    
     if ( stream.trackingIdentifier != nil )
     {
         [[VTrackingManager sharedInstance] setValue:stream.trackingIdentifier
@@ -150,9 +147,24 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 {
     self.didTrackViewDidAppear = YES;
     
-    NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
-                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
+    if (stream.isHashtagStream)
+    {
+        NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
+                                  VTrackingKeyStreamId : stream.trackingIdentifier ?: @"",
+                                  VTrackingKeyHashtag : stream.hashtag ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewHashtagStream parameters:params];
+    }
+    else
+    {
+        NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
+                                  VTrackingKeyStreamId : stream.trackingIdentifier ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
+    }
+    
+    // Be sure to set context AFTER the events above, so that the above events contain
+    // any previous context, and the new context below affects subsequent events
+    NSString *context = [stream isHashtagStream] ? VTrackingValueHashtagStream : VTrackingValueStream;
+    [[VTrackingManager sharedInstance] setValue:context forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (void)resetCellVisibilityTracking

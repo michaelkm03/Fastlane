@@ -44,6 +44,6 @@
 
 @property (nonatomic, copy, readonly) NSString *title; ///< The text to display while selecting tool.
 @property (nonatomic, strong, readonly) UIImage *icon; ///< The icon to display for this tool.
-@property (nonatomic, strong, readonly) UIImage *iconSelected; ///< The icon to display for this tool.
+@property (nonatomic, strong, readonly) UIImage *selectedIcon; ///< The icon to display when selected.
 
 @end

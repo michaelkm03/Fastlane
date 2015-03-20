@@ -11,7 +11,7 @@
 #import "VSequenceActionsDelegate.h"
 #import "VStreamCollectionCell.h"
 
-@class VSequence, VDefaultProfileButton;
+@class VSequence, VDefaultProfileButton, VDependencyManager;
 
 @interface VStreamCellHeaderView : UIView
 
@@ -34,6 +34,10 @@
 @property (nonatomic, weak) VSequence *sequence;
 @property (nonatomic, strong) NSMutableArray *commentViews;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) UIColor *colorForParentSequenceAuthorName; ///< applied to the "remix from..." username (only the username portion)
+
 - (void)hideCommentsButton;
+- (void)reloadCommentsCount;
 
 @end

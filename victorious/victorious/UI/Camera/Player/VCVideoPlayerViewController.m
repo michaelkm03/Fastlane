@@ -13,7 +13,7 @@
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
-static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 1.0;
+static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 3.0;
 
 static NSString * const kPlaybackBufferEmpty = @"playbackBufferEmpty";
 static NSString * const kPlaybackLikelyToKeepUp = @"playbackLikelyToKeepUp";
@@ -133,25 +133,28 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     self.view = [[UIView alloc] init];
     self.view.clipsToBounds = YES;
-    self.view.backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsClearVideoBackground] ? [UIColor clearColor] : [UIColor blackColor];
+    self.view.backgroundColor = [UIColor clearColor];
     
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     self.playerLayer.backgroundColor = [UIColor clearColor].CGColor;
     [self.view.layer addSublayer:self.playerLayer];
     
-    VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
-    toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:toolbarView];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"
-                                                                      options:0
-                                                                      metrics:@{ @"toolbarHeight": @(kToolbarHeight) }
-                                                                        views:NSDictionaryOfVariableBindings(toolbarView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbarView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(toolbarView)]];
-    self.toolbarView = toolbarView;
+    if (self.shouldShowToolbar)
+    {
+        VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
+        toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:toolbarView];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"
+                                                                          options:0
+                                                                          metrics:@{ @"toolbarHeight": @(kToolbarHeight) }
+                                                                            views:NSDictionaryOfVariableBindings(toolbarView)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbarView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:NSDictionaryOfVariableBindings(toolbarView)]];
+        self.toolbarView = toolbarView;
+    }
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
     tap.numberOfTapsRequired = 1;
@@ -334,7 +337,14 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
     _overlayView = overlayView;
     _overlayView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view insertSubview:_overlayView belowSubview:self.toolbarView];
+    if ([self.view.subviews containsObject:self.toolbarView])
+    {
+        [self.view insertSubview:_overlayView belowSubview:self.toolbarView];
+    }
+    else
+    {
+        [self.view addSubview:_overlayView];
+    }
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlayView]|"
                                                                       options:0
                                                                       metrics:nil
@@ -464,6 +474,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     int currentLoop = 0;
     CMTime compareTime = time;
+    
+    if (!CMTIME_IS_VALID(self.originalAssetDuration))
+    {
+        return time;
+    }
     
     while ( CMTIME_COMPARE_INLINE( compareTime, >, self.originalAssetDuration) )
     {

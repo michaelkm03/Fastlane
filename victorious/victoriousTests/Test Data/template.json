@@ -1,11 +1,22 @@
 {
     "id": "d07ab13a-1e39-4a66-952f-f04c638a9adc",
     "name": "application",
-    "color.background": {
+    "color.text": {
         "red": 51,
         "green": 153,
         "blue": 102,
-        "alpha": 1
+        "alpha": 255
+    },
+    "background":
+    {
+        "name":"solidColor.background",
+        "color":
+        {
+            "red":153,
+            "green":51,
+            "blue":102,
+            "alpha":255
+        }
     },
     "font.header": {
         "fontName": "STHeitiSC-Light",
@@ -18,6 +29,7 @@
     "app_store_url": "https:\/\/itunes.apple.com\/us\/app\/id889351747",
     "ivc": {
         "name": "testInitMethod",
+        "id": "508c4beb-bb1a-4384-9f38-6200b32b8485",
         "inner": {
             "name": "testNewMethod",
             "app_store_url": "http:\/\/example.com\/"
@@ -61,6 +73,9 @@
         },
         {
             "referenceID": "ae742d8a-aaea-43db-b99a-707d72b147cb"
+        },
+        {
+            "referenceID": "508c4beb-bb1a-4384-9f38-6200b32b8485"
         }
     ],
     "otherNVC": {
