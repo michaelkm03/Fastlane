@@ -254,7 +254,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         NSLog( @"User (%@) numberOfFollowers: %@", user.name, user.numberOfFollowers );
          welf.followersLabel.text = [welf.largeNumberFormatter stringForInteger:user.numberOfFollowers.integerValue];
      }];
     
@@ -262,7 +261,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         NSLog( @"User (%@) numberOfFollowing: %@", user.name, user.numberOfFollowing );
          welf.followingLabel.text = [welf.largeNumberFormatter stringForInteger:user.numberOfFollowing.integerValue];
      }];
     
@@ -270,7 +268,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         NSLog( @"updating pictureUrl: %@", user.pictureUrl );
          [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
      }];
     
@@ -281,14 +278,12 @@ static NSString * const kEditButtonStylePill = @"rounded";
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         NSLog( @"updating name, tagling, location: %@, %@, %@", user.name, user.tagline, user.location );
-         
          [welf applyEditProfileButtonStyle];
          
          welf.nameLabel.text = user.name;
          welf.locationLabel.text = user.location;
          
-         if (user.tagline && user.tagline.length)
+         if ( user.tagline != nil && user.tagline.length > 0 )
          {
              welf.taglineLabel.text = user.tagline;
          }
