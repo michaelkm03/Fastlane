@@ -87,12 +87,12 @@ NSString * const kMenuKey = @"menu";
 
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
-    return self.tabBarController.selectedViewController;
+    return self.internalTabBarViewController.selectedViewController;
 }
 
 - (UIViewController *)childViewControllerForStatusBarHidden
 {
-    return self.tabBarController.selectedViewController;
+    return self.internalTabBarViewController.selectedViewController;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
