@@ -223,14 +223,7 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
     
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        self.collectionView.backgroundView = self.backgroundImageView;
-    }
-    else
-    {
-        [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
-    }
+    [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
     
     NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
     if (![self.backgroundImageView.sd_imageURL isEqual:pictureURL])

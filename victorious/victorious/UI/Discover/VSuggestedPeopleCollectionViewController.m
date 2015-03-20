@@ -27,8 +27,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 @implementation VSuggestedPeopleCollectionViewController
 
-@synthesize dependencyManager; //< VDiscoverViewControllerProtocol
-
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
@@ -262,7 +260,19 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
         self.userToAnimate = nil;
     }
     cell.delegate = self;
+    cell.dependencyManager = self.dependencyManager;
     return cell;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VSuggestedPersonCollectionViewCell *cell, NSUInteger idx, BOOL *stop)
+    {
+        
+        cell.dependencyManager = dependencyManager;
+        
+    }];
 }
 
 #pragma mark - UICollectionViewDelegate
