@@ -191,7 +191,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                  VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
+                                                                  VScaffoldViewControllerFirstTimeContentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   @"appearance": @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
@@ -215,7 +215,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.enabledTemplate == VTemplateTypeC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                   VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
+                                                                   VScaffoldViewControllerFirstTimeContentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
                                                                    VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                    };
@@ -556,8 +556,8 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     NSArray *trackingArray = self.dataFromInitCall[@"experiments"][@"ftue_welcome_tracking"][@"start"];
     return @{
              kClassNameKey: @"lightweight.contentView",
-             kFTUSequenceURL: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
-             kFTUTrackingURLGroup:  trackingArray ?: @[]
+             @"sequenceURL": [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
+             @"tracking":  trackingArray ?: @[]
              };
 }
 

@@ -8,12 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDependencyManager, VSequence, VLightweightContentViewController, VFirstTimeInstallHelper;
+@class VLightweightContentViewController;
 
 @protocol VLightweightContentViewControllerDelegate <NSObject>
 
-- (void)videoHasCompleted:(VLightweightContentViewController *)lightweightContentVideoViewController;
-- (void)videoHasStarted:(VLightweightContentViewController *)lightweightContentVideoViewController;
+@optional
+
+/**
+ Notifies the delegate that the video has started
+ */
+- (void)videoHasStartedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController;
+
+/**
+ Notifies the delegate that the video has completed.
+ */
+- (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController;
+
+/**
+ Notifies the delegate that the sequence failed to load from the server
+ */
+- (void)failedToLoadSequenceInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController;
 
 @end
 
@@ -23,10 +37,5 @@
  Reports when the video has completed or failed to load
  */
 @property (nonatomic, weak) id <VLightweightContentViewControllerDelegate> delegate;
-
-/**
- Url referencing video to be played
- */
-@property (nonatomic, strong) NSURL *mediaUrl;
 
 @end
