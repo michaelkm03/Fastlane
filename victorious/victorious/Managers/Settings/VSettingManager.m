@@ -22,9 +22,9 @@ NSString * const VExperimentsPauseVideoWhenCommenting = @"pauseVideoWhenCommenti
 NSString * const VExperimentsClearVideoBackground = @"clearVideoBackground";
 
 //URLs
-NSString * const kVTermsOfServiceURL = @"tosUrl";
-NSString * const kVAppStoreURL = @"appStoreUrl";
-NSString * const kVPrivacyUrl = @"privacyUrl";
+NSString * const kVTermsOfServiceURL = @"tosURL";
+NSString * const kVAppStoreURL = @"appStoreURL";
+NSString * const kVPrivacyUrl = @"privacyURL";
 
 @implementation VSettingManager
 

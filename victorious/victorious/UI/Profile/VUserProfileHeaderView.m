@@ -8,7 +8,7 @@
 
 #import "VUserProfileHeaderView.h"
 
-#import "VUser.h"
+#import "VUser+Fetcher.h"
 
 #import "VDependencyManager.h"
 #import "VObjectManager+Users.h"
@@ -21,6 +21,12 @@
 
 static NSString * const kEditButtonStyleKey = @"editButtonStyle";
 static NSString * const kEditButtonStylePill = @"rounded";
+
+@interface VUserProfileHeaderView()
+
+@property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
+
+@end
 
 @implementation VUserProfileHeaderView
 
@@ -46,6 +52,13 @@ static NSString * const kEditButtonStylePill = @"rounded";
     
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
+    
+    self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+}
+
+- (void)dealloc
+{
+    [self cleanupKVOControllerWithUser:self.user];
 }
 
 - (void)setIsFollowingUser:(BOOL)isFollowingUser
@@ -111,8 +124,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
         [self applyEditProfileButtonStyle];
         return;
     }
-    
-    [self.KVOController unobserve:_user];
 
     _user = user;
         
@@ -124,20 +135,14 @@ static NSString * const kEditButtonStylePill = @"rounded";
     
     [self applyEditProfileButtonStyle];
     
+    [self cleanupKVOControllerWithUser:_user];
+    [self setupKVOControllerWithUser:_user];
+    
+    [[VObjectManager sharedManager] countOfFollowsForUser:_user
+                                             successBlock:nil
+                                                failBlock:nil];
+    
     __weak typeof(self) welf = self;
-    
-    [[VObjectManager sharedManager] countOfFollowsForUser:user
-                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         welf.numberOfFollowers = [resultObjects[0] integerValue];
-         welf.numberOfFollowing = [resultObjects[1] integerValue];
-     }
-                                                failBlock:^(NSOperation *operation, NSError *error)
-     {
-         welf.numberOfFollowers = 0;
-         welf.numberOfFollowing = 0;
-     }];
-    
     if (user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
     {
         [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
@@ -165,44 +170,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
             welf.isFollowingUser = NO;
         }
     }
-    
-    void (^userUpdateBlock)(id observer, VUser *user, NSDictionary *change) = ^void(id observer, VUser *user, NSDictionary *change)
-    {
-        [welf applyEditProfileButtonStyle];
-        
-        [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
-        welf.nameLabel.text = user.name;
-        welf.locationLabel.text = user.location;
-        
-        if (user.tagline && user.tagline.length)
-        {
-            welf.taglineLabel.text = user.tagline;
-        }
-        else
-        {
-            welf.taglineLabel.text = @"";
-        }
-    };
-    
-    [self.KVOController observe:user
-                       keyPaths:@[NSStringFromSelector(@selector(name)),
-                                  NSStringFromSelector(@selector(pictureUrl)),
-                                  NSStringFromSelector(@selector(tagline)),
-                                  NSStringFromSelector(@selector(location))]
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:userUpdateBlock];
-}
-
-- (void)setNumberOfFollowers:(NSInteger)numberOfFollowers
-{
-    _numberOfFollowers = numberOfFollowers;
-    self.followersLabel.text = [[[VLargeNumberFormatter alloc] init] stringForInteger:numberOfFollowers];
-}
-
-- (void)setNumberOfFollowing:(NSInteger)numberOfFollowing
-{
-    _numberOfFollowing = numberOfFollowing;
-    self.followingLabel.text = [[[VLargeNumberFormatter alloc] init] stringForInteger:numberOfFollowing];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -270,6 +237,61 @@ static NSString * const kEditButtonStylePill = @"rounded";
     {
         [self.delegate followingHandler];
     }
+}
+
+#pragma mark - KVOController for properties of VUser
+
+- (void)cleanupKVOControllerWithUser:(VUser *)user
+{
+    [self.KVOController unobserve:user];
+}
+
+- (void)setupKVOControllerWithUser:(VUser *)user
+{
+    __weak typeof(self) welf = self;
+    
+    [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(numberOfFollowers))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         welf.followersLabel.text = [welf.largeNumberFormatter stringForInteger:user.numberOfFollowers.integerValue];
+     }];
+    
+    [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(numberOfFollowing))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         welf.followingLabel.text = [welf.largeNumberFormatter stringForInteger:user.numberOfFollowing.integerValue];
+     }];
+    
+    [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(pictureUrl))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+     }];
+    
+    [self.KVOController observe:user
+                       keyPaths:@[ NSStringFromSelector(@selector(name)),
+                                   NSStringFromSelector(@selector(tagline)),
+                                   NSStringFromSelector(@selector(location)) ]
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf applyEditProfileButtonStyle];
+         
+         welf.nameLabel.text = user.name;
+         welf.locationLabel.text = user.location;
+         
+         if ( user.tagline != nil && user.tagline.length > 0 )
+         {
+             welf.taglineLabel.text = user.tagline;
+         }
+         else
+         {
+             welf.taglineLabel.text = @"";
+         }
+     }];
 }
 
 @end
