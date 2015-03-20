@@ -160,6 +160,12 @@ static NSString * const kMacroReplacement = @"XXXXX";
     NSNumber *blue = colorDictionary[kBlueKey];
     NSNumber *alpha = colorDictionary[kAlphaKey];
     
+    // Work around a bug in the back-end
+    if ( alpha.doubleValue == 1.0 )
+    {
+        alpha = @255;
+    }
+    
     if (![red isKindOfClass:[NSNumber class]] ||
         ![green isKindOfClass:[NSNumber class]] ||
         ![blue isKindOfClass:[NSNumber class]] ||

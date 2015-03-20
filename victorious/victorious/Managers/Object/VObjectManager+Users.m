@@ -8,6 +8,7 @@
 
 #import "NSArray+VMap.h"
 #import "NSString+VCrypto.h"
+#import "NSCharacterSet+VURLParts.h"
 
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
@@ -376,19 +377,18 @@ static NSString * const kVAPIParamContext = @"context";
         {
             success(operation, fullResponse, resultObjects);
         }
-    };    
-    
-    NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", [search_string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], (long)pageLimit];
+    };
+    NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
     if (context != nil)
     {
         userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, context];
     }
-    
     return [self GET:userSearchURL
-               object:nil
-           parameters:nil
-         successBlock:fullSuccess
-            failBlock:fail];
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)findFriendsBySocial:(VSocialSelector)selector

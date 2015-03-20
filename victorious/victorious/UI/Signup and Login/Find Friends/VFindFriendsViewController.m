@@ -33,6 +33,7 @@
 @property (nonatomic, strong) VFindFriendsTableViewController *twitterInnerViewController;
 @property (nonatomic) BOOL shouldShowInvite;
 @property (nonatomic, strong) NSString *appStoreLink;
+@property (nonatomic, strong) NSString *appName;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
@@ -59,7 +60,7 @@
 {
     [super viewDidLoad];
 
-    self.shouldShowInvite = [MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText];
+    self.shouldShowInvite = ([MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText]) && [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
     
     if ( self.shouldShowInvite )
     {
@@ -77,6 +78,13 @@
     
     NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
     self.appStoreLink = appStoreUrl.absoluteString;
+    
+    self.appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+}
+
+- (BOOL)stringIsValidForDisplay:(NSString *)string
+{
+    return string != nil && ![string isEqualToString:@""];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -152,7 +160,7 @@
 
 - (IBAction)pressedInvite:(id)sender
 {
-    if ((![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText]) || [self.appStoreLink isEqualToString:@""])
+    if ((![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText]) )
     {
         return;
     }

@@ -556,7 +556,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     NSArray *trackingArray = self.dataFromInitCall[@"experiments"][@"ftue_welcome_tracking"][@"start"];
     return @{
              kClassNameKey: @"lightweight.contentView",
-             kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
+             kFTUSequenceURL: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
              kFTUTrackingURLGroup:  trackingArray ?: @[]
              };
 }
@@ -581,7 +581,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                             @{
                                 kClassNameKey: @"stream.screen",
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                VStreamCollectionViewControllerStreamURLKey: @"/api/sequence/hot_detail_list_by_stream/ugc/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                                 kCanAddContentKey: @YES,
                                 VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                             },
@@ -589,7 +589,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                 kClassNameKey: @"stream.screen",
                                 kIDKey: self.communityRecentID,
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
+                                VStreamCollectionViewControllerStreamURLKey: [self urlPathForStreamCategories:VUGCCategories()],
                                 kCanAddContentKey: @YES,
                             },
                         ]
@@ -808,7 +808,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                 @{
                     kClassNameKey: @"stream.screen",
                     kTitleKey: NSLocalizedString(@"Featured", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                    VStreamCollectionViewControllerStreamURLKey: @"/api/sequence/hot_detail_list_by_stream/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                     kIsHomeKey: @YES,
                     kCanAddContentKey: @YES,
                     },
@@ -816,14 +816,14 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                     kIDKey: self.homeRecentID,
                     kClassNameKey: @"stream.screen",
                     kTitleKey: NSLocalizedString(@"Recent", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
+                    VStreamCollectionViewControllerStreamURLKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
                     kCanAddContentKey: @YES,
                     kMarqueeKey: @YES,
                     },
                 @{
                     kClassNameKey: @"followingStream.screen",
                     kTitleKey: NSLocalizedString(@"Following", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                    VStreamCollectionViewControllerStreamURLKey: @"/api/sequence/follows_detail_list_by_stream/0/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                     kCanAddContentKey: @YES,
                     }
                 ],
@@ -880,14 +880,14 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     NSDictionary *stream = @{
       kTitleKey: NSLocalizedString(@"Recent", @""),
       kInitialKey: @YES,
-      VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
+      VStreamCollectionViewControllerStreamURLKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
     };
 
     NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
     if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
     {
         NSMutableDictionary *mutableStream = [stream mutableCopy];
-        mutableStream[kMarqueeKey] = @{ VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/marquee" };
+        mutableStream[kMarqueeKey] = @{ VStreamCollectionViewControllerStreamURLKey: @"/api/sequence/detail_list_by_stream/marquee" };
         return [mutableStream copy];
     }
     return stream;
@@ -911,7 +911,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                          kDestinationKey: @{
                                                  kClassNameKey: @"showcase.screen",
                                                  kTitleKey: NSLocalizedString(@"Channels", nil),
-                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                                 VStreamCollectionViewControllerStreamURLKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                                                  }
                                          };
         NSMutableDictionary *completeComponent = [[NSMutableDictionary alloc] initWithDictionary:componentBase];
@@ -931,7 +931,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                   kDestinationKey: @{
                           kClassNameKey: @"streamDirectory.screen",
                           kTitleKey: NSLocalizedString(@"Channels", nil),
-                          VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                          VStreamCollectionViewControllerStreamURLKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                           },
                   kBackgroundColor: @{
                           kRedKey: @0,
@@ -960,14 +960,14 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                   @{
                                       kClassNameKey: @"stream.screen",
                                       kTitleKey: NSLocalizedString(@"Featured", @""),
-                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                      VStreamCollectionViewControllerStreamURLKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                                       VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                                       },
                                   @{
                                       kClassNameKey: @"stream.screen",
                                       kInitialKey: @YES,
                                       kTitleKey: NSLocalizedString(@"Recent", @""),
-                                      VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
+                                      VStreamCollectionViewControllerStreamURLKey: [self urlPathForStreamCategories:VOwnerCategories()],
                                       VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                                       }
                                   ]
