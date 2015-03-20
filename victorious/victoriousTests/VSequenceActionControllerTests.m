@@ -41,7 +41,7 @@
     self.sequence = [VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.user = [VDummyModels objectWithEntityName:@"User" subclass:[VUser class]];
     
-    self.origImp = [VUserProfileViewController v_swizzleClassMethod:@selector(userProfileWithUser:) withBlock:^VUserProfileViewController *(VUser *user)
+    self.origImp = [VUserProfileViewController v_swizzleClassMethod:@selector(userProfileViewControllerWithUser:) withBlock:^VUserProfileViewController *(VUser *user)
                     {
                         return [[VUserProfileViewController alloc] init];
                     }];
@@ -55,7 +55,7 @@
 {
     [super tearDown];
     
-    [VUserProfileViewController v_restoreOriginalImplementation:self.origImp forClassMethod:@selector(userProfileWithUser:)];
+    [VUserProfileViewController v_restoreOriginalImplementation:self.origImp forClassMethod:@selector(userProfileViewControllerWithUser:)];
     [VUserProfileViewController v_restoreOriginalImplementation:self.origImpProfile forMethod:@selector(profile)];
 }
 
