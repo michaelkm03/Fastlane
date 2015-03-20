@@ -8,11 +8,11 @@
 
 #import "VDependencyManager+VTracking.h"
 
-NSString * const VTrackingURLAppStartKey = @"start";
-NSString * const VTrackingURLAppStopKey = @"stop";
-NSString * const VTrackingURLInitKey = @"init";
-NSString * const VTrackingURLInstallKey = @"install";
-NSString * const VTrackingURLBallisticCountKey = @"ballistic_count";
+NSString * const VTrackingStartKey = @"start";
+NSString * const VTrackingStopKey = @"stop";
+NSString * const VTrackingInitKey = @"init";
+NSString * const VTrackingInstallKey = @"install";
+NSString * const VTrackingBallisticCountKey = @"ballistic_count";
 
 static NSString * const kTrackingKey = @"tracking";
 

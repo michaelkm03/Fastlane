@@ -10,6 +10,7 @@
 #import "VContentViewViewModel.h"
 #import "VDeeplinkHandler.h"
 #import "VDependencyManager+VObjectManager.h"
+#import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
 #import "VNavigationDestinationsProvider.h"
 #import "VNewContentViewController.h"
@@ -30,14 +31,12 @@
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
 NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
-NSString * const VScaffoldViewControllerLightweightContentViewComponentKey = @"firstTimeContent";
+NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLightweightContentViewControllerDelegate>
-
-@property (nonatomic, strong) VFirstTimeInstallHelper *firstTimeInstallHelper;
 
 @end
 
@@ -59,7 +58,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
     [self showFirstTimeUserExperience];
 }
 
@@ -67,28 +65,35 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)showFirstTimeUserExperience
 {
-    // Show the First Time User Video if it hasn't been shown yet
-    VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
-                                                                                                   forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
+    VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
 
-    self.firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
-
-    // Present the first-time user video view controller if hasn't been shown
-    if ( ![self.firstTimeInstallHelper hasBeenShown] )
+    if ( ![firstTimeInstallHelper hasBeenShown] )
     {
+        VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
+                                                                                                       forKey:VScaffoldViewControllerFirstTimeContentKey];
         lightweightContentVC.delegate = self;
-        double delayInSeconds = 1.0;
-        dispatch_time_t showTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
-                       {
-                           if ( lightweightContentVC.mediaUrl != nil )
-                           {
-                               [self presentViewController:lightweightContentVC animated:YES completion:^
-                               {
-                                   [self.firstTimeInstallHelper savePlaybackDefaults];
-                               }];
-                           }
-                       });
+        if ( lightweightContentVC != nil )
+        {
+            [self presentViewController:lightweightContentVC animated:YES completion:^(void)
+            {
+                [firstTimeInstallHelper savePlaybackDefaults];
+                [self trackFirstTimeContentView];
+            }];
+        }
+    }
+}
+
+- (void)trackFirstTimeContentView
+{
+    // Tracking
+    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
+    
+    NSArray *trackingUrlArray = [childDependencyManager trackingURLsForKey:VTrackingStartKey];
+    if ( trackingUrlArray != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
     }
 }
 
@@ -150,23 +155,14 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 #pragma mark - VLightweightContentViewControllerDelegate
 
-- (void)videoHasCompleted:(VLightweightContentViewController *)firstTimeUserVideoViewController
+- (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
-    [firstTimeUserVideoViewController dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)videoHasStarted:(VLightweightContentViewController *)lightweightContentVideoViewController
+- (void)failedToLoadSequenceInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
-    // Tracking
-    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
-
-    NSArray *trackingUrlArray = [childDependencyManager arrayForKey:kFTUTrackingURLGroup];
-    if ( trackingUrlArray != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Deeplinks

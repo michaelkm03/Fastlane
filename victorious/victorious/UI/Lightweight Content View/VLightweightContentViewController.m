@@ -16,9 +16,10 @@
 #import "VObjectManager+Sequence.h"
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VFirstTimeInstallHelper.h"
 #import "VScaffoldViewController.h"
 #import "VTrackingConstants.h"
+
+static NSString * const kSequenceURLKey = @"sequenceURL";
 
 @interface VLightweightContentViewController () <VCVideoPlayerDelegate>
 
@@ -32,6 +33,11 @@
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+/**
+ Url referencing video to be played
+ */
+@property (nonatomic, strong) NSURL *mediaUrl;
 
 @end
 
@@ -47,7 +53,7 @@
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VLightweightContentViewController *firstTimeVC = [self instantiateFromStoryboard:@"FirstTimeVideo"];
+    VLightweightContentViewController *firstTimeVC = [self instantiateFromStoryboard:@"LightweightContentView"];
     firstTimeVC.dependencyManager = dependencyManager;
     return firstTimeVC;
 }
@@ -58,28 +64,28 @@
 {
     [super viewDidLoad];
     
-    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
+    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
     self.dependencyManager = childDependencyManager;
 
-    // Set the Get Started button style
     self.getStartedButton.secondaryColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.getStartedButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     [self.getStartedButton setTitle:NSLocalizedString(@"Get Started", @"") forState:UIControlStateNormal];
     self.getStartedButton.style = VButtonStyleSecondary;
     
-    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     [self setupVideoUI];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+    [self.activityIndicator startAnimating];
     
-    [self.delegate videoHasStarted:self];
-    
-    // Play the video
-    [self showVideo];
+    if ( self.mediaUrl == nil )
+    {
+        [self fetchMediaSequenceObject];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -133,8 +139,6 @@
 
 - (void)setupVideoUI
 {
-    [self.activityIndicator startAnimating];
-    
     // Setup Video player
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
     self.videoPlayerViewController.delegate = self;
@@ -156,23 +160,11 @@
     self.videoPlayerViewController.view.hidden = NO;
 }
 
-#pragma mark - Dependency Manager Setter
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    
-    if (_dependencyManager != nil)
-    {
-        [self fetchMediaSequenceObject];
-    }
-}
-
 #pragma mark - Select media sequence
 
 - (void)fetchMediaSequenceObject
 {
-    NSString *sequenceId = [[self.dependencyManager stringForKey:kFTUSequenceURL] lastPathComponent];
+    NSString *sequenceId = [[self.dependencyManager stringForKey:kSequenceURLKey] lastPathComponent];
     if (sequenceId != nil)
     {
         [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
@@ -184,16 +176,22 @@
              if (asset.dataURL != nil)
              {
                  self.mediaUrl = asset.dataURL;
+                 [self showVideo];
              }
              else
              {
-                 self.mediaUrl = nil;
+                 if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
+                 {
+                     [self.delegate failedToLoadSequenceInLightweightContentView:self];
+                 }
              }
-             
          }
                                                 failBlock:^(NSOperation *operation, NSError *error)
          {
-             self.mediaUrl = nil;
+             if ( [self.delegate respondsToSelector:@selector(failedToLoadSequenceInLightweightContentView:)] )
+             {
+                 [self.delegate failedToLoadSequenceInLightweightContentView:self];
+             }
          }];
     }
     else
@@ -207,6 +205,10 @@
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
     [self.activityIndicator stopAnimating];
+    if ( [self.delegate respondsToSelector:@selector(videoHasStartedInLightweightContentView:)] )
+    {
+        [self.delegate videoHasStartedInLightweightContentView:self];
+    }
 }
 
 - (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
@@ -233,8 +235,11 @@
         self.videoPlayerViewController.view.hidden = YES;
         self.videoPlayerViewController = nil;
     }
-
-    [self.delegate videoHasCompleted:self];
+    
+    if ( [self.delegate respondsToSelector:@selector(videoHasCompletedInLightweightContentView:)] )
+    {
+        [self.delegate videoHasCompletedInLightweightContentView:self];
+    }
 }
 
 @end
