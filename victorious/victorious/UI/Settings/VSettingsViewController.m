@@ -12,7 +12,6 @@
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
@@ -39,6 +38,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 5;
 static const NSInteger kTrackingButtonIndex          = 6;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
+static NSString * const kOwnerKey = @"owner";
+static NSString * const kNameKey = @"name";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
@@ -326,32 +327,47 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+        NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
+        NSString *creatorName = ownerInfo[ kNameKey ];
+        NSString *recipientEmail = [self.dependencyManager stringForKey:kVSupportEmail];
         
-        MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
-        NSString *msgBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
-                             NSLocalizedString(@"Type your feedback here...", @""),
-                             [self deviceInfo], appName];
-        NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
-        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString, appName];
-        NSString *recipientEmail = [[VThemeManager sharedThemeManager] themedStringForKey:kVSupportEmail];
+        NSString *messageSubject;
+        NSString *messageBody;
+        if ( creatorName != nil )
+        {
+            NSString *subjectWithCreatorNameFormat = NSLocalizedString(@"SupportEmailSubjectWithName", @"Feedback / Help");
+            messageSubject = [NSString stringWithFormat:@"%@ %@", subjectWithCreatorNameFormat, creatorName];
+            
+            messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
+                                     NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo], creatorName];
+            
+        }
+        else
+        {
+            messageSubject = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
+            
+            messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@",
+                           NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo]];
+            
+        }
         
-        [mailComposer setSubject:msgSubj];
+        [mailComposer setSubject:messageSubject];
         [mailComposer setToRecipients:@[ recipientEmail ?: kDefaultHelpEmail ]];
-        [mailComposer setMessageBody:msgBody isHTML:NO];
+        [mailComposer setMessageBody:messageBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
-                                                               message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
-                                                              delegate:self
-                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
-                                                     otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
+                                                        message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+                                              otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
         [alert show];
     }
 }

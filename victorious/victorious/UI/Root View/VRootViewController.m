@@ -24,7 +24,6 @@
 #import "VConstants.h"
 #import "VTemplateGenerator.h"
 #import "VLocationManager.h"
-#import "VPushNotificationManager.h"
 #import "VVoteSettings.h"
 #import "VVoteType.h"
 
@@ -206,7 +205,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     [self seedMonetizationNetworks:[dependencyManager templateValueOfType:[NSArray class] forKey:kAdSystemsKey]];
     
     self.dependencyManager = dependencyManager;

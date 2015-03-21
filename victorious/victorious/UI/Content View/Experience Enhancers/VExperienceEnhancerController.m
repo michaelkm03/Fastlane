@@ -158,13 +158,14 @@
         return NO;
     }
     
-    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
+    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *sequenceLoopStop)
      {
-         [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop)
+         [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *enhancerLoopStop)
           {
               if ( enhancer.voteType.voteTypeID.integerValue == result.remoteId.integerValue )
               {
-                  [enhancer resetStartingVoteCount:result.count.integerValue];
+                  enhancer.voteCount = result.count.integerValue;
+                  *enhancerLoopStop = YES;
               }
           }];
      }];
