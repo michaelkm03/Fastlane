@@ -56,11 +56,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
 }
 
-- (void)dealloc
-{
-    [self cleanupKVOControllerWithUser:self.user];
-}
-
 - (void)setIsFollowingUser:(BOOL)isFollowingUser
 {
     _isFollowingUser = isFollowingUser;
