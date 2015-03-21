@@ -63,18 +63,7 @@ static NSString * const kNameKey = @"name";
 {
     [super viewDidLoad];
     
-    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
-    self.appStoreLink = appStoreUrl.absoluteString;
-    
-    NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
-    self.appName = ownerInfo[ kNameKey ];
-
-    self.shouldShowInvite = ([MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText]) && [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
-    
-    if ( self.shouldShowInvite )
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)];
-    }
+    [self refreshInviteButtons];
     
     [self addChildViewController:self.tabBarViewController];
     self.tabBarViewController.view.frame = self.containerView.bounds;
@@ -84,6 +73,33 @@ static NSString * const kNameKey = @"name";
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self refreshInviteButtons];
+}
+
+- (void)refreshInviteButtons
+{
+    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
+    self.appStoreLink = appStoreUrl.absoluteString;
+    
+    NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
+    self.appName = ownerInfo[ kNameKey ];
+    
+    self.shouldShowInvite = ([MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText]) && [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
+    
+    self.navigationItem.rightBarButtonItem = self.shouldShowInvite ? [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)] : nil;
+}
+
+- (void)setShouldShowInvite:(BOOL)shouldShowInvite
+{
+    _shouldShowInvite = shouldShowInvite;
+    self.contactsInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
+    self.facebookInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
+    self.twitterInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
 }
 
 - (BOOL)stringIsValidForDisplay:(NSString *)string
@@ -236,8 +252,8 @@ static NSString * const kNameKey = @"name";
 {
     if ([MFMessageComposeViewController canSendText])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
-        NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
+        NSString *appName = self.appName;
+        NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:self.appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
         bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];
