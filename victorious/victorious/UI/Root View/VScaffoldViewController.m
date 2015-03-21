@@ -25,6 +25,7 @@
 #import "VNavigationController.h"
 #import "VFirstTimeInstallHelper.h"
 #import "VAuthorizedAction.h"
+#import "VPushNotificationManager.h"
 
 #import <MBProgressHUD.h>
 
@@ -58,12 +59,17 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self showFirstTimeUserExperience];
+    
+    BOOL didShow = [self showFirstTimeUserExperience];
+    if ( !didShow )
+    {
+        [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+    }
 }
 
 #pragma mark - First Time User Experience
 
-- (void)showFirstTimeUserExperience
+- (BOOL)showFirstTimeUserExperience
 {
     VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
 
@@ -71,16 +77,20 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                        forKey:VScaffoldViewControllerFirstTimeContentKey];
-        lightweightContentVC.delegate = self;
         if ( lightweightContentVC != nil )
         {
+            lightweightContentVC.delegate = self;
             [self presentViewController:lightweightContentVC animated:YES completion:^(void)
             {
                 [firstTimeInstallHelper savePlaybackDefaults];
                 [self trackFirstTimeContentView];
             }];
+            
+            return YES;
         }
     }
+    
+    return NO;
 }
 
 - (void)trackFirstTimeContentView
@@ -157,7 +167,10 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^
+     {
+         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+     }];
 }
 
 - (void)failedToLoadSequenceInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
