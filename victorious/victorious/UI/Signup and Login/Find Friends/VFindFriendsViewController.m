@@ -23,6 +23,9 @@
 
 @import MessageUI;
 
+static NSString * const kOwnerKey = @"owner";
+static NSString * const kNameKey = @"name";
+
 @interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
 
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
@@ -59,6 +62,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
+    self.appStoreLink = appStoreUrl.absoluteString;
+    
+    NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
+    self.appName = ownerInfo[ kNameKey ];
 
     self.shouldShowInvite = ([MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText]) && [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
     
@@ -75,11 +84,6 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
-    
-    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
-    self.appStoreLink = appStoreUrl.absoluteString;
-    
-    self.appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
 }
 
 - (BOOL)stringIsValidForDisplay:(NSString *)string
@@ -211,7 +215,7 @@
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+        NSString *appName = self.appName;
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
