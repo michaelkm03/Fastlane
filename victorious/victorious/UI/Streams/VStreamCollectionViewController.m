@@ -617,8 +617,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     }
     
     // Instantiate and push to stack
-    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag];
-    vc.dependencyManager = self.dependencyManager;
+    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

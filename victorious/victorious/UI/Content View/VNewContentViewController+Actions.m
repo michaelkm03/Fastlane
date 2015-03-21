@@ -76,7 +76,7 @@
     VActionItem *descriptionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashTag];
+                                        VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashTag];
                                         
                                         [contentViewController dismissViewControllerAnimated:YES completion:^
                                          {

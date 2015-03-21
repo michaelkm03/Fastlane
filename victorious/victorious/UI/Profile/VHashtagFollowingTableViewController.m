@@ -221,7 +221,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
+    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
