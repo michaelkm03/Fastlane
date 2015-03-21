@@ -226,7 +226,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Tracking Alerts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A70-cw-6uE">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Tracking" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A70-cw-6uE">
                                                     <rect key="frame" x="15" y="0.0" width="270" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -780,7 +780,7 @@
                             <outlet property="delegate" destination="p5c-fI-FBT" id="vYe-Aj-WbW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Tracking Alerts" id="Er4-Xd-8gm"/>
+                    <navigationItem key="navigationItem" title="Tracking" id="Er4-Xd-8gm"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="videoSettings" destination="WPS-3i-wyQ" id="Oje-fP-Ya7"/>
