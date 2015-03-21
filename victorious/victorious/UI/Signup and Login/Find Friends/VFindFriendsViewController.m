@@ -89,9 +89,17 @@ static NSString * const kNameKey = @"name";
     NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
     self.appName = ownerInfo[ kNameKey ];
     
-    self.shouldShowInvite = ([MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText]) && [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
+    BOOL canSendMail = [MFMailComposeViewController canSendMail];
+    BOOL canSendText = [MFMessageComposeViewController canSendText];
+    BOOL hasValidDisplayStrings = [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
+    self.shouldShowInvite = (canSendMail || canSendText) && hasValidDisplayStrings;
     
-    self.navigationItem.rightBarButtonItem = self.shouldShowInvite ? [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)] : nil;
+    UIBarButtonItem *barButtonItem = nil;
+    if ( self.shouldShowInvite )
+    {
+        barButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)];
+    }
+    self.navigationItem.rightBarButtonItem = barButtonItem;
 }
 
 - (void)setShouldShowInvite:(BOOL)shouldShowInvite
