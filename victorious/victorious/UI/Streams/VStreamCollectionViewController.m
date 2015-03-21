@@ -132,7 +132,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
-    streamCollectionVC.shouldDisplayMarquee = [dependencyManager templateValueOfType:[NSString class] forKey:kMarqueeURLKey] != nil;
+    streamCollectionVC.shouldDisplayMarquee = [dependencyManager stringForKey:kMarqueeURLKey] != nil;
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
