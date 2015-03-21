@@ -100,6 +100,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 @property (nonatomic, assign) BOOL canAddContent;
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+@property (nonatomic, strong) NSString *marqueeURLString;
 
 @end
 
@@ -132,7 +133,13 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
-    streamCollectionVC.shouldDisplayMarquee = [dependencyManager stringForKey:kMarqueeURLKey] != nil;
+    NSString *marqueeURLString = [dependencyManager stringForKey:kMarqueeURLKey];
+    
+    if ( marqueeURLString != nil )
+    {
+        streamCollectionVC.marqueeURLString = marqueeURLString;
+        streamCollectionVC.shouldDisplayMarquee = [dependencyManager stringForKey:kMarqueeURLKey] != nil;
+    }
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
@@ -277,7 +284,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 {
     if (!_marquee)
     {
-        VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+        VStream *marquee = [VStream streamForPath:[self.marqueeURLString v_pathComponent] inContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
         
         //The top of the template C hack
