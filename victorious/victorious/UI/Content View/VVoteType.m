@@ -40,9 +40,9 @@ NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
     return [self.dependencyManager stringForKey:@"voteTypeName"];
 }
 
-- (NSNumber *)voteTypeID
+- (NSString *)voteTypeID
 {
-    return [self.dependencyManager numberForKey:@"voteTypeID"];
+    return [self.dependencyManager stringForKey:@"voteTypeID"];
 }
 
 - (NSString *)iconImage

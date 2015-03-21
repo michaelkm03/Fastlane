@@ -17,7 +17,7 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
 
 @property (nonatomic, readonly) NSNumber *displayOrder;
 @property (nonatomic, readonly) NSString *voteTypeName;
-@property (nonatomic, readonly) NSNumber *voteTypeID;
+@property (nonatomic, readonly) NSString *voteTypeID;
 @property (nonatomic, readonly) NSString *iconImage;
 @property (nonatomic, readonly) NSString *iconImageLarge;
 @property (nonatomic, readonly) NSArray *images;
