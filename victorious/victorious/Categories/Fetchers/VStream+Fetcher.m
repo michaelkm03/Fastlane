@@ -56,11 +56,6 @@ NSString * const VStreamFilterTypePopular = @"popular";
     return stream;
 }
 
-+ (VStream *)streamForMarqueeInContext:(NSManagedObjectContext *)context
-{
-    return [self streamForRemoteId:@"marquee" filterName:@"0" managedObjectContext:context];
-}
-
 + (VStream *)streamForRemoteId:(NSString *)remoteId
                     filterName:(NSString *)filterName
           managedObjectContext:(NSManagedObjectContext *)context

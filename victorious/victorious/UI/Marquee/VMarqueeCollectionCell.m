@@ -58,10 +58,10 @@ static const CGFloat kMarqueeBufferHeight = 3;
                                                                           views:tabView]];
 }
 
-- (void)setIsTemplateC:(BOOL)isTemplateC
+- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
 {
-    _isTemplateC = isTemplateC;
-    if ( !self.isTemplateC )
+    _hideMarqueePosterImage = hideMarqueePosterImage;
+    if ( !self.hideMarqueePosterImage )
     {
         self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
@@ -80,6 +80,13 @@ static const CGFloat kMarqueeBufferHeight = 3;
         
         self.backgroundColor = [UIColor clearColor];
     }
+    self.marquee.hideMarqueePosterImage = hideMarqueePosterImage;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.marquee.dependencyManager = dependencyManager;
 }
 
 - (void)setMarquee:(VMarqueeController *)marquee
@@ -87,7 +94,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
     _marquee = marquee;
     marquee.collectionView = self.collectionView;
     marquee.tabView = self.tabView;
-    self.isTemplateC = marquee.isTemplateC;
+    self.hideMarqueePosterImage = marquee.hideMarqueePosterImage;
     
     self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
     
@@ -96,8 +103,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
          self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
          [self.marquee enableTimer];
          [self.collectionView reloadData];
-     }
-                                              failure:nil];
+     } failure:nil];
 }
 
 - (VStreamItem *)currentItem
@@ -109,7 +115,6 @@ static const CGFloat kMarqueeBufferHeight = 3;
 {
     NSIndexPath *path = [self.marquee.streamDataSource indexPathForItem:[self currentItem]];
     VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[self.collectionView cellForItemAtIndexPath:path];
-    cell.isTemplateC = self.isTemplateC;
     return cell.previewImageView;
 }
 
