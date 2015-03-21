@@ -173,7 +173,7 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
 {
-    self.layer.cornerRadius = self.cornerRadius;
+    self.layer.cornerRadius = cornerRadius;
     [self updateAppearance];
 }
 
