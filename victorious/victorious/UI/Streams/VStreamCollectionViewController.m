@@ -72,6 +72,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 static const CGFloat kCreateButtonHeight = 44.0f;
+static NSString * const kMarqueeURLKey = @"marqueeURL";
 
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
@@ -131,7 +132,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
-    streamCollectionVC.shouldDisplayMarquee = [streamCollectionVC.title isEqualToString:@"Recent"];
+    streamCollectionVC.shouldDisplayMarquee = [dependencyManager templateValueOfType:[NSString class] forKey:kMarqueeURLKey] != nil;
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
