@@ -44,7 +44,8 @@
 - (IBAction)upgradeNowTapped:(id)sender
 {
     //Goal is to get rid of this line entirely and just rely on the dependency manager, but will need to update how this view controller is initialized from the animationControllerForPresentedController:etc... call below
-    NSURL *appstoreURL = [[NSUserDefaults standardUserDefaults] objectForKey:VConstantAppStoreURL];
+    NSString *appstoreURLString = [[NSUserDefaults standardUserDefaults] objectForKey:VConstantAppStoreURL];
+    NSURL *appstoreURL = [NSURL URLWithString:appstoreURLString];
     
     if (!appstoreURL || [appstoreURL.absoluteString isEqualToString:@""])
     {

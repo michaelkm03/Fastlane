@@ -107,7 +107,7 @@ static NSTimeInterval const VConstantsMaximumVideoDuration = 15.0;
 
 static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 
-static NSString * const VConstantAppStoreURL = @"url.app.store";
+static NSString * const VConstantAppStoreURL = @"com.getvictorious.appstoreurl";
 
 #pragma mark - Sequence Categories
 
