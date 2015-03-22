@@ -51,6 +51,9 @@ extern NSString * const VDependencyManagerWorkspaceFlowKey;
 extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
 
+// Global configuration keys
+extern NSString * const VDependencyManagerAppStoreURL;
+
 /**
  Provides loose coupling between components.
  Acts as both repository of shared objects

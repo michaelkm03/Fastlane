@@ -13,8 +13,6 @@
 //For appStoreConstant, should eventually be upgraded to have dependencyManager
 #import "VDependencyManager.h"
 
-static NSString * const kVAppStoreURL = @"appStoreURL";
-
 @interface VForceUpgradeViewController () <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -60,11 +58,11 @@ static NSString * const kVAppStoreURL = @"appStoreURL";
 - (IBAction)upgradeNowTapped:(id)sender
 {
     //Goal is to get rid of this line entirely and just rely on the dependency manager, but will need to update how this view controller is initialized from the animationControllerForPresentedController:etc... call below
-    NSURL *appstoreURL = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
+    NSURL *appstoreURL = [[VSettingManager sharedManager] urlForKey:VDependencyManagerAppStoreURL];
     
     if ( self.dependencyManager != nil )
     {
-        NSString *appstoreURLString = [self.dependencyManager stringForKey:kVAppStoreURL];
+        NSString *appstoreURLString = [self.dependencyManager stringForKey:VDependencyManagerAppStoreURL];
         appstoreURL = [NSURL URLWithString:appstoreURLString];
     }
     

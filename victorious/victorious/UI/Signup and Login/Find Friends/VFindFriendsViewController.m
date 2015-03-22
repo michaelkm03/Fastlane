@@ -24,7 +24,6 @@
 
 static NSString * const kOwnerKey = @"owner";
 static NSString * const kNameKey = @"name";
-static NSString * const kVAppStoreURL = @"appStoreURL";
 
 @interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
 
@@ -83,7 +82,7 @@ static NSString * const kVAppStoreURL = @"appStoreURL";
 
 - (void)refreshInviteButtons
 {
-    self.appStoreLink = [self.dependencyManager stringForKey:kVAppStoreURL];
+    self.appStoreLink = [self.dependencyManager stringForKey:VDependencyManagerAppStoreURL];
     
     NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
     self.appName = ownerInfo[ kNameKey ];
