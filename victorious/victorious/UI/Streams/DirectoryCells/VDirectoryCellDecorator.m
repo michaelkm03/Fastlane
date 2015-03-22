@@ -52,28 +52,29 @@
 
 - (void)applyStyleToCell:(VDirectoryItemCell *)cell withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIColor *backgroundColor = [dependencyManager colorForKey:@"color.background"];
-    UIColor *borderColor = [dependencyManager colorForKey:@"color.accent"];
-    UIColor *textColor = [dependencyManager colorForKey:@"color.text"];
-    UIColor *secondaryTextColor = [dependencyManager colorForKey:@"color.text.accent"];
+    UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    UIColor *borderColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    UIColor *secondaryTextColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
     cell.stackBorderColor = borderColor;
     cell.stackBackgroundColor = backgroundColor;
     
-    cell.nameLabel.font = [dependencyManager fontForKey:@"font.label1"];
+    cell.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     cell.nameLabel.textColor = textColor;
     
     cell.countLabel.textColor = secondaryTextColor;
-    cell.countLabel.font = [dependencyManager fontForKey:@"font.label4"];
+    cell.countLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
 }
 
 - (void)applyStyleToSeeMoreCell:(VDirectorySeeMoreItemCell *)cell withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    cell.borderColor = [dependencyManager colorForKey:@"color.accent"];;
-    cell.imageColor = [dependencyManager colorForKey:@"color.accent.secondary"];
-    cell.backgroundColor = [dependencyManager colorForKey:@"color.background"];;
-    cell.seeMoreLabel.textColor = [dependencyManager colorForKey:@"text.color.content"];
-    cell.seeMoreLabel.font = [dependencyManager fontForKey:@"font.header"];
+    cell.borderColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    cell.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    
+    cell.imageColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    cell.seeMoreLabel.textColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    cell.seeMoreLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
 @end
