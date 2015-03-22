@@ -6,12 +6,17 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "VDependencyManager.h"
 #import "VStreamCollectionViewController.h"
 
 @interface VHashtagStreamCollectionViewController : VStreamCollectionViewController
 
-+ (instancetype)instantiateWithHashtag:(NSString *)hashtag;
+@end
 
-+ (instancetype)streamViewControllerForStream:(VStream *)stream;
+#pragma mark -
+
+@interface VDependencyManager (VHashtagStreamCollectionViewController)
+
+- (VHashtagStreamCollectionViewController *)hashtagStreamWithHashtag:(NSString *)hashtag;
 
 @end

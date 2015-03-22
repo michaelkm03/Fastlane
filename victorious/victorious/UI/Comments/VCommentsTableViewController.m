@@ -10,6 +10,8 @@
 #import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"
 #import "VRTCUserPostedAtFormatter.h"
+#import "VRootViewController.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
@@ -303,7 +305,8 @@
     else
     {
         //Tapped a hashtag, show a hashtag view controller
-        VHashtagStreamCollectionViewController *hashtagViewController = [VHashtagStreamCollectionViewController instantiateWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        VDependencyManager *dependencyManager = [[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager];
+        VHashtagStreamCollectionViewController *hashtagViewController = [dependencyManager hashtagStreamWithHashtag:[tag.displayString.string substringFromIndex:1]];
         [self.navigationController pushViewController:hashtagViewController animated:YES];
     }
 }

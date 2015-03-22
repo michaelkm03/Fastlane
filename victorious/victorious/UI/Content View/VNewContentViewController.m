@@ -801,7 +801,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     else
     {
         //Tapped a hashtag, show a hashtag view controller
-        VHashtagStreamCollectionViewController *hashtagViewController = [VHashtagStreamCollectionViewController instantiateWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        VHashtagStreamCollectionViewController *hashtagViewController = [self.dependencyManager hashtagStreamWithHashtag:[tag.displayString.string substringFromIndex:1]];
         [self.navigationController pushViewController:hashtagViewController animated:YES];
     }
 }
