@@ -107,6 +107,8 @@ static NSTimeInterval const VConstantsMaximumVideoDuration = 15.0;
 
 static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 
+static NSString * const VConstantAppStoreURL = @"url.app.store";
+
 #pragma mark - Sequence Categories
 
 //NOTE: If you add categories, add them all to the necessary C functions in this section

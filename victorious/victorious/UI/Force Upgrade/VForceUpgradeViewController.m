@@ -8,29 +8,15 @@
 
 #import "VForceUpgradeAnimatedTransition.h"
 #import "VForceUpgradeViewController.h"
-#import "VSettingManager.h"
-
-//For appStoreConstant, should eventually be upgraded to have dependencyManager
-#import "VDependencyManager.h"
+#import "VConstants.h"
 
 @interface VForceUpgradeViewController () <UIViewControllerTransitioningDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UILabel *label;
 
 @end
 
 @implementation VForceUpgradeViewController
-
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self = [super init];
-    if ( self != nil )
-    {
-        _dependencyManager = dependencyManager;
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -58,13 +44,7 @@
 - (IBAction)upgradeNowTapped:(id)sender
 {
     //Goal is to get rid of this line entirely and just rely on the dependency manager, but will need to update how this view controller is initialized from the animationControllerForPresentedController:etc... call below
-    NSURL *appstoreURL = [[VSettingManager sharedManager] urlForKey:VDependencyManagerAppStoreURL];
-    
-    if ( self.dependencyManager != nil )
-    {
-        NSString *appstoreURLString = [self.dependencyManager stringForKey:VDependencyManagerAppStoreURL];
-        appstoreURL = [NSURL URLWithString:appstoreURLString];
-    }
+    NSURL *appstoreURL = [[NSUserDefaults standardUserDefaults] objectForKey:VConstantAppStoreURL];
     
     if (!appstoreURL || [appstoreURL.absoluteString isEqualToString:@""])
     {
