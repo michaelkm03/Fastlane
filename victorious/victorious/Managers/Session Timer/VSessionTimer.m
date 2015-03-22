@@ -33,7 +33,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 @interface VSessionTimer ()
 
-@property (nonatomic, readwrite) NSTimeInterval previousBackgroundTime;
 @property (nonatomic) BOOL firstLaunch;
 @property (nonatomic) BOOL transitioningFromBackgroundToForeground;
 @property (nonatomic, readwrite) BOOL started;
@@ -42,16 +41,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 @end
 
 @implementation VSessionTimer
-
-- (id)init
-{
-    self = [super init];
-    if (self)
-    {
-        _previousBackgroundTime = kVFirstLaunch;
-    }
-    return self;
-}
 
 - (void)start
 {
@@ -79,18 +68,21 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (BOOL)shouldNewSessionStartNow
 {
-    return !self.firstLaunch && self.previousBackgroundTime >= kMinimumTimeBetweenSessions;
+    NSDate *lastSessionEnd = [[NSUserDefaults standardUserDefaults] objectForKey:kSessionEndTimeDefaultsKey];
+    if (lastSessionEnd)
+    {
+        NSTimeInterval previousBackgroundTime = -[lastSessionEnd timeIntervalSinceNow];
+        return !self.firstLaunch && previousBackgroundTime >= kMinimumTimeBetweenSessions;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 - (void)sessionDidStart
 {
     self.sessionStartTime = [NSDate date];
-    
-    NSDate *lastSessionEnd = [[NSUserDefaults standardUserDefaults] objectForKey:kSessionEndTimeDefaultsKey];
-    if (lastSessionEnd)
-    {
-        self.previousBackgroundTime = -[lastSessionEnd timeIntervalSinceNow];
-    }
     
     if ( [self shouldNewSessionStartNow] )
     {
