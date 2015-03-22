@@ -163,6 +163,15 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         [self setNeedsStatusBarAppearanceUpdate];
         self.willSelectContainerViewController = nil;
     }
+    else if ( [self.internalTabBarViewController.selectedViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
+    {
+        VNavigationDestinationContainerViewController *containerViewController = (VNavigationDestinationContainerViewController *)self.internalTabBarViewController.selectedViewController;
+        if ( [containerViewController.containedViewController isKindOfClass:[VNavigationController class]] )
+        {
+            VNavigationController *navigationController = (VNavigationController *)containerViewController.containedViewController;
+            [navigationController.innerNavigationController pushViewController:viewController animated:YES];
+        }
+    }
 }
 
 @end
