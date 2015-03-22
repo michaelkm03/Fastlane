@@ -138,9 +138,12 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (IBAction)sendButtonAction:(id)sender
 {
-    if ( ![self.delegate canPerformAuthorizedAction] )
+    if ([self.delegate respondsToSelector:@selector(canPerformAuthorizedAction)])
     {
-        return;
+        if ( ![self.delegate canPerformAuthorizedAction] )
+        {
+            return;
+        }
     }
     
     [self.textView resignFirstResponder];
@@ -171,9 +174,12 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (void)cameraPressed:(id)sender
 {
-    if ( ![self.delegate canPerformAuthorizedAction] )
+    if ([self.delegate respondsToSelector:@selector(canPerformAuthorizedAction)])
     {
-        return;
+        if ( ![self.delegate canPerformAuthorizedAction] )
+        {
+            return;
+        }
     }
     
     void (^showCamera)(void) = ^void(void)
@@ -261,9 +267,12 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    if ( ![self.delegate canPerformAuthorizedAction] )
+    if ([self.delegate respondsToSelector:@selector(canPerformAuthorizedAction)])
     {
-        return NO;
+        if ( ![self.delegate canPerformAuthorizedAction] )
+        {
+            return NO;
+        }
     }
     
     return YES;
