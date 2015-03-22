@@ -67,4 +67,9 @@
     return self.voteType.trackingURLs ?: @[];
 }
 
+- (NSString *)debugDescription
+{
+    return [NSString stringWithFormat:@"%@: %p: %@ (%ld)", NSStringFromClass([self class]), self, self.voteType.voteTypeName, (long)self.voteCount];
+}
+
 @end
