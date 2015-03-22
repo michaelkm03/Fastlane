@@ -18,7 +18,6 @@
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
-#import "VSettingManager.h"
 #import "VDependencyManager.h"
 
 @import MessageUI;
@@ -83,8 +82,7 @@ static NSString * const kNameKey = @"name";
 
 - (void)refreshInviteButtons
 {
-    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
-    self.appStoreLink = appStoreUrl.absoluteString;
+    self.appStoreLink = [self.dependencyManager stringForKey:kVAppStoreURL];
     
     NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
     self.appName = ownerInfo[ kNameKey ];

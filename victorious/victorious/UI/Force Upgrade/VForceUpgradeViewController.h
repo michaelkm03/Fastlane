@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
+
 @interface VForceUpgradeViewController : UIViewController
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

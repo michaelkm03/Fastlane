@@ -51,6 +51,14 @@ extern NSString * const VDependencyManagerWorkspaceFlowKey;
 extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
 
+//URLs
+extern NSString * const kVTermsOfServiceURL;
+extern NSString * const kVAppStoreURL;
+extern NSString * const kVPrivacyURL;
+
+//Feedback support
+extern NSString * const kVSupportEmail;
+
 /**
  Provides loose coupling between components.
  Acts as both repository of shared objects

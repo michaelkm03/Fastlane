@@ -8,6 +8,7 @@
 
 #import "VPrivacyPoliciesViewController.h"
 #import "VSettingManager.h"
+#import "VDependencyManager.h"
 
 @implementation VPrivacyPoliciesViewController
 
@@ -15,8 +16,8 @@
 
 - (void)viewDidLoad
 {
-    self.urlToView = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl];
-    
+    NSString *privacyURLString = [self.dependencyManager stringForKey:kVPrivacyURL];
+    self.urlToView = [NSURL URLWithString:privacyURLString];
     [super viewDidLoad];
 }
 
