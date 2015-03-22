@@ -17,7 +17,7 @@
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
 
-const NSUInteger VDirectoryMaxItemsPerGroup = 10;
+const NSUInteger VDirectoryMaxItemsPerGroup = 4;
 
 CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
@@ -31,7 +31,6 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
-@property (nonatomic, strong) VDependencyManager *itemCellDependencyManager;
 
 @end
 
@@ -72,11 +71,8 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 {
     [super setDependencyManager:dependencyManager];
     
-    self.nameLabel.font = [self.dependencyManager fontForKey:@"font.header"];
-    self.nameLabel.textColor = [self.dependencyManager colorForKey:@"color.text"];
-    
-    NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
-    self.itemCellDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
+    self.nameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.nameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     
     [self.collectionView reloadData];
 }
@@ -129,6 +125,10 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if ( [self hasSequenceStream] )
+    {
+        return 1;
+    }
     return MIN( self.stream.streamItems.count, VDirectoryMaxItemsPerGroup + (NSUInteger)1 );
 }
 
@@ -140,7 +140,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
         NSString *identifier = [VDirectorySeeMoreItemCell suggestedReuseIdentifier];
         VDirectorySeeMoreItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                                 forIndexPath:indexPath];
-        [self.cellDecorator applyStyleToSeeMoreCell:seeMoreCell withDependencyManager:self.itemCellDependencyManager];
+        [self.cellDecorator applyStyleToSeeMoreCell:seeMoreCell withDependencyManager:self.dependencyManager];
         
         return seeMoreCell;
     }
@@ -150,14 +150,19 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
         NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
         VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                            forIndexPath:indexPath];
-        VStreamItem *streamItem = self.stream.streamItems[ indexPath.row ];
+        VStreamItem *streamItem = [self hasSequenceStream] ? self.stream : self.stream.streamItems[ indexPath.row ];
         [self.cellDecorator populateCell:directoryCell withStreamItem:streamItem];
-        [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.itemCellDependencyManager];
+        [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
         
         return directoryCell;
     }
     
     return nil;
+}
+
+- (BOOL)hasSequenceStream
+{
+    return [self.stream isKindOfClass:[VSequence class]];
 }
 
 #pragma mark - UICollectionViewDelegate
