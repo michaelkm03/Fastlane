@@ -40,7 +40,7 @@ static const NSInteger kTrackingButtonIndex          = 6;
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kOwnerKey = @"owner";
 static NSString * const kNameKey = @"name";
-static NSString * const   kVSupportEmail = @"email.support";
+static NSString * const kSupportEmailKey = @"email.support";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
@@ -330,7 +330,7 @@ static NSString * const   kVSupportEmail = @"email.support";
     {
         NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
         NSString *creatorName = ownerInfo[ kNameKey ];
-        NSString *recipientEmail = [self.dependencyManager stringForKey:kVSupportEmail];
+        NSString *recipientEmail = [self.dependencyManager stringForKey:kSupportEmailKey];
         
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
