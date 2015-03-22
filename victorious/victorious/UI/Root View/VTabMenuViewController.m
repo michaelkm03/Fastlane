@@ -22,6 +22,9 @@
 // Backgrounds
 #import "VSolidColorBackground.h"
 
+// Categories
+#import "NSArray+VMap.h"
+
 NSString * const kMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
@@ -100,6 +103,23 @@ NSString * const kMenuKey = @"menu";
     return [self.tabBarController.selectedViewController preferredStatusBarUpdateAnimation];
 }
 
+#pragma mark - VScaffoldViewController
+
+- (NSArray *)navigationDestinations
+{
+    return [self.internalTabBarViewController.viewControllers v_map:^id(VNavigationDestinationContainerViewController *container)
+    {
+        if ( [container isKindOfClass:[VNavigationDestinationContainerViewController class]] )
+        {
+            return container.navigationDestination;
+        }
+        else
+        {
+            return container;
+        }
+    }];
+}
+
 #pragma mark - UITabBarControllerDelegate
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
@@ -117,6 +137,19 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         [self dismissViewControllerAnimated:NO completion:nil];
     }
     
+    if ( self.willSelectContainerViewController == nil )
+    {
+        for ( VNavigationDestinationContainerViewController *containerViewController in self.internalTabBarViewController.viewControllers )
+        {
+            if ( [containerViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] &&
+                 (id)containerViewController.navigationDestination == viewController)
+            {
+                self.willSelectContainerViewController = containerViewController;
+                break;
+            }
+        }
+    }
+    
     if (self.willSelectContainerViewController != nil)
     {
         if (self.willSelectContainerViewController.containedViewController == nil)
@@ -129,7 +162,6 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         [self.internalTabBarViewController setSelectedViewController:self.willSelectContainerViewController];
         [self setNeedsStatusBarAppearanceUpdate];
         self.willSelectContainerViewController = nil;
-        return;
     }
 }
 

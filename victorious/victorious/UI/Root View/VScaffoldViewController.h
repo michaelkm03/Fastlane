@@ -8,6 +8,8 @@
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
+#import "VNavigationDestinationsProvider.h"
+
 #import <UIKit/UIKit.h>
 
 @class VSequence, VAuthorization;
@@ -41,15 +43,9 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  This base class does not do any custom view loading--loadView
  implementation is up to subclasses.
  */
-@interface VScaffoldViewController : UIViewController <VHasManagedDependancies>
+@interface VScaffoldViewController : UIViewController <VHasManagedDependancies, VNavigationDestinationsProvider>
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
-
-/**
- The app's menu component. Retrieved from VDependencyManager. Subclasses
- are responsible for adding it as a child view controller.
- */
-@property (nonatomic, readonly) UIViewController *menuViewController;
 
 /**
  Initializes the receiver with an instance of VDependencyManager
@@ -76,6 +72,14 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  Navigates to the view controller pointed to by the given URL
  */
 - (void)navigateToDeeplinkURL:(NSURL *)url;
+
+/**
+ Subclasses should override this and return a list of navigation destinations
+ that they know about. For example, the list of items in a side menu or
+ tab bar. This information will be used to find view controllers that can
+ handle deep links.
+ */
+- (NSArray *)navigationDestinations;
 
 /**
  Attempt to navigate to a destination (the destination will
