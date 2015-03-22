@@ -83,6 +83,9 @@ static NSString * const kImageMacroKey = @"imageMacro";
 static NSString * const kScaleKey = @"scale";
 static NSString * const kMacroReplacement = @"XXXXX";
 
+// Global configuration keys
+NSString * const VDependencyManagerAppStoreURL = @"appStoreURL";
+
 @interface VDependencyManager ()
 
 @property (nonatomic, strong) VDependencyManager *parentManager;
