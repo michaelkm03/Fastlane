@@ -1,5 +1,5 @@
 //
-//  VWorkspaceToolButton.h
+//  VRoundedBackgroundButton.h
 //  victorious
 //
 //  Created by Michael Sena on 3/16/15.
@@ -9,16 +9,10 @@
 #import "VWorkspaceTool.h"
 
 /**
- *  VWorkspaceToolButtons are used to signify selection of a particular tool
- *  within the workspace. Draws a colored circle behind an icon for the tool.
+ *  VRoundedBackgroundButtons draw a colored circle behind an icon for the button.
  *  Color swaps between selected and unselected variants.
  */
-@interface VWorkspaceToolButton : UIButton
-
-/**
- *  Assigna tool to this property and the tool button will grab an icon from this tool.
- */
-@property (nonatomic, weak) id <VWorkspaceTool> tool;
+@interface VRoundedBackgroundButton : UIButton
 
 /**
  *  A color representing the selected state.
@@ -29,5 +23,7 @@
  *  A color representing the unselected state.
  */
 @property (nonatomic, copy) UIColor *unselectedColor;
+
+@property (nonatomic, weak) id v_associatedObjectForButton;
 
 @end
