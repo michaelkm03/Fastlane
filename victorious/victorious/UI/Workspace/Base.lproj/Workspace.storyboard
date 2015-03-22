@@ -161,18 +161,10 @@
                         <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
                         <viewControllerLayoutGuide type="bottom" id="ZAx-4g-MB6"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="FDL-Lx-k9b">
+                    <view key="view" userInteractionEnabled="NO" contentMode="scaleToFill" id="FDL-Lx-k9b">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSH-vN-sA1">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outlet property="delegate" destination="68P-kQ-eWn" id="nhM-bn-rbQ"/>
-                                    <outletCollection property="gestureRecognizers" destination="Spf-LD-f2e" appends="YES" id="RzH-P3-3co"/>
-                                </connections>
-                            </scrollView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iTp-H1-xI3" customClass="VCropOverlayView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -180,27 +172,15 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="eSH-vN-sA1" firstAttribute="top" secondItem="k23-nw-3wG" secondAttribute="bottom" id="033-tB-VcO"/>
                             <constraint firstItem="iTp-H1-xI3" firstAttribute="leading" secondItem="FDL-Lx-k9b" secondAttribute="leading" id="ANw-cH-IUH"/>
-                            <constraint firstItem="eSH-vN-sA1" firstAttribute="leading" secondItem="FDL-Lx-k9b" secondAttribute="leading" id="FDX-V2-rKV"/>
                             <constraint firstAttribute="trailing" secondItem="iTp-H1-xI3" secondAttribute="trailing" id="FU1-th-Z2O"/>
                             <constraint firstItem="ZAx-4g-MB6" firstAttribute="top" secondItem="iTp-H1-xI3" secondAttribute="bottom" id="FiI-wN-P4A"/>
-                            <constraint firstAttribute="trailing" secondItem="eSH-vN-sA1" secondAttribute="trailing" id="p0i-Dp-oS6"/>
-                            <constraint firstItem="ZAx-4g-MB6" firstAttribute="top" secondItem="eSH-vN-sA1" secondAttribute="bottom" id="qEy-jf-xv8"/>
                             <constraint firstItem="iTp-H1-xI3" firstAttribute="top" secondItem="k23-nw-3wG" secondAttribute="bottom" id="uYz-h2-ovl"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
-                    <connections>
-                        <outlet property="croppingScrollView" destination="eSH-vN-sA1" id="Sbe-62-D03"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer numberOfTapsRequired="2" id="Spf-LD-f2e">
-                    <connections>
-                        <action selector="doubleTapCrop:" destination="68P-kQ-eWn" id="kOQ-UJ-O9Y"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="550" y="343"/>
         </scene>

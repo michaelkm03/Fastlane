@@ -15,11 +15,11 @@
     CGRect desiredVisibleRect = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
     if (self.contentSize.height > self.contentSize.width)
     {
-        desiredVisibleRect.origin.y = (self.contentSize.height * 0.5f) - (CGRectGetHeight(self.bounds) * 0.5f);
+        desiredVisibleRect.origin.y = (self.contentSize.height * 0.5f) - (CGRectGetHeight(self.frame) * 0.5f);
     }
     else
     {
-        desiredVisibleRect.origin.x = (self.contentSize.width * 0.5f) - (CGRectGetWidth(self.bounds) * 0.5f);
+        desiredVisibleRect.origin.x = (self.contentSize.width * 0.5f) - (CGRectGetWidth(self.frame) * 0.5f);
     }
     [self scrollRectToVisible:desiredVisibleRect
                      animated:animated];
