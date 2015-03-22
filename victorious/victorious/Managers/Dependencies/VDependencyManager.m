@@ -83,14 +83,6 @@ static NSString * const kImageMacroKey = @"imageMacro";
 static NSString * const kScaleKey = @"scale";
 static NSString * const kMacroReplacement = @"XXXXX";
 
-//URLs
-NSString * const kVTermsOfServiceURL = @"tosURL";
-NSString * const kVAppStoreURL = @"appStoreURL";
-NSString * const kVPrivacyURL = @"privacyURL";
-
-//Feedback support
-NSString * const   kVSupportEmail = @"email.support";
-
 @interface VDependencyManager ()
 
 @property (nonatomic, strong) VDependencyManager *parentManager;

@@ -40,6 +40,7 @@ static const NSInteger kTrackingButtonIndex          = 6;
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kOwnerKey = @"owner";
 static NSString * const kNameKey = @"name";
+static NSString * const   kVSupportEmail = @"email.support";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 

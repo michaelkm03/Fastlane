@@ -24,6 +24,7 @@
 
 static NSString * const kOwnerKey = @"owner";
 static NSString * const kNameKey = @"name";
+static NSString * const kVAppStoreURL = @"appStoreURL";
 
 @interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
 

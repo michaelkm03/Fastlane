@@ -10,6 +10,8 @@
 #import "VSettingManager.h"
 #import "VDependencyManager.h"
 
+static NSString * const kVPrivacyURL = @"privacyURL";
+
 @implementation VPrivacyPoliciesViewController
 
 #pragma mark - Actions

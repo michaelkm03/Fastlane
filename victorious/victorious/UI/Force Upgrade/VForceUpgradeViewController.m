@@ -13,6 +13,8 @@
 //For appStoreConstant, should eventually be upgraded to have dependencyManager
 #import "VDependencyManager.h"
 
+static NSString * const kVAppStoreURL = @"appStoreURL";
+
 @interface VForceUpgradeViewController () <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
