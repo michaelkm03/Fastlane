@@ -19,6 +19,8 @@
 #import "VNavigationController.h"
 #import "VNavigationDestinationContainerViewController.h"
 #import "VBackground.h"
+#import "VProvidesNavigationMenuItemBadge.h"
+#import "VBadgeStringFormatter.h"
 
 @interface VTabMenuShim ()
 
@@ -54,6 +56,19 @@
             [containedNavigationController.innerNavigationController pushViewController:(UIViewController *)menuItem.destination
                                                                                animated:NO];
             shimViewController.containedViewController = containedNavigationController;
+            
+            if ([menuItem.destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge) ])
+            {
+                id <VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
+                [badgeProvider setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
+                {
+                    shimViewController.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+                    if ([shimViewController.tabBarItem.badgeValue isEqualToString:@""])
+                    {
+                        shimViewController.tabBarItem.badgeValue = nil;
+                    }
+                }];
+            }
         }
         
         shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
