@@ -14,13 +14,13 @@
  Returns a new array by transforming the objects 
  in the receiver with the specified block
  */
-- (NSArray *)v_map:(id(^)(id))mapBlock;
+- (NSArray *)v_map:(id(^)(id))transform;
 
 /**
  Returns a new array by transforming the objects
  in the receiver with the specified block
  and flattening the results
  */
-- (NSArray *)v_flatMap:(NSArray *(^)(id))mapBlock;
+- (NSArray *)v_flatMap:(NSArray *(^)(id))transform;
 
 @end

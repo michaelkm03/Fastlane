@@ -10,24 +10,24 @@
 
 @implementation NSArray (VMap)
 
-- (NSArray *)v_map:(id (^)(id))mapBlock
+- (NSArray *)v_map:(id (^)(id))transform
 {
-    NSParameterAssert(mapBlock != nil);
+    NSParameterAssert(transform != nil);
     NSMutableArray *retVal = [[NSMutableArray alloc] initWithCapacity:self.count];
-    for (id o in self)
+    for (id object in self)
     {
-        [retVal addObject:mapBlock(o)];
+        [retVal addObject:transform(object)];
     }
     return [retVal copy];
 }
 
-- (NSArray *)v_flatMap:(NSArray *(^)(id))mapBlock
+- (NSArray *)v_flatMap:(NSArray *(^)(id))transform
 {
-    NSParameterAssert(mapBlock != nil);
+    NSParameterAssert(transform != nil);
     NSMutableArray *retVal = [[NSMutableArray alloc] init];
-    for (id o in self)
+    for (id object in self)
     {
-        [retVal addObjectsFromArray:mapBlock(o)];
+        [retVal addObjectsFromArray:transform(object)];
     }
     return [retVal copy];
 }
