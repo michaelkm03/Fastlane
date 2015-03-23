@@ -62,7 +62,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 #pragma mark - VWorkspaceTool
 
-- (BOOL)canvasShouldBeInteractable
+- (BOOL)canvasScrollViewShoudldBeInteractive
 {
     return YES;
 }

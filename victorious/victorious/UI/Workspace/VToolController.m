@@ -90,13 +90,13 @@
         [selectedTool setSelected:YES];
     }
     
-    if ([selectedTool respondsToSelector:@selector(canvasShouldBeInteractable)])
+    if ([selectedTool respondsToSelector:@selector(canvasScrollViewShoudldBeInteractive)])
     {
-        self.canvasView.userInteractionEnabled = [selectedTool canvasShouldBeInteractable];
+        self.canvasView.canvasScrollView.userInteractionEnabled = [selectedTool canvasScrollViewShoudldBeInteractive];
     }
     else
     {
-        self.canvasView.userInteractionEnabled = NO;
+        self.canvasView.canvasScrollView.userInteractionEnabled = NO;
     }
     
     _selectedTool = selectedTool;
