@@ -22,6 +22,8 @@
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VBadgeStringFormatter.h"
 
+#import "VWorkspaceShimDestination.h"
+
 @interface VTabMenuShim ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -105,9 +107,18 @@
 
 - (void)willNavigateToIndex:(NSInteger)index
 {
+    // Track selection of main menu item
     VNavigationMenuItem *menuItem = [[self.dependencyManager menuItems] objectAtIndex:index];
     NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueTabBar, VTrackingKeySection : menuItem.title };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
+    
+    // Track any additional events unique to this menu item
+#warning Hacky until proper template-based tracking can colve the problem of tracking UserDidSelectCreatePost
+    if ( [menuItem.destination isKindOfClass:[VWorkspaceShimDestination class]] )
+    {
+        NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueTabBar };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost parameters:params];
+    }
 }
 
 @end
