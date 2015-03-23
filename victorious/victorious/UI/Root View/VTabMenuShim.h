@@ -25,6 +25,12 @@
 - (NSArray *)wrappedNavigationDesinations;
 
 /**
+ *  Called when a tabbar controller is about to navigate to a view controller =
+ *  at the selected index.
+ */
+- (void)willNavigateToIndex:(NSInteger)index;
+
+/**
  *  A Background to use for this tab menu.
  */
 @property (nonatomic, readonly) VBackground *background;

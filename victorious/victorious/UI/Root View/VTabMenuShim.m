@@ -103,4 +103,11 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:applicationBadge];
 }
 
+- (void)willNavigateToIndex:(NSInteger)index
+{
+    VNavigationMenuItem *menuItem = [[self.dependencyManager menuItems] objectAtIndex:index];
+    NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueTabBar, VTrackingKeySection : menuItem.title };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
+}
+
 @end
