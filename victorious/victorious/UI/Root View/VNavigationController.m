@@ -142,6 +142,14 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (void)viewDidLayoutSubviews
 {
+    if ( !UIApplication.sharedApplication.statusBarHidden &&
+         CGAffineTransformIsIdentity(self.innerNavigationController.navigationBar.transform) &&
+         CGRectGetMinY(self.innerNavigationController.navigationBar.frame) < CGRectGetMaxY([UIApplication.sharedApplication statusBarFrame]) )
+    {
+        CGRect frame = self.innerNavigationController.navigationBar.frame;
+        frame.origin.y = CGRectGetMaxY([UIApplication.sharedApplication statusBarFrame]);
+        self.innerNavigationController.navigationBar.frame = frame;
+    }
     [self provideLayoutInsetsToViewController:self.innerNavigationController.topViewController];
 }
 
