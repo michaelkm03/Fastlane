@@ -1,5 +1,5 @@
 //
-//  VWorkspaceToolButton.m
+//  VRoundedBackgroundButton.m
 //  victorious
 //
 //  Created by Michael Sena on 3/16/15.
