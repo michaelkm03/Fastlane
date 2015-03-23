@@ -26,6 +26,7 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong, readwrite) VBackground *background;
+@property (nonatomic, strong) NSArray *badgeProviders;
 
 @end
 
@@ -45,6 +46,7 @@
 - (NSArray *)wrappedNavigationDesinations
 {
     NSMutableArray *wrappedMenuItems = [[NSMutableArray alloc] init];
+    NSMutableArray *badgeProviders = [[NSMutableArray alloc] init];
     NSArray *menuItems = [self.dependencyManager menuItems];
     for (VNavigationMenuItem *menuItem in menuItems)
     {
@@ -60,14 +62,17 @@
             if ([menuItem.destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge) ])
             {
                 id <VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
+                __weak typeof(self) welf = self;
                 [badgeProvider setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
                 {
                     shimViewController.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
                     if ([shimViewController.tabBarItem.badgeValue isEqualToString:@""])
                     {
                         shimViewController.tabBarItem.badgeValue = nil;
+                        [welf updateApplicationBadge];
                     }
                 }];
+                [badgeProviders addObject:badgeProvider];
             }
         }
         
@@ -78,6 +83,16 @@
         [wrappedMenuItems addObject:shimViewController];
     }
     return wrappedMenuItems;
+}
+
+- (void)updateApplicationBadge
+{
+    __block NSInteger applicationBadge = 0;
+    [self.badgeProviders enumerateObjectsUsingBlock:^(id <VProvidesNavigationMenuItemBadge> obj, NSUInteger idx, BOOL *stop)
+    {
+        applicationBadge += [obj badgeNumber];
+    }];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:applicationBadge];
 }
 
 @end
