@@ -10,6 +10,16 @@
 
 @interface VBadgeStringFormatter : NSObject
 
+/**
+ *  Formats an integer for presentation in a badge label. 
+ *  Uses a cutoff number after which numbers are simply XX+
+ *
+ *  Returns an empty string if badgeNumber is equal to 0.
+ *
+ *  @param badgeNumber The integer to 
+ *
+ *  @return The formatted string.
+ */
 + (NSString *)formattedBadgeStringForBadgeNumber:(NSInteger)badgeNumber;
 
 @end
