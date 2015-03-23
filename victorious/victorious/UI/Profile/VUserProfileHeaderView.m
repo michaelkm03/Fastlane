@@ -25,7 +25,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
 @interface VUserProfileHeaderView()
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonWidthConstraint;
 
 @end
 
@@ -112,11 +111,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
             [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
         }
     }
-    
-    CGSize size = [self.editProfileButton intrinsicContentSize];
-    self.buttonWidthConstraint.constant = size.width;
-    [self.editProfileButton layoutIfNeeded];
-    [self layoutIfNeeded];
 }
 
 - (void)setUser:(VUser *)user

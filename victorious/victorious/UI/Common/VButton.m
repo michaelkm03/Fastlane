@@ -130,6 +130,8 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
             break;
     }
     
+    self.titleLabel.minimumScaleFactor = 0.5;
+    
     self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     
     [self setNeedsDisplay];
