@@ -129,7 +129,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
 }
 
