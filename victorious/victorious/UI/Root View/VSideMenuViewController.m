@@ -337,7 +337,10 @@
          {
              [self hideMenuViewController];
          }
-         completion();
+         if ( completion != nil )
+         {
+             completion();
+         }
      }];
 }
 

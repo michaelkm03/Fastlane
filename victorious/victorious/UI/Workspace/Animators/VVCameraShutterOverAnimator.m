@@ -42,6 +42,7 @@ static const CGFloat kGradientMagnitude = 20.0f;
         [workvc bringBottomChromeOutOfView];
         
         radialGradientMaskView = [[VRadialGradientView alloc] initWithFrame:workvc.canvasView.bounds];
+        radialGradientMaskView.userInteractionEnabled = NO;
         VRadialGradientLayer *radialGradientLayer = radialGradientMaskView.radialGradientLayer;
         radialGradientLayer.colors = @[(id)[UIColor clearColor].CGColor,
                                        (id)[UIColor blackColor].CGColor];

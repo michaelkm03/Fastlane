@@ -11,6 +11,9 @@
 // Image Blurring
 #import "NSURL+MediaType.h"
 #import "UIImage+ImageEffects.h"
+
+#import "VCanvasView.h"
+
 @import AVFoundation;
 
 @interface VToolController ()
@@ -53,7 +56,6 @@
     {
         if ([_selectedTool shouldLeaveToolOnCanvas])
         {
-            self.canvasToolViewController.view.userInteractionEnabled = NO;
             self.canvasToolViewController = nil;
         }
     }
@@ -66,7 +68,6 @@
     if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
     {
         // In case this viewController's view was disabled but left on the canvas
-        [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
         [self.delegate addCanvasViewController:[selectedTool canvasToolViewController]];
         self.canvasToolViewController = [selectedTool canvasToolViewController];
     }
@@ -87,6 +88,15 @@
     if ([selectedTool respondsToSelector:@selector(setSelected:)])
     {
         [selectedTool setSelected:YES];
+    }
+    
+    if ([selectedTool respondsToSelector:@selector(canvasScrollViewShoudldBeInteractive)])
+    {
+        self.canvasView.canvasScrollView.userInteractionEnabled = [selectedTool canvasScrollViewShoudldBeInteractive];
+    }
+    else
+    {
+        self.canvasView.canvasScrollView.userInteractionEnabled = NO;
     }
     
     _selectedTool = selectedTool;
