@@ -13,6 +13,8 @@
 
 /**
  *  VTabMenuShim is used in conjunction with UITabBarController as a menu component.
+ *  It maintains tab bar items and their badging. It sums all of the tab bar item badges 
+ *  and assigns to the applications shared badge number.
  */
 @interface VTabMenuShim : NSObject <VHasManagedDependancies>
 

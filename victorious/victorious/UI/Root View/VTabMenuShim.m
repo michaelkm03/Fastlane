@@ -19,11 +19,14 @@
 #import "VNavigationController.h"
 #import "VNavigationDestinationContainerViewController.h"
 #import "VBackground.h"
+#import "VProvidesNavigationMenuItemBadge.h"
+#import "VBadgeStringFormatter.h"
 
 @interface VTabMenuShim ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong, readwrite) VBackground *background;
+@property (nonatomic, strong) NSArray *badgeProviders;
 
 @end
 
@@ -43,6 +46,7 @@
 - (NSArray *)wrappedNavigationDesinations
 {
     NSMutableArray *wrappedMenuItems = [[NSMutableArray alloc] init];
+    NSMutableArray *badgeProviders = [[NSMutableArray alloc] init];
     NSArray *menuItems = [self.dependencyManager menuItems];
     for (VNavigationMenuItem *menuItem in menuItems)
     {
@@ -58,6 +62,25 @@
             [containedNavigationController.innerNavigationController pushViewController:(UIViewController *)menuItem.destination
                                                                                animated:NO];
             shimViewController.containedViewController = containedNavigationController;
+            
+            if ([menuItem.destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge) ])
+            {
+                id <VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
+                __weak typeof(self) welf = self;
+                [badgeProvider setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
+                {
+                    [welf updateApplicationBadge];
+                    if (badgeNumber > 0)
+                    {
+                        shimViewController.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+                    }
+                    else
+                    {
+                        shimViewController.tabBarItem.badgeValue = nil;
+                    }
+                }];
+                [badgeProviders addObject:badgeProvider];
+            }
         }
         
         shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
@@ -66,7 +89,18 @@
         shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         [wrappedMenuItems addObject:shimViewController];
     }
+    self.badgeProviders = [NSArray arrayWithArray:badgeProviders];
     return wrappedMenuItems;
+}
+
+- (void)updateApplicationBadge
+{
+    __block NSInteger applicationBadge = 0;
+    [self.badgeProviders enumerateObjectsUsingBlock:^(id <VProvidesNavigationMenuItemBadge> obj, NSUInteger idx, BOOL *stop)
+    {
+        applicationBadge += [obj badgeNumber];
+    }];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:applicationBadge];
 }
 
 @end

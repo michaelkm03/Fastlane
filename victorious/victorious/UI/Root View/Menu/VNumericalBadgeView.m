@@ -9,6 +9,7 @@
 #import "VBadgeBackgroundView.h"
 #import "VDependencyManager.h"
 #import "VNumericalBadgeView.h"
+#import "VBadgeStringFormatter.h"
 
 @interface VNumericalBadgeView ()
 
@@ -18,7 +19,6 @@
 @end
 
 static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
-static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greater than this cutoff will not display
 
 @implementation VNumericalBadgeView
 
@@ -151,18 +151,7 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
     }
     _badgeNumber = badgeNumber;
     
-    if (badgeNumber == 0)
-    {
-        self.label.text = @"";
-    }
-    else if (badgeNumber < kLargeNumberCutoff)
-    {
-        self.label.text = [NSString stringWithFormat:@"%ld", (long)badgeNumber];
-    }
-    else
-    {
-        self.label.text = [NSString stringWithFormat:NSLocalizedString(@"%ld+", @"Number and symbol meaning \"more than\", e.g. \"99+ items\". (%ld is a placeholder for a number)"), (long)(kLargeNumberCutoff - 1)];
-    }
+    self.label.text = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
     [self invalidateIntrinsicContentSize];
 }
 
