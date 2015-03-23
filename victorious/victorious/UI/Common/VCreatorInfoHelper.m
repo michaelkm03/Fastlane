@@ -11,8 +11,6 @@
 
 // Owner info
 NSString * const VDependencyManagerOwnerProfileImageKey = @"profile_image";
-NSString * const VDependencyManagerOwnerNameKey = @"name";
-NSString * const VDependencyManagerOwnerInfoKey = @"owner";
 
 @interface VCreatorInfoHelper ()
 

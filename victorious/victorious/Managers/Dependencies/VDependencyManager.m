@@ -86,6 +86,9 @@ static NSString * const kMacroReplacement = @"XXXXX";
 // Global configuration keys
 NSString * const VDependencyManagerAppStoreURL = @"appStoreURL";
 
+NSString * const VDependencyManagerOwnerNameKey = @"name";
+NSString * const VDependencyManagerOwnerInfoKey = @"owner";
+
 @interface VDependencyManager ()
 
 @property (nonatomic, strong) VDependencyManager *parentManager;

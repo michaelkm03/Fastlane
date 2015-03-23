@@ -255,7 +255,9 @@
                                                                                                                  [NSURL URLWithString:node.shareUrlPath] ?: [NSNull null]]
                                                                                          applicationActivities:@[fbActivity]];
     
-    NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName]];
+    NSDictionary *creatorInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey];
+    NSString *creatorName = creatorInfo[ VDependencyManagerOwnerNameKey ];
+    NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), creatorName];
     [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)

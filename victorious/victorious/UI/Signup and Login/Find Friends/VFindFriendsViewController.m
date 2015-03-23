@@ -22,9 +22,6 @@
 
 @import MessageUI;
 
-static NSString * const kOwnerKey = @"owner";
-static NSString * const kNameKey = @"name";
-
 @interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
 
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
@@ -84,8 +81,8 @@ static NSString * const kNameKey = @"name";
 {
     self.appStoreLink = [self.dependencyManager stringForKey:VDependencyManagerAppStoreURL];
     
-    NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
-    self.appName = ownerInfo[ kNameKey ];
+    NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey];
+    self.appName = ownerInfo[ VDependencyManagerOwnerNameKey ];
     
     BOOL canSendMail = [MFMailComposeViewController canSendMail];
     BOOL canSendText = [MFMessageComposeViewController canSendText];
