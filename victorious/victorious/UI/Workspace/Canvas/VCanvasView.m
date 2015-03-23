@@ -74,6 +74,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _canvasScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     _canvasScrollView.minimumZoomScale = 1.0f;
     _canvasScrollView.maximumZoomScale = 4.0f;
+    _canvasScrollView.bouncesZoom = YES;
+    _canvasScrollView.alwaysBounceVertical = YES;
+    _canvasScrollView.alwaysBounceHorizontal = YES;
     _canvasScrollView.delegate = self;
     _canvasScrollView.translatesAutoresizingMaskIntoConstraints = NO;
     _canvasScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -215,7 +218,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     
     self.imageView.image = _scaledImage;
     
-    VLog(@"canvasFrame: %@, content size: %@, min zoom scale: %@", NSStringFromCGRect(self.canvasScrollView.frame), NSStringFromCGSize(self.canvasScrollView.contentSize), @(self.canvasScrollView.zoomScale));
     self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self layoutIfNeeded];
 }
@@ -285,12 +287,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                                                      zoomedWidth,
                                                      zoomedWidth)
                                  animated:YES];
-//        CGFloat zoomedWidth = (contentSizeWidth / self.canvasScrollView.maximumZoomScale);
-//        [self.canvasScrollView zoomToRect:CGRectMake(locationInView.x - (zoomedWidth/2),
-//                                                     locationInView.y - (zoomedWidth/2),
-//                                                     contentSizeWidth / zoomedWidth,
-//                                                     contentSizeWidth / zoomedWidth)
-//                                 animated:YES];
     }
     
     self.didZoomFromDoubleTap = YES;
@@ -298,7 +294,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 }
 
 #pragma mark - Private Mehtods
-
 
 - (CIImage *)scaledImageForCurrentFrameAndMaxZoomLevel
 {

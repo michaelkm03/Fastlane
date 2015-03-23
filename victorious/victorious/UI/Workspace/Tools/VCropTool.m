@@ -22,7 +22,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @interface VCropTool ()
 
-@property (nonatomic, assign) CGSize assetSize;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIImage *selectedIcon;
@@ -63,9 +62,13 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 #pragma mark - VWorkspaceTool
 
+- (BOOL)canvasShouldBeInteractable
+{
+    return YES;
+}
+
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
-    #warning FIXME
     CIFilter *cropFilter = [CIFilter filterWithName:@"CICrop"];
     
     // Crop to center if we have never been selected
@@ -90,10 +93,14 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         [cropFilter setValue:[lanczosScaleFilter outputImage]
                       forKey:kCIInputImageKey];
         
-        cropVector = [self cropVectorWithScrollView:self.canvasView.canvasScrollView inputImageExtent:inputImage.extent zoomScale:zoomScale];
+        cropVector = [self cropVectorWithScrollView:self.canvasView.canvasScrollView
+                                   inputImageExtent:inputImage.extent
+                                          zoomScale:zoomScale];
     }
     [cropFilter setValue:cropVector
                   forKey:@"inputRectangle"];
+    
+    VLog(@"cropFilter: %@", cropFilter);
     return [cropFilter outputImage];
 }
 
@@ -110,10 +117,12 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     {
         return [CIVector vectorWithCGRect:extent];
     }
-    return [CIVector vectorWithCGRect:CGRectMake(((contentOffset.x / contentSize.width)* zoomedWidth),
-                                                 zoomedHeight - ((contentOffset.y / contentSize.height)* zoomedHeight) ,
-                                                 (croppingBounds.size.width / contentSize.width)* zoomedWidth,
-                                                 -((croppingBounds.size.height / contentSize.height)* zoomedHeight))];
+    CGRect cropRect = CGRectMake(((contentOffset.x / contentSize.width)* zoomedWidth),
+                                 zoomedHeight - ((contentOffset.y / contentSize.height)* zoomedHeight) ,
+                                 (croppingBounds.size.width / contentSize.width)* zoomedWidth,
+                                 -((croppingBounds.size.height / contentSize.height)* zoomedHeight));
+    cropRect = CGRectInset(cropRect, 1, 1); // Kind of a hack to prevent white borders 
+    return [CIVector vectorWithCGRect:cropRect];
 }
 
 - (NSInteger)renderIndex
@@ -121,33 +130,9 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     return [self.filterIndexNumber integerValue];
 }
 
-- (void)setCanvasView:(VCanvasView *)canvasView
-{
-    _canvasView = canvasView;
-    
-    if (CGSizeEqualToSize(canvasView.assetSize, CGSizeZero))
-    {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(assetSizeBecameAvailable:)
-                                                     name:VCanvasViewAssetSizeBecameAvailableNotification
-                                                   object:canvasView];
-    }
-    else
-    {
-        self.assetSize = canvasView.assetSize;
-    }
-}
-
 - (UIViewController *)canvasToolViewController
 {
     return _cropViewController;
-}
-
-#pragma mark - Private Methods
-
-- (void)assetSizeBecameAvailable:(NSNotification *)notification
-{
-    self.assetSize = self.canvasView.assetSize;
 }
 
 @end

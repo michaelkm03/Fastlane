@@ -35,7 +35,18 @@
  */
 @property (nonatomic, readonly) BOOL shouldLeaveToolOnCanvas;
 
+/**
+ *  A tool should iplement this setter if they are interested in the state of the canavs.
+ *
+ *  @param canvasView A VCanvasView where results of this tool will be applied.
+ */
 - (void)setCanvasView:(VCanvasView *)canvasView;
+
+/**
+ *  A tool should implement this getter if they want to prevent the canvas from being interactable by the user.
+ *  If this is not implemented by the selected tool NO is assumed.
+ */
+- (BOOL)canvasShouldBeInteractable;
 
 @property (nonatomic, strong, readonly) UIViewController *canvasToolViewController; ///< The tool to display in the canvas if any.
 @property (nonatomic, strong, readonly) UIViewController *inspectorToolViewController; ///< The tool to display in the inspector if any.

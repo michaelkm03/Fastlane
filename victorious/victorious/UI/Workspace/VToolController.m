@@ -11,6 +11,9 @@
 // Image Blurring
 #import "NSURL+MediaType.h"
 #import "UIImage+ImageEffects.h"
+
+#import "VCanvasView.h"
+
 @import AVFoundation;
 
 @interface VToolController ()
@@ -85,6 +88,15 @@
     if ([selectedTool respondsToSelector:@selector(setSelected:)])
     {
         [selectedTool setSelected:YES];
+    }
+    
+    if ([selectedTool respondsToSelector:@selector(canvasShouldBeInteractable)])
+    {
+        self.canvasView.userInteractionEnabled = [selectedTool canvasShouldBeInteractable];
+    }
+    else
+    {
+        self.canvasView.userInteractionEnabled = NO;
     }
     
     _selectedTool = selectedTool;
