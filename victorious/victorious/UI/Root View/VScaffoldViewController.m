@@ -12,7 +12,6 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
-#import "VNavigationDestinationsProvider.h"
 #import "VNewContentViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -39,6 +38,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLightweightContentViewControllerDelegate>
 
+@property (nonatomic) BOOL pushNotificationsRegistered;
+
 @end
 
 @implementation VScaffoldViewController
@@ -49,7 +50,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
     }
     return self;
 }
@@ -61,9 +61,10 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     [super viewDidAppear:animated];
     
     BOOL didShow = [self showFirstTimeUserExperience];
-    if ( !didShow )
+    if ( !self.pushNotificationsRegistered && !didShow )
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+        self.pushNotificationsRegistered = YES;
     }
 }
 
@@ -195,7 +196,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         return;
     }
-    else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
+    else
     {
         __block MBProgressHUD *hud;
         VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
@@ -211,7 +212,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
         };
 
-        NSArray *possibleHandlers = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
+        NSArray *possibleHandlers = [self navigationDestinations];
         for (id<VDeeplinkHandler> handler in possibleHandlers)
         {
             if ( [handler conformsToProtocol:@protocol(VDeeplinkHandler)] )
@@ -283,6 +284,11 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 }
 
 #pragma mark - Navigation
+
+- (NSArray *)navigationDestinations
+{
+    return @[];
+}
 
 - (void)navigateToDestination:(id)navigationDestination
 {

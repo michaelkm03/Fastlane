@@ -12,7 +12,6 @@
 #import "VMenuController.h"
 #import "VNavigationController.h"
 #import "VNavigationDestination.h"
-#import "VNavigationDestinationsProvider.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VSettingManager.h"
 #import "VSideMenuViewController.h"
@@ -30,6 +29,7 @@
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
 @property (strong, readwrite, nonatomic) VHamburgerButton *hamburgerButton;
+@property (strong, readwrite, nonatomic) UIViewController *menuViewController;
 
 @end
 
@@ -56,6 +56,8 @@
         _parallaxContentMaximumRelativeValue = @(25);
         
         _bouncesHorizontally = YES;
+        
+        _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
         
         [self registerBadgeUpdateBlock];
     }
@@ -165,15 +167,6 @@
     if (initialVC != nil)
     {
         [self displayResultOfNavigation:initialVC];
-    }
-    else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
-    {
-        NSArray *destinations = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
-        
-        if ( destinations.count > 0 )
-        {
-            [self navigateToDestination:destinations[0]];
-        }
     }
 }
 
@@ -322,6 +315,18 @@
     self.contentButton.frame = self.contentViewController.view.bounds;
     self.contentButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.contentViewController.view addSubview:self.contentButton];
+}
+
+- (NSArray *)navigationDestinations
+{
+    if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
+    {
+        return [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
+    }
+    else
+    {
+        return @[];
+    }
 }
 
 - (void)navigateToDestination:(id)navigationDestination completion:(void (^)())completion
