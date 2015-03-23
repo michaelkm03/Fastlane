@@ -168,10 +168,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
-    [self dismissViewControllerAnimated:YES completion:^
-     {
-         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-     }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)failedToLoadSequenceInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
