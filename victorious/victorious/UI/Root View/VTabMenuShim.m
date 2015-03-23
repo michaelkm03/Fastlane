@@ -65,11 +65,11 @@
                 __weak typeof(self) welf = self;
                 [badgeProvider setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
                 {
+                    [welf updateApplicationBadge];
                     shimViewController.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
                     if ([shimViewController.tabBarItem.badgeValue isEqualToString:@""])
                     {
                         shimViewController.tabBarItem.badgeValue = nil;
-                        [welf updateApplicationBadge];
                     }
                 }];
                 [badgeProviders addObject:badgeProvider];
@@ -82,6 +82,7 @@
         shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         [wrappedMenuItems addObject:shimViewController];
     }
+    self.badgeProviders = [NSArray arrayWithArray:badgeProviders];
     return wrappedMenuItems;
 }
 
