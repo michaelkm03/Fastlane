@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 03/19/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 03/23/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -288,4 +288,4 @@ extern NSString * const VTrackingValueMessage;
 
 // Menu types
 extern NSString * const VTrackingValueHamburgerMenu; 
-// TabBar
+extern NSString * const VTrackingValueTabBar; 

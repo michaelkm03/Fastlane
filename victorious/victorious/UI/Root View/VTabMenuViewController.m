@@ -125,6 +125,12 @@ NSString * const kMenuKey = @"menu";
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
 shouldSelectViewController:(VNavigationDestinationContainerViewController *)viewController
 {
+    NSInteger index = [tabBarController.viewControllers indexOfObject:viewController];
+    if ( index != NSNotFound )
+    {
+        [self.tabShim willNavigateToIndex:index];
+    }
+    
     self.willSelectContainerViewController = viewController;
     [self navigateToDestination:viewController.navigationDestination];
     return NO;
