@@ -46,6 +46,10 @@
     NSArray *menuItems = [self.dependencyManager menuItems];
     for (VNavigationMenuItem *menuItem in menuItems)
     {
+        if ( menuItem.destination == nil )
+        {
+            continue;
+        }
         VNavigationDestinationContainerViewController *shimViewController = [[VNavigationDestinationContainerViewController alloc] initWithNavigationDestination:menuItem.destination];
         VNavigationController *containedNavigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
         

@@ -12,7 +12,6 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
-#import "VNavigationDestinationsProvider.h"
 #import "VNewContentViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -51,7 +50,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
     }
     return self;
 }
@@ -198,7 +196,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         return;
     }
-    else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
+    else
     {
         __block MBProgressHUD *hud;
         VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
@@ -214,7 +212,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
         };
 
-        NSArray *possibleHandlers = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
+        NSArray *possibleHandlers = [self navigationDestinations];
         for (id<VDeeplinkHandler> handler in possibleHandlers)
         {
             if ( [handler conformsToProtocol:@protocol(VDeeplinkHandler)] )
@@ -286,6 +284,11 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 }
 
 #pragma mark - Navigation
+
+- (NSArray *)navigationDestinations
+{
+    return @[];
+}
 
 - (void)navigateToDestination:(id)navigationDestination
 {
