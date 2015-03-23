@@ -270,6 +270,16 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)displayConversationForUser:(VUser *)user
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
+    
+    if ( [self.navigationController.viewControllers containsObject:detailVC] )
+    {
+        if ( self.navigationController.topViewController != detailVC )
+        {
+            [self.navigationController popToViewController:detailVC animated:YES];
+        }
+        return;
+    }
+    
     detailVC.messageCountCoordinator = self.messageCountCoordinator;
     [self.navigationController pushViewController:detailVC animated:YES];
 }

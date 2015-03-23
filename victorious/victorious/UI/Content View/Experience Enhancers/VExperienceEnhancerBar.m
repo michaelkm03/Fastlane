@@ -32,6 +32,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
+@property (nonatomic, strong) NSMutableSet *observedExperienceEnhancers;
 
 @end
 
@@ -97,6 +98,12 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     
 - (void)reloadData
 {
+    for (id observedEnhancer in self.observedExperienceEnhancers)
+    {
+        [self.KVOController unobserve:observedEnhancer];
+    }
+    self.observedExperienceEnhancers = [[NSMutableSet alloc] init];
+    
     NSInteger enhancerCount = [self.dataSource numberOfExperienceEnhancers];
     
     NSMutableArray *enhancers = [[NSMutableArray alloc] init];
@@ -105,6 +112,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     {
         VExperienceEnhancer *enhancerForIndex = [self.dataSource experienceEnhancerForIndex:enhancerIndex];
         [enhancers addObject:enhancerForIndex];
+        [self setupKVOControllerWithExperienceEnhancer:enhancerForIndex atIndex:enhancerIndex];
+        [self.observedExperienceEnhancers addObject:enhancerForIndex];
     }
     
     self.enhancers = [NSArray arrayWithArray:enhancers];
@@ -124,43 +133,28 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     VExperienceEnhancerCell *experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]
                                                                                                 forIndexPath:indexPath];
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.voteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     experienceEnhancerCell.isLocked = enhancerForIndexPath.isLocked;
     experienceEnhancerCell.enabled = self.enabled;
-    [self setupKBVOControllerWithExperienceEnhancer:enhancerForIndexPath atIndexPath:indexPath];
     return experienceEnhancerCell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    [self.KVOController unobserve:enhancerForIndexPath];
 }
 
 #pragma mark - KVOConroller
 
-- (void)setupKBVOControllerWithExperienceEnhancer:(VExperienceEnhancer *)enhancer atIndexPath:(NSIndexPath *)indexPath
+- (void)setupKVOControllerWithExperienceEnhancer:(VExperienceEnhancer *)enhancer atIndex:(NSUInteger)index
 {
     typeof(self) __weak welf = self;
-    [self.KVOController unobserve:enhancer];
     [self.KVOController observe:enhancer
                         keyPath:NSStringFromSelector(@selector(voteCount))
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                        options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[welf.collectionView cellForItemAtIndexPath:indexPath];
+         VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[welf.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
          if ( experienceEnhancerCell != nil )
          {
              experienceEnhancerCell.experienceEnhancerTitle = [welf.numberFormatter stringForInteger:enhancer.voteCount];
          }
-     }];
-}
-
-- (void)cleanUpKVOController
-{
-    [self.enhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop)
-     {
-         [self.KVOController unobserve:enhancer];
      }];
 }
 

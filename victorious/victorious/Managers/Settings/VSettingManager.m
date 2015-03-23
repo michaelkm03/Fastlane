@@ -21,11 +21,6 @@ NSString * const VExperimentsRequireProfileImage = @"requireProfileImage";
 NSString * const VExperimentsPauseVideoWhenCommenting = @"pauseVideoWhenCommenting";
 NSString * const VExperimentsClearVideoBackground = @"clearVideoBackground";
 
-//URLs
-NSString * const kVTermsOfServiceURL = @"tosURL";
-NSString * const kVAppStoreURL = @"appStoreURL";
-NSString * const kVPrivacyUrl = @"privacyURL";
-
 @implementation VSettingManager
 
 + (instancetype)sharedManager

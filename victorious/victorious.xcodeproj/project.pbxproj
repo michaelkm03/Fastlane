@@ -2745,10 +2745,10 @@
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
 				0314D3ED19B46B5E00FA363C /* VSideMenuViewController.h */,
 				0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */,
-				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
-				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 				D8CC90291ABA6C3F00A4B38C /* VTabMenuShim.h */,
 				D8CC902A1ABA6C3F00A4B38C /* VTabMenuShim.m */,
+				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
+				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 			);
 			path = "Root View";
 			sourceTree = "<group>";

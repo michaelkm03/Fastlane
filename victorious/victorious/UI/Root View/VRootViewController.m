@@ -216,6 +216,13 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.voteSettings = [[VVoteSettings alloc] init];
     [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
     
+    NSString *appStoreURL = [self.dependencyManager stringForKey:VDependencyManagerAppStoreURL];
+    if ( appStoreURL != nil )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:appStoreURL forKey:VConstantAppStoreURL];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES completion:^(void)
     {
