@@ -117,11 +117,32 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 {
     [super layoutSubviews];
     
-    if (self.canvasScrollView.contentSize.width < CGRectGetWidth(self.bounds))
+    if (self.sourceImage == nil)
     {
-        self.canvasScrollView.contentSize = self.bounds.size;
-        self.imageView.frame = self.canvasScrollView.bounds;
+        return;
     }
+    
+    CGRect imageViewFrame;
+    CGFloat scaleFactor;
+    if (self.sourceImage.size.height > self.sourceImage.size.width)
+    {
+        scaleFactor = self.sourceImage.size.width / CGRectGetWidth(self.canvasScrollView.frame);
+        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
+                                    CGRectGetMinY(self.bounds),
+                                    CGRectGetWidth(self.bounds),
+                                    self.sourceImage.size.height * (1/scaleFactor));
+    }
+    else
+    {
+        scaleFactor = self.sourceImage.size.height / CGRectGetWidth(self.canvasScrollView.frame);
+        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
+                                    CGRectGetMinY(self.bounds),
+                                    self.sourceImage.size.width * (1/scaleFactor),
+                                    CGRectGetHeight(self.bounds));
+    }
+    
+    self.imageView.frame = imageViewFrame;
+    self.canvasScrollView.contentSize = imageViewFrame.size;
 }
 
 #pragma mark - Property Accessors
@@ -137,7 +158,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:VCanvasViewAssetSizeBecameAvailableNotification
                                                             object:strongSelf];
-        [strongSelf layoutIfNeeded];
         [strongSelf.activityIndicator stopAnimating];
         if (!animate)
         {
@@ -191,36 +211,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     
     self.imageView.image = _scaledImage;
     
-    CGRect imageViewFrame;
-    CGFloat scaleFactor;
-    if (self.sourceImage.size.height > self.sourceImage.size.width)
-    {
-        scaleFactor = self.sourceImage.size.width / CGRectGetWidth(self.frame);
-        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
-                                    CGRectGetMinY(self.bounds),
-                                    CGRectGetWidth(self.bounds),
-                                    self.sourceImage.size.height * (1/scaleFactor));
-    }
-    else
-    {
-        scaleFactor = self.sourceImage.size.height / CGRectGetHeight(self.frame);
-        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
-                                    CGRectGetMinY(self.bounds),
-                                    self.sourceImage.size.width * (1/scaleFactor),
-                                    CGRectGetHeight(self.bounds));
-    }
-    
-    _imageView.frame = imageViewFrame;
-    
-    self.canvasScrollView.contentSize = imageViewFrame.size;
-    
-    self.canvasScrollView.minimumZoomScale = 1/scaleFactor;
-    self.canvasScrollView.zoomScale = 1/scaleFactor;
-    
+    VLog(@"canvasFrame: %@, content size: %@, min zoom scale: %@", NSStringFromCGRect(self.canvasScrollView.frame), NSStringFromCGSize(self.canvasScrollView.contentSize), @(self.canvasScrollView.zoomScale));
     self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     [self layoutIfNeeded];
-
-    [self.canvasScrollView v_centerContentAnimated:NO];
 }
 
 - (void)setFilter:(VPhotoFilter *)filter
@@ -275,36 +268,32 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 - (void)doubleTapCanvas:(UITapGestureRecognizer *)sender
 {
     CGPoint locationInView = [sender locationInView:self.imageView];
-    CGFloat contentSizeWidth = self.canvasScrollView.contentSize.width;
-    
+
     if (self.canvasScrollView.zoomScale > self.canvasScrollView.minimumZoomScale)
     {
         CGPoint imageViewCenter = self.imageView.center;
-        [self.canvasScrollView zoomToRect:CGRectMake(imageViewCenter.x - (contentSizeWidth/2),
-                                                     imageViewCenter.y - (contentSizeWidth/2),
-                                                     contentSizeWidth,
-                                                     contentSizeWidth)
+        [self.canvasScrollView zoomToRect:CGRectMake(imageViewCenter.x - (CGRectGetWidth(self.canvasScrollView.bounds)/2),
+                                                     imageViewCenter.y - (CGRectGetWidth(self.canvasScrollView.bounds)/2),
+                                                     CGRectGetWidth(self.canvasScrollView.bounds),
+                                                     CGRectGetWidth(self.canvasScrollView.bounds))
                                  animated:YES];
     }
     else
     {
-        CGFloat zoomedWidth = contentSizeWidth / (self.canvasScrollView.maximumZoomScale * 2);
+        CGFloat zoomedWidth = CGRectGetWidth(self.canvasScrollView.bounds) / self.canvasScrollView.maximumZoomScale;
         [self.canvasScrollView zoomToRect:CGRectMake(locationInView.x - (zoomedWidth/2),
                                                      locationInView.y - (zoomedWidth/2),
-                                                     contentSizeWidth / zoomedWidth,
-                                                     contentSizeWidth / zoomedWidth)
+                                                     zoomedWidth,
+                                                     zoomedWidth)
                                  animated:YES];
+//        CGFloat zoomedWidth = (contentSizeWidth / self.canvasScrollView.maximumZoomScale);
+//        [self.canvasScrollView zoomToRect:CGRectMake(locationInView.x - (zoomedWidth/2),
+//                                                     locationInView.y - (zoomedWidth/2),
+//                                                     contentSizeWidth / zoomedWidth,
+//                                                     contentSizeWidth / zoomedWidth)
+//                                 animated:YES];
     }
     
-//    CGFloat zoomedWidth = self.canvasScrollView.contentSize.width * ( 1 / self.canvasScrollView.maximumZoomScale);
-//    CGRect zoomedRect = CGRectMake(locationInView.x - (zoomedWidth/2), locationInView.y - (zoomedWidth/2), zoomedWidth, zoomedWidth);
-//
-//    CGPoint centerOfContentView = CGPointMake(self.canvasScrollView.contentSize.width/2, self.canvasScrollView.contentSize.height/2);
-//    CGFloat normalWidth = self.canvasScrollView.contentSize.width;
-//    CGRect normalRect = CGRectMake(centerOfContentView.x - (normalWidth / 2), centerOfContentView.y - (normalWidth / 2), normalWidth, normalWidth);
-//    [self.canvasScrollView zoomToRect:self.canvasScrollView.zoomScale > self.canvasScrollView.minimumZoomScale ? normalRect : zoomedRect
-//                               animated:YES];
-
     self.didZoomFromDoubleTap = YES;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithDoubleTap];
 }
