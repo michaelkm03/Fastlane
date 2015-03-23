@@ -113,7 +113,7 @@
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
     
     // Track any additional events unique to this menu item
-#warning Hacky until proper template-based tracking can colve the problem of tracking UserDidSelectCreatePost
+#warning Hacky until proper template-based tracking can solve the problem of tracking event `UserDidSelectCreatePost`
     if ( [menuItem.destination isKindOfClass:[VWorkspaceShimDestination class]] )
     {
         NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueTabBar };
