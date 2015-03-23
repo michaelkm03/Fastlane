@@ -17,10 +17,18 @@ const CGFloat kSleekCellHeaderHeight = 50.0f;
 const CGFloat kSleekCellActionViewHeight = 41.0f;
 static const CGFloat kTextViewInset = 58.0f; //Needs to be sum of textview inset from left and right
 
-const CGFloat kSleekCellActionViewBottomConstraintHeight = 28.0f; //This represents the space between the bottom of the cell and the actionView
+const CGFloat kSleekCellActionViewBottomConstraintHeight = 34.0f; //This represents the space between the bottom of the cell and the actionView
+const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This represents the space between the bottom of the content and the top of the actionView
 
 //Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
 const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
+
+@interface VSleekStreamCollectionCell ()
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
+
+@end
 
 @implementation VSleekStreamCollectionCell
 
@@ -31,6 +39,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.backgroundColor = [UIColor whiteColor];
     
     self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
+    self.actionViewTopConstraint.constant = kSleekCellActionViewTopConstraintHeight;
 }
 
 - (NSString *)headerViewNibName
@@ -50,13 +59,12 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     {
         [super setDependencyManager:dependencyManager];
         self.actionView.dependencyManager = dependencyManager;
-        self.commentsLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.streamCellHeaderView.dateImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        [self.streamCellHeaderView refreshAppearanceAttributes];
     }
     self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
 }
@@ -108,6 +116,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
             [self.actionView addGifButton];
         }
     }
+    
+    [self.actionView updateLayoutOfButtons];
 }
 
 - (NSUInteger)maxCaptionLines
@@ -118,7 +128,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = width + kSleekCellHeaderHeight + kSleekCellActionViewHeight + kSleekCellActionViewBottomConstraintHeight;
+    CGFloat height = width + kSleekCellHeaderHeight + kSleekCellActionViewHeight + kSleekCellActionViewBottomConstraintHeight + kSleekCellActionViewTopConstraintHeight;
     return CGSizeMake(width, height);
 }
 

@@ -40,8 +40,6 @@
     [super awakeFromNib];
     
     self.backgroundColor = [UIColor whiteColor];
-    
-    self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
 }
 
 - (void)dealloc
@@ -108,7 +106,7 @@
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = floorf(width + kSleekCellHeaderHeight + kSleekCellActionViewHeight + kSleekCellActionViewBottomConstraintHeight);
+    CGFloat height = floorf(width + kSleekCellHeaderHeight + kSleekCellActionViewHeight + kSleekCellActionViewBottomConstraintHeight + kSleekCellActionViewTopConstraintHeight);
     return CGSizeMake(width, height);
 }
 

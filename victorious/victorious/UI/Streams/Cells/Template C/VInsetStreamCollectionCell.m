@@ -128,6 +128,8 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         [self.actionView addRepostButton];
     }
     [self.actionView addMoreButton];
+    
+    [self.actionView updateLayoutOfButtons];
 }
 
 - (void)setDescriptionText:(NSString *)text

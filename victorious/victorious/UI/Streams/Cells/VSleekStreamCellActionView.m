@@ -11,8 +11,13 @@
 #import "VLargeNumberFormatter.h"
 #import "VSequenceActionsDelegate.h"
 
-static const CGFloat VCommentButtonContentInset = 6.0f;
-static const CGFloat VCommentButtonHeight = 32.0f;
+static const CGFloat VCommentButtonContentRightInset = 3.0f; ///< Inset of comment content. This offset helps the comment count and image appear horizontally centered
+static const CGFloat VButtonHeight = 36.0f; ///< Height of action buttons
+static const CGFloat VCommentButtonWidth = 68.0f; ///< Width of comment button
+
+static NSString * const VStreamCellActionViewGifIconKey = @"gifIcon"; ///< Key for "gif" icon
+static NSString * const VStreamCellActionViewMemeIconKey = @"memeIcon"; ///< Key for "meme" icon
+static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; ///< Key for "comment" icon
 
 @interface VSleekStreamCellActionView ()
 
@@ -30,31 +35,58 @@ static const CGFloat VCommentButtonHeight = 32.0f;
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
 }
 
+- (void)updateLayoutOfButtons
+{
+    //Remove widths of all POSSIBLY present buttons to have proper space between buttons even when not all 5 buttons are present
+    CGFloat totalButtonWidths = VCommentButtonWidth + VButtonHeight * 4;
+    
+    CGFloat separatorSpace = ( CGRectGetWidth(self.bounds) - totalButtonWidths - VStreamCellActionViewActionButtonBuffer * 2 ) / 4;
+    
+    CGFloat yOrigin = (CGRectGetHeight(self.bounds) - VButtonHeight) / 2;
+    
+    for (NSUInteger i = 0; i < self.actionButtons.count; i++)
+    {
+        UIButton *button = self.actionButtons[i];
+        CGRect frame = button.frame;
+        if (i == 0)
+        {
+            frame.origin.x = VStreamCellActionViewActionButtonBuffer;
+        }
+        else
+        {
+            UIButton *lastButton = self.actionButtons[i - 1];
+            frame.origin.x = CGRectGetMaxX(lastButton.frame) + separatorSpace;
+        }
+        
+        //Fix frame of all buttons to be the
+        frame.size.height = VButtonHeight;
+        frame.origin.y = yOrigin;
+        if ( ![button isEqual:self.commentsButton] )
+        {
+            frame.size.width = VButtonHeight;
+        }
+        button.frame = frame;
+        
+        //Setup the circles behind the images
+        [button setClipsToBounds:YES];
+        button.layer.cornerRadius = VButtonHeight / 2;
+        
+    }
+}
+
 - (void)updateCommentsCount:(NSNumber *)commentsCount
 {
     [self.commentsButton setTitle:[self.largeNumberFormatter stringForInteger:[commentsCount integerValue]] forState:UIControlStateNormal];
-    [self.commentsButton layoutIfNeeded];
-    CGRect newFrame = self.commentsButton.frame;
-    newFrame.size.width = [self.commentsButton sizeThatFits:self.commentsButton.bounds.size].width;
-    newFrame.size.width += self.commentsButton.layer.cornerRadius * 1.5f; //Padding to keep text and icon out of rounded corner mask
-    newFrame.origin.y = self.commentButtonYOrigin;
-    [self.commentsButton setFrame:newFrame];
-    [self layoutSubviews];
 }
 
 - (void)addCommentsButton
 {
-    self.commentsButton = [self addButtonWithImage:[UIImage imageNamed:@"Comment"]];
+    self.commentsButton = [self addButtonWithImageKey:VStreamCellActionViewCommentIconKey];
     [self.commentsButton addTarget:self action:@selector(commentsAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.commentsButton setClipsToBounds:YES];
     self.commentsButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.commentsButton.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, VCommentButtonContentInset / 2.0f);
-    self.commentsButton.imageEdgeInsets = UIEdgeInsetsMake(VCommentButtonContentInset, -VCommentButtonContentInset / 2.0f, VCommentButtonContentInset, VCommentButtonContentInset / 2.0f);
-    CGRect revisedFrame = self.commentsButton.frame;
-    self.commentButtonYOrigin = ( CGRectGetHeight(revisedFrame) - VCommentButtonHeight ) / 2.0f;
-    revisedFrame.size.height = VCommentButtonHeight;
-    [self.commentsButton setFrame:revisedFrame];
-    self.commentsButton.layer.cornerRadius = CGRectGetHeight(self.commentsButton.bounds) / 2.0f;
+    self.commentsButton.contentEdgeInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, VCommentButtonContentRightInset);
+    CGFloat yOrigin = ( CGRectGetHeight(self.commentsButton.frame) - VButtonHeight ) / 2.0f;
+    [self.commentsButton setFrame:CGRectMake(self.commentsButton.frame.origin.x, yOrigin, VCommentButtonWidth, VButtonHeight)];
 
     [self refreshCommentsButtonAppearance];
 }
@@ -69,7 +101,7 @@ static const CGFloat VCommentButtonHeight = 32.0f;
 
 - (void)addGifButton
 {
-    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"stream_gif"]];
+    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewGifIconKey];
     [button addTarget:self action:@selector(gifAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -83,7 +115,7 @@ static const CGFloat VCommentButtonHeight = 32.0f;
 
 - (void)addMemeButton
 {
-    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"stream_meme"]];
+    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewMemeIconKey];
     [button addTarget:self action:@selector(memeAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -113,6 +145,31 @@ static const CGFloat VCommentButtonHeight = 32.0f;
 - (UIColor *)commentButtonColor
 {
     return [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+}
+
+- (UIButton *)addButtonWithImage:(UIImage *)image
+{
+    UIButton *button = [super addButtonWithImage:image];
+    button.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    return button;
+}
+
++ (NSDictionary *)buttonImages
+{
+    static NSDictionary *buttonImages;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      buttonImages = @{
+                                       VStreamCellActionViewShareIconKey : @"shareIcon-D",
+                                       VStreamCellActionViewRepostIconKey : @"repostIcon-D",
+                                       VStreamCellActionViewRepostSuccessIconKey : @"repostIcon-success-D",
+                                       VStreamCellActionViewCommentIconKey : @"commentIcon-D",
+                                       VStreamCellActionViewMemeIconKey : @"memeIcon-D",
+                                       VStreamCellActionViewGifIconKey : @"gifIcon-D"
+                                       };
+                  });
+    return buttonImages;
 }
 
 @end
