@@ -110,6 +110,6 @@
 /// Use this to animate with the same curve that animates the play controls.
 - (void)setAnimateAlongsizePlayControlsBlock:(void (^)(BOOL playControlsHidden))animateWithPlayControls;
 
-- (void)setTracking:(VTracking *)tracking;
+@property (nonatomic, strong) VTracking *tracking;
 
 @end
