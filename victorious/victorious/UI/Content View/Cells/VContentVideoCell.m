@@ -229,11 +229,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.animateWithPlayControls = animateWithPlayControls;
 }
 
-- (void)setTracking:(VTracking *)tracking
-{
-    [self.videoPlayerViewController enableTrackingWithTrackingItem:tracking];
-}
-
 #pragma mark - Private Methods
 
 - (void)adTimerFired:(NSTimer *)timer
@@ -259,6 +254,10 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
+    if ( self.tracking != nil )
+    {
+        [self.videoPlayerViewController enableTrackingWithTrackingItem:self.tracking];
+    }
     [self.contentView addSubview:self.videoPlayerViewController.view];
     [self.contentView sendSubviewToBack:self.videoPlayerViewController.view];
     self.videoPlayerViewController.view.hidden = YES;

@@ -922,7 +922,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
-                [videoCell setTracking:self.viewModel.sequence.tracking];
+                videoCell.tracking = self.viewModel.sequence.tracking;
                 videoCell.delegate = self;
                 videoCell.speed = self.viewModel.speed;
                 videoCell.loop = self.viewModel.loop;
