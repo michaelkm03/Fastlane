@@ -39,6 +39,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLightweightContentViewControllerDelegate>
 
+@property (nonatomic) BOOL pushNotificationsRegistered;
+
 @end
 
 @implementation VScaffoldViewController
@@ -61,9 +63,10 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     [super viewDidAppear:animated];
     
     BOOL didShow = [self showFirstTimeUserExperience];
-    if ( !didShow )
+    if ( !self.pushNotificationsRegistered && !didShow )
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+        self.pushNotificationsRegistered = YES;
     }
 }
 
