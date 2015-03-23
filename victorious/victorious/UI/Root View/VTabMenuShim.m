@@ -66,8 +66,11 @@
                 [badgeProvider setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
                 {
                     [welf updateApplicationBadge];
-                    shimViewController.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
-                    if ([shimViewController.tabBarItem.badgeValue isEqualToString:@""])
+                    if (badgeNumber > 0)
+                    {
+                        shimViewController.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+                    }
+                    else
                     {
                         shimViewController.tabBarItem.badgeValue = nil;
                     }
