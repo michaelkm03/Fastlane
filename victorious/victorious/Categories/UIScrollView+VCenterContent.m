@@ -10,19 +10,30 @@
 
 @implementation UIScrollView (VCenterContent)
 
-- (void)v_centerContentAnimated:(BOOL)animated
+- (void)v_centerZoomedContentAnimated:(BOOL)animated
 {
-    CGRect desiredVisibleRect = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    if (self.contentSize.height > self.contentSize.width)
+    if (![self.delegate respondsToSelector:@selector(viewForZoomingInScrollView:)])
     {
-        desiredVisibleRect.origin.y = (self.contentSize.height * 0.5f) - (CGRectGetHeight(self.frame) * 0.5f);
+        return;
+    }
+    
+    UIView *zoomingView = [self.delegate viewForZoomingInScrollView:self];
+    
+    CGFloat magnitude = 0.0f;
+    if (CGRectGetWidth(zoomingView.bounds) > CGRectGetHeight(zoomingView.bounds))
+    {
+        magnitude = CGRectGetHeight(zoomingView.bounds);
     }
     else
     {
-        desiredVisibleRect.origin.x = (self.contentSize.width * 0.5f) - (CGRectGetWidth(self.frame) * 0.5f);
+        magnitude = CGRectGetWidth(zoomingView.bounds);
     }
-    [self scrollRectToVisible:desiredVisibleRect
-                     animated:animated];
+    
+    [self zoomToRect:CGRectMake(CGRectGetMidX(zoomingView.bounds) - (magnitude/2),
+                                                 CGRectGetMidY(zoomingView.bounds) - (magnitude/2),
+                                                 magnitude,
+                                                 magnitude)
+                             animated:animated];
 }
 
 @end

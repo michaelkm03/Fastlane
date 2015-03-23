@@ -143,6 +143,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     
     self.imageView.frame = imageViewFrame;
     self.canvasScrollView.contentSize = imageViewFrame.size;
+    [self.canvasScrollView v_centerZoomedContentAnimated:NO];
 }
 
 #pragma mark - Property Accessors
@@ -155,6 +156,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     {
         __strong typeof(self) strongSelf = welf;
         strongSelf.sourceImage = sourceImage;
+        [strongSelf layoutSubviews];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:VCanvasViewAssetSizeBecameAvailableNotification
                                                             object:strongSelf];
@@ -177,13 +179,15 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                          completion:nil];
     };
     
-    if (preloadedImage!= nil)
+    if (preloadedImage != nil)
     {
         imageFinishedLoadingBlock(preloadedImage, NO);
         return;
     }
     
-    [self.imageView sd_setImageWithURL:URL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    [self.imageView sd_setImageWithURL:URL
+                      placeholderImage:nil
+                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
     {
         if (image)
         {
@@ -271,12 +275,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
     if (self.canvasScrollView.zoomScale > self.canvasScrollView.minimumZoomScale)
     {
-        CGPoint imageViewCenter = self.imageView.center;
-        [self.canvasScrollView zoomToRect:CGRectMake(imageViewCenter.x - (CGRectGetWidth(self.canvasScrollView.bounds)/2),
-                                                     imageViewCenter.y - (CGRectGetWidth(self.canvasScrollView.bounds)/2),
-                                                     CGRectGetWidth(self.canvasScrollView.bounds),
-                                                     CGRectGetWidth(self.canvasScrollView.bounds))
-                                 animated:YES];
+        [self.canvasScrollView v_centerZoomedContentAnimated:YES];
     }
     else
     {
@@ -299,6 +298,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 }
 
 #pragma mark - Private Mehtods
+
 
 - (CIImage *)scaledImageForCurrentFrameAndMaxZoomLevel
 {
