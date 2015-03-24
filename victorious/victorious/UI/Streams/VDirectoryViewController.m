@@ -41,7 +41,6 @@ static CGFloat const kDirectoryInset = 10.0f;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
-@property (nonatomic, strong) VDependencyManager *itemCellDependencyManager;
 
 @end
 
@@ -75,9 +74,6 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
-    self.itemCellDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
     
     self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = [UIColor clearColor];
@@ -176,11 +172,11 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
-    VDirectoryItemCell *direcotryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
+    VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                           forIndexPath:indexPath];
-    [self.cellDecorator populateCell:direcotryCell withStreamItem:item];
-    [self.cellDecorator applyStyleToCell:direcotryCell withDependencyManager:self.itemCellDependencyManager];
-    return direcotryCell;
+    [self.cellDecorator populateCell:directoryCell withStreamItem:item];
+    [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
+    return directoryCell;
 }
 
 @end
