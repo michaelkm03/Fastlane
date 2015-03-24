@@ -172,11 +172,11 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
-    VDirectoryItemCell *direcotryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
+    VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                           forIndexPath:indexPath];
-    [self.cellDecorator populateCell:direcotryCell withStreamItem:item];
-    [self.cellDecorator applyStyleToCell:direcotryCell withDependencyManager:self.dependencyManager];
-    return direcotryCell;
+    [self.cellDecorator populateCell:directoryCell withStreamItem:item];
+    [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
+    return directoryCell;
 }
 
 @end
