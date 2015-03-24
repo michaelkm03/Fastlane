@@ -178,7 +178,8 @@ static CGFloat const kDirectoryInset = 5.0f;
 {
     //Check to see if we've selected the the count of items in the cell's streamItem (which would mean we selected the "see more" cell)
     VStreamItem *streamItem;
-    if ( indexPath.row == (NSInteger)VDirectoryMaxItemsPerGroup )
+    
+    if ( [groupCell.indexPathForShowMore isEqual:indexPath] )
     {
         NSIndexPath *shelfIndexPath = [self.collectionView indexPathForCell:groupCell];
         streamItem = self.currentStream.streamItems[shelfIndexPath.row];
