@@ -45,7 +45,6 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 //@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
-@property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
