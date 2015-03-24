@@ -8,6 +8,8 @@
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
+#import "VSolidColorBackground.h"
+#import "VURLMacroReplacement.h"
 
 #if CGFLOAT_IS_DOUBLE
 #define CGFLOAT_VALUE doubleValue
@@ -71,9 +73,15 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 // Keys for Workspace
-NSString * const VDependencyManagerWorkspaceFlowKey = @"workspaceFlow";
+NSString * const VDependencyManagerWorkspaceFlowKey = @"defaultWorkspaceDestination";
 NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
 NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
+
+// Keys for image URLs
+static NSString * const kImageCountKey = @"imageCount";
+static NSString * const kImageMacroKey = @"imageMacro";
+static NSString * const kScaleKey = @"scale";
+static NSString * const kMacroReplacement = @"XXXXX";
 
 @interface VDependencyManager ()
 
@@ -82,6 +90,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 @property (nonatomic, copy) NSDictionary *classesByTemplateName;
 @property (nonatomic, strong) NSMutableDictionary *singletonsByID; ///< This dictionary should only be accessed from the privateQueue
 @property (nonatomic, strong) NSMutableDictionary *childDependencyManagersByID; ///< This dictionary should only be accessed from the privateQueue
+@property (nonatomic, strong) NSMutableArray *imageURLs; ///< This array should only be accessed from the privateQueue
 @property (nonatomic) dispatch_queue_t privateQueue;
 
 @end
@@ -98,17 +107,25 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         _parentManager = parentManager;
         _configuration = [self preparedConfigurationWithUnpreparedDictionary:configuration];
         _privateQueue = dispatch_queue_create("com.getvictorious.VDependencyManager", DISPATCH_QUEUE_CONCURRENT);
-        [self createChildDependencyManagersFromDictionary:_configuration];
         
         if (_parentManager == nil)
         {
             _singletonsByID = [[NSMutableDictionary alloc] init];
             _childDependencyManagersByID = [[NSMutableDictionary alloc] init];
+            _imageURLs = [[NSMutableArray alloc] init];
         }
+        [self scanConfiguration:_configuration];
         
         if (classesByTemplateName == nil)
         {
-            _classesByTemplateName = [self defaultDictionaryOfClassesByTemplateName];
+            if ( _parentManager == nil )
+            {
+                _classesByTemplateName = [self defaultDictionaryOfClassesByTemplateName];
+            }
+            else
+            {
+                _classesByTemplateName = _parentManager.classesByTemplateName ?: [self defaultDictionaryOfClassesByTemplateName];
+            }
         }
         else
         {
@@ -122,6 +139,16 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (UIColor *)colorForKey:(NSString *)key
 {
+    // TODO: special case: we switched from using a background color key to a background component,
+    //       but not everything has been updated to use it yet. Until everything is updated,
+    //       we return a background color extracted from the background component to anyone who
+    //       asks for the old background color key.
+    if ( [key isEqualToString:VDependencyManagerBackgroundColorKey] )
+    {
+        VSolidColorBackground *background = [self templateValueOfType:[VSolidColorBackground class] forKey:VDependencyManagerBackgroundKey];
+        return background.backgroundColor;
+    }
+    
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     if (![colorDictionary isKindOfClass:[NSDictionary class]])
@@ -132,6 +159,12 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     NSNumber *green = colorDictionary[kGreenKey];
     NSNumber *blue = colorDictionary[kBlueKey];
     NSNumber *alpha = colorDictionary[kAlphaKey];
+    
+    // Work around a bug in the back-end
+    if ( alpha.doubleValue == 1.0 )
+    {
+        alpha = @255;
+    }
     
     if (![red isKindOfClass:[NSNumber class]] ||
         ![green isKindOfClass:[NSNumber class]] ||
@@ -144,7 +177,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] / 255.0f
                                      green:[green CGFLOAT_VALUE] / 255.0f
                                       blue:[blue CGFLOAT_VALUE] / 255.0f
-                                     alpha:[alpha CGFLOAT_VALUE]];
+                                     alpha:[alpha CGFLOAT_VALUE] / 255.0f];
     return color;
 }
 
@@ -304,6 +337,53 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         }
     }
     return [returnValue copy];
+}
+
+- (NSArray *)arrayOfImageURLsForKey:(NSString *)key
+{
+    NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    if ( imageDictionary == nil )
+    {
+        return nil;
+    }
+    return [self arrayOfImageURLsWithDictionary:imageDictionary];
+}
+
+- (NSArray *)arrayOfImageURLsWithDictionary:(NSDictionary *)imageDictionary
+{
+    NSNumber *imageCount = imageDictionary[kImageCountKey];
+    NSString *macro = imageDictionary[kImageMacroKey];
+    
+    if ( ![imageCount isKindOfClass:[NSNumber class]] || ![macro isKindOfClass:[NSString class]] )
+    {
+        return nil;
+    }
+    
+    NSMutableArray *imageURLs = [[NSMutableArray alloc] initWithCapacity:[imageCount unsignedIntegerValue]];
+    VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
+    for (NSUInteger n = 0; n < [imageCount unsignedIntegerValue]; n++)
+    {
+        NSString *macroReplacementString = [NSString stringWithFormat:@"%.5lu", (unsigned long)n];
+        [imageURLs addObject:[macroReplacement urlByReplacingMacrosFromDictionary:@{ kMacroReplacement: macroReplacementString}
+                                                                      inURLString:macro]];
+    }
+    
+    return imageURLs;
+}
+
+- (NSArray *)arrayOfAllImageURLs
+{
+    if ( self.imageURLs == nil )
+    {
+        return [self.parentManager arrayOfAllImageURLs];
+    }
+    
+    __block NSArray *allImageURLs;
+    dispatch_sync(self.privateQueue, ^(void)
+    {
+        allImageURLs = [self.imageURLs copy];
+    });
+    return allImageURLs;
 }
 
 #pragma mark - Singleton dependencies
@@ -530,10 +610,14 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 #pragma mark - Helpers
 
 /**
- Finds all component definitions in the given dictionary
- and creates child dependency managers for them.
+ Scans and analyzes the configuration dictionary in the following ways:
+ 
+ 1. Finds all component definitions, creates child dependency
+    managers for them, and adds those child DMs to the 
+    self.childDependencyManagersByID dictionary
+ 2. Finds all image URLs and adds them to the self.imageURLs array
  */
-- (void)createChildDependencyManagersFromDictionary:(NSDictionary *)dictionary
+- (void)scanConfiguration:(NSDictionary *)dictionary
 {
     for ( id key in dictionary )
     {
@@ -548,9 +632,14 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
                     [self setChildDependencyManager:childDependencyManager forID:value[kIDKey]];
                 }
             }
+            else if ( value[kImageMacroKey] != nil )
+            {
+                NSArray *images = [self arrayOfImageURLsWithDictionary:value];
+                [self addImageURLsWithArray:images];
+            }
             else
             {
-                [self createChildDependencyManagersFromDictionary:value];
+                [self scanConfiguration:value];
             }
         }
         else if ( [value isKindOfClass:[NSArray class]] )
@@ -580,7 +669,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
             }
             else
             {
-                [self createChildDependencyManagersFromDictionary:dictionary];
+                [self scanConfiguration:dictionary];
             }
         }
         else if ( [dictionary isKindOfClass:[NSArray class]] )
@@ -619,6 +708,32 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         childDependencyManager = self.childDependencyManagersByID[objectID];
     });
     return childDependencyManager;
+}
+
+- (void)addImageURL:(NSString *)imageURL
+{
+    if ( self.imageURLs == nil )
+    {
+        [self.parentManager addImageURL:imageURL];
+        return;
+    }
+    dispatch_barrier_async(self.privateQueue, ^(void)
+    {
+        [self.imageURLs addObject:imageURL];
+    });
+}
+
+- (void)addImageURLsWithArray:(NSArray *)imageArray
+{
+    if ( self.imageURLs == nil )
+    {
+        [self.parentManager addImageURLsWithArray:imageArray];
+        return;
+    }
+    dispatch_barrier_async(self.privateQueue, ^(void)
+    {
+        [self.imageURLs addObjectsFromArray:imageArray];
+    });
 }
 
 /**

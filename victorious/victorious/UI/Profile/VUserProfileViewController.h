@@ -11,12 +11,18 @@
 
 @class VUser;
 
+extern NSString * const VUserProfileFindFriendsIconKey;
+
 @interface VUserProfileViewController : VStreamCollectionViewController
 
 @property   (nonatomic, readonly) VUser                  *profile;
 
-+ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId;
-+ (instancetype)userProfileWithUser:(VUser *)aUser;
+//Total hack versions to the 1.9 release out the door... Replace once depedencyManagers have been propogated down to all the
++ (instancetype)rootDependencyProfileWithRemoteId:(NSNumber *)remoteId;
++ (instancetype)rootDependencyProfileWithUser:(VUser *)user;
+
++ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager;
++ (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  While this property is YES, the viewController will listen for
@@ -38,6 +44,15 @@
  @param user The user whose profile we should display
  @param key  The template key holding the configuration information for VUserProfileViewController
  */
-- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key;
+- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user;
+
+/**
+ Returns a new VUserProfileViewController instance according to the
+ template configuration, primed to display the user with the given remoteID.
+ 
+ @param user The user whose profile we should display
+ @param key  The template key holding the configuration information for VUserProfileViewController
+ */
+- (VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId;
 
 @end

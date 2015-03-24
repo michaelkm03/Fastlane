@@ -11,9 +11,16 @@
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VSwipeCollectionViewCell.h"
 
+@class VDependencyManager;
+
 /**
  *  Implements sensible defaults of VSharedCollectionReusableViewMethods. All CollectionViewCell subclasses should subclass VBaseCollectionViewCell.
  */
 @interface VBaseCollectionViewCell : VSwipeCollectionViewCell <VSharedCollectionReusableViewMethods>
+
+/**
+ A dependencyManager that subclasses of this class can use to modify cell appearance.
+ */
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

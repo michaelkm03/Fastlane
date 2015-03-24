@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VButton.h"
 
-@class VUser, VDefaultProfileImageView;
+@class VUser, VDefaultProfileImageView, VDependencyManager;
 
 @protocol VUserProfileHeaderDelegate <NSObject>
 
@@ -38,10 +38,9 @@
 @property (nonatomic, strong) VUser *user;
 @property (nonatomic, weak) id<VUserProfileHeaderDelegate> delegate;
 
-@property (nonatomic) NSInteger numberOfFollowers;
-@property (nonatomic) NSInteger numberOfFollowing;
-
 @property (nonatomic, assign) BOOL isFollowingUser;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 + (instancetype)newView;
 

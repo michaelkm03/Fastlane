@@ -30,8 +30,9 @@
 #import "VSettingManager.h"
 #import "VStreamItem+Fetcher.h"
 #import "UIColor+VBrightness.h"
+#import "NSString+VParseHelp.h"
 
-static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kItemColor = @"itemColor";
 static NSString * const kBackgroundColor = @"backgroundColor";
 
@@ -63,7 +64,7 @@ static CGFloat const kDirectoryInset = 5.0f;
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    VStream *stream = [VStream streamForPath:[[dependencyManager stringForKey:kStreamURLKey] v_pathComponent] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
@@ -74,7 +75,7 @@ static CGFloat const kDirectoryInset = 5.0f;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [self.dependencyManager colorForKey:@"color.background"];
+    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     NSString *identifier = [VDirectoryGroupCell suggestedReuseIdentifier];
@@ -167,8 +168,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     VDirectoryGroupCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.stream = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     cell.delegate = self;
-    NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.group"];
-    cell.dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
+    cell.dependencyManager = self.dependencyManager;
     return cell;
 }
 
@@ -177,36 +177,36 @@ static CGFloat const kDirectoryInset = 5.0f;
 - (void)streamDirectoryGroupCell:(VDirectoryGroupCell *)groupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //Check to see if we've selected the the count of items in the cell's streamItem (which would mean we selected the "see more" cell)
-    if ( indexPath.row == (NSInteger)VDirectoryMaxItemsPerGroup )
+    VStreamItem *streamItem;
+    
+    if ( [groupCell.indexPathForShowMore isEqual:indexPath] )
     {
-        //Push a new directory view controller to show all contents of the selected streamItem
-        VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:groupCell].row];
-        VGroupedStreamCollectionViewController *directoryViewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
-        directoryViewController.dependencyManager = self.dependencyManager;
-        [self.navigationController pushViewController:directoryViewController animated:YES];
+        NSIndexPath *shelfIndexPath = [self.collectionView indexPathForCell:groupCell];
+        streamItem = self.currentStream.streamItems[shelfIndexPath.row];
     }
     else
     {
-        VStreamItem *streamItem = groupCell.stream.streamItems[ indexPath.row ];
-        if ( streamItem.isContent )
-        {
-            VSequence *sequence = (VSequence *)streamItem;
-            [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence
-                                                                               commentId:nil
-                                                                        placeHolderImage:nil];
-        }
-        else if ( streamItem.isSingleStream )
-        {
-            VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
-            viewController.dependencyManager = self.dependencyManager;
-            [self.navigationController pushViewController:viewController animated:YES];
-        }
-        else if ( streamItem.isStreamOfStreams )
-        {
-            VGroupedStreamCollectionViewController *viewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)streamItem
-                                                                                        dependencyManager:self.dependencyManager];
-            [self.navigationController pushViewController:viewController animated:YES];
-        }
+        streamItem = groupCell.stream.streamItems[ indexPath.row ];
+    }
+    
+    if ( streamItem.isContent )
+    {
+        VSequence *sequence = (VSequence *)streamItem;
+        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence
+                                                                           commentId:nil
+                                                                    placeHolderImage:nil];
+    }
+    else if ( streamItem.isSingleStream )
+    {
+        VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
+        viewController.dependencyManager = self.dependencyManager;
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else if ( streamItem.isStreamOfStreams )
+    {
+        VGroupedStreamCollectionViewController *viewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)streamItem
+                                                                                                                dependencyManager:self.dependencyManager];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 

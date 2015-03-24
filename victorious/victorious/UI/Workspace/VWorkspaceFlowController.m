@@ -88,7 +88,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
     VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
     VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:VDependencyManagerWorkspaceFlowKey
+                                                                                              forKey:@"defaultWorkspaceDestination"
                                                                                withAddedDependencies:injectedDependencies];
     return workspaceFlowController;
 }
@@ -245,7 +245,12 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 #pragma mark - VNavigationDestination
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextCreatePost;
+}
+
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
     self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]];
     [self.workspacePresenter present];
@@ -345,12 +350,15 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     if ([self.capturedMediaURL v_hasImageExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
     }
     else if ([self.capturedMediaURL v_hasVideoExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+        workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VVideoToolControllerInitalVideoEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
+        
         VVideoToolController *videoToolController = (VVideoToolController *)workspaceViewController.toolController;
         videoToolController.videoToolControllerDelegate = self;
         videoToolController.mediaURL = self.capturedMediaURL;

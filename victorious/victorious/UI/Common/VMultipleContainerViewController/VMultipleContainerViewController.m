@@ -9,13 +9,13 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "VMultipleContainerChild.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
-#import "VMultipleContainerViewControllerChild.h"
-#import "VMultipleContainerViewControllerChild.h"
+#import "VStreamCollectionViewController.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
@@ -38,6 +38,8 @@ static NSString * const kInitialKey = @"initial";
     if (self)
     {
         _didShowInitial = NO;
+        CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
+        self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
     return self;
 }
@@ -50,7 +52,7 @@ static NSString * const kInitialKey = @"initial";
     if (self)
     {
         _dependencyManager = dependencyManager;
-        _viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
+        self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
         _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey withAddedDependencies:[dependencyManager styleDictionaryForNavigationBar]];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
@@ -108,7 +110,7 @@ static NSString * const kInitialKey = @"initial";
             {
                 index = 0;
             }
-            [self displayViewControllerAtIndex:index animated:NO];
+            [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
             [self.selector setActiveViewControllerIndex:index];
         }
         self.didShowInitial = YES;
@@ -123,7 +125,7 @@ static NSString * const kInitialKey = @"initial";
     if ( !CGSizeEqualToSize(newItemSize, self.flowLayout.itemSize) )
     {
         self.flowLayout.itemSize = newItemSize;
-        [self displayViewControllerAtIndex:self.selector.activeViewControllerIndex animated:NO];
+        [self displayViewControllerAtIndex:self.selector.activeViewControllerIndex animated:NO isDefaultSelection:YES];
     }
 }
 
@@ -136,11 +138,8 @@ static NSString * const kInitialKey = @"initial";
 {
     [super viewDidAppear:animated];
     
-    UIViewController *viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] )
-    {
-        [((id<VMultipleContainerViewControllerChild>)viewController) viewControllerAppearedAsInitial];
-    }
+    id<VMultipleContainerChild> viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
+    [viewController viewControllerSelected:YES];
 }
 
 #pragma mark - Rotation
@@ -159,8 +158,18 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)setViewControllers:(NSArray *)viewControllers
 {
+    [viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+     {
+         NSParameterAssert( [viewController isKindOfClass:[UIViewController class]] );
+         NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] );
+         
+         id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
+         child.multipleViewControllerChildDelegate = self;
+    }];
+    
     _viewControllers = [viewControllers copy];
     self.selector.viewControllers = _viewControllers;
+    
     [self.collectionView reloadData];
 }
 
@@ -176,6 +185,13 @@ static NSString * const kInitialKey = @"initial";
     }];
 }
 
+#pragma mark - VMultipleContainerChildDelegate
+
+- (UINavigationItem *)parentNavigationItem
+{
+    return self.navigationItem;
+}
+
 #pragma mark -
 
 - (UIViewController *)viewControllerAtIndexPath:(NSIndexPath *)indexPath
@@ -183,19 +199,21 @@ static NSString * const kInitialKey = @"initial";
     return self.viewControllers[indexPath.item];
 }
 
-- (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated
+- (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
+    [self resetNavigationItem];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
-    UIViewController *viewController = self.viewControllers[index];
-    self.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
-    
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] )
-    {
-        [((id<VMultipleContainerViewControllerChild>)viewController) viewControllerSelected];
-    }
+    id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
+    [viewController viewControllerSelected:isDefaultSelection];
+}
+
+- (void)resetNavigationItem
+{
+    CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
+    self.navigationItem.rightBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
 }
 
 #pragma mark - UICollectionViewDelegate methods
@@ -247,7 +265,7 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
 {
-    [self displayViewControllerAtIndex:index animated:NO];
+    [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
 }
 
 @end

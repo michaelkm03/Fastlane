@@ -9,37 +9,31 @@
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager.h"
 #import "VInsetStreamCollectionCell.h"
-#import "VSequence.h"
-#import "CCHLinkTextView.h"
+#import "VSequence+Fetcher.h"
+#import "VStreamCellActionView.h"
+#import "VStreamCellHeaderView.h"
 
 // IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
-static const CGFloat kHeaderHeight = 50.0f;
-static const CGFloat kActionViewHeight = 41.0f;
+const CGFloat kInsetCellHeaderHeight = 50.0f;
+const CGFloat kInsetCellActionViewHeight = 41.0f;
 static const CGFloat kTextViewInset = 22.0f; // Needs to be sum of textview inset from left and right
 
 // Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
-static const CGFloat kTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
+const CGFloat kInsetCellTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
-
-@interface VInsetStreamCollectionCell ()
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentsLeftConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentLabelBottomConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionTextViewTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *interLabelSpaceConstraint;
-
-@end
 
 @implementation VInsetStreamCollectionCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    self.backgroundColor = [UIColor whiteColor];
+        
     self.commentsLeftConstraint.constant = -VStreamCollectionCellTextViewLineFragmentPadding;
-    self.commentLabelBottomConstraint.constant = kTextNeighboringViewSeparatorHeight;
-    self.captionTextViewTopConstraint.constant = kTextNeighboringViewSeparatorHeight;
+    self.commentLabelBottomConstraint.constant = kInsetCellTextNeighboringViewSeparatorHeight;
+    self.captionTextViewTopConstraint.constant = kInsetCellTextNeighboringViewSeparatorHeight;
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -47,7 +41,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     CGFloat width = CGRectGetWidth(bounds);
     
     width *= kAspectRatio;
-    CGFloat height = width + kHeaderHeight + kActionViewHeight + kTextNeighboringViewSeparatorHeight * 2.0f + kTextSeparatorHeight; // Width represents the desired media height, there are 2 neighboring separators (top to textview and bottom to comment label) in addition to one constraint between the comment count label and the textview.
+    CGFloat height = width + kInsetCellHeaderHeight + kInsetCellActionViewHeight + kInsetCellTextNeighboringViewSeparatorHeight * 2.0f; // Width represents the desired media height, there are 2 neighboring separators (top to textview and bottom to comment label)
     return CGSizeMake(width, height);
 }
 
@@ -61,12 +55,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         // Subtract insets and line fragment padding that is padding text in textview BEFORE calculating size
         CGSize textSize = [sequence.name frameSizeForWidth:width
                                              andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        actual.height += textSize.height;
-    }
-    else
-    {
-        // We have no text to display, remove the separator height from our calculation
-        actual.height -= kTextSeparatorHeight;
+        actual.height += textSize.height + kTextSeparatorHeight;
     }
     
     CGSize textSize = [[sequence.commentCount stringValue] frameSizeForWidth:width
@@ -89,27 +78,68 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     return @"VInsetStreamCellHeaderView";
 }
 
+- (NSUInteger)maxCaptionLines
+{
+    return 0;
+}
+
+- (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
+{
+    [super setSequenceActionsDelegate:sequenceActionsDelegate];
+    self.actionView.sequenceActionsDelegate = sequenceActionsDelegate;
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     [super setDependencyManager:dependencyManager];
-    self.backgroundColor = [UIColor whiteColor];
+    self.actionView.dependencyManager = dependencyManager;
+    
+    if ( dependencyManager != nil )
+    {
+        self.commentsLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.dateImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    }
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    
-    BOOL hasText = !self.sequence.nameEmbeddedInContent.boolValue;
-    if ( hasText )
-    {
-        self.captionTextView.textContainer.maximumNumberOfLines = 0;
-        self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
-    }
-    
-    // Remove the space between label and textView if the textView is empty
-    self.interLabelSpaceConstraint.constant = !(hasText && self.captionTextView.text.length > 0) ? 0 : kTextSeparatorHeight;
-    
+    self.actionView.sequence = sequence;
     [self reloadCommentsCount];
+    [self setupActionBar];
+}
+
+- (void)setupActionBar
+{
+    [self.actionView clearButtons];
+    
+    [self.actionView addShareButton];
+    if ( [self.sequence canRemix] )
+    {
+        [self.actionView addRemixButton];
+    }
+    if ( [self.sequence canRepost] )
+    {
+        [self.actionView addRepostButton];
+    }
+    [self.actionView addMoreButton];
+    
+    [self.actionView updateLayoutOfButtons];
+}
+
+- (void)setDescriptionText:(NSString *)text
+{
+    [super setDescriptionText:text];
+    
+    BOOL zeroConstraints = !(!self.sequence.nameEmbeddedInContent.boolValue && text.length > 0);
+    
+    //Remove the space between label and textView if the textView is empty
+    self.captionTextViewBottomConstraint.constant = zeroConstraints ? 0.0f : kTextSeparatorHeight;
 }
 
 - (void)reloadCommentsCount
@@ -118,12 +148,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
     [self.commentsLabel setText:commentsString];
     self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
-}
-
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    self.interLabelSpaceConstraint.constant = kTextSeparatorHeight;
 }
 
 @end

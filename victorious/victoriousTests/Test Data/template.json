@@ -1,11 +1,22 @@
 {
     "id": "d07ab13a-1e39-4a66-952f-f04c638a9adc",
     "name": "application",
-    "color.background": {
+    "color.text": {
         "red": 51,
         "green": 153,
         "blue": 102,
-        "alpha": 1
+        "alpha": 255
+    },
+    "background":
+    {
+        "name":"solidColor.background",
+        "color":
+        {
+            "red":153,
+            "green":51,
+            "blue":102,
+            "alpha":255
+        }
     },
     "font.header": {
         "fontName": "STHeitiSC-Light",

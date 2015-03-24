@@ -12,7 +12,7 @@
 /**
  *  A video snapshot tool. Responsible for managing a video player and UI for taking a snapshot.
  */
-@interface VVideoSnapshotTool : NSObject <VVideoWorkspaceTool, VHasManagedDependancies>
+@interface VVideoSnapshotTool : NSObject <VVideoWorkspaceTool, VHasManagedDependencies>
 
 /**
  *  A completion block for when the tool has captured a snapshot. Includes a preview image and URL for the rendered snapshot.

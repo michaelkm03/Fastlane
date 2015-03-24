@@ -20,7 +20,6 @@
 
 //View Controllers
 #import "VFindFriendsViewController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VWorkspaceFlowController.h"
 #import "VNavigationController.h"
 
@@ -33,11 +32,11 @@
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
-#import "VMultipleContainerViewControllerChild.h"
+#import "VDependencyManager.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController () <VMultipleContainerViewControllerChild, VScrollPaginatorDelegate>
+@interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
@@ -55,6 +54,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @end
 
 @implementation VAbstractStreamCollectionViewController
+
+@synthesize multipleViewControllerChildDelegate;
 
 #pragma mark - Init & Dealloc
 
@@ -128,7 +129,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
 }
 
@@ -173,23 +174,30 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
 }
 
-#pragma mark - VMultipleContainerViewControllerChild protocol
-
-- (void)viewControllerSelected
+- (void)updateUserPostAllowed
 {
-    [self.streamTrackingHelper viewControllerSelected:self.currentStream];
+    // Nothing to do here, provided to override in subclasses
 }
 
-- (void)viewControllerAppearedAsInitial
-{
-    [self.streamTrackingHelper viewControllerAppearedAsInitial:self.currentStream];
-}
+#pragma mark - VMultipleContainerChild protocol
 
-#pragma mark - Tracking helper
-
-- (void)trackStreamDidAppear
+- (void)viewControllerSelected:(BOOL)isDefault
 {
-    // Override in subclasses
+    if ( isDefault )
+    {
+        [self.streamTrackingHelper viewControllerAppearedAsInitial:self.currentStream];
+    }
+    else
+    {
+        // In spite of its name, this is not actullay a stream-related event, so it is not part of `streamTrackingHelper`.
+        // This event fires for any conformist of `VMultipleContainerChild`.
+        NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
+        
+        [self.streamTrackingHelper viewControllerSelected:self.currentStream];
+    }
+    
+    [self updateUserPostAllowed];
 }
 
 #pragma mark - Property Setters
@@ -254,9 +262,15 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
+         [self.refreshControl endRefreshing];
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
-         [self.refreshControl endRefreshing];
+         BOOL viewIsVisible = self.parentViewController != nil;
+         if ( viewIsVisible )
+         {
+             [self updateUserPostAllowed];
+         }
+         
          if (completionBlock)
          {
              completionBlock();

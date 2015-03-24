@@ -32,23 +32,11 @@
  */
 - (void)vote;
 
-/**
- Once voteCount is read and used to track user interactions, this method
- will reset the sessionVoteCount.
- */
-- (void)resetSessionVoteCount;
-
-/**
- Updates the vote base vote count (does not affect session vote count)
- */
-- (void)resetStartingVoteCount:(NSUInteger)voteCount;
-
 @property (nonatomic, strong, readonly) NSArray *trackingUrls;
 
 @property (nonatomic, assign) BOOL isLocked;
 
-@property (nonatomic, readonly) NSUInteger sessionVoteCount;
-@property (nonatomic, readonly) NSUInteger totalVoteCount;
+@property (nonatomic, assign) NSInteger voteCount;
 
 @property (nonatomic, strong) UIImage *iconImage;
 @property (nonatomic, strong) NSArray *animationSequence;

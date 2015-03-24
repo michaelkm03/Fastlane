@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAdViewController.h"
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VObjectManager.h"
@@ -17,27 +18,41 @@
 #import "VScaffoldViewController.h"
 #import "VSessionTimer.h"
 #import "VSettingManager.h"
+#import "VThemeManager.h"
 #import "VTracking.h"
+#import "TremorVideoAd.h"
 #import "VConstants.h"
 #import "VTemplateGenerator.h"
 #import "VLocationManager.h"
+#import "VVoteSettings.h"
+#import "VVoteType.h"
+#import "VAppInfo.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
 static NSString * const kDeeplinkURLKey = @"deeplink";
 static NSString * const kNotificationIDKey = @"notification_id";
+static NSString * const kAdSystemsKey = @"ad_systems";
+
+typedef NS_ENUM(NSInteger, VAppLaunchState)
+{
+    VAppLaunchStateWaiting, ///< The app is waiting for a response from the server
+    VAppLaunchStateLaunching, ///< The app has received its initial data from the server and is waiting for the scaffold to be displayed
+    VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
+};
 
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
 #warning Temporary
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VVoteSettings *voteSettings;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
-@property (nonatomic) BOOL appLaunched; ///< YES when VLoadingViewController has finished its job
+@property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 
 @end
 
@@ -94,7 +109,6 @@ static NSString * const kNotificationIDKey = @"notification_id";
     [super viewDidLoad];
 
     self.sessionTimer = [[VSessionTimer alloc] init];
-    [self.sessionTimer start];
     
     // Check if we have location services and start getting locations if we do
     if ( [VLocationManager haveLocationServicesPermission] )
@@ -173,29 +187,48 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
 #pragma mark - Child View Controllers
 
-- (void)showLoadingViewController
-{
-    self.appLaunched = NO;
-    VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
-    loadingViewController.delegate = self;
-    [self showViewController:loadingViewController animated:NO completion:nil];
-}
-
-- (void)startAppWithInitData:(NSDictionary *)initData
+- (VDependencyManager *)parentDependencyManager
 {
     VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:nil
                                                                                 configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
                                                             dictionaryOfClassesByTemplateName:nil];
+    return basicDependencies;
+}
+
+- (void)showLoadingViewController
+{
+    self.launchState = VAppLaunchStateWaiting;
+    VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
+    loadingViewController.delegate = self;
+    loadingViewController.parentDependencyManager = [self parentDependencyManager];
+    [self showViewController:loadingViewController animated:NO completion:nil];
+}
+
+- (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [self seedMonetizationNetworks:[dependencyManager templateValueOfType:[NSArray class] forKey:kAdSystemsKey]];
     
-    VTemplateGenerator *templateGenerator = [[VTemplateGenerator alloc] initWithInitData:initData];
-    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:basicDependencies
-                                                                 configuration:[templateGenerator configurationDict]
-                                             dictionaryOfClassesByTemplateName:nil];
+    self.dependencyManager = dependencyManager;
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    self.sessionTimer.dependencyManager = self.dependencyManager;
+    [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
+    [[VSettingManager sharedManager] setDependencyManager:self.dependencyManager];
+    [self.sessionTimer start];
+    
+    self.voteSettings = [[VVoteSettings alloc] init];
+    [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
+    
+    NSURL *appStoreURL = appInfo.appURL;
+    if ( appStoreURL != nil )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:appStoreURL.absoluteString forKey:VConstantAppStoreURL];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     
     VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES completion:^(void)
     {
-        self.appLaunched = YES;
+        self.launchState = VAppLaunchStateLaunched;
     }];
     
     if ( self.queuedURL != nil )
@@ -243,6 +276,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
         
         if (animated)
         {
+            viewController.view.clipsToBounds = YES;
             viewController.view.center = CGPointMake(CGRectGetWidth(self.view.bounds) * 1.5f, CGRectGetMidY(self.view.bounds));
             [UIView animateWithDuration:kAnimationDuration
                                   delay:0
@@ -312,11 +346,45 @@ static NSString * const kNotificationIDKey = @"notification_id";
     }
 }
 
+#pragma mark - Ad Networks
+
+- (void)seedMonetizationNetworks:(NSArray *)adSystems
+{
+    if (adSystems)
+    {
+        NSUInteger i;
+        NSString *appID;
+        
+        for (i = 0; i < adSystems.count; i++)
+        {
+            NSDictionary *item = adSystems[i];
+            NSInteger adSystem = [[item valueForKey:@"ad_system"] integerValue];
+            
+            switch (adSystem)
+            {
+                case VMonetizationPartnerTremor:
+                    appID = [item valueForKey:@"tremor_app_id"];
+                    
+                    // If we have an appID, seed the Tremor Ad Network
+                    if (appID && (appID != nil && ![appID isKindOfClass:[NSNull class]]))
+                    {
+                        [TremorVideoAd initWithAppID:appID];
+                        [TremorVideoAd start];
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+    }
+}
+
 #pragma mark - NSNotifications
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
-    if ( !self.appLaunched )
+    if ( self.launchState != VAppLaunchStateLaunched )
     {
         return;
     }
@@ -353,11 +421,12 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
 #pragma mark - VLoadingViewControllerDelegate
 
-- (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithInitResponse:(NSDictionary *)initResponse
+- (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ( loadingViewController == self.currentViewController )
+    if ( loadingViewController == self.currentViewController && self.launchState == VAppLaunchStateWaiting )
     {
-        [self startAppWithInitData:initResponse];
+        self.launchState = VAppLaunchStateLaunching;
+        [self startAppWithDependencyManager:dependencyManager];
     }
 }
 

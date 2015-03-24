@@ -13,6 +13,7 @@
 
 #import "VStreamCollectionViewDataSource.h"
 #import "VMarqueeStreamItemCell.h"
+#import "VMarqueeCollectionCell.h"
 
 #import "VGroupedStreamCollectionViewController.h"
 #import "VMarqueeTabIndicatorView.h"
@@ -132,6 +133,24 @@
     [self.autoScrollTimerManager invalidate];
 }
 
+- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
+{
+    _hideMarqueePosterImage = hideMarqueePosterImage;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *marqueeCell, NSUInteger idx, BOOL *stop)
+    {
+        marqueeCell.hideMarqueePosterImage = hideMarqueePosterImage;
+    }];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *marqueeItemCell, NSUInteger idx, BOOL *stop)
+     {
+         marqueeItemCell.dependencyManager = dependencyManager;
+     }];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -196,6 +215,8 @@
     CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
+    cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
+    cell.dependencyManager = self.dependencyManager;
     cell.delegate = self;
     
     return cell;

@@ -8,31 +8,15 @@
 
 #import "VUserSearchResultsViewController.h"
 #import "VUsersAndTagsSearchViewController.h"
-
-// VObjectManager
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
-
-// User Profile
 #import "VUserProfileViewController.h"
-
-// Dependency Manager
 #import "VDependencyManager.h"
-
-// Constants
 #import "VConstants.h"
-
-// Auth Factory
-#import "VAuthorizationViewControllerFactory.h"
-
-// Table Cell
+#import "VAuthorizedAction.h"
 #import "VFollowerTableViewCell.h"
-
-// No Content View
 #import "VNoContentView.h"
-
-// AutoLayout Category
 #import "UIVIew+AutoLayout.h"
 
 static NSString * const kVUserResultIdentifier = @"followerCell";
@@ -100,16 +84,7 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 {
     [super viewWillDisappear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueUserSearch forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 #pragma mark - UI setup
@@ -197,25 +172,24 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     
     cell.profile = profile;
     cell.haveRelationship = haveRelationship;
+    cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
-        
-        if ([mainUser.following containsObject:profile])
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:self.dependencyManager];
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+         {
+             if ([mainUser.following containsObject:profile])
+             {
+                 [self unfollowFriendAction:profile];
+             }
+             else
+             {
+                 [self followFriendAction:profile];
+             }
+         }];
     };
     return cell;
 }
@@ -228,7 +202,7 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser  *user = self.searchResults[indexPath.row];
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

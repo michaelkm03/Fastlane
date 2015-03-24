@@ -161,7 +161,10 @@ static NSInteger const kVMaxSearchResults = 1000;
     // Remove NSNotification Observers
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    }
 }
 
 - (BOOL)v_prefersNavigationBarHidden

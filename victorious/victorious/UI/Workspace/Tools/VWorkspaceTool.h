@@ -35,6 +35,17 @@
  */
 @property (nonatomic, readonly) BOOL shouldLeaveToolOnCanvas;
 
+/**
+ *  A tool should implement this getter if they want to prevent the canvas from being interactable by the user.
+ *  If this is not implemented by the selected tool NO is assumed.
+ */
+- (BOOL)canvasScrollViewShoudldBeInteractive;
+
+/**
+ *  A tool should iplement this setter if they are interested in the state of the canavs.
+ *
+ *  @param canvasView A VCanvasView where results of this tool will be applied.
+ */
 - (void)setCanvasView:(VCanvasView *)canvasView;
 
 @property (nonatomic, strong, readonly) UIViewController *canvasToolViewController; ///< The tool to display in the canvas if any.
@@ -42,5 +53,6 @@
 
 @property (nonatomic, copy, readonly) NSString *title; ///< The text to display while selecting tool.
 @property (nonatomic, strong, readonly) UIImage *icon; ///< The icon to display for this tool.
+@property (nonatomic, strong, readonly) UIImage *selectedIcon; ///< The icon to display when selected.
 
 @end

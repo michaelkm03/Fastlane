@@ -8,16 +8,15 @@
 
 #import "VFetchedResultsTableViewController.h"
 
-@class VUnreadMessageCountCoordinator, VUser;
+@class VUnreadMessageCountCoordinator, VUser, VDependencyManager;
 
 @interface VInboxViewController : VFetchedResultsTableViewController
 
 //@property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 
-+ (instancetype)inboxViewController;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (void)displayConversationForUser:(VUser *)user; ///< Pushes the conversation view for the given user onto the navigation controller
-//- (void)toggleFilterControl:(NSInteger)idx;
 - (IBAction)userSearchAction:(id)sender;
 
 @end

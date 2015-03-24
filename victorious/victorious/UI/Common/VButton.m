@@ -17,9 +17,12 @@ static const CGFloat kStartScale                    = 1.0f;
 static const CGFloat kEndScale                      = 0.98f;
 static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 
+static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
+
 @interface VButton ()
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *widthConstraint;
 
 @end
 
@@ -86,6 +89,7 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 {
     self.primaryColor = [UIColor grayColor];
     self.secondaryColor = [[self class] defaultSecondaryColor];
+    self.layer.cornerRadius = kCornderRadius;
     [self updateAppearance];
 }
 
@@ -126,7 +130,7 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
             break;
     }
     
-    self.layer.cornerRadius = kCornderRadius;
+    self.titleLabel.minimumScaleFactor = 0.5;
     
     self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     
@@ -166,10 +170,30 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 - (void)setTitle:(NSString *)title forState:(UIControlState)state
 {
     [super setTitle:title forState:UIControlStateNormal];
+    
     if ( self.activityIndicator != nil )
     {
         [self hideActivityIndicator];
     }
+}
+
+- (CGSize)intrinsicContentSize
+{
+    CGSize size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName : self.titleLabel.font ?: @"" }];
+    size.width += kLabelEdgeInsets.left + kLabelEdgeInsets.right;
+    size.height += kLabelEdgeInsets.top + kLabelEdgeInsets.bottom;
+    return size;
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius
+{
+    self.layer.cornerRadius = cornerRadius;
+    [self updateAppearance];
+}
+
+- (CGFloat)cornerRadius
+{
+    return self.layer.cornerRadius;
 }
 
 - (void)applyAnimatedHighlight:(BOOL)highlighted

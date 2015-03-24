@@ -23,7 +23,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
  A toolbar - Representing the currently selected top level tool. For images these are: Text, Filters, and crop.
  
  */
-@interface VWorkspaceViewController : UIViewController <VHasManagedDependancies>
+@interface VWorkspaceViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, copy) NSString *continueText;
 @property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion. PreviewImage and RenderedMediaURL will be nil if unsuccessful.
@@ -36,6 +36,11 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 @property (nonatomic, assign) BOOL shouldConfirmCancels; ///< The workspace will show a "discard" action sheet before calling it's completion block
 
 @property (nonatomic, weak, readonly) VCanvasView *canvasView;
+
+/**
+ *  The initial edit state. (since dependency injection doesn't inherit from parent to child).
+ */
+@property (nonatomic, strong) NSNumber *initalEditState;
 
 - (void)bringTopChromeOutOfView;
 - (void)bringBottomChromeOutOfView;

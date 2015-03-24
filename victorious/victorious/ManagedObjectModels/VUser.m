@@ -26,6 +26,7 @@
 @dynamic location;
 @dynamic name;
 @dynamic numberOfFollowers;
+@dynamic numberOfFollowing;
 @dynamic pictureUrl;
 @dynamic remoteId;
 @dynamic status;

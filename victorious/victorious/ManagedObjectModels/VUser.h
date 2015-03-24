@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numberOfFollowers;
+@property (nonatomic, retain) NSNumber * numberOfFollowing;
 @property (nonatomic, retain) NSString * pictureUrl;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * status;

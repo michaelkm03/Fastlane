@@ -8,6 +8,14 @@
 
 #import "VToolController.h"
 
+// Image Blurring
+#import "NSURL+MediaType.h"
+#import "UIImage+ImageEffects.h"
+
+#import "VCanvasView.h"
+
+@import AVFoundation;
+
 @interface VToolController ()
 
 @property (nonatomic, strong, readwrite) NSArray *tools;
@@ -48,7 +56,6 @@
     {
         if ([_selectedTool shouldLeaveToolOnCanvas])
         {
-            self.canvasToolViewController.view.userInteractionEnabled = NO;
             self.canvasToolViewController = nil;
         }
     }
@@ -61,7 +68,6 @@
     if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
     {
         // In case this viewController's view was disabled but left on the canvas
-        [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
         [self.delegate addCanvasViewController:[selectedTool canvasToolViewController]];
         self.canvasToolViewController = [selectedTool canvasToolViewController];
     }
@@ -84,7 +90,50 @@
         [selectedTool setSelected:YES];
     }
     
+    if ([selectedTool respondsToSelector:@selector(canvasScrollViewShoudldBeInteractive)])
+    {
+        self.canvasView.canvasScrollView.userInteractionEnabled = [selectedTool canvasScrollViewShoudldBeInteractive];
+    }
+    else
+    {
+        self.canvasView.canvasScrollView.userInteractionEnabled = NO;
+    }
+    
     _selectedTool = selectedTool;
+}
+
+- (void)setMediaURL:(NSURL *)mediaURL
+{
+    _mediaURL = mediaURL;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                   {
+                       UIImage *image;
+                       if ([mediaURL v_hasImageExtension])
+                       {
+                           image = [UIImage imageWithData:[NSData dataWithContentsOfURL:mediaURL]];
+                       }
+                       else if ([mediaURL v_hasVideoExtension])
+                       {
+                           AVAsset *assetWithURL = [AVAsset assetWithURL:mediaURL];
+                           AVAssetImageGenerator *imageGenrator = [AVAssetImageGenerator assetImageGeneratorWithAsset:assetWithURL];
+                           CGImageRef imageRef = [imageGenrator copyCGImageAtTime:kCMTimeZero
+                                                                       actualTime:NULL
+                                                                            error:nil];
+                           image = [UIImage imageWithCGImage:imageRef];
+                           CGImageRelease(imageRef);
+                       }
+                       if (image == nil)
+                       {
+                           return;
+                       }
+                       dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           if (self.snapshotImageBecameAvailable != nil)
+                           {
+                               self.snapshotImageBecameAvailable(image);
+                           }
+                       });
+                   });
 }
 
 #pragma mark - Public Methods

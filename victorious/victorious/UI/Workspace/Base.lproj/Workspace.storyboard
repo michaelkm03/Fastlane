@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -55,8 +55,11 @@
                                 <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5" userLabel="Bottom Toolbar">
-                                <rect key="frame" x="0.0" y="556" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="540" width="375" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="6uL-QQ-bId"/>
+                                </constraints>
                                 <items/>
                                 <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
@@ -158,18 +161,10 @@
                         <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
                         <viewControllerLayoutGuide type="bottom" id="ZAx-4g-MB6"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="FDL-Lx-k9b">
+                    <view key="view" userInteractionEnabled="NO" contentMode="scaleToFill" id="FDL-Lx-k9b">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSH-vN-sA1">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outlet property="delegate" destination="68P-kQ-eWn" id="nhM-bn-rbQ"/>
-                                    <outletCollection property="gestureRecognizers" destination="Spf-LD-f2e" appends="YES" id="RzH-P3-3co"/>
-                                </connections>
-                            </scrollView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iTp-H1-xI3" customClass="VCropOverlayView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -177,27 +172,15 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="eSH-vN-sA1" firstAttribute="top" secondItem="k23-nw-3wG" secondAttribute="bottom" id="033-tB-VcO"/>
                             <constraint firstItem="iTp-H1-xI3" firstAttribute="leading" secondItem="FDL-Lx-k9b" secondAttribute="leading" id="ANw-cH-IUH"/>
-                            <constraint firstItem="eSH-vN-sA1" firstAttribute="leading" secondItem="FDL-Lx-k9b" secondAttribute="leading" id="FDX-V2-rKV"/>
                             <constraint firstAttribute="trailing" secondItem="iTp-H1-xI3" secondAttribute="trailing" id="FU1-th-Z2O"/>
                             <constraint firstItem="ZAx-4g-MB6" firstAttribute="top" secondItem="iTp-H1-xI3" secondAttribute="bottom" id="FiI-wN-P4A"/>
-                            <constraint firstAttribute="trailing" secondItem="eSH-vN-sA1" secondAttribute="trailing" id="p0i-Dp-oS6"/>
-                            <constraint firstItem="ZAx-4g-MB6" firstAttribute="top" secondItem="eSH-vN-sA1" secondAttribute="bottom" id="qEy-jf-xv8"/>
                             <constraint firstItem="iTp-H1-xI3" firstAttribute="top" secondItem="k23-nw-3wG" secondAttribute="bottom" id="uYz-h2-ovl"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
-                    <connections>
-                        <outlet property="croppingScrollView" destination="eSH-vN-sA1" id="Sbe-62-D03"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer numberOfTapsRequired="2" id="Spf-LD-f2e">
-                    <connections>
-                        <action selector="doubleTapCrop:" destination="68P-kQ-eWn" id="kOQ-UJ-O9Y"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="550" y="343"/>
         </scene>

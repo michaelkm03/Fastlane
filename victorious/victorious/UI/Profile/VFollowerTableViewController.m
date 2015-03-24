@@ -11,7 +11,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorizedAction.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
@@ -227,25 +227,25 @@
     cell.showButton = YES;
     cell.owner = self.profile;
     cell.haveRelationship = haveRelationship;
+    cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
-        
-        if ([mainUser.following containsObject:profile])
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
+        // Check for authorization first
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:self.dependencyManager];
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+         {
+             if ([mainUser.following containsObject:profile])
+             {
+                 [self unfollowFriendAction:profile];
+             }
+             else
+             {
+                 [self followFriendAction:profile];
+             }
+         }];
     };
     return cell;
 }
@@ -253,16 +253,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser  *user = self.followers[indexPath.row];
-    VUserProfileViewController *profileVC   =   [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileVC   =   [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileVC animated:YES];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
-    {
-        [self loadMoreFollowers];
-    }
 }
 
 - (IBAction)refresh:(id)sender
@@ -333,7 +325,7 @@
     {
         NSString *msg, *title;
         
-        self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+        self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
         
         if (self.isMe)
         {

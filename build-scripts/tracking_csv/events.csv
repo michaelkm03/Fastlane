@@ -8,19 +8,20 @@ ApplicationDidEnterForeground,Backend mapping: app-start
 // Navigation,
 UserDidSelectMainMenu,User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
 UserDidSelectMainSection,"User selected a section from the main menu.  Params: MenuType, Section  (template driven value)"
-UserDidSelectStream,"User selected a tab or segmented control to change streams in a multiple stream view; Params: StreamName, StreamId"
+UserDidSelectStream,"User selected a tab or segmented control to change subections.  This is not actually for streams only, the name remains for legacy purposes. Params: Name (section name, not necessarily stream name)"
 ,
 // Content Creation,
 UserDidSelectCreatePost,"User tapped (+) button, displaying the content type selection; Params: CurrentSection (template driven value)"
 CreatePollSelected,
 CreateImagePostSelected,
+CreateTextOnlyPostSelected,
 CreateVideoPostSelected,
 CreateGIFPostSelected,
 CreateCancelSelected,User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 ,
 // Camera (Camera prefix for legacy/compatibility),
-CameraDidSwitchToVideoCapture,
-CameraDidSwitchToPhotoCapture,
+CameraDidSwitchToVideoCapture,"Since the introduction of the new tap-and-hold-to-record video feature, this event is now fired at the moment when the tap is held long enough to begin recording video."
+CameraDidSwitchToPhotoCapture,Deprecated:  This event no longer applies to the new camera with its tap and hold to record video feature.
 CameraDidCapturePhoto,User did move from camera view to workspace with an image just taken
 CameraDidCaptureVideo,User did move from camera view to workspace with a video just recorded
 CameraUserDidPickImageFromLibrary,
@@ -121,6 +122,7 @@ UserDidSelectItemFromStream,Backend mapping: cell-click
 UserDidSelectItemFromMarquee,Backend mapping: cell-click
 UserDidViewHashtagStream,Params: Hashtag
 UserDidViewStream,"Params: StreamName, Context, StreamId, CurrentSection"
+FirstTimeUserVideoPlayed,
 ,
 UserDidVoteSequence,
 UserDidRepost,"Params: SequenceId, TimeCurrent"

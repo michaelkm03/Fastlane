@@ -24,7 +24,6 @@
 #import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
@@ -56,6 +55,7 @@
 
 //Categories
 #import "NSArray+VMap.h"
+#import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
@@ -65,16 +65,23 @@
 #import "VConstants.h"
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
+#import "VAuthorizedAction.h"
+
+#import "VInsetStreamCellFactory.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
+
+const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
+static NSString * const kMarqueeURLKey = @"marqueeURL";
 
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
+static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 
-NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
+NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
-NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellComponent";
+NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 
 @interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -93,6 +100,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 @property (nonatomic, assign) BOOL canAddContent;
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+@property (nonatomic, strong) NSString *marqueeURLString;
 
 @end
 
@@ -114,8 +122,10 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    NSString *urlPathKey = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
-    VStream *stream = [VStream streamForPath:urlPathKey inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
+    NSString *path = [url v_pathComponent];
+    
+    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
@@ -123,24 +133,48 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
-    if ( [[dependencyManager numberForKey:kMarqueeKey] boolValue] )
+    NSString *marqueeURLString = [dependencyManager stringForKey:kMarqueeURLKey];
+    
+    if ( marqueeURLString != nil )
     {
-        streamCollectionVC.shouldDisplayMarquee = YES;
+        streamCollectionVC.marqueeURLString = marqueeURLString;
+        streamCollectionVC.shouldDisplayMarquee = [dependencyManager stringForKey:kMarqueeURLKey] != nil;
     }
     
-    if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
-    {
-        [streamCollectionVC addCreateSequenceButton];
-        [streamCollectionVC addUploadProgressView];
-    }
-    
-    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"stream_atf_view_threshold"];
+    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
     {
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
     return streamCollectionVC;
+}
+
+#pragma mark - Init
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    self.canShowContent = YES;
 }
 
 #pragma mark - View Heirarchy
@@ -158,6 +192,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     
     self.hasRefreshed = NO;
     self.sequenceActionController = [[VSequenceActionController alloc] init];
+    self.sequenceActionController.dependencyManager = self.dependencyManager;
     
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
@@ -249,11 +284,27 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 {
     if (!_marquee)
     {
-        VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+        VStream *marquee = [VStream streamForPath:[self.marqueeURLString v_pathComponent] inContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
+        
+        //The top of the template C hack
+        _marquee.hideMarqueePosterImage = [self hideMarqueePosterImage];
+        _marquee.dependencyManager = self.dependencyManager;
         _marquee.delegate = self;
     }
     return _marquee;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VBaseCollectionViewCell *baseCollectionViewCell, NSUInteger idx, BOOL *stop)
+    {
+        if ( [baseCollectionViewCell isKindOfClass:[VMarqueeCollectionCell class]] )
+        {
+            ((VMarqueeCollectionCell *)baseCollectionViewCell).dependencyManager = dependencyManager;
+        }
+    }];
 }
 
 - (NSCache *)preloadImageCache
@@ -287,26 +338,66 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 
 #pragma mark - Sequence Creation
 
-- (void)addCreateSequenceButton
+- (BOOL)isUserPostAllowedInStream:(VStream *)stream withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
-    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-    self.navigationItem.rightBarButtonItem = barButton;
+    const BOOL isUserPostAllowedByTemplate = [[dependencyManager numberForKey:kCanAddContentKey] boolValue];
+    const BOOL isUserPostAllowedByStream = stream.isUserPostAllowed.boolValue;
+    
+    return isUserPostAllowedByTemplate || isUserPostAllowedByStream;
 }
 
-- (IBAction)createSequenceAction:(id)sender
+- (void)updateUserPostAllowed
+{
+    [super updateUserPostAllowed];
+    
+    BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];
+    if ( userPostAllowed )
+    {
+        [self addUploadProgressView];
+    }
+    
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleViewControllerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+    }
+    [self installCreateButtonOnNavigationItem:navigationItem
+                             initiallyVisible:userPostAllowed];
+    
+    navigationItem.rightBarButtonItem.customView.hidden = !userPostAllowed;
+}
+
+- (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
+                           initiallyVisible:(BOOL)initiallyVisible
+{
+    if (!self.canShowContent)
+    {
+        return;
+    }
+    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+    UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
+    createbutton.frame = CGRectMake(0, 0, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
+    [createbutton setImage:image forState:UIControlStateNormal];
+    [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
+    createbutton.hidden = !initiallyVisible;
+    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
+    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
+    [navigationItem setRightBarButtonItem:barButton animated:NO];
+}
+
+- (void)createSequenceAction:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
-    [self.workspacePresenter present];
+    __weak typeof(self) weakSelf = self;
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^void
+     {
+         weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
+         [weakSelf.workspacePresenter present];
+     }];
 }
 
 #pragma mark - VMarqueeDelegate
@@ -344,7 +435,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
         return;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
@@ -417,6 +508,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     {
         VMarqueeCollectionCell *cell = [dataSource.collectionView dequeueReusableCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]
                                                                                             forIndexPath:indexPath];
+        cell.hideMarqueePosterImage = [self hideMarqueePosterImage];
         cell.marquee = self.marquee;
         CGSize desiredSize = [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
         cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
@@ -427,6 +519,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamCellFactory collectionView:self.collectionView cellForStreamItem:sequence atIndexPath:indexPath];
     
+
     if ( [cell conformsToProtocol:@protocol(VSequenceActionsSender)] )
     {
         cell.sequenceActionsDelegate = self.actionDelegate ?: self;
@@ -434,6 +527,12 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
+}
+
+//According to design we could have the poster's profile images added back to marquee content at a later day, but for now it should be hidden at all times.
+- (BOOL)hideMarqueePosterImage
+{
+    return YES;
 }
 
 - (void)preloadSequencesAfterIndexPath:(NSIndexPath *)indexPath forDataSource:(VStreamCollectionViewDataSource *)dataSource
@@ -465,12 +564,14 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
-#warning Hacktastic
     [self.sequenceActionController showRemixOnViewController:self
                                                 withSequence:sequence
-                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager];
+                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager
+                                              preloadedImage:nil
+                                            defaultVideoEdit:defaultEdit
+                                                  completion:nil];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -495,8 +596,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 
 - (BOOL)hasRepostedSequence:(VSequence *)sequence
 {
-    const BOOL userHasRepostedSequence = [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];
-    return userHasRepostedSequence;
+    return [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];;
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -517,21 +617,14 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     }
     
     // Instantiate and push to stack
-    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag];
-    vc.dependencyManager = self.dependencyManager;
+    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Actions
 
 - (void)setBackgroundImageWithURL:(NSURL *)url
-{
-    //Don't set the background image for template c
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return;
-    }
-    
+{    
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
@@ -553,6 +646,11 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 
 - (void)addUploadProgressView
 {
+    if ( self.uploadProgressViewController != nil )
+    {
+        return;
+    }
+    
     self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
     self.uploadProgressViewController.delegate = self;
     [self addChildViewController:self.uploadProgressViewController];

@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 03/09/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 03/23/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -18,19 +18,20 @@ extern NSString * const VTrackingEventApplicationDidEnterForeground; //< Backend
 // Navigation
 extern NSString * const VTrackingEventUserDidSelectMainMenu; //< User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
 extern NSString * const VTrackingEventUserDidSelectMainSection; //< "User selected a section from the main menu.  Params: MenuType, Section  (template driven value)"
-extern NSString * const VTrackingEventUserDidSelectStream; //< "User selected a tab or segmented control to change streams in a multiple stream view; Params: StreamName, StreamId"
+extern NSString * const VTrackingEventUserDidSelectStream; //< "User selected a tab or segmented control to change subections.  This is not actually for streams only, the name remains for legacy purposes. Params: Name (section name, not necessarily stream name)"
 
 // Content Creation
 extern NSString * const VTrackingEventUserDidSelectCreatePost; //< "User tapped (+) button, displaying the content type selection; Params: CurrentSection (template driven value)"
 extern NSString * const VTrackingEventCreatePollSelected; 
 extern NSString * const VTrackingEventCreateImagePostSelected; 
+extern NSString * const VTrackingEventCreateTextOnlyPostSelected; 
 extern NSString * const VTrackingEventCreateVideoPostSelected; 
 extern NSString * const VTrackingEventCreateGIFPostSelected; 
 extern NSString * const VTrackingEventCreateCancelSelected; //< User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 
 // Camera (Camera prefix for legacy/compatibility)
-extern NSString * const VTrackingEventCameraDidSwitchToVideoCapture; 
-extern NSString * const VTrackingEventCameraDidSwitchToPhotoCapture; 
+extern NSString * const VTrackingEventCameraDidSwitchToVideoCapture; //< "Since the introduction of the new tap-and-hold-to-record video feature, this event is now fired at the moment when the tap is held long enough to begin recording video."
+extern NSString * const VTrackingEventCameraDidSwitchToPhotoCapture; //< Deprecated:  This event no longer applies to the new camera with its tap and hold to record video feature.
 extern NSString * const VTrackingEventCameraDidCapturePhoto; //< User did move from camera view to workspace with an image just taken
 extern NSString * const VTrackingEventCameraDidCaptureVideo; //< User did move from camera view to workspace with a video just recorded
 extern NSString * const VTrackingEventCameraUserDidPickImageFromLibrary; 
@@ -131,6 +132,7 @@ extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend m
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidViewHashtagStream; //< Params: Hashtag
 extern NSString * const VTrackingEventUserDidViewStream; //< "Params: StreamName, Context, StreamId, CurrentSection"
+extern NSString * const VTrackingEventFirstTimeUserVideoPlayed; 
 
 extern NSString * const VTrackingEventUserDidVoteSequence; 
 extern NSString * const VTrackingEventUserDidRepost; //< "Params: SequenceId, TimeCurrent"
@@ -268,7 +270,8 @@ extern NSString * const VTrackingValuePoll;
 // Context values (to differentiate the source of similar actions)
 extern NSString * const VTrackingValueDiscoverSearch; //< Event triggered from discover section's search results
 extern NSString * const VTrackingValueTrendingHashtags; //< Listed in Discover section
-extern NSString * const VTrackingValueUserSearch; //< "In Find Friends, Inbox, User tagging"
+extern NSString * const VTrackingValueUserSearch; //< "Indicates subsequent actions ocurred from a user search, such as following, viewing profile, etc."
+extern NSString * const VTrackingValueHashtagSearch; //< "Indicates subsequent actions ocurred from a hashtag search search, such as following, viewing stream, etc."
 extern NSString * const VTrackingValueEndCard; //< Event triggered from the end card
 extern NSString * const VTrackingValueUserProfile; //< While viewing a user's profile (including your own)
 extern NSString * const VTrackingValueContentView; //< Event occurred in content view
@@ -286,4 +289,4 @@ extern NSString * const VTrackingValueMessage;
 
 // Menu types
 extern NSString * const VTrackingValueHamburgerMenu; 
-// TabBar
+extern NSString * const VTrackingValueTabBar; 

@@ -8,7 +8,8 @@ Poll,
 // Context values (to differentiate the source of similar actions),
 DiscoverSearch,Event triggered from discover section's search results
 TrendingHashtags,Listed in Discover section
-UserSearch,"In Find Friends, Inbox, User tagging"
+UserSearch,"Indicates subsequent actions ocurred from a user search, such as following, viewing profile, etc."
+HashtagSearch,"Indicates subsequent actions ocurred from a hashtag search search, such as following, viewing stream, etc."
 EndCard,Event triggered from the end card
 UserProfile,While viewing a user's profile (including your own)
 ContentView,Event occurred in content view
@@ -26,4 +27,4 @@ Message,
 ,
 // Menu types,
 HamburgerMenu,
-// TabBar,// TODO: Implement this when ready
+TabBar,

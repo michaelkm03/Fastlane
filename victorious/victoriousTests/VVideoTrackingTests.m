@@ -55,35 +55,4 @@
     XCTAssertFalse( self.videoPlayer.isTrackingEnabled );
 }
 
-- (void)testDetectSkip
-{
-    CMTime current;
-    CMTime previous;
-    int32_t scale = 10;
-    
-    current = CMTimeMake( 15, scale );
-    previous = CMTimeMake( 4, scale );
-    XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-    
-    current = CMTimeMake( 4, scale );
-    previous = CMTimeMake( 15, scale );
-    XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-    
-    current = CMTimeMake( 15, scale );
-    previous = CMTimeMake( 5, scale );
-    XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-    
-    current = CMTimeMake( 5, scale );
-    previous = CMTimeMake( 15, scale );
-    XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-    
-    current = CMTimeMake( 15, scale );
-    previous = CMTimeMake( 6, scale );
-    XCTAssertFalse( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-    
-    current = CMTimeMake( 6, scale );
-    previous = CMTimeMake( 15, scale );
-    XCTAssertFalse( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-}
-
 @end

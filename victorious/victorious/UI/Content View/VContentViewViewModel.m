@@ -14,6 +14,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
+#import "VVoteType.h"
 #import "VNode+Fetcher.h"
 
 // Model Categories
@@ -73,6 +74,7 @@
 
 @property (nonatomic, assign) BOOL hasCreatedAdChain;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
 @end
 
@@ -112,7 +114,7 @@
             _type = VContentViewTypeImage;
         }
         
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
 
         _currentNode = [sequence firstNode];
         
@@ -131,7 +133,7 @@
 
 - (id)init
 {
-    NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
+    NSAssert(false, @"-init is not allowed. Use the designated initializer: \"-initWithSequence:\"");
     return nil;
 }
 
@@ -279,7 +281,7 @@
     }
     
     VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-    endCardModel.videoTitle = self.sequence.sequenceDescription;
+    endCardModel.videoTitle = self.sequence.name;
     endCardModel.nextSequenceId = nextSequence.remoteId;
     endCardModel.nextVideoTitle = nextSequence.sequenceDescription;
     endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewImagesObject];
@@ -332,17 +334,31 @@
     [self fetchSequenceData];
 }
 
+- (VLargeNumberFormatter *)largeNumberFormatter
+{
+    if ( _largeNumberFormatter == nil )
+    {
+        _largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    }
+    return _largeNumberFormatter;
+}
+
 - (void)fetchUserinfo
 {
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         NSInteger followerCount = [resultObjects[0] integerValue];
-         if (followerCount > 0)
+         NSInteger followerCount = self.user.numberOfFollowers.integerValue;
+         if ( followerCount > 0 )
          {
-             
-             welf.followersText =  [NSString stringWithFormat:@"%@ %@", [[VLargeNumberFormatter new] stringForInteger:followerCount], NSLocalizedString(@"followers", @"")];
+             welf.followersText = [NSString stringWithFormat:@"%@ %@",
+                                   [self.largeNumberFormatter stringForInteger:followerCount],
+                                   NSLocalizedString(@"followers", @"")];
+         }
+         else
+         {
+             welf.followersText = @"";  //< To prevent showing "0 Followers"
          }
      }
                                                 failBlock:nil];
@@ -863,7 +879,7 @@
     {
         return nil;
     }
-    return [NSString stringWithFormat:@"%@ %@", [[[VLargeNumberFormatter alloc] init]stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
+    return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
 }
 
 #if FORCE_SHOW_DEBUG_END_CARD

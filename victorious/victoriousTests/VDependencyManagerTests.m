@@ -27,7 +27,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - VTestViewControllerWithInitMethod
 
-@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependancies, VTestProtocol>
+@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependencies, VTestProtocol>
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL calledInitMethod;
@@ -55,7 +55,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - VTestViewControllerWithNewMethod
 
-@interface VTestViewControllerWithNewMethod : UIViewController <VHasManagedDependancies>
+@interface VTestViewControllerWithNewMethod : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic) BOOL calledNewMethod;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -76,7 +76,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - VTestObjectWithProperty
 
-@interface VTestObjectWithProperty : NSObject <VHasManagedDependancies>
+@interface VTestObjectWithProperty : NSObject <VHasManagedDependencies>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -104,11 +104,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     self.dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
                                                 kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod",
-                                                kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty"
+                                                kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty",
+                                                @"solidColor.background": @"VSolidColorBackground",
                                             };
     
-    // The presence of this "base" dependency manager (with an empty configuration dictionary) exposed a bug in a previous iteration of VDependencyManager.
-    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                    configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
+                                                                dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
@@ -121,13 +123,20 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testColor
 {
     UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
-    UIColor *actual = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    UIColor *actual = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testParentColor
 {
     UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
+    UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testBackgroundColor
+{
+    UIColor *expected = [UIColor colorWithRed:0.6 green:0.2 blue:0.4 alpha:1];
     UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
@@ -278,6 +287,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
     XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[4] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+}
+
+- (void)testRootObject
+{
+    id viewController = [self.dependencyManager viewControllerForKey:@"rootComponent"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([viewController calledNewMethod]);
 }
 
 #pragma mark - Strings, numbers, arrays

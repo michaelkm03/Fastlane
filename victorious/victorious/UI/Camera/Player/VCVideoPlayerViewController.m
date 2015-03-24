@@ -13,7 +13,6 @@
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
-static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 1.0;
 
 static NSString * const kPlaybackBufferEmpty = @"playbackBufferEmpty";
 static NSString * const kPlaybackLikelyToKeepUp = @"playbackLikelyToKeepUp";
@@ -140,18 +139,21 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.playerLayer.backgroundColor = [UIColor clearColor].CGColor;
     [self.view.layer addSublayer:self.playerLayer];
     
-    VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
-    toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:toolbarView];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"
-                                                                      options:0
-                                                                      metrics:@{ @"toolbarHeight": @(kToolbarHeight) }
-                                                                        views:NSDictionaryOfVariableBindings(toolbarView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbarView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(toolbarView)]];
-    self.toolbarView = toolbarView;
+    if (self.shouldShowToolbar)
+    {
+        VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
+        toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:toolbarView];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"
+                                                                          options:0
+                                                                          metrics:@{ @"toolbarHeight": @(kToolbarHeight) }
+                                                                            views:NSDictionaryOfVariableBindings(toolbarView)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbarView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:NSDictionaryOfVariableBindings(toolbarView)]];
+        self.toolbarView = toolbarView;
+    }
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
     tap.numberOfTapsRequired = 1;
@@ -334,7 +336,14 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
     _overlayView = overlayView;
     _overlayView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view insertSubview:_overlayView belowSubview:self.toolbarView];
+    if ([self.view.subviews containsObject:self.toolbarView])
+    {
+        [self.view insertSubview:_overlayView belowSubview:self.toolbarView];
+    }
+    else
+    {
+        [self.view addSubview:_overlayView];
+    }
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlayView]|"
                                                                       options:0
                                                                       metrics:nil
@@ -496,17 +505,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.previousTime = self.currentTime;
     self.currentTime = time;
     
-    if ( [self didSkipFromPreviousTime:self.previousTime toCurrentTime:self.currentTime] )
-    {
-        if ( self.isTrackingEnabled && self.shouldShowToolbar )
-        {
-            NSDictionary *params = @{ VTrackingKeyFromTime : @( CMTimeGetSeconds( self.previousTime ) ),
-                                      VTrackingKeyToTime : @( CMTimeGetSeconds( self.currentTime ) ),
-                                      VTrackingKeyUrls : self.trackingItem.videoSkip };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidSkip parameters:params];
-        }
-    }
-    
     if (!self.sliderTouchActive)
     {
         self.toolbarView.slider.value = percentElapsed;
@@ -593,22 +591,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [self.player pause];
         }
     }
-}
-
-- (BOOL)didSkipFromPreviousTime:(CMTime)previousTime toCurrentTime:(CMTime)currentTime
-{
-    NSTimeInterval current = CMTimeGetSeconds( currentTime );
-    NSTimeInterval previous = CMTimeGetSeconds( previousTime );
-    
-    // Testing against NaN
-    if ( current != current || previous != previous )
-    {
-        return NO;
-    }
-    
-    BOOL didSkipForward = current - previous >= kTimeDifferenceLimitForSkipEvent;
-    BOOL didSkipBackward = previous - current >= kTimeDifferenceLimitForSkipEvent;
-    return didSkipBackward || didSkipForward;
 }
 
 - (void)removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:(AVPlayerItem *)currentItem
@@ -736,6 +718,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.sliderTouchActive = YES;
     self.rateBeforeScrubbing = self.player.rate;
     [self.player pause];
+    
+    [self didBeginSliderTouchInteraction];
 }
 
 - (IBAction)sliderValueChanged:(UISlider *)slider
@@ -756,12 +740,41 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [self.player setRate:self.rateBeforeScrubbing];
         }
         self.sliderTouchActive = NO;
+        
+        [self didCompleteTouchSliderInteraction];
     }];
 }
 
 - (IBAction)sliderTouchCancelled:(id)sender
 {
     self.sliderTouchActive = NO;
+    
+    [self didCompleteTouchSliderInteraction];
+}
+
+#pragma mark - Skip detection
+
+- (void)didBeginSliderTouchInteraction
+{
+    self.sliderTouchInteractionStartTime = self.player.currentTime;
+}
+
+- (void)didCompleteTouchSliderInteraction
+{
+    CMTime currentTime = self.player.currentTime;
+    
+    if ( CMTIME_IS_INDEFINITE(currentTime) || CMTIME_IS_INVALID(self.sliderTouchInteractionStartTime) )
+    {
+        return;
+    }
+    
+    if ( self.isTrackingEnabled && self.shouldShowToolbar )
+    {
+        NSDictionary *params = @{ VTrackingKeyFromTime : @( CMTimeGetSeconds( self.sliderTouchInteractionStartTime ) ),
+                                  VTrackingKeyToTime : @( CMTimeGetSeconds( currentTime) ),
+                                  VTrackingKeyUrls : self.trackingItem.videoSkip };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidSkip parameters:params];
+    }
 }
 
 #pragma mark - NSNotification handlers
@@ -790,11 +803,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 [self.delegate videoPlayerDidReachEndOfVideo:self];
             }
-            self.startedVideo           = NO;
-            self.finishedFirstQuartile  = NO;
-            self.finishedMidpoint       = NO;
-            self.finishedThirdQuartile  = NO;
-            self.finishedFourthQuartile = NO;
         }
     }
     

@@ -10,6 +10,7 @@
 #import "VObjectManager+Private.h"
 #import "VTrackingURLRequest.h"
 #import "VURLMacroReplacement.h"
+#import "NSCharacterSet+VURLParts.h"
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";

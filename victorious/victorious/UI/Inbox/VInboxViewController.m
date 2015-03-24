@@ -25,8 +25,6 @@
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUser.h"
-
-#import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
@@ -345,6 +343,16 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (void)displayConversationForUser:(VUser *)user
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
+    
+    if ( [self.navigationController.viewControllers containsObject:detailVC] )
+    {
+        if ( self.navigationController.topViewController != detailVC )
+        {
+            [self.navigationController popToViewController:detailVC animated:YES];
+        }
+        return;
+    }
+    
     detailVC.messageCountCoordinator = self.messageCountCoordinator;
     [self.navigationController pushViewController:detailVC animated:YES];
 }
@@ -405,7 +413,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
     
-    VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
+    VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
     [self.navigationController pushViewController:userSearch animated:YES];
 }

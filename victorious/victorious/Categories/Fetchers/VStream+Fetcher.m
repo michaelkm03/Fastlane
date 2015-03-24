@@ -44,23 +44,6 @@ NSString * const VStreamFilterTypePopular = @"popular";
     return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
-+ (VStream *)streamForHashTag:(NSString *)hashTag
-{
-    NSString *escapedHashtag = [hashTag stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_hashtag/%@/%@/%@",
-                         escapedHashtag, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
-    NSManagedObjectContext *context = [[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext];
-    VStream *stream = [self streamForPath:apiPath inContext:context];
-    stream.hashtag = hashTag;
-    stream.name = [@"#" stringByAppendingString:hashTag];
-    return stream;
-}
-
-+ (VStream *)streamForMarqueeInContext:(NSManagedObjectContext *)context
-{
-    return [self streamForRemoteId:@"marquee" filterName:@"0" managedObjectContext:context];
-}
-
 + (VStream *)streamForRemoteId:(NSString *)remoteId
                     filterName:(NSString *)filterName
           managedObjectContext:(NSManagedObjectContext *)context

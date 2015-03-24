@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
+
 @interface VUserSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-+ (instancetype)newFromStoryboard;
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  A context for this search.

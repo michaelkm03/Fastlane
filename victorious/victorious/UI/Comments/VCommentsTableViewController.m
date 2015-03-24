@@ -10,6 +10,8 @@
 #import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"
 #import "VRTCUserPostedAtFormatter.h"
+#import "VRootViewController.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
@@ -278,7 +280,7 @@
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:comment.user];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:comment.user];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -297,13 +299,14 @@
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else
     {
         //Tapped a hashtag, show a hashtag view controller
-        VHashtagStreamCollectionViewController *hashtagViewController = [VHashtagStreamCollectionViewController instantiateWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        VDependencyManager *dependencyManager = [[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager];
+        VHashtagStreamCollectionViewController *hashtagViewController = [dependencyManager hashtagStreamWithHashtag:[tag.displayString.string substringFromIndex:1]];
         [self.navigationController pushViewController:hashtagViewController animated:YES];
     }
 }
@@ -365,11 +368,6 @@
     editViewController.transitioningDelegate = self.transitionDelegate;
     editViewController.delegate = self;
     [self presentViewController:editViewController animated:YES completion:nil];
-}
-
-- (void)didSelectActionRequiringLogin
-{
-    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

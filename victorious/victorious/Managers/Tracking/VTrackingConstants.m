@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 03/09/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 03/23/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -24,6 +24,7 @@ NSString * const VTrackingEventUserDidSelectStream = @"UserDidSelectStream";
 NSString * const VTrackingEventUserDidSelectCreatePost = @"UserDidSelectCreatePost";
 NSString * const VTrackingEventCreatePollSelected = @"CreatePollSelected";
 NSString * const VTrackingEventCreateImagePostSelected = @"CreateImagePostSelected";
+NSString * const VTrackingEventCreateTextOnlyPostSelected = @"CreateTextOnlyPostSelected";
 NSString * const VTrackingEventCreateVideoPostSelected = @"CreateVideoPostSelected";
 NSString * const VTrackingEventCreateGIFPostSelected = @"CreateGIFPostSelected";
 NSString * const VTrackingEventCreateCancelSelected = @"CreateCancelSelected";
@@ -131,6 +132,7 @@ NSString * const VTrackingEventUserDidSelectItemFromStream = @"UserDidSelectItem
 NSString * const VTrackingEventUserDidSelectItemFromMarquee = @"UserDidSelectItemFromMarquee";
 NSString * const VTrackingEventUserDidViewHashtagStream = @"UserDidViewHashtagStream";
 NSString * const VTrackingEventUserDidViewStream = @"UserDidViewStream";
+NSString * const VTrackingEventFirstTimeUserVideoPlayed = @"FirstTimeUserVideoPlayed";
 
 NSString * const VTrackingEventUserDidVoteSequence = @"UserDidVoteSequence";
 NSString * const VTrackingEventUserDidRepost = @"UserDidRepost";
@@ -269,6 +271,7 @@ NSString * const VTrackingValuePoll = @"Poll";
 NSString * const VTrackingValueDiscoverSearch = @"DiscoverSearch";
 NSString * const VTrackingValueTrendingHashtags = @"TrendingHashtags";
 NSString * const VTrackingValueUserSearch = @"UserSearch";
+NSString * const VTrackingValueHashtagSearch = @"HashtagSearch";
 NSString * const VTrackingValueEndCard = @"EndCard";
 NSString * const VTrackingValueUserProfile = @"UserProfile";
 NSString * const VTrackingValueContentView = @"ContentView";
@@ -286,4 +289,4 @@ NSString * const VTrackingValueMessage = @"Message";
 
 // Menu types
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";
-// TabBar
+NSString * const VTrackingValueTabBar = @"TabBar";

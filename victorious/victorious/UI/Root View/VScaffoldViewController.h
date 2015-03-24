@@ -8,9 +8,11 @@
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
+#import "VNavigationDestinationsProvider.h"
+
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VSequence, VAuthorization;
 
 /**
  The key that identifies the menu component in VDependencyManager
@@ -28,6 +30,11 @@ extern NSString * const VScaffoldViewControllerContentViewComponentKey;
 extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
 
 /**
+ The key that identifies the welcome view component in the VDependencyManager
+ */
+extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
+
+/**
  Abstract base class for view controllers that act as "scaffolding",
  meaning a root-level view controller that contains the other
  important component parts of the app: at minimum, a menu and a
@@ -36,20 +43,19 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
  This base class does not do any custom view loading--loadView
  implementation is up to subclasses.
  */
-@interface VScaffoldViewController : UIViewController <VHasManagedDependancies>
+@interface VScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
 /**
- The app's menu component. Retrieved from VDependencyManager. Subclasses
- are responsible for adding it as a child view controller.
- */
-@property (nonatomic, readonly) UIViewController *menuViewController;
-
-/**
  Initializes the receiver with an instance of VDependencyManager
  */
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ Initializes the receiver with a nib name and an instance of VDependencyManager
+ */
+//- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName NS_DESIGNATED_INITIALIZER;
 
 /**
  Presents a content view for the specified VSequence object.
@@ -66,6 +72,14 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
  Navigates to the view controller pointed to by the given URL
  */
 - (void)navigateToDeeplinkURL:(NSURL *)url;
+
+/**
+ Subclasses should override this and return a list of navigation destinations
+ that they know about. For example, the list of items in a side menu or
+ tab bar. This information will be used to find view controllers that can
+ handle deep links.
+ */
+- (NSArray *)navigationDestinations;
 
 /**
  Attempt to navigate to a destination (the destination will

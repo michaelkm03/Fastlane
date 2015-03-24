@@ -10,15 +10,22 @@
 
 #import "VSequenceActionsDelegate.h"
 #import "VSequence+Fetcher.h"
-#import "VThemeManager.h"
 
 #import "VConstants.h"
 
+#import "VDependencyManager.h"
+
 static CGFloat const kGreyBackgroundColor       = 0.94509803921;
-static CGFloat const kActionButtonBuffer        = 15;
+CGFloat const VStreamCellActionViewActionButtonBuffer = 15;
 static CGFloat const kScaleActive               = 1.0f;
 static CGFloat const kScaleScaledUp             = 1.4f;
 static CGFloat const kRepostedDisabledAlpha     = 0.3f;
+
+NSString * const VStreamCellActionViewShareIconKey = @"shareIcon";
+NSString * const VStreamCellActionViewRemixIconKey = @"remixIcon";
+NSString * const VStreamCellActionViewRepostIconKey = @"repostIcon";
+NSString * const VStreamCellActionViewRepostSuccessIconKey = @"repostSuccessIcon";
+NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
 
 @interface VStreamCellActionView()
 
@@ -49,29 +56,57 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     {
         return;
     }
+    
+    [self updateLayoutOfButtons];
+}
 
+- (void)updateLayoutOfButtons
+{
+    CGFloat totalButtonWidths = 0.0f;
+    for ( UIButton *button in self.actionButtons )
+    {
+        totalButtonWidths += CGRectGetWidth(button.bounds);
+    }
+    
+    CGFloat separatorSpace = ( CGRectGetWidth(self.bounds) - totalButtonWidths - VStreamCellActionViewActionButtonBuffer * 2 ) / ( self.actionButtons.count - 1 );
+    
     for (NSUInteger i = 0; i < self.actionButtons.count; i++)
     {
         UIButton *button = self.actionButtons[i];
         CGRect frame = button.frame;
         if (i == 0)
         {
-            frame.origin.x = kActionButtonBuffer;
+            frame.origin.x = VStreamCellActionViewActionButtonBuffer;
         }
         else if (i == self.actionButtons.count-1)
         {
-            frame.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) - kActionButtonBuffer;
+            frame.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) - VStreamCellActionViewActionButtonBuffer;
         }
         else
         {
-            //Count up all the available space (minus buttons and the buffers)
-            CGFloat leftOvers = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) * self.actionButtons.count - kActionButtonBuffer * 2;
-            //Left overs per button. 
-            CGFloat leftoversPerButton = leftOvers / (self.actionButtons.count - 1);
-            
-            frame.origin.x = kActionButtonBuffer + (leftoversPerButton + CGRectGetWidth(button.bounds)) * i;
+            UIButton *lastButton = self.actionButtons[i - 1];
+            frame.origin.x = CGRectGetMaxX(lastButton.frame) + separatorSpace;
         }
         button.frame = frame;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    UIColor *borderColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    if ( borderColor != nil )
+    {
+        self.layer.borderColor = borderColor.CGColor;
+    }
+    
+    UIColor *textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    if ( textColor != nil )
+    {
+        for ( UIButton *button in self.actionButtons )
+        {
+            [button setTintColor:textColor];
+        }
     }
 }
 
@@ -86,7 +121,7 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 - (void)addShareButton
 {
-    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"shareIcon-C"]];
+    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewShareIconKey];
     [button addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -100,7 +135,7 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 - (void)addRemixButton
 {
-    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"remixIcon-C"]];
+    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewRemixIconKey];
     [button addTarget:self action:@selector(remixAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -108,15 +143,15 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
-        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditGIF];
     }
 }
 
 - (void)addRepostButton
 {
-    self.repostButton = [self addButtonWithImage:[UIImage imageNamed:@"repostIcon-C"]];
+    self.repostButton = [self addButtonWithImageKey:VStreamCellActionViewRepostIconKey];
     [self.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
     
     BOOL hasRespoted = NO;
@@ -126,8 +161,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     }
     
     self.repostButton.alpha = hasRespoted ? kRepostedDisabledAlpha : 1.0f;
-    NSString *imageName = hasRespoted ? @"repostIcon-success-C" : @"repostIcon-C";
-    [self.repostButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    NSString *imageKey = hasRespoted ? VStreamCellActionViewRepostSuccessIconKey : VStreamCellActionViewRepostIconKey;
+    NSString *normalStateImageName = [[[self class] buttonImages] objectForKey:imageKey];
+    [self.repostButton setImage:[UIImage imageNamed:normalStateImageName] forState:UIControlStateNormal];
 }
 
 - (void)repostAction:(id)sender
@@ -148,7 +184,8 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     [self.sequenceActionsDelegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
      {
          self.isAnimatingButton = YES;
-         [self.repostButton setImage:[UIImage imageNamed:@"repostIcon-success-C"] forState:UIControlStateNormal];
+         NSString *imageName = [[[self class] buttonImages] objectForKey:VStreamCellActionViewRepostSuccessIconKey];
+         [self.repostButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
          
          [UIView animateWithDuration:0.15f
                                delay:0.0f
@@ -180,7 +217,7 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 - (void)addMoreButton
 {
-    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"overflowBtn-C"]];
+    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewMoreIconKey];
     [button addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -195,15 +232,40 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     }
 }
 
+- (UIButton *)addButtonWithImageKey:(NSString *)imageKey
+{
+    NSString *imageName = [[[self class] buttonImages] objectForKey:imageKey];
+    return [self addButtonWithImage:[UIImage imageNamed:imageName]];
+}
+
 - (UIButton *)addButtonWithImage:(UIImage *)image
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    button.frame = CGRectMake(0, 0, CGRectGetHeight(self.bounds), CGRectGetHeight(self.bounds));
-    button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    CGFloat buttonSide = CGRectGetHeight(self.bounds);
+    button.frame = CGRectMake(0, 0, buttonSide, buttonSide);
+    button.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     [self addSubview:button];
     [self.actionButtons addObject:button];
     return button;
+}
+
+//Dictionary of images to use. This is a shared instance just to be easily subclassable (if not you have to know where it was instantiated in the superclass and overwrite it afterwards)
++ (NSDictionary *)buttonImages
+{
+    static NSDictionary *buttonImages;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      buttonImages = @{
+                                       VStreamCellActionViewShareIconKey : @"shareIcon-C",
+                                       VStreamCellActionViewRemixIconKey : @"remixIcon-C",
+                                       VStreamCellActionViewRepostIconKey : @"repostIcon-C",
+                                       VStreamCellActionViewRepostSuccessIconKey : @"repostIcon-success-C",
+                                       VStreamCellActionViewMoreIconKey : @"overflowBtn-C"
+                                       };
+                  });
+    return buttonImages;
 }
 
 @end

@@ -8,7 +8,7 @@
 
 #import "NSURL+VPathHelper.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorizedAction.h"
 #import "VConversation.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VInboxContainerViewController.h"
@@ -98,12 +98,6 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    return isTemplateC ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
-}
-
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
 {
     if (_messageCountCoordinator)
@@ -129,7 +123,8 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
 
     if ( [inboxViewController isKindOfClass:[VInboxViewController class]] )
     {
-//        inboxViewController.messageCountCoordinator = self.messageCountCoordinator;
+        inboxViewController.dependencyManager = self.dependencyManager;
+        inboxViewController.messageCountCoordinator = self.messageCountCoordinator;
     }
 }
 
@@ -147,17 +142,11 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     }
 }
 
-#pragma mark - VNavigationDestination methods
+#pragma mark - VNavigationDestination
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (VAuthorizationContext)authorizationContext
 {
-    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:self.dependencyManager.objectManager];
-    if (authorizationViewController)
-    {
-        [[VRootViewController rootViewController] presentViewController:authorizationViewController animated:YES completion:nil];
-        return NO;
-    }
-    return YES;
+    return VAuthorizationContextInbox;
 }
 
 #pragma mark - VDeeplinkHandler methods

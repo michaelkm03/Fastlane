@@ -13,6 +13,7 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
 {
     VVideoToolControllerInitialVideoEditStateVideo,
     VVideoToolControllerInitialVideoEditStateGIF, // Default
+    VVideoToolControllerInitialVideoEditStateMeme
 };
 
 @class VVideoToolController;
@@ -41,11 +42,6 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
  *  A delegate to inform about certain events. Currently just snapshots.
  */
 @property (nonatomic, weak) id<VVideoToolControllerDelegate> videoToolControllerDelegate;
-
-/**
- *  The media URL to use for editing.
- */
-@property (nonatomic, strong) NSURL *mediaURL;
 
 /**
  *  The default video tool.

@@ -8,6 +8,7 @@
 
 #import "VTrackingManager.h"
 #import "VTrackingEvent.h"
+#import "VTrackingEventLog.h"
 
 #define TRACKING_LOGGING_ENABLED 0
 #define TRACKING_EVENT_ALERTS_ENABLED 0
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) NSMutableArray *delegates;
 @property (nonatomic, strong) NSMutableDictionary *durationEvents;
 @property (nonatomic, strong) NSMutableDictionary *sessionParameters;
+@property (nonatomic, strong) VTrackingEventLog *eventLog;
 
 @end
 
@@ -52,6 +54,11 @@
         _queuedEvents = [[NSMutableArray alloc] init];
         _durationEvents = [[NSMutableDictionary alloc] init];
         _sessionParameters = [[NSMutableDictionary alloc] init];
+        
+#ifndef V_NO_TRACKING_ALERTS
+        _eventLog = [[VTrackingEventLog alloc] init];
+        [_eventLog clearEvents];
+#endif
     }
     return self;
 }
@@ -65,14 +72,32 @@
         id value = dictionary[key];
         if ( [value isKindOfClass:[NSArray class]] )
         {
-            value = [NSString stringWithFormat:@"(%@)", @(((NSArray *)value).count)];
+            NSArray *arrayValue = (NSArray *)value;
+            NSString *stringValue = [NSString stringWithFormat:@"%@", arrayValue.firstObject];
+            for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+            {
+                stringValue = [@" " stringByAppendingString:stringValue];
+            }
+            output = [output stringByAppendingFormat:@"\n\t%@:%@", key, stringValue];
+            for ( NSUInteger i = 1; i < arrayValue.count; i++ )
+            {
+                id itemValue = arrayValue[i];
+                for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+                {
+                    output = [output stringByAppendingString:@" "];
+                }
+                output = [output stringByAppendingFormat:@"\n\t%@", itemValue];
+            }
         }
-        NSString *stringValue = [NSString stringWithFormat:@"%@", value];
-        for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+        else
         {
-            stringValue = [@" " stringByAppendingString:stringValue];
+            NSString *stringValue = [NSString stringWithFormat:@"%@", value];
+            for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+            {
+                stringValue = [@" " stringByAppendingString:stringValue];
+            }
+            output = [output stringByAppendingFormat:@"\n\t%@:%@", key, stringValue];
         }
-        output = [output stringByAppendingFormat:@"\n\t%@:%@", key, stringValue];
     }
     return output;
 }
@@ -123,6 +148,9 @@
     {
         return;
     }
+#ifndef V_NO_TRACKING_ALERTS
+    [self.eventLog logEvent:eventName parameters:parameters];
+#endif
     
     NSDictionary *completeParams = [self addSessionParametersToDictionary:parameters];
     
@@ -132,14 +160,10 @@
     
     if ( self.showTrackingEventAlerts )
     {
-        NSString *message = @"";
-        for ( NSString *key in completeParams )
-        {
-            message = [message stringByAppendingFormat:@"\n%@: %@", key, completeParams[key]];
-        }
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
-                           [[[UIAlertView alloc] initWithTitle:eventName message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                           [[[UIAlertView alloc] initWithTitle:eventName message:[self stringFromDictionary:completeParams]
+                                                      delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
                        });
     }
     

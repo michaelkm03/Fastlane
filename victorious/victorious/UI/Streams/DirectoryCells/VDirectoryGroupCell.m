@@ -17,8 +17,6 @@
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
 
-const NSUInteger VDirectoryMaxItemsPerGroup = 10;
-
 CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
 static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
@@ -31,7 +29,6 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
-@property (nonatomic, strong) VDependencyManager *itemCellDependencyManager;
 
 @end
 
@@ -70,13 +67,10 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    _dependencyManager = dependencyManager;
+    [super setDependencyManager:dependencyManager];
     
-    self.nameLabel.font = [_dependencyManager fontForKey:@"font.header"];
-    self.nameLabel.textColor = [_dependencyManager colorForKey:@"color.text"];
-    
-    NSDictionary *component = [_dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
-    self.itemCellDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:component];
+    self.nameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.nameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     
     [self.collectionView reloadData];
 }
@@ -129,18 +123,22 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return MIN( self.stream.streamItems.count, VDirectoryMaxItemsPerGroup + (NSUInteger)1 );
+    if ( [self hasSequenceStream] )
+    {
+        return 1;
+    }
+    return self.stream.streamItems.count + ([self shouldShowShowMore] ? 1 : 0);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //Check if item is last in number of items in section, this is the "show more" cell
-    if ( indexPath.item == VDirectoryMaxItemsPerGroup )
+    if ( [self shouldShowShowMore] && indexPath.item == [self indexPathForShowMore].item )
     {
         NSString *identifier = [VDirectorySeeMoreItemCell suggestedReuseIdentifier];
         VDirectorySeeMoreItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                                 forIndexPath:indexPath];
-        [self.cellDecorator applyStyleToSeeMoreCell:seeMoreCell withDependencyManager:self.itemCellDependencyManager];
+        [self.cellDecorator applyStyleToSeeMoreCell:seeMoreCell withDependencyManager:self.dependencyManager];
         
         return seeMoreCell;
     }
@@ -150,14 +148,38 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
         NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
         VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                            forIndexPath:indexPath];
-        VStreamItem *streamItem = self.stream.streamItems[ indexPath.row ];
+        VStreamItem *streamItem = [self hasSequenceStream] ? self.stream : self.stream.streamItems[ indexPath.row ];
         [self.cellDecorator populateCell:directoryCell withStreamItem:streamItem];
-        [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.itemCellDependencyManager];
+        [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
         
         return directoryCell;
     }
     
     return nil;
+}
+
+- (BOOL)hasSequenceStream
+{
+    return [self.stream isKindOfClass:[VSequence class]];
+}
+
+- (BOOL)shouldShowShowMore
+{
+    if ([self.stream.count integerValue] > (NSInteger)self.stream.streamItems.count)
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (NSIndexPath *)indexPathForShowMore
+{
+    if (![self shouldShowShowMore])
+    {
+        return nil;
+    }
+    NSInteger lastIndexInSection = [self collectionView:self.collectionView numberOfItemsInSection:0];
+    return [NSIndexPath indexPathForItem:lastIndexInSection-1 inSection:0];
 }
 
 #pragma mark - UICollectionViewDelegate

@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAuthorizationProvider.h"
+#import "VTransitionDelegate.h"
+#import "VPresentWithBlurTransition.h"
+#import "VAuthorizationContextHelper.h"
+
 typedef NS_ENUM(NSUInteger, VLoginType)
 {
     kVLoginTypeNone,
@@ -14,8 +19,24 @@ typedef NS_ENUM(NSUInteger, VLoginType)
     kVLoginTypeTwitter,
 };
 
-@interface VLoginViewController : UIViewController
+@class VDependencyManager;
 
-+ (VLoginViewController *)loginViewController;
+@interface VLoginViewController : UIViewController <VAuthorizationProvider, VPresentWithBlurViewController>
+
++ (VLoginViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+
+/**
+ VPresentWithBlurViewController
+ */
+@property (nonatomic, strong) UIView *blurredBackgroundView;
+
+/**
+ VPresentWithBlurViewController
+ */
+@property (nonatomic, strong) NSOrderedSet *stackedElements;
+
+@property (nonatomic, assign) VAuthorizationContext authorizationContextType;
 
 @end

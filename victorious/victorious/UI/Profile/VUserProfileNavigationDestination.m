@@ -7,7 +7,6 @@
 //
 
 #import "NSURL+VPathHelper.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
 #import "VRootViewController.h"
@@ -52,15 +51,16 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
 #pragma mark - VNavigationDestination conformance
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithRemoteId:self.objectManager.mainUser.remoteId];
+    VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser andDependencyManager:self.dependencyManager];
     userProfileViewController.representsMainUser = YES;
     if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
     {
         [userProfileViewController setDependencyManager:self.dependencyManager];
     }
     *alternateViewController = userProfileViewController;
+    
     return YES;
 }
 
@@ -78,26 +78,11 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
         NSInteger userID = [[url v_firstNonSlashPathComponent] integerValue];
         if ( userID != 0 )
         {
-            [[VObjectManager sharedManager] fetchUser:@(userID)
-                                     withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+            VUserProfileViewController *profileVC = [VUserProfileViewController rootDependencyProfileWithRemoteId:@(userID)];
+            dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                VUser *user = [resultObjects firstObject];
-                
-                if ( user == nil )
-                {
-                    completion(nil);
-                }
-                else
-                {
-                    VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:user forKey:VScaffoldViewControllerUserProfileViewComponentKey];
-                    completion(profileVC);
-                }
-            }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-            {
-                VLog(@"Failed to load user with error: %@", [error localizedDescription]);
-                completion(nil);
-            }];
+                completion(profileVC);
+            });
             return YES;
         }
     }

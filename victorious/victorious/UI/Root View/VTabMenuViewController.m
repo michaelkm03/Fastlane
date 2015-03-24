@@ -13,7 +13,7 @@
 #import "VNavigationDestination.h"
 
 // DependencyManager Helpers
-#import "VDependencyManager+VNavigationMenuItem.h"
+#import "VTabMenuShim.h"
 
 // ViewControllers
 #import "VNavigationController.h"
@@ -22,7 +22,10 @@
 // Backgrounds
 #import "VSolidColorBackground.h"
 
-NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
+// Categories
+#import "NSArray+VMap.h"
+
+NSString * const kMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
 
@@ -31,6 +34,8 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
 @property (nonatomic, strong) UITabBarController *internalTabBarViewController;
 
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
+
+@property (nonatomic, strong) VTabMenuShim *tabShim;
 
 @end
 
@@ -43,6 +48,7 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
+        _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
     }
     return self;
 }
@@ -63,8 +69,7 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
     
     // Configure Tab Bar
     [self.internalTabBarViewController.tabBar setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
-    NSDictionary *tabBarAppearanceDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VTabMenuViewControllerMenuAppearanceKey];
-    VBackground *backgroundForTabBar = [[self.dependencyManager childDependencyManagerWithAddedConfiguration:tabBarAppearanceDictionary] templateValueOfType:[VBackground class] forKey:VDependencyManagerBackgroundKey];
+    VBackground *backgroundForTabBar = self.tabShim.background;
     if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
     {
         VSolidColorBackground *solidColorBackground = (VSolidColorBackground *)backgroundForTabBar;
@@ -75,7 +80,7 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
     [self.view addSubview:self.internalTabBarViewController.view];
     [self.internalTabBarViewController didMoveToParentViewController:self];
     
-    self.internalTabBarViewController.viewControllers = [self wrappedNavigationDesinations];
+    self.internalTabBarViewController.viewControllers = [self.tabShim wrappedNavigationDesinations];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -85,12 +90,12 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
 
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
-    return self.tabBarController.selectedViewController;
+    return self.internalTabBarViewController.selectedViewController;
 }
 
 - (UIViewController *)childViewControllerForStatusBarHidden
 {
-    return self.tabBarController.selectedViewController;
+    return self.internalTabBarViewController.selectedViewController;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
@@ -98,11 +103,34 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
     return [self.tabBarController.selectedViewController preferredStatusBarUpdateAnimation];
 }
 
+#pragma mark - VScaffoldViewController
+
+- (NSArray *)navigationDestinations
+{
+    return [self.internalTabBarViewController.viewControllers v_map:^id(VNavigationDestinationContainerViewController *container)
+    {
+        if ( [container isKindOfClass:[VNavigationDestinationContainerViewController class]] )
+        {
+            return container.navigationDestination;
+        }
+        else
+        {
+            return container;
+        }
+    }];
+}
+
 #pragma mark - UITabBarControllerDelegate
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
 shouldSelectViewController:(VNavigationDestinationContainerViewController *)viewController
 {
+    NSInteger index = [tabBarController.viewControllers indexOfObject:viewController];
+    if ( index != NSNotFound )
+    {
+        [self.tabShim willNavigateToIndex:index];
+    }
+    
     self.willSelectContainerViewController = viewController;
     [self navigateToDestination:viewController.navigationDestination];
     return NO;
@@ -113,6 +141,19 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     if ( self.presentedViewController != nil )
     {
         [self dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    if ( self.willSelectContainerViewController == nil )
+    {
+        for ( VNavigationDestinationContainerViewController *containerViewController in self.internalTabBarViewController.viewControllers )
+        {
+            if ( [containerViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] &&
+                 (id)containerViewController.navigationDestination == viewController)
+            {
+                self.willSelectContainerViewController = containerViewController;
+                break;
+            }
+        }
     }
     
     if (self.willSelectContainerViewController != nil)
@@ -127,35 +168,16 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         [self.internalTabBarViewController setSelectedViewController:self.willSelectContainerViewController];
         [self setNeedsStatusBarAppearanceUpdate];
         self.willSelectContainerViewController = nil;
-        return;
     }
-}
-
-#pragma mark - Private Methods
-
-- (NSArray *)wrappedNavigationDesinations
-{
-    NSMutableArray *wrappedMenuItems = [[NSMutableArray alloc] init];
-    NSArray *menuItems = [self.dependencyManager menuItems];
-    for (VNavigationMenuItem *menuItem in menuItems)
+    else if ( [self.internalTabBarViewController.selectedViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
     {
-        VNavigationDestinationContainerViewController *shimViewController = [[VNavigationDestinationContainerViewController alloc] initWithNavigationDestination:menuItem.destination];
-        VNavigationController *containedNavigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-        
-        if ([menuItem.destination isKindOfClass:[UIViewController class]])
+        VNavigationDestinationContainerViewController *containerViewController = (VNavigationDestinationContainerViewController *)self.internalTabBarViewController.selectedViewController;
+        if ( [containerViewController.containedViewController isKindOfClass:[VNavigationController class]] )
         {
-            [containedNavigationController.innerNavigationController pushViewController:(UIViewController *)menuItem.destination
-                                                                               animated:NO];
-            shimViewController.containedViewController = containedNavigationController;
+            VNavigationController *navigationController = (VNavigationController *)containerViewController.containedViewController;
+            [navigationController.innerNavigationController pushViewController:viewController animated:YES];
         }
-        
-        shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
-                                                                      image:menuItem.icon
-                                                              selectedImage:menuItem.icon];
-        shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
-        [wrappedMenuItems addObject:shimViewController];
     }
-    return wrappedMenuItems;
 }
 
 @end

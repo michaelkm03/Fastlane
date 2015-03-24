@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
+#define LOG_API_RESPONSES 0
+
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -16,7 +18,7 @@
 
 #import "VConversation.h"
 #import "VPollResult+RestKit.h"
-
+#import "VDependencyManager.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VVoteType.h"
@@ -25,9 +27,16 @@
 
 #import "VUserManager.h"
 
+//Imported to log out the payload from the database and the payload we would have gotten from the (deprecated) api/init and the VTemplateGenerator
+#import "VTemplateGenerator.h"
+#import "NSDictionary+VJSONLogging.h"
+
 @implementation VObjectManager (Login)
 
 NSString * const kLoggedInChangedNotification          = @"com.getvictorious.LoggedInChangedNotification";
+
+static NSString * const kDefaultTemplateName = @"defaultTemplate";
+static NSString * const kJSONType = @"json";
 
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
@@ -40,12 +49,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self updateTheme:[VThemeManager sharedThemeManager] withResponsePayload:fullResponse[kVPayloadKey]];
-
-        [self updateSettings:[VSettingManager sharedManager] withResponsePayload:fullResponse[kVPayloadKey]];
-        
-        [self updateSettings:[VSettingManager sharedManager] withResultObjects:resultObjects];
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -59,64 +62,68 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
            failBlock:failed];
 }
 
-- (void)updateTheme:(VThemeManager *)themeManager withResponsePayload:(NSDictionary *)payload
+- (RKManagedObjectRequestOperation *)templateWithDependencyManager:(VDependencyManager *)parentDependencyManager
+                                                      successBlock:(VTemplateSuccessBlock)success
+                                                         failBlock:(VFailBlock)failed
 {
-    NSDictionary *newTheme = payload[kVAppearanceKey];
-    if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [themeManager setTheme:newTheme];
-    }
+        if ( success == nil )
+        {
+            return;
+        }
+        if ( ![fullResponse isKindOfClass:[NSDictionary class]] )
+        {
+            if ( failed != nil )
+            {
+                failed(operation, nil);
+            }
+        }
+        
+#if LOG_API_RESPONSES
+#warning API LOGGING IS ENABLED!
+        [(NSDictionary *)fullResponse[@"payload"] logJSONStringWithTitle:@"FROM DB"];
+        [VTemplateGenerator logExampleTemplate];
+#endif
+        
+        NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
+        template = [self concatenateTemplateWithDefaultTemplate:template];
+        
+        VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
+                                                                                    configuration:template
+                                                                dictionaryOfClassesByTemplateName:nil];
+        success(operation, fullResponse, dependencyManager);
+    };
+    
+    return [self GET:@"/api/template"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:failed];
 }
 
-- (void)updateSettings:(VSettingManager *)settingsManager withResponsePayload:(NSDictionary *)payload
+- (NSDictionary *)concatenateTemplateWithDefaultTemplate:(NSDictionary *)originalTemplate
 {
-    NSDictionary *videoQuality = payload[kVVideoQualityKey];
-    if ([videoQuality isKindOfClass:[NSDictionary class]])
+    // Load a default template
+    NSString *defaultTemplatePath = [[NSBundle bundleForClass:[self class]] pathForResource:kDefaultTemplateName ofType:kJSONType];
+    NSError *error = nil;
+    NSData *defaultTemplateData = [NSData dataWithContentsOfFile:defaultTemplatePath options:kNilOptions error:&error];
+    if (error != nil)
     {
-        [settingsManager updateSettingsWithDictionary:videoQuality];
+        return originalTemplate;
+    }
+    NSDictionary *defaultTemplate = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
+    if (error != nil)
+    {
+        return originalTemplate;
     }
     
-    NSString *app_store_url = payload[@"app_store_url"];
-    if (app_store_url)
-    {
-        NSDictionary *dict = @{@"url.appstore": app_store_url};
-        [settingsManager updateSettingsWithDictionary:dict];
-    }
+    // Combine templates
+    NSMutableDictionary *combinedDictionary = [[NSMutableDictionary alloc] init];
+    [combinedDictionary addEntriesFromDictionary:defaultTemplate];
+    [combinedDictionary addEntriesFromDictionary:originalTemplate];
     
-    NSDictionary *experiments = payload[kVExperimentsKey];
-    if ([experiments isKindOfClass:[NSDictionary class]])
-    {
-        [settingsManager updateSettingsWithDictionary:experiments];
-    }
-}
-
-- (void)updateSettings:(VSettingManager *)settingsManager withResultObjects:(NSArray *)resultObjects
-{
-    if ( ![resultObjects isKindOfClass:[NSArray class]] || resultObjects == nil || resultObjects.count == 0 )
-    {
-        return;
-    }
-    
-    VTracking *tracking = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VTracking class]].firstObject;
-    [settingsManager updateSettingsWithAppTracking:tracking];
-    
-    NSArray *voteTypes = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VVoteType class]];
-    settingsManager.voteSettings.voteTypes = voteTypes;
-}
-
-- (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class
-{
-    NSParameterAssert( class != nil );
-    if ( ![array isKindOfClass:[NSArray class]] || array == nil || array.count == 0 )
-    {
-        return @[];
-    }
-    
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *bindings)
-                              {
-                                  return [obj isKindOfClass:class];
-                              }];
-    return [array filteredArrayUsingPredicate:predicate];
+    return [NSDictionary dictionaryWithDictionary:combinedDictionary];
 }
 
 #pragma mark - Login and status

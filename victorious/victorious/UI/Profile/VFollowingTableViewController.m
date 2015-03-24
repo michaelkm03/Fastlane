@@ -11,13 +11,14 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorizedAction.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
+#import "VDependencyManager.h"
 
 static NSString * const kVFollowerCellName = @"followerCell";
 
@@ -29,6 +30,16 @@ static NSString * const kVFollowerCellName = @"followerCell";
 @end
 
 @implementation VFollowingTableViewController
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _dependencyManager = dependencyManager;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -222,25 +233,26 @@ static NSString * const kVFollowerCellName = @"followerCell";
     cell.profile = self.following[indexPath.row];
     cell.showButton = NO;
     cell.haveRelationship = haveRelationship;
+    cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
+        // Check for authorization first
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:self.dependencyManager];
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+         {
+             if ([mainUser.following containsObject:profile])
+             {
+                 [self unfollowFriendAction:profile];
+             }
+             else
+             {
+                 [self followFriendAction:profile];
+             }
+         }];
 
-        if ([mainUser.following containsObject:profile])
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
     };
     return cell;
 }
@@ -248,16 +260,8 @@ static NSString * const kVFollowerCellName = @"followerCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser  *user = self.following[indexPath.row];
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
-    {
-        //[self loadMoreFollowings];
-    }
 }
 
 - (IBAction)refresh:(id)sender
@@ -342,7 +346,7 @@ static NSString * const kVFollowerCellName = @"followerCell";
     {
         NSString *msg, *title;
         
-        self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+        self.isMe = [[VObjectManager sharedManager] mainUser] != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue;
         
         if (self.isMe)
         {

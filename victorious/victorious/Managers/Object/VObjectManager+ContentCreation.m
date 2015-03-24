@@ -343,7 +343,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             [asset addCommentsObject: newComment];
         }
         
-        NSDictionary *params = @{ VTrackingKeyTextLength : @(text.length),
+        NSString *commentText = payload[@"text"];
+        NSDictionary *params = @{ VTrackingKeyTextLength : @(commentText.length),
                                   VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment parameters:params];
 

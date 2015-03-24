@@ -109,9 +109,9 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 /**
  Returns the NSArray with the specified key. If the array
  elements contain configuration dictionaries for dependant
- objects, those configuration dictionaries can be passed
- into -objectFromDictionary to instantiate a new object.
- */
+ objects, those objects will be instantiated and added to
+ the array.
+*/
 - (NSArray *)arrayForKey:(NSString *)key;
 
 /**
@@ -145,6 +145,17 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  be returned again.
  */
 - (NSArray *)arrayOfSingletonValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns an NSArray of NSString objects for the specified key. These 
+ NSString objects will contain URLs pointing to images.
+ */
+- (NSArray *)arrayOfImageURLsForKey:(NSString *)key;
+
+/**
+ Returns an array of all image URLs that appear in the template.
+ */
+- (NSArray *)arrayOfAllImageURLs;
 
 /**
  Returns the value stored for the specified key in the configuration

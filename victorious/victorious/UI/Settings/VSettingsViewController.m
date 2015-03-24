@@ -12,7 +12,6 @@
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
@@ -28,6 +27,7 @@
 #import "VPurchaseManager.h"
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
+#import "VAppInfo.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -39,6 +39,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 5;
 static const NSInteger kTrackingButtonIndex          = 6;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
+static NSString * const kSupportEmailKey = @"email.support";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
@@ -224,7 +225,10 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     else
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+        [self presentViewController:navigationController animated:YES completion:nil];
     }
     
     [self.tableView beginUpdates];
@@ -243,7 +247,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     if ( [viewController respondsToSelector:@selector(setDependencyManager:)] )
     {
-        [(id<VHasManagedDependancies>)viewController setDependencyManager:self.dependencyManager];
+        [(id<VHasManagedDependencies>)viewController setDependencyManager:self.dependencyManager];
     }
 }
 
@@ -323,32 +327,47 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+        VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+        NSString *creatorName = appInfo.appName;
+        NSString *recipientEmail = [self.dependencyManager stringForKey:kSupportEmailKey];
         
-        MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
-        NSString *msgBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
-                             NSLocalizedString(@"Type your feedback here...", @""),
-                             [self deviceInfo], appName];
-        NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
-        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString, appName];
-        NSString *recipientEmail = [[VThemeManager sharedThemeManager] themedStringForKey:kVSupportEmail];
+        NSString *messageSubject;
+        NSString *messageBody;
+        if ( creatorName != nil )
+        {
+            NSString *subjectWithCreatorNameFormat = NSLocalizedString(@"SupportEmailSubjectWithName", @"Feedback / Help");
+            messageSubject = [NSString stringWithFormat:@"%@ %@", subjectWithCreatorNameFormat, creatorName];
+            
+            messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
+                                     NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo], creatorName];
+            
+        }
+        else
+        {
+            messageSubject = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
+            
+            messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@",
+                           NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo]];
+            
+        }
         
-        [mailComposer setSubject:msgSubj];
+        [mailComposer setSubject:messageSubject];
         [mailComposer setToRecipients:@[ recipientEmail ?: kDefaultHelpEmail ]];
-        [mailComposer setMessageBody:msgBody isHTML:NO];
+        [mailComposer setMessageBody:messageBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
-                                                               message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
-                                                              delegate:self
-                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
-                                                     otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
+                                                        message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+                                              otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
         [alert show];
     }
 }
@@ -402,7 +421,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 #pragma mark - VNavigationDestination
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
     return YES;
 }
