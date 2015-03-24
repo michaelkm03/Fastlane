@@ -9,11 +9,11 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "VMultipleContainerChild.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
-#import "VMultipleContainerChild.h"
-#import "VMultipleContainerChild.h"
+#import "VStreamCollectionViewController.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate>
 
@@ -38,6 +38,8 @@ static NSString * const kInitialKey = @"initial";
     if (self)
     {
         _didShowInitial = NO;
+        CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
+        self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
     return self;
 }
@@ -204,6 +206,7 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
+    [self resetNavigationItem];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
@@ -214,6 +217,12 @@ static NSString * const kInitialKey = @"initial";
     {
         [((id<VMultipleContainerChild>)viewController) viewControllerSelected:isDefaultSelection];
     }
+}
+
+- (void)resetNavigationItem
+{
+    CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
+    self.navigationItem.rightBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
 }
 
 #pragma mark - UICollectionViewDelegate methods

@@ -17,6 +17,8 @@ extern NSString * const VStreamCollectionViewControllerStreamURLKey; ///< The ke
 extern NSString * const VStreamCollectionViewControllerCreateSequenceIconKey; ///< The key that identifies the create sequence icon in VDependencyManager
 extern NSString * const VStreamCollectionViewControllerCellComponentKey; ///< A VDependencyManager key for the stream cell component
 
+const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height of the "create content" button
+
 @class VStreamCollectionViewDataSource;
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>

@@ -71,7 +71,7 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static const CGFloat kCreateButtonHeight = 44.0f;
+const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 static NSString * const kMarqueeURLKey = @"marqueeURL";
 
 static NSString * const kCanAddContentKey = @"canAddContent";
@@ -376,7 +376,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     }
     UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
     UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-    createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
+    createbutton.frame = CGRectMake(0, 0, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
     [createbutton setImage:image forState:UIControlStateNormal];
     [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
     createbutton.hidden = !initiallyVisible;
