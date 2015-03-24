@@ -257,14 +257,6 @@
     [self.navigationController pushViewController:profileVC animated:YES];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
-    {
-        [self loadMoreFollowers];
-    }
-}
-
 - (IBAction)refresh:(id)sender
 {
     int64_t         delayInSeconds = 1.0f;
