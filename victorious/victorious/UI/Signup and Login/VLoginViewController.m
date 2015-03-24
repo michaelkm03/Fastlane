@@ -275,11 +275,6 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
                        {
-                           if ( created )
-                           {
-                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidSucceed];
-                           }
-                           
                            self.profile = user;
                            if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
                            {
