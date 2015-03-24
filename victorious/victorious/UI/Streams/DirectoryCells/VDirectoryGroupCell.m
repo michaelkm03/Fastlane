@@ -17,8 +17,6 @@
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
 
-const NSUInteger VDirectoryMaxItemsPerGroup = 4;
-
 CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
 static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
@@ -129,13 +127,13 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     {
         return 1;
     }
-    return MIN( self.stream.streamItems.count, VDirectoryMaxItemsPerGroup + (NSUInteger)1 );
+    return self.stream.streamItems.count + ([self shouldShowShowMore] ? 1 : 0);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //Check if item is last in number of items in section, this is the "show more" cell
-    if ( indexPath.item == VDirectoryMaxItemsPerGroup )
+    if ( [self shouldShowShowMore] && indexPath.item == [self indexPathForShowMore].item )
     {
         NSString *identifier = [VDirectorySeeMoreItemCell suggestedReuseIdentifier];
         VDirectorySeeMoreItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
@@ -163,6 +161,25 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 - (BOOL)hasSequenceStream
 {
     return [self.stream isKindOfClass:[VSequence class]];
+}
+
+- (BOOL)shouldShowShowMore
+{
+    if ([self.stream.count integerValue] > (NSInteger)self.stream.streamItems.count)
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (NSIndexPath *)indexPathForShowMore
+{
+    if (![self shouldShowShowMore])
+    {
+        return nil;
+    }
+    NSInteger lastIndexInSection = [self collectionView:self.collectionView numberOfItemsInSection:0];
+    return [NSIndexPath indexPathForItem:lastIndexInSection-1 inSection:0];
 }
 
 #pragma mark - UICollectionViewDelegate
