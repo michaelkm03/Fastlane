@@ -10,6 +10,35 @@
 
 @implementation UIColor (VBrightness)
 
+- (VColorLuminance)v_colorLuminance
+{
+    CGFloat red = 0;
+    CGFloat green = 0;
+    CGFloat blue = 0;
+    CGFloat alpha = 0;
+    
+    if ( ![self getRed:&red green:&green blue:&blue alpha:&alpha] )
+    {
+        return VColorLuminanceDark;
+    }
+    
+    // Relative luminance in colorimetric spaces - http://en.wikipedia.org/wiki/Luminance_(relative)
+    red *= 0.2126f;
+    green *= 0.7152f;
+    blue *= 0.0722f;
+    CGFloat luminance = red + green + blue;
+    
+    if ( luminance < 0.6f )
+    {
+        return VColorLuminanceDark;
+    }
+    else
+    {
+        return VColorLuminanceBright;
+    }
+
+}
+
 - (UIColor *)v_colorLightenedBy:(CGFloat)amount
 {
     CGFloat r, g, b, a;

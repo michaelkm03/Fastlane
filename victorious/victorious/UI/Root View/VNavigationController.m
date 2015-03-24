@@ -13,6 +13,7 @@
 #import "VScaffoldViewController.h"
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
+#import  "UIColor+VBrightness.h"
 
 #import <objc/runtime.h>
 
@@ -71,29 +72,12 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
 {
-    CGFloat red = 0;
-    CGFloat green = 0;
-    CGFloat blue = 0;
-    CGFloat alpha = 0;
-    
-    if ( ![color getRed:&red green:&green blue:&blue alpha:&alpha] )
+    switch ([color v_colorLuminance])
     {
-        return UIStatusBarStyleDefault;
-    }
-    
-    // Relative luminance in colorimetric spaces - http://en.wikipedia.org/wiki/Luminance_(relative)
-    red *= 0.2126f;
-    green *= 0.7152f;
-    blue *= 0.0722f;
-    CGFloat luminance = red + green + blue;
-    
-    if ( luminance < 0.6f )
-    {
-        return UIStatusBarStyleLightContent;
-    }
-    else
-    {
-        return UIStatusBarStyleDefault;
+        case VColorLuminanceBright:
+            return UIStatusBarStyleDefault;
+        case VColorLuminanceDark:
+            return UIStatusBarStyleLightContent;
     }
 }
 
