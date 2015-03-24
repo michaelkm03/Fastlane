@@ -78,7 +78,8 @@ static NSString * const kEditButtonStylePill = @"rounded";
     {
         linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     }
-    self.editProfileButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.editProfileButton.titleLabel.font = buttonFont;
 
     if ( [[self.dependencyManager stringForKey:kEditButtonStyleKey] isEqualToString:kEditButtonStylePill] )
     {
