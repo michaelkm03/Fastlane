@@ -27,6 +27,7 @@
 #import "VPurchaseManager.h"
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
+#import "VAppInfo.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -38,8 +39,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 5;
 static const NSInteger kTrackingButtonIndex          = 6;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
-static NSString * const kOwnerKey = @"owner";
-static NSString * const kNameKey = @"name";
 static NSString * const kSupportEmailKey = @"email.support";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
@@ -328,8 +327,8 @@ static NSString * const kSupportEmailKey = @"email.support";
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
-        NSString *creatorName = ownerInfo[ kNameKey ];
+        VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+        NSString *creatorName = appInfo.appName;
         NSString *recipientEmail = [self.dependencyManager stringForKey:kSupportEmailKey];
         
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];

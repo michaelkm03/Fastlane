@@ -19,11 +19,9 @@
 #import "VTabInfo.h"
 #import "VThemeManager.h"
 #import "VDependencyManager.h"
+#import "VAppInfo.h"
 
 @import MessageUI;
-
-static NSString * const kOwnerKey = @"owner";
-static NSString * const kNameKey = @"name";
 
 @interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
 
@@ -82,10 +80,9 @@ static NSString * const kNameKey = @"name";
 
 - (void)refreshInviteButtons
 {
-    self.appStoreLink = [self.dependencyManager stringForKey:VDependencyManagerAppStoreURL];
-    
-    NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerKey];
-    self.appName = ownerInfo[ kNameKey ];
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    self.appStoreLink = appInfo.appURL.absoluteString;
+    self.appName = appInfo.appName;
     
     BOOL canSendMail = [MFMailComposeViewController canSendMail];
     BOOL canSendText = [MFMessageComposeViewController canSendText];

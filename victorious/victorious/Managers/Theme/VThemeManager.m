@@ -12,8 +12,6 @@
 
 #pragma mark - new theme constants
 
-NSString * const   kVCreatorName                       =   @"creator.name";
-
 NSString * const   kVMenuBackgroundImage               =   @"LaunchImage";
 NSString * const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
 

@@ -11,7 +11,6 @@
 @class VDependencyManager;
 
 #pragma mark - New Theme Constants
-extern NSString * const kVCreatorName;
 
 // Images
 

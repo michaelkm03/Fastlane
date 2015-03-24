@@ -8,11 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-// Owner info
-extern NSString * const VDependencyManagerOwnerProfileImageKey;
-extern NSString * const VDependencyManagerOwnerNameKey;
-extern NSString * const VDependencyManagerOwnerInfoKey;
-
 @class VDependencyManager;
 
 @interface VCreatorInfoHelper : NSObject

@@ -8,11 +8,7 @@
 #import "VCreatorInfoHelper.h"
 #import "VDependencyManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
-// Owner info
-NSString * const VDependencyManagerOwnerProfileImageKey = @"profile_image";
-NSString * const VDependencyManagerOwnerNameKey = @"name";
-NSString * const VDependencyManagerOwnerInfoKey = @"owner";
+#import "VAppInfo.h"
 
 @interface VCreatorInfoHelper ()
 
@@ -25,8 +21,12 @@ NSString * const VDependencyManagerOwnerInfoKey = @"owner";
 
 - (void)populateViewsWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSDictionary *creatorInfo = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey];
-    if ( creatorInfo == nil )
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:dependencyManager];
+    NSString *ownerName = appInfo.ownerName;
+    NSURL *profileImageURL = appInfo.profileImageURL;
+    
+    
+    if ( ![self stringIsValidForDisplay:ownerName] || ![self isValidURL:profileImageURL] )
     {
         // If there's no valid data to show for this creator, hide these views
         self.creatorNameLabel.hidden = YES;
@@ -40,19 +40,27 @@ NSString * const VDependencyManagerOwnerInfoKey = @"owner";
         self.creatorAvatarImageView.hidden = NO;
     }
     
-    NSString *creatorName = creatorInfo[ VDependencyManagerOwnerNameKey ];
-    self.creatorNameLabel.text = creatorName;
+    self.creatorNameLabel.text = ownerName;
     self.creatorNameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     
-    NSString *creatorUrl = creatorInfo[ VDependencyManagerOwnerProfileImageKey ];
     self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
     self.creatorAvatarImageView.layer.borderWidth = 1.0f;
     self.creatorAvatarImageView.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
     self.creatorAvatarImageView.layer.masksToBounds = YES;
     
-    [self.creatorAvatarImageView sd_setImageWithURL:[NSURL URLWithString:creatorUrl] placeholderImage:nil];
+    [self.creatorAvatarImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
     
     [self.creatorAvatarImageView setNeedsDisplay];
+}
+
+- (BOOL)stringIsValidForDisplay:(NSString *)string
+{
+    return string != nil && ![string isEqualToString:@""];
+}
+
+- (BOOL)isValidURL:(NSURL *)url
+{
+    return url != nil && ![url.absoluteString isEqualToString:@""];
 }
 
 @end

@@ -764,6 +764,8 @@
 		F028CF4E1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF4D1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m */; };
 		F028CF591A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF581A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib */; };
 		F028F3BE1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */; };
+		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
+		F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
 		F04A7C8B1AB36AFB0092A374 /* VSleekStreamCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04A7C8A1AB36AFB0092A374 /* VSleekStreamCollectionCell.xib */; };
 		F04A7C8E1AB37E440092A374 /* VSleekStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A7C8D1AB37E440092A374 /* VSleekStreamCellActionView.m */; };
 		F04A7C911AB38EA80092A374 /* VSleekStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A7C901AB38EA80092A374 /* VSleekStreamCollectionCell.m */; };
@@ -2180,6 +2182,9 @@
 		F028CF581A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VGroupedStreamCollectionViewController.xib; sourceTree = "<group>"; };
 		F028F3BC1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VJSONLogging.h"; sourceTree = "<group>"; };
 		F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+VJSONLogging.m"; sourceTree = "<group>"; };
+		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
+		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
+		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
 		F04A7C8A1AB36AFB0092A374 /* VSleekStreamCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSleekStreamCollectionCell.xib; sourceTree = "<group>"; };
 		F04A7C8C1AB37E440092A374 /* VSleekStreamCellActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekStreamCellActionView.h; sourceTree = "<group>"; };
 		F04A7C8D1AB37E440092A374 /* VSleekStreamCellActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekStreamCellActionView.m; sourceTree = "<group>"; };
@@ -4191,6 +4196,7 @@
 				A77AD4FA1A1FF33100142F24 /* VAlertControllerAdvancedTests.m */,
 				A77AD4F81A1FEDD100142F24 /* VAlertControllerBasicTests.m */,
 				A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */,
+				F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */,
 				A709640419F0738200CE6633 /* VApplicationTrackingTests.m */,
 				A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */,
 				039420491AB88A9A0087ADFA /* VDependencyManagerImageTests.m */,
@@ -4749,6 +4755,8 @@
 				030931921A184285004E9781 /* VNavigationMenuItem.m */,
 				03C185BD19B42F0E00E27D05 /* VSequenceUserInteractions.h */,
 				03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */,
+				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,
+				F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */,
 			);
 			path = "Simple Models";
 			sourceTree = "<group>";
@@ -5498,6 +5506,7 @@
 				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
 				D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
+				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				F04A7C9C1AB3AA330092A374 /* VSleekStreamCollectionCellPoll.m in Sources */,
@@ -5974,6 +5983,7 @@
 				A72005321A03073B00285A9C /* VUploadManagerTests.m in Sources */,
 				F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */,
 				A70AFE641A1684880027549F /* VFlurryTrackingTests.m in Sources */,
+				F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */,
 				030931901A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				A72005361A03073B00285A9C /* VUploadTaskSerializerTests.m in Sources */,
