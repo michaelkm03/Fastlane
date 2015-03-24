@@ -45,7 +45,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @synthesize selectedIcon = _selectedIcon;
 @synthesize icon = _icon;
 
-#pragma mark - VHasManagedDependancies
+#pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
