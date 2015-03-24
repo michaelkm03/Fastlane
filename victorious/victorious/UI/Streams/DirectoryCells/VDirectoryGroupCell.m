@@ -179,7 +179,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
         return nil;
     }
     NSInteger lastIndexInSection = [self collectionView:self.collectionView numberOfItemsInSection:0];
-    return [NSIndexPath indexPathForRow:lastIndexInSection-1 inSection:0];
+    return [NSIndexPath indexPathForItem:lastIndexInSection-1 inSection:0];
 }
 
 #pragma mark - UICollectionViewDelegate
