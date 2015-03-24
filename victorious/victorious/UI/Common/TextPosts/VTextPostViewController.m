@@ -23,7 +23,7 @@ static const NSUInteger kMaxTextLength = 200;
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) IBOutlet VTextBackgroundView *backgroundView;
-@property (nonatomic, strong) UITextView *hashtagTextview;
+@property (nonatomic, strong) UITextView *hashtagTextView;
 
 @end
 
@@ -54,20 +54,19 @@ static const NSUInteger kMaxTextLength = 200;
 {
     _supplementaryHashtagText = supplementaryHashtagText;
     
-    if ( self.hashtagTextview != nil )
+    NSLog( @"Set text %@", _supplementaryHashtagText );
+    
+    if ( self.hashtagTextView == nil )
     {
-        [self.hashtagTextview removeFromSuperview];
-        self.hashtagTextview = nil;
+        self.hashtagTextView = [[UITextView alloc] init];
+        self.hashtagTextView.backgroundColor = [UIColor clearColor];
+        [self.view addSubview:self.hashtagTextView];
     }
-    else
-    {
-        self.hashtagTextview = [[UITextView alloc] init];
-        NSDictionary *attribtues = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
-        self.hashtagTextview.attributedText = [[NSAttributedString alloc] initWithString:supplementaryHashtagText
-                                                                              attributes:attribtues];
-        [self.hashtagTextview sizeToFit];
-        [self.view addSubview:self.hashtagTextview];
-    }
+    
+    NSDictionary *attribtues = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
+    self.hashtagTextView.attributedText = [[NSAttributedString alloc] initWithString:supplementaryHashtagText
+                                                                          attributes:attribtues];
+    [self.hashtagTextView sizeToFit];
     
     [self updateTextBackground];
 }
@@ -87,7 +86,7 @@ static const NSUInteger kMaxTextLength = 200;
     NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
     NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
     
-    for ( UITextView *textView in @[ self.textView, self.supplementaryHashtagText ?: [NSNull null] ] )
+    for ( UITextView *textView in @[ self.textView, self.hashtagTextView  ?: [NSNull null] ] )
     {
         if ( ![textView isKindOfClass:[UITextView class]] )
         {
@@ -98,13 +97,13 @@ static const NSUInteger kMaxTextLength = 200;
                                                        withAttributes:attributes
                                                              maxWidth:CGRectGetWidth(textView.frame)];
         
-        CGFloat offset = kTextBaselineOffsetMultiplier * kTextLineHeight;
+        CGFloat offset = kTextBaselineOffsetMultiplier * kTextLineHeight - 10;
         NSUInteger y = 0;
         for ( NSString *line in textLines )
         {
             CGSize size = [line sizeWithAttributes:attributes];
             CGFloat width = [line isEqual:textLines.lastObject] ? size.width : CGRectGetWidth(self.view.frame);
-            CGRect rect = CGRectMake( 0, offset + (y++) * (size.height + 2), width, size.height );
+            CGRect rect = CGRectMake( 0, textView.frame.origin.y + offset + (y++) * (size.height + 2), width, size.height );
             [backgroundFrames addObject:[NSValue valueWithCGRect:rect]];
         }
     }
