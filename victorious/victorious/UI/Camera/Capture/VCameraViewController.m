@@ -1002,6 +1002,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.previewSnapshot = snapshot;
     
     VRadialGradientView *radialGradientView = [[VRadialGradientView alloc]  initWithFrame:self.previewView.bounds];
+    radialGradientView.userInteractionEnabled = NO;
     [self.previewView addSubview:radialGradientView];
     self.radialGradientView = radialGradientView;
     radialGradientView.translatesAutoresizingMaskIntoConstraints = NO;

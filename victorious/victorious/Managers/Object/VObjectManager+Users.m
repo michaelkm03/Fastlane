@@ -231,6 +231,8 @@ static NSString * const kVAPIParamContext = @"context";
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self.mainUser addFollowingObject:user];
+        self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
+        user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
         [self notifyIsFollowingUpdated];
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser];
@@ -257,6 +259,8 @@ static NSString * const kVAPIParamContext = @"context";
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self.mainUser removeFollowingObject:user];
+        self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
+        user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
         [self notifyIsFollowingUpdated];
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser];
@@ -280,14 +284,12 @@ static NSString * const kVAPIParamContext = @"context";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if (success)
+        user.numberOfFollowers = @(((NSString *)fullResponse[kVPayloadKey][@"followers"]).integerValue);
+        user.numberOfFollowing = @(((NSString *)fullResponse[kVPayloadKey][@"subscribed_to"]).integerValue);
+        
+        if ( success != nil )
         {
-            NSArray *results = @[fullResponse[kVPayloadKey][@"followers"], fullResponse[kVPayloadKey][@"subscribed_to"]];
-            
-            if (success)
-            {
-                success(operation, fullResponse, results);
-            }
+            success( operation, fullResponse, resultObjects );
         }
     };
     

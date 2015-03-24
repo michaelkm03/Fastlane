@@ -13,6 +13,8 @@
 
 /**
  *  VTabMenuShim is used in conjunction with UITabBarController as a menu component.
+ *  It maintains tab bar items and their badging. It sums all of the tab bar item badges 
+ *  and assigns to the applications shared badge number.
  */
 @interface VTabMenuShim : NSObject <VHasManagedDependancies>
 
@@ -21,6 +23,12 @@
  *  navigation destinations of the items property for this menu.
  */
 - (NSArray *)wrappedNavigationDesinations;
+
+/**
+ *  Called when a tabbar controller is about to navigate to a view controller
+ *  at the selected index.
+ */
+- (void)willNavigateToIndex:(NSInteger)index;
 
 /**
  *  A Background to use for this tab menu.

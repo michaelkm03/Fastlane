@@ -12,8 +12,6 @@
 
 #pragma mark - new theme constants
 
-NSString * const   kVCreatorName                       =   @"creator.name";
-
 NSString * const   kVMenuBackgroundImage               =   @"LaunchImage";
 NSString * const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
 
@@ -50,12 +48,6 @@ NSString * const   kVLinkColor                         =   @"color.link";
 NSString * const   kVSecondaryLinkColor                =   @"color.link.secondary";
 
 NSString * const   kVNewThemeKey                       =   @"kVNewTheme";
-
-#pragma mark - Feedback Support
-
-NSString * const   kVSupportEmail                      =   @"email.support";
-
-static CGFloat const kGreyBackgroundColor = 0.94509803921;
 
 @implementation VThemeManager
 

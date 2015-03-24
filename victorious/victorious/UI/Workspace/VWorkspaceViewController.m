@@ -17,7 +17,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIAlertView+VBlocks.h"
 #import "UIActionSheet+VBlocks.h"
-#import "VWorkspaceToolButton.h"
+#import "VRoundedBackgroundButton.h"
 
 // Keyboard
 #import "VKeyboardNotificationManager.h"
@@ -131,11 +131,13 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     NSMutableArray *workspaceToolButtons = [[NSMutableArray alloc] init];
     [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
-        VWorkspaceToolButton *workspaceToolButton = [[VWorkspaceToolButton alloc] initWithFrame:CGRectMake(0, 0, kWorkspaceToolButtonSize, kWorkspaceToolButtonSize)];
+        VRoundedBackgroundButton *workspaceToolButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kWorkspaceToolButtonSize, kWorkspaceToolButtonSize)];
         workspaceToolButton.selectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         workspaceToolButton.unselectedColor = [UIColor colorWithRed:40/255.0f green:45/255.0f blue:48/255.0f alpha:1.0f];
         workspaceToolButton.selected = NO;
-        workspaceToolButton.tool = tool;
+        [workspaceToolButton setImage:[tool icon] forState:UIControlStateNormal];
+        [workspaceToolButton setImage:[tool selectedIcon] forState:UIControlStateSelected];
+        workspaceToolButton.associatedObjectForButton = tool;
         [workspaceToolButton addTarget:self action:@selector(selectedButton:) forControlEvents:UIControlEventTouchUpInside];
         [workspaceToolButtons addObject:workspaceToolButton];
 
@@ -188,9 +190,9 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     [super viewWillAppear:animated];
     
     [self.toolController setupDefaultTool];
-    [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VWorkspaceToolButton *toolButton, NSUInteger idx, BOOL *stop)
+    [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *toolButton, NSUInteger idx, BOOL *stop)
      {
-         if (self.toolController.selectedTool == toolButton.tool)
+         if (self.toolController.selectedTool == toolButton.associatedObjectForButton)
          {
              [self setSelectedButton:toolButton];
              *stop = YES;
@@ -304,9 +306,9 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
      }];
 }
 
-- (void)selectedButton:(VWorkspaceToolButton *)button
+- (void)selectedButton:(VRoundedBackgroundButton *)button
 {
-    self.toolController.selectedTool = button.tool;
+    self.toolController.selectedTool = button.associatedObjectForButton;
     [self setSelectedButton:button];
     
     NSDictionary *params = @{ VTrackingKeyName : self.toolController.selectedTool.title ?: @"" };
@@ -451,9 +453,9 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
                      completion:nil];
 }
 
-- (void)setSelectedButton:(VWorkspaceToolButton *)button
+- (void)setSelectedButton:(VRoundedBackgroundButton *)button
 {
-    [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VWorkspaceToolButton *toolButton, NSUInteger idx, BOOL *stop)
+    [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *toolButton, NSUInteger idx, BOOL *stop)
     {
         toolButton.selected = NO;
     }];

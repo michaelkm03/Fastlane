@@ -8,8 +8,9 @@
 
 #import "VTrackingManager.h"
 #import "VTrackingEvent.h"
+#import "VTrackingEventLog.h"
 
-#define TRACKING_LOGGING_ENABLED 1
+#define TRACKING_LOGGING_ENABLED 0
 #define TRACKING_EVENT_ALERTS_ENABLED 0
 #define TRACKING_START_END_ALERTS_ENABLED 0
 #define TRACKING_QUEUE_LOGGING_ENABLED 0
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) NSMutableArray *delegates;
 @property (nonatomic, strong) NSMutableDictionary *durationEvents;
 @property (nonatomic, strong) NSMutableDictionary *sessionParameters;
+@property (nonatomic, strong) VTrackingEventLog *eventLog;
 
 @end
 
@@ -52,6 +54,11 @@
         _queuedEvents = [[NSMutableArray alloc] init];
         _durationEvents = [[NSMutableDictionary alloc] init];
         _sessionParameters = [[NSMutableDictionary alloc] init];
+        
+#ifndef V_NO_TRACKING_ALERTS
+        _eventLog = [[VTrackingEventLog alloc] init];
+        [_eventLog clearEvents];
+#endif
     }
     return self;
 }
@@ -141,6 +148,9 @@
     {
         return;
     }
+#ifndef V_NO_TRACKING_ALERTS
+    [self.eventLog logEvent:eventName parameters:parameters];
+#endif
     
     NSDictionary *completeParams = [self addSessionParametersToDictionary:parameters];
     

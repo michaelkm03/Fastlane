@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, VColorLuminance)
+{
+    VColorLuminanceBright,
+    VColorLuminanceDark,
+};
+
 @interface UIColor (VBrightness)
+
+- (VColorLuminance)v_colorLuminance;
 
 /**
  Returns a new color darkened according to the `amount` parameter where

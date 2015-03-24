@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 @class VUser, VDependencyManager;
 
-@interface VFollowingTableViewController : UITableViewController
+@interface VFollowingTableViewController : UITableViewController <VHasManagedDependancies>
 
 @property (nonatomic, strong) VUser *profile;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

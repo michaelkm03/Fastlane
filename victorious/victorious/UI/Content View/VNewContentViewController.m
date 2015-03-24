@@ -156,6 +156,8 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 @property (nonatomic, strong) NSDate *videoLoadedDate;
 
+@property (nonatomic, assign) BOOL hasBeenPresented;
+
 @end
 
 @implementation VNewContentViewController
@@ -557,9 +559,10 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     }
 #endif
     
-    BOOL isBeingPresented = self.isBeingPresented || self.navigationController.isBeingPresented;
-    if ( isBeingPresented && self.videoCell == nil )
+    if ( !self.hasBeenPresented )
     {
+        self.hasBeenPresented = YES;
+        
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
@@ -801,7 +804,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     else
     {
         //Tapped a hashtag, show a hashtag view controller
-        VHashtagStreamCollectionViewController *hashtagViewController = [VHashtagStreamCollectionViewController instantiateWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        VHashtagStreamCollectionViewController *hashtagViewController = [self.dependencyManager hashtagStreamWithHashtag:[tag.displayString.string substringFromIndex:1]];
         [self.navigationController pushViewController:hashtagViewController animated:YES];
     }
 }
@@ -922,7 +925,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
-                [videoCell setTracking:self.viewModel.sequence.tracking];
+                videoCell.tracking = self.viewModel.sequence.tracking;
                 videoCell.delegate = self;
                 videoCell.speed = self.viewModel.speed;
                 videoCell.loop = self.viewModel.loop;

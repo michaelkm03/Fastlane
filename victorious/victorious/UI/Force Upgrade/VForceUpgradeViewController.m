@@ -8,7 +8,7 @@
 
 #import "VForceUpgradeAnimatedTransition.h"
 #import "VForceUpgradeViewController.h"
-#import "VSettingManager.h"
+#import "VConstants.h"
 
 @interface VForceUpgradeViewController () <UIViewControllerTransitioningDelegate>
 
@@ -43,7 +43,10 @@
 
 - (IBAction)upgradeNowTapped:(id)sender
 {
-    NSURL *appstoreURL = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
+    //Goal is to get rid of this line entirely and just rely on the dependency manager, but will need to update how this view controller is initialized from the animationControllerForPresentedController:etc... call below
+    NSString *appstoreURLString = [[NSUserDefaults standardUserDefaults] objectForKey:VConstantAppStoreURL];
+    NSURL *appstoreURL = [NSURL URLWithString:appstoreURLString];
+    
     if (!appstoreURL || [appstoreURL.absoluteString isEqualToString:@""])
     {
         appstoreURL = [NSURL URLWithString:@"itms-apps://itunes.com/apps"];

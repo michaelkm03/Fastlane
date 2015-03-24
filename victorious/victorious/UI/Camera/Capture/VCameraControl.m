@@ -184,6 +184,8 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
             [self sendActionsForControlEvents:VCameraControlEventStartRecordingVideo];
             animationDuration = kTransitionToRecordingAnimationDuration;
             
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSwitchToVideoCapture];
+            
             animations = ^
             {
                 self.alpha = 1.0f;

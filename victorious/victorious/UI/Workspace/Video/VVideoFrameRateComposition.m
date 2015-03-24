@@ -48,13 +48,14 @@
                                                atTime:kCMTimeZero
                                                 error:nil];
              
+             if (self.muteAudio)
+             {
+                 [self removeAudioTracksFromComposition:self.mutableComposition];
+             }
+             
              AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.mutableComposition copy]];
              playerItem.seekingWaitsForVideoCompositionRendering = YES;
              playerItem.videoComposition = [self videoComposition];
-             if (self.muteAudio)
-             {
-                 playerItem.audioMix = [self mutedAudioMixWithTrack:[self audioTrack]];
-             }
              
              if (self.playerItemReady)
              {
@@ -70,11 +71,6 @@
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:[self.mutableComposition copy]
                                                                             presetName:AVAssetExportPresetHighestQuality];
     exportSession.videoComposition = [self videoComposition];
-
-    if (self.muteAudio)
-    {
-        exportSession.audioMix = [self mutedAudioMixWithTrack:[self audioTrack]];
-    }
     
     return exportSession;
 }
@@ -108,31 +104,20 @@
     return [videoComposition copy];
 }
 
-- (AVAssetTrack *)audioTrack
+- (void)removeAudioTracksFromComposition:(AVMutableComposition *)compositionToMute
 {
-    for (AVAssetTrack *track in self.mutableComposition.tracks)
-    {
-        if ([track.mediaType isEqualToString:AVMediaTypeAudio])
-        {
-            return track;
-        }
-    }
-    return nil;
-}
-
-- (AVAudioMix *)mutedAudioMixWithTrack:(AVAssetTrack *)track
-{
-    if (track == nil)
-    {
-        return nil;
-    }
-    
-    AVMutableAudioMixInputParameters *mixParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:track];
-    [mixParameters setVolume:0.0f
-                      atTime:kCMTimeZero];
-    AVMutableAudioMix *mix = [AVMutableAudioMix audioMix];
-    mix.inputParameters = @[mixParameters];
-    return mix;
+    NSMutableArray *tracksToRemove = [[NSMutableArray alloc] init];
+    [self.mutableComposition.tracks enumerateObjectsUsingBlock:^(AVMutableCompositionTrack *track, NSUInteger idx, BOOL *stop)
+     {
+         if ([[track mediaType] isEqualToString:AVMediaTypeAudio])
+         {
+             [tracksToRemove addObject:track];
+         }
+     }];
+    [tracksToRemove enumerateObjectsUsingBlock:^(AVMutableCompositionTrack *track, NSUInteger idx, BOOL *stop)
+     {
+         [self.mutableComposition removeTrack:track];
+     }];
 }
 
 @end

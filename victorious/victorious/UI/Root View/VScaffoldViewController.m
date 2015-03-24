@@ -12,7 +12,6 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
-#import "VNavigationDestinationsProvider.h"
 #import "VNewContentViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -25,6 +24,7 @@
 #import "VNavigationController.h"
 #import "VFirstTimeInstallHelper.h"
 #import "VAuthorizedAction.h"
+#import "VPushNotificationManager.h"
 
 #import <MBProgressHUD.h>
 
@@ -38,6 +38,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLightweightContentViewControllerDelegate>
 
+@property (nonatomic) BOOL pushNotificationsRegistered;
+
 @end
 
 @implementation VScaffoldViewController
@@ -48,7 +50,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
     }
     return self;
 }
@@ -58,29 +59,39 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self showFirstTimeUserExperience];
+    
+    BOOL didShow = [self showFirstTimeUserExperience];
+    if ( !self.pushNotificationsRegistered && !didShow )
+    {
+        [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
+        self.pushNotificationsRegistered = YES;
+    }
 }
 
 #pragma mark - First Time User Experience
 
-- (void)showFirstTimeUserExperience
+- (BOOL)showFirstTimeUserExperience
 {
     VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
 
     if ( ![firstTimeInstallHelper hasBeenShown] )
     {
+        [firstTimeInstallHelper savePlaybackDefaults];
         VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                        forKey:VScaffoldViewControllerFirstTimeContentKey];
-        lightweightContentVC.delegate = self;
         if ( lightweightContentVC != nil )
         {
+            lightweightContentVC.delegate = self;
             [self presentViewController:lightweightContentVC animated:YES completion:^(void)
             {
-                [firstTimeInstallHelper savePlaybackDefaults];
                 [self trackFirstTimeContentView];
             }];
+            
+            return YES;
         }
     }
+    
+    return NO;
 }
 
 - (void)trackFirstTimeContentView
@@ -182,7 +193,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         return;
     }
-    else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
+    else
     {
         __block MBProgressHUD *hud;
         VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
@@ -198,7 +209,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
         };
 
-        NSArray *possibleHandlers = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
+        NSArray *possibleHandlers = [self navigationDestinations];
         for (id<VDeeplinkHandler> handler in possibleHandlers)
         {
             if ( [handler conformsToProtocol:@protocol(VDeeplinkHandler)] )
@@ -234,8 +245,13 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         return NO;
     }
-
-    NSNumber *commentId = @([url v_pathComponentAtIndex:2].integerValue);
+    
+    NSNumber *commentId = nil;
+    NSString *commentIDString = [url v_pathComponentAtIndex:2];
+    if ( commentIDString != nil )
+    {
+        commentId = @([commentIDString integerValue]);
+    }
 
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -270,6 +286,11 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 }
 
 #pragma mark - Navigation
+
+- (NSArray *)navigationDestinations
+{
+    return @[];
+}
 
 - (void)navigateToDestination:(id)navigationDestination
 {

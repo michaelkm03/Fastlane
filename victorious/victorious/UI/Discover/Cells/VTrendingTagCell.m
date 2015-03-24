@@ -7,7 +7,6 @@
 //
 
 #import "VTrendingTagCell.h"
-#import "VThemeManager.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VHashTags.h"

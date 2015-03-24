@@ -129,7 +129,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
 }
 
@@ -189,6 +189,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
     }
     else
     {
+        // In spite of its name, this is not actullay a stream-related event, so it is not part of `streamTrackingHelper`.
+        // This event fires for any conformist of `VMultipleContainerChild`.
+        NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
+        
         [self.streamTrackingHelper viewControllerSelected:self.currentStream];
     }
     

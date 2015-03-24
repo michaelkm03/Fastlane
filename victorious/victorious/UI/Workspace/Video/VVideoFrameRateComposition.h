@@ -20,15 +20,39 @@
                    frameDuration:(CMTime)frameDuration
                        muteAudio:(BOOL)muteAudio NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, readonly) NSURL *videoURL; //< The url to create an AVAsset from.
+/**
+ *  The url to create an AVAsset from.
+ */
+@property (nonatomic, readonly) NSURL *videoURL;
 
-@property (nonatomic, readonly) CMTime frameDuration; //< Reciprocal of frame rate i.e. 1/30 = 30fps.
+/**
+ *  Reciprocal of frame rate i.e. 1/30 = 30fps.
+ */
+@property (nonatomic, readonly) CMTime frameDuration;
 
-@property (nonatomic, readonly) BOOL muteAudio; //< YES if audio is muted
+/**
+ *  Muting the audio will remove any audio tracks from the internal composition.
+ */
+@property (nonatomic, readonly) BOOL muteAudio;
 
-@property (nonatomic, copy) void (^playerItemReady)(AVPlayerItem *playerItem); //< A completion block for when the video is ready to be played.
+/**
+ *  A completion block for when the video is ready to be played.
+ */
+@property (nonatomic, copy) void (^playerItemReady)(AVPlayerItem *playerItem);
 
-- (AVAssetExportSession *)makeExportable; //< An export session for rendering.
-- (AVVideoComposition *)videoComposition; //< A Composition for rendering + thumbnailing.
+/**
+ *  An export session for rendering.
+ *
+ *  @return A configured export session
+ */
+- (AVAssetExportSession *)makeExportable;
+
+/**
+ *  The internal video composition used in construction of the player item. 
+ *  Use this forfor rendering + thumbnailing.
+ *
+ *  @return The AVVideoComposition used in creating the AVPlayerItem.
+ */
+- (AVVideoComposition *)videoComposition;
 
 @end

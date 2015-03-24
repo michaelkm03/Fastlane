@@ -16,13 +16,6 @@ extern NSString * const VExperimentsRequireProfileImage;
 extern NSString * const VExperimentsPauseVideoWhenCommenting;
 extern NSString * const VExperimentsClearVideoBackground;
 
-//URLs
-extern NSString * const kVTermsOfServiceURL;
-extern NSString * const kVPrivacyUrl;
-
-extern NSString * const kVAppStoreURL;
-extern NSString * const kVSupportEmail;
-
 @class VTracking;
 
 @interface VSettingManager : NSObject

@@ -9,32 +9,32 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Afq-NV-r8v" customClass="VSleekStreamCollectionCellPoll">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="439"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="449"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="439"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="449"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4hb-9q-so0" userLabel="left Image View">
-                        <rect key="frame" x="0.0" y="50" width="160" height="320"/>
+                        <rect key="frame" x="0.0" y="50" width="160" height="322"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DYL-sd-dM5" userLabel="right Image View">
-                        <rect key="frame" x="160" y="50" width="160" height="320"/>
+                        <rect key="frame" x="160" y="50" width="160" height="322"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8QT-3n-Tuc" userLabel="Shade View">
-                        <rect key="frame" x="0.0" y="50" width="320" height="320"/>
+                        <rect key="frame" x="0.0" y="50" width="320" height="322"/>
                         <subviews>
                             <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f5h-ld-LK6">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="322"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Wr-Fl-cRV">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="272"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="274"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="D_poll-or" translatesAutoresizingMaskIntoConstraints="NO" id="tLb-yU-zgl">
-                                        <rect key="frame" x="116" y="93" width="87" height="87"/>
+                                        <rect key="frame" x="116" y="94" width="87" height="87"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -44,7 +44,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HKO-eN-WWK">
-                                <rect key="frame" x="0.0" y="272" width="320" height="48"/>
+                                <rect key="frame" x="0.0" y="274" width="320" height="48"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MFw-gp-F7D" customClass="VHashTagTextView">
                                         <rect key="frame" x="10" y="0.0" width="300" height="48"/>
@@ -87,7 +87,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R7e-A2-yzh" customClass="VSleekStreamCellActionView">
-                        <rect key="frame" x="-1" y="370" width="322" height="41"/>
+                        <rect key="frame" x="-1" y="380" width="322" height="41"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="wog-YW-4Rx"/>
@@ -103,7 +103,7 @@
                 <constraint firstAttribute="trailing" secondItem="DYL-sd-dM5" secondAttribute="trailing" id="Mgr-4e-wdA"/>
                 <constraint firstItem="DYL-sd-dM5" firstAttribute="width" secondItem="4hb-9q-so0" secondAttribute="width" id="NVx-dI-dro"/>
                 <constraint firstAttribute="bottom" secondItem="R7e-A2-yzh" secondAttribute="bottom" constant="28" id="Nzv-Le-NQI"/>
-                <constraint firstItem="R7e-A2-yzh" firstAttribute="top" secondItem="8QT-3n-Tuc" secondAttribute="bottom" id="RgP-R9-e0l"/>
+                <constraint firstItem="R7e-A2-yzh" firstAttribute="top" secondItem="8QT-3n-Tuc" secondAttribute="bottom" constant="8" id="RgP-R9-e0l"/>
                 <constraint firstItem="DYL-sd-dM5" firstAttribute="height" secondItem="4hb-9q-so0" secondAttribute="height" id="S4U-HN-dbh"/>
                 <constraint firstItem="4hb-9q-so0" firstAttribute="leading" secondItem="Afq-NV-r8v" secondAttribute="leading" id="Uht-dr-eFp"/>
                 <constraint firstItem="R7e-A2-yzh" firstAttribute="leading" secondItem="Afq-NV-r8v" secondAttribute="leading" constant="-1" id="VyO-dC-UIK"/>
@@ -116,10 +116,11 @@
                 <constraint firstAttribute="trailing" secondItem="EGy-dZ-mCE" secondAttribute="trailing" id="pes-Ft-a6q"/>
                 <constraint firstItem="EGy-dZ-mCE" firstAttribute="leading" secondItem="Afq-NV-r8v" secondAttribute="leading" id="tVc-U9-aq6"/>
             </constraints>
-            <size key="customSize" width="325" height="165"/>
+            <size key="customSize" width="325" height="175"/>
             <connections>
                 <outlet property="actionView" destination="R7e-A2-yzh" id="HKB-aj-SPK"/>
                 <outlet property="actionViewBottomConstraint" destination="Nzv-Le-NQI" id="KqF-2R-PsE"/>
+                <outlet property="actionViewTopConstraint" destination="RgP-R9-e0l" id="j5J-PR-HMX"/>
                 <outlet property="captionContainerHeightConstraint" destination="bUx-aK-SY4" id="8Ff-6S-eMx"/>
                 <outlet property="captionContainerView" destination="HKO-eN-WWK" id="DkZ-qa-FIa"/>
                 <outlet property="captionTextView" destination="MFw-gp-F7D" id="BGd-ub-9tt"/>
@@ -130,7 +131,7 @@
                 <outlet property="shadeView" destination="8QT-3n-Tuc" id="whN-fE-uL0"/>
                 <outlet property="streamCellHeaderView" destination="EGy-dZ-mCE" id="ZbT-d5-nLb"/>
             </connections>
-            <point key="canvasLocation" x="415" y="218.5"/>
+            <point key="canvasLocation" x="415" y="223.5"/>
         </collectionViewCell>
     </objects>
     <resources>

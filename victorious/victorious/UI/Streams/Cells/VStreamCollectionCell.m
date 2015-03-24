@@ -179,10 +179,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ( dependencyManager == self.dependencyManager )
-    {
-        return;
-    }
     [super setDependencyManager:dependencyManager];
     
     if ( dependencyManager != nil )

@@ -17,11 +17,11 @@ extern const CGFloat kSleekCellActionViewHeight;
 extern const CGFloat kSleekCellActionViewBottomConstraintHeight; ///< The space between bottom of actionView and bottom of cell
 
 extern const CGFloat kSleekCellTextNeighboringViewSeparatorHeight; ///< The space between the top of the textView and the content and between the bottom of the comment label and the actionView
+extern const CGFloat kSleekCellActionViewTopConstraintHeight;
+
 
 @interface VSleekStreamCollectionCell : VStreamCollectionCell
 
 @property (nonatomic, weak) IBOutlet VSleekStreamCellActionView *actionView;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 
 @end

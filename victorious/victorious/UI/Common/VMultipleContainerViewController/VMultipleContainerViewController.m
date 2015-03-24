@@ -9,11 +9,11 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "VMultipleContainerChild.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
-#import "VMultipleContainerChild.h"
-#import "VMultipleContainerChild.h"
+#import "VStreamCollectionViewController.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate>
 
@@ -38,6 +38,8 @@ static NSString * const kInitialKey = @"initial";
     if (self)
     {
         _didShowInitial = NO;
+        CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
+        self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
     return self;
 }
@@ -136,11 +138,8 @@ static NSString * const kInitialKey = @"initial";
 {
     [super viewDidAppear:animated];
     
-    UIViewController *viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-    {
-        [((id<VMultipleContainerChild>)viewController) viewControllerSelected:YES];
-    }
+    id<VMultipleContainerChild> viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
+    [viewController viewControllerSelected:YES];
 }
 
 #pragma mark - Rotation
@@ -162,12 +161,10 @@ static NSString * const kInitialKey = @"initial";
     [viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
      {
          NSParameterAssert( [viewController isKindOfClass:[UIViewController class]] );
+         NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] );
          
-         if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-         {
-             id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
-             child.multipleViewControllerChildDelegate = self;
-         }
+         id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
+         child.multipleViewControllerChildDelegate = self;
     }];
     
     _viewControllers = [viewControllers copy];
@@ -204,16 +201,19 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
+    [self resetNavigationItem];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
-    UIViewController *viewController = self.viewControllers[index];
-    
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-    {
-        [((id<VMultipleContainerChild>)viewController) viewControllerSelected:isDefaultSelection];
-    }
+    id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
+    [viewController viewControllerSelected:isDefaultSelection];
+}
+
+- (void)resetNavigationItem
+{
+    CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
+    self.navigationItem.rightBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
 }
 
 #pragma mark - UICollectionViewDelegate methods

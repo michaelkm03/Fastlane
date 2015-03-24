@@ -17,6 +17,16 @@ static NSString * const kQueryStringDelimiter = @"?";
 
 - (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString
 {
+    return [self urlByReplacingMacrosFromDictionary:macros inURLString:urlString complete:YES];
+}
+
+- (NSString *)urlByPartiallyReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString
+{
+    return [self urlByReplacingMacrosFromDictionary:macros inURLString:urlString complete:NO];
+}
+
+- (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString complete:(BOOL)complete
+{
     NSString *nonQueryString = nil;
     NSString *queryString = nil;
     NSArray *urlParts = [urlString componentsSeparatedByString:kQueryStringDelimiter];
@@ -35,11 +45,11 @@ static NSString * const kQueryStringDelimiter = @"?";
         nonQueryString = urlString;
     }
     
-    nonQueryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:nonQueryString withAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    nonQueryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:nonQueryString withAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet] complete:complete];
     
     if ( queryString != nil )
     {
-        queryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:queryString withAllowedCharacters:[NSCharacterSet v_queryPartCharacterSet]];
+        queryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:queryString withAllowedCharacters:[NSCharacterSet v_queryPartCharacterSet] complete:complete];
         return [NSString stringWithFormat:@"%@%@%@", nonQueryString, kQueryStringDelimiter, queryString];
     }
     else
@@ -48,7 +58,7 @@ static NSString * const kQueryStringDelimiter = @"?";
     }
 }
 
-- (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString withAllowedCharacters:(NSCharacterSet *)allowedCharacters
+- (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString withAllowedCharacters:(NSCharacterSet *)allowedCharacters complete:(BOOL)complete
 {
     NSString *output = urlString;
 
@@ -66,16 +76,19 @@ static NSString * const kQueryStringDelimiter = @"?";
         output = [output stringByReplacingOccurrencesOfString:macro withString:replacementValue];
     }
     
-    // Remove any un-replaced macros
-    static NSRegularExpression *macroRegex;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
+    if ( complete )
     {
-        macroRegex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%1$@.+?%1$@", VURLMacroReplacementDelimiter]
-                                                               options:0
-                                                                 error:nil];
-    });
-    output = [macroRegex stringByReplacingMatchesInString:output options:0 range:NSMakeRange(0, output.length) withTemplate:@""];
+        // Remove any un-replaced macros
+        static NSRegularExpression *macroRegex;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^(void)
+        {
+            macroRegex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%1$@.+?%1$@", VURLMacroReplacementDelimiter]
+                                                                   options:0
+                                                                     error:nil];
+        });
+        output = [macroRegex stringByReplacingMatchesInString:output options:0 range:NSMakeRange(0, output.length) withTemplate:@""];
+    }
     
     return output;
 }

@@ -24,9 +24,9 @@
 #import "VConstants.h"
 #import "VTemplateGenerator.h"
 #import "VLocationManager.h"
-#import "VPushNotificationManager.h"
 #import "VVoteSettings.h"
 #import "VVoteType.h"
+#import "VAppInfo.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
@@ -206,10 +206,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     [self seedMonetizationNetworks:[dependencyManager templateValueOfType:[NSArray class] forKey:kAdSystemsKey]];
     
     self.dependencyManager = dependencyManager;
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     self.sessionTimer.dependencyManager = self.dependencyManager;
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
     [[VSettingManager sharedManager] setDependencyManager:self.dependencyManager];
@@ -217,6 +217,13 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     self.voteSettings = [[VVoteSettings alloc] init];
     [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
+    
+    NSURL *appStoreURL = appInfo.appURL;
+    if ( appStoreURL != nil )
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:appStoreURL.absoluteString forKey:VConstantAppStoreURL];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     
     VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES completion:^(void)
