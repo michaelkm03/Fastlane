@@ -31,7 +31,7 @@ extern NSString * const VTrackingEventCreateCancelSelected; //< User selected ca
 
 // Camera (Camera prefix for legacy/compatibility)
 extern NSString * const VTrackingEventCameraDidSwitchToVideoCapture; //< "Since the introduction of the new tap-and-hold-to-record video feature, this event is now fired at the moment when the tap is held long enough to begin recording video."
-// Deprecated: CameraDidSwitchToPhotoCapture
+extern NSString * const VTrackingEventCameraDidSwitchToPhotoCapture; //< Deprecated:  This event no longer applies to the new camera with its tap and hold to record video feature.
 extern NSString * const VTrackingEventCameraDidCapturePhoto; //< User did move from camera view to workspace with an image just taken
 extern NSString * const VTrackingEventCameraDidCaptureVideo; //< User did move from camera view to workspace with a video just recorded
 extern NSString * const VTrackingEventCameraUserDidPickImageFromLibrary; 

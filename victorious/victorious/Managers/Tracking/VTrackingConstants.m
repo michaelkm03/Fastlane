@@ -31,7 +31,7 @@ NSString * const VTrackingEventCreateCancelSelected = @"CreateCancelSelected";
 
 // Camera (Camera prefix for legacy/compatibility)
 NSString * const VTrackingEventCameraDidSwitchToVideoCapture = @"CameraDidSwitchToVideoCapture";
-// Deprecated: CameraDidSwitchToPhotoCapture
+NSString * const VTrackingEventCameraDidSwitchToPhotoCapture = @"CameraDidSwitchToPhotoCapture";
 NSString * const VTrackingEventCameraDidCapturePhoto = @"CameraDidCapturePhoto";
 NSString * const VTrackingEventCameraDidCaptureVideo = @"CameraDidCaptureVideo";
 NSString * const VTrackingEventCameraUserDidPickImageFromLibrary = @"CameraUserDidPickImageFromLibrary";
