@@ -16,7 +16,7 @@
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
-static NSString * const kIconSelectedKey = @"iconSelected";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 static NSString * const kImageURLKey = @"imageURL";
 static NSString * const kPickerKey = @"picker";
 
@@ -24,7 +24,7 @@ static NSString * const kPickerKey = @"picker";
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
-@property (nonatomic, strong) UIImage *iconSelected;
+@property (nonatomic, strong) UIImage *selectedIcon;
 @property (nonatomic, strong) VEditTextToolViewController *canvasToolViewController;
 @property (nonatomic, strong) VTickerPickerViewController *toolPicker;
 
@@ -41,7 +41,7 @@ static NSString * const kPickerKey = @"picker";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
-        _iconSelected = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconSelectedKey][kImageURLKey]];
+        _selectedIcon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kSelectedIconKey][kImageURLKey]];
         
 #warning Get this from somewhere else, probably the template
         NSArray *testColors = @[ @{ @"title" : @"RED",       @"color" : [UIColor redColor] },

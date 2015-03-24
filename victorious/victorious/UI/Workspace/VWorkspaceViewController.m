@@ -40,7 +40,7 @@
 
 static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 
-@interface VWorkspaceViewController () <VToolControllerDelegate>
+@interface VWorkspaceViewController ()
 
 @property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
 
@@ -52,6 +52,7 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *continueButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, strong) NSArray *workspaceToolButtons;
 
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
@@ -59,8 +60,6 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @property (nonatomic, strong) VKeyboardNotificationManager *keyboardManager;
-
-@property (nonatomic, strong, readwrite) VToolController *toolController;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopBarToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBottomBarToContainer;
@@ -271,7 +270,10 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
         [confirmExitActionSheet showInView:self.view];
         return;
     }
-    self.completionBlock(NO, nil, nil);
+    if ( self.completionBlock != nil )
+    {
+        self.completionBlock( NO, nil, nil );
+    }
 }
 
 - (IBAction)publish:(id)sender
@@ -313,6 +315,13 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     
     NSDictionary *params = @{ VTrackingKeyName : self.toolController.selectedTool.title ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTool parameters:params];
+}
+
+- (void)setShowCloseButton:(BOOL)showCloseButton
+{
+    _showCloseButton = showCloseButton;
+    NSString *imageName = showCloseButton ? @"cameraButtonClose" : @"cameraButtonBack";
+    self.backButton.image = [UIImage imageNamed:imageName];
 }
 
 #pragma mark - VWorkspaceToolControllerDelegate

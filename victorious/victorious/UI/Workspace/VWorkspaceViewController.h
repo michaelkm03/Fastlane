@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
+#import "VToolController.h"
 
 @class VToolController, VCanvasView;
 
@@ -23,7 +24,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
  A toolbar - Representing the currently selected top level tool. For images these are: Text, Filters, and crop.
  
  */
-@interface VWorkspaceViewController : UIViewController <VHasManagedDependancies>
+@interface VWorkspaceViewController : UIViewController <VHasManagedDependancies, VToolControllerDelegate>
 
 @property (nonatomic, copy) NSString *continueText;
 @property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion. PreviewImage and RenderedMediaURL will be nil if unsuccessful.
@@ -31,7 +32,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
 
-@property (nonatomic, readonly) VToolController *toolController; ///< The toolController
+@property (nonatomic, strong) VToolController *toolController; ///< The toolController
 
 @property (nonatomic, assign) BOOL shouldConfirmCancels; ///< The workspace will show a "discard" action sheet before calling it's completion block
 
@@ -41,6 +42,8 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
  *  The initial edit state. (since dependency injection doesn't inherit from parent to child).
  */
 @property (nonatomic, strong) NSNumber *initalEditState;
+
+@property (nonatomic, assign) BOOL showCloseButton;
 
 - (void)bringTopChromeOutOfView;
 - (void)bringBottomChromeOutOfView;

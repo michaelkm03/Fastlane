@@ -26,8 +26,8 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VWorkspaceViewController *editTextWorkspaceViewController;
-@property (nonatomic, strong) VEditTextToolViewController *editTextToolViewController;
+@property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
+@property (nonatomic, strong) VEditTextToolViewController *textToolViewController;
 
 @end
 
@@ -38,41 +38,50 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
     self = [super init];
     if ( self )
     {
-        VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-        NSDictionary *dictionary = [globalDependencyManager templateValueOfType:[NSDictionary class] forKey:@"workspaceFlowText"];
-        _dependencyManager = [globalDependencyManager childDependencyManagerWithAddedConfiguration:dictionary];
+        _dependencyManager = dependencyManager;
         _flowNavigationController = [[UINavigationController alloc] init];
         _flowNavigationController.navigationBarHidden = YES;
         //_flowNavigationController.delegate = self;
         
-        _editTextWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
-        _editTextWorkspaceViewController.continueText = NSLocalizedString( @"Publish", @"" );
-#warning FIX
-        // _editTextWorkspaceViewController.showCloseButton = YES;
-#warning FIX
-        // _editTextWorkspaceViewController.delegate = self;
+        _textWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
+        __weak typeof(self) welf = self;
+        _textWorkspaceViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+        {
+            if ( !finished )
+            {
+                [welf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+            }
+            else
+            {
+                NSLog( @"PUBLISH" );
+            }
+        };
+        _textWorkspaceViewController.showCloseButton = YES;
+        _textWorkspaceViewController.continueText = @"Publish";
         
-        _editTextToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
-        NSDictionary *editTextWorkspace = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"editTextWorkspace"];
-        VDependencyManager *workspaceDependency = [dependencyManager childDependencyManagerWithAddedConfiguration:editTextWorkspace];
+        _textToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
+        NSDictionary *textWorkspace = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"editTextWorkspace"];
+        
+        VDependencyManager *workspaceDependency = [dependencyManager childDependencyManagerWithAddedConfiguration:textWorkspace];
         NSArray *workspaceTools = [workspaceDependency workspaceTools];
         VTextToolController *toolController = [[VTextToolController alloc] initWithTools:workspaceTools];
-        toolController.delegate = _editTextWorkspaceViewController;
         toolController.text = [self randomSampleText];
-#warning FIX
-        // toolController.dependencyManager = _editTextWorkspaceViewController.dependencyManager;
-#warning FIX
-        // _editTextWorkspaceViewController.toolController = toolController;
+        toolController.delegate = _textWorkspaceViewController;
+        
+        //toolController.dependencyManager = _textWorkspaceViewController.dependencyManager;
+        _textWorkspaceViewController.toolController = toolController;
         
         [toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
          {
              if ( [tool respondsToSelector:@selector(setSharedCanvasToolViewController:)] )
              {
-                 [tool setSharedCanvasToolViewController:_editTextToolViewController];
+                 [tool setSharedCanvasToolViewController:_textToolViewController];
              }
         }];
         
-        [self.flowNavigationController pushViewController:_editTextWorkspaceViewController animated:NO];
+        
+        
+        [self.flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
     }
     return self;
 }
@@ -97,18 +106,6 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
                                                   toViewController:(UIViewController *)toVC
 {
     return nil;
-}
-
-#pragma mark - VWorkspaceDelegate
-
-- (void)workspaceDidPublish:(VWorkspaceViewController *)workspaceViewController
-{
-    NSLog( @"Publish" );
-}
-
-- (void)workspaceDidClose:(VWorkspaceViewController *)workspaceViewController
-{
-    [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

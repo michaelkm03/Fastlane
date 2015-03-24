@@ -26,6 +26,8 @@
 // Login
 #import "VRootViewController.h"
 
+#import "VTemplateGenerator.h"
+
 @interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
@@ -115,9 +117,11 @@
 
 - (void)presentTextOnlyWorkspace
 {
-#warning Pipe in a dependency manager here:
+#warning Pipe in a dependency manager from the template here:
+    VTemplateGenerator *templateGenerator = [[VTemplateGenerator alloc] init];
     VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    VTextWorkspaceFlowController *textWorkspaceController = [[VTextWorkspaceFlowController alloc] initWithDependencyManager:globalDependencyManager];
+    VDependencyManager *dependencyManager = [globalDependencyManager childDependencyManagerWithAddedConfiguration:[templateGenerator textWorkspaceFlowComponent]];
+    VTextWorkspaceFlowController *textWorkspaceController = [[VTextWorkspaceFlowController alloc] initWithDependencyManager:dependencyManager];
     
     [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController
                                                  animated:YES
