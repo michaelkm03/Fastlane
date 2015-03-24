@@ -8,10 +8,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="k5V-32-ew9" customClass="VSleekStreamCollectionCell">
-            <rect key="frame" x="0.0" y="0.0" width="302" height="421"/>
+            <rect key="frame" x="0.0" y="0.0" width="302" height="431"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="302" height="421"/>
+                <rect key="frame" x="0.0" y="0.0" width="302" height="431"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="21k-Mb-C9q" customClass="VStreamCellHeaderView">
@@ -22,19 +22,20 @@
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit amet" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-Bo-1cB" customClass="VHashTagTextView">
+                        <rect key="frame" x="48" y="50" width="244" height="2"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyd-x0-d0C" customClass="VSleekStreamCellActionView">
-                        <rect key="frame" x="-1" y="352" width="304" height="41"/>
+                        <rect key="frame" x="-1" y="362" width="304" height="41"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="cwl-tf-eKG"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0yG-Rl-S8H" userLabel="Content Container">
-                        <rect key="frame" x="0.0" y="50" width="302" height="302"/>
+                        <rect key="frame" x="0.0" y="52" width="302" height="302"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1KY-vY-sth" userLabel="Preview Image View">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
@@ -59,10 +60,10 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="GwF-J3-KYa">
-                        <rect key="frame" x="125" y="175" width="52" height="52"/>
+                        <rect key="frame" x="125" y="177" width="52" height="52"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="TCA-zq-hwv">
-                        <rect key="frame" x="125" y="175" width="52" height="52"/>
+                        <rect key="frame" x="125" y="177" width="52" height="52"/>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -74,7 +75,7 @@
                 <constraint firstItem="21k-Mb-C9q" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" id="7da-VQ-Kx6"/>
                 <constraint firstAttribute="trailing" secondItem="gyd-x0-d0C" secondAttribute="trailing" constant="-1" id="GSN-s5-Jsd"/>
                 <constraint firstItem="0yG-Rl-S8H" firstAttribute="top" secondItem="6Ls-Bo-1cB" secondAttribute="bottom" id="KUq-xP-egX"/>
-                <constraint firstItem="gyd-x0-d0C" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="bottom" id="LCa-Vw-jCf"/>
+                <constraint firstItem="gyd-x0-d0C" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="bottom" constant="8" id="LCa-Vw-jCf"/>
                 <constraint firstItem="21k-Mb-C9q" firstAttribute="top" secondItem="k5V-32-ew9" secondAttribute="top" id="XhY-0i-FGU"/>
                 <constraint firstItem="TCA-zq-hwv" firstAttribute="centerX" secondItem="GwF-J3-KYa" secondAttribute="centerX" id="Zlu-yj-1zA"/>
                 <constraint firstAttribute="trailing" secondItem="0yG-Rl-S8H" secondAttribute="trailing" priority="999" id="cya-dt-NQV"/>
@@ -86,10 +87,11 @@
                 <constraint firstAttribute="bottom" secondItem="gyd-x0-d0C" secondAttribute="bottom" constant="28" id="wVb-eX-0SM"/>
                 <constraint firstItem="0yG-Rl-S8H" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" priority="999" id="yEI-i4-pyA"/>
             </constraints>
-            <size key="customSize" width="543" height="256"/>
+            <size key="customSize" width="543" height="266"/>
             <connections>
                 <outlet property="actionView" destination="gyd-x0-d0C" id="oSU-c4-1E5"/>
                 <outlet property="actionViewBottomConstraint" destination="wVb-eX-0SM" id="jxt-Zp-Ub6"/>
+                <outlet property="actionViewTopConstraint" destination="LCa-Vw-jCf" id="my1-eP-1ne"/>
                 <outlet property="captionTextView" destination="6Ls-Bo-1cB" id="Zde-ol-mjp"/>
                 <outlet property="captionTextViewBottomConstraint" destination="KUq-xP-egX" id="YEA-rn-45b"/>
                 <outlet property="captionTextViewTopConstraint" destination="stU-iI-F8H" id="Adn-Ga-Hsh"/>
@@ -100,7 +102,7 @@
                 <outlet property="streamCellHeaderView" destination="21k-Mb-C9q" id="iOU-IC-WRv"/>
                 <outlet property="videoPlayerView" destination="6ry-iE-omC" id="BjN-y1-I83"/>
             </connections>
-            <point key="canvasLocation" x="326" y="333.5"/>
+            <point key="canvasLocation" x="326" y="338.5"/>
         </collectionViewCell>
     </objects>
     <resources>

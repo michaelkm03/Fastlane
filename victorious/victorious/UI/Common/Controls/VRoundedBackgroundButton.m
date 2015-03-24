@@ -1,31 +1,24 @@
 //
-//  VWorkspaceToolButton.m
+//  VRoundedBackgroundButton.m
 //  victorious
 //
 //  Created by Michael Sena on 3/16/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VWorkspaceToolButton.h"
+#import "VRoundedBackgroundButton.h"
+#import <Objc/runtime.h>
 
 static const CGFloat kHighlightedAlpha = 0.7f;
 static const CGFloat kHighlightedScale = 0.8f;
 
-@interface VWorkspaceToolButton ()
+@interface VRoundedBackgroundButton ()
 
 @property (nonatomic, strong) CAShapeLayer *circleLayer;
 
 @end
 
-@implementation VWorkspaceToolButton
-
-- (void)setTool:(id<VWorkspaceTool>)tool
-{
-    _tool = tool;
-    
-    [self setImage:[tool icon] forState:UIControlStateNormal];
-    [self setImage:[tool selectedIcon] forState:UIControlStateSelected];
-}
+@implementation VRoundedBackgroundButton
 
 - (void)layoutSubviews
 {
@@ -35,12 +28,14 @@ static const CGFloat kHighlightedScale = 0.8f;
     {
         self.circleLayer = [CAShapeLayer layer];
         [self.layer insertSublayer:self.circleLayer atIndex:0];
-        self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : self.unselectedColor.CGColor;
     }
     
+    self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : self.unselectedColor.CGColor;
     self.circleLayer.bounds = self.bounds;
     self.circleLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
+    UIBezierPath *circlePath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
+                                                     byRoundingCorners:UIRectCornerAllCorners
+                                                           cornerRadii:self.bounds.size];
     self.circleLayer.path = circlePath.CGPath;
 }
 
