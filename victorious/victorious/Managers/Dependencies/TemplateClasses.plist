@@ -52,6 +52,8 @@
 	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>hashtagStream.screen</key>
+	<string>VHashtagStreamCollectionViewController</string>
 	<key>standard.contentView</key>
 	<string>VNewContentViewController</string>
 	<key>animated.voteType</key>

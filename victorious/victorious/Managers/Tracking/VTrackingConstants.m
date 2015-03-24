@@ -1,8 +1,8 @@
 // 
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
-//
-// Generated from CSV using script "tracking_generate_constants.sh" on 03/19/15.
+// 
+// Generated from CSV using script "tracking_generate_constants.sh" on 03/23/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -288,4 +288,4 @@ NSString * const VTrackingValueMessage = @"Message";
 
 // Menu types
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";
-// TabBar
+NSString * const VTrackingValueTabBar = @"TabBar";

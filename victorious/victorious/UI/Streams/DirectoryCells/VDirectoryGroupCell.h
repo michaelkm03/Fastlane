@@ -9,8 +9,6 @@
 #import "VBaseCollectionViewCell.h"
 #import "VDependencyManager.h"
 
-extern const NSUInteger VDirectoryMaxItemsPerGroup;
-
 @class VStreamItem, VDirectoryGroupCell, VStream, VSequence;
 
 extern CGFloat const kStreamDirectoryGroupCellInset;
@@ -33,8 +31,6 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
  */
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 /**
     The item cell delegate that will respond to selections made within the collectionView contained in this cell
  */
@@ -44,5 +40,10 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
  *  The VStream used to populate fields on the cell.
  */
 @property (nonatomic, strong) VStream *stream;
+
+/**
+ *  The current index path of the show more cell. Nil if no show more is being displayed.
+ */
+- (NSIndexPath *)indexPathForShowMore;
 
 @end

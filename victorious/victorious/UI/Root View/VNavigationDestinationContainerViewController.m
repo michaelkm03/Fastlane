@@ -77,6 +77,7 @@
     [self addChildViewController:containedViewController];
     containedViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
     containedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    containedViewController.view.frame = self.view.bounds;
     [self.view addSubview:containedViewController.view];
     [containedViewController didMoveToParentViewController:self];
     [self setNeedsStatusBarAppearanceUpdate];

@@ -227,6 +227,7 @@
     cell.showButton = YES;
     cell.owner = self.profile;
     cell.haveRelationship = haveRelationship;
+    cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
@@ -254,14 +255,6 @@
     VUser  *user = self.followers[indexPath.row];
     VUserProfileViewController *profileVC   =   [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileVC animated:YES];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
-    {
-        [self loadMoreFollowers];
-    }
 }
 
 - (IBAction)refresh:(id)sender
@@ -332,7 +325,7 @@
     {
         NSString *msg, *title;
         
-        self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+        self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
         
         if (self.isMe)
         {

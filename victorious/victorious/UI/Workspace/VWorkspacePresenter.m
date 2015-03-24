@@ -15,6 +15,7 @@
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 #import "VCreatePollViewController.h"
+#import "VTextWorkspaceFlowController.h"
 
 // Action sheet
 #import "VAlertController.h"
@@ -65,6 +66,13 @@
                                                             initialImageEditState:VImageToolControllerInitialImageEditStateText
                                                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
                                }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a TestPost", @"Create a text post action button.")
+                                                    handler:^(VAlertAction *action)
+                               {
+                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
+                                   
+                                   [self presentTextOnlyWorkspace];
+                               }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
@@ -103,6 +111,17 @@
     [self presentCreateFlowWithInitialCaptureState:initialCaptureState
                              initialImageEditState:VImageToolControllerInitialImageEditStateText
                           andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
+}
+
+- (void)presentTextOnlyWorkspace
+{
+#warning Pipe in a dependency manager here:
+    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
+    VTextWorkspaceFlowController *textWorkspaceController = [[VTextWorkspaceFlowController alloc] initWithDependencyManager:globalDependencyManager];
+    
+    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController
+                                                 animated:YES
+                                               completion:nil];
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate

@@ -72,7 +72,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static const CGFloat kCreateButtonHeight = 44.0f;
+const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
+static NSString * const kMarqueeURLKey = @"marqueeURL";
 
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
@@ -100,6 +101,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 @property (nonatomic, assign) BOOL canAddContent;
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+@property (nonatomic, strong) NSString *marqueeURLString;
 
 @end
 
@@ -132,9 +134,12 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
-    if ( [[dependencyManager numberForKey:kMarqueeKey] boolValue] )
+    NSString *marqueeURLString = [dependencyManager stringForKey:kMarqueeURLKey];
+    
+    if ( marqueeURLString != nil )
     {
-        streamCollectionVC.shouldDisplayMarquee = YES;
+        streamCollectionVC.marqueeURLString = marqueeURLString;
+        streamCollectionVC.shouldDisplayMarquee = [dependencyManager stringForKey:kMarqueeURLKey] != nil;
     }
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
@@ -250,7 +255,8 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     [self updateCurrentlyPlayingMediaAsset];
     
 #warning TESTING ONLY: Jumpts right to text workspace
-    //[self presentCreateFlowWithTextOnly];
+    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
+    [self.workspacePresenter presentTextOnlyWorkspace];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -283,14 +289,27 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 {
     if (!_marquee)
     {
-        VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+        VStream *marquee = [VStream streamForPath:[self.marqueeURLString v_pathComponent] inContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
         
         //The top of the template C hack
-        _marquee.isTemplateC = [self.streamCellFactory isKindOfClass:[VInsetStreamCellFactory class]];
+        _marquee.hideMarqueePosterImage = [self hideMarqueePosterImage];
+        _marquee.dependencyManager = self.dependencyManager;
         _marquee.delegate = self;
     }
     return _marquee;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VBaseCollectionViewCell *baseCollectionViewCell, NSUInteger idx, BOOL *stop)
+    {
+        if ( [baseCollectionViewCell isKindOfClass:[VMarqueeCollectionCell class]] )
+        {
+            ((VMarqueeCollectionCell *)baseCollectionViewCell).dependencyManager = dependencyManager;
+        }
+    }];
 }
 
 - (NSCache *)preloadImageCache
@@ -362,7 +381,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     }
     UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
     UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-    createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
+    createbutton.frame = CGRectMake(0, 0, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
     [createbutton setImage:image forState:UIControlStateNormal];
     [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
     createbutton.hidden = !initiallyVisible;
@@ -494,6 +513,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     {
         VMarqueeCollectionCell *cell = [dataSource.collectionView dequeueReusableCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]
                                                                                             forIndexPath:indexPath];
+        cell.hideMarqueePosterImage = [self hideMarqueePosterImage];
         cell.marquee = self.marquee;
         CGSize desiredSize = [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
         cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
@@ -512,6 +532,12 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
+}
+
+//According to design we could have the poster's profile images added back to marquee content at a later day, but for now it should be hidden at all times.
+- (BOOL)hideMarqueePosterImage
+{
+    return YES;
 }
 
 - (void)preloadSequencesAfterIndexPath:(NSIndexPath *)indexPath forDataSource:(VStreamCollectionViewDataSource *)dataSource
@@ -596,8 +622,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     }
     
     // Instantiate and push to stack
-    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag];
-    vc.dependencyManager = self.dependencyManager;
+    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

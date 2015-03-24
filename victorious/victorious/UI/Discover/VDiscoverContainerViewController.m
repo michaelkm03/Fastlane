@@ -27,7 +27,7 @@
 #import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
 
-@interface VDiscoverContainerViewController () <UITextFieldDelegate>
+@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
@@ -42,6 +42,8 @@
 @end
 
 @implementation VDiscoverContainerViewController
+
+@synthesize multipleViewControllerChildDelegate; ///< VMultipleContainerChild
 
 #pragma mark - Initializers
 
@@ -191,6 +193,15 @@
     {
         self.usersAndTagsSearchViewController = segue.destinationViewController;
     }
+}
+
+#pragma mark - VMultipleContainerChild
+
+- (void)viewControllerSelected:(BOOL)isDefault
+{
+    // This event is not actually stream related, its name remains for legacy purposes
+    NSDictionary *params = @{ VTrackingKeyStreamName : [self.dependencyManager stringForKey:VDependencyManagerTitleKey] ?: @"Discover" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
 }
 
 #pragma mark - UINavigationControllerDelegate methods

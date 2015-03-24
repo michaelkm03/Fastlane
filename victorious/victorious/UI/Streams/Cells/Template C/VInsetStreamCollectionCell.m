@@ -98,11 +98,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     {
         self.commentsLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.streamCellHeaderView.parentLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.dateImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     }
 }
 
@@ -128,6 +128,8 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         [self.actionView addRepostButton];
     }
     [self.actionView addMoreButton];
+    
+    [self.actionView updateLayoutOfButtons];
 }
 
 - (void)setDescriptionText:(NSString *)text

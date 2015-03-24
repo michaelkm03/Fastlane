@@ -10,17 +10,19 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface      VFollowerTableViewCell ()
+@interface VFollowerTableViewCell ()
 
-@property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
-@property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
-@property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImage;
+@property (nonatomic, weak) IBOutlet UILabel *profileName;
+@property (nonatomic, weak) IBOutlet UILabel *profileLocation;
 
 @property (nonatomic, strong) UIImage *followImage;
 @property (nonatomic, strong) UIImage *unfollowImage;
+
+@property (nonatomic, strong) UIColor *tintColorForRelationship;
 
 @end
 
@@ -36,15 +38,12 @@
     
     [self.profileImage sd_setImageWithURL:[NSURL URLWithString: profile.pictureUrl]
                          placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
-    self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
     self.profileImage.layer.borderWidth = 1.0;
     self.profileImage.layer.borderColor = [UIColor whiteColor].CGColor;
     self.profileImage.clipsToBounds = YES;
     
-    self.profileName.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.profileName.text = profile.name;
-    self.profileLocation.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.profileLocation.text = profile.location;
     
     self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
@@ -66,15 +65,32 @@
 {
     _haveRelationship = haveRelationship;
     
-    if (_haveRelationship)
+    [self updateRelationshipDependencies];
+}
+
+- (void)updateRelationshipDependencies
+{
+    if ( self.haveRelationship )
     {
         self.followButton.imageView.image = self.unfollowImage;
     }
     else
     {
-        self.followButton.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        self.followButton.imageView.tintColor = self.tintColorForRelationship;
         self.followButton.imageView.image = self.followImage;
     }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    self.profileImage.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.profileName.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    self.profileLocation.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    self.tintColorForRelationship = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    
+    [self updateRelationshipDependencies];
 }
 
 - (IBAction)follow:(id)sender

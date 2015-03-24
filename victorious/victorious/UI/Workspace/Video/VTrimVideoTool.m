@@ -8,11 +8,12 @@
 
 #import "VTrimVideoTool.h"
 #import "VTrimmerViewController.h"
-#import "VVideoFrameRateComposition.h"
-#import "VAssetThumbnailDataSource.h"
-#import "VTrimLoopingPlayerViewController.h"
-
 #import "VDependencyManager.h"
+#import "VVideoFrameRateComposition.h"
+#import <KVOController/FBKVOController.h>
+
+#import "VAssetThumbnailDataSource.h"
+#import "VCVideoPlayerViewController.h"
 
 static const int32_t kDefaultTimeScale = 600;
 
@@ -26,11 +27,11 @@ static NSString * const kVideoMuted = @"videoMuted";
 static NSString * const kIconKey = @"icon";
 static NSString * const kSelectedIconKey = @"selectedIcon";
 
-@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimLoopingPlayerViewControllerDelegate>
+@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VCVideoPlayerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
-@property (nonatomic, strong) VTrimLoopingPlayerViewController *trimLoopingViewController;
+@property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerController;
 
 @property (nonatomic, strong, readwrite) AVPlayerItem *playerItem;
 
@@ -81,10 +82,13 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         _trimViewController.title = _title;
         _trimViewController.delegate = self;
         
-        _trimLoopingViewController = [[VTrimLoopingPlayerViewController alloc] initWithNibName:nil bundle:nil];
-        _trimLoopingViewController.muted = _muteAudio;
-        _trimLoopingViewController.frameDuration = _frameDuration;
-        _trimLoopingViewController.delegate = self;
+        _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+        _videoPlayerController.shouldFireAnalytics = NO;
+        _videoPlayerController.loopWithoutComposition = YES;
+        _videoPlayerController.shouldShowToolbar = NO;
+        _videoPlayerController.delegate = self;
+        _videoPlayerController.shouldChangeVideoGravityOnDoubleTap = YES;
+        _videoPlayerController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
     }
     return self;
 }
@@ -125,7 +129,13 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
             welf.trimViewController.thumbnailDataSource = welf.thumbnailDataSource;
         });
     };
-    self.trimLoopingViewController.mediaURL = mediaURL;
+}
+
+- (void)setPlayerItem:(AVPlayerItem *)playerItem
+{
+    _playerItem = playerItem;
+    
+    self.videoPlayerController.playerItem = playerItem;
 }
 
 - (void)setSelected:(BOOL)selected
@@ -139,10 +149,36 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     if (selected)
     {
         self.trimViewController.thumbnailDataSource = self.thumbnailDataSource;
+        [self.videoPlayerController.player pause];
+        [self.KVOController observe:self.videoPlayerController.player
+                            keyPath:NSStringFromSelector(@selector(status))
+                            options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionInitial
+                              block:^(id observer, id object, NSDictionary *change)
+         {
+             AVPlayer *player = (AVPlayer *)object;
+             switch (player.status)
+             {
+                 case AVPlayerStatusReadyToPlay:
+                 {
+                     [player prerollAtRate:1.0f
+                         completionHandler:^(BOOL finished)
+                      {
+                          [player play];
+                      }];
+                     break;
+                 }
+                 case AVPlayerStatusUnknown:
+                 case AVPlayerStatusFailed:
+                     break;
+             }
+         }];
     }
     else
     {
         self.trimViewController.thumbnailDataSource = nil;
+        [self.videoPlayerController.player pause];
+        [self.KVOController unobserve:self.videoPlayerController.player
+                              keyPath:NSStringFromSelector(@selector(status))];
     }
 }
 
@@ -187,7 +223,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 
 - (UIViewController *)canvasToolViewController
 {
-    return self.trimLoopingViewController;
+    return self.videoPlayerController;
 }
 
 #pragma mark - VTrimmerViewControllerDelegate
@@ -196,27 +232,61 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
    didUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
 {
     self.didTrim = YES;
-    if (trimmerViewController.isInteracting)
-    {
-        return;
-    }
-    self.trimLoopingViewController.trimRange = selectedTimeRange;
+    [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(selectedTimeRange.start)];
+    [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration))];
+}
+
+- (void)trimmerViewControllerBeganSeeking:(VTrimmerViewController *)trimmerViewController
+                                   toTime:(CMTime)time
+{
+    [self.videoPlayerController.player pause];
+    [self.videoPlayerController.player seekToTime:time];
 }
 
 - (void)trimmerViewControllerEndedSeeking:(VTrimmerViewController *)trimmerViewController
 {
-    if (trimmerViewController.isInteracting)
+    __weak typeof(self) welf = self;
+    [self.videoPlayerController.player prerollAtRate:1.0f
+                                   completionHandler:^(BOOL finished)
     {
-        return;
-    }
-    self.trimLoopingViewController.trimRange = trimmerViewController.selectedTimeRange;
+        if (finished)
+        {
+            [welf.videoPlayerController.player play];
+        }
+    }];
 }
 
-#pragma mark - VVTrimLoopingPlayerViewControllerDelegate
+#pragma mark - VCVideoPlayerDelegate
 
-- (void)trimLoopingPlayerDidPlayToTime:(CMTime)currentTime
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
+      didPlayToTime:(CMTime)time
 {
-    self.trimViewController.currentPlayTime = currentTime;
+    self.trimViewController.currentPlayTime = time;
+}
+
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
+{
+    [videoPlayer.player play];
+}
+
+- (void)videoPlayerWasTapped
+{
+    if (self.videoPlayerController.isPlaying)
+    {
+        [self.videoPlayerController.player pause];
+    }
+    else
+    {
+        [self.videoPlayerController.player play];
+    }
+}
+
+#pragma mark - Private Methods
+
+- (void)updateStartEndTimesOnVideoPlayer
+{
+    [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(self.trimViewController.selectedTimeRange.start)];
+    [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(self.trimViewController.selectedTimeRange.start, self.trimViewController.selectedTimeRange.duration))];
 }
 
 @end

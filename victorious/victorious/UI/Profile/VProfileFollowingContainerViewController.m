@@ -12,15 +12,16 @@
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
+#import "VDependencyManager.h"
 
 @interface VProfileFollowingContainerViewController ()
 
 @property (nonatomic, weak)   IBOutlet UIView   *headerView;
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
 
-@property (nonatomic, strong) VTabBarViewController                 *tabBarViewController;
-@property (nonatomic, strong) VHashtagFollowingTableViewController  *hashtagFollowingViewController;
-@property (nonatomic, strong) VFollowingTableViewController         *userFollowingViewController;
+@property (nonatomic, strong) VTabBarViewController *tabBarViewController;
+@property (nonatomic, strong) VHashtagFollowingTableViewController *hashtagFollowingViewController;
+@property (nonatomic, strong) VFollowingTableViewController *userFollowingViewController;
 
 @end
 
@@ -64,8 +65,8 @@
 
 - (void)addInnerViewControllersToTabController:(VTabBarViewController *)tabViewController
 {
-    self.userFollowingViewController = [[VFollowingTableViewController alloc] init];
-    self.hashtagFollowingViewController = [[VHashtagFollowingTableViewController alloc] init];
+    self.userFollowingViewController = [[VFollowingTableViewController alloc] initWithDependencyManager:self.dependencyManager];
+    self.hashtagFollowingViewController = [[VHashtagFollowingTableViewController alloc] initWithDependencyManager:self.dependencyManager];
     
     tabViewController.viewControllers = @[v_newTab(self.userFollowingViewController, [UIImage imageNamed:@"tabIconUser"]),
                                           v_newTab(self.hashtagFollowingViewController, [UIImage imageNamed:@"tabIconHashtag"])

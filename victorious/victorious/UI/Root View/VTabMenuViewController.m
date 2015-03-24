@@ -22,6 +22,9 @@
 // Backgrounds
 #import "VSolidColorBackground.h"
 
+// Categories
+#import "NSArray+VMap.h"
+
 NSString * const kMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
@@ -100,11 +103,34 @@ NSString * const kMenuKey = @"menu";
     return [self.tabBarController.selectedViewController preferredStatusBarUpdateAnimation];
 }
 
+#pragma mark - VScaffoldViewController
+
+- (NSArray *)navigationDestinations
+{
+    return [self.internalTabBarViewController.viewControllers v_map:^id(VNavigationDestinationContainerViewController *container)
+    {
+        if ( [container isKindOfClass:[VNavigationDestinationContainerViewController class]] )
+        {
+            return container.navigationDestination;
+        }
+        else
+        {
+            return container;
+        }
+    }];
+}
+
 #pragma mark - UITabBarControllerDelegate
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
 shouldSelectViewController:(VNavigationDestinationContainerViewController *)viewController
 {
+    NSInteger index = [tabBarController.viewControllers indexOfObject:viewController];
+    if ( index != NSNotFound )
+    {
+        [self.tabShim willNavigateToIndex:index];
+    }
+    
     self.willSelectContainerViewController = viewController;
     [self navigateToDestination:viewController.navigationDestination];
     return NO;
@@ -115,6 +141,19 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     if ( self.presentedViewController != nil )
     {
         [self dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    if ( self.willSelectContainerViewController == nil )
+    {
+        for ( VNavigationDestinationContainerViewController *containerViewController in self.internalTabBarViewController.viewControllers )
+        {
+            if ( [containerViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] &&
+                 (id)containerViewController.navigationDestination == viewController)
+            {
+                self.willSelectContainerViewController = containerViewController;
+                break;
+            }
+        }
     }
     
     if (self.willSelectContainerViewController != nil)
@@ -129,7 +168,15 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         [self.internalTabBarViewController setSelectedViewController:self.willSelectContainerViewController];
         [self setNeedsStatusBarAppearanceUpdate];
         self.willSelectContainerViewController = nil;
-        return;
+    }
+    else if ( [self.internalTabBarViewController.selectedViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
+    {
+        VNavigationDestinationContainerViewController *containerViewController = (VNavigationDestinationContainerViewController *)self.internalTabBarViewController.selectedViewController;
+        if ( [containerViewController.containedViewController isKindOfClass:[VNavigationController class]] )
+        {
+            VNavigationController *navigationController = (VNavigationController *)containerViewController.containedViewController;
+            [navigationController.innerNavigationController pushViewController:viewController animated:YES];
+        }
     }
 }
 

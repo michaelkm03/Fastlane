@@ -11,14 +11,15 @@
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VTableViewCell.h"
 
-@class VStreamItem, VMarqueeController;
+@class VStreamItem, VMarqueeController, VDependencyManager;
 
 @interface VMarqueeCollectionCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
 @property (nonatomic, readonly) UIImageView *currentPreviewImageView;
 @property (nonatomic, readonly) VStreamItem *currentItem;
 @property (nonatomic, strong) VMarqueeController *marquee;
-@property (nonatomic, assign) BOOL isTemplateC;
+@property (nonatomic, assign) BOOL hideMarqueePosterImage;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (void)restartAutoScroll;
 

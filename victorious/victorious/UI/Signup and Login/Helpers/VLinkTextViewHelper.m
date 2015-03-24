@@ -22,14 +22,17 @@
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
     UIColor *normalColor = linkTextView.textColor ?: [UIColor whiteColor];
-    UIColor *linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    normalColor = [normalColor colorWithAlphaComponent:0.7f];
+    UIColor *linkColor = normalColor;
     UIFont *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    UIFont *linkFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     
     NSDictionary *attributes = @{ NSFontAttributeName : font ?: [NSNull null],
                                   NSForegroundColorAttributeName : normalColor,
                                   NSParagraphStyleAttributeName : paragraphStyle };
     
     NSDictionary *linkAttributes = @{ NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid),
+                                      NSFontAttributeName : linkFont ?: [NSNull null],
                                       NSForegroundColorAttributeName : linkColor,
                                       NSUnderlineColorAttributeName : linkColor,
                                       CCHLinkAttributeName : [text substringWithRange:range] };

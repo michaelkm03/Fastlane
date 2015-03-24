@@ -18,6 +18,7 @@
 #import "VConstants.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
+#import "VDependencyManager.h"
 
 static NSString * const kVFollowerCellName = @"followerCell";
 
@@ -29,6 +30,16 @@ static NSString * const kVFollowerCellName = @"followerCell";
 @end
 
 @implementation VFollowingTableViewController
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _dependencyManager = dependencyManager;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -222,6 +233,7 @@ static NSString * const kVFollowerCellName = @"followerCell";
     cell.profile = self.following[indexPath.row];
     cell.showButton = NO;
     cell.haveRelationship = haveRelationship;
+    cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
@@ -250,14 +262,6 @@ static NSString * const kVFollowerCellName = @"followerCell";
     VUser  *user = self.following[indexPath.row];
     VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
-    {
-        //[self loadMoreFollowings];
-    }
 }
 
 - (IBAction)refresh:(id)sender
@@ -342,7 +346,7 @@ static NSString * const kVFollowerCellName = @"followerCell";
     {
         NSString *msg, *title;
         
-        self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+        self.isMe = [[VObjectManager sharedManager] mainUser] != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue;
         
         if (self.isMe)
         {

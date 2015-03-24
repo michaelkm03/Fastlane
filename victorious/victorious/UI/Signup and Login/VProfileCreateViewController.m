@@ -36,6 +36,8 @@
 @import CoreLocation;
 @import AddressBookUI;
 
+static NSString * const kVTermsOfServiceURL = @"tosURL";
+
 @interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;

@@ -18,8 +18,8 @@
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
-#import "VSettingManager.h"
 #import "VDependencyManager.h"
+#import "VAppInfo.h"
 
 @import MessageUI;
 
@@ -59,13 +59,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.shouldShowInvite = ([MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText]) && [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
     
-    if ( self.shouldShowInvite )
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)];
-    }
+    [self refreshInviteButtons];
     
     [self addChildViewController:self.tabBarViewController];
     self.tabBarViewController.view.frame = self.containerView.bounds;
@@ -75,11 +70,39 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self refreshInviteButtons];
+}
+
+- (void)refreshInviteButtons
+{
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    self.appStoreLink = appInfo.appURL.absoluteString;
+    self.appName = appInfo.appName;
     
-    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
-    self.appStoreLink = appStoreUrl.absoluteString;
+    BOOL canSendMail = [MFMailComposeViewController canSendMail];
+    BOOL canSendText = [MFMessageComposeViewController canSendText];
+    BOOL hasValidDisplayStrings = [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
+    self.shouldShowInvite = (canSendMail || canSendText) && hasValidDisplayStrings;
     
-    self.appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+    UIBarButtonItem *barButtonItem = nil;
+    if ( self.shouldShowInvite )
+    {
+        barButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)];
+    }
+    self.navigationItem.rightBarButtonItem = barButtonItem;
+}
+
+- (void)setShouldShowInvite:(BOOL)shouldShowInvite
+{
+    _shouldShowInvite = shouldShowInvite;
+    self.contactsInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
+    self.facebookInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
+    self.twitterInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
 }
 
 - (BOOL)stringIsValidForDisplay:(NSString *)string
@@ -211,7 +234,7 @@
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+        NSString *appName = self.appName;
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
@@ -232,8 +255,8 @@
 {
     if ([MFMessageComposeViewController canSendText])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
-        NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
+        NSString *appName = self.appName;
+        NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:self.appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
         bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];

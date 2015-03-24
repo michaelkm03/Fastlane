@@ -275,11 +275,6 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
                        {
-                           if ( created )
-                           {
-                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidSucceed];
-                           }
-                           
                            self.profile = user;
                            if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
                            {
@@ -317,7 +312,7 @@
             dispatch_async(dispatch_get_main_queue(), ^(void)
                            {
                                NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
-                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts parameters:params];
+                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
                                
                                [self hideLoginProgress];
                                [self twitterAccessDidFail:error];
@@ -331,7 +326,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
                     NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts parameters:params];
                     
                     [self hideLoginProgress];
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
@@ -467,8 +462,6 @@
                                                    OnCompletion:^(VUser *user, BOOL created)
      {
          [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
-         
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidSucceed];
          
          self.profile = user;
          if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )

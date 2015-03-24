@@ -8,6 +8,10 @@
 
 #import "VWebContentViewController.h"
 
+@class VDependencyManager;
+
 @interface VPrivacyPoliciesViewController : VWebContentViewController
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

@@ -43,6 +43,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @implementation VTextTool
 
+@synthesize selected = _selected;
 @synthesize selectedIcon = _selectedIcon;
 @synthesize icon = _icon;
 
@@ -75,6 +76,12 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 }
 
 #pragma mark - Property Accessors
+
+- (void)setSelected:(BOOL)selected
+{
+    _selected = selected;
+    self.canvasToolViewController.view.userInteractionEnabled = selected;
+}
 
 - (void)setActiveTextTool:(id<VWorkspaceTool>)activeTextTool
 {

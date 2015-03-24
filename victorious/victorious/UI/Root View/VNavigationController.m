@@ -13,6 +13,7 @@
 #import "VScaffoldViewController.h"
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
+#import  "UIColor+VBrightness.h"
 
 #import <objc/runtime.h>
 
@@ -71,29 +72,12 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
 {
-    CGFloat red = 0;
-    CGFloat green = 0;
-    CGFloat blue = 0;
-    CGFloat alpha = 0;
-    
-    if ( ![color getRed:&red green:&green blue:&blue alpha:&alpha] )
+    switch ([color v_colorLuminance])
     {
-        return UIStatusBarStyleDefault;
-    }
-    
-    // Relative luminance in colorimetric spaces - http://en.wikipedia.org/wiki/Luminance_(relative)
-    red *= 0.2126f;
-    green *= 0.7152f;
-    blue *= 0.0722f;
-    CGFloat luminance = red + green + blue;
-    
-    if ( luminance < 0.6f )
-    {
-        return UIStatusBarStyleLightContent;
-    }
-    else
-    {
-        return UIStatusBarStyleDefault;
+        case VColorLuminanceBright:
+            return UIStatusBarStyleDefault;
+        case VColorLuminanceDark:
+            return UIStatusBarStyleLightContent;
     }
 }
 
@@ -142,6 +126,14 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (void)viewDidLayoutSubviews
 {
+    if ( !UIApplication.sharedApplication.statusBarHidden &&
+         CGAffineTransformIsIdentity(self.innerNavigationController.navigationBar.transform) &&
+         CGRectGetMinY(self.innerNavigationController.navigationBar.frame) < CGRectGetMaxY([UIApplication.sharedApplication statusBarFrame]) )
+    {
+        CGRect frame = self.innerNavigationController.navigationBar.frame;
+        frame.origin.y = CGRectGetMaxY([UIApplication.sharedApplication statusBarFrame]);
+        self.innerNavigationController.navigationBar.frame = frame;
+    }
     [self provideLayoutInsetsToViewController:self.innerNavigationController.topViewController];
 }
 
@@ -469,8 +461,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     
     if ( self.leftBarButtonItem != nil &&
          navigationController.viewControllers.count > 0 &&
-         navigationController.viewControllers[0] == viewController &&
-         viewController.navigationItem.leftBarButtonItems.count == 0 )
+         navigationController.viewControllers[0] == viewController )
     {
         viewController.navigationItem.leftBarButtonItems = @[ self.leftBarButtonItem ];
     }

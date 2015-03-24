@@ -98,8 +98,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
-    vc.dependencyManager = self.dependencyManager;
+    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -170,6 +169,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     VHashtag *hashtag = self.searchResults[ indexPath.row ];
     [customCell setHashtag:hashtag];
     customCell.shouldCellRespond = YES;
+    customCell.dependencyManager = self.dependencyManager;
     
     __weak typeof(customCell) weakCell = customCell;
     customCell.subscribeToTagAction = ^(void)

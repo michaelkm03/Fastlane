@@ -14,6 +14,8 @@
 #import "VPurchaseManager.h"
 #import "VVoteType.h"
 
+#import <KVOController/FBKVOController.h>
+
 NSString * const VExperienceEnhancerBarDidRequireLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
 NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt = @"VExperienceEnhancerBarDidRequirePurchasePrompt";
 
@@ -30,6 +32,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
+@property (nonatomic, strong) NSMutableSet *observedExperienceEnhancers;
 
 @end
 
@@ -95,6 +98,12 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     
 - (void)reloadData
 {
+    for (id observedEnhancer in self.observedExperienceEnhancers)
+    {
+        [self.KVOController unobserve:observedEnhancer];
+    }
+    self.observedExperienceEnhancers = [[NSMutableSet alloc] init];
+    
     NSInteger enhancerCount = [self.dataSource numberOfExperienceEnhancers];
     
     NSMutableArray *enhancers = [[NSMutableArray alloc] init];
@@ -103,6 +112,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     {
         VExperienceEnhancer *enhancerForIndex = [self.dataSource experienceEnhancerForIndex:enhancerIndex];
         [enhancers addObject:enhancerForIndex];
+        [self setupKVOControllerWithExperienceEnhancer:enhancerForIndex atIndex:enhancerIndex];
+        [self.observedExperienceEnhancers addObject:enhancerForIndex];
     }
     
     self.enhancers = [NSArray arrayWithArray:enhancers];
@@ -122,11 +133,29 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     VExperienceEnhancerCell *experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerCell suggestedReuseIdentifier]
                                                                                                 forIndexPath:indexPath];
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
+    experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.voteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     experienceEnhancerCell.isLocked = enhancerForIndexPath.isLocked;
     experienceEnhancerCell.enabled = self.enabled;
     return experienceEnhancerCell;
+}
+
+#pragma mark - KVOConroller
+
+- (void)setupKVOControllerWithExperienceEnhancer:(VExperienceEnhancer *)enhancer atIndex:(NSUInteger)index
+{
+    typeof(self) __weak welf = self;
+    [self.KVOController observe:enhancer
+                        keyPath:NSStringFromSelector(@selector(voteCount))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[welf.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+         if ( experienceEnhancerCell != nil )
+         {
+             experienceEnhancerCell.experienceEnhancerTitle = [welf.numberFormatter stringForInteger:enhancer.voteCount];
+         }
+     }];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -170,14 +199,9 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)selectExperienceEnhancerAtIndex:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     
     // Incrememnt the vote count
     [enhancerForIndexPath vote];
-    
-    // Update the cell with the incremenet vote count
-    NSString *totalVoteCountString = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
-    experienceEnhancerCell.experienceEnhancerTitle = totalVoteCountString;
     
     // Call the selection block (configured in VNewContentViewController) to play the animations
     if (self.selectionBlock)

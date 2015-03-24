@@ -6,10 +6,12 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "NSString+VParseHelp.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VObjectManager+Discover.h"
 #import "VObjectManager+Login.h"
+#import "VURLMacroReplacement.h"
 #import "VUser.h"
 #import "VHashtag.h"
 #import "MBProgressHUD.h"
@@ -17,6 +19,10 @@
 #import "VStream+Fetcher.h"
 #import "VNoContentView.h"
 #import "VAuthorizedAction.h"
+
+static NSString * const kHashtagStreamKey = @"hashtagStream";
+static NSString * const kHashtagKey = @"hashtag";
+static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 @interface VHashtagStreamCollectionViewController ()
 
@@ -32,10 +38,25 @@
 
 #pragma mark - Instantiation
 
-+ (instancetype)instantiateWithHashtag:(NSString *)hashtag
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VHashtagStreamCollectionViewController *streamCollection = [[self class] streamViewControllerForStream:[VStream streamForHashTag:hashtag]];
+    NSAssert([NSThread isMainThread], @"This method needs to be called on the main thread");
+    NSString *hashtag = [dependencyManager stringForKey:kHashtagKey];
+    NSString *streamURL = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
+    
+    if ( hashtag != nil )
+    {
+        VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
+        streamURL = [macroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kHashtagURLMacro: hashtag } inURLString:streamURL];
+    }
+    
+    VStream *stream = [VStream streamForPath:[streamURL v_pathComponent] inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    stream.hashtag = hashtag;
+    stream.name = [NSString stringWithFormat:@"#%@", hashtag];
+    
+    VHashtagStreamCollectionViewController *streamCollection = [[self class] streamViewControllerForStream:stream];
     streamCollection.selectedHashtag = hashtag;
+    streamCollection.dependencyManager = dependencyManager;
     return streamCollection;
 }
 
@@ -223,6 +244,18 @@
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(toggleFollowHashtag)];
+}
+
+@end
+
+#pragma mark -
+
+@implementation VDependencyManager (VHashtagStreamCollectionViewController)
+
+- (VHashtagStreamCollectionViewController *)hashtagStreamWithHashtag:(NSString *)hashtag
+{
+    NSParameterAssert(hashtag != nil );
+    return [self templateValueOfType:[VHashtagStreamCollectionViewController class] forKey:kHashtagStreamKey withAddedDependencies:@{ kHashtagKey: hashtag }];
 }
 
 @end

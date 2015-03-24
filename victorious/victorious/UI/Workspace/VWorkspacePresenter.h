@@ -14,4 +14,7 @@
 
 - (void)present;
 
+#warning This is only public for testing:
+- (void)presentTextOnlyWorkspace;
+
 @end

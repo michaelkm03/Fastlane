@@ -74,6 +74,7 @@
 
 @property (nonatomic, assign) BOOL hasCreatedAdChain;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
 @end
 
@@ -333,17 +334,31 @@
     [self fetchSequenceData];
 }
 
+- (VLargeNumberFormatter *)largeNumberFormatter
+{
+    if ( _largeNumberFormatter == nil )
+    {
+        _largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    }
+    return _largeNumberFormatter;
+}
+
 - (void)fetchUserinfo
 {
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         NSInteger followerCount = [resultObjects[0] integerValue];
-         if (followerCount > 0)
+         NSInteger followerCount = self.user.numberOfFollowers.integerValue;
+         if ( followerCount > 0 )
          {
-             
-             welf.followersText =  [NSString stringWithFormat:@"%@ %@", [[VLargeNumberFormatter new] stringForInteger:followerCount], NSLocalizedString(@"followers", @"")];
+             welf.followersText = [NSString stringWithFormat:@"%@ %@",
+                                   [self.largeNumberFormatter stringForInteger:followerCount],
+                                   NSLocalizedString(@"followers", @"")];
+         }
+         else
+         {
+             welf.followersText = @"";  //< To prevent showing "0 Followers"
          }
      }
                                                 failBlock:nil];
@@ -864,7 +879,7 @@
     {
         return nil;
     }
-    return [NSString stringWithFormat:@"%@ %@", [[[VLargeNumberFormatter alloc] init]stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
+    return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
 }
 
 #if FORCE_SHOW_DEBUG_END_CARD

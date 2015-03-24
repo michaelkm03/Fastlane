@@ -78,26 +78,11 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
         NSInteger userID = [[url v_firstNonSlashPathComponent] integerValue];
         if ( userID != 0 )
         {
-            [[VObjectManager sharedManager] fetchUser:@(userID)
-                                     withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+            VUserProfileViewController *profileVC = [VUserProfileViewController rootDependencyProfileWithRemoteId:@(userID)];
+            dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                VUser *user = [resultObjects firstObject];
-                
-                if ( user == nil )
-                {
-                    completion(nil);
-                }
-                else
-                {
-                    VUserProfileViewController *profileVC = [VUserProfileViewController rootDependencyProfileWithUser:user];
-                    completion(profileVC);
-                }
-            }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-            {
-                VLog(@"Failed to load user with error: %@", [error localizedDescription]);
-                completion(nil);
-            }];
+                completion(profileVC);
+            });
             return YES;
         }
     }
