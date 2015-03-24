@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, VTextTypeVerticalAlignment)
 /**
  *   VTextTypeTool represents a type of a text tool. Such as meme, quote, etc.
  */
-@interface VTextTypeTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
+@interface VTextTypeTool : NSObject <VHasManagedDependencies, VWorkspaceTool>
 
 @property (nonatomic, readonly) VTextTypeVerticalAlignment verticalAlignment; ///< Should this be center or bottom aligned
 @property (nonatomic, readonly) NSDictionary *attributes; ///< They attributes for use in NSAttributedStrings

@@ -56,7 +56,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 @implementation VPublishViewController
 
-#pragma mark - VHasManagedDependancies
+#pragma mark - VHasManagedDependencies
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {

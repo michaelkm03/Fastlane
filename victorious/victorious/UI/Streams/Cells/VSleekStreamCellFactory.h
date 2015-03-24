@@ -11,7 +11,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VSleekStreamCellFactory : NSObject <VHasManagedDependancies, VStreamCellFactory>
+@interface VSleekStreamCellFactory : NSObject <VHasManagedDependencies, VStreamCellFactory>
 
 /**
  Initializes the stream cell factory with an instance of VDependencyManager

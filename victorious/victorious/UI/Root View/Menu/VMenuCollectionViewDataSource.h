@@ -16,7 +16,7 @@
 /**
  A collection view data source for menus
  */
-@interface VMenuCollectionViewDataSource : NSObject <UICollectionViewDataSource, VHasManagedDependancies>
+@interface VMenuCollectionViewDataSource : NSObject <UICollectionViewDataSource, VHasManagedDependencies>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< An instance of VDependencyManager for supplying theme colors and fonts
 @property (nonatomic, copy, readonly) NSArray *menuSections; ///< Array of Arrays of VNavigationMenuItems

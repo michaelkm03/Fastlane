@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VNotificationSettingsViewController : UITableViewController <VHasManagedDependancies>
+@interface VNotificationSettingsViewController : UITableViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< Must be set prior to display
 

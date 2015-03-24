@@ -16,7 +16,7 @@
  *  It maintains tab bar items and their badging. It sums all of the tab bar item badges 
  *  and assigns to the applications shared badge number.
  */
-@interface VTabMenuShim : NSObject <VHasManagedDependancies>
+@interface VTabMenuShim : NSObject <VHasManagedDependencies>
 
 /**
  *  An array of VNavigationDestinationContainerViewController wrapping the 
