@@ -8,6 +8,10 @@
 
 #import "VFetchedResultsTableViewController.h"
 
+@class VUnreadMessageCountCoordinator, VUser, VDependencyManager;
+
 @interface VNotificationsViewController : VFetchedResultsTableViewController
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

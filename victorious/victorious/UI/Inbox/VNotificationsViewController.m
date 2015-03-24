@@ -14,6 +14,8 @@
 #import "VNotificationCell.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+Login.h"
+#import "VDependencyManager+VObjectManager.h"
 
 
 #import "UIViewController+VLayoutInsets.h"
@@ -32,6 +34,21 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 
 @implementation VNotificationsViewController
 
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VNotificationsViewController *viewController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"VNotificationsViewController"];
+    if (viewController)
+    {
+        viewController.dependencyManager = dependencyManager;
+        viewController.title = @"Notifications";
+        viewController.navigationItem.rightBarButtonItem = nil;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
+    }
+    return viewController;
+}
+
+/*
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"VNotificationsViewController"];
@@ -47,6 +64,7 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     }
     return self;
 }
+ */
 
 - (void)dealloc
 {
@@ -230,6 +248,23 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 {
     [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeNext
                                                         successBlock:nil failBlock:nil];
+}
+
+
+#pragma mark - NSNotification handlers
+
+- (void)loggedInChanged:(NSNotification *)notification
+{
+    /*
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.messageCountCoordinator updateUnreadMessageCount];
+    }
+    else
+    {
+        self.badgeNumber = 0;
+    }
+     */
 }
 
 @end

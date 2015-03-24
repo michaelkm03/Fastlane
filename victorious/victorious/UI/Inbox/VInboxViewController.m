@@ -29,26 +29,22 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VProvidesNavigationMenuItemBadge.h"
+#import "NSURL+VPathHelper.h"
 
-//NS_ENUM(NSUInteger, VModeSelect)
-//{
-//    kMessageModeSelect      = 0,
-//    kNotificationModeSelect = 1
-//};
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 //static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 @interface VInboxViewController ()
 
-//@property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelectControl;
-//@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
+
+static char kKVOContext;
 
 NSString * const VInboxViewControllerDeeplinkHostComponent = @"inbox";
 NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
@@ -60,7 +56,27 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
 }
 
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VInboxViewController *viewController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
+    if (viewController)
+    {
+        viewController.dependencyManager = dependencyManager;
+        viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
+        viewController.title = NSLocalizedString(@"Messages", @"");
+        viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:viewController
+                                                                                 action:@selector(userSearchAction:)];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    }
+    return viewController;
+}
 
+/*
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
@@ -79,9 +95,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     }
     return self;
 }
+ */
 
 - (void)dealloc
 {
+    self.messageCountCoordinator = nil; // calling property setter to remove KVO
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -127,6 +145,25 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 #pragma mark - Properties
 
+- (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
+{
+    if (_messageCountCoordinator)
+    {
+        [_messageCountCoordinator removeObserver:self forKeyPath:NSStringFromSelector(@selector(unreadMessageCount))];
+    }
+    _messageCountCoordinator = messageCountCoordinator;
+    
+    if (messageCountCoordinator)
+    {
+        [messageCountCoordinator addObserver:self forKeyPath:NSStringFromSelector(@selector(unreadMessageCount)) options:NSKeyValueObservingOptionNew context:&kKVOContext];
+        
+        if ( [self.dependencyManager.objectManager mainUserLoggedIn] )
+        {
+            [messageCountCoordinator updateUnreadMessageCount];
+        }
+    }
+}
+
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
     if ( badgeNumber == _badgeNumber )
@@ -139,6 +176,55 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         self.badgeNumberUpdateBlock(self.badgeNumber);
     }
+}
+
+#pragma mark - VNavigationDestination
+
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextInbox;
+}
+
+#pragma mark - VDeeplinkHandler methods
+
+- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+{
+    if ( ![self.dependencyManager.objectManager authorized] )
+    {
+        return NO;
+    }
+    
+    if ( [url.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+    {
+        NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
+        if ( conversationID != 0 )
+        {
+            [[VObjectManager sharedManager] conversationByID:@(conversationID)
+                                                successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+             {
+                 VConversation *conversation = (VConversation *)[resultObjects firstObject];
+                 if ( conversation == nil )
+                 {
+                     completion(nil);
+                 }
+                 else
+                 {
+                     completion(self);
+                     dispatch_async(dispatch_get_main_queue(), ^(void)
+                                    {
+                                        [self displayConversationForUser:conversation.user];
+                                    });
+                 }
+             }
+                                                   failBlock:^(NSOperation *operation, NSError *error)
+             {
+                 VLog(@"Failed to load conversation with error: %@", [error localizedDescription]);
+                 completion(nil);
+             }];
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - Segmented Control
@@ -165,20 +251,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     RKObjectManager *manager = [RKObjectManager sharedManager];
     
-    NSFetchRequest *fetchRequest = nil;
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] init];
-    
-//    if (VModeSelect == kMessageModeSelect)
-//    {
-        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-        sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
-//    }
-//    else if (VModeSelect == kNotificationModeSelect)
-//    {
-//        
-//        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
-//        sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
-//    }
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
 
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
@@ -472,6 +546,26 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
          {
              [self.messageCountCoordinator updateUnreadMessageCount];
          } failBlock:nil];
+    }
+}
+
+#pragma mark - Key-Value Observation
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ( context != &kKVOContext )
+    {
+        return;
+    }
+    
+    if ( object == self.messageCountCoordinator && [keyPath isEqualToString:NSStringFromSelector(@selector(unreadMessageCount))] )
+    {
+        NSNumber *newUnreadCount = change[NSKeyValueChangeNewKey];
+        
+        if ( [newUnreadCount isKindOfClass:[NSNumber class]] )
+        {
+            self.badgeNumber = [newUnreadCount integerValue];
+        }
     }
 }
 
