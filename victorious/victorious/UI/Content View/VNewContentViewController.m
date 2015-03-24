@@ -156,6 +156,8 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 @property (nonatomic, strong) NSDate *videoLoadedDate;
 
+@property (nonatomic, assign) BOOL hasBeenPresented;
+
 @end
 
 @implementation VNewContentViewController
@@ -557,9 +559,10 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     }
 #endif
     
-    BOOL isBeingPresented = self.isBeingPresented || self.navigationController.isBeingPresented;
-    if ( isBeingPresented && self.videoCell == nil )
+    if ( !self.hasBeenPresented )
     {
+        self.hasBeenPresented = YES;
+        
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };

@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, VLastLoginType)
 static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUserManager.LoginType";
 static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUserManager.AccountIdentifier";
 static NSString * const kKeychainServiceName          = @"com.getvictorious.VUserManager.LoginPassword";
+static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
 
 @implementation VUserManager
 
@@ -93,7 +94,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
             VUser *user = [resultObjects firstObject];
             if ([user isKindOfClass:[VUser class]])
             {
-                NSString *eventName = created ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventSignupWithFacebookDidSucceed;
+                NSString *eventName = created ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventLoginWithFacebookDidSucceed;
                 [[VTrackingManager sharedInstance] trackEvent:eventName];
                 
                 [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook
@@ -204,8 +205,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         NSString *oauthToken = [parsedData objectForKey:@"oauth_token"];
         NSString *tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
         NSString *twitterId = [parsedData objectForKey:@"user_id"];
-         
-        __block BOOL created = YES;
+        
         VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             VUser *user = [resultObjects firstObject];
@@ -218,14 +218,18 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
             }
             else
             {
+                BOOL created = ![VObjectManager sharedManager].mainUserProfileComplete;
+                
                 [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeTwitter   forKey:kLastLoginTypeUserDefaultsKey];
                 [[NSUserDefaults standardUserDefaults] setObject:twitterAccount.identifier forKey:kAccountIdentifierDefaultsKey];
+                
                 if (completion)
                 {
                     completion(user, created);
                 }
+                
+                [[VTrackingManager sharedInstance] trackEvent:created ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed];
             }
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithTwitterDidSucceed];
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
@@ -239,7 +243,6 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
              
             if (error.code == kVAccountAlreadyExistsError)
             {
-                created = NO;
                 [[VObjectManager sharedManager] loginToTwitterWithToken:oauthToken
                                                            accessSecret:tokenSecret
                                                               twitterId:twitterId

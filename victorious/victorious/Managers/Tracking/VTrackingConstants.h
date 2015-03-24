@@ -18,7 +18,7 @@ extern NSString * const VTrackingEventApplicationDidEnterForeground; //< Backend
 // Navigation
 extern NSString * const VTrackingEventUserDidSelectMainMenu; //< User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
 extern NSString * const VTrackingEventUserDidSelectMainSection; //< "User selected a section from the main menu.  Params: MenuType, Section  (template driven value)"
-extern NSString * const VTrackingEventUserDidSelectStream; //< "User selected a tab or segmented control to change streams in a multiple stream view; Params: StreamName, StreamId"
+extern NSString * const VTrackingEventUserDidSelectStream; //< "User selected a tab or segmented control to change subections.  This is not actually for streams only, the name remains for legacy purposes. Params: Name (section name, not necessarily stream name)"
 
 // Content Creation
 extern NSString * const VTrackingEventUserDidSelectCreatePost; //< "User tapped (+) button, displaying the content type selection; Params: CurrentSection (template driven value)"
@@ -30,8 +30,8 @@ extern NSString * const VTrackingEventCreateGIFPostSelected;
 extern NSString * const VTrackingEventCreateCancelSelected; //< User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 
 // Camera (Camera prefix for legacy/compatibility)
-extern NSString * const VTrackingEventCameraDidSwitchToVideoCapture; 
-extern NSString * const VTrackingEventCameraDidSwitchToPhotoCapture; 
+extern NSString * const VTrackingEventCameraDidSwitchToVideoCapture; //< "Since the introduction of the new tap-and-hold-to-record video feature, this event is now fired at the moment when the tap is held long enough to begin recording video."
+extern NSString * const VTrackingEventCameraDidSwitchToPhotoCapture; //< Deprecated:  This event no longer applies to the new camera with its tap and hold to record video feature.
 extern NSString * const VTrackingEventCameraDidCapturePhoto; //< User did move from camera view to workspace with an image just taken
 extern NSString * const VTrackingEventCameraDidCaptureVideo; //< User did move from camera view to workspace with a video just recorded
 extern NSString * const VTrackingEventCameraUserDidPickImageFromLibrary; 
