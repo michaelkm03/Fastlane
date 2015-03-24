@@ -354,7 +354,7 @@ static NSString * const kVFollowerCellName = @"followerCell";
     {
         NSString *msg, *title;
         
-        self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+        self.isMe = [[VObjectManager sharedManager] mainUser] != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue;
         
         if (self.isMe)
         {

@@ -96,30 +96,32 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 
 + (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
     VUser *mainUser = [VObjectManager sharedManager].mainUser;
-    BOOL isMe = (remoteId.integerValue == mainUser.remoteId.integerValue);
+    BOOL isMe = (mainUser != nil && remoteId.integerValue == mainUser.remoteId.integerValue);
     
     if ( !isMe )
     {
-        [viewController loadUserWithRemoteId:remoteId];
+        viewController.remoteId = remoteId;
     }
     else
     {
         viewController.profile = mainUser;
     }
     
-    viewController.dependencyManager = dependencyManager != nil ? dependencyManager : [[VRootViewController rootViewController] dependencyManager];
+    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
 + (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.profile = aUser;
     
-    BOOL isMe = (aUser.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+    BOOL isMe = ([VObjectManager sharedManager].mainUser != nil && aUser.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
     if (isMe)
     {
@@ -130,7 +132,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
         viewController.title = aUser.name ?: @"Profile";
     }
     
-    viewController.dependencyManager = dependencyManager != nil ? dependencyManager : [[VRootViewController rootViewController] dependencyManager];
+    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -190,8 +192,6 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     self.streamDataSource.hasHeaderCell = YES;
     self.collectionView.alwaysBounceVertical = YES;
     
-    self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
-    
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
     
@@ -220,6 +220,10 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     if (self.isMe)
     {
         [self addFriendsButton];
+    }
+    else if ( self.profile == nil && self.remoteId != nil )
+    {
+        [self loadUserWithRemoteId:self.remoteId];
     }
     else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
     {
@@ -440,10 +444,10 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     
     _profile = profile;
     
-    BOOL isMe = (profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+    self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     NSString *profileName = profile.name ?: @"Profile";
     
-    self.title = isMe ? NSLocalizedString(@"me", "") : profileName;
+    self.title = self.isMe ? NSLocalizedString(@"me", "") : profileName;
     
     [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
