@@ -27,6 +27,7 @@
 #import "VPurchaseManager.h"
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
+#import "VAppInfo.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -326,8 +327,8 @@ static NSString * const kSupportEmailKey = @"email.support";
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey];
-        NSString *creatorName = ownerInfo[ VDependencyManagerOwnerNameKey ];
+        VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+        NSString *creatorName = appInfo.appName;
         NSString *recipientEmail = [self.dependencyManager stringForKey:kSupportEmailKey];
         
         MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];

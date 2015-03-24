@@ -26,6 +26,7 @@
 #import "VLocationManager.h"
 #import "VVoteSettings.h"
 #import "VVoteType.h"
+#import "VAppInfo.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
@@ -208,6 +209,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [self seedMonetizationNetworks:[dependencyManager templateValueOfType:[NSArray class] forKey:kAdSystemsKey]];
     
     self.dependencyManager = dependencyManager;
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     self.sessionTimer.dependencyManager = self.dependencyManager;
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
     [[VSettingManager sharedManager] setDependencyManager:self.dependencyManager];
@@ -216,10 +218,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.voteSettings = [[VVoteSettings alloc] init];
     [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
     
-    NSString *appStoreURL = [self.dependencyManager stringForKey:VDependencyManagerAppStoreURL];
+    NSURL *appStoreURL = appInfo.appURL;
     if ( appStoreURL != nil )
     {
-        [[NSUserDefaults standardUserDefaults] setObject:appStoreURL forKey:VConstantAppStoreURL];
+        [[NSUserDefaults standardUserDefaults] setObject:appStoreURL.absoluteString forKey:VConstantAppStoreURL];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     

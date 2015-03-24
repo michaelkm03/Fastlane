@@ -48,6 +48,8 @@
 #import "VVideoToolController.h"
 #import "VAuthorizedAction.h"
 
+#import "VAppInfo.h"
+
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
@@ -249,14 +251,15 @@
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShare];
     
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
                                                                                                                  [self shareTextForSequence:sequence],
                                                                                                                  [NSURL URLWithString:node.shareUrlPath] ?: [NSNull null]]
                                                                                          applicationActivities:@[fbActivity]];
     
-    NSDictionary *creatorInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey];
-    NSString *creatorName = creatorInfo[ VDependencyManagerOwnerNameKey ];
+    NSString *creatorName = appInfo.appName;
     NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), creatorName];
     [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];

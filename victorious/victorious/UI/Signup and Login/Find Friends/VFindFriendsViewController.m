@@ -19,6 +19,7 @@
 #import "VTabInfo.h"
 #import "VThemeManager.h"
 #import "VDependencyManager.h"
+#import "VAppInfo.h"
 
 @import MessageUI;
 
@@ -79,10 +80,9 @@
 
 - (void)refreshInviteButtons
 {
-    self.appStoreLink = [self.dependencyManager stringForKey:VDependencyManagerAppStoreURL];
-    
-    NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey];
-    self.appName = ownerInfo[ VDependencyManagerOwnerNameKey ];
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    self.appStoreLink = appInfo.appURL.absoluteString;
+    self.appName = appInfo.appName;
     
     BOOL canSendMail = [MFMailComposeViewController canSendMail];
     BOOL canSendText = [MFMessageComposeViewController canSendText];

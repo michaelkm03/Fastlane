@@ -18,6 +18,7 @@
 #import "VConstants.h"
 #import "VThemeManager.h"
 #import "VDependencyManager.h"
+#import "VAppInfo.h"
 
 @interface VNotificationSettingsViewController() <VNotificationSettingCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
@@ -124,8 +125,8 @@
     
     // Feed section
     NSString *format = NSLocalizedString( @"PostFromCreator", nil);
-    NSDictionary *ownerInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey];
-    NSString *creatorName = ownerInfo[ VDependencyManagerOwnerNameKey ];
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    NSString *creatorName = appInfo.ownerName;
     NSArray *sectionFeedRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
                                                                                enabled:_settings.isPostFromCreatorEnabled.boolValue],
                                   [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
