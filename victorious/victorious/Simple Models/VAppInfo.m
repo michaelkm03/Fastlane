@@ -10,21 +10,15 @@
 #import "VDependencyManager.h"
 
 // Global configuration keys
-NSString * const kAppStoreURLKey = @"appStoreURL";
-NSString * const kAppNameKey = @"appName";
+static NSString * const kAppStoreURLKey = @"appStoreURL";
+static NSString * const kAppNameKey = @"appName";
 
-NSString * const kOwnerDictionaryKey = @"owner";
-NSString * const kOwnerNameKey = @"name";
-NSString * const kOwnerProfileImageURLKey = @"profile_image";
-NSString * const kOwnerIdKey = @"id";
+static NSString * const kOwnerDictionaryKey = @"owner";
+static NSString * const kOwnerNameKey = @"name";
+static NSString * const kOwnerProfileImageURLKey = @"profile_image";
+static NSString * const kOwnerIdKey = @"id";
 
 @interface VAppInfo ()
-
-@property (nonatomic, readwrite) NSString *ownerName;
-@property (nonatomic, readwrite) NSString *ownerId;
-@property (nonatomic, readwrite) NSURL *profileImageURL;
-@property (nonatomic, readwrite) NSString *appName;
-@property (nonatomic, readwrite) NSURL *appURL;
 
 @end
 
@@ -39,9 +33,9 @@ NSString * const kOwnerIdKey = @"id";
         NSDictionary *ownerDictionary = [dependencyManager templateValueOfType:[NSDictionary class] forKey:kOwnerDictionaryKey];
         if ( ownerDictionary != nil )
         {
-            _ownerName = [ownerDictionary objectForKey:kOwnerNameKey];
-            _profileImageURL = [NSURL URLWithString:[ownerDictionary objectForKey:kOwnerProfileImageURLKey]];
-            _ownerId = [ownerDictionary objectForKey:kOwnerIdKey];
+            _ownerName = ownerDictionary[ kOwnerNameKey ];
+            _profileImageURL = [NSURL URLWithString:ownerDictionary[ kOwnerProfileImageURLKey ]];
+            _ownerId = ownerDictionary[ kOwnerIdKey ];
         }
         _appName = [dependencyManager stringForKey:kAppNameKey];
         _appURL = [NSURL URLWithString:[dependencyManager stringForKey:kAppStoreURLKey]];
