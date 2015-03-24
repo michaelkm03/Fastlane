@@ -14,18 +14,9 @@
 #import "VEditTextToolViewController.h"
 #import "VWorkspaceTool.h"
 
-typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
-{
-    VTextWorkspaceFlowStateTypeNone = -1,
-    VTextWorkspaceFlowStateTypeEnter,
-    VTextWorkspaceFlowStateTypeEdit,
-    VTextWorkspaceFlowStateTypePublish
-};
-
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
 @property (nonatomic, strong) VEditTextToolViewController *textToolViewController;
 
@@ -38,57 +29,60 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
     self = [super init];
     if ( self )
     {
-        _dependencyManager = dependencyManager;
-        _flowNavigationController = [[UINavigationController alloc] init];
-        _flowNavigationController.navigationBarHidden = YES;
-        //_flowNavigationController.delegate = self;
+        // 1. Create the text workspace
+        _textWorkspaceViewController = [self createTextWorkspaceWithDependencyManager:dependencyManager];
         
-        _textWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
-        __weak typeof(self) welf = self;
-        _textWorkspaceViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
-        {
-            if ( !finished )
-            {
-                [welf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
-            }
-            else
-            {
-                NSLog( @"PUBLISH" );
-            }
-        };
-        _textWorkspaceViewController.showCloseButton = YES;
-        _textWorkspaceViewController.continueText = @"Publish";
-        
+        // 2. Create the worksapce canvas
         _textToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
-        NSDictionary *textWorkspace = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"editTextWorkspace"];
         
-        VDependencyManager *workspaceDependency = [dependencyManager childDependencyManagerWithAddedConfiguration:textWorkspace];
-        NSArray *workspaceTools = [workspaceDependency workspaceTools];
-        VTextToolController *toolController = [[VTextToolController alloc] initWithTools:workspaceTools];
-        toolController.text = [self randomSampleText];
-        toolController.delegate = _textWorkspaceViewController;
+        // 3. Create the tool controller using workspace as delegate
+        _textWorkspaceViewController.toolController = [self createToolControllerWithDependencyManager:dependencyManager delegate:_textWorkspaceViewController];
         
-        //toolController.dependencyManager = _textWorkspaceViewController.dependencyManager;
-        _textWorkspaceViewController.toolController = toolController;
-        
-        [toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
+        // 4. Add tools to the tool controller
+        [_textWorkspaceViewController.toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
          {
              if ( [tool respondsToSelector:@selector(setSharedCanvasToolViewController:)] )
              {
                  [tool setSharedCanvasToolViewController:_textToolViewController];
              }
-        }];
+         }];
         
-        
-        
-        [self.flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
+        // 5. Create the nav controller and present the workspace
+        _flowNavigationController = [[UINavigationController alloc] init];
+        _flowNavigationController.navigationBarHidden = YES;
+        [_flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
     }
     return self;
 }
 
-- (NSString *)randomSampleText
+- (VTextToolController *)createToolControllerWithDependencyManager:(VDependencyManager *)dependencyManager delegate:(id<VToolControllerDelegate>)delegate
 {
-    return @"Here is my sample text that is quite long and is intended to span onto at least three lines so we can see how it looks.";
+    NSDictionary *textWorkspace = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"editTextWorkspace"];
+    VDependencyManager *workspaceDependency = [dependencyManager childDependencyManagerWithAddedConfiguration:textWorkspace];
+    NSArray *workspaceTools = [workspaceDependency workspaceTools];
+    VTextToolController *toolController = [[VTextToolController alloc] initWithTools:workspaceTools];
+    toolController.delegate = delegate;
+    return toolController;
+}
+
+- (VWorkspaceViewController *)createTextWorkspaceWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VWorkspaceViewController *workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
+    __weak typeof(self) welf = self;
+    workspace.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+    {
+        if ( !finished )
+        {
+            [welf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            NSLog( @"PUBLISH" );
+        }
+    };
+    workspace.showCloseButton = YES;
+    workspace.continueText = @"Publish";
+    return workspace;
 }
 
 #pragma mark - Property Accessors
@@ -96,16 +90,6 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
 - (UIViewController *)flowRootViewController
 {
     return self.flowNavigationController;
-}
-
-#pragma mark - UINavigationControllerDelegate
-
-- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
-{
-    return nil;
 }
 
 @end
