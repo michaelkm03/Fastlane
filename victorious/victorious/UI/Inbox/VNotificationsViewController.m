@@ -91,6 +91,7 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 }
 
 /*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -107,10 +108,10 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     RKObjectManager *manager = [RKObjectManager sharedManager];
     
     NSFetchRequest *fetchRequest = nil;
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] init];
+//    NSSortDescriptor *sort = [[NSSortDescriptor alloc] init];
     
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
-    sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
     
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
@@ -141,8 +142,8 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
-        noMessageView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
-        noMessageView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
+        noMessageView.titleLabel.text = NSLocalizedString(@"NoNotificationsTitle", @"");
+        noMessageView.messageLabel.text = NSLocalizedString(@"NoNotificationsMessage", @"");
         noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
         self.tableView.backgroundView = noMessageView;
     }
@@ -158,6 +159,7 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     UITableViewCell    *theCell;
     
     theCell = [tableView dequeueReusableCellWithIdentifier:kNotificationCellViewIdentifier forIndexPath:indexPath];
+    
     VNotification  *info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
     [(VNotificationCell *)theCell setNotification:info];
     ((VNotificationCell *)theCell).parentTableViewController = self;
@@ -209,7 +211,7 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
         hud.mode = MBProgressHUDModeText;
         hud.labelText = NSLocalizedString(@"RefreshError", @"");
         [hud hide:YES afterDelay:3.0];
-        VLog(@"Failed to refresh conversation list: %@", [error localizedDescription]);
+        VLog(@"Failed to refresh notification list: %@", [error localizedDescription]);
     };
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
