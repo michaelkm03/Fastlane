@@ -137,7 +137,7 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
         workspaceToolButton.selected = NO;
         [workspaceToolButton setImage:[tool icon] forState:UIControlStateNormal];
         [workspaceToolButton setImage:[tool selectedIcon] forState:UIControlStateSelected];
-        workspaceToolButton.v_associatedObjectForButton = tool;
+        workspaceToolButton.associatedObjectForButton = tool;
         [workspaceToolButton addTarget:self action:@selector(selectedButton:) forControlEvents:UIControlEventTouchUpInside];
         [workspaceToolButtons addObject:workspaceToolButton];
 
@@ -192,7 +192,7 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     [self.toolController setupDefaultTool];
     [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *toolButton, NSUInteger idx, BOOL *stop)
      {
-         if (self.toolController.selectedTool == toolButton.v_associatedObjectForButton)
+         if (self.toolController.selectedTool == toolButton.associatedObjectForButton)
          {
              [self setSelectedButton:toolButton];
              *stop = YES;
@@ -308,7 +308,7 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 
 - (void)selectedButton:(VRoundedBackgroundButton *)button
 {
-    self.toolController.selectedTool = button.v_associatedObjectForButton;
+    self.toolController.selectedTool = button.associatedObjectForButton;
     [self setSelectedButton:button];
     
     NSDictionary *params = @{ VTrackingKeyName : self.toolController.selectedTool.title ?: @"" };

@@ -24,6 +24,6 @@
  */
 @property (nonatomic, copy) UIColor *unselectedColor;
 
-@property (nonatomic, weak) id v_associatedObjectForButton;
+@property (nonatomic, weak) id associatedObjectForButton;
 
 @end

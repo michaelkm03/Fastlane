@@ -28,7 +28,6 @@ static const CGFloat kHighlightedScale = 0.8f;
     {
         self.circleLayer = [CAShapeLayer layer];
         [self.layer insertSublayer:self.circleLayer atIndex:0];
-
     }
     
     self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : self.unselectedColor.CGColor;
