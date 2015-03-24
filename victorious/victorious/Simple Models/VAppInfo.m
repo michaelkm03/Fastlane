@@ -18,6 +18,16 @@ NSString * const kOwnerNameKey = @"name";
 NSString * const kOwnerProfileImageURLKey = @"profile_image";
 NSString * const kOwnerIdKey = @"id";
 
+@interface VAppInfo ()
+
+@property (nonatomic, readwrite) NSString *ownerName;
+@property (nonatomic, readwrite) NSString *ownerId;
+@property (nonatomic, readwrite) NSURL *profileImageURL;
+@property (nonatomic, readwrite) NSString *appName;
+@property (nonatomic, readwrite) NSURL *appURL;
+
+@end
+
 @implementation VAppInfo
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
