@@ -75,9 +75,9 @@ static const CGFloat kStatusBarHeight = 20.0f;
     switch ([color v_colorLuminance])
     {
         case VColorLuminanceBright:
-            return UIStatusBarStyleLightContent;
-        case VColorLuminanceDark:
             return UIStatusBarStyleDefault;
+        case VColorLuminanceDark:
+            return UIStatusBarStyleLightContent;
     }
 }
 
