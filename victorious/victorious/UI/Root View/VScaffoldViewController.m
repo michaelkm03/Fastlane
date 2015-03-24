@@ -76,6 +76,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
     if ( ![firstTimeInstallHelper hasBeenShown] )
     {
+        [firstTimeInstallHelper savePlaybackDefaults];
         VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                        forKey:VScaffoldViewControllerFirstTimeContentKey];
         if ( lightweightContentVC != nil )
@@ -83,7 +84,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             lightweightContentVC.delegate = self;
             [self presentViewController:lightweightContentVC animated:YES completion:^(void)
             {
-                [firstTimeInstallHelper savePlaybackDefaults];
                 [self trackFirstTimeContentView];
             }];
             
