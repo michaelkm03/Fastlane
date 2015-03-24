@@ -60,10 +60,10 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         [super setDependencyManager:dependencyManager];
         self.actionView.dependencyManager = dependencyManager;
         self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         [self.streamCellHeaderView refreshAppearanceAttributes];
     }
     self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
@@ -153,7 +153,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     if ( dependencyManager != nil )
     {
         attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-        attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     }
     attributes[ NSParagraphStyleAttributeName ] = [[NSMutableParagraphStyle alloc] init];
     return [NSDictionary dictionaryWithDictionary:attributes];

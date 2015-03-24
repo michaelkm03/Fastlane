@@ -151,6 +151,7 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 {
     UIButton *button = [super addButtonWithImage:image];
     button.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    button.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     return button;
 }
 

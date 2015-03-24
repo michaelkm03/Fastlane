@@ -695,7 +695,6 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
         return self.currentProfileCell;
     }
     VBaseCollectionViewCell *cell = (VBaseCollectionViewCell *)[super dataSource:dataSource cellForIndexPath:indexPath];
-    cell.dependencyManager = self.dependencyManager;
     return cell;
 }
 
