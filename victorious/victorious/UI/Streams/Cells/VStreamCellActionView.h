@@ -26,7 +26,6 @@ extern NSString * const VStreamCellActionViewMoreIconKey; ///< Key for "more" ic
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-- (UIColor *)buttonTintColor;
 - (UIButton *)addButtonWithImage:(UIImage *)image;
 - (UIButton *)addButtonWithImageKey:(NSString *)imageKey;
 

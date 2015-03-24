@@ -32,82 +32,32 @@
 #import "VDirectoryCellDecorator.h"
 #import "NSString+VParseHelp.h"
 
-static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
-static NSString * const kStreamURLKey = @"streamURL";
-
 static CGFloat const kDirectoryInset = 10.0f;
 
 @interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
-@property (nonatomic, strong) VDependencyManager *itemCellDependencyManager;
 
 @end
 
 @implementation VDirectoryViewController
-
-#pragma mark - Initializers
-
-+ (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager
-{
-    VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
-                                                                                           bundle:nil];
-    streamDirectory.currentStream = stream;
-    streamDirectory.title = stream.name;
-    streamDirectory.dependencyManager = dependencyManager;
-    
-    return streamDirectory;
-}
-
-#pragma mark VHasManagedDependencies conforming initializer
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    VStream *stream = [VStream streamForPath:[[dependencyManager stringForKey:kStreamURLKey] v_pathComponent] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
-}
 
 #pragma mark - UIView overrides
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
-    self.itemCellDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
-    
-    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    
     self.cellDecorator = [[VDirectoryCellDecorator alloc] init];
-    
-    //Register cells
-    [self.collectionView registerNib:[VDirectoryItemCell nibForCell]
-          forCellWithReuseIdentifier:[VDirectoryItemCell suggestedReuseIdentifier]];
-    
-    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
-    self.streamDataSource.delegate = self;
-    self.streamDataSource.collectionView = self.collectionView;
-    self.collectionView.dataSource = self.streamDataSource;
-    self.collectionView.delegate = self;
-    
-    [self refresh:self.refreshControl];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (NSString *)cellIdentifier
 {
-    [super viewWillAppear:animated];
-    
-    // Layout may have changed between awaking from nib and being added to the container of the SoS
-    [self.collectionView.collectionViewLayout invalidateLayout];
+    return [VDirectoryItemCell suggestedReuseIdentifier];
 }
 
-- (BOOL)shouldAutorotate
+- (UINib *)cellNib
 {
-    return NO;
+    return [VDirectoryItemCell nibForCell];
 }
 
 #pragma mark - CollectionViewDelegate
@@ -179,7 +129,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     VDirectoryItemCell *direcotryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                           forIndexPath:indexPath];
     [self.cellDecorator populateCell:direcotryCell withStreamItem:item];
-    [self.cellDecorator applyStyleToCell:direcotryCell withDependencyManager:self.itemCellDependencyManager];
+    [self.cellDecorator applyStyleToCell:direcotryCell withDependencyManager:self.dependencyManager];
     return direcotryCell;
 }
 

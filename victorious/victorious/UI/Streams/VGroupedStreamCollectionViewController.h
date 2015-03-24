@@ -6,13 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VAbstractStreamCollectionViewController.h"
-#import "VHasManagedDependencies.h"
+#import "VAbstractDirectoryCollectionViewController.h"
 
-@class VStream, VStreamCollectionViewDataSource;
-
-@interface VGroupedStreamCollectionViewController : VAbstractStreamCollectionViewController <VHasManagedDependancies>
-
-+ (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager;
+@interface VGroupedStreamCollectionViewController : VAbstractDirectoryCollectionViewController
 
 @end
