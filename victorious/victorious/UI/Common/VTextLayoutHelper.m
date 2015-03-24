@@ -19,12 +19,21 @@ static const CGFloat kTextSpacingVertical = 2;
                       maxWidth:(CGFloat)maxWidth
 {
     NSMutableArray *lines = [[NSMutableArray alloc] init];
-    NSMutableArray *allWords = [NSMutableArray arrayWithArray:[text componentsSeparatedByString:@" "]];
     
+    if ( [text rangeOfString:@" "].location == NSNotFound )
+    {
+        return [NSArray arrayWithArray:lines];
+    }
+    
+    NSMutableArray *allWords = [NSMutableArray arrayWithArray:[text componentsSeparatedByString:@" "]];
+    // NSInteger maxIterations = allWords.count;
+    
+    // for ( NSInteger i = 0; i < maxIterations && allWords.count > 0; i++ )
     while ( allWords.count > 0 )
     {
         NSMutableString *currentLine = [[NSMutableString alloc] init];
-        while ( [[currentLine stringByAppendingFormat:@" %@", allWords.firstObject] sizeWithAttributes:attributes].width < maxWidth )
+        NSString *currentLineWithNextWord = [currentLine stringByAppendingFormat:@" %@", allWords.firstObject];
+        while ( [currentLineWithNextWord sizeWithAttributes:attributes].width < maxWidth )
         {
             [currentLine appendFormat:@" %@", allWords.firstObject];
             [allWords removeObjectAtIndex:0];
@@ -36,6 +45,7 @@ static const CGFloat kTextSpacingVertical = 2;
         [lines addObject:currentLine];
     }
     
+    NSLog( @"num lines = %@", @(lines.count) );
     return [NSArray arrayWithArray:lines];
 }
 

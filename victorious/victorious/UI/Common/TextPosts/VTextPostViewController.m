@@ -8,8 +8,8 @@
 
 #import "VTextPostViewController.h"
 #import "VTextLayoutHelper.h"
-#import "VTextBackgroundView.h"
 #import "VDependencyManager.h"
+#import "VTextPostTextView.h"
 
 static const CGFloat kTextLineHeight = 35.0f;
 static const CGFloat kTextBaselineOffsetMultiplier = 0.371f;
@@ -18,12 +18,9 @@ static const NSUInteger kMaxTextLength = 200;
 @interface VTextPostViewController () <UITextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
-
-@property (nonatomic, weak) IBOutlet UITextView *textView;
-@property (nonatomic, weak) IBOutlet VTextBackgroundView *backgroundView;
-@property (nonatomic, strong) UITextView *hashtagTextView;
+@property (nonatomic, weak) IBOutlet VTextPostTextView *textView;
+@property (nonatomic, weak) IBOutlet VTextPostTextView *hashtagTextView;
 
 @end
 
@@ -47,6 +44,7 @@ static const NSUInteger kMaxTextLength = 200;
 {
     [super viewDidLoad];
     
+    self.supplementaryHashtagText = @"";
     self.text = @"Enter your text!";
 }
 
@@ -54,18 +52,10 @@ static const NSUInteger kMaxTextLength = 200;
 {
     _supplementaryHashtagText = supplementaryHashtagText;
     
-    NSLog( @"Set text %@", _supplementaryHashtagText );
-    
-    if ( self.hashtagTextView == nil )
-    {
-        self.hashtagTextView = [[UITextView alloc] init];
-        self.hashtagTextView.backgroundColor = [UIColor clearColor];
-        [self.view addSubview:self.hashtagTextView];
-    }
-    
     NSDictionary *attribtues = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
     self.hashtagTextView.attributedText = [[NSAttributedString alloc] initWithString:supplementaryHashtagText
                                                                           attributes:attribtues];
+    
     [self.hashtagTextView sizeToFit];
     
     [self updateTextBackground];
@@ -84,32 +74,29 @@ static const NSUInteger kMaxTextLength = 200;
 - (void)updateTextBackground
 {
     NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
-    NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
     
-    for ( UITextView *textView in @[ self.textView, self.hashtagTextView  ?: [NSNull null] ] )
+    for ( VTextPostTextView *textView in @[ self.textView, self.hashtagTextView ] )
     {
-        if ( ![textView isKindOfClass:[UITextView class]] )
-        {
-            continue;
-        }
+        
+        NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
         [textView layoutIfNeeded];
         NSArray *textLines = [self.textLayoutHelper textLinesFromText:textView.attributedText.string
                                                        withAttributes:attributes
                                                              maxWidth:CGRectGetWidth(textView.frame)];
         
-        CGFloat offset = kTextBaselineOffsetMultiplier * kTextLineHeight - 10;
+        CGFloat offset = kTextBaselineOffsetMultiplier * kTextLineHeight;
         NSUInteger y = 0;
         for ( NSString *line in textLines )
         {
             CGSize size = [line sizeWithAttributes:attributes];
-            CGFloat width = [line isEqual:textLines.lastObject] ? size.width : CGRectGetWidth(self.view.frame);
-            CGRect rect = CGRectMake( 0, textView.frame.origin.y + offset + (y++) * (size.height + 2), width, size.height );
+            CGFloat width = [line isEqual:textLines.lastObject] ? size.width : CGRectGetWidth(textView.frame);
+            CGRect rect = CGRectMake( 0, offset + (y++) * (size.height + 2), width + 6, size.height);
             [backgroundFrames addObject:[NSValue valueWithCGRect:rect]];
         }
+        
+        textView.backgroundFrameColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f];
+        textView.backgroundFrames = [NSArray arrayWithArray:backgroundFrames];
     }
-    
-    self.backgroundView.backgroundFrameColor = [UIColor whiteColor];
-    self.backgroundView.backgroundFrames = backgroundFrames;
 }
 
 #pragma mark - Text Attributes
@@ -117,14 +104,14 @@ static const NSUInteger kMaxTextLength = 200;
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
+              NSForegroundColorAttributeName: [UIColor cyanColor], //[dependencyManager colorForKey:@"color.text.content"],
               NSParagraphStyleAttributeName: [self paragraphStyle] };
 }
 
 - (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
+              NSForegroundColorAttributeName: [UIColor redColor], //[dependencyManager colorForKey:@"color.link"],
               NSParagraphStyleAttributeName: [self paragraphStyle] };
 }
 

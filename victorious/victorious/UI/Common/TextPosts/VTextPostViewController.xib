@@ -6,7 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VTextPostViewController">
             <connections>
-                <outlet property="backgroundView" destination="Iit-g5-QVM" id="dIM-vc-IcG"/>
+                <outlet property="hashtagTextView" destination="ON9-Ap-Px7" id="XC1-oG-TeS"/>
                 <outlet property="textLayoutHelper" destination="DgL-W4-teC" id="ebL-61-Eqm"/>
                 <outlet property="textView" destination="EdJ-vJ-rzg" id="CvN-ia-c6B"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="HSK-lU-PKi"/>
@@ -17,11 +17,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iit-g5-QVM" customClass="VTextBackgroundView">
-                    <rect key="frame" x="10" y="10" width="580" height="580"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdJ-vJ-rzg">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdJ-vJ-rzg" customClass="VTextPostTextView">
                     <rect key="frame" x="10" y="220" width="580" height="160"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -35,14 +31,17 @@
                         <outlet property="delegate" destination="-1" id="qvi-UH-K6A"/>
                     </connections>
                 </textView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="#hashtag" translatesAutoresizingMaskIntoConstraints="NO" id="ON9-Ap-Px7" customClass="VTextPostTextView">
+                    <rect key="frame" x="130" y="68" width="135" height="51"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="textColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                </textView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Iit-g5-QVM" secondAttribute="bottom" constant="10" id="4v1-ES-ajM"/>
-                <constraint firstItem="Iit-g5-QVM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="8Yl-fO-Sei"/>
                 <constraint firstItem="EdJ-vJ-rzg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="DfA-4J-TQo"/>
-                <constraint firstItem="Iit-g5-QVM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Ras-Bn-XAd"/>
-                <constraint firstAttribute="trailing" secondItem="Iit-g5-QVM" secondAttribute="trailing" constant="10" id="e4V-Yt-NG1"/>
                 <constraint firstAttribute="trailing" secondItem="EdJ-vJ-rzg" secondAttribute="trailing" constant="10" id="gKH-In-kGk"/>
                 <constraint firstAttribute="centerY" secondItem="EdJ-vJ-rzg" secondAttribute="centerY" id="nCR-gS-ReL"/>
             </constraints>

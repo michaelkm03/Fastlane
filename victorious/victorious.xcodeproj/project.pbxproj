@@ -421,7 +421,6 @@
 		A75ED0D61AB79EB500C35063 /* VEditTextToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0CE1AB79EB500C35063 /* VEditTextToolViewController.m */; };
 		A75ED0D71AB79EB500C35063 /* VEditTextToolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0CF1AB79EB500C35063 /* VEditTextToolViewController.xib */; };
 		A75ED0D81AB79EB500C35063 /* VEnterTextTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */; };
-		A75ED0DA1AB79EB500C35063 /* VTextLayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0D51AB79EB500C35063 /* VTextLayoutHelper.m */; };
 		A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0DD1AB7BC3E00C35063 /* VHashtagType.m */; };
 		A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0E01AB7BEFC00C35063 /* VColorType.m */; };
 		A75ED0E91AB8CC0A00C35063 /* VStreamContentPermissionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0E81AB8CC0A00C35063 /* VStreamContentPermissionsTests.m */; };
@@ -474,6 +473,7 @@
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
+		A793A92F1AC21BC0007F32EE /* VTextLayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A92E1AC21BC0007F32EE /* VTextLayoutHelper.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
 		A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */; };
@@ -484,7 +484,7 @@
 		A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
-		A7A4BCAF1AC2035A00E01D51 /* VTextBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A4BCAE1AC2035A00E01D51 /* VTextBackgroundView.m */; };
+		A7A4BCB21AC2067400E01D51 /* VTextPostTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A4BCB11AC2067400E01D51 /* VTextPostTextView.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9A31A83F1C300A3D3A0 /* VStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9761A83F1C300A3D3A0 /* VStreamCellActionView.m */; };
@@ -1552,8 +1552,6 @@
 		A75ED0CF1AB79EB500C35063 /* VEditTextToolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEditTextToolViewController.xib; sourceTree = "<group>"; };
 		A75ED0D01AB79EB500C35063 /* VEnterTextTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnterTextTool.h; sourceTree = "<group>"; };
 		A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnterTextTool.m; sourceTree = "<group>"; };
-		A75ED0D41AB79EB500C35063 /* VTextLayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextLayoutHelper.h; sourceTree = "<group>"; };
-		A75ED0D51AB79EB500C35063 /* VTextLayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextLayoutHelper.m; sourceTree = "<group>"; };
 		A75ED0DC1AB7BC3E00C35063 /* VHashtagType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagType.h; sourceTree = "<group>"; };
 		A75ED0DD1AB7BC3E00C35063 /* VHashtagType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagType.m; sourceTree = "<group>"; };
 		A75ED0DF1AB7BEFC00C35063 /* VColorType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VColorType.h; sourceTree = "<group>"; };
@@ -1654,6 +1652,8 @@
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
 		A790C8241A01980F00C4F208 /* VTrackingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingManager.h; sourceTree = "<group>"; };
 		A790C8251A01980F00C4F208 /* VTrackingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManager.m; sourceTree = "<group>"; };
+		A793A92D1AC21BC0007F32EE /* VTextLayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextLayoutHelper.h; sourceTree = "<group>"; };
+		A793A92E1AC21BC0007F32EE /* VTextLayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextLayoutHelper.m; sourceTree = "<group>"; };
 		A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
 		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
@@ -1674,8 +1674,8 @@
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
-		A7A4BCAD1AC2035A00E01D51 /* VTextBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextBackgroundView.h; sourceTree = "<group>"; };
-		A7A4BCAE1AC2035A00E01D51 /* VTextBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextBackgroundView.m; sourceTree = "<group>"; };
+		A7A4BCB01AC2067400E01D51 /* VTextPostTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTextPostTextView.h; path = TextPosts/VTextPostTextView.h; sourceTree = "<group>"; };
+		A7A4BCB11AC2067400E01D51 /* VTextPostTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTextPostTextView.m; path = TextPosts/VTextPostTextView.m; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
@@ -3824,8 +3824,10 @@
 				A75ED0811AB3C48A00C35063 /* VTextPostViewController.h */,
 				A75ED0821AB3C48A00C35063 /* VTextPostViewController.m */,
 				A75ED0831AB3C48A00C35063 /* VTextPostViewController.xib */,
-				A7A4BCAD1AC2035A00E01D51 /* VTextBackgroundView.h */,
-				A7A4BCAE1AC2035A00E01D51 /* VTextBackgroundView.m */,
+				A7A4BCB01AC2067400E01D51 /* VTextPostTextView.h */,
+				A7A4BCB11AC2067400E01D51 /* VTextPostTextView.m */,
+				A793A92D1AC21BC0007F32EE /* VTextLayoutHelper.h */,
+				A793A92E1AC21BC0007F32EE /* VTextLayoutHelper.m */,
 			);
 			name = TextPosts;
 			sourceTree = "<group>";
@@ -3870,8 +3872,6 @@
 				A75ED0CF1AB79EB500C35063 /* VEditTextToolViewController.xib */,
 				A75ED0D01AB79EB500C35063 /* VEnterTextTool.h */,
 				A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */,
-				A75ED0D41AB79EB500C35063 /* VTextLayoutHelper.h */,
-				A75ED0D51AB79EB500C35063 /* VTextLayoutHelper.m */,
 			);
 			path = "Text EntryTools";
 			sourceTree = "<group>";
@@ -5650,7 +5650,6 @@
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */,
-				A7A4BCAF1AC2035A00E01D51 /* VTextBackgroundView.m in Sources */,
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
 				F04A7CBD1AB874A10092A374 /* VSleekStreamCellFactory.m in Sources */,
 				F028CF4E1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m in Sources */,
@@ -5752,7 +5751,6 @@
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VHamburgerButton.m in Sources */,
-				A75ED0DA1AB79EB500C35063 /* VTextLayoutHelper.m in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
 				D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */,
 				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
@@ -5815,6 +5813,7 @@
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
+				A793A92F1AC21BC0007F32EE /* VTextLayoutHelper.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
@@ -6054,6 +6053,7 @@
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
+				A7A4BCB21AC2067400E01D51 /* VTextPostTextView.m in Sources */,
 				A74293981AAF906700532948 /* VTextToolController.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,

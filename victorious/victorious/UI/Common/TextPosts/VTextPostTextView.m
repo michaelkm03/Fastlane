@@ -1,14 +1,14 @@
 //
-//  VTextBackgroundView.m
+//  VTextPostTextView.m
 //  victorious
 //
-//  Created by Patrick Lynch on 3/12/15.
+//  Created by Patrick Lynch on 3/24/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VTextBackgroundView.h"
+#import "VTextPostTextView.h"
 
-@implementation VTextBackgroundView
+@implementation VTextPostTextView
 
 - (void)setBackgroundFrames:(NSArray *)backgroundFrames
 {
