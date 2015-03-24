@@ -55,6 +55,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"settings" bundle:[NSBundle mainBundle]];
     self.viewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VNotificationSettingsViewController class])];
     [self.viewController viewDidLoad];
+    self.viewController.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:nil dictionaryOfClassesByTemplateName:nil];
     
     self.randomSettings = [VDummyModels objectWithEntityName:[VNotificationSettings entityName]
                                                     subclass:[VNotificationSettings class]];
