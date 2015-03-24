@@ -461,8 +461,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     
     if ( self.leftBarButtonItem != nil &&
          navigationController.viewControllers.count > 0 &&
-         navigationController.viewControllers[0] == viewController &&
-         viewController.navigationItem.leftBarButtonItems.count == 0 )
+         navigationController.viewControllers[0] == viewController )
     {
         viewController.navigationItem.leftBarButtonItems = @[ self.leftBarButtonItem ];
     }
