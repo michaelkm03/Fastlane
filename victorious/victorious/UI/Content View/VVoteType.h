@@ -13,7 +13,7 @@
 
 extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retrieving vote types from an instance of VDependencyManager
 
-@interface VVoteType : NSObject <VHasManagedDependancies>
+@interface VVoteType : NSObject <VHasManagedDependencies>
 
 @property (nonatomic, readonly) NSNumber *displayOrder;
 @property (nonatomic, readonly) NSString *voteTypeName;

@@ -22,7 +22,7 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 
 @class CCHLinkTextView, VDependencyManager, VSequence, VStreamCellHeaderView, VStreamCollectionCell;
 
-@interface VStreamCollectionCell : VBaseCollectionViewCell <VSequenceActionsSender, VSharedCollectionReusableViewMethods, VHasManagedDependancies>
+@interface VStreamCollectionCell : VBaseCollectionViewCell <VSequenceActionsSender, VSharedCollectionReusableViewMethods, VHasManagedDependencies>
 
 @property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;

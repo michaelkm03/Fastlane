@@ -18,7 +18,7 @@
 
 @end
 
-@interface VNotificationSettingCell : UITableViewCell <VHasManagedDependancies>
+@interface VNotificationSettingCell : UITableViewCell <VHasManagedDependencies>
 
 @property (nonatomic, readonly) BOOL value;
 @property (nonatomic, weak) id<VNotificationSettingCellDelegate> delegate;

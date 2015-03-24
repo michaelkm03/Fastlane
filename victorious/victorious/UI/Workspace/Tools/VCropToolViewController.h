@@ -13,7 +13,7 @@
 /**
  *  A CropToolViewController contains a cropping scrollview that contains no visible subviews but forwards any updates of the contentOffset or zoomScale to interested parties via the onCropBoundsChange block.
  */
-@interface VCropToolViewController : UIViewController <VHasManagedDependancies>
+@interface VCropToolViewController : UIViewController <VHasManagedDependencies>
 
 + (instancetype)cropViewController;
 

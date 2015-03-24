@@ -23,7 +23,7 @@
 
 @end
 
-@interface VPurchaseViewController : UIViewController <VSimpleModalTransitionPresentedViewController, VHasManagedDependancies>
+@interface VPurchaseViewController : UIViewController <VSimpleModalTransitionPresentedViewController, VHasManagedDependencies>
 
 @property (nonatomic, strong) id<VPurchaseViewControllerDelegate> delegate;
 

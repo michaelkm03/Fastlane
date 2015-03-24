@@ -12,7 +12,7 @@
  *  Background components sit behind a user interface and are usually not themselves interactive;
     they just make everything look pretty.
  */
-@interface VBackground : NSObject <VHasManagedDependancies>
+@interface VBackground : NSObject <VHasManagedDependencies>
 
 /**
  *  MUST be overriden by subclasses!

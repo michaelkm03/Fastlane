@@ -16,7 +16,7 @@ extern NSString * const VHamburgerButtonIconKey; ///< The key that identifies th
  A hamburger button to be displayed in the navigation bar.
  Includes a numerical badge, too.
  */
-@interface VHamburgerButton : UIView <VHasManagedDependancies>
+@interface VHamburgerButton : UIView <VHasManagedDependencies>
 
 @property (nonatomic) NSInteger badgeNumber; ///< The number to display in the badge
 

@@ -11,7 +11,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VInsetStreamCellFactory : NSObject <VHasManagedDependancies, VStreamCellFactory>
+@interface VInsetStreamCellFactory : NSObject <VHasManagedDependencies, VStreamCellFactory>
 
 /**
  Initializes the stream cell factory with an instance of VDependencyManager

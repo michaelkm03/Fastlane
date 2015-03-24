@@ -15,7 +15,7 @@ extern NSString * const VSessionTimerNewSessionShouldStart; ///< Notification th
 /**
  VSessionTimer times a user's session for analytics purposes
  */
-@interface VSessionTimer : NSObject <VHasManagedDependancies>
+@interface VSessionTimer : NSObject <VHasManagedDependencies>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, readonly) BOOL started; ///< returns YES if -start has already been called
