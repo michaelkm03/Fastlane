@@ -16,7 +16,7 @@
  A wrapper around UINavigation controller 
  that adds some new functionality
  */
-@interface VNavigationController : UIViewController <VHasManagedDependancies>
+@interface VNavigationController : UIViewController <VHasManagedDependencies>
 
 /**
  The navigation controller doing all the work. Please 

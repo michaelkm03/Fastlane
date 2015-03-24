@@ -30,7 +30,7 @@ static NSString * const kshouldForceUppercaseKey = @"shouldForceUppercase";
 
 @implementation VTextTypeTool
 
-#pragma mark - VHasManagedDependancies
+#pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {

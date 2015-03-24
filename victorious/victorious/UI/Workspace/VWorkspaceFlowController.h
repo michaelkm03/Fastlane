@@ -73,7 +73,7 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
  */
-@interface VWorkspaceFlowController : NSObject <VHasManagedDependancies, VNavigationDestination>
+@interface VWorkspaceFlowController : NSObject <VHasManagedDependencies, VNavigationDestination>
 
 //TODO: this is a temporary workaround for when there may not be a dependency manager.
 + (instancetype)workspaceFlowControllerWithoutADependencyManger;

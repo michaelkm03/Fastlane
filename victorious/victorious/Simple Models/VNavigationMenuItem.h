@@ -14,7 +14,7 @@
 /**
  An item in a navigation menu
  */
-@interface VNavigationMenuItem : NSObject <VHasManagedDependancies>
+@interface VNavigationMenuItem : NSObject <VHasManagedDependencies>
 
 @property (nonatomic, copy, readonly) NSString *title; ///< The text to display in the menu
 @property (nonatomic, copy, readonly) NSString *identifier; ///< Identifier used for automation, accessibility and other non-user-facing purposes
