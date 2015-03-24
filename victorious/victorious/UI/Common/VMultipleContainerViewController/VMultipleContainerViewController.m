@@ -136,11 +136,8 @@ static NSString * const kInitialKey = @"initial";
 {
     [super viewDidAppear:animated];
     
-    UIViewController *viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-    {
-        [((id<VMultipleContainerChild>)viewController) viewControllerSelected:YES];
-    }
+    id<VMultipleContainerChild> viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
+    [viewController viewControllerSelected:YES];
 }
 
 #pragma mark - Rotation
@@ -162,12 +159,10 @@ static NSString * const kInitialKey = @"initial";
     [viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
      {
          NSParameterAssert( [viewController isKindOfClass:[UIViewController class]] );
+         NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] );
          
-         if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-         {
-             id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
-             child.multipleViewControllerChildDelegate = self;
-         }
+         id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
+         child.multipleViewControllerChildDelegate = self;
     }];
     
     _viewControllers = [viewControllers copy];
@@ -208,12 +203,8 @@ static NSString * const kInitialKey = @"initial";
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
-    UIViewController *viewController = self.viewControllers[index];
-    
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-    {
-        [((id<VMultipleContainerChild>)viewController) viewControllerSelected:isDefaultSelection];
-    }
+    id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
+    [viewController viewControllerSelected:isDefaultSelection];
 }
 
 #pragma mark - UICollectionViewDelegate methods
