@@ -10,6 +10,6 @@
 #import "VNavigationDestination.h"
 #import "VHasManagedDependencies.h"
 
-@interface VWorkspaceShimDestination : NSObject <VHasManagedDependancies, VNavigationDestination>
+@interface VWorkspaceShimDestination : NSObject <VHasManagedDependencies, VNavigationDestination>
 
 @end

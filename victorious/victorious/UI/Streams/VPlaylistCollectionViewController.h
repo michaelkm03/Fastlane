@@ -7,8 +7,7 @@
 //
 
 #import "VAbstractDirectoryCollectionViewController.h"
-#import "VHasManagedDependencies.h"
 
-@interface VPlaylistCollectionViewController : VAbstractDirectoryCollectionViewController <VHasManagedDependancies>
+@interface VPlaylistCollectionViewController : VAbstractDirectoryCollectionViewController
 
 @end

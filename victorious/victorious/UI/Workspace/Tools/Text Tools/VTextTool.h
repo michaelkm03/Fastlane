@@ -17,7 +17,7 @@
  *  NOTE: VTextTool expects it's picker to be of type VTickerPickerViewController.
  *
  */
-@interface VTextTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
+@interface VTextTool : NSObject <VHasManagedDependencies, VWorkspaceTool>
 
 @property (nonatomic, readonly) NSString *embeddedText; ///< The embedded text if any.
 @property (nonatomic, readonly) NSString *textStyleTitle; ///< The selected text style if any.
