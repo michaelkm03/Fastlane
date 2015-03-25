@@ -44,7 +44,7 @@ static const NSUInteger kMaxTextLength = 200;
 {
     [super viewDidLoad];
     
-    self.text = @"Enter your text!";
+    self.text = @"A;lkjds a;lkj lkjd ksj dksjid jsi jdks ndmsndjshidusik dks kd jskd jksndmsn mdsn kdusiou dishj kdsj kdjsk jdiosu diosu idj sk ";
     self.supplementaryHashtagText = @"";
     
     self.textView.clipsToBounds = NO;
@@ -75,6 +75,8 @@ static const NSUInteger kMaxTextLength = 200;
 {
     NSValue *lastLineFrameValueObject = self.textView.backgroundFrames.lastObject;
     
+    NSLog( @"lastLineFrameValueObject = %@", lastLineFrameValueObject );
+    
     CGRect hashtagTextViewFrame = self.hashtagTextView.frame;
     CGRect lastLineFrame = [lastLineFrameValueObject CGRectValue];
     if ( CGRectGetWidth(lastLineFrame) < CGRectGetWidth(self.textView.frame) - CGRectGetWidth(self.hashtagTextView.frame) )
@@ -87,8 +89,7 @@ static const NSUInteger kMaxTextLength = 200;
     {
         // New line
         hashtagTextViewFrame.origin.x = CGRectGetMinX( lastLineFrame );
-        hashtagTextViewFrame.origin.y = CGRectGetMaxY( lastLineFrame ) - 10
-        ;
+        hashtagTextViewFrame.origin.y = CGRectGetMaxY( lastLineFrame ) - 10;
     }
     self.hashtagTextView.frame = hashtagTextViewFrame;
     [self.hashtagTextView setNeedsLayout];
@@ -107,28 +108,47 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (void)updateTextBackground
 {
-    NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
+    CGFloat verticalSpacing = 2;
+    CGFloat lineOffsetMultiplier = 0.4f;
     
-    for ( VTextPostTextView *textView in @[ self.textView, self.hashtagTextView ] )
+    for ( VTextPostTextView *textView in @[ self.textView, self.hashtagTextView] )
     {
-        
-        NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
-        [textView layoutIfNeeded];
-        NSArray *textLines = [self.textLayoutHelper textLinesFromText:textView.attributedText.string
-                                                       withAttributes:attributes
-                                                             maxWidth:CGRectGetWidth(textView.frame)];
-        
-        CGFloat offset = kTextBaselineOffsetMultiplier * kTextLineHeight;
-        NSUInteger y = 0;
-        for ( NSString *line in textLines )
+        if ( textView.attributedText.string.length == 0 )
         {
-            CGSize size = [line sizeWithAttributes:attributes];
-            CGFloat width = [line isEqual:textLines.lastObject] ? size.width : CGRectGetWidth(textView.frame);
-            CGRect rect = CGRectMake( 0, offset + (y++) * (size.height + 2), width + 6, size.height);
-            [backgroundFrames addObject:[NSValue valueWithCGRect:rect]];
+            textView.backgroundFrames = @[];
+            continue;
         }
         
-        textView.backgroundFrameColor = [UIColor whiteColor];
+        textView.backgroundFrameColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3f];
+        
+        // Use this function of text storange to get the usedRect of each line fragment
+        NSRange fullRange = NSMakeRange( 0, textView.attributedText.string.length );
+        __block NSMutableArray *lineFragmentRects = [[NSMutableArray alloc] init];
+        [textView.layoutManager enumerateLineFragmentsForGlyphRange:fullRange usingBlock:^( CGRect rect, CGRect usedRect, NSTextContainer *textContainer, NSRange glyphRange, BOOL *stop )
+         {
+             [lineFragmentRects addObject:[NSValue valueWithCGRect:usedRect]];
+         }];
+        
+        // Calculate the actual line count a bit differently, since the one above is not as accurate while typing
+        CGRect singleCharRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, 1 )];
+        CGRect totalRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, textView.attributedText.string.length)];
+        totalRect.size = [textView sizeThatFits:CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX )];
+        totalRect.size.width = textView.bounds.size.width;
+        
+        __block NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
+        NSInteger numLines = totalRect.size.height / singleCharRect.size.height;
+        for ( NSInteger i = 0; i < numLines; i++ )
+        {
+            CGRect lineRect = totalRect;
+            lineRect.size.height = singleCharRect.size.height - verticalSpacing;
+            lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * lineOffsetMultiplier;
+            if ( i == numLines - 1 )
+            {
+                lineRect.size.width = ((NSValue *)lineFragmentRects.lastObject).CGRectValue.size.width;
+            }
+            [backgroundFrames addObject:[NSValue valueWithCGRect:lineRect]];
+        }
+        
         textView.backgroundFrames = [NSArray arrayWithArray:backgroundFrames];
     }
 }
@@ -138,7 +158,7 @@ static const NSUInteger kMaxTextLength = 200;
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
+              NSForegroundColorAttributeName: [UIColor cyanColor], //[dependencyManager colorForKey:@"color.text.content"],
               NSParagraphStyleAttributeName: [self paragraphStyle] };
 }
 

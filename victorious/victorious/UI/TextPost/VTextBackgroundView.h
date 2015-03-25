@@ -1,5 +1,5 @@
 //
-//  VTextPostTextView.h
+//  VTextBackgroundView.h
 //  victorious
 //
 //  Created by Patrick Lynch on 3/24/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VTextPostTextView : UIView
+@interface VTextBackgroundView : UIView
 
 @property (nonatomic, strong) NSArray *backgroundFrames;
 @property (nonatomic, strong) UIColor *backgroundFrameColor;

@@ -13,4 +13,6 @@
 @property (nonatomic, strong) NSArray *backgroundFrames;
 @property (nonatomic, strong) UIColor *backgroundFrameColor;
 
+- (CGRect)boundingRectForCharacterRange:(NSRange)range;
+
 @end
