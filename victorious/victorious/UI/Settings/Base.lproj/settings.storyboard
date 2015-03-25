@@ -9,7 +9,7 @@
         <!--Push Notifications-->
         <scene sceneID="CaJ-Gk-ZQq">
             <objects>
-                <tableViewController storyboardIdentifier="VNotificationSettingsViewController" title="Push Notifications" useStoryboardIdentifierAsRestorationIdentifier="YES" clearsSelectionOnViewWillAppear="NO" id="2cC-vU-QEc" customClass="VNotificationSettingsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="VNotificationSettingsViewController" title="Push Notifications" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" clearsSelectionOnViewWillAppear="NO" id="2cC-vU-QEc" customClass="VNotificationSettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="eWd-cN-CbD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -425,7 +425,7 @@
         <!--Terms of Service-->
         <scene sceneID="80e-2h-oqv">
             <objects>
-                <viewController storyboardIdentifier="VTOSViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VTOSViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VTOSViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VTOSViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="X30-bY-u4J"/>
                         <viewControllerLayoutGuide type="bottom" id="kNM-ik-iVo"/>
@@ -537,7 +537,7 @@
         <!--Privacy Policy-->
         <scene sceneID="Dbm-PF-rlC">
             <objects>
-                <viewController storyboardIdentifier="privacyPolicies" title="Privacy Policy" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lSu-os-HMa" customClass="VPrivacyPoliciesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="privacyPolicies" title="Privacy Policy" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lSu-os-HMa" customClass="VPrivacyPoliciesViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yhS-mM-YmB"/>
                         <viewControllerLayoutGuide type="bottom" id="UG0-VD-PTs"/>
@@ -556,7 +556,7 @@
         <!--Server Environment-->
         <scene sceneID="quU-xZ-2Jq">
             <objects>
-                <tableViewController title="Server Environment" id="6fa-Sd-wUR" customClass="VServerEnvironmentTableViewController" sceneMemberID="viewController">
+                <tableViewController title="Server Environment" extendedLayoutIncludesOpaqueBars="YES" id="6fa-Sd-wUR" customClass="VServerEnvironmentTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="YMY-dS-YC6">
                         <rect key="frame" x="0.0" y="44" width="320" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -589,7 +589,7 @@
         <!--Purchase Settings-->
         <scene sceneID="oSl-bU-Faw">
             <objects>
-                <tableViewController title="Server Environment" id="0nf-aa-3V6" userLabel="Purchase Settings" customClass="VPurchaseSettingsViewController" sceneMemberID="viewController">
+                <tableViewController title="Server Environment" extendedLayoutIncludesOpaqueBars="YES" id="0nf-aa-3V6" userLabel="Purchase Settings" customClass="VPurchaseSettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="qpQ-jJ-EMf">
                         <rect key="frame" x="0.0" y="44" width="320" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -685,9 +685,9 @@
         <!--Video Autoplay Settings-->
         <scene sceneID="xfB-WG-Eh5">
             <objects>
-                <tableViewController title="Server Environment" id="bDt-FM-3G4" userLabel="Video Autoplay Settings" customClass="VAutoplaySettingsViewController" sceneMemberID="viewController">
+                <tableViewController title="Server Environment" extendedLayoutIncludesOpaqueBars="YES" id="bDt-FM-3G4" userLabel="Video Autoplay Settings" customClass="VAutoplaySettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="7SB-ip-Cnv">
-                        <rect key="frame" x="0.0" y="44" width="320" height="661"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
@@ -722,9 +722,9 @@
         <!--Tracking Settings-->
         <scene sceneID="8Zb-26-6Dw">
             <objects>
-                <tableViewController title="Server Environment" id="p5c-fI-FBT" userLabel="Tracking Settings" customClass="VTrackingSettingsViewController" sceneMemberID="viewController">
+                <tableViewController title="Server Environment" extendedLayoutIncludesOpaqueBars="YES" id="p5c-fI-FBT" userLabel="Tracking Settings" customClass="VTrackingSettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="5PF-SZ-0yF">
-                        <rect key="frame" x="0.0" y="64" width="320" height="661"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
