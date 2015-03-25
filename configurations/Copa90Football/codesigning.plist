@@ -4,8 +4,6 @@
 <dict>
     <key>ProvisioningProfiles</key>
     <dict>
-        <key>Staging</key>
-        <string>Copa 90 Football Staging In-House Distribution</string>
     </dict>
 </dict>
 </plist>
