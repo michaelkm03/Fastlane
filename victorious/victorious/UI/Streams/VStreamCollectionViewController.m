@@ -61,6 +61,7 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "UIViewController+VLayoutInsets.h"
 
+#import "VURLMacroReplacement.h"
 #import "VWorkspacePresenter.h"
 #import "VConstants.h"
 #import "VTracking.h"
@@ -82,6 +83,10 @@ static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
+
+static NSString * const kRemixStreamKey = @"remixStream";
+static NSString * const kSequenceIDKey = @"sequenceID";
+static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 @interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -123,6 +128,14 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
     NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
+
+    NSString *sequenceID = [dependencyManager stringForKey:kSequenceIDKey];
+    if ( sequenceID != nil )
+    {
+        VURLMacroReplacement *urlMacroReplacement = [[VURLMacroReplacement alloc] init];
+        url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
+                                                                   inURLString:url];
+    }
     NSString *path = [url v_pathComponent];
     
     VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
@@ -737,7 +750,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     {
         noContentUpdates = ^void(void)
         {
-            UIImage *newImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] preferredBackgroundColor]];
+            UIImage *newImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
             self.collectionView.backgroundView = [[UIImageView alloc] initWithImage:newImage];
         };
     }
@@ -871,6 +884,31 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     {
         [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream sequence:cell.sequence];
     }
+}
+
+@end
+
+#pragma mark -
+
+@implementation VDependencyManager (VStreamCollectionViewController)
+
+- (VStreamCollectionViewController *)remixStreamForSequence:(VSequence *)sequence
+{
+    NSString *sequenceID = sequence.remoteId;
+    VStreamCollectionViewController *remixStream = [self templateValueOfType:[VStreamCollectionViewController class]
+                                                                      forKey:kRemixStreamKey
+                                                       withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
+    
+    remixStream.navigationItem.title = NSLocalizedString(@"Remixes", nil);
+    remixStream.currentStream.name = NSLocalizedString(@"Remixes", nil);
+    
+    VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:remixStream.view.bounds];
+    noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
+    noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
+    noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
+    remixStream.noContentView = noRemixView;
+    
+    return remixStream;
 }
 
 @end
