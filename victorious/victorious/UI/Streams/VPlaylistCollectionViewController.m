@@ -67,14 +67,31 @@ static const CGFloat kPlaylistCellHeight = 140.0f;
     }
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self updateParallaxOffsetOfVisibleCells];
+}
+
+- (void)updateParallaxOffsetOfVisibleCells
+{
+    CGFloat topInset = 20.0f; ///< only the height of the status bar
+    CGFloat contentOffset = self.collectionView.contentOffset.y;
+    for ( VDirectoryPlaylistCell *playlistCell in self.collectionView.visibleCells )
+    {
+        CGFloat yRange = CGRectGetHeight(self.collectionView.bounds) - topInset + CGRectGetHeight(playlistCell.bounds);
+        CGFloat cellCenter = CGRectGetMidY(playlistCell.frame);
+        playlistCell.parallaxYOffset = - (contentOffset - cellCenter) / (yRange / 2) + 1;
+    }
+}
+
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(self.topInset,
-                            0,
-                            0,
-                            0);
+                            0.0f,
+                            0.0f,
+                            0.0f);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
@@ -84,7 +101,12 @@ static const CGFloat kPlaylistCellHeight = 140.0f;
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    return 0;
+    return 0.0f;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 1.0f;
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -95,6 +117,10 @@ static const CGFloat kPlaylistCellHeight = 140.0f;
     VDirectoryPlaylistCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.stream = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     cell.dependencyManager = self.dependencyManager;
+    CGFloat centerY = ( CGRectGetHeight(self.collectionView.bounds) / 2 ) - ( kPlaylistCellHeight / 2 );
+    CGFloat cellOffset = indexPath.row * kPlaylistCellHeight + [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout minimumLineSpacingForSectionAtIndex:0];
+    CGFloat offsetFromCenter = centerY + self.collectionView.contentOffset.y - CGRectGetMinY(cell.frame) - cellOffset;
+    //cell.parallaxYOffset = offsetFromCenter / centerY;
     return cell;
 }
 

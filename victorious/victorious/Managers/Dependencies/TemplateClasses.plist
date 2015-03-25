@@ -55,7 +55,7 @@
 	<key>showcase.screen</key>
 	<string>VGroupedStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
-	<string>VDirectoryViewController</string>
+	<string>VPlaylistCollectionViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>

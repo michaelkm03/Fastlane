@@ -14,7 +14,15 @@
 
 static NSString * const kStreamURLKey = @"streamURL";
 
+@interface VAbstractDirectoryCollectionViewController ()
+
+@property (nonatomic, readwrite) UICollectionView *collectionView;
+
+@end
+
 @implementation VAbstractDirectoryCollectionViewController
+
+@synthesize collectionView;
 
 #pragma mark - Initializers
 
@@ -25,6 +33,7 @@ static NSString * const kStreamURLKey = @"streamURL";
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
     streamDirectory.dependencyManager = dependencyManager;
+    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     
     return streamDirectory;
 }
@@ -44,6 +53,19 @@ static NSString * const kStreamURLKey = @"streamURL";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.collectionView];
+    NSDictionary *views = @{ @"collectionView" : self.collectionView };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    
     
     self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = [UIColor clearColor];

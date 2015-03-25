@@ -17,4 +17,6 @@
  */
 @property (nonatomic, strong) VStreamItem *stream;
 
+@property (nonatomic, assign) CGFloat parallaxYOffset;
+
 @end
