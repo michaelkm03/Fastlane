@@ -96,6 +96,23 @@
     layout.sectionInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.collectionView.bounds) - singleCellHeight, 0);
 }
 
+- (void)selectToolAtIndex:(NSInteger)index
+{
+    if ( index >= 0 && index < [self.dataSource collectionView:self.collectionView numberOfItemsInSection:0] )
+    {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        [self.collectionView cellForItemAtIndexPath:indexPath].selected = YES;
+        [self itemSelectedAtIndexPath:indexPath];
+    }
+}
+
+- (void)itemSelectedAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+    self.blockScrollingSelectionUntilReached = indexPath;
+    [self.delegate toolPicker:self didSelectItemAtIndex:indexPath.row];
+}
+
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -122,11 +139,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [collectionView scrollToItemAtIndexPath:indexPath
-                           atScrollPosition:UICollectionViewScrollPositionTop
-                                   animated:YES];
-    self.blockScrollingSelectionUntilReached = indexPath;
-    [self.delegate toolPicker:self didSelectItemAtIndex:indexPath.row];
+    [self itemSelectedAtIndexPath:indexPath];
 }
 
 #pragma mark - UIScrollViewDelegate

@@ -74,7 +74,7 @@ static NSString * const kPickerKey = @"picker";
 
 - (void)selectDefault
 {
-    
+    [_toolPicker selectToolAtIndex:0];
 }
 
 #pragma mark - Loading Remote Data

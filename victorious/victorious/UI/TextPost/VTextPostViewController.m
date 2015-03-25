@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, assign) BOOL hasBeenDisplayed;
+
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textView;
 @property (nonatomic, weak) IBOutlet VTextPostTextView *hashtagTextView;
 
@@ -54,6 +56,15 @@
 {
     [super viewDidAppear:animated];
     
+    if ( !self.hasBeenDisplayed )
+    {
+        [self setDefaultValues];
+        self.hasBeenDisplayed = YES;
+    }
+}
+
+- (void)setDefaultValues
+{
     self.text = @"What's on your mind?";
     self.supplementaryHashtagText = @"#hashtag";
 }
