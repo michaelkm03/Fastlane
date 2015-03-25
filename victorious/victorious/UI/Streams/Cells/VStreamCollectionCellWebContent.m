@@ -26,6 +26,7 @@
     [super awakeFromNib];
     
     self.webViewController = [[VStreamWebViewController alloc] init];
+    self.webViewController.view.backgroundColor = [UIColor clearColor];
     [self.webViewContainer addSubview:self.webViewController.view];
     [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
 }

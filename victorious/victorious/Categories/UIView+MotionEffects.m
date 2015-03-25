@@ -27,8 +27,8 @@ static const char kAssociatedObjectKey;
     xMotionEffect.minimumRelativeValue = @(-magnitude);
     
     UIInterpolatingMotionEffect *yMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    yMotionEffect.maximumRelativeValue = @(magnitude);
-    yMotionEffect.minimumRelativeValue = @(-magnitude);
+    yMotionEffect.maximumRelativeValue = @(-magnitude);
+    yMotionEffect.minimumRelativeValue = @(magnitude);
     
     UIMotionEffectGroup *motionEffectsGroup = [[UIMotionEffectGroup alloc] init];
     motionEffectsGroup.motionEffects = @[xMotionEffect, yMotionEffect];

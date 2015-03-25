@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -37,9 +37,13 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yqk-3U-Cvu" userLabel="Content Container">
                         <rect key="frame" x="0.0" y="50" width="302" height="302"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYN-Ie-nea" customClass="VLoadingView">
+                                <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="De6-Pn-uJH" userLabel="Preview Image View">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N8i-0p-V1f" customClass="VVideoView">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
@@ -49,14 +53,18 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="De6-Pn-uJH" secondAttribute="bottom" id="3yh-Ju-onl"/>
+                            <constraint firstItem="cYN-Ie-nea" firstAttribute="top" secondItem="Yqk-3U-Cvu" secondAttribute="top" id="Bc8-Ib-BBx"/>
                             <constraint firstAttribute="bottom" secondItem="N8i-0p-V1f" secondAttribute="bottom" id="GpP-hf-2y7"/>
                             <constraint firstAttribute="trailing" secondItem="N8i-0p-V1f" secondAttribute="trailing" id="ICe-08-teC"/>
                             <constraint firstItem="De6-Pn-uJH" firstAttribute="leading" secondItem="Yqk-3U-Cvu" secondAttribute="leading" id="RSQ-Bj-8P3"/>
                             <constraint firstAttribute="width" secondItem="Yqk-3U-Cvu" secondAttribute="height" multiplier="1:1" id="SAC-FQ-uDg"/>
                             <constraint firstItem="N8i-0p-V1f" firstAttribute="top" secondItem="Yqk-3U-Cvu" secondAttribute="top" id="VcE-zj-hUo"/>
+                            <constraint firstItem="cYN-Ie-nea" firstAttribute="leading" secondItem="Yqk-3U-Cvu" secondAttribute="leading" id="Vle-a5-vAV"/>
                             <constraint firstItem="De6-Pn-uJH" firstAttribute="top" secondItem="Yqk-3U-Cvu" secondAttribute="top" id="X3w-uU-CeJ"/>
                             <constraint firstItem="N8i-0p-V1f" firstAttribute="leading" secondItem="Yqk-3U-Cvu" secondAttribute="leading" id="feT-Ni-Nkf"/>
+                            <constraint firstAttribute="trailing" secondItem="cYN-Ie-nea" secondAttribute="trailing" id="kA4-ud-okG"/>
                             <constraint firstAttribute="trailing" secondItem="De6-Pn-uJH" secondAttribute="trailing" id="qKL-Tb-Kbe"/>
+                            <constraint firstAttribute="bottom" secondItem="cYN-Ie-nea" secondAttribute="bottom" id="zwc-OC-Vj5"/>
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="EYB-Sg-RQg">
@@ -72,7 +80,7 @@
                             <constraint firstAttribute="height" constant="32" id="NDj-86-whc"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>

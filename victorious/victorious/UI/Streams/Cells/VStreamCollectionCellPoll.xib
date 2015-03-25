@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -14,26 +14,32 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fNb-sJ-auk" customClass="VLoadingView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CAh-rM-9BA">
                         <rect key="frame" x="160" y="0.0" width="160" height="214"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ynz-bO-mU9">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="214"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u2a-eI-ipT" userLabel="Shade View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
                         <subviews>
                             <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tqQ-lC-aKz">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="qLh-Ms-IvS">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="a4c-tz-jQh">
                                 <rect key="frame" x="0.0" y="112" width="320" height="102"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -80,6 +86,7 @@
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="6cV-mg-W2X">
                         <rect key="frame" x="128" y="71" width="65" height="72"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -90,6 +97,7 @@
                 <constraint firstItem="u2a-eI-ipT" firstAttribute="leading" secondItem="4tB-ht-XlG" secondAttribute="leading" id="HZA-4u-k1C"/>
                 <constraint firstItem="CAh-rM-9BA" firstAttribute="leading" secondItem="ynz-bO-mU9" secondAttribute="trailing" id="LDT-er-bWL"/>
                 <constraint firstAttribute="centerY" secondItem="6cV-mg-W2X" secondAttribute="centerY" id="MvQ-31-G16"/>
+                <constraint firstItem="fNb-sJ-auk" firstAttribute="top" secondItem="4tB-ht-XlG" secondAttribute="top" id="OBN-Mf-iPS"/>
                 <constraint firstAttribute="trailing" secondItem="u2a-eI-ipT" secondAttribute="trailing" id="PMw-Oc-2I2"/>
                 <constraint firstItem="sFz-f0-h8E" firstAttribute="top" secondItem="4tB-ht-XlG" secondAttribute="top" id="UIv-uG-fjs"/>
                 <constraint firstAttribute="trailing" secondItem="CAh-rM-9BA" secondAttribute="trailing" id="Uff-8l-YbJ"/>
@@ -99,7 +107,10 @@
                 <constraint firstItem="sFz-f0-h8E" firstAttribute="leading" secondItem="4tB-ht-XlG" secondAttribute="leading" id="ggI-0h-czd"/>
                 <constraint firstAttribute="centerX" secondItem="6cV-mg-W2X" secondAttribute="centerX" id="hCU-bE-ezi"/>
                 <constraint firstAttribute="bottom" secondItem="u2a-eI-ipT" secondAttribute="bottom" id="olz-Rd-Tmg"/>
+                <constraint firstAttribute="bottom" secondItem="fNb-sJ-auk" secondAttribute="bottom" id="p73-vb-m7n"/>
+                <constraint firstItem="fNb-sJ-auk" firstAttribute="leading" secondItem="4tB-ht-XlG" secondAttribute="leading" id="pKc-Ix-PJX"/>
                 <constraint firstItem="u2a-eI-ipT" firstAttribute="top" secondItem="4tB-ht-XlG" secondAttribute="top" id="rKt-UE-skC"/>
+                <constraint firstAttribute="trailing" secondItem="fNb-sJ-auk" secondAttribute="trailing" id="sJz-sZ-KzY"/>
                 <constraint firstItem="ynz-bO-mU9" firstAttribute="width" secondItem="CAh-rM-9BA" secondAttribute="width" id="snb-Dk-cpt"/>
                 <constraint firstAttribute="bottom" secondItem="sFz-f0-h8E" secondAttribute="bottom" id="wKO-QV-Ulp"/>
                 <constraint firstItem="ynz-bO-mU9" firstAttribute="leading" secondItem="4tB-ht-XlG" secondAttribute="leading" id="x0c-di-NGg"/>

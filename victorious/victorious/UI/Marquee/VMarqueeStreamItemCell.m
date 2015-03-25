@@ -79,7 +79,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
-                           placeholderImage:[UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+                           placeholderImage:nil];
     
     self.detailsBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -211,6 +211,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     if ( self.webViewController == nil )
     {
         self.webViewController = [[VStreamWebViewController alloc] init];
+        self.webViewController.view.backgroundColor = [UIColor clearColor];
         [self.webViewContainer addSubview:self.webViewController.view];
         [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
         self.previewImageView.hidden = YES;

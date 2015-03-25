@@ -147,7 +147,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
     
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
-                           placeholderImage:[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]]];
+                           placeholderImage:nil];
     
     [self setDescriptionText:self.sequence.name];
     

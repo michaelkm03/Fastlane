@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
@@ -16,25 +16,33 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j4I-ZV-vTW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S7o-oK-F0L" customClass="VLoadingView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sTq-xU-n7a" userLabel="Preview Image View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZUr-6v-oVB" customClass="VVideoView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="S7o-oK-F0L" firstAttribute="top" secondItem="j4I-ZV-vTW" secondAttribute="top" id="LMJ-YT-DH0"/>
                             <constraint firstItem="ZUr-6v-oVB" firstAttribute="top" secondItem="j4I-ZV-vTW" secondAttribute="top" id="LYA-nh-Nni"/>
                             <constraint firstItem="ZUr-6v-oVB" firstAttribute="leading" secondItem="j4I-ZV-vTW" secondAttribute="leading" id="NK9-Nh-k5E"/>
+                            <constraint firstAttribute="trailing" secondItem="S7o-oK-F0L" secondAttribute="trailing" id="ONS-cN-UlC"/>
                             <constraint firstItem="sTq-xU-n7a" firstAttribute="leading" secondItem="j4I-ZV-vTW" secondAttribute="leading" id="TYu-pj-BLx"/>
                             <constraint firstAttribute="trailing" secondItem="sTq-xU-n7a" secondAttribute="trailing" id="Yst-W3-bCZ"/>
                             <constraint firstItem="sTq-xU-n7a" firstAttribute="top" secondItem="j4I-ZV-vTW" secondAttribute="top" id="kKf-B8-7iX"/>
                             <constraint firstAttribute="bottom" secondItem="sTq-xU-n7a" secondAttribute="bottom" id="lJR-ni-xBi"/>
                             <constraint firstAttribute="bottom" secondItem="ZUr-6v-oVB" secondAttribute="bottom" id="mSo-3U-ydK"/>
                             <constraint firstAttribute="trailing" secondItem="ZUr-6v-oVB" secondAttribute="trailing" id="qSt-TY-Bp0"/>
+                            <constraint firstItem="S7o-oK-F0L" firstAttribute="leading" secondItem="j4I-ZV-vTW" secondAttribute="leading" id="qc5-Z1-H07"/>
+                            <constraint firstAttribute="bottom" secondItem="S7o-oK-F0L" secondAttribute="bottom" id="uGA-Ir-pTO"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qPB-vc-HRS" userLabel="Shade View">
@@ -138,7 +146,7 @@
                 <outlet property="streamCellHeaderView" destination="XNn-If-c8r" id="pPZ-oe-pEe"/>
                 <outlet property="videoPlayerView" destination="ZUr-6v-oVB" id="4Dh-Eb-iaU"/>
             </connections>
-            <point key="canvasLocation" x="392" y="343"/>
+            <point key="canvasLocation" x="197" y="331"/>
         </collectionViewCell>
     </objects>
     <resources>
