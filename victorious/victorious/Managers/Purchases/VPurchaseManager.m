@@ -256,12 +256,12 @@ return;
     
     if ( self.activeProductRequest != nil )
     {
+        NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"",
+                                  VTrackingKeyErrorMessage : error.localizedDescription ?: @""};
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventAppStoreProductRequestDidFail parameters:params];
+        
         if ( self.activeProductRequest.failureCallback != nil )
         {
-            NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"",
-                                      VTrackingKeyErrorMessage : error.localizedDescription ?: @""};
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventAppStoreProductRequestDidFail parameters:params];
-            
             self.activeProductRequest.failureCallback( error );
         }
         self.activeProductRequest = nil;
