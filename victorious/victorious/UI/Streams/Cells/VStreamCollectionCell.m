@@ -145,8 +145,17 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
-    
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
+
+    NSURL *imageUrl;
+    if ([sequence isImage])
+    {
+        imageUrl = [NSURL URLWithString:[self.sequence.firstNode imageAsset].data];
+    }
+    else
+    {
+        imageUrl = [NSURL URLWithString:self.sequence.previewImagesObject];
+    }
+    [self.previewImageView fadeInImageAtURL:imageUrl
                            placeholderImage:nil];
     
     [self setDescriptionText:self.sequence.name];
@@ -164,7 +173,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
             self.isPlayButtonVisible = NO;
             [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
                                         loop:self.videoAsset.loop.boolValue
-                               audioMuted:self.videoAsset.audioMuted.boolValue];
+                                  audioMuted:self.videoAsset.audioMuted.boolValue];
         }
         else
         {
