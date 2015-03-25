@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VAbstractStreamCollectionViewController.h"
+#import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
@@ -21,7 +22,7 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 
 @class VStreamCollectionViewDataSource;
 
-@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>
+@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies>
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate>actionDelegate;///<Optional param.  If this is not set, the collection view will act as the action delegate for the cells.  Use this if you are embedding this view controller somewhere (i.e. the page view controller)
 @property (nonatomic) BOOL shouldDisplayMarquee;
@@ -42,5 +43,16 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
  *  visible area is greater than or equal to this value.
  */
 @property (nonatomic, assign) float trackingMinRequiredCellVisibilityRatio;
+
+@end
+
+#pragma mark - 
+
+@interface VDependencyManager (VStreamCollectionViewController)
+
+/**
+ Returns a stream of remixes for the given sequence.
+ */
+- (VStreamCollectionViewController *)remixStreamForSequence:(VSequence *)sequence;
 
 @end

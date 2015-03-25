@@ -10,7 +10,7 @@
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
 
-@interface VTextWorkspaceFlowController : NSObject <VHasManagedDependancies, VNavigationDestination>
+@interface VTextWorkspaceFlowController : NSObject <VHasManagedDependencies, VNavigationDestination>
 
 /**
  *  Present this viewcontroller. Note, the WorkspaceFlowController IS retained by this viewcontroller.

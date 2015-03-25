@@ -18,7 +18,7 @@
 
 @implementation VEnterTextTool
 
-#pragma mark - VHasManagedDependancies
+#pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {

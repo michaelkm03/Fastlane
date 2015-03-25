@@ -10,6 +10,6 @@
 #import "VWorkspaceTool.h"
 #import "VHasManagedDependencies.h"
 
-@interface VEnterTextTool : NSObject <VWorkspaceTool, VHasManagedDependancies>
+@interface VEnterTextTool : NSObject <VWorkspaceTool, VHasManagedDependencies>
 
 @end

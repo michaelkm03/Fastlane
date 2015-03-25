@@ -59,7 +59,7 @@
     NSAssert( self.dataSource != nil, @"A VTickerPickerViewController must have a VToolPickerDataSource property set." );
     
     self.collectionView.dataSource = self.dataSource;
-    [self.dataSource registerCellsWithCollectionView:_collectionView];
+    [self.dataSource registerCellsWithCollectionView:self.collectionView];
     [self.collectionView reloadData];
     
     self.selectionIndicatorView =

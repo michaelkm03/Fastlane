@@ -14,7 +14,7 @@
  Similar to a UITabBarController, except the tab bar
  is at the top and isn't necessarily a tab bar.
  */
-@interface VMultipleContainerViewController : UIViewController <VHasManagedDependancies>
+@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The view controllers to be displayed
 

@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VPurchaseSettingsViewController : UITableViewController <VHasManagedDependancies>
+@interface VPurchaseSettingsViewController : UITableViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 

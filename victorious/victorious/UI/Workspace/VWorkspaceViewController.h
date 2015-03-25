@@ -24,7 +24,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
  A toolbar - Representing the currently selected top level tool. For images these are: Text, Filters, and crop.
  
  */
-@interface VWorkspaceViewController : UIViewController <VHasManagedDependancies, VToolControllerDelegate>
+@interface VWorkspaceViewController : UIViewController <VHasManagedDependencies, VToolControllerDelegate>
 
 @property (nonatomic, copy) NSString *continueText;
 @property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion. PreviewImage and RenderedMediaURL will be nil if unsuccessful.

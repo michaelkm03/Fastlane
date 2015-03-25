@@ -32,7 +32,7 @@ static NSString * const kPickerKey = @"picker";
 
 @implementation VTextColorTool
 
-#pragma mark - VHasManagedDependancies
+#pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {

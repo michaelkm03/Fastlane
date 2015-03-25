@@ -43,7 +43,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  This base class does not do any custom view loading--loadView
  implementation is up to subclasses.
  */
-@interface VScaffoldViewController : UIViewController <VHasManagedDependancies, VNavigationDestinationsProvider>
+@interface VScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 

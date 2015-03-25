@@ -15,7 +15,7 @@
 /**
  *  A ViewController for publshing content.
  */
-@interface VPublishViewController : UIViewController <VHasManagedDependancies>
+@interface VPublishViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, copy) void (^completion)(BOOL published); ///< Called upon completion, YES indicates successful publish
 

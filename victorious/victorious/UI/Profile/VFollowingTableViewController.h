@@ -10,7 +10,7 @@
 
 @class VUser, VDependencyManager;
 
-@interface VFollowingTableViewController : UITableViewController <VHasManagedDependancies>
+@interface VFollowingTableViewController : UITableViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VUser *profile;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

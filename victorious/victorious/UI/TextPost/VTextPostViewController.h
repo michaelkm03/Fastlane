@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
-@interface VTextPostViewController : UIViewController <VHasManagedDependancies>
+@interface VTextPostViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSString *supplementaryHashtagText;

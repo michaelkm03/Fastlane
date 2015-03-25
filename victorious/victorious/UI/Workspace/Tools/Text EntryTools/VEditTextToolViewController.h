@@ -10,7 +10,7 @@
 #import "VHasManagedDependencies.h"
 #import "VTextPostViewController.h"
 
-@interface VEditTextToolViewController : UIViewController <VHasManagedDependancies>
+@interface VEditTextToolViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong, readonly) VTextPostViewController *textPostViewController;
 

@@ -35,7 +35,7 @@ static NSString * const kPickerKey = @"picker";
 
 @implementation VHashtagTool
 
-#pragma mark - VHasManagedDependancies
+#pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {

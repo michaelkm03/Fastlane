@@ -247,7 +247,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     }
     if ( [viewController respondsToSelector:@selector(setDependencyManager:)] )
     {
-        [(id<VHasManagedDependancies>)viewController setDependencyManager:self.dependencyManager];
+        [(id<VHasManagedDependencies>)viewController setDependencyManager:self.dependencyManager];
     }
 }
 
