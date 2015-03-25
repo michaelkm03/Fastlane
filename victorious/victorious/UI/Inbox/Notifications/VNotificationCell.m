@@ -54,6 +54,7 @@ CGFloat const kVNotificationCellHeight = 72;
     self.usernameLabel.text  = notification.user.name;
     
     [self.notificationWho setImage:[UIImage imageNamed:@"user-icon"]];
+    self.accessoryType = [self.notification.deeplink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
     VNotificationType notificationType = [self getTypeForNotification:self.notification];
     NSMutableString *message = [NSMutableString stringWithCapacity:64];

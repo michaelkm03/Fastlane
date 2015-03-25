@@ -250,7 +250,6 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
                                                         successBlock:nil failBlock:nil];
 }
 
-
 #pragma mark - NSNotification handlers
 
 - (void)loggedInChanged:(NSNotification *)notification
