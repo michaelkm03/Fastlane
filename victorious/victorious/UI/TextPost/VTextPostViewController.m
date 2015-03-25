@@ -12,7 +12,9 @@
 #import "VTextPostTextView.h"
 
 static const CGFloat kTextLineHeight = 35.0f;
-static const CGFloat kTextBaselineOffsetMultiplier = 0.371f;
+static const CGFloat kVerticalSpacing = 2;
+static const CGFloat kLineOffsetMultiplier = 0.4f;
+static const CGFloat kHorizontalSpacing = 3;
 static const NSUInteger kMaxTextLength = 200;
 
 @interface VTextPostViewController () <UITextViewDelegate>
@@ -21,6 +23,9 @@ static const NSUInteger kMaxTextLength = 200;
 @property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textView;
 @property (nonatomic, weak) IBOutlet VTextPostTextView *hashtagTextView;
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *hashtagTextViewLeadingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *hashtagTextViewTopConstraint;
 
 @end
 
@@ -37,7 +42,7 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (void)startEditingText
 {
-    //[self.textView becomeFirstResponder];
+    [self.textView becomeFirstResponder];
 }
 
 - (void)viewDidLoad
@@ -46,9 +51,6 @@ static const NSUInteger kMaxTextLength = 200;
     
     self.text = @"";
     self.supplementaryHashtagText = @"";
-    
-    /*self.textView.clipsToBounds = NO;
-    [self.textView addSubview:self.hashtagTextView];*/
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -56,14 +58,14 @@ static const NSUInteger kMaxTextLength = 200;
     [super viewDidAppear:animated];
     
     self.text = @"What's on your mind?";
-    
-    [self updateTextBackground];
-    [self updateHashtagPostiion];
+    self.supplementaryHashtagText = @"#hashtag";
 }
 
 - (void)setSupplementaryHashtagText:(NSString *)supplementaryHashtagText
 {
     _supplementaryHashtagText = supplementaryHashtagText;
+    
+    self.hashtagTextView.translatesAutoresizingMaskIntoConstraints = NO;
     
     const BOOL wasSelectable = self.hashtagTextView.selectable;
     self.hashtagTextView.selectable = YES; ///< UITextView's attributedString property cannot be read unless this is set to YES
@@ -72,7 +74,7 @@ static const NSUInteger kMaxTextLength = 200;
     self.hashtagTextView.attributedText = [[NSAttributedString alloc] initWithString:supplementaryHashtagText
                                                                           attributes:attribtues];
     [self.hashtagTextView sizeToFit];
-
+    
     self.hashtagTextView.selectable = wasSelectable;
     
     self.hashtagTextView.hidden = supplementaryHashtagText.length == 0;
@@ -83,26 +85,22 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (void)updateHashtagPostiion
 {
-    NSValue *lastLineFrameValueObject = self.textView.backgroundFrames.lastObject;
+    CGRect textLastLineFrame = [self.textView.backgroundFrames.lastObject CGRectValue];
+    CGRect hashtagTextFrame = [self.hashtagTextView.backgroundFrames.lastObject CGRectValue];
     
-    //NSLog( @"lastLineFrameValueObject = %@", lastLineFrameValueObject );
-    
-    CGRect hashtagTextViewFrame = self.hashtagTextView.frame;
-    CGRect lastLineFrame = [lastLineFrameValueObject CGRectValue];
-    if ( CGRectGetWidth(lastLineFrame) < CGRectGetWidth(self.textView.frame) - CGRectGetWidth(self.hashtagTextView.frame) )
+    CGFloat targetLeading = textLastLineFrame.size.width + CGRectGetMinX( self.textView.frame ) + kHorizontalSpacing;
+    CGFloat spaceNeededForHashtagText = CGRectGetWidth( self.textView.frame ) - CGRectGetWidth( hashtagTextFrame );
+    if ( targetLeading < spaceNeededForHashtagText )
     {
-        // End of last line
-        hashtagTextViewFrame.origin.x = CGRectGetMaxX( lastLineFrame ) + 4;
-        hashtagTextViewFrame.origin.y = CGRectGetMinY( lastLineFrame ) - 13;
+        self.hashtagTextViewTopConstraint.constant = CGRectGetMinY( textLastLineFrame );
+        self.hashtagTextViewLeadingConstraint.constant = targetLeading;
     }
     else
     {
-        // New line
-        hashtagTextViewFrame.origin.x = CGRectGetMinX( lastLineFrame );
-        hashtagTextViewFrame.origin.y = CGRectGetMaxY( lastLineFrame ) - 10;
+        self.hashtagTextViewTopConstraint.constant = CGRectGetMaxY( textLastLineFrame );
+        self.hashtagTextViewLeadingConstraint.constant = CGRectGetMinX( self.textView.frame );
     }
-    self.hashtagTextView.frame = hashtagTextViewFrame;
-    [self.hashtagTextView setNeedsLayout];
+    [self.view layoutIfNeeded];
 }
 
 - (void)setText:(NSString *)text
@@ -118,8 +116,6 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (void)updateTextBackground
 {
-    CGFloat verticalSpacing = 2;
-    CGFloat lineOffsetMultiplier = 0.4f;
     
     for ( VTextPostTextView *textView in @[ self.textView, self.hashtagTextView] )
     {
@@ -150,15 +146,12 @@ static const NSUInteger kMaxTextLength = 200;
         
         __block NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
         NSInteger numLines = totalRect.size.height / singleCharRect.size.height;
-        
-        NSLog( @"numLines = %@", @(numLines) );
-        
         for ( NSInteger i = 0; i < numLines; i++ )
         {
             // Calculate individual rects for each line to draw in the background of text view
             CGRect lineRect = totalRect;
-            lineRect.size.height = singleCharRect.size.height - verticalSpacing;
-            lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * lineOffsetMultiplier;
+            lineRect.size.height = singleCharRect.size.height - kVerticalSpacing;
+            lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * kLineOffsetMultiplier;
             if ( i == numLines - 1 )
             {
                 // If this is the last line, use the line fragment rects collected above
