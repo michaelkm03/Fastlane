@@ -4,6 +4,18 @@
 <dict>
     <key>ProvisioningProfiles</key>
     <dict>
+        <key>Staging</key>
+        <string>Copa90 Football Staging Ad-Hoc Distribution</string>
+    </dict>
+    <key>SigningIdentities</key>
+    <dict>
+        <key>Staging</key>
+        <string>iPhone Distribution: Philip Mitchelson (B375C9JY57)</string>
+    </dict>
+    <key>DevAccounts</key>
+    <dict>
+        <key>Staging</key>
+        <string>copa90football@getappsubmit.com</string>
     </dict>
 </dict>
 </plist>
