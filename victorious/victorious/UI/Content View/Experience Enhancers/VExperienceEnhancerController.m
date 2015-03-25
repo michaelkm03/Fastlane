@@ -206,9 +206,6 @@
         {
             enhancer.isLocked = ![purchaseManager isProductIdentifierPurchased:productIdentifier];
             
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
-            return YES;
-#endif
             // If there's an error of any kind that has led to the product not being present in purchase manager,
             // we should not even show the enhancer because it will be locked and will fail when the user tries to purchase it.
             // There is frequent call to fetchProducts (every time VExperienceEnhancerViewController is initialized)
