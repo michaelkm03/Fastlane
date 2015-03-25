@@ -166,22 +166,24 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     return self.canvasToolViewController.userEnteredText;
 }
 
+- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectItemAtIndex:(NSInteger)index
+{
+    BOOL activeToolWasUndefined = self.activeTextTool == nil;
+
+    id <VWorkspaceTool> selectedTool = [toolPicker.dataSource.tools objectAtIndex:index];
+    
+    self.activeTextTool = selectedTool;
+    
+    // The first time the tool is selected, it is the default selection, not a user action
+    if ( !activeToolWasUndefined )
+    {
+        NSDictionary *params = @{ VTrackingKeyName : selectedTool.title ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTextType parameters:params];
+    }
+}
+
 - (UIViewController *)inspectorToolViewController
 {
-    __weak typeof(self) welf = self;
-    self.toolPicker.onToolSelection = ^(id <VWorkspaceTool> selectedTool)
-    {
-        BOOL activeToolWasUndefined = welf.activeTextTool == nil;
-        
-        welf.activeTextTool = selectedTool;
-        
-        // The first time the tool is selected, it is the default selection, not a user action
-        if ( !activeToolWasUndefined )
-        {
-            NSDictionary *params = @{ VTrackingKeyName : selectedTool.title ?: @"" };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTextType parameters:params];
-        }
-    };
     return (UIViewController *)self.toolPicker;
 }
 

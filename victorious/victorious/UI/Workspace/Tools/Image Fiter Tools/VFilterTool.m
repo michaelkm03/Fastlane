@@ -27,7 +27,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 static NSString * const kIconKey = @"icon";
 static NSString * const kSelectedIconKey = @"selectedIcon";
 
-@interface VFilterTool ()
+@interface VFilterTool () <VToolPickerDelegate>
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
@@ -82,6 +82,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         id<VToolPickerDataSource> dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager];
         dataSource.tools = filterTools;
         _toolPicker.dataSource = dataSource;
+        _toolPicker.dataSource = self;
     }
     return self;
 }
@@ -115,13 +116,14 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 - (void)setCanvasView:(VCanvasView *)canvasView
 {
     _canvasView = canvasView;
+}
+
+- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectItemAtIndex:(NSInteger)index
+{
+    VFilterTypeTool<VWorkspaceTool> *selectedTool = [toolPicker.dataSource.tools objectAtIndex:index];
     
-    __weak typeof(self) welf = self;
-    self.toolPicker.onToolSelection = ^void(VFilterTypeTool <VWorkspaceTool> *selectedTool)
-    {
-        welf.canvasView.filter = selectedTool.filter;
-        welf.selectedFilter = selectedTool;
-    };
+    self.canvasView.filter = selectedTool.filter;
+    self.selectedFilter = selectedTool;
 }
 
 - (UIViewController *)inspectorToolViewController

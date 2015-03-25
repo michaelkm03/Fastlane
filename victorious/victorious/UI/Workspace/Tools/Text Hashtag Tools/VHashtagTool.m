@@ -72,6 +72,11 @@ static NSString * const kPickerKey = @"picker";
     [_toolPicker reloadData];
 }
 
+- (void)selectDefault
+{
+    
+}
+
 #pragma mark - Loading Remote Data
 
 - (void)loadTrendingHashtags
@@ -92,6 +97,7 @@ static NSString * const kPickerKey = @"picker";
          }];
          
          [self updateTools:hashtagTools];
+         [self selectDefault];
      }
                                                failBlock:nil];
 }

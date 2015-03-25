@@ -41,7 +41,6 @@
 @property (nonatomic, strong) id<VToolPickerDataSource> dataSource;
 @property (nonatomic, strong) id<VToolPickerDelegate> delegate;
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.
-@property (nonatomic, copy) void (^onToolSelection)(id <VWorkspaceTool> selectedTool); ///< A block that is called whenever a new tool has been selected.
 
 - (void)reloadData;
 

@@ -25,8 +25,6 @@
 
 @implementation VTickerPickerViewController
 
-@synthesize onToolSelection = _onToolSelection;
-
 @synthesize delegate;
 @synthesize dataSource;
 
@@ -181,11 +179,6 @@
 }
 
 #pragma mark - VToolPicker
-
-- (void)setOnToolSelection:(void (^)(id<VWorkspaceTool>))onToolSelection
-{
-    _onToolSelection = [onToolSelection copy];
-}
 
 - (void)reloadData
 {

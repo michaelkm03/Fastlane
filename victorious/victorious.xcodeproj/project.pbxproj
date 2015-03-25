@@ -405,8 +405,6 @@
 		A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0091AB0B6D100C35063 /* VFilterTool.m */; };
 		A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED00B1AB0B6D100C35063 /* VFilterTypeTool.m */; };
 		A75ED0421AB1FEA300C35063 /* VTextWorkspaceFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */; };
-		A75ED0841AB3C48A00C35063 /* VTextPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0821AB3C48A00C35063 /* VTextPostViewController.m */; };
-		A75ED0851AB3C48A00C35063 /* VTextPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0831AB3C48A00C35063 /* VTextPostViewController.xib */; };
 		A75ED08D1AB77C1800C35063 /* VBasicToolPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED08C1AB77C1800C35063 /* VBasicToolPickerCell.xib */; };
 		A75ED0901AB77E3300C35063 /* VFilterPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED08F1AB77E3300C35063 /* VFilterPickerDataSource.m */; };
 		A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED09C1AB78C7400C35063 /* VTextColorTool.m */; };
@@ -473,7 +471,11 @@
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
-		A793A92F1AC21BC0007F32EE /* VTextLayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A92E1AC21BC0007F32EE /* VTextLayoutHelper.m */; };
+		A793A93F1AC22C8C007F32EE /* VTextPostTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A93B1AC22C8C007F32EE /* VTextPostTextView.m */; };
+		A793A9401AC22C8C007F32EE /* VTextPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A93D1AC22C8C007F32EE /* VTextPostViewController.m */; };
+		A793A9411AC22C8C007F32EE /* VTextPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A793A93E1AC22C8C007F32EE /* VTextPostViewController.xib */; };
+		A793A9441AC22CF7007F32EE /* VTextLayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A9431AC22CF7007F32EE /* VTextLayoutHelper.m */; };
+		A793A9471AC23F14007F32EE /* VTextBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A9461AC23F14007F32EE /* VTextBackgroundView.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
 		A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */; };
@@ -484,7 +486,6 @@
 		A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
-		A7A4BCB21AC2067400E01D51 /* VTextPostTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A4BCB11AC2067400E01D51 /* VTextPostTextView.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9A31A83F1C300A3D3A0 /* VStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9761A83F1C300A3D3A0 /* VStreamCellActionView.m */; };
@@ -1525,9 +1526,6 @@
 		A75ED00B1AB0B6D100C35063 /* VFilterTypeTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterTypeTool.m; sourceTree = "<group>"; };
 		A75ED0401AB1FEA300C35063 /* VTextWorkspaceFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextWorkspaceFlowController.h; sourceTree = "<group>"; };
 		A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextWorkspaceFlowController.m; sourceTree = "<group>"; };
-		A75ED0811AB3C48A00C35063 /* VTextPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTextPostViewController.h; path = TextPosts/VTextPostViewController.h; sourceTree = "<group>"; };
-		A75ED0821AB3C48A00C35063 /* VTextPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTextPostViewController.m; path = TextPosts/VTextPostViewController.m; sourceTree = "<group>"; };
-		A75ED0831AB3C48A00C35063 /* VTextPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VTextPostViewController.xib; path = TextPosts/VTextPostViewController.xib; sourceTree = "<group>"; };
 		A75ED08C1AB77C1800C35063 /* VBasicToolPickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBasicToolPickerCell.xib; sourceTree = "<group>"; };
 		A75ED08E1AB77E3300C35063 /* VFilterPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterPickerDataSource.h; sourceTree = "<group>"; };
 		A75ED08F1AB77E3300C35063 /* VFilterPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterPickerDataSource.m; sourceTree = "<group>"; };
@@ -1652,8 +1650,15 @@
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
 		A790C8241A01980F00C4F208 /* VTrackingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingManager.h; sourceTree = "<group>"; };
 		A790C8251A01980F00C4F208 /* VTrackingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManager.m; sourceTree = "<group>"; };
-		A793A92D1AC21BC0007F32EE /* VTextLayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextLayoutHelper.h; sourceTree = "<group>"; };
-		A793A92E1AC21BC0007F32EE /* VTextLayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextLayoutHelper.m; sourceTree = "<group>"; };
+		A793A93A1AC22C8C007F32EE /* VTextPostTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostTextView.h; sourceTree = "<group>"; };
+		A793A93B1AC22C8C007F32EE /* VTextPostTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostTextView.m; sourceTree = "<group>"; };
+		A793A93C1AC22C8C007F32EE /* VTextPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostViewController.h; sourceTree = "<group>"; };
+		A793A93D1AC22C8C007F32EE /* VTextPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostViewController.m; sourceTree = "<group>"; };
+		A793A93E1AC22C8C007F32EE /* VTextPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTextPostViewController.xib; sourceTree = "<group>"; };
+		A793A9421AC22CF7007F32EE /* VTextLayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextLayoutHelper.h; sourceTree = "<group>"; };
+		A793A9431AC22CF7007F32EE /* VTextLayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextLayoutHelper.m; sourceTree = "<group>"; };
+		A793A9451AC23F14007F32EE /* VTextBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextBackgroundView.h; sourceTree = "<group>"; };
+		A793A9461AC23F14007F32EE /* VTextBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextBackgroundView.m; sourceTree = "<group>"; };
 		A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
 		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
@@ -1674,8 +1679,6 @@
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
-		A7A4BCB01AC2067400E01D51 /* VTextPostTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTextPostTextView.h; path = TextPosts/VTextPostTextView.h; sourceTree = "<group>"; };
-		A7A4BCB11AC2067400E01D51 /* VTextPostTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTextPostTextView.m; path = TextPosts/VTextPostTextView.m; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
@@ -2475,6 +2478,7 @@
 				0314D40019B46B5E00FA363C /* Sharing */,
 				0314D40319B46B5E00FA363C /* Signup and Login */,
 				0314D43319B46B5E00FA363C /* Streams */,
+				A793A9391AC22C8C007F32EE /* TextPost */,
 				A769C3D81A13176700698D0C /* Web View */,
 				D8A93F131A2E84A9009B8A18 /* Workspace */,
 			);
@@ -2514,7 +2518,6 @@
 		0314D34819B46B5E00FA363C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				A75ED0801AB3C46B00C35063 /* TextPosts */,
 				D8CA63AF19D51C8D002046E5 /* Action Sheet */,
 				D876E1F91A9DA685002CAA29 /* Background */,
 				D89A50071A000D540010D050 /* Controls */,
@@ -3818,20 +3821,6 @@
 			path = "Image Fiter Tools";
 			sourceTree = "<group>";
 		};
-		A75ED0801AB3C46B00C35063 /* TextPosts */ = {
-			isa = PBXGroup;
-			children = (
-				A75ED0811AB3C48A00C35063 /* VTextPostViewController.h */,
-				A75ED0821AB3C48A00C35063 /* VTextPostViewController.m */,
-				A75ED0831AB3C48A00C35063 /* VTextPostViewController.xib */,
-				A7A4BCB01AC2067400E01D51 /* VTextPostTextView.h */,
-				A7A4BCB11AC2067400E01D51 /* VTextPostTextView.m */,
-				A793A92D1AC21BC0007F32EE /* VTextLayoutHelper.h */,
-				A793A92E1AC21BC0007F32EE /* VTextLayoutHelper.m */,
-			);
-			name = TextPosts;
-			sourceTree = "<group>";
-		};
 		A75ED09A1AB78C7400C35063 /* Text Color Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -4074,6 +4063,22 @@
 				032954A41A9FF4E000698119 /* VURLMacroReplacement.m */,
 			);
 			path = Tracking;
+			sourceTree = "<group>";
+		};
+		A793A9391AC22C8C007F32EE /* TextPost */ = {
+			isa = PBXGroup;
+			children = (
+				A793A9451AC23F14007F32EE /* VTextBackgroundView.h */,
+				A793A9461AC23F14007F32EE /* VTextBackgroundView.m */,
+				A793A9421AC22CF7007F32EE /* VTextLayoutHelper.h */,
+				A793A9431AC22CF7007F32EE /* VTextLayoutHelper.m */,
+				A793A93A1AC22C8C007F32EE /* VTextPostTextView.h */,
+				A793A93B1AC22C8C007F32EE /* VTextPostTextView.m */,
+				A793A93C1AC22C8C007F32EE /* VTextPostViewController.h */,
+				A793A93D1AC22C8C007F32EE /* VTextPostViewController.m */,
+				A793A93E1AC22C8C007F32EE /* VTextPostViewController.xib */,
+			);
+			path = TextPost;
 			sourceTree = "<group>";
 		};
 		A7A2E0021A38E41800F8C705 /* Purchases */ = {
@@ -5286,6 +5291,7 @@
 				0390087419F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib in Resources */,
 				036F38941A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf in Resources */,
 				036F388E1A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf in Resources */,
+				A793A9411AC22C8C007F32EE /* VTextPostViewController.xib in Resources */,
 				036F38911A0C4DEA0014DF66 /* Signika-Light.ttf in Resources */,
 				03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */,
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
@@ -5340,7 +5346,6 @@
 				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
 				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
-				A75ED0851AB3C48A00C35063 /* VTextPostViewController.xib in Resources */,
 				A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */,
 				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
@@ -5650,6 +5655,7 @@
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */,
+				A793A9471AC23F14007F32EE /* VTextBackgroundView.m in Sources */,
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
 				F04A7CBD1AB874A10092A374 /* VSleekStreamCellFactory.m in Sources */,
 				F028CF4E1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m in Sources */,
@@ -5786,7 +5792,6 @@
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				D814040B1AB372320099EC4B /* VWorkspacePresenter.m in Sources */,
 				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
-				A75ED0841AB3C48A00C35063 /* VTextPostViewController.m in Sources */,
 				0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
 				0314D49319B46B5E00FA363C /* VReposterTableViewController.m in Sources */,
@@ -5813,7 +5818,6 @@
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
-				A793A92F1AC21BC0007F32EE /* VTextLayoutHelper.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
@@ -5939,6 +5943,7 @@
 				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
+				A793A93F1AC22C8C007F32EE /* VTextPostTextView.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
@@ -5986,6 +5991,7 @@
 				D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */,
+				A793A9441AC22CF7007F32EE /* VTextLayoutHelper.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,
 				A7738B101A4B4A0D008EA973 /* VCommentCellUtilitesController.m in Sources */,
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
@@ -6040,6 +6046,7 @@
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
 				A7D288141A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m in Sources */,
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
+				A793A9401AC22C8C007F32EE /* VTextPostViewController.m in Sources */,
 				A75ED0421AB1FEA300C35063 /* VTextWorkspaceFlowController.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
@@ -6053,7 +6060,6 @@
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
-				A7A4BCB21AC2067400E01D51 /* VTextPostTextView.m in Sources */,
 				A74293981AAF906700532948 /* VTextToolController.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,

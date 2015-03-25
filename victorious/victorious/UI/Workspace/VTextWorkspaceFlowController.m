@@ -68,12 +68,11 @@
 - (VWorkspaceViewController *)createTextWorkspaceWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VWorkspaceViewController *workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
-    __weak typeof(self) welf = self;
     workspace.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
         if ( !finished )
         {
-            [welf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+            [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {

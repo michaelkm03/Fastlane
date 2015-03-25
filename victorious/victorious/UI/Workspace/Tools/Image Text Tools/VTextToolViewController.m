@@ -201,7 +201,7 @@ shouldChangeTextInRange:(NSRange)range
     });
     
     NSDictionary *params = @{ VTrackingKeyTextLength : @(self.embeddedText.length),
-                              VTrackingKeyTextType : self.textType.title };
+                              VTrackingKeyTextType : self.textType.title ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidEnterWorkspaceText
                                        parameters:params];
 }

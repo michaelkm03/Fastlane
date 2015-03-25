@@ -49,8 +49,6 @@
     self.buttonCamera.alpha = 0.0f;
     
     [self.textPostViewController performSelector:@selector(startEditingText) withObject:nil afterDelay:0.0f];
-    
-    self.textPostViewController.supplementaryHashtagText = @"#SampleHashtag";
 }
 
 - (void)setImageControlsVisible:(BOOL)visible animated:(BOOL)animated

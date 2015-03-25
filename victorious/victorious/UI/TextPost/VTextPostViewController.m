@@ -44,21 +44,54 @@ static const NSUInteger kMaxTextLength = 200;
 {
     [super viewDidLoad];
     
-    self.supplementaryHashtagText = @"";
     self.text = @"Enter your text!";
+    self.supplementaryHashtagText = @"";
+    
+    self.textView.clipsToBounds = NO;
+    [self.textView addSubview:self.hashtagTextView];
 }
 
 - (void)setSupplementaryHashtagText:(NSString *)supplementaryHashtagText
 {
     _supplementaryHashtagText = supplementaryHashtagText;
     
+    const BOOL wasSelectable = self.hashtagTextView.selectable;
+    self.hashtagTextView.selectable = YES; ///< UITextView's attributedString property cannot be read unless this is set to YES
+    
     NSDictionary *attribtues = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
     self.hashtagTextView.attributedText = [[NSAttributedString alloc] initWithString:supplementaryHashtagText
                                                                           attributes:attribtues];
-    
     [self.hashtagTextView sizeToFit];
+
+    self.hashtagTextView.selectable = wasSelectable;
+    
+    self.hashtagTextView.hidden = supplementaryHashtagText.length == 0;
     
     [self updateTextBackground];
+    [self updateHashtagPostiion];
+}
+
+- (void)updateHashtagPostiion
+{
+    NSValue *lastLineFrameValueObject = self.textView.backgroundFrames.lastObject;
+    
+    CGRect hashtagTextViewFrame = self.hashtagTextView.frame;
+    CGRect lastLineFrame = [lastLineFrameValueObject CGRectValue];
+    if ( CGRectGetWidth(lastLineFrame) < CGRectGetWidth(self.textView.frame) - CGRectGetWidth(self.hashtagTextView.frame) )
+    {
+        // End of last line
+        hashtagTextViewFrame.origin.x = CGRectGetMaxX( lastLineFrame ) + 4;
+        hashtagTextViewFrame.origin.y = CGRectGetMinY( lastLineFrame ) - 13;
+    }
+    else
+    {
+        // New line
+        hashtagTextViewFrame.origin.x = CGRectGetMinX( lastLineFrame );
+        hashtagTextViewFrame.origin.y = CGRectGetMaxY( lastLineFrame ) - 10
+        ;
+    }
+    self.hashtagTextView.frame = hashtagTextViewFrame;
+    [self.hashtagTextView setNeedsLayout];
 }
 
 - (void)setText:(NSString *)text
@@ -69,6 +102,7 @@ static const NSUInteger kMaxTextLength = 200;
     self.textView.attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
     
     [self updateTextBackground];
+    [self updateHashtagPostiion];
 }
 
 - (void)updateTextBackground
@@ -94,7 +128,7 @@ static const NSUInteger kMaxTextLength = 200;
             [backgroundFrames addObject:[NSValue valueWithCGRect:rect]];
         }
         
-        textView.backgroundFrameColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f];
+        textView.backgroundFrameColor = [UIColor whiteColor];
         textView.backgroundFrames = [NSArray arrayWithArray:backgroundFrames];
     }
 }
@@ -104,14 +138,14 @@ static const NSUInteger kMaxTextLength = 200;
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [UIColor cyanColor], //[dependencyManager colorForKey:@"color.text.content"],
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
               NSParagraphStyleAttributeName: [self paragraphStyle] };
 }
 
 - (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [UIColor redColor], //[dependencyManager colorForKey:@"color.link"],
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
               NSParagraphStyleAttributeName: [self paragraphStyle] };
 }
 
@@ -128,6 +162,7 @@ static const NSUInteger kMaxTextLength = 200;
 - (void)textViewDidChange:(UITextView *)textView
 {
     [self updateTextBackground];
+    [self updateHashtagPostiion];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView

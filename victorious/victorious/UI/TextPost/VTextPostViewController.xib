@@ -7,7 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VTextPostViewController">
             <connections>
                 <outlet property="hashtagTextView" destination="ON9-Ap-Px7" id="XC1-oG-TeS"/>
-                <outlet property="textLayoutHelper" destination="DgL-W4-teC" id="ebL-61-Eqm"/>
+                <outlet property="textLayoutHelper" destination="jkY-iK-feB" id="aGJ-dU-4Zg"/>
                 <outlet property="textView" destination="EdJ-vJ-rzg" id="CvN-ia-c6B"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="HSK-lU-PKi"/>
             </connections>
@@ -26,7 +26,7 @@
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
                     <color key="textColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="qvi-UH-K6A"/>
                     </connections>
@@ -36,7 +36,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="textColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                 </textView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -47,6 +47,6 @@
             </constraints>
             <point key="canvasLocation" x="774" y="689"/>
         </view>
-        <customObject id="DgL-W4-teC" customClass="VTextLayoutHelper"/>
+        <customObject id="jkY-iK-feB" customClass="VTextLayoutHelper"/>
     </objects>
 </document>

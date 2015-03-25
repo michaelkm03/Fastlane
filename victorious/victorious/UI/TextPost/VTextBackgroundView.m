@@ -14,12 +14,14 @@
 {
     _backgroundFrames = backgroundFrames;
     
+    [self setNeedsLayout];
     [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextClearRect( context, rect );
     
     for ( NSValue *value in self.backgroundFrames )
     {
