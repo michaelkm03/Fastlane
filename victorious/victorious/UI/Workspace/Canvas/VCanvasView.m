@@ -28,6 +28,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 @property (nonatomic, strong) dispatch_queue_t renderingQueue;
 @property (nonatomic, strong) NSMutableArray *rendertimes;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, assign, getter = hasLayedOutCanvasScrollView) BOOL layedoutCanvasScrollView;
 
 @end
 
@@ -125,6 +126,11 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         return;
     }
     
+    if (self.hasLayedOutCanvasScrollView)
+    {
+        return;
+    }
+    
     CGRect imageViewFrame;
     CGFloat scaleFactor;
     if (self.sourceImage.size.height > self.sourceImage.size.width)
@@ -147,6 +153,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     self.imageView.frame = imageViewFrame;
     self.canvasScrollView.contentSize = imageViewFrame.size;
     [self.canvasScrollView v_centerZoomedContentAnimated:NO];
+    self.layedoutCanvasScrollView = YES;
 }
 
 #pragma mark - Property Accessors
