@@ -325,4 +325,21 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     return self.imageView;
 }
 
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    if ( !self.didZoomFromDoubleTap )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithZoom];
+    }
+    self.didZoomFromDoubleTap = NO;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if ( !scrollView.isZooming )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithPan];
+    }
+}
+
 @end
