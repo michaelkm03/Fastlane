@@ -10,22 +10,19 @@
 #import "VTextLayoutHelper.h"
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
-
-static const CGFloat kTextLineHeight = 35.0f;
-static const CGFloat kVerticalSpacing = 2;
-static const CGFloat kLineOffsetMultiplier = 0.4f;
-static const CGFloat kHorizontalSpacing = 3;
-static const NSUInteger kMaxTextLength = 200;
+#import "VTextPostHashtagContraints.h"
+#import "VTextPostConfiguration.h"
 
 @interface VTextPostViewController () <UITextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
+
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textView;
 @property (nonatomic, weak) IBOutlet VTextPostTextView *hashtagTextView;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *hashtagTextViewLeadingConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *hashtagTextViewTopConstraint;
+@property (nonatomic, strong) IBOutlet VTextPostHashtagContraints *hashtagConstraints;
+@property (nonatomic, strong) IBOutlet VTextPostConfiguration *configuration;
+@property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
 
 @end
 
@@ -64,41 +61,43 @@ static const NSUInteger kMaxTextLength = 200;
 - (void)setSupplementaryHashtagText:(NSString *)supplementaryHashtagText
 {
     _supplementaryHashtagText = supplementaryHashtagText;
-    
-    self.hashtagTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    if ( _supplementaryHashtagText.length > 0 && [_supplementaryHashtagText rangeOfString:@"#"].location != 0 )
+    {
+        _supplementaryHashtagText = [NSString stringWithFormat:@"#%@", _supplementaryHashtagText];
+    }
     
     const BOOL wasSelectable = self.hashtagTextView.selectable;
     self.hashtagTextView.selectable = YES; ///< UITextView's attributedString property cannot be read unless this is set to YES
     
     NSDictionary *attribtues = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
-    self.hashtagTextView.attributedText = [[NSAttributedString alloc] initWithString:supplementaryHashtagText
+    self.hashtagTextView.attributedText = [[NSAttributedString alloc] initWithString:_supplementaryHashtagText
                                                                           attributes:attribtues];
-    [self.hashtagTextView sizeToFit];
     
     self.hashtagTextView.selectable = wasSelectable;
     
-    self.hashtagTextView.hidden = supplementaryHashtagText.length == 0;
+    self.hashtagTextView.hidden = _supplementaryHashtagText.length == 0;
     
-    [self updateTextBackground];
+    [self updateTextBackgrounds];
     [self updateHashtagPostiion];
 }
 
 - (void)updateHashtagPostiion
 {
     CGRect textLastLineFrame = [self.textView.backgroundFrames.lastObject CGRectValue];
+    textLastLineFrame.origin.y -= ceil(self.textView.font.pointSize / self.configuration.lineHeightMultipler);
     CGRect hashtagTextFrame = [self.hashtagTextView.backgroundFrames.lastObject CGRectValue];
     
-    CGFloat targetLeading = textLastLineFrame.size.width + CGRectGetMinX( self.textView.frame ) + kHorizontalSpacing;
+    CGFloat targetLeading = textLastLineFrame.size.width + CGRectGetMinX( self.textView.frame ) + self.configuration.horizontalSpacing;
     CGFloat spaceNeededForHashtagText = CGRectGetWidth( self.textView.frame ) - CGRectGetWidth( hashtagTextFrame );
     if ( targetLeading < spaceNeededForHashtagText )
     {
-        self.hashtagTextViewTopConstraint.constant = CGRectGetMinY( textLastLineFrame );
-        self.hashtagTextViewLeadingConstraint.constant = targetLeading;
+        self.hashtagConstraints.top.constant = CGRectGetMinY( textLastLineFrame );
+        self.hashtagConstraints.leading.constant = targetLeading;
     }
     else
     {
-        self.hashtagTextViewTopConstraint.constant = CGRectGetMaxY( textLastLineFrame );
-        self.hashtagTextViewLeadingConstraint.constant = CGRectGetMinX( self.textView.frame );
+        self.hashtagConstraints.top.constant = CGRectGetMaxY( textLastLineFrame ) + self.configuration.verticalSpacing;
+        self.hashtagConstraints.leading.constant = CGRectGetMinX( self.textView.frame );
     }
     [self.view layoutIfNeeded];
 }
@@ -107,69 +106,23 @@ static const NSUInteger kMaxTextLength = 200;
 {
     _text = text;
     
-    NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
+    if ( _text.length == 0 )
+    {
+        _text = @" ";
+    }
     
-    [self updateTextBackground];
+    NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:_text attributes:attributes];
+    
+    [self updateTextBackgrounds];
     [self updateHashtagPostiion];
 }
 
-- (void)updateTextBackground
+- (void)updateTextBackgrounds
 {
-    
     for ( VTextPostTextView *textView in @[ self.textView, self.hashtagTextView] )
     {
-        if ( textView.attributedText.string.length == 0 )
-        {
-            textView.backgroundFrames = @[]; ///< Don't draw any background for empty text
-            continue;
-        }
-        
-        textView.backgroundFrameColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3f];
-        
-        // Use this function of text storange to get the usedRect of each line fragment
-        NSRange fullRange = NSMakeRange( 0, textView.attributedText.string.length );
-        __block NSMutableArray *lineFragmentRects = [[NSMutableArray alloc] init];
-        [textView.layoutManager enumerateLineFragmentsForGlyphRange:fullRange usingBlock:^( CGRect rect,
-                                                                                           CGRect usedRect,
-                                                                                           NSTextContainer *textContainer,
-                                                                                           NSRange glyphRange, BOOL *stop )
-         {
-             [lineFragmentRects addObject:[NSValue valueWithCGRect:usedRect]];
-         }];
-        
-        // Calculate the actual line count a bit differently, since the one above is not as accurate while typing
-        CGRect singleCharRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, 1 )];
-        CGRect totalRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, textView.attributedText.string.length)];
-        totalRect.size = [textView sizeThatFits:CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX )];
-        totalRect.size.width = textView.bounds.size.width;
-        
-        __block NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
-        NSInteger numLines = totalRect.size.height / singleCharRect.size.height;
-        for ( NSInteger i = 0; i < numLines; i++ )
-        {
-            // Calculate individual rects for each line to draw in the background of text view
-            CGRect lineRect = totalRect;
-            lineRect.size.height = singleCharRect.size.height - kVerticalSpacing;
-            lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * kLineOffsetMultiplier;
-            if ( i == numLines - 1 )
-            {
-                // If this is the last line, use the line fragment rects collected above
-                lineRect.size.width = ((NSValue *)lineFragmentRects.lastObject).CGRectValue.size.width;
-                if ( lineRect.size.width == 0 )
-                {
-                    // Sometimes the line fragment rect will give is 0 width for a singel word overhanging on the next line
-                    // So, we'll take that last word and calcualte its width to get a proper value for the line's background rect
-                    NSString *lastWord = [textView.attributedText.string componentsSeparatedByString:@" "].lastObject;
-                    NSRange lastWordRange = [textView.attributedText.string rangeOfString:lastWord];
-                    CGRect lastWordBoundingRect = [textView boundingRectForCharacterRange:lastWordRange];
-                    lineRect.size.width = lastWordBoundingRect.size.width + lastWordBoundingRect.size.height * 0.3;
-                }
-            }
-            [backgroundFrames addObject:[NSValue valueWithCGRect:lineRect]];
-        }
-        
-        textView.backgroundFrames = [NSArray arrayWithArray:backgroundFrames];
+        [self.textLayoutHelper updateTextViewBackground:textView configuraiton:self.configuration];
     }
 }
 
@@ -177,23 +130,25 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [UIColor cyanColor], //[dependencyManager colorForKey:@"color.text.content"],
-              NSParagraphStyleAttributeName: [self paragraphStyle] };
+    UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
+    return @{ NSFontAttributeName: font ?: @"",
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
+              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
 }
 
 - (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
+    UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
+    return @{ NSFontAttributeName: font ?: @"",
               NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
-              NSParagraphStyleAttributeName: [self paragraphStyle] };
+              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
 }
 
-- (NSParagraphStyle *)paragraphStyle
+- (NSParagraphStyle *)paragraphStyleWithFont:(UIFont *)font
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentLeft;
-    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = kTextLineHeight;
+    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = ((CGFloat)font.pointSize) * self.configuration.lineHeightMultipler;
     return paragraphStyle;
 }
 
@@ -201,7 +156,7 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self updateTextBackground];
+    [self updateTextBackgrounds];
     [self updateHashtagPostiion];
 }
 
@@ -217,7 +172,13 @@ static const NSUInteger kMaxTextLength = 200;
         return NO;
     }
     
-    return textView.text.length + text.length < kMaxTextLength;
+    if ( text.length == 0 )
+    {
+        self.text = @" ";
+        return NO;
+    }
+    
+    return textView.text.length + text.length < self.configuration.maxTextLength;
 }
 
 @end

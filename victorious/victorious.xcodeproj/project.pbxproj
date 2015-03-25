@@ -475,7 +475,6 @@
 		A793A9401AC22C8C007F32EE /* VTextPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A93D1AC22C8C007F32EE /* VTextPostViewController.m */; };
 		A793A9411AC22C8C007F32EE /* VTextPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A793A93E1AC22C8C007F32EE /* VTextPostViewController.xib */; };
 		A793A9441AC22CF7007F32EE /* VTextLayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A9431AC22CF7007F32EE /* VTextLayoutHelper.m */; };
-		A793A9471AC23F14007F32EE /* VTextBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = A793A9461AC23F14007F32EE /* VTextBackgroundView.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
 		A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */; };
@@ -486,6 +485,8 @@
 		A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
+		A7A921FD1AC3609B00F4755E /* VTextPostHashtagContraints.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FC1AC3609B00F4755E /* VTextPostHashtagContraints.m */; };
+		A7A922001AC362F700F4755E /* VTextPostConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9A31A83F1C300A3D3A0 /* VStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9761A83F1C300A3D3A0 /* VStreamCellActionView.m */; };
@@ -1657,8 +1658,6 @@
 		A793A93E1AC22C8C007F32EE /* VTextPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTextPostViewController.xib; sourceTree = "<group>"; };
 		A793A9421AC22CF7007F32EE /* VTextLayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextLayoutHelper.h; sourceTree = "<group>"; };
 		A793A9431AC22CF7007F32EE /* VTextLayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextLayoutHelper.m; sourceTree = "<group>"; };
-		A793A9451AC23F14007F32EE /* VTextBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextBackgroundView.h; sourceTree = "<group>"; };
-		A793A9461AC23F14007F32EE /* VTextBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextBackgroundView.m; sourceTree = "<group>"; };
 		A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
 		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
@@ -1680,6 +1679,10 @@
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
+		A7A921FB1AC3609B00F4755E /* VTextPostHashtagContraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostHashtagContraints.h; sourceTree = "<group>"; };
+		A7A921FC1AC3609B00F4755E /* VTextPostHashtagContraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostHashtagContraints.m; sourceTree = "<group>"; };
+		A7A921FE1AC362F700F4755E /* VTextPostConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostConfiguration.h; sourceTree = "<group>"; };
+		A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostConfiguration.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
 		A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionController.h; sourceTree = "<group>"; };
@@ -4068,10 +4071,12 @@
 		A793A9391AC22C8C007F32EE /* TextPost */ = {
 			isa = PBXGroup;
 			children = (
-				A793A9451AC23F14007F32EE /* VTextBackgroundView.h */,
-				A793A9461AC23F14007F32EE /* VTextBackgroundView.m */,
 				A793A9421AC22CF7007F32EE /* VTextLayoutHelper.h */,
 				A793A9431AC22CF7007F32EE /* VTextLayoutHelper.m */,
+				A7A921FE1AC362F700F4755E /* VTextPostConfiguration.h */,
+				A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */,
+				A7A921FB1AC3609B00F4755E /* VTextPostHashtagContraints.h */,
+				A7A921FC1AC3609B00F4755E /* VTextPostHashtagContraints.m */,
 				A793A93A1AC22C8C007F32EE /* VTextPostTextView.h */,
 				A793A93B1AC22C8C007F32EE /* VTextPostTextView.m */,
 				A793A93C1AC22C8C007F32EE /* VTextPostViewController.h */,
@@ -5655,7 +5660,6 @@
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */,
-				A793A9471AC23F14007F32EE /* VTextBackgroundView.m in Sources */,
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
 				F04A7CBD1AB874A10092A374 /* VSleekStreamCellFactory.m in Sources */,
 				F028CF4E1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m in Sources */,
@@ -5932,6 +5936,7 @@
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
+				A7A922001AC362F700F4755E /* VTextPostConfiguration.m in Sources */,
 				DBDBE6EE1A16736C00DA1BB2 /* VAdBreak.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */,
 				A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */,
@@ -6044,6 +6049,7 @@
 				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
 				A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */,
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
+				A7A921FD1AC3609B00F4755E /* VTextPostHashtagContraints.m in Sources */,
 				A7D288141A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m in Sources */,
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
 				A793A9401AC22C8C007F32EE /* VTextPostViewController.m in Sources */,

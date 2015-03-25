@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VDependencyManager;
+@class VDependencyManager, VTextPostConfiguration, VTextPostTextView;
 
 @interface VTextLayoutHelper : NSObject
 
@@ -16,17 +16,6 @@
                 withAttributes:(NSDictionary *)attributes
                       maxWidth:(CGFloat)maxWidth;
 
-- (NSArray *)createTextFieldsFromTextLines:(NSArray *)lines
-                                attributes:(NSDictionary *)attributes
-                                 superview:(UIView *)superview;
-
-- (void)updateHashtagLayoutWithText:(NSString *)text
-                          superview:(UIView *)superview
-                  bottmLineTextView:(UIView *)bottmLineTextView
-                         attributes:(NSDictionary *)attributes;
-
-- (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
-
-- (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
+- (void)updateTextViewBackground:(VTextPostTextView *)textView configuraiton:(VTextPostConfiguration *)configuration;
 
 @end

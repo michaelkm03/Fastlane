@@ -8,9 +8,8 @@
 
 #import "VTextLayoutHelper.h"
 #import "VDependencyManager.h"
-
-static const CGFloat kTextSpacingHorizontal = 4;
-static const CGFloat kTextSpacingVertical = 2;
+#import "VTextPostTextView.h"
+#import "VTextPostConfiguration.h"f dsa
 
 @implementation VTextLayoutHelper
 
@@ -40,87 +39,53 @@ static const CGFloat kTextSpacingVertical = 2;
     return [NSArray arrayWithArray:lines];
 }
 
-- (NSArray *)createTextFieldsFromTextLines:(NSArray *)lines
-                                attributes:(NSDictionary *)attributes
-                                 superview:(UIView *)superview
+- (void)updateTextViewBackground:(VTextPostTextView *)textView configuraiton:(VTextPostConfiguration *)configuration
 {
-    [superview.subviews enumerateObjectsUsingBlock:^(UIView *subview, NSUInteger idx, BOOL *stop)
+    textView.backgroundFrameColor = configuration.backgroundColor;
+    
+    // Use this function of text storange to get the usedRect of each line fragment
+    NSRange fullRange = NSMakeRange( 0, textView.attributedText.string.length );
+    __block NSMutableArray *lineFragmentRects = [[NSMutableArray alloc] init];
+    [textView.layoutManager enumerateLineFragmentsForGlyphRange:fullRange usingBlock:^( CGRect rect,
+                                                                                       CGRect usedRect,
+                                                                                       NSTextContainer *textContainer,
+                                                                                       NSRange glyphRange, BOOL *stop )
      {
-         [subview removeFromSuperview];
+         [lineFragmentRects addObject:[NSValue valueWithCGRect:usedRect]];
      }];
     
-    NSUInteger y = 0;
-    NSMutableArray *textViews = [[NSMutableArray alloc] init];
-    for ( NSString *line in lines )
+    // Calculate the actual line count a bit differently, since the one above is not as accurate while typing
+    CGRect singleCharRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, 1 )];
+    CGRect totalRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, textView.attributedText.string.length)];
+    totalRect.size = [textView sizeThatFits:CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX )];
+    totalRect.size.width = textView.bounds.size.width;
+    
+    __block NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
+    NSInteger numLines = totalRect.size.height / singleCharRect.size.height;
+    for ( NSInteger i = 0; i < numLines; i++ )
     {
-        UITextView *textView = [[UITextView alloc] init];
-        textView.backgroundColor = [UIColor whiteColor];
-        textView.editable = NO;
-        textView.selectable = NO;
-        textView.attributedText = [[NSAttributedString alloc] initWithString:line
-                                                                  attributes:attributes];
-        [superview addSubview:textView];
-        [textView sizeToFit];
-        
-        CGRect frame = textView.frame;
-        frame.origin.y = (y++) * (CGRectGetHeight(frame) + kTextSpacingVertical);
-        frame.size.width = [lines.lastObject isEqualToString:line] ? frame.size.width : superview.frame.size.width;
-        textView.frame = frame;
-        
-        [textViews addObject:textView];
+        // Calculate individual rects for each line to draw in the background of text view
+        CGRect lineRect = totalRect;
+        lineRect.size.height = singleCharRect.size.height - configuration.verticalSpacing;
+        lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * configuration.lineOffsetMultiplier;
+        if ( i == numLines - 1 )
+        {
+            // If this is the last line, use the line fragment rects collected above
+            lineRect.size.width = ((NSValue *)lineFragmentRects.lastObject).CGRectValue.size.width;
+            if ( lineRect.size.width == 0 )
+            {
+                // Sometimes the line fragment rect will give is 0 width for a singel word overhanging on the next line
+                // So, we'll take that last word and calcualte its width to get a proper value for the line's background rect
+                NSString *lastWord = [textView.attributedText.string componentsSeparatedByString:@" "].lastObject;
+                NSRange lastWordRange = [textView.attributedText.string rangeOfString:lastWord];
+                CGRect lastWordBoundingRect = [textView boundingRectForCharacterRange:lastWordRange];
+                lineRect.size.width = lastWordBoundingRect.size.width + lastWordBoundingRect.size.height * 0.3;
+            }
+        }
+        [backgroundFrames addObject:[NSValue valueWithCGRect:lineRect]];
     }
     
-    return [[NSArray alloc] initWithArray:textViews];
-}
-
-
-- (void)updateHashtagLayoutWithText:(NSString *)text
-                          superview:(UIView *)superview
-                  bottmLineTextView:(UIView *)bottmLineTextView
-                         attributes:(NSDictionary *)attributes
-{
-    UITextView *textView = [[UITextView alloc] init];
-    textView.backgroundColor = [UIColor whiteColor];
-    textView.editable = NO;
-    textView.selectable = NO;
-    textView.attributedText = [[NSAttributedString alloc] initWithString:text
-                                                              attributes:attributes];
-    [superview addSubview:textView];
-    
-    [textView sizeToFit];
-    
-    CGRect frame = textView.frame;
-    if ( bottmLineTextView.frame.size.width + kTextSpacingHorizontal + textView.frame.size.width <= superview.frame.size.width )
-    {
-        frame.origin.y = bottmLineTextView.frame.origin.y;
-        frame.origin.x = CGRectGetMaxX( bottmLineTextView.frame ) + kTextSpacingHorizontal;
-    }
-    else
-    {
-        frame.origin.y = CGRectGetMaxY( bottmLineTextView.frame ) + kTextSpacingVertical;
-        frame.origin.x = bottmLineTextView.frame.origin.x;
-    }
-    textView.frame = frame;
-}
-
-#pragma mark - Text Attributes
-
-- (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    
-    return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"] };
-}
-
-- (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    
-    return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"] };
+    textView.backgroundFrames = [NSArray arrayWithArray:backgroundFrames];
 }
 
 @end
