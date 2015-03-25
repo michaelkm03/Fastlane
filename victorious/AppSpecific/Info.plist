@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}EatYourKimchi</string>
+	<string>${ProductPrefix}victorious</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}eatyourkimchi</string>
+	<string>com.getvictorious.${ProductPrefix}victorious</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -31,20 +31,26 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb866010463411279</string>
+				<string>fb1374328719478033</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>${ProductPrefix}victorious</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>
 	<key>CreatorSalutation</key>
-	<string>Simon &amp; Martina</string>
+	<string>Debug Victorious</string>
 	<key>FacebookAppID</key>
-	<string>866010463411279</string>
+	<string>1374328719478033</string>
 	<key>FlurryAPIKey</key>
-	<string>YB44YS7TR59PT4WXKD5C</string>
+	<string>XXXXXXXXXX</string>
 	<key>GAID</key>
-	<string>UA-51702806-1</string>
+	<string>UA-51702806-9</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -52,17 +58,17 @@
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
 	<key>QAAppID</key>
-	<integer>9</integer>
+	<integer>1</integer>
 	<key>StagingAppID</key>
-	<integer>29</integer>
+	<integer>1</integer>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>L6vqTap4DxEwPhoM353Yhv1Zh</string>
+	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>9dmJtNBZsFtUQjRFi1PBW3ykvu9xE9OpLu3VElrKJ422x8svf9</string>
+	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
 	<key>TestflightQAAppToken</key>
-	<string>d33532a9-0dd3-424d-9337-99806b320bf6</string>
+	<string>553ddcc2-00e7-4c93-987b-f552eba89273</string>
 	<key>TestflightReleaseAppToken</key>
-	<string>e32874bd-7c85-4874-9d8e-37546c066c12</string>
+	<string>02101c7d-4a01-4a44-8e8a-26dca03554aa</string>
 	<key>TestflightStagingAppToken</key>
 	<string>cabc9a4e-9385-49a7-8d5f-bedd539b60d6</string>
 	<key>UIAppFonts</key>
@@ -150,7 +156,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>VictoriousAppID</key>
-	<integer>13</integer>
+	<integer>1</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 </dict>

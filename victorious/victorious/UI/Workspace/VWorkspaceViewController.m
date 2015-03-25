@@ -40,7 +40,7 @@
 
 static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 
-@interface VWorkspaceViewController ()
+@interface VWorkspaceViewController () <VToolControllerDelegate>
 
 @property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
 
@@ -270,10 +270,7 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
         [confirmExitActionSheet showInView:self.view];
         return;
     }
-    if ( self.completionBlock != nil )
-    {
-        self.completionBlock( NO, nil, nil );
-    }
+    self.completionBlock(NO, nil, nil);
 }
 
 - (IBAction)publish:(id)sender
@@ -317,13 +314,6 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTool parameters:params];
 }
 
-- (void)setShowCloseButton:(BOOL)showCloseButton
-{
-    _showCloseButton = showCloseButton;
-    NSString *imageName = showCloseButton ? @"cameraButtonClose" : @"cameraButtonBack";
-    self.backButton.image = [UIImage imageNamed:imageName];
-}
-
 #pragma mark - VWorkspaceToolControllerDelegate
 
 - (void)addCanvasViewController:(UIViewController *)canvasViewController
@@ -362,6 +352,13 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     _continueText = [continueText copy];
     
     [self.continueButton setTitle:continueText];
+}
+
+- (void)setShowCloseButton:(BOOL)showCloseButton
+{
+    _showCloseButton = showCloseButton;
+    NSString *imageName = showCloseButton ? @"cameraButtonClose" : @"cameraButtonBack";
+    self.backButton.image = [UIImage imageNamed:imageName];
 }
 
 #pragma mark - Public Methods
