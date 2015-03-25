@@ -30,8 +30,7 @@
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
-                                                                  bundle:nil];
+    UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace" bundle:nil];
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.dependencyManager = dependencyManager;
     toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];

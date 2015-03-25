@@ -42,8 +42,11 @@
     self.buttonImageSearch.backgroundColor = [self.dependencyManager colorForKey:@"color.link"];
     
     self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+    [self addChildViewController:self.textPostViewController];
+    [self.textPostViewController willMoveToParentViewController:self];
     [self.view insertSubview:self.textPostViewController.view atIndex:0];
     [self.view v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+    [self.textPostViewController didMoveToParentViewController:self];
     
     self.buttonImageSearch.alpha = 0.0f;
     self.buttonCamera.alpha = 0.0f;

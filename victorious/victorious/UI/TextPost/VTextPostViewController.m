@@ -37,18 +37,28 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (void)startEditingText
 {
-    [self.textView becomeFirstResponder];
+    //[self.textView becomeFirstResponder];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.text = @"A;lkjds a;lkj lkjd ksj dksjid jsi jdks ndmsndjshidusik dks kd jskd jksndmsn mdsn kdusiou dishj kdsj kdjsk jdiosu diosu idj sk ";
+    self.text = @"";
     self.supplementaryHashtagText = @"";
     
-    self.textView.clipsToBounds = NO;
-    [self.textView addSubview:self.hashtagTextView];
+    /*self.textView.clipsToBounds = NO;
+    [self.textView addSubview:self.hashtagTextView];*/
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.text = @"What's on your mind?";
+    
+    [self updateTextBackground];
+    [self updateHashtagPostiion];
 }
 
 - (void)setSupplementaryHashtagText:(NSString *)supplementaryHashtagText
@@ -75,7 +85,7 @@ static const NSUInteger kMaxTextLength = 200;
 {
     NSValue *lastLineFrameValueObject = self.textView.backgroundFrames.lastObject;
     
-    NSLog( @"lastLineFrameValueObject = %@", lastLineFrameValueObject );
+    //NSLog( @"lastLineFrameValueObject = %@", lastLineFrameValueObject );
     
     CGRect hashtagTextViewFrame = self.hashtagTextView.frame;
     CGRect lastLineFrame = [lastLineFrameValueObject CGRectValue];
@@ -115,7 +125,7 @@ static const NSUInteger kMaxTextLength = 200;
     {
         if ( textView.attributedText.string.length == 0 )
         {
-            textView.backgroundFrames = @[];
+            textView.backgroundFrames = @[]; ///< Don't draw any background for empty text
             continue;
         }
         
@@ -124,7 +134,10 @@ static const NSUInteger kMaxTextLength = 200;
         // Use this function of text storange to get the usedRect of each line fragment
         NSRange fullRange = NSMakeRange( 0, textView.attributedText.string.length );
         __block NSMutableArray *lineFragmentRects = [[NSMutableArray alloc] init];
-        [textView.layoutManager enumerateLineFragmentsForGlyphRange:fullRange usingBlock:^( CGRect rect, CGRect usedRect, NSTextContainer *textContainer, NSRange glyphRange, BOOL *stop )
+        [textView.layoutManager enumerateLineFragmentsForGlyphRange:fullRange usingBlock:^( CGRect rect,
+                                                                                           CGRect usedRect,
+                                                                                           NSTextContainer *textContainer,
+                                                                                           NSRange glyphRange, BOOL *stop )
          {
              [lineFragmentRects addObject:[NSValue valueWithCGRect:usedRect]];
          }];
@@ -137,14 +150,28 @@ static const NSUInteger kMaxTextLength = 200;
         
         __block NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
         NSInteger numLines = totalRect.size.height / singleCharRect.size.height;
+        
+        NSLog( @"numLines = %@", @(numLines) );
+        
         for ( NSInteger i = 0; i < numLines; i++ )
         {
+            // Calculate individual rects for each line to draw in the background of text view
             CGRect lineRect = totalRect;
             lineRect.size.height = singleCharRect.size.height - verticalSpacing;
             lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * lineOffsetMultiplier;
             if ( i == numLines - 1 )
             {
+                // If this is the last line, use the line fragment rects collected above
                 lineRect.size.width = ((NSValue *)lineFragmentRects.lastObject).CGRectValue.size.width;
+                if ( lineRect.size.width == 0 )
+                {
+                    // Sometimes the line fragment rect will give is 0 width for a singel word overhanging on the next line
+                    // So, we'll take that last word and calcualte its width to get a proper value for the line's background rect
+                    NSString *lastWord = [textView.attributedText.string componentsSeparatedByString:@" "].lastObject;
+                    NSRange lastWordRange = [textView.attributedText.string rangeOfString:lastWord];
+                    CGRect lastWordBoundingRect = [textView boundingRectForCharacterRange:lastWordRange];
+                    lineRect.size.width = lastWordBoundingRect.size.width + lastWordBoundingRect.size.height * 0.3;
+                }
             }
             [backgroundFrames addObject:[NSValue valueWithCGRect:lineRect]];
         }
