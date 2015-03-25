@@ -17,7 +17,7 @@ extern CGFloat const kVNotificationCellHeight;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *notificationType;
+@property (weak, nonatomic) IBOutlet UIImageView *notificationWho;
 @property (strong, nonatomic) VNotification *notification;
 
 @end

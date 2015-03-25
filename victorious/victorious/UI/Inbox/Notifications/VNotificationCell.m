@@ -34,10 +34,10 @@ CGFloat const kVNotificationCellHeight = 72;
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    self.notificationType.clipsToBounds = YES;
-    self.notificationType.layer.cornerRadius = CGRectGetHeight(self.notificationType.bounds)/2;
-    self.notificationType.layer.borderColor = self.backgroundColor.CGColor;
-    self.notificationType.layer.borderWidth = 1.0f;
+    self.notificationWho.clipsToBounds = YES;
+    self.notificationWho.layer.cornerRadius = CGRectGetHeight(self.notificationWho.bounds)/2;
+    self.notificationWho.layer.borderColor = self.backgroundColor.CGColor;
+    self.notificationWho.layer.borderWidth = 1.0f;
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
@@ -48,7 +48,7 @@ CGFloat const kVNotificationCellHeight = 72;
     
     self.usernameLabel.text  = notification.user.name;
     
-    [self.notificationType setImage:[UIImage imageNamed:@"user-icon"]];
+    [self.notificationWho setImage:[UIImage imageNamed:@"user-icon"]];
     
     self.messageLabel.text = @"notification message goes here and now it's really long to wrap onto 2 lines.";
     self.dateLabel.text = [notification.postedAt timeSince];

@@ -21,43 +21,53 @@
                             <constraint firstAttribute="width" constant="48" id="emi-md-8pl"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nKr-Pc-2kO" userLabel="username label">
+                        <rect key="frame" x="64" y="13" width="206" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="jK4-XI-tEW">
-                        <rect key="frame" x="64" y="48" width="9" height="9"/>
+                        <rect key="frame" x="279" y="17" width="9" height="9"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="9" id="bIy-tE-rk2"/>
                             <constraint firstAttribute="width" constant="9" id="l36-DG-h3g"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dke-Yg-Kw5">
-                        <rect key="frame" x="75" y="46" width="14" height="14"/>
+                        <rect key="frame" x="290" y="15" width="14" height="14"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" red="0.27058823529999998" green="0.27058823529999998" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="Il9-me-FYI" userLabel="Message label">
-                        <rect key="frame" x="64" y="16" width="248" height="20"/>
+                        <rect key="frame" x="64" y="37" width="256" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="jK4-XI-tEW" firstAttribute="centerY" secondItem="nKr-Pc-2kO" secondAttribute="centerY" id="0lb-G8-5tV"/>
                     <constraint firstItem="dke-Yg-Kw5" firstAttribute="centerY" secondItem="jK4-XI-tEW" secondAttribute="centerY" id="4gZ-vn-Fg3"/>
                     <constraint firstItem="D3F-Lh-YGd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="8FT-by-1i9"/>
-                    <constraint firstItem="Il9-me-FYI" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="B76-YT-JwZ"/>
+                    <constraint firstItem="Il9-me-FYI" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" constant="8" id="B76-YT-JwZ"/>
+                    <constraint firstItem="Il9-me-FYI" firstAttribute="top" secondItem="nKr-Pc-2kO" secondAttribute="bottom" constant="8" id="OQu-8f-oTS"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Il9-me-FYI" secondAttribute="bottom" constant="6" id="Ps6-rh-GGh"/>
+                    <constraint firstItem="nKr-Pc-2kO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="Rpc-Lt-APX"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="dke-Yg-Kw5" secondAttribute="trailing" constant="8" id="SnA-iX-Ytk"/>
                     <constraint firstItem="dke-Yg-Kw5" firstAttribute="leading" secondItem="jK4-XI-tEW" secondAttribute="trailing" constant="2" id="Tij-mv-V2e"/>
-                    <constraint firstItem="jK4-XI-tEW" firstAttribute="top" secondItem="Il9-me-FYI" secondAttribute="bottom" constant="12" id="ahc-Uc-5u7"/>
+                    <constraint firstItem="jK4-XI-tEW" firstAttribute="leading" secondItem="nKr-Pc-2kO" secondAttribute="trailing" constant="9" id="c4q-2f-dHf"/>
                     <constraint firstItem="D3F-Lh-YGd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="ddr-uP-QVx"/>
-                    <constraint firstItem="jK4-XI-tEW" firstAttribute="leading" secondItem="Il9-me-FYI" secondAttribute="leading" id="o9T-5H-AqO"/>
+                    <constraint firstItem="nKr-Pc-2kO" firstAttribute="leading" secondItem="D3F-Lh-YGd" secondAttribute="trailing" constant="8" id="jVv-2p-dAa"/>
                     <constraint firstItem="Il9-me-FYI" firstAttribute="leading" secondItem="D3F-Lh-YGd" secondAttribute="trailing" constant="8" id="uul-vp-lQs"/>
-                    <constraint firstItem="Il9-me-FYI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="zQU-Ow-od9"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="dateLabel" destination="dke-Yg-Kw5" id="3Lx-cc-6Bl"/>
                 <outlet property="messageLabel" destination="Il9-me-FYI" id="Oa1-oP-TrV"/>
-                <outlet property="notificationType" destination="D3F-Lh-YGd" id="QTQ-ve-FZz"/>
+                <outlet property="notificationWho" destination="D3F-Lh-YGd" id="fgw-ks-nWV"/>
+                <outlet property="usernameLabel" destination="nKr-Pc-2kO" id="LDM-ik-8yU"/>
             </connections>
-            <point key="canvasLocation" x="256" y="315"/>
+            <point key="canvasLocation" x="256" y="314"/>
         </tableViewCell>
     </objects>
     <resources>
