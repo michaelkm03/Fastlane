@@ -8,6 +8,18 @@
 
 #import "VTableViewCell.h"
 
+/**
+ Notification Types
+ */
+typedef NS_ENUM(NSInteger, VNotificationType) {
+    VNotificationTypeNewFollow,
+    VNotificationTypeComment,
+    VNotificationTypeFriendJoined,
+    VNotificationTypeRepost,
+    VNotificationTypePollResponse,
+    VNotificationTypeRemix
+};
+
 extern CGFloat const kVNotificationCellHeight;
 
 @class VNotification;
