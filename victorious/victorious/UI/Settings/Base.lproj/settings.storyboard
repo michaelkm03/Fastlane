@@ -425,7 +425,7 @@
         <!--Terms of Service-->
         <scene sceneID="80e-2h-oqv">
             <objects>
-                <viewController storyboardIdentifier="VTOSViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VTOSViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VTOSViewController" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VTOSViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="X30-bY-u4J"/>
                         <viewControllerLayoutGuide type="bottom" id="kNM-ik-iVo"/>
@@ -537,7 +537,7 @@
         <!--Privacy Policy-->
         <scene sceneID="Dbm-PF-rlC">
             <objects>
-                <viewController storyboardIdentifier="privacyPolicies" title="Privacy Policy" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lSu-os-HMa" customClass="VPrivacyPoliciesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="privacyPolicies" title="Privacy Policy" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lSu-os-HMa" customClass="VPrivacyPoliciesViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yhS-mM-YmB"/>
                         <viewControllerLayoutGuide type="bottom" id="UG0-VD-PTs"/>
@@ -556,7 +556,7 @@
         <!--Server Environment-->
         <scene sceneID="quU-xZ-2Jq">
             <objects>
-                <tableViewController title="Server Environment" extendedLayoutIncludesOpaqueBars="YES" id="6fa-Sd-wUR" customClass="VServerEnvironmentTableViewController" sceneMemberID="viewController">
+                <tableViewController title="Server Environment" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="6fa-Sd-wUR" customClass="VServerEnvironmentTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="YMY-dS-YC6">
                         <rect key="frame" x="0.0" y="44" width="320" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
