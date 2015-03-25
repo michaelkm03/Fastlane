@@ -12,6 +12,7 @@
 
 @import StoreKit;
 
+#import "VPseudoProduct.h"
 #import "VPurchaseManager.h"
 #import "VPurchase.h"
 #import "VPurchaseRecord.h"
@@ -27,6 +28,10 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 @property (nonatomic, strong) VPurchase *activePurchaseRestore;
 @property (nonatomic, strong) VPurchaseRecord *purchaseRecord;
 @property (nonatomic, strong) NSMutableDictionary *fetchedProducts;
+
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+@property (nonatomic, strong) NSMutableSet *simulatedPurchasedProductIdentifiers; ///< Product IDs that are being treated as purchased even though they may not have actually been purchased.
+#endif
 
 @end
 
@@ -54,6 +59,10 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
         self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kDocumentDirectoryRelativePath];
         [self.purchaseRecord loadPurchasedProductIdentifiers];
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+        
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+        _simulatedPurchasedProductIdentifiers = [[NSMutableSet alloc] init];
+#endif
     }
     return self;
 }
@@ -77,12 +86,27 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier
 {
-    return [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];
+    BOOL purchased = [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+    purchased = purchased || [self.simulatedPurchasedProductIdentifiers containsObject:productIdentifier];
+#endif
+    return purchased;
 }
 
 - (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
     VProduct *product = [self purchaseableProductForProductIdentifier:productIdentifier];
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+    if ( product.storeKitProduct == nil )
+    {
+        [self.simulatedPurchasedProductIdentifiers addObject:productIdentifier];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+        {
+            successCallback([NSSet setWithObject:productIdentifier]);
+        });
+        return;
+    }
+#endif
     [self purchaseProduct:product success:successCallback failure:failureCallback];
 }
 
@@ -211,7 +235,20 @@ return;
     return product;
 #endif
 #endif
-    return [self.fetchedProducts objectForKey:productIdentifier];
+    
+    VProduct *product = [self.fetchedProducts objectForKey:productIdentifier];
+    
+#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+    if ( product == nil )
+    {
+        product = [[VPseudoProduct alloc] initWithProductIdentifier:productIdentifier
+                                                              price:@"$$$"
+                                               localizedDescription:@"The description of the in-app purchase goes here."
+                                                     localizedTitle:@"In-App Purchase"];
+    }
+#endif
+
+    return product;
 }
 
 #pragma mark - Purchase product helpers
