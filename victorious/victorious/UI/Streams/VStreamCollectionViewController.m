@@ -350,17 +350,15 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 {
     [super updateUserPostAllowed];
     
-    BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];
-    if ( userPostAllowed )
-    {
-        [self addUploadProgressView];
-    }
+    [self addUploadProgressView];
     
     UINavigationItem *navigationItem = self.navigationItem;
     if ( self.multipleViewControllerChildDelegate != nil )
     {
         navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
     }
+    
+    BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];
     [self installCreateButtonOnNavigationItem:navigationItem
                              initiallyVisible:userPostAllowed];
     
