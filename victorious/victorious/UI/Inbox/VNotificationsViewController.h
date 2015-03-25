@@ -7,10 +7,13 @@
 //
 
 #import "VFetchedResultsTableViewController.h"
+#import "VMultipleContainerChild.h"
 
 @class VUnreadMessageCountCoordinator, VUser, VDependencyManager;
 
-@interface VNotificationsViewController : VFetchedResultsTableViewController
+@interface VNotificationsViewController : VFetchedResultsTableViewController <VMultipleContainerChild>
+
+@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

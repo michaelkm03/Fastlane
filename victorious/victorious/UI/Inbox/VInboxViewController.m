@@ -103,6 +103,13 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark -  Container Child
+
+- (void)viewControllerSelected:(BOOL)isDefault
+{
+    
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad

@@ -72,6 +72,15 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 }
 
 
+#pragma mark -  Container Child
+
+- (void)viewControllerSelected:(BOOL)isDefault
+{
+    
+}
+
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
