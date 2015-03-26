@@ -44,7 +44,7 @@
 @end
 
 static const CGFloat kTextInset = 8.0f;
-static const CGFloat kParallaxMovementAmount = 60.0f;
+static const CGFloat kParallaxMovementAmount = 30.0f;
 
 @implementation VDirectoryPlaylistCell
 
@@ -67,7 +67,6 @@ static const CGFloat kParallaxMovementAmount = 60.0f;
     if ( !self.addedParallaxEffect )
     {
         self.addedParallaxEffect = YES;
-        [self.previewImageView v_addMotionEffectsWithMagnitude: - kParallaxMovementAmount / 4];
     }
 }
 
@@ -119,7 +118,7 @@ static const CGFloat kParallaxMovementAmount = 60.0f;
 {
     [super layoutSubviews];
     
-    CGRect parallaxViewFrame = CGRectInset(self.bounds, - kParallaxMovementAmount / 4, - kParallaxMovementAmount);
+    CGRect parallaxViewFrame = CGRectInset(self.bounds, 0, - kParallaxMovementAmount);
     [self updateParallaxEffectForFrame:parallaxViewFrame];
 }
 
@@ -132,8 +131,11 @@ static const CGFloat kParallaxMovementAmount = 60.0f;
 
 - (void)updateParallaxEffectForFrame:(CGRect)frame
 {
-    frame.origin.y = ( self.parallaxYOffset * ( kParallaxMovementAmount / 4 ) ) - ( kParallaxMovementAmount / 2 );
-    [self.previewImageView setFrame:frame];
+    frame.origin.y = ( self.parallaxYOffset * ( kParallaxMovementAmount / 2 ) ) - ( kParallaxMovementAmount / 2 );
+    if ( !CGRectEqualToRect(self.previewImageView.frame, frame) )
+    {
+        [self.previewImageView setFrame:frame];
+    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
