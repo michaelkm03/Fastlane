@@ -43,10 +43,13 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelRightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomConstraint;
 
+@property (nonatomic, assign) BOOL setImage;
+
 @end
 
 static const CGFloat kTextInset = 8.0f;
-static const CGFloat kParallaxMovementAmount = 30.0f;
+static const CGFloat kParallaxScrollMovementAmount = 30.0f;
+static const CGFloat kParallaxTiltMovementAmount = 20.0f;
 static const CGFloat kPreferredLabelHeight = 27.0f;
 static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kTextInset * 2 );
 
@@ -65,6 +68,8 @@ static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kText
     
     self.previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.previewImageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+    
+    [self.previewImageView v_addMotionEffectsWithMagnitude:kParallaxTiltMovementAmount / 2];
 }
 
 - (void)setStream:(VStreamItem *)stream
@@ -115,7 +120,7 @@ static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kText
 {
     [super layoutSubviews];
     
-    CGRect parallaxViewFrame = CGRectInset(self.bounds, 0, - kParallaxMovementAmount);
+    CGRect parallaxViewFrame = CGRectInset( self.bounds, - kParallaxTiltMovementAmount, - ( kParallaxScrollMovementAmount + kParallaxTiltMovementAmount ) );
     [self updateParallaxEffectForFrame:parallaxViewFrame];
 }
 
@@ -127,7 +132,7 @@ static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kText
 
 - (void)updateParallaxEffectForFrame:(CGRect)frame
 {
-    frame.origin.y = ( self.parallaxYOffset * ( kParallaxMovementAmount / 2 ) ) - ( kParallaxMovementAmount / 2 );
+    frame.origin.y = ( self.parallaxYOffset * ( kParallaxScrollMovementAmount / 2 ) ) - ( kParallaxScrollMovementAmount / 2 );
     if ( !CGRectEqualToRect(self.previewImageView.frame, frame) )
     {
         [self.previewImageView setFrame:frame];
