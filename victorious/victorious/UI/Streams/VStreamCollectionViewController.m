@@ -84,15 +84,11 @@ NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 
-<<<<<<< HEAD
-@interface VStreamCollectionViewController () <VFullscreenMarqueeControllerDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
-=======
 static NSString * const kRemixStreamKey = @"remixStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
-@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
->>>>>>> 032a1c647247eac8914e96fe249403e1ae8d4fc8
+@interface VStreamCollectionViewController () <VFullscreenMarqueeControllerDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
