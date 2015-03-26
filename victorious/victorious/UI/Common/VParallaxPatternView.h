@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VLoadingView : UIView
+@interface VParallaxPatternView : UIView
 
-@property (nonatomic, strong) UIImage *tiledImage;
+@property (nonatomic, copy) UIColor *patternTintColor;
 
 @end

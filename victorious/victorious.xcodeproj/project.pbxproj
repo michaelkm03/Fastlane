@@ -587,7 +587,7 @@
 		BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC833BD19D364A500341EA9 /* VPollResult.m */; };
 		BEEDF46119D2337B000DF6F5 /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEDF46019D2337B000DF6F5 /* VStreamItem.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
-		D80A0F281AC34C7800B5F5B8 /* VLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A0F271AC34C7800B5F5B8 /* VLoadingView.m */; };
+		D80A0F281AC34C7800B5F5B8 /* VParallaxPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A0F271AC34C7800B5F5B8 /* VParallaxPatternView.m */; };
 		D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */; };
 		D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DD1A53941D0035D788 /* VTrimControl.m */; };
 		D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94E51A546DF90035D788 /* VAssetThumbnailDataSource.m */; };
@@ -1862,8 +1862,8 @@
 		BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPollResult+RestKit.m"; sourceTree = "<group>"; };
 		C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D805CE301A005A470014EE2A /* VFollowUserControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowUserControlTests.m; sourceTree = "<group>"; };
-		D80A0F261AC34C7800B5F5B8 /* VLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoadingView.h; sourceTree = "<group>"; };
-		D80A0F271AC34C7800B5F5B8 /* VLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoadingView.m; sourceTree = "<group>"; };
+		D80A0F261AC34C7800B5F5B8 /* VParallaxPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VParallaxPatternView.h; sourceTree = "<group>"; };
+		D80A0F271AC34C7800B5F5B8 /* VParallaxPatternView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VParallaxPatternView.m; sourceTree = "<group>"; };
 		D80A94D91A536C8C0035D788 /* VTrimmerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimmerViewController.h; sourceTree = "<group>"; };
 		D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimmerViewController.m; sourceTree = "<group>"; };
 		D80A94DC1A53941D0035D788 /* VTrimControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimControl.h; sourceTree = "<group>"; };
@@ -2490,8 +2490,8 @@
 				D8B70FE91A805CC800090C5E /* VInlineValidationView.m */,
 				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
 				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
-				D80A0F261AC34C7800B5F5B8 /* VLoadingView.h */,
-				D80A0F271AC34C7800B5F5B8 /* VLoadingView.m */,
+				D80A0F261AC34C7800B5F5B8 /* VParallaxPatternView.h */,
+				D80A0F271AC34C7800B5F5B8 /* VParallaxPatternView.m */,
 				037FCF1F1A8DAF5400E8ABFC /* VMultipleContainerViewController */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
@@ -5678,7 +5678,7 @@
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
-				D80A0F281AC34C7800B5F5B8 /* VLoadingView.m in Sources */,
+				D80A0F281AC34C7800B5F5B8 /* VParallaxPatternView.m in Sources */,
 				DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */,
 				DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */,
 				D81404111AB372760099EC4B /* VNotAuthorizedDataSource.m in Sources */,

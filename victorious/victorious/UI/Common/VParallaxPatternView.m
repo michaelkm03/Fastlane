@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VLoadingView.h"
+#import "VParallaxPatternView.h"
 #import "UIView+MotionEffects.h"
+#import "UIColor+VBrightness.h"
 
 #if CGFLOAT_IS_DOUBLE
 #define CEIL ceil
@@ -15,7 +16,7 @@
 #define CEIL ceilf
 #endif
 
-@interface VLoadingView ()
+@interface VParallaxPatternView ()
 
 @property (nonatomic, assign) BOOL hasLayedOutPatternBackground;
 
@@ -23,10 +24,13 @@
 @property (nonatomic, strong) CALayer *replicatedLayer;
 @property (nonatomic, strong) CAReplicatorLayer *xReplicatorLayer;
 @property (nonatomic, strong) CAReplicatorLayer *yReplicatorLayer;
+@property (nonatomic, strong) NSCache *renderedImageCache;
+
+@property (nonatomic, strong) UIImage *tiledImage;
 
 @end
 
-@implementation VLoadingView
+@implementation VParallaxPatternView
 
 #pragma mark - Init
 
@@ -53,9 +57,17 @@
 - (void)sharedInit
 {
     self.tiledImage = [UIImage imageNamed:@"pat_geometric_01"];
+    self.renderedImageCache = [[NSCache alloc] init];
 }
 
 #pragma mark - UIView
+
+- (void)setPatternTintColor:(UIColor *)patternTinitColor
+{
+    _patternTintColor = patternTinitColor;
+    
+    self.replicatedLayer.contents = (id)[self patternImage].CGImage;
+}
 
 - (void)layoutSubviews
 {
@@ -71,10 +83,8 @@
     {
         return;
     }
-    
+
     self.layer.masksToBounds = YES;
-    
-    NSLog(@"laying out!!!");
     
     UIView *interpolationContainer = [[UIView alloc] initWithFrame:self.bounds];
     interpolationContainer.translatesAutoresizingMaskIntoConstraints = NO;
@@ -83,7 +93,7 @@
     [self addSubview:interpolationContainer];
     self.interpolationView = interpolationContainer;
     
-    [interpolationContainer v_addMotionEffectsWithMagnitude:-self.tiledImage.size.width];
+    [interpolationContainer v_addMotionEffectsWithMagnitude:-self.tiledImage.size.width*0.5f];
     
     self.xReplicatorLayer = [CAReplicatorLayer layer];
     self.xReplicatorLayer.frame = CGRectMake( 0, 0, self.tiledImage.size.width, self.tiledImage.size.height);
@@ -104,7 +114,7 @@
     [interpolationContainer.layer addSublayer:self.yReplicatorLayer];
     
     self.replicatedLayer = [CALayer layer];
-    self.replicatedLayer.contents = (id)self.tiledImage.CGImage;
+    self.replicatedLayer.contents = (id)[self patternImage].CGImage;
     self.replicatedLayer.frame = CGRectMake( -self.tiledImage.size.width,
                                             -self.tiledImage.size.height,
                                             self.tiledImage.size.width,
@@ -117,25 +127,39 @@
     
     self.xReplicatorLayer.instanceDelay = 0.1f;
     self.yReplicatorLayer.instanceDelay = 0.1f;
-    
-    [self.replicatedLayer addAnimation:[self breathingAnimation] forKey:@"breathingAnimation"];
-}
-
-#pragma mark - Public
-
-- (void)setTiledImage:(UIImage *)tiledImage
-{
-    _tiledImage = tiledImage;
-    
-    for (CALayer *layer in self.interpolationView.layer.sublayers)
-    {
-        [layer removeFromSuperlayer];
-    }
-    self.hasLayedOutPatternBackground = NO;
-    [self setNeedsLayout];
 }
 
 #pragma mark - Private
+
+- (UIImage *)patternImage
+{
+    UIImage *renderedImage = [self.renderedImageCache objectForKey:self.tintColor];
+    
+    if (renderedImage)
+    {
+        return renderedImage;
+    }
+    
+    UIColor *blendColor = [self.patternTintColor colorWithAlphaComponent:0.85f];
+    
+    if (blendColor == nil)
+    {
+        return self.tiledImage;
+    }
+    
+    UIGraphicsBeginImageContext(self.tiledImage.size);
+    {
+        CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(), blendColor.CGColor);
+        CGContextFillRect(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, self.tiledImage.size.width, self.tiledImage.size.height));
+        [self.tiledImage drawInRect:CGRectMake(0, 0, self.tiledImage.size.width, self.tiledImage.size.height) blendMode:kCGBlendModeColorDodge alpha:1.0f];
+        renderedImage = UIGraphicsGetImageFromCurrentImageContext();
+    }
+    UIGraphicsEndImageContext();
+    
+    [self.renderedImageCache setObject:renderedImage forKey:self.tintColor];
+    
+    return renderedImage;
+}
 
 - (CABasicAnimation *)breathingAnimation
 {

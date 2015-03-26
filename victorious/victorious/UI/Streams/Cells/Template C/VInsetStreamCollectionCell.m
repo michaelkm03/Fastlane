@@ -12,6 +12,7 @@
 #import "VSequence+Fetcher.h"
 #import "VStreamCellActionView.h"
 #import "VStreamCellHeaderView.h"
+#import "VParallaxPatternView.h"
 
 // IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
@@ -22,6 +23,12 @@ static const CGFloat kTextViewInset = 22.0f; // Needs to be sum of textview inse
 // Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
 const CGFloat kInsetCellTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
+
+@interface VInsetStreamCollectionCell ()
+
+@property (nonatomic, weak) IBOutlet VParallaxPatternView *loadingView;
+
+@end
 
 @implementation VInsetStreamCollectionCell
 
@@ -103,6 +110,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.loadingView.patternTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 
