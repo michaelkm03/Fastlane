@@ -228,15 +228,17 @@ return;
 
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier
 {
+    VProduct *product;
+    
 #if SIMULATE_STOREKIT
 #if !SIMULATE_FETCH_PRODUCTS_ERROR
-    VProduct *product = [[VProduct alloc] init];
+    product = [[VProduct alloc] init];
     product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
     return product;
 #endif
 #endif
     
-    VProduct *product = [self.fetchedProducts objectForKey:productIdentifier];
+    product = [self.fetchedProducts objectForKey:productIdentifier];
     
 #ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
     if ( product == nil )
