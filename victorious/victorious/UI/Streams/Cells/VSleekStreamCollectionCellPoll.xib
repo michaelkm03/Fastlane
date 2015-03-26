@@ -134,6 +134,7 @@
                 <outlet property="captionTextView" destination="MFw-gp-F7D" id="BGd-ub-9tt"/>
                 <outlet property="captionTextViewBottomConstraint" destination="wy1-KA-n4v" id="xzU-EW-obD"/>
                 <outlet property="captionTextViewTopConstraint" destination="zyL-20-j66" id="d0I-H0-UeH"/>
+                <outlet property="parallaxPatternView" destination="TlZ-3e-RyI" id="JYM-ol-g5E"/>
                 <outlet property="previewImageTwo" destination="DYL-sd-dM5" id="Rz0-Dy-cOS"/>
                 <outlet property="previewImageView" destination="4hb-9q-so0" id="iJ9-Ef-J30"/>
                 <outlet property="shadeView" destination="8QT-3n-Tuc" id="whN-fE-uL0"/>

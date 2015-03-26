@@ -37,6 +37,7 @@
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
+                <outlet property="parallaxPatternView" destination="VRJ-WM-Cx7" id="X6V-9B-oQr"/>
                 <outlet property="webViewContainer" destination="7gx-qd-AkN" id="9Iw-fN-9j9"/>
             </connections>
             <point key="canvasLocation" x="-127" y="658"/>

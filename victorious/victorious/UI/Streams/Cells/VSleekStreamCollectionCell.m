@@ -7,10 +7,16 @@
 //
 
 #import "VSleekStreamCollectionCell.h"
-#import "VSleekStreamCellActionView.h"
+
+// Stream Support
 #import "VSequence+Fetcher.h"
-#import "NSString+VParseHelp.h"
+
+// Dependencies
 #import "VDependencyManager.h"
+
+// Views + Helpers
+#import "VSleekStreamCellActionView.h"
+#import "NSString+VParseHelp.h"
 #import "VStreamCellHeaderView.h"
 #import "VParallaxPatternView.h"
 
@@ -26,7 +32,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 @interface VSleekStreamCollectionCell ()
 
-@property (nonatomic, weak) IBOutlet VParallaxPatternView *loadingView;
+@property (nonatomic, weak) IBOutlet VParallaxPatternView *parallaxPatternView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 
@@ -67,7 +73,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         [self.streamCellHeaderView refreshAppearanceAttributes];
-        self.loadingView.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.parallaxPatternView.patternTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
     self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
 }
