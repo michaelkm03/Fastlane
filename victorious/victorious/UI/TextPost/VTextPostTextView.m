@@ -26,6 +26,10 @@
     for ( NSValue *value in self.backgroundFrames )
     {
         CGRect frame = [value CGRectValue];
+        if ( self.textAlignment == NSTextAlignmentCenter )
+        {
+            frame.origin.x += (self.frame.size.width - frame.size.width) * 0.5f;
+        }
         CGContextAddRect( context, frame );
         CGContextSetFillColorWithColor( context, self.backgroundFrameColor.CGColor );
         CGContextFillRect( context, frame );

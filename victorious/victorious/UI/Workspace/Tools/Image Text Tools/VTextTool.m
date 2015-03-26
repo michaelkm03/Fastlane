@@ -30,11 +30,10 @@ static NSString * const kSubtoolsKey = @"subtools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
-@interface VTextTool ()
+@interface VTextTool () <VToolPickerDelegate>
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) NSInteger renderIndex;
-@property (nonatomic, strong) NSArray *subTools;
 @property (nonatomic, strong) id <VWorkspaceTool> activeTextTool;
 @property (nonatomic, strong) VTickerPickerViewController *toolPicker;
 @property (nonatomic, strong) VTextToolViewController *canvasToolViewController;
@@ -55,22 +54,13 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        _subTools = [[dependencyManager workspaceTools] sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
-        {
-            return [tool1.title caseInsensitiveCompare:tool2.title];
-        }];
-        
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        id<VToolPickerDataSource> dataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager];
-        dataSource.tools = _subTools;
-        _toolPicker.dataSource = dataSource;
+        _toolPicker.dataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        _toolPicker.delegate = self;
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [dependencyManager imageForKey:kIconKey];
         _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
-        
-#warning FIX
-//        [_toolPicker setTools:_subTools];
     }
     return self;
 }

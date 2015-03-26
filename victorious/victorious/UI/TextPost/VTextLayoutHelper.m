@@ -68,10 +68,11 @@
         CGRect lineRect = totalRect;
         lineRect.size.height = singleCharRect.size.height - configuration.verticalSpacing;
         lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * configuration.lineOffsetMultiplier;
-        if ( i == numLines - 1 )
+        //if ( i == numLines - 1 )
+        if ( i < lineFragmentRects.count )
         {
             // If this is the last line, use the line fragment rects collected above
-            lineRect.size.width = ((NSValue *)lineFragmentRects.lastObject).CGRectValue.size.width;
+            lineRect.size.width = ((NSValue *)lineFragmentRects[i]).CGRectValue.size.width;
             if ( lineRect.size.width == 0 )
             {
                 // Sometimes the line fragment rect will give is 0 width for a singel word overhanging on the next line

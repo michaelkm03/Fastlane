@@ -8,8 +8,6 @@
 
 #import "VTickerPickerViewController.h"
 #import "VDependencyManager.h"
-
-#warning Remove all uses of this cell here for something generic 
 #import "VBasicToolPickerCell.h"
 
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>

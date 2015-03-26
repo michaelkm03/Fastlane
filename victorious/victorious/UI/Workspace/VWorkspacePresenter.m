@@ -68,7 +68,7 @@
                                                             initialImageEditState:VImageToolControllerInitialImageEditStateText
                                                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
                                }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a TestPost", @"Create a text post action button.")
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Text Post", @"Create a text post action button.")
                                                     handler:^(VAlertAction *action)
                                {
                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];

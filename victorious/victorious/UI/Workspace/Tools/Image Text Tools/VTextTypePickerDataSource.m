@@ -10,10 +10,12 @@
 #import "VBasicToolPickerCell.h"
 #import "VTextTypeTool.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspaceTool.h"
 
 @interface VTextTypePickerDataSource ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) NSArray *subTools;
 
 @end
 
@@ -27,6 +29,11 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
+        self.tools = [[dependencyManager workspaceTools] sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
+                      {
+                          return [tool1.title caseInsensitiveCompare:tool2.title];
+                      }];
+        
     }
     return self;
 }

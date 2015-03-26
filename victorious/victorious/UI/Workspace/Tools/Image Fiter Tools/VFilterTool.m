@@ -82,7 +82,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         id<VToolPickerDataSource> dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager];
         dataSource.tools = filterTools;
         _toolPicker.dataSource = dataSource;
-        _toolPicker.dataSource = self;
+        _toolPicker.delegate = self;
     }
     return self;
 }
