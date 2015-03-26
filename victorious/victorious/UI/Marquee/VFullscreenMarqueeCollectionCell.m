@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMarqueeCollectionCell.h"
+#import "VFullscreenMarqueeCollectionCell.h"
 
 #import "VUserProfileViewController.h"
 
-#import "VMarqueeTabIndicatorView.h"
-#import "VMarqueeStreamItemCell.h"
+#import "VFullscreenMarqueeTabIndicatorView.h"
+#import "VFullscreenMarqueeStreamItemCell.h"
 
 #import "VStreamCollectionViewDataSource.h"
-#import "VMarqueeController.h"
+#import "VFullscreenMarqueeController.h"
 
 #import "VStreamItem.h"
 #import "VUser.h"
@@ -28,21 +28,21 @@ static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
 static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 static const CGFloat kMarqueeBufferHeight = 3;
 
-@interface VMarqueeCollectionCell()
+@interface VFullscreenMarqueeCollectionCell()
 
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
-@property (nonatomic, strong) VMarqueeTabIndicatorView *tabView;
+@property (nonatomic, strong) VFullscreenMarqueeTabIndicatorView *tabView;
+@property (nonatomic, strong) VFullscreenMarqueeController *marquee;
 
 @end
 
-@implementation VMarqueeCollectionCell
+@implementation VFullscreenMarqueeCollectionCell
 
 - (void)awakeFromNib
 {
-    [self.collectionView registerNib:[VMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[VFullscreenMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VFullscreenMarqueeStreamItemCell suggestedReuseIdentifier]];
     
-    self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.bounds];
+    self.tabView = [[VFullscreenMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.bounds];
     self.tabView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self.tabContainerView addSubview:self.tabView];
@@ -83,94 +83,26 @@ static const CGFloat kMarqueeBufferHeight = 3;
     self.marquee.hideMarqueePosterImage = hideMarqueePosterImage;
 }
 
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+- (void)setMarquee:(VFullscreenMarqueeController *)marquee
 {
-    _dependencyManager = dependencyManager;
-    self.marquee.dependencyManager = dependencyManager;
-}
-
-- (void)setMarquee:(VMarqueeController *)marquee
-{
-    _marquee = marquee;
-    marquee.collectionView = self.collectionView;
     marquee.tabView = self.tabView;
+    self.tabView.numberOfTabs = marquee.streamDataSource.count;
+    
+    [super setMarquee:marquee];
+    
     self.hideMarqueePosterImage = marquee.hideMarqueePosterImage;
-    
+}
+
+- (void)updatedFromRefresh
+{
     self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
-    
-    [self.marquee refreshWithSuccess:^(void)
-     {
-         self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
-         [self.marquee enableTimer];
-         [self.collectionView reloadData];
-     } failure:nil];
 }
 
-- (VStreamItem *)currentItem
-{
-    return self.marquee.currentStreamItem;
-}
-
-- (UIImageView *)currentPreviewImageView
-{
-    NSIndexPath *path = [self.marquee.streamDataSource indexPathForItem:[self currentItem]];
-    VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[self.collectionView cellForItemAtIndexPath:path];
-    return cell.previewImageView;
-}
-
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    [self.marquee.autoScrollTimerManager invalidate];
-}
-
-- (void)restartAutoScroll
-{
-    [self.marquee enableTimer];
-}
-
-#pragma mark - UIResponder
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super touchesBegan:touches withEvent:event];
-    [self.marquee disableTimer];
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super touchesMoved:touches withEvent:event];
-    [self.marquee disableTimer];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super touchesEnded:touches withEvent:event];
-    [self.marquee enableTimer];
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super touchesCancelled:touches withEvent:event];
-    [self.marquee enableTimer];
-}
-
-#pragma mark - VSharedCollectionReusableViewMethods
-
-+ (NSString *)suggestedReuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
-+ (UINib *)nibForCell
-{
-    return [UINib nibWithNibName:NSStringFromClass([self class])
-                          bundle:nil];
-}
+#pragma mark - desiredCellSize
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
+    CGSize size = [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
     size.height += kMarqueeBufferHeight;
     return size;
 }

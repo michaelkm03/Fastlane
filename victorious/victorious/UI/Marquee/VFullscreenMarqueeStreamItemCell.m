@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMarqueeStreamItemCell.h"
+#import "VFullscreenMarqueeStreamItemCell.h"
 
 #import "VDefaultProfileButton.h"
 
@@ -31,11 +31,10 @@ static CGFloat const kVDetailBounceHeight = 8.0f;
 static CGFloat const kVDetailBounceTime = 0.15f;
 static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 
-@interface VMarqueeStreamItemCell ()
+@interface VFullscreenMarqueeStreamItemCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 
-@property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
@@ -54,7 +53,7 @@ static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 360 width
 
-@implementation VMarqueeStreamItemCell
+@implementation VFullscreenMarqueeStreamItemCell
 
 - (void)awakeFromNib
 {
@@ -67,7 +66,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
-    _streamItem = streamItem;
+    [super setStreamItem:streamItem];
     
     self.nameLabel.text = streamItem.name;
     if ( self.nameLabel.text != nil )
@@ -130,12 +129,12 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    _dependencyManager = dependencyManager;
-    if ( _dependencyManager != nil )
+    [super setDependencyManager:dependencyManager];
+    if ( dependencyManager != nil )
     {
-        self.detailsBackgroundView.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileImageButton.layer.borderColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
+        self.detailsBackgroundView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileImageButton.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
     }
 }
 
@@ -234,19 +233,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     {
         [self.delegate cell:self selectedUser:((VSequence *)self.streamItem).user];
     }
-}
-
-#pragma mark - VSharedCollectionReusableViewMethods
-
-+ (NSString *)suggestedReuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
-+ (UINib *)nibForCell
-{
-    return [UINib nibWithNibName:NSStringFromClass([self class])
-                          bundle:nil];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

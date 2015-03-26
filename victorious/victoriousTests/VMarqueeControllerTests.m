@@ -10,13 +10,13 @@
 
 #import <OCMock/OCMock.h>
 
-#import "VMarqueeController.h"
+#import "VFullscreenMarqueeController.h"
 #import "VTimerManager.h"
 #import "VStreamCollectionViewDataSource.h"
 
 @interface VMarqueeControllerTests : XCTestCase
 
-@property (nonatomic, strong) VMarqueeController *marquee;
+@property (nonatomic, strong) VFullscreenMarqueeController *marquee;
 
 @end
 
@@ -25,7 +25,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.marquee = [[VMarqueeController alloc] initWithStream:nil];
+    self.marquee = [[VFullscreenMarqueeController alloc] initWithStream:nil];
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 

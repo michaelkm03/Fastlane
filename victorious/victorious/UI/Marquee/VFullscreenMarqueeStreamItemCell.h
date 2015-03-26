@@ -6,28 +6,26 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VAbstractMarqueeStreamItemCell.h"
 
-#import "VSharedCollectionReusableViewMethods.h"
+@class VFullscreenMarqueeStreamItemCell, VUser;
 
 extern CGFloat const kVDetailVisibilityDuration;
 extern CGFloat const kVDetailHideDuration;
 
-@class VStreamItem, VUser, VMarqueeStreamItemCell, VDefaultProfileButton, VDependencyManager;
-
 /**
  *  Delegate for a VMarqueeStreamItemCell
  */
-@protocol VMarqueeCellDelegate <NSObject>
+@protocol VFullscreenMarqueeCellDelegate <NSObject>
 
-- (void)cell:(VMarqueeStreamItemCell *)cell selectedUser:(VUser *)user;///<Sent when the user button is clicked in a marquee cell
+- (void)cell:(VFullscreenMarqueeStreamItemCell *)cell selectedUser:(VUser *)user;///<Sent when the user button is clicked in a marquee cell
 
 @end
 
 /**
  *  A cell that displays a streamItem for a Marquee
  */
-@interface VMarqueeStreamItemCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
+@interface VFullscreenMarqueeStreamItemCell : VAbstractMarqueeStreamItemCell
 
 /**
  Adjust the visibility of the "detail" view on the bottom of the marquee cell.
@@ -43,10 +41,7 @@ extern CGFloat const kVDetailHideDuration;
  */
 - (void)restartHideTimer;
 
-@property (nonatomic, strong) VStreamItem *streamItem; ///<Stream item to display
-@property (nonatomic, weak) id<VMarqueeCellDelegate> delegate;
-@property (nonatomic, weak, readonly) UIImageView *previewImageView;
+@property (nonatomic, weak) id <VFullscreenMarqueeCellDelegate> delegate;
 @property (nonatomic, assign) BOOL hideMarqueePosterImage;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
