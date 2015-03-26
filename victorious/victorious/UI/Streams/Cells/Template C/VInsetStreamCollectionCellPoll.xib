@@ -26,18 +26,21 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFR-h6-Ez8" userLabel="Shade View">
                         <rect key="frame" x="0.0" y="50" width="302" height="202"/>
                         <subviews>
-                            <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yYl-by-YLg">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yYl-by-YLg" customClass="VParallaxPatternView">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="202"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-fc-oTt">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="52"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="gza-QN-Veo">
                                 <rect key="frame" x="0.0" y="100" width="302" height="102"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="oTO-Bh-qw9">
                                 <rect key="frame" x="118" y="65" width="65" height="72"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -126,6 +129,7 @@
                 <outlet property="commentLabelBottomConstraint" destination="94C-gP-RsR" id="auf-38-7UF"/>
                 <outlet property="commentsLabel" destination="2I4-YY-QY7" id="5lr-hl-IfK"/>
                 <outlet property="commentsLeftConstraint" destination="KoS-bo-F34" id="WDj-zN-HP2"/>
+                <outlet property="loadingView" destination="yYl-by-YLg" id="RuJ-km-wbe"/>
                 <outlet property="lowerGradientView" destination="gza-QN-Veo" id="hsn-cS-K5e"/>
                 <outlet property="previewImageTwo" destination="JTX-77-BzI" id="cfM-uu-BJ7"/>
                 <outlet property="previewImageView" destination="cHq-pN-LVg" id="dTw-88-PxD"/>

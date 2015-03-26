@@ -127,6 +127,8 @@
     
     self.xReplicatorLayer.instanceDelay = 0.1f;
     self.yReplicatorLayer.instanceDelay = 0.1f;
+    
+    [self.replicatedLayer addAnimation:[self breathingAnimation] forKey:@"breathingAnimation"];
 }
 
 #pragma mark - Private
