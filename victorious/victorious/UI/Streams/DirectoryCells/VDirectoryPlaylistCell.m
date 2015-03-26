@@ -49,7 +49,7 @@
 
 static const CGFloat kTextInset = 8.0f;
 static const CGFloat kParallaxScrollMovementAmount = 30.0f;
-static const CGFloat kParallaxTiltMovementAmount = 20.0f;
+static const CGFloat kParallaxTiltMovementAmount = 10.0f;
 static const CGFloat kPreferredLabelHeight = 27.0f;
 static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kTextInset * 2 );
 
@@ -69,7 +69,7 @@ static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kText
     self.previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.previewImageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
     
-    [self.previewImageView v_addMotionEffectsWithMagnitude:kParallaxTiltMovementAmount / 2];
+    [self.previewImageView v_addMotionEffectsWithMagnitude:kParallaxTiltMovementAmount];
 }
 
 - (void)setStream:(VStreamItem *)stream
