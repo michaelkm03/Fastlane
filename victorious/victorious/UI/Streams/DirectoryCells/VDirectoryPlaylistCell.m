@@ -44,7 +44,7 @@
 @end
 
 static const CGFloat kTextInset = 8.0f;
-static const CGFloat kParallaxMovementAmount = 30.0f;
+static const CGFloat kParallaxMovementAmount = 60.0f;
 
 @implementation VDirectoryPlaylistCell
 
@@ -67,7 +67,7 @@ static const CGFloat kParallaxMovementAmount = 30.0f;
     if ( !self.addedParallaxEffect )
     {
         self.addedParallaxEffect = YES;
-        [self.previewImageView v_addMotionEffectsWithMagnitude: - kParallaxMovementAmount];
+        [self.previewImageView v_addMotionEffectsWithMagnitude: - kParallaxMovementAmount / 4];
     }
 }
 
@@ -119,23 +119,22 @@ static const CGFloat kParallaxMovementAmount = 30.0f;
 {
     [super layoutSubviews];
     
-    CGRect parallaxViewFrame = CGRectInset(self.bounds, - kParallaxMovementAmount, - kParallaxMovementAmount);
-    parallaxViewFrame.origin.y = ( self.parallaxYOffset * ( kParallaxMovementAmount / 2 ) ) - ( kParallaxMovementAmount / 2 );
-    [self.previewImageView setFrame:parallaxViewFrame];
+    CGRect parallaxViewFrame = CGRectInset(self.bounds, - kParallaxMovementAmount / 4, - kParallaxMovementAmount);
+    [self updateParallaxEffectForFrame:parallaxViewFrame];
 }
 
 - (void)setParallaxYOffset:(CGFloat)parallaxYOffset
 {
     _parallaxYOffset = parallaxYOffset;
-    if ( [self.stream.name isEqualToString:@"Goro Stream"] )
-    {
-        NSLog(@"offset is %f", parallaxYOffset);
-    }
-    CGRect parallaxViewFrame = self.previewImageView.frame;
-    parallaxViewFrame.origin.y = ( parallaxYOffset * ( kParallaxMovementAmount / 2 ) ) - ( kParallaxMovementAmount / 2 );
-    [self.previewImageView setFrame:parallaxViewFrame];
+    
+    [self updateParallaxEffectForFrame:self.previewImageView.frame];
 }
 
+- (void)updateParallaxEffectForFrame:(CGRect)frame
+{
+    frame.origin.y = ( self.parallaxYOffset * ( kParallaxMovementAmount / 4 ) ) - ( kParallaxMovementAmount / 2 );
+    [self.previewImageView setFrame:frame];
+}
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {

@@ -17,7 +17,7 @@ static const char kAssociatedObjectKey;
 - (void)v_addMotionEffectsWithMagnitude:(CGFloat)magnitude
 {
     UIMotionEffectGroup *oldMotionEffects = objc_getAssociatedObject(self, &kAssociatedObjectKey);
-    if ( oldMotionEffects != nil )
+    if (oldMotionEffects)
     {
         [self removeMotionEffect:oldMotionEffects];
     }
@@ -33,7 +33,7 @@ static const char kAssociatedObjectKey;
     UIMotionEffectGroup *motionEffectsGroup = [[UIMotionEffectGroup alloc] init];
     motionEffectsGroup.motionEffects = @[xMotionEffect, yMotionEffect];
     
-    objc_setAssociatedObject(self, &kAssociatedObjectKey, motionEffectsGroup, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &kAssociatedObjectKey, motionEffectsGroup, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     [self addMotionEffect:motionEffectsGroup];
 }

@@ -74,14 +74,22 @@ static const CGFloat kPlaylistCellHeight = 140.0f;
 
 - (void)updateParallaxOffsetOfVisibleCells
 {
-    CGFloat topInset = 20.0f; ///< only the height of the status bar
-    CGFloat contentOffset = self.collectionView.contentOffset.y;
     for ( VDirectoryPlaylistCell *playlistCell in self.collectionView.visibleCells )
     {
-        CGFloat yRange = CGRectGetHeight(self.collectionView.bounds) - topInset + CGRectGetHeight(playlistCell.bounds);
-        CGFloat cellCenter = CGRectGetMidY(playlistCell.frame);
-        playlistCell.parallaxYOffset = - (contentOffset - cellCenter) / (yRange / 2) + 1;
+        [self updateParallaxYOffsetOfCell:playlistCell withMidY:CGRectGetMidY(playlistCell.frame)];
     }
+}
+
+- (void)updateParallaxYOffsetOfCell:(VDirectoryPlaylistCell *)playlistCell withMidY:(CGFloat)midY
+{
+    //Determine and set the parallaxYOffset for the provided cell
+    
+    CGFloat topInset = 20.0f; // Only the height of the status bar
+    CGFloat contentOffset = self.collectionView.contentOffset.y;
+    CGFloat cellHeight = CGRectGetHeight(playlistCell.bounds);
+    CGFloat yRange = CGRectGetHeight(self.collectionView.bounds) - topInset + cellHeight;
+    CGFloat cellCenter = midY - topInset;
+    playlistCell.parallaxYOffset = (contentOffset - cellCenter - ( cellHeight / 2 ) ) / (yRange / 2) + 1;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -117,10 +125,9 @@ static const CGFloat kPlaylistCellHeight = 140.0f;
     VDirectoryPlaylistCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.stream = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     cell.dependencyManager = self.dependencyManager;
-    CGFloat centerY = ( CGRectGetHeight(self.collectionView.bounds) / 2 ) - ( kPlaylistCellHeight / 2 );
-    CGFloat cellOffset = indexPath.row * kPlaylistCellHeight + [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout minimumLineSpacingForSectionAtIndex:0];
-    CGFloat offsetFromCenter = centerY + self.collectionView.contentOffset.y - CGRectGetMinY(cell.frame) - cellOffset;
-    //cell.parallaxYOffset = offsetFromCenter / centerY;
+    CGFloat interLineSpace = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout minimumLineSpacingForSectionAtIndex:0];
+    CGFloat midY = kPlaylistCellHeight / 2 + indexPath.row * (kPlaylistCellHeight + interLineSpace) + 20.0f;
+    [self updateParallaxYOffsetOfCell:cell withMidY:midY];
     return cell;
 }
 
