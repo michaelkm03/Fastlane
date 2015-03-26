@@ -8,7 +8,6 @@
             <connections>
                 <outlet property="configuration" destination="uf6-RX-Z66" id="cbv-QS-uEE"/>
                 <outlet property="hashtagConstraints" destination="8k4-hD-YQP" id="knV-Bh-AQC"/>
-                <outlet property="hashtagTextView" destination="ON9-Ap-Px7" id="XC1-oG-TeS"/>
                 <outlet property="textLayoutHelper" destination="jkY-iK-feB" id="aGJ-dU-4Zg"/>
                 <outlet property="textView" destination="EdJ-vJ-rzg" id="CvN-ia-c6B"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="HSK-lU-PKi"/>
@@ -19,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="EdJ-vJ-rzg" customClass="VTextPostTextView">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdJ-vJ-rzg" customClass="VTextPostTextView">
                     <rect key="frame" x="10" y="220" width="580" height="160"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -33,35 +32,17 @@
                         <outlet property="delegate" destination="-1" id="qvi-UH-K6A"/>
                     </connections>
                 </textView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="#hashtag" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ON9-Ap-Px7" userLabel="Hashtag Text View" customClass="VTextPostTextView">
-                    <rect key="frame" x="10" y="220" width="580" height="52"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" priority="1" constant="160" id="9ZQ-Pa-nNo"/>
-                    </constraints>
-                    <color key="textColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                </textView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="EdJ-vJ-rzg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="DfA-4J-TQo"/>
-                <constraint firstItem="ON9-Ap-Px7" firstAttribute="top" secondItem="EdJ-vJ-rzg" secondAttribute="top" id="Rf1-VH-6XL"/>
                 <constraint firstAttribute="trailing" secondItem="EdJ-vJ-rzg" secondAttribute="trailing" constant="10" id="gKH-In-kGk"/>
-                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="width" secondItem="ON9-Ap-Px7" secondAttribute="width" id="lka-aF-afW"/>
                 <constraint firstAttribute="centerY" secondItem="EdJ-vJ-rzg" secondAttribute="centerY" id="nCR-gS-ReL"/>
-                <constraint firstItem="ON9-Ap-Px7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="vx3-n8-xK9"/>
             </constraints>
             <point key="canvasLocation" x="774" y="689"/>
         </view>
         <customObject id="jkY-iK-feB" customClass="VTextLayoutHelper"/>
-        <customObject id="8k4-hD-YQP" customClass="VTextPostHashtagContraints">
-            <connections>
-                <outlet property="leading" destination="vx3-n8-xK9" id="V6P-SB-wac"/>
-                <outlet property="top" destination="Rf1-VH-6XL" id="H2N-AZ-26S"/>
-            </connections>
-        </customObject>
+        <customObject id="8k4-hD-YQP" customClass="VTextPostHashtagContraints"/>
         <customObject id="uf6-RX-Z66" customClass="VTextPostConfiguration"/>
     </objects>
 </document>

@@ -84,8 +84,8 @@
     id selectedTool = toolPicker.dataSource.tools[ index ];
     if ( [selectedTool isKindOfClass:[VHashtagType class]] )
     {
-        VHashtagType *hashtagType = (VHashtagType *)selectedTool;
-        editTextViewController.textPostViewController.supplementaryHashtagText = hashtagType.isDefault ? @"" : hashtagType.hashtagText;
+        //VHashtagType *hashtagType = (VHashtagType *)selectedTool;
+#warning Add selected hasg tag to an array
     }
     else if ( [selectedTool isKindOfClass:[VColorType class]] )
     {

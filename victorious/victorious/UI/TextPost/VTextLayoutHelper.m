@@ -9,7 +9,7 @@
 #import "VTextLayoutHelper.h"
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
-#import "VTextPostConfiguration.h"f dsa
+#import "VTextPostConfiguration.h"
 
 @implementation VTextLayoutHelper
 
@@ -39,9 +39,17 @@
     return [NSArray arrayWithArray:lines];
 }
 
-- (void)updateTextViewBackground:(VTextPostTextView *)textView configuraiton:(VTextPostConfiguration *)configuration
+- (void)updateTextViewBackground:(VTextPostTextView *)textView
+                   configuraiton:(VTextPostConfiguration *)configuration
+                   calloutRanges:(NSArray *)calloutRanges
 {
-    textView.backgroundFrameColor = configuration.backgroundColor;
+    textView.backgroundFrameColor = [configuration.backgroundColor colorWithAlphaComponent:0.5f];
+    
+    // Calculate the actual line count a bit differently, since the one above is not as accurate while typing
+    CGRect singleCharRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, 1 )];
+    CGRect totalRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, textView.attributedText.string.length)];
+    totalRect.size = [textView sizeThatFits:CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX )];
+    totalRect.size.width = textView.bounds.size.width;
     
     // Use this function of text storange to get the usedRect of each line fragment
     NSRange fullRange = NSMakeRange( 0, textView.attributedText.string.length );
@@ -54,21 +62,14 @@
          [lineFragmentRects addObject:[NSValue valueWithCGRect:usedRect]];
      }];
     
-    // Calculate the actual line count a bit differently, since the one above is not as accurate while typing
-    CGRect singleCharRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, 1 )];
-    CGRect totalRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, textView.attributedText.string.length)];
-    totalRect.size = [textView sizeThatFits:CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX )];
-    totalRect.size.width = textView.bounds.size.width;
-    
     __block NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
-    NSInteger numLines = totalRect.size.height / singleCharRect.size.height;
-    for ( NSInteger i = 0; i < numLines; i++ )
+    NSUInteger numLines = totalRect.size.height / singleCharRect.size.height;
+    for ( NSUInteger i = 0; i < numLines; i++ )
     {
         // Calculate individual rects for each line to draw in the background of text view
         CGRect lineRect = totalRect;
         lineRect.size.height = singleCharRect.size.height - configuration.verticalSpacing;
         lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * configuration.lineOffsetMultiplier;
-        //if ( i == numLines - 1 )
         if ( i < lineFragmentRects.count )
         {
             // If this is the last line, use the line fragment rects collected above
@@ -86,7 +87,24 @@
         [backgroundFrames addObject:[NSValue valueWithCGRect:lineRect]];
     }
     
-    textView.backgroundFrames = [NSArray arrayWithArray:backgroundFrames];
+    __block NSMutableArray *calloutRects = [[NSMutableArray alloc] init];
+    for ( NSUInteger i = 0; i < calloutRanges.count; i++ )
+    {
+        NSValue *rangeValueObject = calloutRanges[i];
+        NSRange range = [rangeValueObject rangeValue];
+        CGRect boundingRect = [textView.layoutManager boundingRectForGlyphRange:range inTextContainer:textView.textContainer];
+        boundingRect.size.height = singleCharRect.size.height - configuration.verticalSpacing;
+        boundingRect.origin.y += boundingRect.size.height * configuration.lineOffsetMultiplier;
+        [calloutRects addObject:[NSValue valueWithCGRect:boundingRect]];
+    }
+    
+    NSArray *concatonated = [backgroundFrames arrayByAddingObjectsFromArray:calloutRects];
+    textView.backgroundFrames = [NSArray arrayWithArray:concatonated];
+}
+
+- (NSArray *)separatedRectsFromRect:(CGRect)sourceRect withCalloutRects:(NSArray *)calloutRects
+{
+    return @[ [NSValue valueWithCGRect:sourceRect] ];
 }
 
 @end

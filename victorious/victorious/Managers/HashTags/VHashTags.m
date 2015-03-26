@@ -12,6 +12,11 @@
 
 + (NSArray *)detectHashTags:(NSString *)fieldText
 {
+    return [[self class] detectHashTags:fieldText includeHashSymbol:NO];
+}
+
++ (NSArray *)detectHashTags:(NSString *)fieldText includeHashSymbol:(BOOL)includeHashSymbol
+{
     if (!fieldText)
     {
         return nil;
@@ -28,6 +33,11 @@
     for (NSTextCheckingResult *tag in tags)
     {
         NSRange wordRange = [tag rangeAtIndex:1];
+        if ( includeHashSymbol )
+        {
+            wordRange.location -= 1;
+            wordRange.length += 1;
+        }
         [array addObject:[NSValue valueWithRange:wordRange]];
     }
     

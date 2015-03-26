@@ -16,6 +16,8 @@
                 withAttributes:(NSDictionary *)attributes
                       maxWidth:(CGFloat)maxWidth;
 
-- (void)updateTextViewBackground:(VTextPostTextView *)textView configuraiton:(VTextPostConfiguration *)configuration;
+- (void)updateTextViewBackground:(VTextPostTextView *)textView
+                   configuraiton:(VTextPostConfiguration *)configuration
+                   calloutRanges:(NSArray *)calloutRanges;
 
 @end

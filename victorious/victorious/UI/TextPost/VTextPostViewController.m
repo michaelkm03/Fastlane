@@ -12,6 +12,7 @@
 #import "VTextPostTextView.h"
 #import "VTextPostHashtagContraints.h"
 #import "VTextPostConfiguration.h"
+#import "VHashTags.h"
 
 @interface VTextPostViewController () <UITextViewDelegate>
 
@@ -20,7 +21,6 @@
 @property (nonatomic, assign) BOOL hasBeenDisplayed;
 
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textView;
-@property (nonatomic, weak) IBOutlet VTextPostTextView *hashtagTextView;
 
 @property (nonatomic, strong) IBOutlet VTextPostHashtagContraints *hashtagConstraints;
 @property (nonatomic, strong) IBOutlet VTextPostConfiguration *configuration;
@@ -49,7 +49,6 @@
     [super viewDidLoad];
     
     self.text = @"";
-    self.supplementaryHashtagText = @"";
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -66,51 +65,6 @@
 - (void)setDefaultValues
 {
     self.text = @"What's on your mind?";
-    self.supplementaryHashtagText = @"#hashtag";
-}
-
-- (void)setSupplementaryHashtagText:(NSString *)supplementaryHashtagText
-{
-    _supplementaryHashtagText = supplementaryHashtagText;
-    if ( _supplementaryHashtagText.length > 0 && [_supplementaryHashtagText rangeOfString:@"#"].location != 0 )
-    {
-        _supplementaryHashtagText = [NSString stringWithFormat:@"#%@", _supplementaryHashtagText];
-    }
-    
-    const BOOL wasSelectable = self.hashtagTextView.selectable;
-    self.hashtagTextView.selectable = YES; ///< UITextView's attributedString property cannot be read unless this is set to YES
-    
-    NSDictionary *attribtues = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
-    self.hashtagTextView.attributedText = [[NSAttributedString alloc] initWithString:_supplementaryHashtagText
-                                                                          attributes:attribtues];
-    
-    self.hashtagTextView.selectable = wasSelectable;
-    
-    self.hashtagTextView.hidden = _supplementaryHashtagText.length == 0;
-    
-    [self updateTextBackgrounds];
-    [self updateHashtagPostiion];
-}
-
-- (void)updateHashtagPostiion
-{
-    CGRect textLastLineFrame = [self.textView.backgroundFrames.lastObject CGRectValue];
-    textLastLineFrame.origin.y -= ceil(self.textView.font.pointSize / self.configuration.lineHeightMultipler);
-    CGRect hashtagTextFrame = [self.hashtagTextView.backgroundFrames.lastObject CGRectValue];
-    
-    CGFloat targetLeading = textLastLineFrame.size.width + CGRectGetMinX( self.textView.frame ) + self.configuration.horizontalSpacing;
-    CGFloat spaceNeededForHashtagText = CGRectGetWidth( self.textView.frame ) - CGRectGetWidth( hashtagTextFrame );
-    if ( targetLeading < spaceNeededForHashtagText )
-    {
-        self.hashtagConstraints.top.constant = CGRectGetMinY( textLastLineFrame );
-        self.hashtagConstraints.leading.constant = targetLeading;
-    }
-    else
-    {
-        self.hashtagConstraints.top.constant = CGRectGetMaxY( textLastLineFrame ) + self.configuration.verticalSpacing;
-        self.hashtagConstraints.leading.constant = CGRectGetMinX( self.textView.frame );
-    }
-    [self.view layoutIfNeeded];
 }
 
 - (void)setText:(NSString *)text
@@ -122,19 +76,24 @@
         _text = @" ";
     }
     
-    NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:_text attributes:attributes];
-    
-    [self updateTextBackgrounds];
-    [self updateHashtagPostiion];
+    [self updateTextView];
 }
 
-- (void)updateTextBackgrounds
+- (void)updateTextView
 {
-    for ( VTextPostTextView *textView in @[ self.textView, self.hashtagTextView] )
-    {
-        [self.textLayoutHelper updateTextViewBackground:textView configuraiton:self.configuration];
-    }
+    NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:_text attributes:attributes];;
+    
+    NSArray *hashtagRanges = [VHashTags detectHashTags:_text];
+    NSDictionary *hashtagAttributes = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
+    [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:hashtagAttributes];
+    
+    self.textView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
+    
+    NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:_text includeHashSymbol:YES];
+    [self.textLayoutHelper updateTextViewBackground:self.textView
+                                      configuraiton:self.configuration
+                                      calloutRanges:hashtagCalloutRanges];
 }
 
 #pragma mark - Text Attributes
@@ -158,7 +117,7 @@
 - (NSParagraphStyle *)paragraphStyleWithFont:(UIFont *)font
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
+    paragraphStyle.alignment = NSTextAlignmentLeft; //f das fsdNSTextAlignmentCenter;
     paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = ((CGFloat)font.pointSize) * self.configuration.lineHeightMultipler;
     return paragraphStyle;
 }
@@ -167,8 +126,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self updateTextBackgrounds];
-    [self updateHashtagPostiion];
+    self.text = textView.text;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
@@ -180,12 +138,6 @@
     if ( [text isEqualToString:@"\n"] )
     {
         [textView resignFirstResponder];
-        return NO;
-    }
-    
-    if ( text.length == 0 )
-    {
-        self.text = @" ";
         return NO;
     }
     
