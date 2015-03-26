@@ -45,4 +45,6 @@ typedef void (^VAnswerSelectionBlock)(BOOL isVideo, NSURL *mediaURL);
 
 - (void)setAnswerBIsVideowithVideoURL:(NSURL *)videoURL;
 
+- (void)setPatternBackgroundColor:(UIColor *)patternBackgroundColor;
+
 @end

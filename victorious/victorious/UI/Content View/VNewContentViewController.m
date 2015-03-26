@@ -909,6 +909,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
             {
                 VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
+                [imageCell setPatternBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
                 [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
                                               placeholderImage:self.placeholderImage?:nil];
                 self.contentCell = imageCell;
@@ -948,6 +949,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
             {
                 VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
+                [pollCell setPatternBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
                 pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
                 if (self.viewModel.answerAIsVideo)
                 {

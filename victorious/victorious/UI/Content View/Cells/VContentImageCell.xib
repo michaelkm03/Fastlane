@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -14,8 +14,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yJ1-dj-tK9" customClass="VParallaxPatternView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OKp-Dj-CUq" userLabel="Content Image View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="OKp-Dj-CUq" secondAttribute="height" multiplier="1:1" id="YZq-cV-cdB"/>
                         </constraints>
@@ -25,10 +30,14 @@
             </view>
             <constraints>
                 <constraint firstItem="OKp-Dj-CUq" firstAttribute="leading" secondItem="yMK-fU-iYV" secondAttribute="leading" priority="999" id="1kW-F1-jip"/>
+                <constraint firstItem="yJ1-dj-tK9" firstAttribute="top" secondItem="yMK-fU-iYV" secondAttribute="top" id="4Hh-Xv-OHf"/>
+                <constraint firstAttribute="bottom" secondItem="yJ1-dj-tK9" secondAttribute="bottom" id="Ho3-Am-L8c"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OKp-Dj-CUq" secondAttribute="trailing" id="Jah-qP-LFp"/>
                 <constraint firstAttribute="trailing" secondItem="OKp-Dj-CUq" secondAttribute="trailing" priority="999" id="Mp6-dY-JiQ"/>
                 <constraint firstItem="OKp-Dj-CUq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="yMK-fU-iYV" secondAttribute="top" id="Wtb-ao-ggI"/>
                 <constraint firstItem="OKp-Dj-CUq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yMK-fU-iYV" secondAttribute="leading" id="dTG-fd-Mtb"/>
+                <constraint firstAttribute="trailing" secondItem="yJ1-dj-tK9" secondAttribute="trailing" id="de7-TF-wLD"/>
+                <constraint firstItem="yJ1-dj-tK9" firstAttribute="leading" secondItem="yMK-fU-iYV" secondAttribute="leading" id="dx1-2h-8rf"/>
                 <constraint firstAttribute="centerY" secondItem="OKp-Dj-CUq" secondAttribute="centerY" id="jOH-Go-37B"/>
                 <constraint firstItem="OKp-Dj-CUq" firstAttribute="top" secondItem="yMK-fU-iYV" secondAttribute="top" priority="999" id="k3Q-Eh-0HF"/>
                 <constraint firstAttribute="centerX" secondItem="OKp-Dj-CUq" secondAttribute="centerX" id="lNF-YB-ekG"/>
@@ -38,6 +47,7 @@
             <size key="customSize" width="50" height="117"/>
             <connections>
                 <outlet property="contentImageView" destination="OKp-Dj-CUq" id="XAS-aJ-4Uv"/>
+                <outlet property="parallaxPatternView" destination="yJ1-dj-tK9" id="YHY-Sh-Jio"/>
             </connections>
         </collectionViewCell>
     </objects>

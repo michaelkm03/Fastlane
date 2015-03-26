@@ -7,10 +7,13 @@
 //
 
 #import "VContentImageCell.h"
+#import "VParallaxPatternView.h"
 
 @interface VContentImageCell ()
 
 @property (nonatomic, assign) BOOL updatedImageBounds;
+
+@property (weak, nonatomic) IBOutlet VParallaxPatternView *parallaxPatternView;
 
 @end
 
@@ -43,6 +46,11 @@
     [super awakeFromNib];
     
     self.shrinkingContentView = self.contentImageView;
+}
+
+- (void)setPatternBackgroundColor:(UIColor *)patternBackgroundColor
+{
+    [self.parallaxPatternView setPatternTintColor:patternBackgroundColor];
 }
 
 @end

@@ -8,15 +8,15 @@
 
 #import "VContentPollCell.h"
 
-// Subviews
+// Views + Helpers
 #import "VResultView.h"
+#import "VParallaxPatternView.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 // Theme
 #import "VThemeManager.h"
 
 #import "VCVideoPlayerViewController.h"
-
-#import <SDWebImage/UIImageView+WebCache.h>
 
 static const CGFloat kDesiredPollCellHeight = 214.0f;
 
@@ -36,6 +36,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @property (weak, nonatomic) IBOutlet UIView *pollCountContainer;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfVotersLabel;
+@property (weak, nonatomic) IBOutlet VParallaxPatternView *parallaxPatternView;
 
 @property (nonatomic, strong) VCVideoPlayerViewController *aVideoPlayerViewController;
 @property (nonatomic, strong) VCVideoPlayerViewController *bVideoPlayerViewController;
@@ -204,6 +205,11 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     [container addSubview:videoPlayerViewController.view];
     
     return videoPlayerViewController;
+}
+
+- (void)setPatternBackgroundColor:(UIColor *)patternBackgroundColor
+{
+    [self.parallaxPatternView setPatternTintColor:patternBackgroundColor];
 }
 
 #pragma mark - IBActions

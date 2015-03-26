@@ -15,4 +15,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
 
+- (void)setPatternBackgroundColor:(UIColor *)patternBackgroundColor;
+
 @end
