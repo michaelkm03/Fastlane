@@ -75,6 +75,8 @@
     
     if (self.hasLayedOutPatternBackground)
     {
+        [self.interpolationView v_addMotionEffectsWithMagnitude:-self.tiledImage.size.width*0.5f];
+        [self.replicatedLayer addAnimation:[self breathingAnimation] forKey:@"breathingAnimation"];
         return;
     }
     

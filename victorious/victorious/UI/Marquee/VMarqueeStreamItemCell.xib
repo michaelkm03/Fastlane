@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="283"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="83k-OL-pLv">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="83k-OL-pLv">
                         <rect key="frame" x="127" y="106" width="65" height="72"/>
                     </imageView>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bg-N6-FzQ" userLabel="DetailsContainer">
