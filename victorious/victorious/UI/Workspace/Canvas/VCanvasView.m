@@ -28,6 +28,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 @property (nonatomic, strong) dispatch_queue_t renderingQueue;
 @property (nonatomic, strong) NSMutableArray *rendertimes;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, assign, getter = hasLayedOutCanvasScrollView) BOOL layedoutCanvasScrollView;
 
 @end
 
@@ -125,6 +126,11 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         return;
     }
     
+    if (self.hasLayedOutCanvasScrollView)
+    {
+        return;
+    }
+    
     CGRect imageViewFrame;
     CGFloat scaleFactor;
     if (self.sourceImage.size.height > self.sourceImage.size.width)
@@ -147,6 +153,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     self.imageView.frame = imageViewFrame;
     self.canvasScrollView.contentSize = imageViewFrame.size;
     [self.canvasScrollView v_centerZoomedContentAnimated:NO];
+    self.layedoutCanvasScrollView = YES;
 }
 
 #pragma mark - Property Accessors
@@ -323,6 +330,23 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.imageView;
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    if ( !self.didZoomFromDoubleTap )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithZoom];
+    }
+    self.didZoomFromDoubleTap = NO;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if ( !scrollView.isZooming )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithPan];
+    }
 }
 
 @end
