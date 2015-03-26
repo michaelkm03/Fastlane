@@ -133,6 +133,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     cell.stream = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     cell.dependencyManager = self.dependencyManager;
     CGFloat interLineSpace = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout minimumLineSpacingForSectionAtIndex:0];
+    
     //Need to add statusBarHeight here since it will be added into the yOrigin by the collectionView
     CGFloat yOrigin = indexPath.row * (kPlaylistCellHeight + interLineSpace) + kStatusBarHeight;
     [self updateParallaxYOffsetOfCell:cell withYOrigin:yOrigin];

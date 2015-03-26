@@ -30,21 +30,25 @@
  */
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 
+/**
+ Describes the height of the view containing the name label
+ */
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelContainerHeightConstraint;
 
+/**
+ Describe the left, right, top, and bottom constraints used to inset the label from it's containing view
+ */
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelLeftConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelRightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomConstraint;
 
-@property (nonatomic, assign) CGFloat preferredContainerHeight;
-
-@property (nonatomic, assign) BOOL addedParallaxEffect;
-
 @end
 
 static const CGFloat kTextInset = 8.0f;
 static const CGFloat kParallaxMovementAmount = 30.0f;
+static const CGFloat kPreferredLabelHeight = 27.0f;
+static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kTextInset * 2 );
 
 @implementation VDirectoryPlaylistCell
 
@@ -61,13 +65,6 @@ static const CGFloat kParallaxMovementAmount = 30.0f;
     
     self.previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.previewImageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
-    
-    self.preferredContainerHeight = self.labelContainerHeightConstraint.constant;
-    
-    if ( !self.addedParallaxEffect )
-    {
-        self.addedParallaxEffect = YES;
-    }
 }
 
 - (void)setStream:(VStreamItem *)stream
@@ -104,11 +101,11 @@ static const CGFloat kParallaxMovementAmount = 30.0f;
                                                          attributes:attributes
                                                             context:NULL]);
     
-    CGFloat containerHeight = self.preferredContainerHeight;
+    CGFloat containerHeight = kPreferredContainerHeight;
     CGFloat fittingContainerHeight = kTextInset * 2 + textHeight;
     if ( containerHeight < fittingContainerHeight )
     {
-        //If our preferred container height is too short to nicely fit the text, then use the newly calculated fittingContainerHeight
+        //If our preferred container height is too short to properly fit the text, then use the newly calculated fittingContainerHeight
         containerHeight = fittingContainerHeight;
     }
     self.labelContainerHeightConstraint.constant = containerHeight;
@@ -125,12 +122,6 @@ static const CGFloat kParallaxMovementAmount = 30.0f;
 - (void)setParallaxYOffset:(CGFloat)parallaxYOffset
 {
     _parallaxYOffset = parallaxYOffset;
-    
-    if ( [self.stream.name isEqualToString:@"Test"] )
-    {
-        NSLog(@"yOffset %f", parallaxYOffset);
-    }
-    
     [self updateParallaxEffectForFrame:self.previewImageView.frame];
 }
 
