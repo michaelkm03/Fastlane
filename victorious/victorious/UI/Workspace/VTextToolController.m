@@ -48,6 +48,12 @@
     [self setPickerDelegate:self forSubtools:self.tools];
     
     [self setSelectedTool:self.tools.firstObject];
+    
+    [self.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
+     {
+         id<VToolPicker> toolPicker = (id<VToolPicker>)tool.inspectorToolViewController;
+         [self toolPicker:toolPicker didSelectItemAtIndex:0];
+     }];
 }
 
 - (void)updateSelectedTool
@@ -65,13 +71,8 @@
 {
     [subtools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
-         if ( [tool respondsToSelector:@selector(inspectorToolViewController)] &&
-             tool.inspectorToolViewController != nil &&
-             [tool.inspectorToolViewController conformsToProtocol:@protocol(VToolPicker)] )
-         {
-             id<VToolPicker> toolPicker = (id<VToolPicker>)tool.inspectorToolViewController;
-             toolPicker.delegate = delegate;
-         }
+         id<VToolPicker> toolPicker = (id<VToolPicker>)tool.inspectorToolViewController;
+         toolPicker.delegate = delegate;
      }];
 }
 

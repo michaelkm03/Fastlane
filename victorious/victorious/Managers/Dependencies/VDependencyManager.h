@@ -79,6 +79,12 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (UIColor *)colorForKey:(NSString *)key;
 
 /**
+ Marshalls a dictionary in the expected format into a UIColor object.
+ Returns nil if failed.
+*/
+ - (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary;
+
+/**
  Returns the font with the specified key
  */
 - (UIFont *)fontForKey:(NSString *)key;

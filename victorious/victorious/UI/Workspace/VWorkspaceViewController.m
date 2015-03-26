@@ -111,6 +111,8 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     
     [self.continueButton setTitle:self.continueText];
     
+    [self updateBackButton];
+    
     self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     self.toolController.canvasView = self.canvasView;
@@ -357,7 +359,13 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 - (void)setShowCloseButton:(BOOL)showCloseButton
 {
     _showCloseButton = showCloseButton;
-    NSString *imageName = showCloseButton ? @"cameraButtonClose" : @"cameraButtonBack";
+    
+    [self updateBackButton];
+}
+
+- (void)updateBackButton
+{
+    NSString *imageName = self.showCloseButton ? @"cameraButtonClose" : @"cameraButtonBack";
     self.backButton.image = [UIImage imageNamed:imageName];
 }
 

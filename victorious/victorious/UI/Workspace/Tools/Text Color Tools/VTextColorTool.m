@@ -11,7 +11,6 @@
 #import "VEditTextToolViewController.h"
 #import "VTickerPickerViewController.h"
 #import "VColorPickerDataSource.h"
-#import "NSArray+VMap.h"
 #import "VColorType.h"
 
 static NSString * const kTitleKey = @"title";
@@ -42,24 +41,8 @@ static NSString * const kPickerKey = @"picker";
         _title = [dependencyManager stringForKey:kTitleKey];
         _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
         _selectedIcon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kSelectedIconKey][kImageURLKey]];
-        
-#warning Get this from somewhere else, probably the template
-        NSArray *testColors = @[ @{ @"title" : @"RED",       @"color" : [UIColor redColor] },
-                                 @{ @"title" : @"ORANGE",    @"color" : [UIColor orangeColor] },
-                                 @{ @"title" : @"YELLOW",    @"color" : [UIColor yellowColor] },
-                                 @{ @"title" : @"GREEN",     @"color" : [UIColor greenColor] },
-                                 @{ @"title" : @"BLUE",      @"color" : [UIColor blueColor] },
-                                 @{ @"title" : @"PURPLE",    @"color" : [UIColor purpleColor] },
-                                 @{ @"title" : @"GRAY",      @"color" : [UIColor grayColor] } ];
-        
-        NSArray *colorTypes = [testColors v_map:^VColorType *(NSDictionary *dictionary)
-        {
-            return [[VColorType alloc] initWithColor:dictionary[ @"color" ] title:dictionary[ @"title" ]];
-        }];
-        id<VToolPickerDataSource> dataSource = [[VColorPickerDataSource alloc] initWithDependencyManager:dependencyManager];
-        dataSource.tools = colorTypes;
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        _toolPicker.dataSource = dataSource;
+        _toolPicker.dataSource = [[VColorPickerDataSource alloc] initWithDependencyManager:dependencyManager];
     }
     return self;
 }

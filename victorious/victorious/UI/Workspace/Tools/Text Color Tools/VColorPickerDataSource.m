@@ -10,6 +10,11 @@
 #import "VDependencyManager.h"
 #import "VColorOptionCell.h"
 #import "VColorType.h"
+#import "NSArray+VMap.h"
+
+static NSString * const kColorOptionsKey = @"colorOptions";
+static NSString * const kColorKey = @"color";
+static NSString * const kTitleKey = @"title";
 
 @interface VColorPickerDataSource ()
 
@@ -27,6 +32,26 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
+        
+        NSArray *colorOptions = [_dependencyManager templateValueOfType:[NSArray class] forKey:@"colorOptions"];
+        
+        NSArray *suppliedColors = [colorOptions v_map:^VColorType *(NSDictionary *dictionary)
+                                   {
+                                       NSString *title = dictionary[ kTitleKey ];
+                                       UIColor *color = [dependencyManager colorFromDictionary:dictionary[ kColorKey ]];
+                                       if ( color != nil && title != nil )
+                                       {
+                                           return [[VColorType alloc] initWithColor:color title:title];
+                                       }
+                                       return nil;
+                                   }];
+        UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+        if ( accentColor )
+        {
+            VColorType *defaultColorOption = [[VColorType alloc] initWithColor:accentColor title:@"Standard"];
+            suppliedColors = [@[ defaultColorOption ] arrayByAddingObjectsFromArray:suppliedColors];
+        }
+        self.tools = suppliedColors;
     }
     return self;
 }
