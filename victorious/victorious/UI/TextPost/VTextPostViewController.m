@@ -21,6 +21,7 @@
 @property (nonatomic, assign) BOOL hasBeenDisplayed;
 
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textView;
+@property (nonatomic, weak) IBOutlet UIButton *overlayButton;
 
 @property (nonatomic, strong) IBOutlet VTextPostHashtagContraints *hashtagConstraints;
 @property (nonatomic, strong) IBOutlet VTextPostConfiguration *configuration;
@@ -29,6 +30,8 @@
 @end
 
 @implementation VTextPostViewController
+
+#pragma mark - Initializations
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -39,10 +42,7 @@
     return viewController;
 }
 
-- (void)startEditingText
-{
-    [self.textView becomeFirstResponder];
-}
+#pragma mark - View controller lifecycle
 
 - (void)viewDidLoad
 {
@@ -79,13 +79,40 @@
     [self updateTextView];
 }
 
+- (void)startEditingText
+{
+    self.editable = YES;
+    
+    [self.textView becomeFirstResponder];
+    self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
+    self.overlayButton.hidden = YES;
+}
+
+- (void)stopEditingText
+{
+    [self.textView resignFirstResponder];
+    self.overlayButton.hidden = NO;
+}
+
+#pragma mark - IBActions
+
+- (IBAction)overlayButtonTapped:(id)sender
+{
+    if ( self.isEditable )
+    {
+        [self startEditingText];
+    }
+}
+
+#pragma mark - Drawing and layout
+
 - (void)updateTextView
 {
-    NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
+    NSDictionary *attributes = [self.configuration textAttributesWithDependencyManager:self.dependencyManager];
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:_text attributes:attributes];;
     
     NSArray *hashtagRanges = [VHashTags detectHashTags:_text];
-    NSDictionary *hashtagAttributes = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
+    NSDictionary *hashtagAttributes = [self.configuration hashtagTextAttributesWithDependencyManager:self.dependencyManager];
     [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:hashtagAttributes];
     
     self.textView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
@@ -94,32 +121,6 @@
     [self.textLayoutHelper updateTextViewBackground:self.textView
                                       configuraiton:self.configuration
                                       calloutRanges:hashtagCalloutRanges];
-}
-
-#pragma mark - Text Attributes
-
-- (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
-    return @{ NSFontAttributeName: font ?: @"",
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
-              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
-}
-
-- (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
-    return @{ NSFontAttributeName: font ?: @"",
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
-              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
-}
-
-- (NSParagraphStyle *)paragraphStyleWithFont:(UIFont *)font
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft; //f das fsdNSTextAlignmentCenter;
-    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = ((CGFloat)font.pointSize) * self.configuration.lineHeightMultipler;
-    return paragraphStyle;
 }
 
 #pragma mark - UITextViewDelegate
@@ -131,6 +132,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+    [self stopEditingText];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

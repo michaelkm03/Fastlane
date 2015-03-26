@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) NSString *text;
 
+@property (nonatomic, assign, getter=isEditable) BOOL editable;
+
 - (void)startEditingText;
 
 @end

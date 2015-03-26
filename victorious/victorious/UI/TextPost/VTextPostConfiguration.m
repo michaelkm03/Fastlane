@@ -7,6 +7,7 @@
 //
 
 #import "VTextPostConfiguration.h"
+#import "VDependencyManager.h"
 
 @implementation VTextPostConfiguration
 
@@ -23,6 +24,30 @@
         _backgroundColor       = [UIColor whiteColor];
     }
     return self;
+}
+
+- (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
+    return @{ NSFontAttributeName: font ?: @"",
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
+              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
+}
+
+- (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
+    return @{ NSFontAttributeName: font ?: @"",
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
+              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
+}
+
+- (NSParagraphStyle *)paragraphStyleWithFont:(UIFont *)font
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentLeft; //f das fsdNSTextAlignmentCenter;
+    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = ((CGFloat)font.pointSize) * self.lineHeightMultipler;
+    return paragraphStyle;
 }
 
 @end

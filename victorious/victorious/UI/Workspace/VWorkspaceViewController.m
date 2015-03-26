@@ -39,6 +39,7 @@
 @import AVFoundation;
 
 static CGFloat const kWorkspaceToolButtonSize = 44.0f;
+static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
 
 @interface VWorkspaceViewController () <VToolControllerDelegate>
 
@@ -421,6 +422,9 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     
     void (^animations)() = ^()
     {
+        self.inspectorToolViewController.view.userInteractionEnabled = NO;
+        self.inspectorToolViewController.view.alpha = kInspectorToolDisabledAlpha;
+        
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
         self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
         self.inspectorToolViewController.view.frame = inspectorFrame;
@@ -452,6 +456,9 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
     
     void (^animations)() = ^()
     {
+        self.inspectorToolViewController.view.userInteractionEnabled = YES;
+        self.inspectorToolViewController.view.alpha = 1.0f;
+        
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
         [self.view layoutIfNeeded];
         [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)

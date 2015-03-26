@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
+
 @interface VTextPostConfiguration : NSObject
 
 @property (nonatomic, assign, readonly) CGFloat lineHeightMultipler;  ///< Multiplied by font's `pointSize` to get optimal line height
@@ -16,5 +18,9 @@
 @property (nonatomic, assign, readonly) CGFloat horizontalSpacing;
 @property (nonatomic, assign, readonly) NSUInteger maxTextLength;
 @property (nonatomic, readonly) UIColor *backgroundColor;
+
+- (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+- (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
