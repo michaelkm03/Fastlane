@@ -10,6 +10,10 @@
 #import "VWorkspaceTool.h"
 #import "VEditTextToolViewController.h"
 
+@class VTickerPickerViewController;
+
 @interface VTextColorTool : NSObject <VWorkspaceTool>
+
+@property (nonatomic, strong, readonly) VTickerPickerViewController *toolPicker;
 
 @end

@@ -12,8 +12,12 @@
 #import "VToolPicker.h"
 #import "VHashtagType.h"
 #import "VColorType.h"
+#import "VTextColorTool.h"
+#import "VObjectManager+ContentCreation.h"
 
 @interface VTextToolController() <VToolPickerDelegate>
+
+@property (nonatomic, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 
 @end
 
@@ -34,8 +38,6 @@
 - (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
 {
     [super setSelectedTool:selectedTool];
-    
-    [self updateSelectedTool];
 }
 
 - (void)setupDefaultTool
@@ -52,19 +54,42 @@
     [self.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
          id<VToolPicker> toolPicker = (id<VToolPicker>)tool.inspectorToolViewController;
+         if ( [tool isKindOfClass:[VTextColorTool class]] )
+         {
+             self.textColorTool = tool;
+         }
          [self toolPicker:toolPicker didSelectItemAtIndex:0];
      }];
-}
-
-- (void)updateSelectedTool
-{
-    VEditTextToolViewController *editTextViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
-    editTextViewController.text = self.text;
 }
 
 - (void)exportWithSourceAsset:(NSURL *)source withCompletion:(void (^)(BOOL, NSURL *, UIImage *, NSError *))completion
 {
     completion( YES, nil, nil, nil );
+    return;
+    
+    [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
+                                           backgroundColor:[self currentColorSelection]
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         
+     }
+                                                 failBlock:^(NSOperation *operation, NSError *error)
+     {
+         
+     }];
+}
+
+- (UIColor *)currentColorSelection
+{
+    id<VToolPicker> colorPicker = (id<VToolPicker>)self.textColorTool.toolPicker;
+    VColorType *selectedTool = (VColorType *)colorPicker.selectedTool;
+    return selectedTool.color;
+}
+
+- (NSString *)currentText
+{
+    VEditTextToolViewController *editTextViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
+    return editTextViewController.textPostViewController.completedText;
 }
 
 - (void)setPickerDelegate:(id<VToolPickerDelegate>)delegate forSubtools:(NSArray *)subtools
@@ -85,8 +110,8 @@
     id selectedTool = toolPicker.dataSource.tools[ index ];
     if ( [selectedTool isKindOfClass:[VHashtagType class]] )
     {
-        //VHashtagType *hashtagType = (VHashtagType *)selectedTool;
-#warning Add selected hasg tag to an array
+        VHashtagType *hashtagType = (VHashtagType *)selectedTool;
+        [editTextViewController.textPostViewController addHashtag:hashtagType.hashtagText];
     }
     else if ( [selectedTool isKindOfClass:[VColorType class]] )
     {

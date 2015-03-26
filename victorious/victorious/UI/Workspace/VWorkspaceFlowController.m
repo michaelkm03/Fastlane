@@ -46,9 +46,6 @@
 // Here be dragons
 #import <objc/runtime.h>
 
-#import "UIAlertView+VBlocks.h"
-#import "MBProgressHUD.h"
-
 @import AssetsLibrary;
 
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
@@ -301,17 +298,15 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             {
                 self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
             }
-            self.cameraViewController.shouldSkipPreview = YES;
-            self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
-            [self.flowNavigationController pushViewController:self.cameraViewController animated:NO];
             break;
         case VWorkspaceFlowControllerInitialCaptureStateVideo:
             self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
-            self.cameraViewController.shouldSkipPreview = YES;
-            self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
-            [self.flowNavigationController pushViewController:self.cameraViewController animated:NO];
             break;
     }
+    self.cameraViewController.shouldSkipPreview = YES;
+    self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
+    [self.flowNavigationController pushViewController:self.cameraViewController
+                                             animated:NO];
 }
 
 - (VMediaCaptureCompletion)mediaCaptureCompletion
@@ -348,6 +343,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (void)toEditState
 {
+    NSAssert(self.capturedMediaURL != nil, @"We need a captured media url to begin editing!");
+    
+    __weak typeof(self) welf = self;
     VWorkspaceViewController *workspaceViewController;
     if ([self.capturedMediaURL v_hasImageExtension])
     {
@@ -365,9 +363,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         videoToolController.videoToolControllerDelegate = self;
         videoToolController.mediaURL = self.capturedMediaURL;
     }
-    
-#warning FIX
-    // workspaceViewController.disabledToolbarWhileKeyboardIsVisible = YES;
+    else
+    {
+        NSAssert(false, @"Media type not supported!");
+    }
     
     UIImage *preloadedImage = [self.dependencyManager imageForKey:VWorkspaceFlowControllerPreloadedImageKey];
     if (preloadedImage != nil)
@@ -379,9 +378,22 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     BOOL isRemix = (remixItem != nil);
     workspaceViewController.shouldConfirmCancels = !isRemix;
     
-#warning FIX
-    // workspaceViewController.delegate = self;
-    
+    workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+    {
+        if (finished)
+        {
+            welf.renderedMeidaURL = renderedMediaURL;
+            welf.previewImage = previewImage;
+            [welf transitionFromState:welf.state
+                              toState:VWorkspaceFlowControllerStatePublish];
+        }
+        else
+        {
+            welf.capturedMediaURL = nil;
+            [welf transitionFromState:welf.state
+                              toState:VWorkspaceFlowControllerStateCapture];
+        }
+    };
     BOOL selectedFromAssetsLibraryOrSearch = self.cameraViewController.didSelectFromWebSearch || self.cameraViewController.didSelectAssetFromLibrary;
     BOOL shouldShowPublish = YES;
     if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWorkspaceFlowController:)])
@@ -389,10 +401,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
     }
     workspaceViewController.continueText = shouldShowPublish ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
-
+    
     [self.flowNavigationController pushViewController:workspaceViewController
                                              animated:!selectedFromAssetsLibraryOrSearch];
-
+    
 }
 
 #pragma mark - Notify Delegate Methods
@@ -407,9 +419,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         [self.flowRootViewController dismissViewControllerAnimated:YES
                                                         completion:^
-        {
-            [self.flowNavigationController popToRootViewControllerAnimated:NO];
-        }];
+         {
+             [self.flowNavigationController popToRootViewControllerAnimated:NO];
+         }];
     }
     objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -514,62 +526,21 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     imageToolController.defaultImageTool = VImageToolControllerInitialImageEditStateText;
     
     imageWorkspaceViewController.continueText = NSLocalizedString(@"Publish", nil);
-#warning FIX
-    // imageWorkspaceViewController.delegate = self;
+    __weak typeof(self) welf = self;
+    imageWorkspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedImage)
+    {
+        if (!finished)
+        {
+            [welf.flowNavigationController popViewControllerAnimated:YES];
+            return;
+        }
+        
+        welf.renderedMeidaURL = renderedImage;
+        welf.previewImage = previewImage;
+        [self transitionFromState:welf.state
+                          toState:VWorkspaceFlowControllerStatePublish];
+    };
     [self.flowNavigationController pushViewController:imageWorkspaceViewController animated:YES];
-}
-
-#pragma mark - VWorkspaceDelegate
-
-- (void)workspaceDidPublish:(VWorkspaceViewController *)workspaceViewController
-{
-    MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:workspaceViewController.view animated:YES];
-    hudForView.labelText = NSLocalizedString(@"Rendering...", @"");
-    
-#warning Make sure to implement this in text workspace
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishWorkspaceEdits];
-    
-    [workspaceViewController.toolController exportWithSourceAsset:workspaceViewController.mediaURL
-                                withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error)
-     {
-         [hudForView hide:YES];
-         if (error != nil)
-         {
-             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Render failure", @"")
-                                                                  message:error.localizedDescription
-                                                        cancelButtonTitle:NSLocalizedString(@"ok", @"")
-                                                           onCancelButton:nil
-                                               otherButtonTitlesAndBlocks:nil, nil];
-             [errorAlert show];
-         }
-         else
-         {
-             self.renderedMeidaURL = renderedMediaURL;
-             self.previewImage = previewImage;
-             [self transitionFromState:self.state toState:VWorkspaceFlowControllerStatePublish];
-         }
-     }];
-}
-
-- (void)workspaceDidClose:(VWorkspaceViewController *)workspaceViewController
-{
-    if ( workspaceViewController.shouldConfirmCancels )
-    {
-        UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
-                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                                      onCancelButton:nil
-                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
-                                                                 onDestructiveButton:^
-                                                 {
-                                                     [self.flowNavigationController popViewControllerAnimated:YES];
-                                                 }
-                                                          otherButtonTitlesAndBlocks:nil, nil];
-        [confirmExitActionSheet showInView:workspaceViewController.view];
-    }
-    else
-    {
-        [self.flowNavigationController popViewControllerAnimated:YES];
-    }
 }
 
 @end

@@ -70,14 +70,7 @@
     VWorkspaceViewController *workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
     workspace.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
-        if ( !finished )
-        {
-            [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            NSLog( @"PUBLISH" );
-        }
+        [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
     };
     workspace.showCloseButton = YES;
     workspace.continueText = @"Publish";

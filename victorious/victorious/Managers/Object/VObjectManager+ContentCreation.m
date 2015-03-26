@@ -73,6 +73,23 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 #pragma mark - Sequence Methods
 
+- (RKManagedObjectRequestOperation *)createTextPostWithText:(NSString *)textContent
+                                            backgroundColor:(UIColor *)backgroundColor
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
+{
+    NSParameterAssert( textContent.length > 0 );
+    
+    NSDictionary *parameters = @{ @"content" : textContent,
+                                  @"background_color" : backgroundColor ?: [NSNull null] };
+    
+    return [self GET:@"/api/text/create"
+              object:nil
+          parameters:parameters
+        successBlock:success
+           failBlock:fail];
+}
+
 - (void)createPollWithName:(NSString *)name
                description:(NSString *)description
               previewImage:(UIImage *)previewImage

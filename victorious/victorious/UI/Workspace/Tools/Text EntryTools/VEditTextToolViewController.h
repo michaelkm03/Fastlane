@@ -14,9 +14,6 @@
 
 @property (nonatomic, strong, readonly) VTextPostViewController *textPostViewController;
 
-@property (nonatomic, strong) NSString *text;
-@property (nonatomic, strong) NSString *hashtagText;
-
 - (void)setImageControlsVisible:(BOOL)visible animated:(BOOL)animated;
 
 @end

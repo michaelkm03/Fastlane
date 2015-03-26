@@ -26,6 +26,7 @@
 @property (nonatomic, strong) IBOutlet VTextPostHashtagContraints *hashtagConstraints;
 @property (nonatomic, strong) IBOutlet VTextPostConfiguration *configuration;
 @property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
+@property (nonatomic, strong) NSMutableSet *supplementalHashtags;
 
 @end
 
@@ -39,6 +40,7 @@
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     VTextPostViewController *viewController = [[VTextPostViewController alloc] initWithNibName:nibName bundle:bundle];
     viewController.dependencyManager = dependencyManager;
+    viewController.supplementalHashtags = [[NSMutableSet alloc] init];
     return viewController;
 }
 
@@ -64,7 +66,7 @@
 
 - (void)setDefaultValues
 {
-    self.text = @"What's on your mind?";
+    self.text = @"What's #hashyhashy on your #hash mind?  What's #hashyhashy on your #hash mind?";
 }
 
 - (void)setText:(NSString *)text
@@ -92,6 +94,18 @@
 {
     [self.textView resignFirstResponder];
     self.overlayButton.hidden = NO;
+}
+
+- (void)addHashtag:(NSString *)hashtagText
+{
+    [self.supplementalHashtags addObject:[VHashTags stringWithPrependedHashmarkFromString:hashtagText]];
+    NSLog( @"supplementalHashtags = %@", self.supplementalHashtags );
+}
+
+- (NSString *)completedText
+{
+#warning TODO: Add selected trending hashtags
+    return _text;
 }
 
 #pragma mark - IBActions

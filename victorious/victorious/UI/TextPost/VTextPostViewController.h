@@ -15,6 +15,10 @@
 
 @property (nonatomic, assign, getter=isEditable) BOOL editable;
 
+@property (nonatomic, readonly) NSString *completedText;
+
+- (void)addHashtag:(NSString *)hashtagText;
+
 - (void)startEditingText;
 
 @end

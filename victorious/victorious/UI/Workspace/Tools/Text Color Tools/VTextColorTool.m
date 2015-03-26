@@ -25,7 +25,7 @@ static NSString * const kPickerKey = @"picker";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIImage *selectedIcon;
 @property (nonatomic, strong) VEditTextToolViewController *canvasToolViewController;
-@property (nonatomic, strong) VTickerPickerViewController *toolPicker;
+@property (nonatomic, strong, readwrite) VTickerPickerViewController *toolPicker;
 
 @end
 
