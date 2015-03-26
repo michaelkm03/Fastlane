@@ -28,14 +28,6 @@ NSString * const VStreamFilterTypePopular = @"popular";
     return self.hashtag != nil;
 }
 
-+ (VStream *)remixStreamForSequence:(VSequence *)sequence
-{
-    NSString *escapedRemoteId = [(sequence.remoteId ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/remixes_by_sequence/%@/%@/%@",
-                         escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
-    return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-}
-
 + (VStream *)streamForUser:(VUser *)user
 {
     NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
