@@ -36,26 +36,6 @@ NSString * const VStreamFilterTypePopular = @"popular";
     return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
-+ (VStream *)streamForRemoteId:(NSString *)remoteId
-                    filterName:(NSString *)filterName
-          managedObjectContext:(NSManagedObjectContext *)context
-{
-    NSString *streamIdKey = remoteId ?: @"0";
-    NSString *filterIdKey;
-    NSString *apiPath = [@"/api/sequence/detail_list_by_stream/" stringByAppendingPathComponent:streamIdKey];
-    if (filterName.length)
-    {
-        filterIdKey = filterName;
-        apiPath = [apiPath stringByAppendingPathComponent:filterIdKey];
-    }
-    
-    VStream *stream = [self streamForPath:apiPath inContext:context];
-    stream.remoteId = remoteId;
-    stream.filterName = filterName;
-    [stream.managedObjectContext saveToPersistentStore:nil];
-    return stream;
-}
-
 + (VStream *)streamForPath:(NSString *)apiPath
                  inContext:(NSManagedObjectContext *)context
 {
