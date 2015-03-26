@@ -108,7 +108,7 @@ static const CGFloat kParallaxMovementAmount = 30.0f;
     CGFloat fittingContainerHeight = kTextInset * 2 + textHeight;
     if ( containerHeight < fittingContainerHeight )
     {
-        //If the height 
+        //If our preferred container height is too short to nicely fit the text, then use the newly calculated fittingContainerHeight
         containerHeight = fittingContainerHeight;
     }
     self.labelContainerHeightConstraint.constant = containerHeight;
@@ -125,6 +125,11 @@ static const CGFloat kParallaxMovementAmount = 30.0f;
 - (void)setParallaxYOffset:(CGFloat)parallaxYOffset
 {
     _parallaxYOffset = parallaxYOffset;
+    
+    if ( [self.stream.name isEqualToString:@"Test"] )
+    {
+        NSLog(@"yOffset %f", parallaxYOffset);
+    }
     
     [self updateParallaxEffectForFrame:self.previewImageView.frame];
 }

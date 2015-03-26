@@ -20,6 +20,8 @@
 
 static const CGFloat kPlaylistCellHeight = 140.0f;
 
+static const CGFloat kStatusBarHeight = 20.0f;
+
 @interface VPlaylistCollectionViewController ()
 
 @end
@@ -76,20 +78,25 @@ static const CGFloat kPlaylistCellHeight = 140.0f;
 {
     for ( VDirectoryPlaylistCell *playlistCell in self.collectionView.visibleCells )
     {
-        [self updateParallaxYOffsetOfCell:playlistCell withMidY:CGRectGetMidY(playlistCell.frame)];
+        [self updateParallaxYOffsetOfCell:playlistCell withYOrigin:CGRectGetMinY(playlistCell.frame)];
     }
 }
 
-- (void)updateParallaxYOffsetOfCell:(VDirectoryPlaylistCell *)playlistCell withMidY:(CGFloat)midY
+- (void)updateParallaxYOffsetOfCell:(VDirectoryPlaylistCell *)playlistCell withYOrigin:(CGFloat)yOrigin
 {
-    //Determine and set the parallaxYOffset for the provided cell
+    //Determine and set the parallaxYOffset for the provided cell.
     
-    CGFloat topInset = 20.0f; // Only the height of the status bar
     CGFloat contentOffset = self.collectionView.contentOffset.y;
     CGFloat cellHeight = CGRectGetHeight(playlistCell.bounds);
-    CGFloat yRange = CGRectGetHeight(self.collectionView.bounds) - topInset + cellHeight;
-    CGFloat cellCenter = midY - topInset;
-    playlistCell.parallaxYOffset = (contentOffset - cellCenter - ( cellHeight / 2 ) ) / (yRange / 2) + 1;
+    
+    //Represents entire range where the ENTIRE cell is visible. Must remove "topInset" (the status bar height) from the collectionViewBounds height because it isn't otherwise accounted for and the status bar appears in front of the visible cells
+    CGFloat yRange = CGRectGetHeight(self.collectionView.bounds) - kStatusBarHeight - cellHeight;
+    
+    //This will provide a value in the range [-1, 0] such that the cell is just touching the status bar at -1 and just touching the bottom of the collection view bounds at 0
+    CGFloat unnormalizedYOffset = ( contentOffset - ( yOrigin - kStatusBarHeight ) ) / yRange;
+    
+    //We need to pass in values in the range [-1, 1] for the parallaxYOffset to have proper image displaying. Noramlize the value we yOffset value we have by multiplying by 2 and adding 1.
+    playlistCell.parallaxYOffset = ( unnormalizedYOffset * 2 ) + 1;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -126,8 +133,9 @@ static const CGFloat kPlaylistCellHeight = 140.0f;
     cell.stream = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     cell.dependencyManager = self.dependencyManager;
     CGFloat interLineSpace = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout minimumLineSpacingForSectionAtIndex:0];
-    CGFloat midY = kPlaylistCellHeight / 2 + indexPath.row * (kPlaylistCellHeight + interLineSpace) + 20.0f;
-    [self updateParallaxYOffsetOfCell:cell withMidY:midY];
+    //Need to add statusBarHeight here since it will be added into the yOrigin by the collectionView
+    CGFloat yOrigin = indexPath.row * (kPlaylistCellHeight + interLineSpace) + kStatusBarHeight;
+    [self updateParallaxYOffsetOfCell:cell withYOrigin:yOrigin];
     return cell;
 }
 

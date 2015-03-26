@@ -17,6 +17,9 @@
  */
 @property (nonatomic, strong) VStreamItem *stream;
 
+/**
+ *  A value in the range of [-1,1] that will be used to update the offset of the preview image inside the cell
+ */
 @property (nonatomic, assign) CGFloat parallaxYOffset;
 
 @end
