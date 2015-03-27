@@ -250,7 +250,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
      }];
 }
 
-#pragma mark - VBackgroundView
+#pragma mark - VBackgroundContainer
 
 - (UIView *)v_backgroundContainer
 {
