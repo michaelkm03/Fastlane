@@ -33,7 +33,7 @@
  chance to select from multiple views 
  (e.g. a tab bar)
  */
-@interface VSelectorViewBase : UIView <VHasManagedDependancies>
+@interface VSelectorViewBase : UIView <VHasManagedDependencies>
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VSelectorViewDelegate> delegate; ///< A delegate object to be notified when the selection changes

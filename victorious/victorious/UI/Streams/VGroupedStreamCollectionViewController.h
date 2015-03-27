@@ -11,7 +11,7 @@
 
 @class VStream, VStreamCollectionViewDataSource;
 
-@interface VGroupedStreamCollectionViewController : VAbstractStreamCollectionViewController <VHasManagedDependancies>
+@interface VGroupedStreamCollectionViewController : VAbstractStreamCollectionViewController <VHasManagedDependencies>
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager;
 

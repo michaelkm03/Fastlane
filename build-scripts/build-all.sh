@@ -16,7 +16,7 @@ DEFAULT_DEV_ACCOUNT="build.server@getvictorious.com"
 shift 2
 
 # Default App ID key: the plist key that contains the app ID that corresponds to the configuration we're building.
-if [ "$CONFIGURATION" == "Release" ]; then
+if [ "$CONFIGURATION" == "Release" -o "$CONFIGURATION" == "Stable" ]; then
     DEFAULT_APP_ID_KEY="VictoriousAppID"
 elif [ "$CONFIGURATION" == "Staging" ]; then
     DEFAULT_APP_ID_KEY="StagingAppID"

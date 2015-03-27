@@ -11,7 +11,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VTitleOverlayStreamCellFactory : NSObject <VHasManagedDependancies, VStreamCellFactory>
+@interface VTitleOverlayStreamCellFactory : NSObject <VHasManagedDependencies, VStreamCellFactory>
 
 /**
  Initializes the stream cell factory with an instance of VDependencyManager

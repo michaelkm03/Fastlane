@@ -27,7 +27,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - VTestViewControllerWithInitMethod
 
-@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependancies, VTestProtocol>
+@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependencies, VTestProtocol>
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL calledInitMethod;
@@ -55,7 +55,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - VTestViewControllerWithNewMethod
 
-@interface VTestViewControllerWithNewMethod : UIViewController <VHasManagedDependancies>
+@interface VTestViewControllerWithNewMethod : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic) BOOL calledNewMethod;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -76,7 +76,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - VTestObjectWithProperty
 
-@interface VTestObjectWithProperty : NSObject <VHasManagedDependancies>
+@interface VTestObjectWithProperty : NSObject <VHasManagedDependencies>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 

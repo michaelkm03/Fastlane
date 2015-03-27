@@ -31,7 +31,7 @@
 /**
  *  The content view controller.
  */
-@interface VNewContentViewController : UIViewController <VHasManagedDependancies>
+@interface VNewContentViewController : UIViewController <VHasManagedDependencies>
 
 /**
  *  VNewContentViewController informs its delegate when it is ready to be dismissed or performed a deletion action.

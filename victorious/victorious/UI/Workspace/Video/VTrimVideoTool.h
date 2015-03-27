@@ -12,7 +12,7 @@
 @import CoreMedia;
 @import AVFoundation;
 
-@interface VTrimVideoTool : NSObject <VVideoWorkspaceTool, VHasManagedDependancies>
+@interface VTrimVideoTool : NSObject <VVideoWorkspaceTool, VHasManagedDependencies>
 
 /**
  *  Whether or not the user did trim.
