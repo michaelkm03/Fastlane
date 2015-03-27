@@ -8,20 +8,21 @@
 
 #import "VMarqueeStreamItemCell.h"
 
-#import "VDefaultProfileButton.h"
-
+// Stream Support
 #import "VStreamItem+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
-
-#import "UIImageView+VLoadingAnimations.h"
-#import "UIImage+ImageCreation.h"
-
-#import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VStreamWebViewController.h"
-#import "UIView+Autolayout.h"
 
+// Views + Helpers
+#import "VDefaultProfileButton.h"
+#import "UIView+Autolayout.h"
+#import "UIImageView+VLoadingAnimations.h"
+#import "UIImage+ImageCreation.h"
+#import "VThemeManager.h"
+
+// Dependencies
 #import "VDependencyManager.h"
 
 CGFloat const kVDetailVisibilityDuration = 3.0f;
@@ -35,6 +36,7 @@ static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
@@ -79,7 +81,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
-                           placeholderImage:[UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+                           placeholderImage:nil];
     
     self.detailsBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -130,12 +132,12 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    _dependencyManager = dependencyManager;
-    if ( _dependencyManager != nil )
+    [super setDependencyManager:dependencyManager];
+    if ( self.dependencyManager != nil )
     {
-        self.detailsBackgroundView.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileImageButton.layer.borderColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
+        self.detailsBackgroundView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileImageButton.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
     }
 }
 
@@ -211,6 +213,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     if ( self.webViewController == nil )
     {
         self.webViewController = [[VStreamWebViewController alloc] init];
+        self.webViewController.view.backgroundColor = [UIColor clearColor];
         [self.webViewContainer addSubview:self.webViewController.view];
         [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
         self.previewImageView.hidden = YES;
@@ -254,6 +257,13 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     CGFloat width = CGRectGetWidth(bounds);
     CGFloat height = width * kVCellHeightRatio;
     return CGSizeMake(width, height);
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.backgroundContainer;
 }
 
 @end

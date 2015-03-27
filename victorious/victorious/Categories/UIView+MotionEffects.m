@@ -17,7 +17,7 @@ static const char kAssociatedObjectKey;
 - (void)v_addMotionEffectsWithMagnitude:(CGFloat)magnitude
 {
     UIMotionEffectGroup *oldMotionEffects = objc_getAssociatedObject(self, &kAssociatedObjectKey);
-    if (oldMotionEffects)
+    if (oldMotionEffects != nil)
     {
         [self removeMotionEffect:oldMotionEffects];
     }
@@ -27,8 +27,8 @@ static const char kAssociatedObjectKey;
     xMotionEffect.minimumRelativeValue = @(-magnitude);
     
     UIInterpolatingMotionEffect *yMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    yMotionEffect.maximumRelativeValue = @(magnitude);
-    yMotionEffect.minimumRelativeValue = @(-magnitude);
+    yMotionEffect.maximumRelativeValue = @(-magnitude);
+    yMotionEffect.minimumRelativeValue = @(magnitude);
     
     UIMotionEffectGroup *motionEffectsGroup = [[UIMotionEffectGroup alloc] init];
     motionEffectsGroup.motionEffects = @[xMotionEffect, yMotionEffect];

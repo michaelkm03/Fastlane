@@ -66,14 +66,12 @@
 {
     self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];
     self.secondAssetUrl = [NSURL URLWithString:self.secondAnswer.thumbnailUrl];
-    
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    
+
     [self.previewImageView fadeInImageAtURL:self.firstAssetUrl
-                           placeholderImage:placeholderImage];
+                           placeholderImage:nil];
     
     [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
-                          placeholderImage:placeholderImage];
+                          placeholderImage:nil];
 }
 
 - (void)setDescriptionText:(NSString *)text
