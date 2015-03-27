@@ -20,6 +20,6 @@
  *
  *  @return A view that can become the superview of a new background.
  */
-- (UIView *)v_backgroundContainer;
+- (UIView *)vBackgroundContainerView;
 
 @end

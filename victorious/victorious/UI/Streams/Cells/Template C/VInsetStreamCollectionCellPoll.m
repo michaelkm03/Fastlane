@@ -75,7 +75,7 @@ static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)v_backgroundContainer
+- (UIView *)vBackgroundContainerView
 {
     return self.backgroundContainer;
 }
