@@ -261,7 +261,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)vBackgroundContainerView
+- (UIView *)backgroundContainerView
 {
     return self.backgroundContainer;
 }

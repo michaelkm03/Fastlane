@@ -54,7 +54,7 @@
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)vBackgroundContainerView
+- (UIView *)backgroundContainerView
 {
     return self.backgroundContainer;
 }

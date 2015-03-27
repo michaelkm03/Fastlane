@@ -15,7 +15,7 @@
 
 - (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundHost
 {
-    if (![backgroundHost respondsToSelector:@selector(vBackgroundContainerView)])
+    if (![backgroundHost respondsToSelector:@selector(backgroundContainerView)])
     {
         return;
     }
@@ -27,15 +27,15 @@
     }
     
     // We've already added a background do nothing
-    if ([backgroundHost vBackgroundContainerView].subviews.count > 0)
+    if ([backgroundHost backgroundContainerView].subviews.count > 0)
     {
         return;
     }
     
     UIView *backgroundView = [background viewForBackground];
     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    [[backgroundHost vBackgroundContainerView] addSubview:backgroundView];
-    [[backgroundHost vBackgroundContainerView] v_addFitToParentConstraintsToSubview:backgroundView];
+    [[backgroundHost backgroundContainerView] addSubview:backgroundView];
+    [[backgroundHost backgroundContainerView] v_addFitToParentConstraintsToSubview:backgroundView];
 }
 
 @end

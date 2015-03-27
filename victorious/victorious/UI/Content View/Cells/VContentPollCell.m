@@ -252,7 +252,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)vBackgroundContainerView
+- (UIView *)backgroundContainerView
 {
     return self.backgroundContainer;
 }

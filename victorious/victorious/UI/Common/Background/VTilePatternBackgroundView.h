@@ -24,7 +24,7 @@
 @property (nonatomic, strong) UIImage *image;
 
 /**
- *  If the tiled backgroudn should parallax with the tilt of the device.
+ *  If the tiled background should parallax with the tilt of the device.
  */
 @property (nonatomic, assign) BOOL tiltParallaxEnabled;
 

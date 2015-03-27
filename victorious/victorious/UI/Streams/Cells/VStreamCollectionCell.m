@@ -371,7 +371,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)vBackgroundContainerView
+- (UIView *)backgroundContainerView
 {
     return self.backgroundContainer;
 }

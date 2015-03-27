@@ -158,7 +158,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)vBackgroundContainerView
+- (UIView *)backgroundContainerView
 {
     return self.backgroundContainer;
 }
