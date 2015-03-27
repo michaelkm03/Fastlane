@@ -62,6 +62,8 @@
         [self setDefaultValues];
         self.hasBeenDisplayed = YES;
     }
+    
+    [self updateTextView];
 }
 
 - (void)setDefaultValues
@@ -123,17 +125,21 @@
 - (void)updateTextView
 {
     NSDictionary *attributes = [self.configuration textAttributesWithDependencyManager:self.dependencyManager];
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:_text attributes:attributes];;
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:_text attributes:attributes];
     
     NSArray *hashtagRanges = [VHashTags detectHashTags:_text];
     NSDictionary *hashtagAttributes = [self.configuration hashtagTextAttributesWithDependencyManager:self.dependencyManager];
     [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:hashtagAttributes];
     
+    NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:_text includeHashSymbol:YES];
+    
+    [self.textLayoutHelper addWordPaddingWithVaule:self.configuration.calloutWordPadding
+                                toAttributedString:attributedText
+                                 withCalloutRanges:hashtagCalloutRanges];
+    
     self.textView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
     
-    NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:_text includeHashSymbol:YES];
-    [self.textLayoutHelper updateTextViewBackground:self.textView
-                                      calloutRanges:hashtagCalloutRanges];
+    [self.textLayoutHelper updateTextViewBackground:self.textView calloutRanges:hashtagCalloutRanges];
 }
 
 #pragma mark - UITextViewDelegate

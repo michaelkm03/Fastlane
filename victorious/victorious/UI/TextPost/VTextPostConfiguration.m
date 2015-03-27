@@ -19,8 +19,9 @@
         _lineHeightMultipler   = 1.6;
         _verticalSpacing       = 2;
         _lineOffsetMultiplier  = 0.4f;
-        _horizontalSpacing     = 4;
+        _horizontalSpacing     = 2;
         _maxTextLength         = 200;
+        _calloutWordPadding    = 10;
         _backgroundColor       = [UIColor whiteColor];
     }
     return self;
@@ -45,7 +46,7 @@
 - (NSParagraphStyle *)paragraphStyleWithFont:(UIFont *)font
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft; //f das fsdNSTextAlignmentCenter;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
     paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = ((CGFloat)font.pointSize) * self.lineHeightMultipler;
     return paragraphStyle;
 }

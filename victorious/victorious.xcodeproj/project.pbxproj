@@ -488,7 +488,6 @@
 		A7A921FD1AC3609B00F4755E /* VTextPostHashtagContraints.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FC1AC3609B00F4755E /* VTextPostHashtagContraints.m */; };
 		A7A922001AC362F700F4755E /* VTextPostConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */; };
 		A7A922581AC4B52A00F4755E /* VWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922571AC4B52A00F4755E /* VWorkspaceViewController.m */; };
-		A7A9225B1AC5D78700F4755E /* VTextPostBackgroundModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A9225A1AC5D78700F4755E /* VTextPostBackgroundModel.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9A31A83F1C300A3D3A0 /* VStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9761A83F1C300A3D3A0 /* VStreamCellActionView.m */; };
@@ -1687,8 +1686,6 @@
 		A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostConfiguration.m; sourceTree = "<group>"; };
 		A7A922561AC4B52A00F4755E /* VWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceViewController.h; sourceTree = "<group>"; };
 		A7A922571AC4B52A00F4755E /* VWorkspaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceViewController.m; sourceTree = "<group>"; };
-		A7A922591AC5D78700F4755E /* VTextPostBackgroundModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostBackgroundModel.h; sourceTree = "<group>"; };
-		A7A9225A1AC5D78700F4755E /* VTextPostBackgroundModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostBackgroundModel.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
 		A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionController.h; sourceTree = "<group>"; };
@@ -4088,8 +4085,6 @@
 				A793A93C1AC22C8C007F32EE /* VTextPostViewController.h */,
 				A793A93D1AC22C8C007F32EE /* VTextPostViewController.m */,
 				A793A93E1AC22C8C007F32EE /* VTextPostViewController.xib */,
-				A7A922591AC5D78700F4755E /* VTextPostBackgroundModel.h */,
-				A7A9225A1AC5D78700F4755E /* VTextPostBackgroundModel.m */,
 			);
 			path = TextPost;
 			sourceTree = "<group>";
@@ -5835,7 +5830,6 @@
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
-				A7A9225B1AC5D78700F4755E /* VTextPostBackgroundModel.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				0314D06419B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m in Sources */,

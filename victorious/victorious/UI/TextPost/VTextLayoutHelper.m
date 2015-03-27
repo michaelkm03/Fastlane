@@ -20,6 +20,19 @@
 
 @implementation VTextLayoutHelper
 
+- (void)addWordPaddingWithVaule:(NSInteger)wordPadding
+             toAttributedString:(NSMutableAttributedString *)attributedString
+                withCalloutRanges:(NSArray *)calloutRanges
+{
+    for ( NSValue *rangeValueObject in calloutRanges )
+    {
+        NSRange range = rangeValueObject.rangeValue;
+        NSNumber *padding = @( wordPadding );
+        [attributedString addAttribute:NSKernAttributeName value:padding range:NSMakeRange( range.location - 1, 1 )];
+        [attributedString addAttribute:NSKernAttributeName value:padding range:NSMakeRange( range.location - 1 + range.length, 1 )];
+    }
+}
+
 - (NSArray *)textLinesFromText:(NSString *)text
                 withAttributes:(NSDictionary *)attributes
                       maxWidth:(CGFloat)maxWidth
@@ -91,6 +104,10 @@
                 lineRect.size.width = lastWordBoundingRect.size.width + lastWordBoundingRect.size.height * 0.3;
             }
         }
+        if ( textView.textAlignment == NSTextAlignmentCenter )
+        {
+            lineRect.origin.x = (CGRectGetWidth(textView.frame) - CGRectGetWidth(lineRect)) * 0.5f;
+        }
         [backgroundLineFrames addObject:[NSValue valueWithCGRect:lineRect]];
     }
     
@@ -100,13 +117,16 @@
         [calloutRects addObject:[[NSMutableArray alloc] init]];
     }
     
+    const CGFloat spaceOffset = (self.configuration.calloutWordPadding + self.configuration.horizontalSpacing) * 0.5f;
     for ( NSValue *rangeValueObject in calloutRanges )
     {
         NSRange range = [rangeValueObject rangeValue];
         textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX );
         CGRect rect = [textView.layoutManager boundingRectForGlyphRange:range inTextContainer:textView.textContainer];
-        rect.size.height = singleCharRect.size.height - self.configuration.verticalSpacing;
         rect.origin.y += rect.size.height * self.configuration.lineOffsetMultiplier;
+        rect.size.height = singleCharRect.size.height - self.configuration.verticalSpacing;
+        rect.origin.x -= spaceOffset;
+        rect.size.width += spaceOffset;
         
         NSUInteger lineNumber = CGRectGetMinY(rect) / totalRect.size.height * numLines;
        [[calloutRects objectAtIndex:lineNumber] addObject:[NSValue valueWithCGRect:rect]];
@@ -178,16 +198,8 @@
                 {
                     rect.size.width -= space;
                 }
-                i++;
                 
-                // If the callout was the first word of the line, sometimes it will offset
-                // a bit, in which case we'd like to realign it to the left side.
-                // Maybe only necessary for left justirfied?
-                /*if ( rect.origin.x < cleanupMargin )
-                {
-                    rect.size.width += cleanupMargin - rect.origin.x;
-                    rect.origin.x = 0;
-                }*/
+                i++;
                 
                 return [NSValue valueWithCGRect:rect];
             }];

@@ -19,4 +19,8 @@
 - (void)updateTextViewBackground:(VTextPostTextView *)textView
                    calloutRanges:(NSArray *)calloutRanges;
 
+- (void)addWordPaddingWithVaule:(NSInteger)wordPadding
+             toAttributedString:(NSMutableAttributedString *)attributedString
+              withCalloutRanges:(NSArray *)calloutRanges;
+
 @end

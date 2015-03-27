@@ -17,6 +17,7 @@
 @property (nonatomic, assign, readonly) CGFloat lineOffsetMultiplier;
 @property (nonatomic, assign, readonly) CGFloat horizontalSpacing;
 @property (nonatomic, assign, readonly) NSUInteger maxTextLength;
+@property (nonatomic, assign, readonly) NSUInteger calloutWordPadding;
 @property (nonatomic, readonly) UIColor *backgroundColor;
 
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
