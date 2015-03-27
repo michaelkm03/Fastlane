@@ -10,8 +10,14 @@
 
 @class VBackground;
 
+ /**
+ *  A convenience category for quickly grabbing backgrounds.
+ */
 @interface VDependencyManager (VBackground)
 
+/**
+ *  A background or nil if unable to find one.
+ */
 - (VBackground *)background;
 
 @end

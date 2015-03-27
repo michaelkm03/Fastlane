@@ -50,9 +50,9 @@
     }
 }
 
-#pragma mark - VBackgroundHost
+#pragma mark - VBackgroundContainer
 
-- (UIView *)v_backgroundHost
+- (UIView *)v_backgroundContainer
 {
     return self.backgroundContainer;
 }

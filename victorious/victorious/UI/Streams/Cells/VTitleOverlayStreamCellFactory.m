@@ -11,7 +11,7 @@
 #import "VStreamCollectionCellPoll.h"
 #import "VStreamCollectionCellWebContent.h"
 #import "VTitleOverlayStreamCellFactory.h"
-#import "VDependencyManager+VBackgroundHost.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 #import "VBackground.h"
 #import "UIView+AutoLayout.h"
 

@@ -132,9 +132,9 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     return 0;
 }
 
-#pragma mark - VBackgroundHost
+#pragma mark - VBackgroundContainer
 
-- (UIView *)v_backgroundHost
+- (UIView *)v_backgroundContainer
 {
     return self.backgroundHost;
 }

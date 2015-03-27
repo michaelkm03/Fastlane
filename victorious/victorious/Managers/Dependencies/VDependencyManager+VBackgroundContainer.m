@@ -1,21 +1,21 @@
 //
-//  VDependencyManager+VBackgroundHost.m
+//  VDependencyManager+VBackgroundContainer.m
 //  victorious
 //
 //  Created by Michael Sena on 3/27/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VDependencyManager+VBackgroundHost.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 #import "VBackground.h"
 #import "UIView+AutoLayout.h"
 
-@implementation VDependencyManager (VBackgroundHost)
+@implementation VDependencyManager (VBackgroundContainer)
 
-- (void)addBackgroundToBackgroundHost:(id <VBackgroundHost>)backgroundHost
+- (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundHost
 {
-    if (![backgroundHost respondsToSelector:@selector(v_backgroundHost)])
+    if (![backgroundHost respondsToSelector:@selector(v_backgroundContainer)])
     {
         return;
     }
@@ -27,15 +27,15 @@
     }
     
     // We've already added a background do nothing
-    if ([backgroundHost v_backgroundHost].subviews.count > 0)
+    if ([backgroundHost v_backgroundContainer].subviews.count > 0)
     {
         return;
     }
     
     UIView *backgroundView = [background viewForBackground];
     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    [[backgroundHost v_backgroundHost] addSubview:backgroundView];
-    [[backgroundHost v_backgroundHost] v_addFitToParentConstraintsToSubview:backgroundView];
+    [[backgroundHost v_backgroundContainer] addSubview:backgroundView];
+    [[backgroundHost v_backgroundContainer] v_addFitToParentConstraintsToSubview:backgroundView];
 }
 
 @end

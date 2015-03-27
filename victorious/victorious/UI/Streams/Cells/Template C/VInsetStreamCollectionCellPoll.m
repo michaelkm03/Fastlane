@@ -73,9 +73,9 @@ static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
     return CGSizeMake(width, height);
 }
 
-#pragma mark - VBackgroundHost
+#pragma mark - VBackgroundContainer
 
-- (UIView *)v_backgroundHost
+- (UIView *)v_backgroundContainer
 {
     return self.backgroundContainer;
 }

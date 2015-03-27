@@ -156,9 +156,9 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
 }
 
-#pragma mark - VBackgroundHost
+#pragma mark - VBackgroundContainer
 
-- (UIView *)v_backgroundHost
+- (UIView *)v_backgroundContainer
 {
     return self.backgroundContainer;
 }

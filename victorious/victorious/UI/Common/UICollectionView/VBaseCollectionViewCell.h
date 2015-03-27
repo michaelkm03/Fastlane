@@ -10,14 +10,14 @@
 
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VSwipeCollectionViewCell.h"
-#import "VBackgroundHost.h"
+#import "VBackgroundContainer.h"
 
 @class VDependencyManager;
 
 /**
  *  Implements sensible defaults of VSharedCollectionReusableViewMethods. All CollectionViewCell subclasses should subclass VBaseCollectionViewCell.
  */
-@interface VBaseCollectionViewCell : VSwipeCollectionViewCell <VSharedCollectionReusableViewMethods, VBackgroundHost>
+@interface VBaseCollectionViewCell : VSwipeCollectionViewCell <VSharedCollectionReusableViewMethods, VBackgroundContainer>
 
 /**
  A dependencyManager that subclasses of this class can use to modify cell appearance.

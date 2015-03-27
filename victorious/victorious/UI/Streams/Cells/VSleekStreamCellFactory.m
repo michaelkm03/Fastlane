@@ -11,7 +11,7 @@
 #import "VSleekStreamCollectionCellPoll.h"
 #import "VSequence+Fetcher.h"
 #import "VStreamCollectionCellWebContent.h"
-#import "VDependencyManager+VBackgroundHost.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 @interface VSleekStreamCellFactory ()
 
