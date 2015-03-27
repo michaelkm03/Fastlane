@@ -7,17 +7,24 @@
 //
 
 #import "VContentImageCell.h"
-#import "VParallaxPatternView.h"
 
 @interface VContentImageCell ()
 
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, assign) BOOL updatedImageBounds;
-
-@property (weak, nonatomic) IBOutlet VParallaxPatternView *parallaxPatternView;
 
 @end
 
 @implementation VContentImageCell
+
+#pragma mark - NSObject
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.shrinkingContentView = self.contentImageView;
+}
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
@@ -25,6 +32,8 @@
 {
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
 }
+
+#pragma mark - UIView
 
 - (void)setBounds:(CGRect)bounds
 {
@@ -41,16 +50,11 @@
     }
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.shrinkingContentView = self.contentImageView;
-}
+#pragma mark - VBackgroundHost
 
-- (void)setPatternBackgroundColor:(UIColor *)patternBackgroundColor
+- (UIView *)v_backgroundHost
 {
-    [self.parallaxPatternView setPatternTintColor:patternBackgroundColor];
+    return self.backgroundContainer;
 }
 
 @end

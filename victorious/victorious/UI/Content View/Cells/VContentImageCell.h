@@ -6,15 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VBaseCollectionViewCell.h"
-
 #import "VContentCell.h"
 
 /// A UICollectionViewCell for displaying image content.
 @interface VContentImageCell : VContentCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *contentImageView;
-
-- (void)setPatternBackgroundColor:(UIColor *)patternBackgroundColor;
 
 @end

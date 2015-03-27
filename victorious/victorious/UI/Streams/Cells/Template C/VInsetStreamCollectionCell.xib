@@ -37,7 +37,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yqk-3U-Cvu" userLabel="Content Container">
                         <rect key="frame" x="0.0" y="50" width="302" height="302"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYN-Ie-nea" customClass="VParallaxPatternView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cYN-Ie-nea" userLabel="Background Container">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -111,6 +111,7 @@
             <size key="customSize" width="543" height="290"/>
             <connections>
                 <outlet property="actionView" destination="LDv-jo-7gZ" id="1oO-81-IEN"/>
+                <outlet property="backgroundContainer" destination="cYN-Ie-nea" id="1KV-bH-CHV"/>
                 <outlet property="captionTextView" destination="QyC-HK-x2o" id="cMd-VE-Gge"/>
                 <outlet property="captionTextViewBottomConstraint" destination="u0E-OZ-gY2" id="zUj-rx-H7e"/>
                 <outlet property="captionTextViewTopConstraint" destination="A3e-xE-iUM" id="OUm-Pz-YPf"/>
@@ -119,7 +120,6 @@
                 <outlet property="commentsLabel" destination="cW4-bM-sNC" id="luq-a5-YM5"/>
                 <outlet property="commentsLeftConstraint" destination="9KD-hj-9El" id="GtG-Hl-072"/>
                 <outlet property="contentContainer" destination="Yqk-3U-Cvu" id="WaC-5x-TYc"/>
-                <outlet property="loadingView" destination="cYN-Ie-nea" id="30h-fi-Xye"/>
                 <outlet property="playBackgroundImageView" destination="IRG-lN-Zwl" id="xkg-6p-V7g"/>
                 <outlet property="playImageView" destination="EYB-Sg-RQg" id="eFi-Uc-FSE"/>
                 <outlet property="previewImageView" destination="De6-Pn-uJH" id="Ypz-2a-uiA"/>

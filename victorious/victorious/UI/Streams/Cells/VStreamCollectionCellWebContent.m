@@ -16,16 +16,15 @@
 
 // Views + Helpers
 #import "UIView+Autolayout.h"
-#import "VParallaxPatternView.h"
 
 // Dependencies
 #import "VDependencyManager.h"
 
 @interface VStreamCollectionCellWebContent ()
 
+@property (weak, nonatomic) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
-@property (nonatomic, weak) IBOutlet VParallaxPatternView *parallaxPatternView;
 
 @end
 
@@ -48,16 +47,16 @@
     self.webViewController.url = [NSURL URLWithString:sequence.webContentPreviewUrl];
 }
 
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    [super setDependencyManager:dependencyManager];
-    
-    self.parallaxPatternView.patternTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-}
-
 - (CGRect)mediaContentFrame
 {
     return self.frame;
+}
+
+#pragma mark - VBackgroundHost
+
+- (UIView *)v_backgroundHost
+{
+    return self.backgroundContainer;
 }
 
 @end

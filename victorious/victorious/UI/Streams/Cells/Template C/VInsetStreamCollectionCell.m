@@ -12,7 +12,6 @@
 #import "VSequence+Fetcher.h"
 #import "VStreamCellActionView.h"
 #import "VStreamCellHeaderView.h"
-#import "VParallaxPatternView.h"
 
 // IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
@@ -26,7 +25,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 @interface VInsetStreamCollectionCell ()
 
-@property (nonatomic, weak) IBOutlet VParallaxPatternView *loadingView;
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 
 @end
 
@@ -110,7 +109,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.loadingView.patternTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 
@@ -156,6 +154,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
     [self.commentsLabel setText:commentsString];
     self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
+}
+
+#pragma mark - VBackgroundHost
+
+- (UIView *)v_backgroundHost
+{
+    return self.backgroundContainer;
 }
 
 @end

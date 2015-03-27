@@ -17,7 +17,6 @@
 
 // Views + Helpers
 #import "VDefaultProfileButton.h"
-#import "VParallaxPatternView.h"
 #import "UIView+Autolayout.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
@@ -37,7 +36,7 @@ static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 
-@property (nonatomic, weak) IBOutlet VParallaxPatternView *parallaxPatternView;
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
@@ -133,13 +132,12 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    _dependencyManager = dependencyManager;
-    if ( _dependencyManager != nil )
+    [super setDependencyManager:dependencyManager];
+    if ( self.dependencyManager != nil )
     {
-        self.detailsBackgroundView.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileImageButton.layer.borderColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
-        self.parallaxPatternView.patternTintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.detailsBackgroundView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileImageButton.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
     }
 }
 
@@ -259,6 +257,13 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     CGFloat width = CGRectGetWidth(bounds);
     CGFloat height = width * kVCellHeightRatio;
     return CGSizeMake(width, height);
+}
+
+#pragma mark - VBackgroundHost
+
+- (UIView *)v_backgroundHost
+{
+    return self.backgroundContainer;
 }
 
 @end

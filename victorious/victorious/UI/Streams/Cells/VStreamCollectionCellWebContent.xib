@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRJ-WM-Cx7" customClass="VParallaxPatternView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRJ-WM-Cx7" userLabel="Background Container">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -37,7 +37,7 @@
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
-                <outlet property="parallaxPatternView" destination="VRJ-WM-Cx7" id="X6V-9B-oQr"/>
+                <outlet property="backgroundContainer" destination="VRJ-WM-Cx7" id="duM-0d-ww9"/>
                 <outlet property="webViewContainer" destination="7gx-qd-AkN" id="9Iw-fN-9j9"/>
             </connections>
             <point key="canvasLocation" x="-127" y="658"/>

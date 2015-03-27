@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VParallaxPatternView : UIView
+@interface VTilePatternBackgroundView : UIView
 
 @property (nonatomic, copy) UIColor *patternTintColor;
+@property (nonatomic, strong) UIImage *patternImage;
+@property (nonatomic, assign) BOOL tiltParallaxEnabled;
+@property (nonatomic, assign) BOOL shimmerAnimationActive;
 
 @end

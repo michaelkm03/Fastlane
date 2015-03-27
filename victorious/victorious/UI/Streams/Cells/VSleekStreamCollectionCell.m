@@ -18,7 +18,6 @@
 #import "VSleekStreamCellActionView.h"
 #import "NSString+VParseHelp.h"
 #import "VStreamCellHeaderView.h"
-#import "VParallaxPatternView.h"
 
 const CGFloat kSleekCellHeaderHeight = 50.0f;
 const CGFloat kSleekCellActionViewHeight = 41.0f;
@@ -32,7 +31,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 @interface VSleekStreamCollectionCell ()
 
-@property (nonatomic, weak) IBOutlet VParallaxPatternView *parallaxPatternView;
+@property (nonatomic, weak) IBOutlet UIView *backgroundHost;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 
@@ -73,7 +72,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         [self.streamCellHeaderView refreshAppearanceAttributes];
-        self.parallaxPatternView.patternTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
     self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
 }
@@ -133,6 +131,15 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     return 0;
 }
+
+#pragma mark - VBackgroundHost
+
+- (UIView *)v_backgroundHost
+{
+    return self.backgroundHost;
+}
+
+#pragma mark - Class Methods
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {

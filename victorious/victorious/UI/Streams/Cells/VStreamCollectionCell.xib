@@ -16,7 +16,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j4I-ZV-vTW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S7o-oK-F0L" customClass="VParallaxPatternView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S7o-oK-F0L" userLabel="Background Container">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -134,6 +134,7 @@
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
+                <outlet property="backgroundContainer" destination="S7o-oK-F0L" id="hVg-Zl-xeX"/>
                 <outlet property="bottomGradient" destination="ANb-iR-hwm" id="lWl-Jc-DFX"/>
                 <outlet property="captionTextView" destination="Ijd-Vg-9fv" id="4bk-Tz-fIr"/>
                 <outlet property="contentContainer" destination="j4I-ZV-vTW" id="lqa-Gd-QXN"/>

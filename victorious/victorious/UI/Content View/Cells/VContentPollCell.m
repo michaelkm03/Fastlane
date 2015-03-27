@@ -10,7 +10,6 @@
 
 // Views + Helpers
 #import "VResultView.h"
-#import "VParallaxPatternView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 // Theme
@@ -21,6 +20,8 @@
 static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @interface VContentPollCell () <VCVideoPlayerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIView *backgroundContainer;
 
 @property (nonatomic, weak, readwrite) IBOutlet UIView *answerAContainer;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *answerBContainer;
@@ -36,13 +37,9 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @property (weak, nonatomic) IBOutlet UIView *pollCountContainer;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfVotersLabel;
-@property (weak, nonatomic) IBOutlet VParallaxPatternView *parallaxPatternView;
 
 @property (nonatomic, strong) VCVideoPlayerViewController *aVideoPlayerViewController;
 @property (nonatomic, strong) VCVideoPlayerViewController *bVideoPlayerViewController;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *answerAContainerViewWidth;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *answerBContainerViewWidth;
 
 @property (nonatomic, assign, readwrite) BOOL answerBIsVideo;
 @property (nonatomic, assign, readwrite) BOOL answerAIsVideo;
@@ -207,11 +204,6 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     return videoPlayerViewController;
 }
 
-- (void)setPatternBackgroundColor:(UIColor *)patternBackgroundColor
-{
-    [self.parallaxPatternView setPatternTintColor:patternBackgroundColor];
-}
-
 #pragma mark - IBActions
 
 - (IBAction)pressedAnswerAButton:(id)sender
@@ -258,4 +250,10 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
      }];
 }
 
+#pragma mark - VBackgroundView
+
+- (UIView *)v_backgroundHost
+{
+    return self.backgroundContainer;
+}
 @end

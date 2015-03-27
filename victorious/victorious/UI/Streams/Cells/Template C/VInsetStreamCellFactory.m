@@ -13,6 +13,11 @@
 #import "VStreamCollectionCellWebContent.h"
 #import "VDependencyManager.h"
 
+// Background
+#import "VDependencyManager+VBackground.h"
+#import "VBackground.h"
+#import "UIView+AutoLayout.h"
+
 @interface VInsetStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
@@ -56,6 +61,7 @@
         VStreamCollectionCellWebContent *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         cell.sequence = sequence;
+        [self configureBackgroundOfCell:cell];
         return cell;
     }
     else
@@ -65,6 +71,9 @@
     }
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
+    
+    [self configureBackgroundOfCell:cell];
+    
     return cell;
 }
 
@@ -91,6 +100,33 @@
 - (UIEdgeInsets)sectionInsets
 {
     return UIEdgeInsetsMake(10.0f, 0.0f, 10.0f, 0.0f);
+}
+
+#pragma mark - Private
+
+- (void)configureBackgroundOfCell:(VBaseCollectionViewCell *)cell
+{
+    if (![cell respondsToSelector:@selector(v_backgroundHost)])
+    {
+        return;
+    }
+    
+    UIView *backgroundHost = [cell v_backgroundHost];
+    
+    if (backgroundHost.subviews.count > 0)
+    {
+        // We've already setup the background
+        return;
+    }
+    
+    VBackground *backgroundForCell = [self.dependencyManager background];
+    if (backgroundForCell != nil)
+    {
+        UIView *backgroundView = [backgroundForCell viewForBackground];
+        backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+        [backgroundHost addSubview:backgroundView];
+        [backgroundHost v_addFitToParentConstraintsToSubview:backgroundView];
+    }
 }
 
 @end

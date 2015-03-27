@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VParallaxPatternView.h"
+#import "VTilePatternBackgroundView.h"
 #import "UIView+MotionEffects.h"
 #import "UIColor+VBrightness.h"
 
@@ -16,7 +16,7 @@
 #define CEIL ceilf
 #endif
 
-@interface VParallaxPatternView ()
+@interface VTilePatternBackgroundView ()
 
 @property (nonatomic, assign) BOOL hasLayedOutPatternBackground;
 
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation VParallaxPatternView
+@implementation VTilePatternBackgroundView
 
 #pragma mark - Init
 
@@ -56,7 +56,7 @@
 
 - (void)sharedInit
 {
-    self.tiledImage = [UIImage imageNamed:@"pat_geometric_01"];
+    self.tiledImage = [UIImage imageNamed:@"pat_geometric"];
     self.renderedImageCache = [[NSCache alloc] init];
 }
 

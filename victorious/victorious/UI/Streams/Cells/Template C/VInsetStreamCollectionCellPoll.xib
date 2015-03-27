@@ -15,7 +15,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="302" height="347"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yYl-by-YLg" customClass="VParallaxPatternView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yYl-by-YLg">
                         <rect key="frame" x="0.0" y="50" width="302" height="202"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
@@ -122,6 +122,7 @@
             <size key="customSize" width="307" height="73"/>
             <connections>
                 <outlet property="actionView" destination="5hj-dg-nbn" id="0dp-IR-bke"/>
+                <outlet property="backgroundContainer" destination="yYl-by-YLg" id="d1M-il-O8K"/>
                 <outlet property="captionTextView" destination="2qV-rt-BGZ" id="df9-Wt-hPG"/>
                 <outlet property="captionTextViewBottomConstraint" destination="JAG-QQ-ijc" id="8ia-qC-GMX"/>
                 <outlet property="captionTextViewTopConstraint" destination="KgH-Vm-tWb" id="EqT-3D-nVM"/>
@@ -129,7 +130,6 @@
                 <outlet property="commentLabelBottomConstraint" destination="94C-gP-RsR" id="auf-38-7UF"/>
                 <outlet property="commentsLabel" destination="2I4-YY-QY7" id="5lr-hl-IfK"/>
                 <outlet property="commentsLeftConstraint" destination="KoS-bo-F34" id="WDj-zN-HP2"/>
-                <outlet property="loadingView" destination="yYl-by-YLg" id="RuJ-km-wbe"/>
                 <outlet property="lowerGradientView" destination="gza-QN-Veo" id="hsn-cS-K5e"/>
                 <outlet property="previewImageTwo" destination="JTX-77-BzI" id="cfM-uu-BJ7"/>
                 <outlet property="previewImageView" destination="cHq-pN-LVg" id="dTw-88-PxD"/>
