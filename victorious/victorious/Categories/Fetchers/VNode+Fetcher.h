@@ -22,4 +22,6 @@
 
 - (VAsset *)imageAsset; //< Searches assets for an asset with ".jpg" suffix on data property
 
+- (VAsset *)textAsset; //< Search assets for `data` field for string content value
+
 @end

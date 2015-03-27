@@ -488,6 +488,8 @@
 		A7A921FD1AC3609B00F4755E /* VTextPostHashtagContraints.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FC1AC3609B00F4755E /* VTextPostHashtagContraints.m */; };
 		A7A922001AC362F700F4755E /* VTextPostConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */; };
 		A7A922581AC4B52A00F4755E /* VWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922571AC4B52A00F4755E /* VWorkspaceViewController.m */; };
+		A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922611AC6166600F4755E /* VContentTextCell.m */; };
+		A7A922641AC61B3500F4755E /* VContentTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7A922631AC61B3500F4755E /* VContentTextCell.xib */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9A31A83F1C300A3D3A0 /* VStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9761A83F1C300A3D3A0 /* VStreamCellActionView.m */; };
@@ -1686,6 +1688,9 @@
 		A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostConfiguration.m; sourceTree = "<group>"; };
 		A7A922561AC4B52A00F4755E /* VWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceViewController.h; sourceTree = "<group>"; };
 		A7A922571AC4B52A00F4755E /* VWorkspaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceViewController.m; sourceTree = "<group>"; };
+		A7A922601AC6166600F4755E /* VContentTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentTextCell.h; sourceTree = "<group>"; };
+		A7A922611AC6166600F4755E /* VContentTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentTextCell.m; sourceTree = "<group>"; };
+		A7A922631AC61B3500F4755E /* VContentTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentTextCell.xib; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
 		A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionController.h; sourceTree = "<group>"; };
@@ -5003,6 +5008,9 @@
 				D82E76DC19F5BFED00FFB722 /* VContentPollQuestionCell.h */,
 				D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */,
 				D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */,
+				A7A922601AC6166600F4755E /* VContentTextCell.h */,
+				A7A922611AC6166600F4755E /* VContentTextCell.m */,
+				A7A922631AC61B3500F4755E /* VContentTextCell.xib */,
 				D8E39BCD19CB7C80007FD86A /* VContentVideoCell.h */,
 				D8E39BCE19CB7C80007FD86A /* VContentVideoCell.m */,
 				03FD87D619F96F8700D93BAA /* VContentVideoCell.xib */,
@@ -5448,6 +5456,7 @@
 				036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */,
 				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
+				A7A922641AC61B3500F4755E /* VContentTextCell.xib in Resources */,
 				034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */,
 				0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */,
 				036F388A1A0C4DEA0014DF66 /* PT_Serif-Web-Regular.ttf in Resources */,
@@ -5728,6 +5737,7 @@
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
+				A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */,
 				DB58EF501994174900D2A07F /* VNotification.m in Sources */,

@@ -36,6 +36,8 @@
 #import "UIView+Autolayout.h"
 #import "VVideoView.h"
 
+#import "VTextPostViewController.h"
+
 @interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
@@ -50,6 +52,7 @@
 @property (nonatomic, assign) BOOL isPlayButtonVisible;
 
 @property (nonatomic, readonly) BOOL canPlayVideo;
+@property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -132,6 +135,9 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [self pauseVideo];
     self.videoPlayerView.alpha = 0.0f;
     self.videoAsset = nil;
+    
+    [self.textPostViewController.view removeFromSuperview];
+    self.textPostViewController = nil;
 }
 
 - (CGRect)mediaContentFrame
@@ -174,6 +180,23 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     else
     {
         self.isPlayButtonVisible = NO;
+    }
+    
+    if ( [sequence isText] )
+    {
+        self.isPlayButtonVisible = NO;
+        
+        VAsset *asset = [self.sequence.firstNode textAsset];
+        if ( asset.data != nil )
+        {
+            self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+            [self.contentContainer addSubview:self.textPostViewController.view];
+            [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+            
+#warning Background color is required
+            // http://jira.victorious.com/browse/API-1224
+            self.textPostViewController.view.backgroundColor = @[ [UIColor redColor], [UIColor darkGrayColor], [UIColor purpleColor] ][ arc4random() % 3 ];
+        }
     }
 }
 

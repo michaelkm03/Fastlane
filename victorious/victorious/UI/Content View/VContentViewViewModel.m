@@ -108,6 +108,10 @@
         {
             _type = VContentViewTypeImage;
         }
+        else if ( [sequence isText] )
+        {
+            _type = VContentViewTypeText;
+        }
         else
         {
             // Fall back to image.
@@ -474,6 +478,18 @@
 - (BOOL)audioMuted
 {
     return [self.currentAsset.audioMuted boolValue];
+}
+
+- (NSString *)textContent
+{
+    return self.currentAsset.data;
+}
+
+- (UIColor *)textBackgroundColor
+{
+#warning Background color is required
+    // http://jira.victorious.com/browse/API-1224
+    return @[ [UIColor redColor], [UIColor darkGrayColor], [UIColor purpleColor] ][ arc4random() % 3 ];
 }
 
 - (void)setComments:(NSArray *)comments

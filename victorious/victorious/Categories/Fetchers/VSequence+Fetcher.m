@@ -83,6 +83,12 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
             asset.streamAutoplay.boolValue == YES;
 }
 
+- (BOOL)isText
+{
+    return [self.category isEqualToString:kVUGCTextCategory] ||
+           [self.category isEqualToString:kVOwnerTextCategory];
+}
+
 - (BOOL)isOwnerContent
 {
     for (NSString *category in VOwnerCategories())
