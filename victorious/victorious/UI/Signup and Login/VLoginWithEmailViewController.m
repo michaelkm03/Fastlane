@@ -16,7 +16,7 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIAlertView+VBlocks.h"
 #import "VPasswordValidator.h"
@@ -53,6 +53,8 @@
 
 @implementation VLoginWithEmailViewController
 
+@synthesize registrationStepDelegate; //< VRegistrationStep
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.usernameTextField];
@@ -65,8 +67,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
 
     self.emailValidator = [[VEmailValidator alloc] init];
     self.passwordValidator = [[VPasswordValidator alloc] init];
@@ -86,12 +86,12 @@
                                                                                attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     self.passwordTextField.delegate = self;
     
-    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.cancelButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
+    self.cancelButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.cancelButton.style = VButtonStyleSecondary;
 
-    self.loginButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.loginButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.loginButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
+    self.loginButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.loginButton.style = VButtonStylePrimary;
     
     self.usernameTextField.delegate = self;
@@ -107,9 +107,9 @@
     
     NSString *linkText = NSLocalizedString( @"Reset here", @"" );
     NSString *normalText = NSLocalizedString( @"Forgot Password?", @"" );
-    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    NSString *text = [NSString stringWithFormat:@"%@ %@", normalText, linkText];
     NSRange range = [text rangeOfString:linkText];
-    self.forgotPasswordTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.forgotPasswordTextView.textColor = [self.dependencyManager colorForKey:@"color.text.content"];
     [self.linkTextHelper setupLinkTextView:self.forgotPasswordTextView withText:text range:range];
     self.forgotPasswordTextView.linkDelegate = self;
     self.forgotPasswordTextView.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;
@@ -142,7 +142,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -173,6 +173,9 @@
                                          forced:YES];
         shouldLogin = NO;
         
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailValidationDidFail parameters:params];
+        
         if (newResponder == nil)
         {
             [self.usernameTextField becomeFirstResponder];
@@ -182,11 +185,15 @@
     
     if ( ![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
     {
+        
         [self.passwordTextField showInvalidText:validationError.localizedDescription
                                        animated:YES
                                           shake:YES
                                          forced:YES];
         shouldLogin = NO;
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailValidationDidFail parameters:params];
         
         if (newResponder == nil)
         {
@@ -205,19 +212,17 @@
     
     self.profile = mainUser;
     
-    if ( ![VObjectManager sharedManager].authorized )
+    if ( self.registrationStepDelegate != nil )
     {
-        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
-    }
-    else
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:YES];
     }
 }
 
 - (void)didFailWithError:(NSError *)error
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail parameters:params];
+    
     if (error.code != kVUserBannedError)
     {
         NSString       *message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
@@ -240,28 +245,35 @@
     if ([self shouldLogin])
     {
         self.loginButton.enabled = NO;
-        [[VUserManager sharedInstance] loginViaEmail:self.usernameTextField.text
-                                             password:self.passwordTextField.text
-                                         onCompletion:^(VUser *user, BOOL created)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                [self didLoginWithUser:user];
-            });
-        }
-                                              onError:^(NSError *error)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                [self didFailWithError:error];
-                self.loginButton.enabled = YES;
-            });
-        }];
+        [self performLoginWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
     }
+}
+
+- (void)performLoginWithUsername:(NSString *)username password:(NSString *)password
+{
+    [[VUserManager sharedInstance] loginViaEmail:username
+                                        password:password
+                                    onCompletion:^(VUser *user, BOOL created)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            [self didLoginWithUser:user];
+                        });
+     }
+                                         onError:^(NSError *error)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            [self didFailWithError:error];
+                            self.loginButton.enabled = YES;
+                        });
+     }];
 }
 
 - (IBAction)cancel:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelLoginWithEmail];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -281,6 +293,8 @@
     [self.resetAlert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
     [self.resetAlert textFieldAtIndex:0].returnKeyType = UIReturnKeyDone;
     [self.resetAlert show];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectResetPassword];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -295,6 +309,9 @@
                 NSString *message = NSLocalizedString(@"EmailNotValid", @"");
                 NSString *title = NSLocalizedString(@"EmailValidation", @"");
                 [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
+                
+                NSDictionary *params = @{ VTrackingKeyErrorMessage : message ?: @"" };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordValidationDidFail parameters:params];
                 return;
             }
             
@@ -308,6 +325,10 @@
              {
                  NSString *message = NSLocalizedString(@"EmailNotFound", @"");
                  NSString *title = NSLocalizedString(@"EmailValidation", @"");
+                 
+                 NSDictionary *params = @{ VTrackingKeyErrorMessage : message ?: @"" };
+                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidFail parameters:params];
+                 
                  [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
              }];
         }
@@ -387,6 +408,15 @@
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+        profileViewController.dependencyManager = self.dependencyManager;
+        profileViewController.registrationStepDelegate = self;
+    }
+    else if ([segue.identifier isEqualToString:@"toEnterResetToken"])
+    {
+        VEnterResetTokenViewController *destinationVC = (VEnterResetTokenViewController *)segue.destinationViewController;
+        destinationVC.registrationStepDelegate = self;
+        destinationVC.deviceToken = self.deviceToken;
+        destinationVC.dependencyManager = self.dependencyManager;
     }
 }
 
@@ -430,6 +460,13 @@
             [textField hideInvalidText];
         }
     }
+}
+
+#pragma mark - VRegistrationStepDelegate
+
+- (void)didFinishRegistrationStepWithSuccess:(BOOL)success
+{
+    [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
 }
 
 @end

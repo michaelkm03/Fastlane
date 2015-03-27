@@ -23,6 +23,7 @@
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 static NSString * const kSubtoolsKey = @"subtools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
@@ -30,7 +31,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @interface VTextTool ()
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, assign) NSInteger renderIndex;
 @property (nonatomic, strong) NSArray *subTools;
 @property (nonatomic, strong) id <VWorkspaceTool> activeTextTool;
@@ -41,7 +41,11 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @implementation VTextTool
 
-#pragma mark - VHasManagedDependancies
+@synthesize selected = _selected;
+@synthesize selectedIcon = _selectedIcon;
+@synthesize icon = _icon;
+
+#pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -68,13 +72,20 @@ static NSString * const kFilterIndexKey = @"filterIndex";
             };
         }
         _canvasToolViewController = [VTextToolViewController textToolViewController];
-        _icon = [UIImage imageNamed:@"textIcon"];
+        _icon = [dependencyManager imageForKey:kIconKey];
+        _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
         [_toolPicker setTools:_subTools];
     }
     return self;
 }
 
 #pragma mark - Property Accessors
+
+- (void)setSelected:(BOOL)selected
+{
+    _selected = selected;
+    self.canvasToolViewController.view.userInteractionEnabled = selected;
+}
 
 - (void)setActiveTextTool:(id<VWorkspaceTool>)activeTextTool
 {
@@ -164,7 +175,16 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     __weak typeof(self) welf = self;
     self.toolPicker.onToolSelection = ^(id <VWorkspaceTool> selectedTool)
     {
+        BOOL activeToolWasUndefined = welf.activeTextTool == nil;
+        
         welf.activeTextTool = selectedTool;
+        
+        // The first time the tool is selected, it is the default selection, not a user action
+        if ( !activeToolWasUndefined )
+        {
+            NSDictionary *params = @{ VTrackingKeyName : selectedTool.title ?: @"" };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTextType parameters:params];
+        }
     };
     return (UIViewController *)self.toolPicker;
 }

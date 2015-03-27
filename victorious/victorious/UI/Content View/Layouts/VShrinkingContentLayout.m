@@ -91,10 +91,22 @@ static const NSInteger kAllCommentsZIndex = 6666;
             if (self.collectionView.contentOffset.y > [self catchPoint].y)
             {
                 CGFloat deltaCatchToLock = [self lockPoint].y - [self catchPoint].y;
-                CGFloat percentToLockPoint = fminf(1.0f, (self.collectionView.contentOffset.y - [self catchPoint].y) / deltaCatchToLock);
+                CGFloat percentToLockPoint;
+                if (deltaCatchToLock == 0.0f)
+                {
+                    percentToLockPoint = 1.0f;
+                }
+                else
+                {
+                    percentToLockPoint = fminf(1.0f, (self.collectionView.contentOffset.y - [self catchPoint].y) / deltaCatchToLock);
+                }
                 
                 CGFloat sizeDelta = self.mediaContentSize.height - VShrinkingContentLayoutMinimumContentHeight;
-                CGFloat transformScaleCoefficient = ((self.mediaContentSize.height - (sizeDelta * percentToLockPoint)) / self.mediaContentSize.height);
+                CGFloat transformScaleCoefficient = 1.0f;
+                if (self.mediaContentSize.height != 0.0f)
+                {
+                    transformScaleCoefficient = ((self.mediaContentSize.height - (sizeDelta * percentToLockPoint)) / self.mediaContentSize.height);
+                }
                 
                 CGRect rect = self.collectionView.bounds;
                 rect.size.height = self.mediaContentSize.height * transformScaleCoefficient;
@@ -202,7 +214,15 @@ static const NSInteger kAllCommentsZIndex = 6666;
     {
         CGFloat catchToLockDelta = [self lockPoint].y - [self catchPoint].y;
         CGFloat offsetToCatchDelta = proposedContentOffset.y - [self catchPoint].y;
-        CGFloat percentCloseToLock = offsetToCatchDelta / catchToLockDelta;
+        CGFloat percentCloseToLock = 0.0f;
+        if (catchToLockDelta == 0.0f)
+        {
+            percentCloseToLock = 1.0f;
+        }
+        else
+        {
+            percentCloseToLock = offsetToCatchDelta / catchToLockDelta;
+        }
         if (percentCloseToLock < 0.5)
         {
             desiredContentOffset = [self catchPoint];

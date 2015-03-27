@@ -24,6 +24,8 @@ static NSString * const kVideoFrameDurationTimescale = @"frameDurationTimescale"
 static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
+static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 
 @interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VCVideoPlayerDelegate>
 
@@ -51,6 +53,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @synthesize selected = _selected;
 @synthesize mediaURL = _mediaURL;
 @synthesize icon = _icon;
+@synthesize selectedIcon = _selectedIcon;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -61,9 +64,10 @@ static NSString * const kVideoMuted = @"videoMuted";
         
         _title = [dependencyManager stringForKey:kTitleKey];
         
-        _isGIF = [_title isEqualToString:@"gif"];
+        _isGIF = [[dependencyManager numberForKey:@"isGIF"] boolValue];
         
-        _icon = _isGIF ? [UIImage imageNamed:@"gif_btn"] : [UIImage imageNamed:@"video_btn"];
+        _icon = [dependencyManager imageForKey:kIconKey];
+        _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
         
         _minDuration = [dependencyManager numberForKey:kVideoMinDuration];
         _maxDuration = [dependencyManager numberForKey:kVideoMaxDuration];
@@ -75,6 +79,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         _frameDuration = CMTimeMake((int)[frameDurationValue unsignedIntegerValue], (int)[frameDurationTimescale unsignedIntegerValue]);
         
         _trimViewController = [[VTrimmerViewController alloc] initWithNibName:nil bundle:nil];
+        _trimViewController.title = _title;
         _trimViewController.delegate = self;
         
         _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
@@ -92,6 +97,11 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (void)setMediaURL:(NSURL *)mediaURL
 {
+    if ([_mediaURL isEqual:mediaURL])
+    {
+        return;
+    }
+    
     _mediaURL = [mediaURL copy];
     
     self.frameRateComposition = [[VVideoFrameRateComposition alloc] initWithVideoURL:mediaURL
@@ -130,6 +140,11 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (void)setSelected:(BOOL)selected
 {
+    if (_selected == selected)
+    {
+        return;
+    }
+    
     _selected = selected;
     if (selected)
     {

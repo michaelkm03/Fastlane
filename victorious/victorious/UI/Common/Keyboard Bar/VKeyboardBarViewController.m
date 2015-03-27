@@ -7,13 +7,13 @@
 //
 
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 #import "VContentInputAccessoryView.h"
-#import "VObjectManager+Comment.h"
 #import "VKeyboardBarViewController.h"
 #import "VLoginViewController.h"
 
-#import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VConstants.h"
@@ -31,7 +31,6 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) NSURL *mediaURL;
-@property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 
 @end
 
@@ -52,7 +51,19 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 {
     [super viewDidLoad];
     
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil textView:nil taggingDelegate:self.delegate];
+    [self createTextView];
+    
+    [self addAccessoryBar];
+    
+    self.promptLabel.textColor = [UIColor lightGrayColor];
+    
+    [self enableOrDisableSendButtonAsAppropriate];
+}
+
+- (void)createTextView
+{
+    UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -64,7 +75,7 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.textView setBackgroundColor:[UIColor clearColor]];
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.textView.font = defaultFont;
     
     //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = self.textView.textContainerInset;
@@ -80,12 +91,6 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     [self.textStorage setTextView:self.textView];
     
     [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
-    
-    [self addAccessoryBar];
-    
-    self.promptLabel.textColor = [UIColor lightGrayColor];
-    
-    [self enableOrDisableSendButtonAsAppropriate];
 }
 
 - (void)addAccessoryBar
@@ -133,10 +138,12 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (IBAction)sendButtonAction:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
+    if ([self.delegate respondsToSelector:@selector(canPerformAuthorizedAction)])
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
+        if ( ![self.delegate canPerformAuthorizedAction] )
+        {
+            return;
+        }
     }
     
     [self.textView resignFirstResponder];
@@ -167,11 +174,14 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (void)cameraPressed:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
+    if ([self.delegate respondsToSelector:@selector(canPerformAuthorizedAction)])
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
+        if ( ![self.delegate canPerformAuthorizedAction] )
+        {
+            return;
+        }
     }
+    
     void (^showCamera)(void) = ^void(void)
     {
         VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter),
@@ -257,11 +267,14 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    if (![VObjectManager sharedManager].authorized)
+    if ([self.delegate respondsToSelector:@selector(canPerformAuthorizedAction)])
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return NO;
+        if ( ![self.delegate canPerformAuthorizedAction] )
+        {
+            return NO;
+        }
     }
+    
     return YES;
 }
 

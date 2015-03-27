@@ -8,8 +8,11 @@
 
 #import "VDefaultProfileImageView.h"
 
+// Utilities
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+
+// Categories
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation VDefaultProfileImageView
@@ -34,7 +37,8 @@
 {
     self.image = [self defaultImage];
     
-    NSString *colorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVLinkColor : kVAccentColor;
+    //Was previously accent color on A and D
+    NSString *colorKey = kVLinkColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;

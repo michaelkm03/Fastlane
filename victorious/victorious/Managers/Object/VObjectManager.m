@@ -15,6 +15,7 @@
 #import "VPaginationManager.h"
 #import "VUploadManager.h"
 #import "VRootViewController.h"
+#import "VLocationManager.h"
 
 #import "VConstants.h"
 
@@ -30,7 +31,6 @@
 #import "VImageSearchResult.h"
 #import "VPollResult+RestKit.h"
 #import "VMessage+RestKit.h"
-#import "VVoteType+RestKit.h"
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
@@ -124,7 +124,6 @@
                                              [VPollResult descriptor],
                                              [VPollResult createPollResultDescriptor],
                                              [VPollResult byUserDescriptor],
-                                             [VVoteType descriptor],
                                              [VTracking descriptor],
                                              [VImageSearchResult descriptor]
                                              ]];
@@ -465,6 +464,14 @@
     [request addValue:@"iOS" forHTTPHeaderField:@"X-Client-Platform"];
     [request addValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"X-Client-OS-Version"];
     [request addValue:appVersion forHTTPHeaderField:@"X-Client-App-Version"];
+    
+    // Add location data to request if we have permission to collect it
+    VLocationManager *locationManager = [VLocationManager sharedInstance];
+    NSString *locationString = [locationManager httpFormattedLocationString];
+    if ([locationManager permissionGranted] && ![locationString isEqualToString:@""])
+    {
+        [request addValue:locationString forHTTPHeaderField:@"X-Geo-Location"];
+    }
 }
 
 - (NSString *)rFC2822DateTimeString

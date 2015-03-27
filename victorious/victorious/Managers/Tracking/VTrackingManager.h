@@ -39,7 +39,7 @@
  tracking calls until cleared. To clear a
  previously set parameter, pass nil for value.
  */
-- (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key;
+- (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key;
 
 /**
  Clears all session properties
@@ -76,5 +76,15 @@
 - (void)removeDelegate:(id<VTrackingDelegate>)service;
 
 - (void)removeAllDelegates;
+
+/**
+ Shows alerts track events sent with `trackEvent:parameters:` method.  ** NON-PRODUCTION BUILDS ONLY **
+ */
+@property (nonatomic, assign) BOOL showTrackingEventAlerts;
+
+/**
+ Shows alerts track events sent with `startEvent:parameters:` and `endEvent:` methods.  ** NON-PRODUCTION BUILDS ONLY **
+ */
+@property (nonatomic, assign) BOOL showTrackingStartEndAlerts;
 
 @end

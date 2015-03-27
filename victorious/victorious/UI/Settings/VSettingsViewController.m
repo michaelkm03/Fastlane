@@ -8,10 +8,10 @@
 
 @import MessageUI;
 
+#import "VDependencyManager.h"
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
@@ -26,16 +26,20 @@
 #import "VButton.h"
 #import "VPurchaseManager.h"
 #import "VVideoSettings.h"
+#import "VSettingsTableViewCell.h"
+#import "VAppInfo.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
 static const NSInteger kPushNotificationsButtonIndex = 3;
-static const NSInteger kServerEnvironmentButtonIndex = 4;
-static const NSInteger kResetPurchasesButtonIndex    = 5;
+static const NSInteger kResetPurchasesButtonIndex    = 4;
+static const NSInteger kServerEnvironmentButtonIndex = 5;
+static const NSInteger kTrackingButtonIndex          = 6;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
+static NSString * const kSupportEmailKey = @"email.support";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
@@ -47,6 +51,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 @property (nonatomic, assign) BOOL showChromeCastButton;
 @property (nonatomic, assign) BOOL showEnvironmentSetting;
+@property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
 
@@ -54,6 +59,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
 
 @property (nonatomic, weak) IBOutlet VVideoSettings *videoSettings;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -63,7 +69,9 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    VSettingsViewController *settingsViewController = (VSettingsViewController *)[[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    settingsViewController.dependencyManager = dependencyManager;
+    return settingsViewController;
 }
 
 - (void)dealloc
@@ -79,11 +87,11 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+         label.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
      }];
     [self.rightLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+         label.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
      }];
     
     NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
@@ -93,7 +101,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 #endif
     
     self.versionString.text = appVersionString;
-    self.versionString.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.versionString.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,6 +120,12 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     self.showEnvironmentSetting = NO;
 #else
     self.showEnvironmentSetting = YES;
+#endif
+    
+#ifdef V_NO_TRACKING_ALERTS
+    self.showTrackingAlertSetting = NO;
+#else
+    self.showTrackingAlertSetting = YES;
 #endif
     
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
@@ -163,6 +177,13 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     {
         [self sendHelp:self];
     }
+    
+    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
+    {
+        NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
+    }
 }
 
 - (void)loginStatusDidChange:(NSNotification *)note
@@ -173,8 +194,8 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 - (void)updateLogoutButtonState
 {
-    self.logoutButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.logoutButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.logoutButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
@@ -204,7 +225,10 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     else
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+        [self presentViewController:navigationController animated:YES completion:nil];
     }
     
     [self.tableView beginUpdates];
@@ -215,11 +239,15 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    VWebContentViewController  *viewController = segue.destinationViewController;
+    UIViewController *viewController = segue.destinationViewController;
     
     if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
         viewController.title = NSLocalizedString(@"ToSText", @"");
+    }
+    if ( [viewController respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        [(id<VHasManagedDependencies>)viewController setDependencyManager:self.dependencyManager];
     }
 }
 
@@ -280,6 +308,17 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
             return 0;
         }
     }
+    else if (kSettingsSectionIndex == indexPath.section && kTrackingButtonIndex == indexPath.row)
+    {
+        if (self.showEnvironmentSetting)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     
     return self.tableView.rowHeight;
 }
@@ -288,32 +327,47 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+        VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+        NSString *creatorName = appInfo.appName;
+        NSString *recipientEmail = [self.dependencyManager stringForKey:kSupportEmailKey];
         
-        MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
-        NSString *msgBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
-                             NSLocalizedString(@"Type your feedback here...", @""),
-                             [self deviceInfo], appName];
-        NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
-        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString, appName];
-        NSString *recipientEmail = [[VThemeManager sharedThemeManager] themedStringForKey:kVSupportEmail];
+        NSString *messageSubject;
+        NSString *messageBody;
+        if ( creatorName != nil )
+        {
+            NSString *subjectWithCreatorNameFormat = NSLocalizedString(@"SupportEmailSubjectWithName", @"Feedback / Help");
+            messageSubject = [NSString stringWithFormat:@"%@ %@", subjectWithCreatorNameFormat, creatorName];
+            
+            messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
+                                     NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo], creatorName];
+            
+        }
+        else
+        {
+            messageSubject = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
+            
+            messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@",
+                           NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo]];
+            
+        }
         
-        [mailComposer setSubject:msgSubj];
+        [mailComposer setSubject:messageSubject];
         [mailComposer setToRecipients:@[ recipientEmail ?: kDefaultHelpEmail ]];
-        [mailComposer setMessageBody:msgBody isHTML:NO];
+        [mailComposer setMessageBody:messageBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
-                                                               message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
-                                                              delegate:self
-                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
-                                                     otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
+                                                        message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+                                              otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
         [alert show];
     }
 }
@@ -363,6 +417,13 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - VNavigationDestination
+
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
+{
+    return YES;
 }
 
 @end

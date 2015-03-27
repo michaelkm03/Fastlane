@@ -63,8 +63,9 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
     self.modalContainer.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
     self.modalContainer.layer.borderWidth = 1.0f;
     
+    UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.editTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.editTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.editTextView.font = defaultFont;
     self.editTextView.returnKeyType = UIReturnKeyDone;
     self.editTextView.delegate = self;
     self.editTextView.text = self.comment.text;
@@ -72,8 +73,8 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
                                                             kTextViewInsetsHorizontal,
                                                             kTextViewInsetsVertical,
                                                             kTextViewInsetsHorizontal );
-    
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.editTextView.text textView:self.editTextView taggingDelegate:self];
+        
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:self.editTextView defaultFont:defaultFont taggingDelegate:self];
         
     [self updateSize];
 }
@@ -150,6 +151,8 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
 
 - (IBAction)onBackgroundTapped:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelEditComment];
+    
     [self dismiss];
     self.isDismissing = YES;
 }
@@ -161,9 +164,13 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
     [[VObjectManager sharedManager] editComment:self.comment
                                    successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompleteEditComment];
      }
                                       failBlock:^(NSOperation *operation, NSError *error)
      {
+         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditCommentDidFail parameters:params];
+         
          VLog( @"Comment edit failed: %@", error.localizedDescription );
      }];
     
@@ -180,6 +187,9 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
 
 - (IBAction)onCancel:(id)sender
 {
+    // Tracking
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelEditComment];
+    
     [self dismiss];
 }
 

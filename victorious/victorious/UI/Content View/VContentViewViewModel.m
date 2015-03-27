@@ -14,6 +14,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
+#import "VVoteType.h"
 #import "VNode+Fetcher.h"
 
 // Model Categories
@@ -51,6 +52,8 @@
 #import "VVideoSettings.h"
 #import "VEndCardActionModel.h"
 
+#define FORCE_SHOW_DEBUG_END_CARD 0
+
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -71,6 +74,7 @@
 
 @property (nonatomic, assign) BOOL hasCreatedAdChain;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
 @end
 
@@ -110,7 +114,7 @@
             _type = VContentViewTypeImage;
         }
         
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
 
         _currentNode = [sequence firstNode];
         
@@ -129,7 +133,7 @@
 
 - (id)init
 {
-    NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
+    NSAssert(false, @"-init is not allowed. Use the designated initializer: \"-initWithSequence:\"");
     return nil;
 }
 
@@ -260,6 +264,11 @@
 
 - (VEndCardModel *)createEndCardModel
 {
+#if FORCE_SHOW_DEBUG_END_CARD
+#warning Debug end card will show for all video sequences... make sure to turn this off before committing!
+    return [self DEBUG_endardModel];
+#endif
+    
     if ( self.sequence.endCard == nil  )
     {
         return nil;
@@ -272,7 +281,7 @@
     }
     
     VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-    endCardModel.videoTitle = self.sequence.sequenceDescription;
+    endCardModel.videoTitle = self.sequence.name;
     endCardModel.nextSequenceId = nextSequence.remoteId;
     endCardModel.nextVideoTitle = nextSequence.sequenceDescription;
     endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewImagesObject];
@@ -325,17 +334,31 @@
     [self fetchSequenceData];
 }
 
+- (VLargeNumberFormatter *)largeNumberFormatter
+{
+    if ( _largeNumberFormatter == nil )
+    {
+        _largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    }
+    return _largeNumberFormatter;
+}
+
 - (void)fetchUserinfo
 {
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         NSInteger followerCount = [resultObjects[0] integerValue];
-         if (followerCount > 0)
+         NSInteger followerCount = self.user.numberOfFollowers.integerValue;
+         if ( followerCount > 0 )
          {
-             
-             welf.followersText =  [NSString stringWithFormat:@"%@ %@", [[VLargeNumberFormatter new] stringForInteger:followerCount], NSLocalizedString(@"followers", @"")];
+             welf.followersText = [NSString stringWithFormat:@"%@ %@",
+                                   [self.largeNumberFormatter stringForInteger:followerCount],
+                                   NSLocalizedString(@"followers", @"")];
+         }
+         else
+         {
+             welf.followersText = @"";  //< To prevent showing "0 Followers"
          }
      }
                                                 failBlock:nil];
@@ -620,6 +643,8 @@
                 shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
                 break;
             case VContentViewTypeGIFVideo:
+                shareText = NSLocalizedString(@"UGCShareGIFFormat", nil);
+                break;
             case VContentViewTypeVideo:
                 shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
                 break;
@@ -837,11 +862,13 @@
      {
          [self.delegate didUpdatePollsData];
          
+         NSDictionary *params = @{ VTrackingKeyIndex : selectedAnswer == VPollAnswerB ? @1 : @0 };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollAnswer parameters:params];
+         
          completion(YES, nil);
      }
                                      failBlock:^(NSOperation *operation, NSError *error)
      {
-         //
          completion(NO, error);
      }];
 }
@@ -852,7 +879,51 @@
     {
         return nil;
     }
-    return [NSString stringWithFormat:@"%@ %@", [[[VLargeNumberFormatter alloc] init]stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
+    return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
 }
+
+#if FORCE_SHOW_DEBUG_END_CARD
+- (VEndCardModel *)DEBUG_endardModel
+{
+    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
+    endCardModel.videoTitle = self.sequence.sequenceDescription;
+    endCardModel.nextSequenceId = nil;
+    endCardModel.nextVideoTitle = nil;
+    endCardModel.nextVideoThumbailImageURL = nil;
+    endCardModel.streamName = self.sequence.endCard.streamName ?: @"";
+    endCardModel.videoAuthorName = nil;
+    endCardModel.videoAuthorProfileImageURL = nil;
+    endCardModel.countdownDuration = 1000000000;
+    endCardModel.dependencyManager = self.dependencyManager;
+    NSMutableArray *actions = [[NSMutableArray alloc] init];
+    VEndCardActionModel *action = nil;
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierGIF;
+        action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+        action.iconImageNameDefault = @"action_gif";
+        [actions addObject:action];
+    }
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierRepost;
+        action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
+        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
+        action.iconImageNameDefault = @"action_repost";
+        action.iconImageNameSuccess = @"action_success";
+        [actions addObject:action];
+    }
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierShare;
+        action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
+        action.iconImageNameDefault = @"action_share";
+        [actions addObject:action];
+    }
+    endCardModel.actions = [NSArray arrayWithArray:actions];
+    return endCardModel;
+}
+
+#endif
 
 @end

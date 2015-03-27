@@ -105,11 +105,33 @@ NSString * const kHashtagStatusChangedNotification = @"com.getvictorious.Hashtag
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
 {
+    
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagPost];
+        
+        if ( success != nil )
+        {
+            success( operation, fullResponse, resultObjects );
+        }
+    };
+    
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFlagPostDidFail parameters:params];
+        
+        if ( fail != nil )
+        {
+            fail( operation, error );
+        }
+    };
+    
     return [self POST:@"/api/sequence/flag"
                object:nil
            parameters:@{@"sequence_id" : sequence.remoteId ?: [NSNull null]}
-         successBlock:success
-            failBlock:fail];
+         successBlock:fullSuccess
+            failBlock:fullFail];
 }
 
 #pragma mark - Sequence Vote Methods

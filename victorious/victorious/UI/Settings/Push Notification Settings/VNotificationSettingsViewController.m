@@ -17,6 +17,8 @@
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
+#import "VDependencyManager.h"
+#import "VAppInfo.h"
 
 @interface VNotificationSettingsViewController() <VNotificationSettingCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
@@ -47,8 +49,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.stateManager reset];
+    NSAssert(self.dependencyManager != nil, @"VNotificationSettingsViewController doesn't have an instance of dependency manager.");
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -123,7 +125,8 @@
     
     // Feed section
     NSString *format = NSLocalizedString( @"PostFromCreator", nil);
-    NSString *creatorName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    NSString *creatorName = appInfo.ownerName;
     NSArray *sectionFeedRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
                                                                                enabled:_settings.isPostFromCreatorEnabled.boolValue],
                                   [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
@@ -261,6 +264,7 @@
         VNotificationSettingsTableSection *section = self.sections[ indexPath.section ];
         VNotificationSettingsTableRow *row = [section rowAtIndex:indexPath.row];
         cell.delegate = self;
+        cell.dependencyManager = self.dependencyManager;
         [cell setTitle:row.title value:row.isEnabled];
         return cell;
     }
@@ -328,8 +332,8 @@
     {
         return 130.0f;
     }
-    
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+
+    return 44.0f;
 }
 
 @end

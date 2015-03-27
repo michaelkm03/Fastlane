@@ -21,7 +21,6 @@
 #pragma mark - Controllers
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VUserProfileViewController.h"
 #import "VCommentsContainerViewController.h"
 #import "VWorkspaceViewController.h"
@@ -45,6 +44,11 @@
 
 #pragma mark - Workflow
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
+#import "VAuthorizedAction.h"
+
+#import "VAppInfo.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -58,7 +62,7 @@
 
 - (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
+    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController newWithDependencyManager:self.dependencyManager];
     commentsTable.sequence = sequence;
     [viewController.navigationController pushViewController:commentsTable animated:YES];
 }
@@ -78,7 +82,7 @@
         return NO;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:sequence.user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
     return YES;
@@ -90,15 +94,10 @@
                      withSequence:(VSequence *)sequence
              andDependencyManager:(VDependencyManager *)dependencyManager
                    preloadedImage:(UIImage *)preloadedImage
+                 defaultVideoEdit:(VDefaultVideoEdit)defaultVideoEdit
                        completion:(void(^)(BOOL))completion
 {
-    NSAssert(![sequence isPoll], @"You cannot remix polls.");
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
+    NSAssert( ![sequence isPoll], @"You cannot remix polls." );
     NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
     if (sequence)
     {
@@ -109,48 +108,58 @@
         [addedDependencies setObject:preloadedImage forKey:VWorkspaceFlowControllerPreloadedImageKey];
     }
     [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
-    [addedDependencies setObject:@(VVideoToolControllerInitialVideoEditStateGIF) forKey:VVideoToolControllerInitalVideoEditStateKey];
+    VVideoToolControllerInitialVideoEditState editState;
+    switch (defaultVideoEdit)
+    {
+        case VDefaultVideoEditVideo:
+            editState = VVideoToolControllerInitialVideoEditStateVideo;
+            break;
+        case VDefaultVideoEditGIF:
+            editState = VVideoToolControllerInitialVideoEditStateGIF;
+            break;
+        case VDefaultVideoEditSnapshot:
+            editState = VVideoToolControllerInitialVideoEditStateMeme;
+            break;
+    }
+    [addedDependencies setObject:@(editState) forKey:VVideoToolControllerInitalVideoEditStateKey];
     
-    VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                   forKey:VDependencyManagerWorkspaceFlowKey
-                                                    withAddedDependencies:addedDependencies];
-    
-    workspaceFlowController.delegate = self;
-    self.viewControllerPresentingWorkspace = viewController;
-    [viewController presentViewController:workspaceFlowController.flowRootViewController
-                                 animated:YES
-                               completion:nil];
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^
+     {
+         VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                                  forKey:VDependencyManagerWorkspaceFlowKey
+                                                                                   withAddedDependencies:addedDependencies];
+         
+         workspaceFlowController.delegate = self;
+         self.viewControllerPresentingWorkspace = viewController;
+         [viewController presentViewController:workspaceFlowController.flowRootViewController
+                                      animated:YES
+                                    completion:nil];
+     }];
 }
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
              andDependencyManager:(VDependencyManager *)dependencyManager
-                       completion:(void(^)(BOOL))completion
+                   preloadedImage:(UIImage *)preloadedImage
+                       completion:(void (^)(BOOL))completion
 {
-    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager preloadedImage:nil completion:nil];
+    [self showRemixOnViewController:viewController
+                       withSequence:sequence
+               andDependencyManager:dependencyManager
+                     preloadedImage:preloadedImage
+                   defaultVideoEdit:VDefaultVideoEditGIF
+                         completion:completion];
 }
 
-- (void)showRemixOnViewController:(UIViewController *)viewController
-                     withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showRemixersOnNavigationController:(UINavigationController *)navigationController
+                                   sequence:(VSequence *)sequence
+                       andDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager completion:nil];
-}
-
-- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence andDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VStream *stream = [VStream remixStreamForSequence:sequence];
-    stream.name = NSLocalizedString(@"Remixes", nil);
-    VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:stream];
-    streamCollection.dependencyManager = dependencyManager;
-    
-    VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
-    noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
-    noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
-    noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
-    streamCollection.noContentView = noRemixView;
-    
-    [viewController.navigationController pushViewController:streamCollection animated:YES];
+    NSParameterAssert(sequence != nil);
+    VStreamCollectionViewController *remixStream = [dependencyManager remixStreamForSequence:sequence];
+    [navigationController pushViewController:remixStream animated:YES];
 }
 
 #pragma mark - Repost
@@ -167,47 +176,40 @@
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
     [self repostActionFromViewController:viewController node:node completion:nil];
 }
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    [[VObjectManager sharedManager] repostNode:node
-                                      withName:nil
-                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^
      {
-         node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
-         
-         [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-         
-         if ( completion != nil )
-         {
-             completion( YES );
-         }
-     }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if ( error.code == kVSequenceAlreadyReposted )
-         {
-             [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-         }
-         
-         if ( completion != nil )
-         {
-             completion( NO );
-         }
+         [[VObjectManager sharedManager] repostNode:node
+                                           withName:nil
+                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+          {
+              node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
+              
+              [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+              
+              if ( completion != nil )
+              {
+                  completion( YES );
+              }
+          }
+                                          failBlock:^(NSOperation *operation, NSError *error)
+          {
+              if ( error.code == kVSequenceAlreadyReposted )
+              {
+                  [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+              }
+              
+              if ( completion != nil )
+              {
+                  completion( NO );
+              }
+          }];
      }];
 }
 
@@ -223,7 +225,7 @@
 
 - (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    VReposterTableViewController *vc = [[VReposterTableViewController alloc] init];
+    VReposterTableViewController *vc = [[VReposterTableViewController alloc] initWithDependencyManager:self.dependencyManager];
     vc.sequence = sequence;
     [viewController.navigationController pushViewController:vc animated:YES];
 }
@@ -237,21 +239,37 @@
 
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node completion:(void(^)())completion
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShare];
+    
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
                                                                                                                  [self shareTextForSequence:sequence],
                                                                                                                  [NSURL URLWithString:node.shareUrlPath] ?: [NSNull null]]
                                                                                          applicationActivities:@[fbActivity]];
     
-    NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName]];
+    NSString *creatorName = appInfo.appName;
+    NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), creatorName];
     [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
     {
-        NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
-                                  VTrackingKeyActivityType : activityType ?: @"",
-                                  VTrackingKeyUrls : sequence.tracking.share ?: @[] };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+        if ( completed )
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
+                                      VTrackingKeyShareDestination : activityType ?: @"",
+                                      VTrackingKeyUrls : sequence.tracking.share ?: @[] };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+        }
+        else if ( activityError != nil )
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
+                                      VTrackingKeyShareDestination : activityType ?: @"",
+                                      VTrackingKeyUrls : sequence.tracking.share ?: @[],
+                                      VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedDescription };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserShareDidFail parameters:params];
+        }
         
         [viewController reloadInputViews];
         
@@ -270,6 +288,8 @@
 
 - (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                        onCancelButton:nil
@@ -335,6 +355,10 @@
         if ([sequence isPoll])
         {
             shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), sequence.user.name];
+        }
+        else if ([sequence isGIFVideo])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareGIFFormat", nil), sequence.name, sequence.user.name];
         }
         else if ([sequence isVideo])
         {

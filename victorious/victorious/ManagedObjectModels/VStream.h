@@ -17,9 +17,10 @@
 @property (nonatomic, retain) NSString * apiPath;
 @property (nonatomic, retain) NSNumber * count;
 @property (nonatomic, retain) NSString * filterName;
-@property (nonatomic, retain) NSString * streamContentType;
 @property (nonatomic, retain) NSOrderedSet *streamItems;
 @property (nonatomic, retain) NSString * hashtag;
+@property (nonatomic, retain) NSString * trackingIdentifier;
+@property (nonatomic, retain) NSNumber * isUserPostAllowed;
 @end
 
 @interface VStream (CoreDataGeneratedAccessors)
@@ -34,4 +35,5 @@
 - (void)removeStreamItemsObject:(VStreamItem *)value;
 - (void)addStreamItems:(NSOrderedSet *)values;
 - (void)removeStreamItems:(NSOrderedSet *)values;
+
 @end

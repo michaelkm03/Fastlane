@@ -15,7 +15,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VAuthorizationViewControllerFactory.h"
+#import "UIViewController+VLayoutInsets.h"
 
 // Dependency Manager
 #import "VDependencyManager.h"
@@ -27,7 +27,7 @@
 #import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
 
-@interface VDiscoverContainerViewController () <UITextFieldDelegate>
+@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
@@ -37,9 +37,13 @@
 @property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
+@property (nonatomic, strong) NSLayoutConstraint *searchTopConstraint;
+
 @end
 
 @implementation VDiscoverContainerViewController
+
+@synthesize multipleViewControllerChildDelegate; ///< VMultipleContainerChild
 
 #pragma mark - Initializers
 
@@ -70,6 +74,8 @@
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
 
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -82,15 +88,15 @@
                                                  name:kVDiscoverUserProfileSelectedNotification
                                                object:nil];
 
-    NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
+    self.searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
                                                                            attribute:NSLayoutAttributeTop
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.topLayoutGuide
-                                                                           attribute:NSLayoutAttributeBottom
+                                                                              toItem:self.view
+                                                                           attribute:NSLayoutAttributeTop
                                                                           multiplier:1.0
                                                                             constant:0];
-    [self.view addConstraint:searchTopConstraint];
-    [self.view layoutIfNeeded];
+    self.searchTopConstraint.constant = self.v_layoutInsets.top;
+    [self.view addConstraint:self.searchTopConstraint];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -129,7 +135,7 @@
         return;
     }
 
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     if ( self.navigationController != nil )
     {
         [self.navigationController pushViewController:profileViewController animated:YES];
@@ -152,21 +158,14 @@
     [self.searchField becomeFirstResponder];
 }
 
-#pragma mark - VNavigationDestination
-
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
-{
-    [self.childViewController refresh:YES];
-
-    return YES;
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     // Release the search field
     [self.searchField resignFirstResponder];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSearchBar];
 
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
@@ -175,17 +174,34 @@
 
 #pragma mark - Navigation
 
+- (void)v_setLayoutInsets:(UIEdgeInsets)v_layoutInsets
+{
+    [super v_setLayoutInsets:v_layoutInsets];
+    
+    self.searchTopConstraint.constant = self.v_layoutInsets.top;
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
     {
         self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
+        self.childViewController.dependencyManager = self.dependencyManager;
     }
 
     if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )
     {
         self.usersAndTagsSearchViewController = segue.destinationViewController;
     }
+}
+
+#pragma mark - VMultipleContainerChild
+
+- (void)viewControllerSelected:(BOOL)isDefault
+{
+    // This event is not actually stream related, its name remains for legacy purposes
+    NSDictionary *params = @{ VTrackingKeyStreamName : [self.dependencyManager stringForKey:VDependencyManagerTitleKey] ?: @"Discover" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
 }
 
 #pragma mark - UINavigationControllerDelegate methods

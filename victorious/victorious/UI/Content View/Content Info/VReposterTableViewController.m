@@ -19,22 +19,23 @@
 
 #import "VFollowUserControl.h"
 
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorizedAction.h"
 
 @interface VReposterTableViewController ()
 
 @property (nonatomic, strong) NSArray *reposters;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VReposterTableViewController
 
-- (id)init
+- (id)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self)
     {
-        
+        _dependencyManager = dependencyManager;
     }
     return self;
 }
@@ -67,6 +68,20 @@
     [self refreshRepostersList];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueReposters forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -90,38 +105,39 @@
 
 - (void)followActionForCell:(VInviteFriendTableViewCell *)cell
 {
-    // Check if logged in before attempting to follow / unfollow
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    if ([mainUser.following containsObject:cell.profile])
-    {
-        [[VObjectManager sharedManager] unfollowUser:cell.profile
-                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+     {
+         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+         if ([mainUser.following containsObject:cell.profile])
          {
-             [cell updateFollowStatus];
+             NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser parameters:params];
+             
+             [[VObjectManager sharedManager] unfollowUser:cell.profile
+                                             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+              {
+                  [cell updateFollowStatus];
+              }
+                                                failBlock:^(NSOperation *operation, NSError *error)
+              {
+                  [cell updateFollowStatus];
+              }];
          }
-                                           failBlock:^(NSOperation *operation, NSError *error)
+         else
          {
-             [cell updateFollowStatus];
-         }];
-    }
-    else
-    {
-        [[VObjectManager sharedManager] followUser:cell.profile
-                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [cell updateFollowStatus];
+             [[VObjectManager sharedManager] followUser:cell.profile
+                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+              {
+                  [cell updateFollowStatus];
+              }
+                                              failBlock:^(NSOperation *operation, NSError *error)
+              {
+                  [cell updateFollowStatus];
+              }];
          }
-                                         failBlock:^(NSOperation *operation, NSError *error)
-         {
-             [cell updateFollowStatus];
-         }];
-    }
+     }];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath

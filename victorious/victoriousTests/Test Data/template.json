@@ -1,11 +1,22 @@
 {
     "id": "d07ab13a-1e39-4a66-952f-f04c638a9adc",
     "name": "application",
-    "color.background": {
+    "color.text": {
         "red": 51,
         "green": 153,
         "blue": 102,
-        "alpha": 1
+        "alpha": 255
+    },
+    "background":
+    {
+        "name":"solidColor.background",
+        "color":
+        {
+            "red":153,
+            "green":51,
+            "blue":102,
+            "alpha":255
+        }
     },
     "font.header": {
         "fontName": "STHeitiSC-Light",
@@ -17,7 +28,12 @@
     },
     "app_store_url": "https:\/\/itunes.apple.com\/us\/app\/id889351747",
     "ivc": {
-        "name": "testInitMethod"
+        "name": "testInitMethod",
+        "id": "508c4beb-bb1a-4384-9f38-6200b32b8485",
+        "inner": {
+            "name": "testNewMethod",
+            "app_store_url": "http:\/\/example.com\/"
+        }
     },
     "nvc": {
         "id": "ae742d8a-aaea-43db-b99a-707d72b147cb",
@@ -31,18 +47,16 @@
         "thing": [{
             "id": "10c8b593-b463-4845-bdf0-9d34fcd4e174",
             "name": "testNewMethod"
-        }]
+        }],
+        "app_store_url": "deep_store_url"
     },
-    "video_quality": {
-        "capture": "medium",
-        "remix": "large"
-    },
+    "video_quality": "medium",
     "experiments": {
         "channels_enabled": true,
-        "histogram_enabled": false,
-        "require_profile_image": true,
         "template_c_enabled": false
     },
+    "require_profile_image": true,
+    "histogram_enabled": false,
     "arrayOfStrings": [ "red", "fish", "blue", "fish"],
     "arrayOfObjects": [
         {
@@ -56,6 +70,12 @@
         {
             "id": "b5b15ccc-151d-40ed-8d12-a9fcde6413f8",
             "name": "testInitMethod"
+        },
+        {
+            "referenceID": "ae742d8a-aaea-43db-b99a-707d72b147cb"
+        },
+        {
+            "referenceID": "508c4beb-bb1a-4384-9f38-6200b32b8485"
         }
     ],
     "otherNVC": {
@@ -66,5 +86,8 @@
     },
     "missingReference": {
         "referenceID": "4327cba0-5a09-4f30-bf19-f4e36b250a9a"
+    },
+    "myImage": {
+        "imageURL": "Menu"
     }
 }

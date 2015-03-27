@@ -145,7 +145,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.allowPhotos = YES;
     self.allowVideo = YES;
     self.videoEnabled = YES;
-    self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
+    self.videoQuality = AVCaptureSessionPresetMedium;
     self.initialCaptureMode = self.videoQuality;
     self.state = VCameraViewControllerStateDefault;
     self.captureAnimationQueue = dispatch_queue_create("capture animation queue, waits for animation to transition to capture state", DISPATCH_QUEUE_SERIAL);
@@ -200,6 +200,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                  forControlEvents:VCameraControlEventStartRecordingVideo];
     [self.cameraControl addTarget:self action:@selector(stopRecording)
                  forControlEvents:VCameraControlEventEndRecordingVideo];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidEnter];
 }
 
 - (void)viewDidLayoutSubviews
@@ -536,10 +538,14 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     {
         self.completionBlock(NO, nil, nil);
     }
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidExit];
 }
 
 - (IBAction)searchAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
+    
     VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
     __weak typeof(self) welf = self;
     imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
@@ -996,6 +1002,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.previewSnapshot = snapshot;
     
     VRadialGradientView *radialGradientView = [[VRadialGradientView alloc]  initWithFrame:self.previewView.bounds];
+    radialGradientView.userInteractionEnabled = NO;
     [self.previewView addSubview:radialGradientView];
     self.radialGradientView = radialGradientView;
     radialGradientView.translatesAutoresizingMaskIntoConstraints = NO;

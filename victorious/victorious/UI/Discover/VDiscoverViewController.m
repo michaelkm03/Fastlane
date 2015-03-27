@@ -23,15 +23,13 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VConstants.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
-
+#import "VAuthorizedAction.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
-static CGFloat const kTopInset = 22.0f; ///< The space between the top of the view controller and the top of the table view contents
 
 @interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate>
 
@@ -48,6 +46,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 @implementation VDiscoverViewController
 
+@synthesize dependencyManager = _dependencyManager; //< VDiscoverViewControllerProtocol
+
 #pragma mark - View controller life cycle
 
 - (void)loadView
@@ -55,6 +55,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     [super loadView];
     
     self.suggestedPeopleViewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Discover"];
+    self.suggestedPeopleViewController.dependencyManager = self.dependencyManager;
     self.suggestedPeopleViewController.delegate = self;
     
     [self addChildViewController:self.suggestedPeopleViewController];
@@ -71,8 +72,6 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     [self registerCells];
     [self refresh:YES];
     
-    self.tableView.contentInset = UIEdgeInsetsMake(kTopInset, 0.0f, 0.0f, 0.0f);
-    
     // Watch for a change in the login status
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(viewStatusChanged:)
@@ -83,6 +82,24 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                                              selector:@selector(viewStatusChanged:)
                                                  name:kHashtagStatusChangedNotification
                                                object:nil];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.suggestedPeopleViewController.dependencyManager = dependencyManager;
+    for ( UITableViewCell *cell in self.tableView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VTrendingTagCell class]] )
+        {
+            ((VTrendingTagCell *)cell).dependencyManager = self.dependencyManager;
+        }
+        else if ( [cell isKindOfClass:[VSuggestedPeopleCell class]] )
+        {
+            [cell.contentView setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
+        }
+    }
 }
 
 - (void)dealloc
@@ -221,9 +238,9 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     [self.tableView reloadData];
 }
 
-- (void)didAttemptActionThatRequiresLogin
+- (UIViewController *)componentRootViewController
 {
-    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
+    return self;
 }
 
 #pragma mark - UITableViewDataSource
@@ -277,6 +294,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                 self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
             }
             
+            cell.contentView.backgroundColor = [UIColor clearColor];
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }
@@ -308,30 +326,31 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
             __weak typeof(customCell) weakCell = customCell;
             customCell.subscribeToTagAction = ^(void)
             {
-                // Check if logged in before attempting to subscribe / unsubscribe
-                if (![VObjectManager sharedManager].authorized)
-                {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-                    return;
-                }
-                
                 // Disable follow / unfollow button
                 if (!weakCell.shouldCellRespond)
                 {
                     return;
                 }
-                weakCell.shouldCellRespond = NO;
                 
-                // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                if ([self isUserSubscribedToHashtag:hashtag.tag])
-                {
-                    [self unsubscribeToTagAction:hashtag];
-                }
-                else
-                {
-                    [self subscribeToTagAction:hashtag];
-                }
+                // Check for authorization first
+                VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                            dependencyManager:self.dependencyManager];
+                [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^
+                 {
+                     weakCell.shouldCellRespond = NO;
+                     
+                     // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
+                     if ([self isUserSubscribedToHashtag:hashtag.tag])
+                     {
+                         [self unsubscribeToTagAction:hashtag];
+                     }
+                     else
+                     {
+                         [self subscribeToTagAction:hashtag];
+                     }
+                 }];
             };
+            customCell.dependencyManager = self.dependencyManager;
             cell = customCell;
         }
     }
@@ -367,8 +386,13 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     // No actions available for kTableViewSectionSuggestedPeople
     if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && self.isShowingNoData == NO )
     {
-        // Show hashtag stream
         VHashtag *hashtag = self.trendingTags[ indexPath.row ];
+        
+        // Tracking
+        NSDictionary *params = @{ VTrackingKeyHashtag : hashtag.tag ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectTrendingHashtag parameters:params];
+        
+        // Show hashtag stream
         [self showStreamWithHashtag:hashtag];
     }
 }
@@ -377,9 +401,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VDiscoverContainerViewController *containerViewController = (VDiscoverContainerViewController *)self.parentViewController;
-    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
-    vc.dependencyManager = containerViewController.dependencyManager;
+    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -392,6 +414,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 - (void)subscribeToTagAction:(VHashtag *)hashtag
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueTrendingHashtags forSessionParameterWithKey:VTrackingKeyContext];
+    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Add tag to user tags object
@@ -413,6 +437,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueTrendingHashtags forSessionParameterWithKey:VTrackingKeyContext];
+    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Remove tag to user tags object
@@ -434,6 +460,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond failure:(BOOL)failed
 {
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    
     NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
     
     for (NSIndexPath *idxPath in indexPaths)

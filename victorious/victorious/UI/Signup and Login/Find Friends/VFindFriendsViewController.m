@@ -18,7 +18,8 @@
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
-#import "VSettingManager.h"
+#import "VDependencyManager.h"
+#import "VAppInfo.h"
 
 @import MessageUI;
 
@@ -32,15 +33,19 @@
 @property (nonatomic, strong) VFindFriendsTableViewController *twitterInnerViewController;
 @property (nonatomic) BOOL shouldShowInvite;
 @property (nonatomic, strong) NSString *appStoreLink;
+@property (nonatomic, strong) NSString *appName;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VFindFriendsViewController
 
-+ (VFindFriendsViewController *)newFindFriendsViewController
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
-    return [storyboard instantiateViewControllerWithIdentifier:@"VFindFriendsViewController"];
+    VFindFriendsViewController *viewController = (VFindFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"VFindFriendsViewController"];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
 }
 
 #pragma mark - View Lifecycle
@@ -54,13 +59,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.shouldShowInvite = [MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText];
     
-    if ( self.shouldShowInvite )
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)];
-    }
+    [self refreshInviteButtons];
     
     [self addChildViewController:self.tabBarViewController];
     self.tabBarViewController.view.frame = self.containerView.bounds;
@@ -70,9 +70,44 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self refreshInviteButtons];
+}
+
+- (void)refreshInviteButtons
+{
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    self.appStoreLink = appInfo.appURL.absoluteString;
+    self.appName = appInfo.appName;
     
-    NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
-    self.appStoreLink = appStoreUrl.absoluteString;
+    BOOL canSendMail = [MFMailComposeViewController canSendMail];
+    BOOL canSendText = [MFMessageComposeViewController canSendText];
+    BOOL hasValidDisplayStrings = [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
+    self.shouldShowInvite = (canSendMail || canSendText) && hasValidDisplayStrings;
+    
+    UIBarButtonItem *barButtonItem = nil;
+    if ( self.shouldShowInvite )
+    {
+        barButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)];
+    }
+    self.navigationItem.rightBarButtonItem = barButtonItem;
+}
+
+- (void)setShouldShowInvite:(BOOL)shouldShowInvite
+{
+    _shouldShowInvite = shouldShowInvite;
+    self.contactsInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
+    self.facebookInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
+    self.twitterInnerViewController.shouldDisplayInviteButton = shouldShowInvite;
+}
+
+- (BOOL)stringIsValidForDisplay:(NSString *)string
+{
+    return string != nil && ![string isEqualToString:@""];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -112,10 +147,15 @@
     
     self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.contactsInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
+    self.contactsInnerViewController.dependencyManager = self.dependencyManager;
+    
     self.facebookInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.facebookInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
+    self.facebookInnerViewController.dependencyManager = self.dependencyManager;
+    
     self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.twitterInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
+    self.twitterInnerViewController.dependencyManager = self.dependencyManager;
     
     tabViewController.viewControllers = @[v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
                                           v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),
@@ -143,10 +183,12 @@
 
 - (IBAction)pressedInvite:(id)sender
 {
-    if ((![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText]) || [self.appStoreLink isEqualToString:@""])
+    if ((![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText]) )
     {
         return;
     }
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectInvite];
     
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"InviteYourFriends", @"")
                                               cancelButtonTitle:nil
@@ -192,7 +234,7 @@
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+        NSString *appName = self.appName;
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
@@ -213,8 +255,8 @@
 {
     if ([MFMessageComposeViewController canSendText])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
-        NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
+        NSString *appName = self.appName;
+        NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:self.appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
         bodyString = [bodyString stringByReplacingOccurrencesOfString:@"%@" withString:appName];
@@ -237,6 +279,11 @@
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
+    if ( result == MFMailComposeResultSent || result == MFMailComposeResultSaved )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidInviteFiendsWithEmail];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -244,6 +291,11 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
+    if ( result == MessageComposeResultSent )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidInviteFiendsWithSMS];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

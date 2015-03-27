@@ -34,7 +34,6 @@
 
 #import "UIVIew+AutoLayout.h"
 
-
 NSString *const kVUserSearchResultsChangedNotification = @"VUserSearchResultsChangedNotification";
 NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchResultsChangedNotification";
 
@@ -151,6 +150,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
 
     [self.searchField becomeFirstResponder];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueDiscoverSearch forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -159,6 +160,11 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     // Remove NSNotification Observers
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    }
 }
 
 - (BOOL)v_prefersNavigationBarHidden
@@ -194,6 +200,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     // Perform search
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchUser];
+        
         self.userSearchResultsVC.view.alpha = 1.0f;
         self.tagsSearchResultsVC.view.alpha = 0;
         
@@ -209,6 +217,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag];
+        
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 1.0f;
 
@@ -298,7 +308,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
                                                           limit:kVMaxSearchResults
-                                                        context:VObjectManagerSearchContextMessage
+                                                        context:VObjectManagerSearchContextDiscover
                                                withSuccessBlock:searchSuccess
                                                       failBlock:nil];
     }
@@ -378,7 +388,7 @@ static NSInteger const kVMaxSearchResults = 1000;
         messageTitle = NSLocalizedString(@"No People Found In Search Title", @"");
         messageText = NSLocalizedString(@"No people found in search", @"");
         messageIcon = [[UIImage imageNamed:@"user-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.userSearchResultsVC.tableView.backgroundView = noResultsFoundView;
+        self.tagsSearchResultsVC.tableView.backgroundView = noResultsFoundView;
         self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )

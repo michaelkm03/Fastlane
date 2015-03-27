@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
+
 @interface VProfileFollowingContainerViewController : UIViewController
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

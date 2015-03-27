@@ -54,11 +54,19 @@
 
 - (BOOL)shouldAutorotate
 {
+    if ([self isBeingDismissed] || [self isMovingFromParentViewController])
+    {
+        return NO;
+    }
     return self.hasAppeared;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
+    if ([self isBeingDismissed] || [self isMovingFromParentViewController])
+    {
+        return  UIInterfaceOrientationMaskPortrait;
+    }
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 

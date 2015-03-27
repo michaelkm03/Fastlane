@@ -17,7 +17,8 @@
 #import "VPaginationManager.h"
 
 //Data Models
-#import "VStream.h"
+#import "VStream+Fetcher.h"
+#import "VSequence.h"
 
 static char KVOContext;
 
@@ -93,37 +94,19 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     return self.stream.streamItems.count;
 }
 
-- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
+- (void)unloadStream
 {
-    self.isLoading = YES;
-    [[VObjectManager sharedManager] loadStream:self.stream
-                                      pageType:VPageTypeFirst
-                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         if (successBlock)
-         {
-             successBlock();
-         }
-         self.isLoading = NO;
-     }
-                                        failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if (failureBlock)
-         {
-             failureBlock(error);
-         }
-         self.isLoading = NO;
-     }];
+    self.stream.streamItems = [[NSOrderedSet alloc] init];
 }
 
-- (void)loadNextPageWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
+- (void)loadPage:(VPageType)pageType withSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
     self.isLoading = YES;
     [[VObjectManager sharedManager] loadStream:self.stream
-                                      pageType:VPageTypeNext
+                                      pageType:pageType
                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         if (successBlock)
+         if ( successBlock != nil )
          {
              successBlock();
          }
@@ -131,9 +114,9 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
      }
                                                failBlock:^(NSOperation *operation, NSError *error)
      {
-         if (failureBlock)
+         if ( failureBlock != nil )
          {
-             failureBlock(error);
+             failureBlock( error );
          }
          self.isLoading = NO;
      }];
@@ -145,7 +128,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
 }
 
-- (BOOL)filterCanLoadNextPage
+- (BOOL)canLoadNextPage
 {
     VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream];
     return [filter canLoadPageType:VPageTypeNext];
@@ -201,7 +184,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
+{    
     if ( [self.delegate respondsToSelector:@selector(shouldDisplayActivityViewFooterForCollectionView:inSection:)] &&
         [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {

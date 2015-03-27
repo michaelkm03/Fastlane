@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VHasManagedDependencies.h"
 
-@interface VHashtagFollowingTableViewController : UITableViewController
+@interface VHashtagFollowingTableViewController : UITableViewController <VHasManagedDependencies>
 
 @end

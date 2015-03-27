@@ -20,12 +20,11 @@
 #import "VNotificationCell.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+Users.h"
 #import "VPaginationManager.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUser.h"
-
-#import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
 
 NS_ENUM(NSUInteger, VModeSelect)
@@ -46,11 +45,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 @end
 
 @implementation VInboxViewController
-
-+ (instancetype)inboxViewController
-{
-    return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
-}
 
 - (void)dealloc
 {
@@ -91,22 +85,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-}
-
-#pragma mark - Segmented Control
-
-- (void)toggleFilterControl:(NSInteger)idx
-{
-    VModeSelect = idx;
-    NSLog(@"\n\n-----\nSelected Index = %lu\n-----\n\n", (unsigned long)VModeSelect);
-    
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-    }
-    
-    self.fetchedResultsController = nil;
-    [self performFetch];
 }
 
 #pragma mark - Overrides
@@ -281,6 +259,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (conversation.user)
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMessage];
+        
         [self displayConversationForUser:conversation.user];
     }
 }
@@ -290,6 +270,16 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)displayConversationForUser:(VUser *)user
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
+    
+    if ( [self.navigationController.viewControllers containsObject:detailVC] )
+    {
+        if ( self.navigationController.topViewController != detailVC )
+        {
+            [self.navigationController popToViewController:detailVC animated:YES];
+        }
+        return;
+    }
+    
     detailVC.messageCountCoordinator = self.messageCountCoordinator;
     [self.navigationController pushViewController:detailVC animated:YES];
 }
@@ -348,7 +338,10 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (IBAction)userSearchAction:(id)sender
 {
-    VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
+    
+    VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
+    userSearch.searchContext = VObjectManagerSearchContextMessage;
     [self.navigationController pushViewController:userSearch animated:YES];
 }
 

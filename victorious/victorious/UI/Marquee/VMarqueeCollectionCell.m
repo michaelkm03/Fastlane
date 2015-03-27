@@ -22,6 +22,8 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
+#import "VTimerManager.h"
+
 static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
 static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 static const CGFloat kMarqueeBufferHeight = 3;
@@ -40,10 +42,26 @@ static const CGFloat kMarqueeBufferHeight = 3;
 {
     [self.collectionView registerNib:[VMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier]];
     
-    self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.frame];
-    [self.tabView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin];
+    self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.bounds];
+    self.tabView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    [self.tabContainerView addSubview:self.tabView];
+    
+    NSDictionary *tabView = @{ @"tabView":self.tabView };
+    [self.tabContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tabView]|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:tabView]];
+    [self.tabContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tabView]|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:tabView]];
+}
+
+- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
+{
+    _hideMarqueePosterImage = hideMarqueePosterImage;
+    if ( !self.hideMarqueePosterImage )
     {
         self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
@@ -59,20 +77,16 @@ static const CGFloat kMarqueeBufferHeight = 3;
         self.tabView.deselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         self.tabView.tabImage = [UIImage imageNamed:@"tabIndicatorDot"];
         self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatioC;
-
+        
         self.backgroundColor = [UIColor clearColor];
     }
-    
-    [self addSubview:self.tabView];
-    
-    //Add constraints to tabView so it stays centered in it's superview
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tabView
-                                                     attribute:NSLayoutAttributeCenterX
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.tabView.superview
-                                                     attribute:NSLayoutAttributeCenterX
-                                                    multiplier:1.0f constant:0.0f]];
+    self.marquee.hideMarqueePosterImage = hideMarqueePosterImage;
+}
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.marquee.dependencyManager = dependencyManager;
 }
 
 - (void)setMarquee:(VMarqueeController *)marquee
@@ -80,6 +94,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
     _marquee = marquee;
     marquee.collectionView = self.collectionView;
     marquee.tabView = self.tabView;
+    self.hideMarqueePosterImage = marquee.hideMarqueePosterImage;
     
     self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
     
@@ -88,8 +103,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
          self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
          [self.marquee enableTimer];
          [self.collectionView reloadData];
-     }
-                                              failure:nil];
+     } failure:nil];
 }
 
 - (VStreamItem *)currentItem
@@ -107,7 +121,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    [self.marquee.autoScrollTimer invalidate];
+    [self.marquee.autoScrollTimerManager invalidate];
 }
 
 - (void)restartAutoScroll

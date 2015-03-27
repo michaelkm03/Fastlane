@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VRegistration.h"
+
 typedef NS_ENUM(NSUInteger, VLoginErrorCode)
 {
     VLoginErrorCodeBadEmailAddress,
@@ -13,8 +15,11 @@ typedef NS_ENUM(NSUInteger, VLoginErrorCode)
     VLoginErrorCodeFailedLogin
 };
 
-@interface VLoginWithEmailViewController : UIViewController
+@class VDependencyManager;
+
+@interface VLoginWithEmailViewController : UIViewController <VRegistrationStep, VRegistrationStepDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *transitionPlaceholder;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

@@ -11,6 +11,8 @@
 
 // multi-purpose keys
 extern NSString * const VDependencyManagerTitleKey;
+extern NSString * const VDependencyManagerBackgroundKey;
+extern NSString * const VDependencyManagerImageURLKey;
 
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;
@@ -90,6 +92,11 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 - (NSNumber *)numberForKey:(NSString *)key;
 
 /**
+ Returns the UIImage with the specified key
+ */
+- (UIImage *)imageForKey:(NSString *)key;
+
+/**
  Returns a new instance of a view controller with the specified key
  */
 - (UIViewController *)viewControllerForKey:(NSString *)key;
@@ -102,9 +109,9 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 /**
  Returns the NSArray with the specified key. If the array
  elements contain configuration dictionaries for dependant
- objects, those configuration dictionaries can be passed
- into -objectFromDictionary to instantiate a new object.
- */
+ objects, those objects will be instantiated and added to
+ the array.
+*/
 - (NSArray *)arrayForKey:(NSString *)key;
 
 /**
@@ -124,10 +131,37 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 - (NSArray *)arrayOfSingletonValuesOfType:(Class)expectedType forKey:(NSString *)key;
 
 /**
+ Returns an NSArray with the specified key. The array
+ will be filtered for objects conforming to the
+ specified protocol.
+ */
+- (NSArray *)arrayOfValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns an NSArray with the specified key. The array
+ will be filtered for objects conforming to the
+ specified protocol. If any of the array elements have
+ been previously returned, the previous value will
+ be returned again.
+ */
+- (NSArray *)arrayOfSingletonValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns an NSArray of NSString objects for the specified key. These 
+ NSString objects will contain URLs pointing to images.
+ */
+- (NSArray *)arrayOfImageURLsForKey:(NSString *)key;
+
+/**
+ Returns an array of all image URLs that appear in the template.
+ */
+- (NSArray *)arrayOfAllImageURLs;
+
+/**
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  
- @param expectedType if the value found at keyPath is not this kind
+ @param expectedType if the value found at key is not this kind
  of class, we return nil.
  */
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key;
@@ -136,13 +170,33 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  
- @param expectedType if the value found at keyPath is not this kind
+ @param expectedType if the value found at key is not this kind
  of class, we return nil.
  @param dependencies If the returned object conforms to VHasManagedDependencies,
  a new instance of VDependencyManager will be provided to it, and these
  extra dependencies will be added to it.
  */
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
+
+/**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param expectedType if the value found at key does not conform 
+                     to this protocol, of class, we return nil.
+ */
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param protocol If the value found at key does not conform to this protocol, we return nil.
+ @param dependencies If the returned object conforms to VHasManagedDependencies,
+                     a new instance of VDependencyManager will be provided to it, and these
+                     extra dependencies will be added to it.
+ */
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
 
 /**
  Returns a singleton object stored for the specified key in the configuration
@@ -152,32 +206,10 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Calling this method twice with the same key will return the same
  object both times.
  
- @param expectedType if the value found at keyPath is not this kind
+ @param expectedType if the value found at key is not this kind
  of class, we return nil.
  */
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
-
-/**
- Returns a new object defined by the given configuration dictionary
- 
- @param expectedType The type of object you expect to get back
- @param configurationDictionary A dictionary of configuration attributes that describes the object
- @return An object described by the configurationDictionary,
- or nil if no such key exists or is of the wrong type.
- */
-- (id)objectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
-
-/**
- Returns a singleton object defined by the given configuration dictionary
- 
- @discussion
- Calling this method twice with the same dictionary will return the same
- object both times.
- 
- @param expectedType The type of object you expect to get back
- @param configurationDictionary A dictionary of configuration attributes that describes the object
- */
-- (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
 
 /**
  Creates and returns a new dependency manager with the given configuration dictionary. The

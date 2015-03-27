@@ -52,6 +52,8 @@
 @property (nonatomic, assign) BOOL isAudioEnabled;
 @property (nonatomic, assign) BOOL loopWithoutComposition;              ///< Loops by playing the asset again instead of making a composition that repeats
 @property (nonatomic, assign) BOOL toolbarHidden;
+@property (nonatomic, assign) CMTime sliderTouchInteractionStartTime; ///< The time at which a touch slider interaction (scrub) began
+@property (nonatomic, assign) BOOL shouldRestorePlaybackAfterSeeking; ///< YES by default
 
 - (void)toggleToolbarHidden;
 

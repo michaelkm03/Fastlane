@@ -23,7 +23,7 @@ NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
 {
     NSParameterAssert( viewController != nil ); //< This is here for future use of UIAlertController
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:error.localizedFailureReason
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:error.localizedDescription
                                                     message:error.localizedDescription
                                                    delegate:nil
                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")

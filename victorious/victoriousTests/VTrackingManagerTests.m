@@ -20,6 +20,7 @@
 @property (nonatomic, readwrite) NSMutableArray *queuedEvents;
 
 - (NSUInteger)numberOfQueuedEventsForEventName:(NSString *)eventName;
+- (NSDictionary *)addSessionParametersToDictionary:(NSDictionary *)dictionary;
 
 @end
 
@@ -181,6 +182,32 @@
     [self.trackingMgr trackEvent:@"some_event"];
     XCTAssertNil(delegate.paramsReceived[param1Key]);
     XCTAssertNil(delegate.paramsReceived[param2Key]);
+}
+
+- (void)testAddSessionParamsToDictionary
+{
+    NSString * const param1Key = @"abc";
+    NSString * const param1Value = @"def";
+    NSString * const param2Key = @"xyz";
+    NSString * const param2Value = @"zyx";
+    
+    NSString * const session1Value = @"jkl";
+    NSString * const session2Key = @"mno";
+    NSString * const session2Value = @"pqr";
+    
+    [self.trackingMgr setValue:session1Value forSessionParameterWithKey:param1Key];
+    [self.trackingMgr setValue:session2Value forSessionParameterWithKey:session2Key];
+    
+    NSDictionary *eventParams = @{ param1Key : param1Value, param2Key : param2Value };
+    
+    NSDictionary *combinedParams = [self.trackingMgr addSessionParametersToDictionary:eventParams];
+    
+    XCTAssertEqualObjects( combinedParams[ param1Key ], param1Value,
+                          @"Session parameters should not override event parameters with same key" );
+    XCTAssertNotEqualObjects( combinedParams[ param1Key ], session1Value,
+                             @"Session parameters should not override event parameters with same key" );
+    XCTAssertEqualObjects( combinedParams[ param2Key ], param2Value );
+    XCTAssertEqualObjects( combinedParams[ session2Key ], session2Value );
 }
 
 - (void)testDurationEvents

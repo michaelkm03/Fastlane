@@ -68,6 +68,8 @@ static NSString * const kStoryboardName = @"EndCard";
 {
     [super viewDidLoad];
     
+    self.replayButton.titleLabel.numberOfLines = 3;
+    
     self.nextVideoBannerViewBottomMax = self.nextVideoBannerViewBottomConstraint.constant;
     [self.nextVideoBannerViewController configureWithDependencyManager:self.dependencyManager];
     
@@ -201,18 +203,23 @@ static NSString * const kStoryboardName = @"EndCard";
 
 - (IBAction)onReplay:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectReplayVideo];
+    
     [self.delegate replaySelectedFromEndCard:self];
 }
 
 - (IBAction)onNextVideo:(id)sender
 {
-    [self nextVideoSelected];
+    [self nextVideoSelectedWithAutoPlay:NO];
 }
 
 #pragma mark - VEndCardViewControllerDelegate
 
-- (void)nextVideoSelected
+- (void)nextVideoSelectedWithAutoPlay:(BOOL)autoPlay
 {
+    NSString *eventName = autoPlay ? VTrackingEventNextVideoDidAutoPlay : VTrackingEventUserDidSelectPlayNextVideo;
+    [[VTrackingManager sharedInstance] trackEvent:eventName];
+    
     [self.delegate nextSelectedFromEndCard:self];
 }
 

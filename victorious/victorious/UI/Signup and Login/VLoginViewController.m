@@ -9,11 +9,9 @@
 #import "VLoginViewController.h"
 #import "VConstants.h"
 #import "VUser.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "VProfileCreateViewController.h"
 #import "VUserManager.h"
-#import "VSignupTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -29,65 +27,111 @@
 #import "CCHLinkTextViewDelegate.h"
 #import "VLinkTextViewHelper.h"
 #import "MBProgressHUD.h"
+#import "UIView+AutoLayout.h"
+#import "VDependencyManager.h"
+#import "VCreatorInfoHelper.h"
 
 @import Accounts;
 @import Social;
 
-@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate>
+@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate, VRegistrationStepDelegate>
 
 @property (nonatomic, strong) VUser *profile;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet VLoginButton *facebookButton;
 @property (nonatomic, weak) IBOutlet VLoginButton *twitterButton;
 @property (nonatomic, weak) IBOutlet VLoginButton *signupWithEmailButton;
 
-@property (weak, nonatomic) IBOutlet CCHLinkTextView *loginTextView;
-
-@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, weak) IBOutlet CCHLinkTextView *loginTextView;
 
 @property (nonatomic, assign) VLoginType loginType;
-@property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, weak) IBOutlet VAuthorizationContextHelper *authorizationContextHelper;
+
+@property (nonatomic, weak) IBOutlet UITextView *authorizationContextTextView;
+@property (nonatomic, weak) IBOutlet VCreatorInfoHelper *creatorInfoHelper;
+@property (nonatomic, weak) IBOutlet UIView *contentContainer;
 
 @end
 
 @implementation VLoginViewController
 
-+ (VLoginViewController *)loginViewController
+@synthesize authorizedAction; //< VAuthorizationProvider
+
++ (VLoginViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIStoryboard   *storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
-    return [storyboard instantiateInitialViewController];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
+    VLoginViewController *viewController = (VLoginViewController *)[storyboard instantiateInitialViewController];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
+}
+
+- (void)loginDidFinishWithSuccess:(BOOL)success
+{
+    NSAssert( self.navigationController != nil && [self.navigationController.viewControllers.firstObject isEqual:self],
+             @"VLoginViewController can only exist as the root view controller of a navigation controller." );
+    
+    // If we're dismissing from a subsequently pushed navigation controller, disable the custom transition
+    if ( self.navigationController.viewControllers.count > 1 )
+    {
+        self.navigationController.transitioningDelegate = nil;
+    }
+    
+    [self.navigationController dismissViewControllerAnimated:YES completion:^void
+     {
+         if ( success && self.authorizedAction != nil )
+         {
+             self.authorizedAction();
+         }
+     }];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    UIImage    *backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
-                                   applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
     
-    self.backgroundImageView.image = backgroundImage;
-    [self addGradientToImageView:self.backgroundImageView];
-    
-    [self.facebookButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.facebookButton setFont:[self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
     [self.facebookButton setTextColor:[UIColor whiteColor]];
     self.facebookButton.accessibilityIdentifier = VAutomationIdentifierLoginFacebook;
     
-    [self.signupWithEmailButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.signupWithEmailButton setFont:[self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
     [self.signupWithEmailButton setTextColor:[UIColor whiteColor]];
     self.signupWithEmailButton.accessibilityIdentifier = VAutomationIdentifierLoginSignUp;
     
-    [self.twitterButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.twitterButton setFont:[self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
     [self.twitterButton setTextColor:[UIColor whiteColor]];
     self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLoginTwitter;
     
     NSString *linkText = NSLocalizedString( @"Log in here", @"" );
     NSString *normalText = NSLocalizedString( @"Already Registered?", @"" );
-    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    NSString *text = [NSString stringWithFormat:@"%@ %@", normalText, linkText];
     NSRange range = [text rangeOfString:linkText];
     [self.linkTextHelper setupLinkTextView:self.loginTextView withText:text range:range];
     self.loginTextView.linkDelegate = self;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:VProfileCreateViewControllerWasAbortedNotification object:nil];
+    // Some prep for VPresentWithBlurViewController background
+    self.blurredBackgroundView = [self createBackgroundView:self.view.bounds];
+    [self.view addSubview:self.blurredBackgroundView];
+    [self.view sendSubviewToBack:self.blurredBackgroundView];
+    [self.view v_addFitToParentConstraintsToSubview:self.blurredBackgroundView];
+    
+    // Some prep for VPresentWithBlurViewController animation (this is the order elements animate on screen)
+    NSArray *elementsArray = @[ self.contentContainer,
+                                self.signupWithEmailButton,
+                                self.facebookButton,
+                                self.twitterButton,
+                                self.loginTextView ];
+    self.stackedElements = [NSOrderedSet orderedSetWithArray:elementsArray];
+    
+    NSString *authorizationContextText = [self.authorizationContextHelper textForContext:self.authorizationContextType];
+    NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]
+                                                        color:[UIColor whiteColor]
+                                                   lineHeight:23.0f];
+    self.authorizationContextTextView.attributedText = [[NSAttributedString alloc] initWithString:authorizationContextText attributes:attributes];
+    
+    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
 }
 
 - (void)dealloc
@@ -99,27 +143,19 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    
-    UIImage    *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(closeButtonClicked:)];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     self.navigationController.delegate = self;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [[VTrackingManager sharedInstance] startEvent:@"Login"];
+    
+    if ( self.isBeingPresented || self.navigationController.isBeingPresented )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginDidShow];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VTrackingManager sharedInstance] endEvent:@"Login"];
     
     // Stop being the navigation controller's delegate
     if (self.navigationController.delegate == self)
@@ -140,25 +176,70 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return [self.navigationController.presentingViewController prefersStatusBarHidden];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+#pragma mark - VPresentWithBlurViewController
+
+- (void)setTransitionDelegate:(VTransitionDelegate *)transitionDelegate
+{
+    _transitionDelegate = transitionDelegate;
+    
+    UIViewController *viewController = self;
+    if ( self.navigationController != nil )
+    {
+        viewController = self.navigationController;
+    }
+    
+    viewController.transitioningDelegate = transitionDelegate;
 }
 
 #pragma mark - CCHLinkTextViewDelegate
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
+    
     [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
 }
 
-#pragma mark - Support
+#pragma mark - VRegistrationStepDelegate
 
-- (void)addGradientToImageView:(UIView *)view
+- (void)didFinishRegistrationStepWithSuccess:(BOOL)success
 {
-    CAGradientLayer    *gradient    =   [CAGradientLayer layer];
-    gradient.frame = view.bounds;
-    gradient.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-                        (id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor];
-    [view.layer insertSublayer:gradient atIndex:0];
+    [self loginDidFinishWithSuccess:success];
+}
+
+#pragma mark - Helpers
+
+- (NSDictionary *)stringAttributesWithFont:(UIFont *)font color:(UIColor *)color lineHeight:(CGFloat)lineHeight
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = lineHeight;
+    
+    return @{ NSFontAttributeName: font ?: [NSNull null],
+              NSForegroundColorAttributeName: color,
+              NSParagraphStyleAttributeName: paragraphStyle };
+}
+
+- (UIView *)createBackgroundView:(CGRect)bounds
+{
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    blurEffectView.frame = bounds;
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = bounds;
+    gradientLayer.colors = @[ (id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+                              (id)[UIColor colorWithWhite:0.0 alpha:0.3].CGColor,
+                              (id)[UIColor colorWithWhite:0.0 alpha:0.8].CGColor ];
+    [blurEffectView.layer insertSublayer:gradientLayer atIndex:(unsigned)(blurEffectView.layer.sublayers.count-1)];
+    return blurEffectView;
 }
 
 - (void)twitterAccessDidFail:(NSError *)error
@@ -194,7 +275,6 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
                        {
-                           [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidSucceed];
                            self.profile = user;
                            if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
                            {
@@ -202,18 +282,20 @@
                            }
                            else
                            {
-                               [self dismissViewControllerAnimated:YES completion:nil];
+                               [self loginDidFinishWithSuccess:YES];
                            }
                        });
     }
                                                          onError:^(NSError *error)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
-            [self didFailWithError:error];
-            [self hideLoginProgress];
-        });
+                       {
+                           NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+                           [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:params];
+                           
+                           [self didFailWithError:error];
+                           [self hideLoginProgress];
+                       });
     }];
 }
 
@@ -228,11 +310,13 @@
         if (!granted)
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts];
-                [self hideLoginProgress];
-                [self twitterAccessDidFail:error];
-            });
+                           {
+                               NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
+                               
+                               [self hideLoginProgress];
+                               [self twitterAccessDidFail:error];
+                           });
         }
         else
         {
@@ -241,7 +325,9 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied];
+                    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts parameters:params];
+                    
                     [self hideLoginProgress];
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
@@ -299,14 +385,16 @@
 
 - (IBAction)signup:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
+    
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
-- (IBAction)closeButtonClicked:(id)sender
+- (IBAction)onDismiss:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelLogin];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self loginDidFinishWithSuccess:NO];
 }
 
 #pragma mark - Navigation
@@ -315,60 +403,65 @@
 {
     if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {
-        VProfileCreateViewController   *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeFaceBook;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
-        
+        profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithTwitter"])
     {
-        VProfileCreateViewController   *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeTwitter;
         profileViewController.profile = self.profile;
+        profileViewController.registrationStepDelegate = self;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
     }
-}
-
-- (void)userDidAbortCreateProfile:(NSNotification *)note
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    else if ([segue.identifier isEqualToString:@"toEmailLogin"])
+    {
+        VLoginWithEmailViewController *viewController = (VLoginWithEmailViewController *)segue.destinationViewController;
+        viewController.registrationStepDelegate = self;
+        viewController.dependencyManager = self.dependencyManager;
+    }
+    else if ([segue.identifier isEqualToString:@"toSignup"])
+    {
+        VSignupWithEmailViewController *viewController = (VSignupWithEmailViewController *)segue.destinationViewController;
+        viewController.registrationStepDelegate = self;
+        viewController.dependencyManager = self.dependencyManager;
+    }
 }
 
 #pragma mark - VSelectorViewControllerDelegate
 
-- (void)vSelectorViewController:(VSelectorViewController *)selectorViewController
-                  didSelectItem:(id)selectedItem
+- (void)vSelectorViewController:(VSelectorViewController *)selectorViewController didSelectItem:(id)selectedItem
 {
     [self attemptLoginWithTwitterAccount:selectedItem];
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)vSelectorViewControllerDidCancel:(VSelectorViewController *)selectorViewController
 {
     [self hideLoginProgress];
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)attemptLoginWithTwitterAccount:(ACAccount *)twitterAccount
 {
-    [MBProgressHUD showHUDAddedTo:self.navigationController.view
-                         animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
                                                    OnCompletion:^(VUser *user, BOOL created)
      {
-         [MBProgressHUD hideHUDForView:self.navigationController.view
-                              animated:YES];
-         
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidSucceed];
+         [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
          
          self.profile = user;
          if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
@@ -377,15 +470,15 @@
          }
          else
          {
-             [self dismissViewControllerAnimated:YES completion:NULL];
+             [self loginDidFinishWithSuccess:YES];
          }
          
      } onError:^(NSError *error)
      {
-         [MBProgressHUD hideHUDForView:self.navigationController.view
-                              animated:YES];
+         [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
          
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown];
+         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown parameters:params];
          
          [self hideLoginProgress];
          [self didFailWithError:error];

@@ -8,24 +8,32 @@
 
 #import "VUserProfileHeaderView.h"
 
-#import "VUser.h"
+#import "VUser+Fetcher.h"
 
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import "VObjectManager+Users.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
 #import "VSettingManager.h"
+#import "VThemeManager.h"
 
 #import <KVOController/FBKVOController.h>
 
+static NSString * const kEditButtonStyleKey = @"editButtonStyle";
+static NSString * const kEditButtonStylePill = @"rounded";
+
+@interface VUserProfileHeaderView()
+
+@property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
+
+@end
+
 @implementation VUserProfileHeaderView
 
-+ (instancetype)newViewWithFrame:(CGRect)frame
++ (instancetype)newView
 {
     NSArray *nibViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VUserProfileHeaderView class]) owner:self options:nil];
     VUserProfileHeaderView *view = [nibViews objectAtIndex:0];
-    view.frame = frame;
-    
     return view;
 }
 
@@ -34,32 +42,18 @@
     [super awakeFromNib];
     
     self.profileImageView.layer.borderWidth = 2.0;
-    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
-    
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
-    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    
-    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    self.taglineLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
+
+    self.followersHeader.text = NSLocalizedString(@"FOLLOWERS", @"");
+
     self.followersLabel.userInteractionEnabled = YES;
     [self.followersLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowers:)]];
-    self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    
-    self.followersHeader.text = NSLocalizedString(@"FOLLOWERS", @"");
-    self.followersHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+
+    self.followingHeader.text = NSLocalizedString(@"FOLLOWING", @"");
     
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
-    self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
-    self.followingHeader.text = NSLocalizedString(@"FOLLOWING", @"");
-    self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
-    
-    self.userStatsBar.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
-    [self applyEditProfileButtonStyle];
+    self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
 }
 
 - (void)setIsFollowingUser:(BOOL)isFollowingUser
@@ -71,7 +65,7 @@
 
 - (void)applyEditProfileButtonStyle
 {
-    if ( self.user == nil )
+    if ( self.user == nil || self.dependencyManager == nil )
     {
         return;
     }
@@ -79,16 +73,25 @@
     const VUser *loggedInUser = [VObjectManager sharedManager].mainUser;
     const BOOL isCurrentUser = loggedInUser != nil && [self.user.remoteId isEqualToNumber:loggedInUser.remoteId];
 
-    UIColor *linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    
-    self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    if ( linkColor == nil )
+    {
+        linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+    UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.editProfileButton.titleLabel.font = buttonFont;
 
+    if ( [[self.dependencyManager stringForKey:kEditButtonStyleKey] isEqualToString:kEditButtonStylePill] )
+    {
+        self.editProfileButton.cornerRadius = CGRectGetHeight(self.editProfileButton.bounds) / 2.0f;
+    }
+    
     // Set the text
     if ( isCurrentUser )
     {
         [self.editProfileButton setStyle:VButtonStyleSecondary];
         self.editProfileButton.primaryColor = linkColor;
-        self.editProfileButton.secondaryColor = [UIColor blackColor];
+        self.editProfileButton.secondaryColor = linkColor;
         [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
     }
     else
@@ -117,11 +120,9 @@
         [self applyEditProfileButtonStyle];
         return;
     }
-    
-    [self.KVOController unobserve:_user];
 
     _user = user;
-    
+        
     if (_user == nil)
     {
         [self applyEditProfileButtonStyle];
@@ -130,20 +131,14 @@
     
     [self applyEditProfileButtonStyle];
     
+    [self cleanupKVOControllerWithUser:_user];
+    [self setupKVOControllerWithUser:_user];
+    
+    [[VObjectManager sharedManager] countOfFollowsForUser:_user
+                                             successBlock:nil
+                                                failBlock:nil];
+    
     __weak typeof(self) welf = self;
-    
-    [[VObjectManager sharedManager] countOfFollowsForUser:user
-                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         welf.numberOfFollowers = [resultObjects[0] integerValue];
-         welf.numberOfFollowing = [resultObjects[1] integerValue];
-     }
-                                                failBlock:^(NSOperation *operation, NSError *error)
-     {
-         welf.numberOfFollowers = 0;
-         welf.numberOfFollowing = 0;
-     }];
-    
     if (user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
     {
         [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
@@ -171,44 +166,45 @@
             welf.isFollowingUser = NO;
         }
     }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
     
-    void (^userUpdateBlock)(id observer, VUser *user, NSDictionary *change) = ^void(id observer, VUser *user, NSDictionary *change)
+    UIColor *linkColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    if ( linkColor == nil )
     {
-        [welf applyEditProfileButtonStyle];
-        
-        [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
-        welf.nameLabel.text = user.name;
-        welf.locationLabel.text = user.location;
-        
-        if (user.tagline && user.tagline.length)
-        {
-            welf.taglineLabel.text = user.tagline;
-        }
-        else
-        {
-            welf.taglineLabel.text = @"";
-        }
-    };
+        linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
     
-    [self.KVOController observe:user
-                       keyPaths:@[NSStringFromSelector(@selector(name)),
-                                  NSStringFromSelector(@selector(pictureUrl)),
-                                  NSStringFromSelector(@selector(tagline)),
-                                  NSStringFromSelector(@selector(location))]
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:userUpdateBlock];
-}
+    UIColor *accentColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    
+    self.profileImageView.layer.borderColor = linkColor.CGColor;
+    
+    self.nameLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
+    self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    
+    self.locationLabel.font = [_dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    
+    self.taglineLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+    self.taglineLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        
+    self.followersLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    self.followersLabel.textColor = accentColor;
+    
+    self.followersHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    self.followersHeader.textColor = accentColor;
 
-- (void)setNumberOfFollowers:(NSInteger)numberOfFollowers
-{
-    _numberOfFollowers = numberOfFollowers;
-    self.followersLabel.text = [[[VLargeNumberFormatter alloc] init] stringForInteger:numberOfFollowers];
-}
+    self.followingLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    self.followingLabel.textColor = accentColor;
 
-- (void)setNumberOfFollowing:(NSInteger)numberOfFollowing
-{
-    _numberOfFollowing = numberOfFollowing;
-    self.followingLabel.text = [[[VLargeNumberFormatter alloc] init] stringForInteger:numberOfFollowing];
+    self.followingHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    self.followingHeader.textColor = accentColor;
+
+    UIColor *backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.userStatsBar.backgroundColor = backgroundColor;
+    [self applyEditProfileButtonStyle];
 }
 
 - (IBAction)pressedEditProfile:(id)sender
@@ -221,6 +217,8 @@
 
 - (IBAction)pressedFollowers:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectProfileFollowers];
+    
     if ([self.delegate respondsToSelector:@selector(followerHandler)])
     {
         [self.delegate followerHandler];
@@ -229,10 +227,67 @@
 
 - (IBAction)pressedFollowering:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectProfileFollowing];
+    
     if ([self.delegate respondsToSelector:@selector(followingHandler)])
     {
         [self.delegate followingHandler];
     }
+}
+
+#pragma mark - KVOController for properties of VUser
+
+- (void)cleanupKVOControllerWithUser:(VUser *)user
+{
+    [self.KVOController unobserve:user];
+}
+
+- (void)setupKVOControllerWithUser:(VUser *)user
+{
+    __weak typeof(self) welf = self;
+    
+    [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(numberOfFollowers))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         welf.followersLabel.text = [welf.largeNumberFormatter stringForInteger:user.numberOfFollowers.integerValue];
+     }];
+    
+    [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(numberOfFollowing))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         welf.followingLabel.text = [welf.largeNumberFormatter stringForInteger:user.numberOfFollowing.integerValue];
+     }];
+    
+    [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(pictureUrl))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+     }];
+    
+    [self.KVOController observe:user
+                       keyPaths:@[ NSStringFromSelector(@selector(name)),
+                                   NSStringFromSelector(@selector(tagline)),
+                                   NSStringFromSelector(@selector(location)) ]
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf applyEditProfileButtonStyle];
+         
+         welf.nameLabel.text = user.name;
+         welf.locationLabel.text = user.location;
+         
+         if ( user.tagline != nil && user.tagline.length > 0 )
+         {
+             welf.taglineLabel.text = user.tagline;
+         }
+         else
+         {
+             welf.taglineLabel.text = @"";
+         }
+     }];
 }
 
 @end

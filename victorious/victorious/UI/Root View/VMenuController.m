@@ -27,8 +27,8 @@
 #import "VSettingsViewController.h"
 #import "VInboxContainerViewController.h"
 #import "VUserProfileNavigationDestination.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
+#import "VGroupedStreamCollectionViewController.h"
 #import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"
@@ -84,6 +84,10 @@ static char kKVOContext;
                                     forKeyPath:NSStringFromSelector(@selector(badgeTotal))
                                        options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                                        context:&kKVOContext];
+    
+    // Set the initial section in tracking session parameters
+    VNavigationMenuItem *menuItem = [self.collectionViewDataSource menuItemAtIndexPath:0];
+    [[VTrackingManager sharedInstance] setValue:menuItem.title forSessionParameterWithKey:VTrackingKeyCurrentSection];
 }
 
 - (void)viewDidLayoutSubviews
@@ -107,16 +111,17 @@ static char kKVOContext;
     return YES;
 }
 
-#pragma mark - VNavigationDestinationsProvider methods
+#pragma mark - VNavigationDestinationsProvider methodsm
 
 - (NSArray *)navigationDestinations
 {
-    NSMutableArray *returnValue = [[NSMutableArray alloc] init];
-    [self.collectionViewDataSource.menuSections enumerateObjectsUsingBlock:^(NSArray *obj, NSUInteger idx, BOOL *stop)
+    return [[self.dependencyManager menuItemSections] v_flatMap:^NSArray *(NSArray *section)
     {
-        [returnValue addObjectsFromArray:[obj v_map:^id(VNavigationMenuItem *item) { return item.destination; }]];
+        return [section v_map:^id(VNavigationMenuItem *item)
+        {
+            return item.destination;
+        }];
     }];
-    return returnValue;
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -143,7 +148,14 @@ static char kKVOContext;
     VNavigationMenuItem *menuItem = [self.collectionViewDataSource menuItemAtIndexPath:indexPath];
     
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    [[self.dependencyManager scaffoldViewController] navigateToDestination:menuItem.destination];
+    
+    NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueHamburgerMenu, VTrackingKeySection : menuItem.title };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
+    
+    [[self.dependencyManager scaffoldViewController] navigateToDestination:menuItem.destination completion:^void
+     {
+         [[VTrackingManager sharedInstance] setValue:menuItem.title forSessionParameterWithKey:VTrackingKeyCurrentSection];
+     }];
 }
 
 #pragma mark - Key-Value Observation

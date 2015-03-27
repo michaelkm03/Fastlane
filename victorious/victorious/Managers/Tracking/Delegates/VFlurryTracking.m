@@ -37,7 +37,7 @@
             {
                 // Call this before startSession:
                 [Flurry setAppVersion:appVersion];
-            }
+            };
             
             [Flurry startSession:apiKey];
             _enabled = YES;
@@ -60,6 +60,24 @@
     return [infoDictionary objectForKey:@"FlurryAPIKey"];
 }
 
+- (NSDictionary *)filteredDictionaryExcludingKeys:(NSArray *)keysToExclude fromDictionary:(NSDictionary *)dictionary
+{
+    if ( keysToExclude == nil || dictionary == nil || keysToExclude.count == 0 || dictionary.count == 0 )
+    {
+        return dictionary;
+    }
+    
+    // Only include keys not contained in keysToExclude and that are not empty strings
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *key, NSDictionary *bindings)
+                              {
+                                  BOOL shoudBeExcluded = [keysToExclude containsObject:key];
+                                  BOOL isEmptyString = [dictionary[ key ] isKindOfClass:[NSString class]] && [dictionary[ key ] isEqualToString:@""];
+                                  return !shoudBeExcluded && !isEmptyString;
+                              }];
+    NSArray *filteredParameterKeys = [[dictionary allKeys] filteredArrayUsingPredicate:predicate];
+    return[dictionary dictionaryWithValuesForKeys:filteredParameterKeys];
+}
+
 #pragma mark - VTrackingDelegate protocol
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
@@ -69,10 +87,18 @@
         return;
     }
     
-    [Flurry logEvent:eventName withParameters:parameters];
+    // Because Flurry only allows up to 10 parameters, this allows us to filter out ones
+    // that we don't care about to ensure that others get used
+    NSDictionary *filteredParameters = [self filteredDictionaryExcludingKeys:self.unwantedParameterKeys fromDictionary:parameters];
+    [Flurry logEvent:eventName withParameters:filteredParameters];
     
 #if DEBUG && FLURRY_TRACKING_LOGGING_ENABLED
-    VLog( @"Flurry Tracking :: Event: %@", eventName );
+    NSString *params = @"";
+    for ( NSString *key in filteredParameters )
+    {
+        params = [params stringByAppendingFormat:@"\n\t%@: %@", key, filteredParameters[key]];
+    }
+    NSLog( @":: ******* Flurry Tracking ******** :: \n%@%@", eventName, params );
 #endif
 }
 

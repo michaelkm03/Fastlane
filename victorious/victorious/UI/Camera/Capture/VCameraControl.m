@@ -8,9 +8,14 @@
 
 #import "VCameraControl.h"
 
+#import "UIColor+VBrightness.h"
+
 static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
 static const CGFloat kWidthScaleFactorDefault = 1.7f;
+static const CGFloat kHighlightedAlpha = 0.6f;
+static const CGFloat kHighlightedScaleFactor = 0.85;
+
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2;
 static const NSTimeInterval kRecordingTriggerDuration = 0.45;
 static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2;
@@ -164,7 +169,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
             animations = ^
             {
                 self.backgroundColor = [UIColor whiteColor];
-                self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                self.transform = CGAffineTransformIdentity;
                 self.layer.cornerRadius = kMinHeightSize * 0.5f;
                 self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
@@ -174,35 +179,18 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
             };
             break;
         }
-        case VCameraControlStateGrowing:
-        {
-            animationDuration = kRecordingTriggerDuration;
-            animations = ^
-            {
-                self.frame = CGRectInset(self.frame, -35.0f, 0.0f);
-                self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
-                                                     CGRectGetMinY(self.bounds),
-                                                     CGRectGetWidth(self.bounds) * self.recordingProgress,
-                                                     CGRectGetHeight(self.bounds));
-            };
-            completion = ^(BOOL finished)
-            {
-                BOOL videoEnabled = ((self.captureMode & VCameraControlCaptureModeVideo) != NO);
-                if ((self.currentStartTrackingTime != kNotRecordingTrackingTime) && videoEnabled && (self.cameraControlState == VCameraControlStateGrowing))
-                {
-                    self.cameraControlState = VCameraControlStateRecording;
-                }
-            };
-            break;
-        }
         case VCameraControlStateRecording:
         {
             [self sendActionsForControlEvents:VCameraControlEventStartRecordingVideo];
             animationDuration = kTransitionToRecordingAnimationDuration;
             
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSwitchToVideoCapture];
+            
             animations = ^
             {
-                
+                self.alpha = 1.0f;
+                self.transform = CGAffineTransformIdentity;
+                self.frame = CGRectInset(self.frame, -35.0f, 0.0f);
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
                                                      CGRectGetMinY(self.bounds),
                                                      CGRectGetWidth(self.bounds) * self.recordingProgress,
@@ -212,20 +200,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
         }
         case VCameraControlStateCapturingImage:
         {
-            [CATransaction commit];
-            [UIView animateWithDuration:0.35f
-                                  delay:0.0f
-                 usingSpringWithDamping:1.0f
-                  initialSpringVelocity:-1.0f
-                                options:UIViewAnimationOptionCurveEaseOut
-                             animations:^
-             {
-                 self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
-             }
-                             completion:^(BOOL finished)
-             {
-                 [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
-             }];
+            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
             _cameraControlState = cameraControlState;
             return;
             break;
@@ -250,8 +225,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     BOOL defaultTrackingWithTouch = [super beginTrackingWithTouch:touch
                                                         withEvent:event];
     self.currentStartTrackingTime = event.timestamp;
-    self.cameraControlState = VCameraControlStateGrowing;
-    
+
     return defaultTrackingWithTouch;
 }
 
@@ -270,9 +244,9 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     {
         shouldRecognizeImage = (elapsedTime <= kMaxElapsedTimeImageTriggerWithVideo);
     }
-    BOOL isRecording = (self.recordingProgress == 0.0f);
+    BOOL isNotRecording = (self.recordingProgress == 0.0f);
 
-    if (shouldRecognizeImage && isRecording && (self.captureMode & VCameraControlCaptureModeImage) && (self.cameraControlState == VCameraControlStateGrowing))
+    if (shouldRecognizeImage && isNotRecording && (self.captureMode & VCameraControlCaptureModeImage) && self.isTouchInside)
     {
         self.cameraControlState = VCameraControlStateCapturingImage;
     }
@@ -295,6 +269,58 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
         self.recording = NO;
     }
     [super sendActionsForControlEvents:controlEvents];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    if (self.isHighlighted == highlighted)
+    {
+        return;
+    }
+    
+    [super setHighlighted:highlighted];
+    
+    if (highlighted)
+    {
+        if (self.cameraControlState != VCameraControlStateDefault)
+        {
+            return;
+        }
+        [UIView animateWithDuration:kRecordingTriggerDuration/2
+                         animations:^
+         {
+             self.alpha = kHighlightedAlpha;
+             self.transform = CGAffineTransformMakeScale(kHighlightedScaleFactor, kHighlightedScaleFactor);
+         }
+                         completion:^(BOOL finished)
+         {
+             if ((self.cameraControlState != VCameraControlStateDefault) || !self.isHighlighted)
+             {
+                 return;
+             }
+             [UIView animateWithDuration:kRecordingTriggerDuration/2
+                              animations:nil
+                              completion:^(BOOL finished)
+              {
+                  BOOL videoCaptureModeEnabled = (self.captureMode & VCameraControlCaptureModeVideo);
+                  if ((self.cameraControlState == VCameraControlStateDefault) &&
+                      videoCaptureModeEnabled &&
+                      self.isHighlighted)
+                  {
+                      self.cameraControlState = VCameraControlStateRecording;
+                  }
+              }];
+         }];
+    }
+    else
+    {
+        [UIView animateWithDuration:kRecordingTriggerDuration/2
+                         animations:^
+         {
+             self.alpha = 1.0f;
+             self.transform = CGAffineTransformIdentity;
+         }];
+    }
 }
 
 #pragma mark - Target/Action

@@ -24,6 +24,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 @property (nonatomic, assign, readwrite) BOOL videoDidEnd;
 @property (nonatomic, strong) NSURL *contentURL;
+@property (nonatomic, assign) BOOL updatedVideoBounds;
 
 @property (nonatomic, assign) BOOL adDidStart;
 @property (nonatomic, assign) BOOL videoDidStart;
@@ -58,6 +59,22 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.failureRetryButton.hidden = YES;
     self.failureRetryButton.enabled = NO;// If you remove this need to fix the retry logic
     self.failureRetryButton.titleLabel.numberOfLines = 0;
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    if ( !self.updatedVideoBounds )
+    {
+        /*
+         Updating video player bounds after first time bounds is set
+         Assumes cell will never be re-updated to a new "full" size but allows normal content
+            resizing to work its magic
+         */
+        self.updatedVideoBounds = YES;
+        self.videoPlayerViewController.view.frame = self.contentView.bounds;
+        self.adPlayerViewController.view.frame = self.contentView.bounds;
+    }
 }
 
 - (void)dealloc
@@ -109,6 +126,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [self.adPlayerViewController assignMonetizationPartner:monetizationPartner withDetails:details];
     self.adPlayerViewController.delegate = self;
     self.adPlayerViewController.view.hidden = NO;
+    self.adPlayerViewController.view.frame = self.contentView.bounds;
+
     [self.contentView addSubview:self.adPlayerViewController.view];
     [self.contentView sendSubviewToBack:self.adPlayerViewController.view];
     [self.adPlayerViewController start];
@@ -210,11 +229,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.animateWithPlayControls = animateWithPlayControls;
 }
 
-- (void)setTracking:(VTracking *)tracking
-{
-    [self.videoPlayerViewController enableTrackingWithTrackingItem:tracking];
-}
-
 #pragma mark - Private Methods
 
 - (void)adTimerFired:(NSTimer *)timer
@@ -240,6 +254,10 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
+    if ( self.tracking != nil )
+    {
+        [self.videoPlayerViewController enableTrackingWithTrackingItem:self.tracking];
+    }
     [self.contentView addSubview:self.videoPlayerViewController.view];
     [self.contentView sendSubviewToBack:self.videoPlayerViewController.view];
     self.videoPlayerViewController.view.hidden = YES;

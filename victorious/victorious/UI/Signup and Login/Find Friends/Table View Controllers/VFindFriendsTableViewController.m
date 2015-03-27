@@ -14,10 +14,11 @@
 #import "NSArray+VMap.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
+#import "VAuthorizedAction.h"
+#import "VDependencyManager.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -49,6 +50,13 @@
     
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -56,6 +64,20 @@
     {
         [self _connectToSocialNetworkWithPossibleUserInteraction:NO];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueFindFriends forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -541,21 +563,20 @@
     // Tell the button what to do when it's tapped
     cell.followAction = ^(void)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
-        
-        if ([mainUser.following containsObject:profile])
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
+        // Check for authorization first
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:self.dependencyManager];
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+         {
+             if ([mainUser.following containsObject:profile])
+             {
+                 [self unfollowFriendAction:profile];
+             }
+             else
+             {
+                 [self followFriendAction:profile];
+             }
+         }];
     };
 
     return cell;

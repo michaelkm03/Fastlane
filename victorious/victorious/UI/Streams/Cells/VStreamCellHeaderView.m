@@ -11,7 +11,6 @@
 
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
-#import "VThemeManager.h"
 #import "NSDate+timeSince.h"
 #import "VUser.h"
 #import "VSequence+Fetcher.h"
@@ -22,7 +21,6 @@
 #import "VConstants.h"
 
 #import "VUserProfileViewController.h"
-#import "VSettingManager.h"
 
 #import <KVOController/FBKVOController.h>
 
@@ -32,6 +30,8 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 static const CGFloat kCommentButtonBuffer = 5.0f;
 
 @interface VStreamCellHeaderView ()
+
+@property (nonatomic, weak) IBOutlet UILabel *parentLabel;
 
 @property (nonatomic, assign) NSInteger defaultUsernameBottomConstraintValue;
 
@@ -78,21 +78,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kCommentButtonBuffer, 0, 0)];
 
-    // Style the ui
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.parentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    [self.commentButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]];
-    self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        self.parentLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-        self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    }
-    
-    self.dateImageView.tintColor = self.dateLabel.textColor;
+    [self refreshAppearanceAttributes];
     
     self.defaultUsernameBottomConstraintValue = self.usernameLabelBottomConstraint.constant;
     
@@ -103,10 +89,22 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     [self.commentButton setHidden:YES];
 }
 
+- (void)reloadCommentsCount
+{
+    // Get comment count (if any)
+    NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
+    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
+}
+
 - (void)setParentText:(NSString *)text
 {
     // Format repost / remix string
     NSString *parentUserString;
+    if ( self.colorForParentSequenceText != nil )
+    {
+        self.parentLabel.textColor = self.colorForParentSequenceText;
+    }
+    
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
@@ -140,16 +138,21 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
                                  };
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:parentUserString ?: @""
                                                                                          attributes:attributes];
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    if ( parentUserString != nil && self.colorForParentSequenceAuthorName != nil )
     {
         NSRange range = [parentUserString rangeOfString:text];
         
         [attributedString addAttribute:NSForegroundColorAttributeName
-                                 value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                                 value:self.colorForParentSequenceAuthorName
                                  range:range];
     }
     
     self.parentLabel.attributedText = attributedString;
+}
+
+- (void)refreshParentLabelAttributes
+{
+    [self setParentText:[self parentUser].name];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -185,23 +188,15 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
-    VUser *originalPoster = self.sequence.user;
-    VUser *parentUser = self.sequence.parentUser;
-    
-    if ( [self.sequence.isRepost boolValue] )
-    {
-        originalPoster = self.sequence.parentUser;
-        parentUser = self.sequence.user;
-    }
+    VUser *originalPoster = [self originalPoster];
+    VUser *parentUser = [self parentUser];
     
     [self.profileImageButton setProfileImageURL:[NSURL URLWithString:originalPoster.pictureUrl]
                                        forState:UIControlStateNormal];
     
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
-    // Get comment count (if any)
-    NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
-    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
+    [self reloadCommentsCount];
     
     NSString *parentText = @"";
     CGFloat usernameBottomConstant = self.usernameLabelTopConstraint.constant;
@@ -228,6 +223,52 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     {
         self.userInfoViewHeightConstraint.constant = self.usernameLabel.intrinsicContentSize.height;
     }
+}
+
+- (VUser *)originalPoster
+{
+    return [self.sequence.isRepost boolValue] ? self.sequence.parentUser : self.sequence.user;
+}
+
+- (VUser *)parentUser
+{
+    return [self.sequence.isRepost boolValue] ? self.sequence.user : self.sequence.parentUser;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self refreshAppearanceAttributes];
+    [self refreshParentLabelAttributes];
+}
+
+- (void)setColorForParentSequenceAuthorName:(UIColor *)colorForParentSequenceAuthorName
+{
+    _colorForParentSequenceAuthorName = colorForParentSequenceAuthorName;
+    [self refreshParentLabelAttributes];
+}
+
+- (void)setColorForParentSequenceText:(UIColor *)colorForParentSequenceText
+{
+    _colorForParentSequenceText = colorForParentSequenceText;
+    [self refreshParentLabelAttributes];
+}
+
+- (void)refreshAppearanceAttributes
+{
+    if ( self.dependencyManager == nil )
+    {
+        return;
+    }
+    
+    // Style the ui
+    self.usernameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    self.parentLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    [self.commentButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
+    self.dateLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    
+    self.dateImageView.tintColor = self.dateLabel.textColor;
+    self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }
 
 #pragma mark - Button Actions

@@ -10,6 +10,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VSettingsViewController : UITableViewController <VHasManagedDependancies>
+#import "VNavigationDestination.h"
+
+@interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination>
 
 @end

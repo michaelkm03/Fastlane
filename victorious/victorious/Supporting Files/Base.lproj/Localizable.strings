@@ -39,10 +39,13 @@
 "Following"             =   "Following";
 "FOLLOWERS"             =   "FOLLOWERS";
 "FOLLOWING"             =   "FOLLOWING";
+"NumStreams"            =   "%@ STREAMS";
+"NumItems"              =   "%@ ITEMS";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
 
+"Get Started"           =   "Get Started!";
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
 "PasswordValidation"    =   "Password is less than 8 characters";
@@ -99,9 +102,9 @@
 "NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
 
 "ProfileNoFollowersTitle"      =   "BE THE FIRST TO FOLLOW THIS USER";
-"ProfileNoFollowersMessage"    =   "Build your community by following other users. You’ll be alerted when they post new content.";
+"ProfileNoFollowersMessage"    =   "Build your community by following other users. You'll be alerted when they post new content.";
 
-"ProfileNotFollowingTitle"     =   "UH-OH! THIS PERSON ISN’T FOLLOWING ANYONE YET";
+"ProfileNotFollowingTitle"     =   "UH-OH! THIS PERSON ISN'T FOLLOWING ANYONE YET";
 "ProfileNotFollowingMessage"   =   "Create a community by following other users and encouraging them to follow you.";
 
 "SuggestedFollowersNone" =   "No Followers";
@@ -120,6 +123,7 @@
 "OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
+"UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
 "UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
 "EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
 
@@ -301,7 +305,7 @@
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
-"ResendEmail"           =   "Resend Email";
+"Resend Email"           =   "Resend Email";
 
 "EmailNotFound"         =   "The email provided was not found. Please enter the email used to create this account.";
 "EmailNotValid"         =   "Please enter the email used to create this account.";
@@ -348,7 +352,7 @@
 "Login"                 =   "Log In";
 
 "UserBannedTitle"       =   "Ruh Roh!";
-"UserBannedMessage"     =   "Unfortunately, you're a banned community member. You'll still be able to view content, but will not be able to post or interact with others.";
+"UserBannedMessage"     =   "Unfortunately, your account has been deactivated. You'll still be able to view content, but will not be able to post or interact with others.";
 
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";
@@ -397,7 +401,8 @@
 "contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";
 "captionIsntPublished"  =   "Your content hasn't been published yet! If you go back, your caption will be lost.";
 
-"SupportEmailSubject"   =   "Feedback on";
+"SupportEmailSubject"   =   "Feedback";
+"SupportEmailSubjectWithName" = "Feedback on";
 
 "DiscoverSuggestedPeopleError"  = "Sorry, unable to load suggested people.";
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
@@ -464,3 +469,15 @@
 "PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restore Purchases";
 "SettingsRestorePurchasesPrompt"        = "You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them.";
+
+"AuthorizationContextDefault"                   = "We are so excited to have you join our community! Create an account and you'll be able to create, post, and share!";
+"AuthorizationContextCreatePost"                = "Yay! We can't wait to see your first post. Just create an account and start sharing your lovely creation with the community!";
+"AuthorizationContextFollowHashtag"             = "Hashtags are the best. Create your account then follow some of the amazing conversations happening here!";
+"AuthorizationContextFollowUser"                = "We are so excited to have you join our community and follow content from other fans. Make your profile so users can follow you back!";
+"AuthorizationContextVoteBallistic"             = "These emojis are amazing, right? Create your account first, then send some love. ";
+"AuthorizationContextVotePoll"                  = "We want to see your vote! Create an account first and start casting your votes!";
+"AuthorizationContextRepost"                    = "That post is pretty great. Create your account first and repost away! ";
+"AuthorizationContextRemix"                     = "We're so excited to see what you're creating. Create an account so we can keep it in your profile. ";
+"AuthorizationContextViewProfile"               = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are. ";
+"AuthorizationContextAddComment"                = "Join in on the conversation! We want to hear what you have to say. Create an account and you'll be on your way!";
+"AuthorizationContextInbox"                     = "We are so excited to have you join our community and message fans. Just create an account so you can send and receive messages!";

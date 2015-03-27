@@ -22,21 +22,25 @@
 
 //Data Models
 #import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VObjectManager.h"
 #import "VSettingManager.h"
+#import "VDirectoryCellDecorator.h"
+#import "NSString+VParseHelp.h"
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
-static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kStreamURLKey = @"streamURL";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
 @interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
 
 @end
 
@@ -60,7 +64,7 @@ static CGFloat const kDirectoryInset = 10.0f;
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    VStream *stream = [VStream streamForPath:[[dependencyManager stringForKey:kStreamURLKey] v_pathComponent] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
@@ -71,10 +75,15 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    
+    self.cellDecorator = [[VDirectoryCellDecorator alloc] init];
+    
     //Register cells
-    UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
-
+    [self.collectionView registerNib:[VDirectoryItemCell nibForCell]
+          forCellWithReuseIdentifier:[VDirectoryItemCell suggestedReuseIdentifier]];
+    
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
@@ -124,23 +133,26 @@ static CGFloat const kDirectoryInset = 10.0f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
-    //Commented out code is the inital logic for supporting other stream types / sequences in streams.
-    if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
+    VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
+    if ( streamItem.isContent )
     {
-        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
-        streamCollection.dependencyManager = self.dependencyManager;
-        [self.navigationController pushViewController:streamCollection animated:YES];
+        VSequence *sequence = (VSequence *)streamItem;
+        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence
+                                                                           commentId:nil
+                                                                    placeHolderImage:nil];
     }
-    else if ([item isKindOfClass:[VStream class]])
+    else if ( streamItem.isSingleStream )
     {
-        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
-        sos.dependencyManager = self.dependencyManager;
-        [self.navigationController pushViewController:sos animated:YES];
+        VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
+        viewController.dependencyManager = self.dependencyManager;
+        [self.navigationController pushViewController:viewController animated:YES];
     }
-    else if ([item isKindOfClass:[VSequence class]])
+    else if ( streamItem.isStreamOfStreams )
     {
-        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)item commentId:nil placeHolderImage:nil];
+        VDirectoryViewController *viewController = [VDirectoryViewController streamDirectoryForStream:(VStream *)streamItem
+                                                                                    dependencyManager:self.dependencyManager];
+        viewController.dependencyManager = self.dependencyManager;
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 
@@ -159,12 +171,12 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
-    VDirectoryItemCell *cell;
-
-    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
-    cell.streamItem = item;
-    
-    return cell;
+    NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
+    VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                          forIndexPath:indexPath];
+    [self.cellDecorator populateCell:directoryCell withStreamItem:item];
+    [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
+    return directoryCell;
 }
 
 @end

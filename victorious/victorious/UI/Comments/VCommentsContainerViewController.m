@@ -6,8 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsContainerViewController.h"
+
+#import "MBProgressHUD.h"
+
+#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsTableViewController.h"
 #import "VKeyboardBarViewController.h"
 #import "VSequence+Fetcher.h"
@@ -18,12 +21,9 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
-
+#import "VAuthorizedAction.h"
 #import "VThemeManager.h"
-
 #import "UIImage+ImageCreation.h"
-
-#import "MBProgressHUD.h"
 
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (strong, nonatomic) IBOutlet UIImageView *backgroundImage;
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
 
@@ -38,10 +39,11 @@
 
 @synthesize conversationTableViewController = _conversationTableViewController;
 
-+ (instancetype)commentsContainerView
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VCommentsContainerViewController *commentsContainerViewController = (VCommentsContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kCommentsContainerStoryboardID];
-    return commentsContainerViewController;
+    VCommentsContainerViewController *viewController = (VCommentsContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kCommentsContainerStoryboardID];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -144,8 +146,13 @@
                                              andParent:nil
                                           successBlock:success
                                              failBlock:fail];
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment];
+}
+
+- (BOOL)canPerformAuthorizedAction
+{
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    return [authorization performFromViewController:self context:VAuthorizationContextAddComment completion:^{}];
 }
 
 - (IBAction)pressedBackButton:(id)sender

@@ -8,6 +8,7 @@
 
 #import "VAbstractProfileEditViewController.h"
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
@@ -17,6 +18,10 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate, VWorkspaceFlowControllerDelegate>
+
+@property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet UIButton *cameraButton;
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
 @property (nonatomic, assign) NSInteger numberOfLines;
@@ -43,8 +48,6 @@
     self.cameraButton.layer.masksToBounds = YES;
     self.cameraButton.layer.cornerRadius = CGRectGetHeight(self.cameraButton.bounds)/2;
     self.cameraButton.clipsToBounds = YES;
-    
-    self.automaticallyAdjustsScrollViewInsets = NO;
     
     self.taglineTextView.inputAccessoryView =
     ({
@@ -122,8 +125,10 @@
     // Create background image
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundView = backgroundImageView;
     self.backgroundImageView = backgroundImageView;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     
     // Set profile images
     NSURL *profileImageURL = [NSURL URLWithString:profile.pictureUrl];
@@ -221,6 +226,8 @@
        finishedWithPreviewImage:(UIImage *)previewImage
                capturedMediaURL:(NSURL *)capturedMediaURL
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectImageForEditProfile];
+    
     self.profileImageView.image = previewImage;
     self.updatedProfileImage = capturedMediaURL;
     [self.backgroundImageView setBlurredImageWithClearImage:previewImage placeholderImage:self.backgroundImageView.image tintColor:nil];

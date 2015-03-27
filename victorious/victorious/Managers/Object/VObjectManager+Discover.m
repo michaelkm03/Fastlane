@@ -12,6 +12,7 @@
 #import "VHashtag+RestKit.h"
 #import "VPaginationManager.h"
 #import "VAbstractFilter.h"
+#import "NSCharacterSet+VURLParts.h"
 
 @implementation VObjectManager (Discover)
 
@@ -91,7 +92,7 @@
     };
 
     NSAssert([NSThread isMainThread], @"This VAbstractFilter object is intended to be called on the main thread");
-    VAbstractFilter *hashtagFilter = [self.paginationManager filterForPath:@"/api/hashtag/subscribed_to_list"
+    VAbstractFilter *hashtagFilter = [self.paginationManager filterForPath:[NSString stringWithFormat:@"/api/hashtag/subscribed_to_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro]
                                                                 entityName:[VAbstractFilter entityName]
                                                       managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
 
@@ -132,6 +133,8 @@
         [hashtagSet addObject:newTag];
         mainUser.hashtags = hashtagSet;
         [mainUser.managedObjectContext save:nil];
+        
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowHashtag];
         
         if (success != nil)
         {
@@ -181,6 +184,8 @@
                 break;
             }
         }
+        
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowHashtag];
 
         if (success != nil)
         {
@@ -229,8 +234,10 @@
     {
         pageLimit = 15;
     }
+    
+    NSString *escapedHashtag = [hashtag stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
 
-    return [self GET:[NSString stringWithFormat:@"/api/hashtag/search/%@/1/%ld", hashtag, (long)pageLimit]
+    return [self GET:[NSString stringWithFormat:@"/api/hashtag/search/%@/1/%ld", escapedHashtag, (long)pageLimit]
                object:nil
            parameters:nil
          successBlock:fullSuccess

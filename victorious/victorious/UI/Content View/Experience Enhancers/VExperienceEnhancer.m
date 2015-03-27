@@ -7,14 +7,12 @@
 //
 
 #import "VExperienceEnhancer.h"
-#import "VVoteType+Fetcher.h"
+#import "VVoteType.h"
 #import "VTracking.h"
 
 @interface VExperienceEnhancer()
 
-@property (nonatomic, assign) NSUInteger startingVoteCount;
 @property (nonatomic, readwrite) VVoteType *voteType;
-@property (nonatomic, readwrite) NSUInteger sessionVoteCount;
 
 @end
 
@@ -44,12 +42,12 @@
     self = [super init];
     if (self)
     {
-        self.voteType = voteType;
-        self.startingVoteCount = voteCount;
+        _voteType = voteType;
+        _voteCount = voteCount;
         
-        self.contentMode = voteType.contentMode;
-        self.flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
-        self.animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
+        _contentMode = voteType.contentMode;
+        _flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
+        _animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
     }
     return self;
 }
@@ -61,44 +59,17 @@
 
 - (void)vote
 {
-    self.sessionVoteCount++;
-}
-
-- (NSUInteger)totalVoteCount
-{
-    return self.sessionVoteCount + self.startingVoteCount;
-}
-
-- (void)resetSessionVoteCount
-{
-    self.sessionVoteCount = 0;
-}
-
-- (void)resetStartingVoteCount:(NSUInteger)voteCount
-{
-    self.startingVoteCount = voteCount;
+    self.voteCount++;
 }
 
 - (NSArray *)trackingUrls
 {
-    if ( self.voteType.tracking.ballisticCount != nil )
-    {
-        return self.voteType.tracking.ballisticCount;
-    }
-    return @[];
+    return self.voteType.trackingURLs ?: @[];
 }
 
-- (CGSize)desiredSize
+- (NSString *)debugDescription
 {
-    CGFloat intrinsicWidth = self.flightImage.size.width;
-    CGFloat intrinsicHeight = self.flightImage.size.height;
-    
-    return CGSizeMake(intrinsicWidth * [self scaleFactor], intrinsicHeight * [self scaleFactor]);
-}
-
-- (CGFloat)scaleFactor
-{
-    return [self.voteType.scaleFactor floatValue] / [[UIScreen mainScreen] scale];
+    return [NSString stringWithFormat:@"%@: %p: %@ (%ld)", NSStringFromClass([self class]), self, self.voteType.voteTypeName, (long)self.voteCount];
 }
 
 @end

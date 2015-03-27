@@ -20,7 +20,6 @@
 
 //View Controllers
 #import "VFindFriendsViewController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VWorkspaceFlowController.h"
 #import "VNavigationController.h"
 
@@ -33,6 +32,7 @@
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
+#import "VDependencyManager.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
@@ -54,6 +54,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @end
 
 @implementation VAbstractStreamCollectionViewController
+
+@synthesize multipleViewControllerChildDelegate;
 
 #pragma mark - Init & Dealloc
 
@@ -79,6 +81,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)commonInit
 {
+    self.streamTrackingHelper = [[VStreamTrackingHelper alloc] init];
+
     self.scrollPaginator = [[VScrollPaginator alloc] init];
     self.scrollPaginator.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -106,11 +110,16 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
     [self positionRefreshControl];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.extendedLayoutIncludesOpaqueBars = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
     
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
@@ -120,13 +129,15 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self.streamTrackingHelper onStreamViewDidAppearWithStream:self.currentStream isBeingPresented:self.isBeingPresented];
     
     if ( self.navigationBarShouldAutoHide )
     {
@@ -137,6 +148,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.streamTrackingHelper onStreamViewWillDisappearWithStream:self.currentStream
+                                                  isBeingDismissed:self.isBeingDismissed];
+    
     self.navigationControllerScrollDelegate = nil;
 }
 
@@ -157,6 +172,32 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)addScrollDelegate
 {
     self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
+}
+
+- (void)updateUserPostAllowed
+{
+    // Nothing to do here, provided to override in subclasses
+}
+
+#pragma mark - VMultipleContainerChild protocol
+
+- (void)viewControllerSelected:(BOOL)isDefault
+{
+    if ( isDefault )
+    {
+        [self.streamTrackingHelper viewControllerAppearedAsInitial:self.currentStream];
+    }
+    else
+    {
+        // In spite of its name, this is not actullay a stream-related event, so it is not part of `streamTrackingHelper`.
+        // This event fires for any conformist of `VMultipleContainerChild`.
+        NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
+        
+        [self.streamTrackingHelper viewControllerSelected:self.currentStream];
+    }
+    
+    [self updateUserPostAllowed];
 }
 
 #pragma mark - Property Setters
@@ -219,9 +260,17 @@ const CGFloat kVLoadNextPagePoint = .75f;
         return;
     }
     
-    [self.streamDataSource refreshWithSuccess:^(void)
-     {
+    [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
+     ^{
          [self.refreshControl endRefreshing];
+         [self.streamTrackingHelper streamDidLoad:self.currentStream];
+         
+         BOOL viewIsVisible = self.parentViewController != nil;
+         if ( viewIsVisible )
+         {
+             [self updateUserPostAllowed];
+         }
+         
          if (completionBlock)
          {
              completionBlock();
@@ -236,9 +285,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
          hud.userInteractionEnabled = NO;
          [hud hide:YES afterDelay:3.0];
      }];
-    
-    [self.refreshControl beginRefreshing];
-    self.refreshControl.hidden = NO;
 }
 
 - (void)positionRefreshControl
@@ -279,9 +325,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
+    const BOOL canLoadNextPage = [self.streamDataSource canLoadNextPage];
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
-    return isLastSection && hasOneOrMoreItems && [self.streamDataSource filterCanLoadNextPage];
+    return canLoadNextPage && isLastSection && hasOneOrMoreItems;
 }
 
 - (BOOL)shouldAnimateActivityViewFooter
@@ -342,23 +389,21 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)shouldLoadNextPage
 {
-    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.filterCanLoadNextPage)
+    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.canLoadNextPage)
     {
         return;
     }
     
     self.shouldAnimateActivityViewFooter = YES;
-    [self.streamDataSource loadNextPageWithSuccess:^(void)
-     {
+    [self.streamDataSource loadPage:VPageTypeNext withSuccess:
+     ^{
          __weak typeof(self) welf = self;
          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                         {
                             [welf.collectionView flashScrollIndicators];
                         });
      }
-                                              failure:^(NSError *error)
-     {
-     }];
+                                              failure:nil];
 }
 
 #pragma mark - UIScrollViewDelegate

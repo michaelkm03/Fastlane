@@ -10,28 +10,13 @@
 #import "VWorkspaceTool.h"
 #import "NSArray+VMap.h"
 
-static NSString *const kToolsKey = @"tools";
+static NSString * const kToolsKey = @"tools";
 
 @implementation VDependencyManager (VWorkspaceTool)
 
 - (NSArray /* VWorkspaceTool */ *)workspaceTools
 {
-    NSArray *toolConfigurations = [self arrayForKey:kToolsKey];
-    
-    if (toolConfigurations == nil)
-    {
-        return nil;
-    }
-    
-    if (toolConfigurations.count == 0)
-    {
-        return nil;
-    }
-    
-    return [toolConfigurations v_map:^id(NSDictionary *configuration)
-    {
-        return [self objectOfType:[NSObject class] fromDictionary:configuration];
-    }];
+    return [self arrayOfValuesConformingToProtocol:@protocol(VWorkspaceTool) forKey:kToolsKey];
 }
 
 @end

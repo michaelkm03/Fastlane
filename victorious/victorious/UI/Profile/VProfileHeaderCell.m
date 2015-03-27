@@ -7,15 +7,18 @@
 //
 
 #import "VProfileHeaderCell.h"
+#import "UIView+AutoLayout.h"
 
 @implementation VProfileHeaderCell
 
 - (void)setHeaderView:(VUserProfileHeaderView *)headerView
 {
+    self.clipsToBounds = NO;
     [_headerView removeFromSuperview];
     _headerView = headerView;
-    _headerView.frame = _headerView.bounds;//Make sure the header view is set to an origin of 0 0
+    _headerView.frame = self.bounds;//Make sure the header view is set to an origin of 0 0
     [self addSubview:_headerView];
+    [self v_addFitToParentConstraintsToSubview:_headerView];
 }
 
 @end

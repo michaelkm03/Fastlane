@@ -13,14 +13,8 @@
 /**
  *  A CropToolViewController contains a cropping scrollview that contains no visible subviews but forwards any updates of the contentOffset or zoomScale to interested parties via the onCropBoundsChange block.
  */
-@interface VCropToolViewController : UIViewController <VHasManagedDependancies>
+@interface VCropToolViewController : UIViewController <VHasManagedDependencies>
 
 + (instancetype)cropViewController;
-
-@property (nonatomic, copy) void (^onCropBoundsChange)(UIScrollView *croppingScrollView); ///< Will be called on content offset or zoom scale changes
-
-@property (nonatomic, assign) CGSize assetSize; ///< The asset size (in points) that the cropVC will provide scrolling area for.
-
-@property (nonatomic, weak, readonly) UIScrollView *croppingScrollView; ///< The cropping scrollView used internally for scrolling/zooming.
 
 @end

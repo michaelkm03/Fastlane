@@ -8,6 +8,7 @@
 
 #import "VObjectManager+ImageSearch.h"
 #import "VObjectManager+Private.h"
+#import "NSCharacterSet+VURLParts.h"
 
 @implementation VObjectManager (ImageSearch)
 
@@ -17,8 +18,9 @@
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
+    NSString *escapedKeyword = [keyword stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
     NSString *path = [NSString stringWithFormat:@"/api/image/search/%@/%lu/%lu",
-                        RKPercentEscapedQueryStringFromStringWithEncoding(keyword, NSUTF8StringEncoding),
+                        escapedKeyword,
                         (long)page,
                         (long)perPage];
     return [self GET:path

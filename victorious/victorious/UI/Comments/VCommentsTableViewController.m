@@ -10,6 +10,8 @@
 #import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"
 #import "VRTCUserPostedAtFormatter.h"
+#import "VRootViewController.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
@@ -41,10 +43,14 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VTagStringFormatter.h"
+#import "VTag.h"
+#import "VUserTag.h"
+#import "VTagSensitiveTextView.h"
+#import "VHashtagStreamCollectionViewController.h"
 
 @import Social;
 
-@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate>
+@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
@@ -96,6 +102,15 @@
             self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.bounds.size.height);
         } completion:nil];
     }
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueCommentsView forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisppear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 #pragma mark - Property Accessors
@@ -241,9 +256,10 @@
     NSDictionary *defaultStringAttributes = cell.commentTextView.textFont ? [VCommentTextAndMediaView attributesForTextWithFont:cell.commentTextView.textFont] : [VCommentTextAndMediaView attributesForText];
     NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
     [tagStringAttributes setObject:[[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]] forKey:NSForegroundColorAttributeName];
-    NSMutableAttributedString *formattedCommentText = [[NSMutableAttributedString alloc] initWithString:comment.text attributes:defaultStringAttributes];
-    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:formattedCommentText withTagStringAttributes:tagStringAttributes andDefaultStringAttributes:defaultStringAttributes];
-    cell.commentTextView.attributedText = formattedCommentText;
+    [cell.commentTextView.textView setupWithDatabaseFormattedText:comment.text
+                                                    tagAttributes:tagStringAttributes
+                                                defaultAttributes:defaultStringAttributes
+                                                andTagTapDelegate:self];
     if (comment.hasMedia)
     {
         cell.commentTextView.hasMedia = YES;
@@ -264,7 +280,7 @@
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:comment.user];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:comment.user];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -276,6 +292,23 @@
     cell.commentsUtilitiesDelegate = self;
     
     return cell;
+}
+
+- (void)tagSensitiveTextView:(VTagSensitiveTextView *)tagSensitiveTextView tappedTag:(VTag *)tag
+{
+    if ( [tag isKindOfClass:[VUserTag class]] )
+    {
+        //Tapped a user tag, show a profile view controller
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
+    else
+    {
+        //Tapped a hashtag, show a hashtag view controller
+        VDependencyManager *dependencyManager = [[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager];
+        VHashtagStreamCollectionViewController *hashtagViewController = [dependencyManager hashtagStreamWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        [self.navigationController pushViewController:hashtagViewController animated:YES];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -335,11 +368,6 @@
     editViewController.transitioningDelegate = self.transitionDelegate;
     editViewController.delegate = self;
     [self presentViewController:editViewController animated:YES completion:nil];
-}
-
-- (void)didSelectActionRequiringLogin
-{
-    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

@@ -15,7 +15,7 @@
 #import "VObjectManager+Private.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VVoteType+Fetcher.h"
+#import "VVoteType.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
 #import "VPurchaseManager.h"
@@ -47,7 +47,7 @@
     return cache;
 }
 
-- (instancetype)initWithSequence:(VSequence *)sequence
+- (instancetype)initWithSequence:(VSequence *)sequence voteTypes:(NSArray *)voteTypes
 {
     self = [super init];
     if (self)
@@ -55,8 +55,6 @@
         self.sequence = sequence;
         
         self.fileCache = [[VFileCache alloc] init];
-        
-        NSArray *voteTypes = [VSettingManager sharedManager].voteSettings.voteTypes;
         
         self.purchaseManager = [VPurchaseManager sharedInstance];
         
@@ -112,8 +110,13 @@
               }
               else
               {
-                  enhancer.animationSequence = images;
-                  enhancer.flightImage = images.firstObject;
+                  NSMutableArray *adjustedSequence = [[NSMutableArray alloc] init];
+                  [images enumerateObjectsUsingBlock:^(UIImage *image, NSUInteger idx, BOOL *stop)
+                   {
+                       [adjustedSequence addObject:[UIImage imageWithCGImage:image.CGImage scale:[voteType.scaleFactor floatValue] orientation:image.imageOrientation]];
+                   }];
+                  enhancer.animationSequence = adjustedSequence;
+                  enhancer.flightImage = [adjustedSequence firstObject];
               }
           }];
          
@@ -155,13 +158,14 @@
         return NO;
     }
     
-    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
+    [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *sequenceLoopStop)
      {
-         [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop)
+         [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *enhancerLoopStop)
           {
-              if ( enhancer.voteType.remoteId.integerValue == result.remoteId.integerValue )
+              if ( enhancer.voteType.voteTypeID.integerValue == result.remoteId.integerValue )
               {
-                  [enhancer resetStartingVoteCount:result.count.integerValue];
+                  enhancer.voteCount = result.count.integerValue;
+                  *enhancerLoopStop = YES;
               }
           }];
      }];
@@ -174,7 +178,7 @@
     __block VVoteResult *outputResult = nil;
     [sequence.voteResults enumerateObjectsUsingBlock:^(VVoteResult *result, BOOL *stop)
      {
-         if ( [result.remoteId isEqual:voteType.remoteId] )
+         if ( [result.remoteId isEqual:voteType.voteTypeID] )
          {
              outputResult = result;
              *stop = YES;

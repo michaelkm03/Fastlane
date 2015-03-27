@@ -15,7 +15,7 @@
 
 - (void)suggestedPeopleDidFailToLoad;
 - (void)suggestedPeopleDidFinishLoading;
-- (void)didAttemptActionThatRequiresLogin;
+- (UIViewController *)componentRootViewController;
 
 @end
 
@@ -27,5 +27,6 @@
 
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic,  strong) NSArray *suggestedUsers;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

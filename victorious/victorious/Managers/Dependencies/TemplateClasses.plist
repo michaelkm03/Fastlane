@@ -2,8 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>hiddenWorkspace</key>
+	<string>VWorkspaceFlowController</string>
+	<key>translucent.background</key>
+	<string>VTranslucentBackground</string>
+	<key>blurredImage.background</key>
+	<string>VBlurredImageBackground</string>
+	<key>solidColor.background</key>
+	<string>VSolidColorBackground</string>
 	<key>trim.video.tool</key>
 	<string>VTrimVideoTool</string>
+	<key>snapshot.video.tool</key>
+	<string>VVideoSnapshotTool</string>
 	<key>basic.crop</key>
 	<string>VCropToolViewController</string>
 	<key>vertical.picker</key>
@@ -23,15 +33,27 @@
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>workspace</key>
-	<string>VWorkspaceFlowController</string>
+	<string>VWorkspaceShimDestination</string>
 	<key>sideMenu.scaffold</key>
 	<string>VSideMenuViewController</string>
+	<key>tabMenu.scaffold</key>
+	<string>VTabMenuViewController</string>
 	<key>simple.menu</key>
 	<string>VMenuController</string>
+	<key>tab.menu</key>
+	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>hashtagStream.screen</key>
+	<string>VHashtagStreamCollectionViewController</string>
+	<key>standard.contentView</key>
+	<string>VNewContentViewController</string>
+	<key>animated.voteType</key>
+	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
+	<key>showcase.screen</key>
+	<string>VGroupedStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
 	<key>basic.multiScreen</key>
@@ -40,6 +62,8 @@
 	<string>VSegmentedSelectorView</string>
 	<key>textbar.multiScreenSelector</key>
 	<string>VTextbarSelectorView</string>
+	<key>rounded.multiScreenSelector</key>
+	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VInboxContainerViewController</string>
 	<key>currentUserProfile.screen</key>
@@ -50,5 +74,13 @@
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
+	<key>lightweight.contentView</key>
+	<string>VLightweightContentViewController</string>
+	<key>inset.streamCell</key>
+	<string>VInsetStreamCellFactory</string>
+	<key>sleek.streamCell</key>
+	<string>VSleekStreamCellFactory</string>
+	<key>titleOverlay.streamCell</key>
+	<string>VTitleOverlayStreamCellFactory</string>
 </dict>
 </plist>

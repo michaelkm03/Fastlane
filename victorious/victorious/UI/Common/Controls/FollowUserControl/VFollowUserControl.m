@@ -157,6 +157,12 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
                     completion:nil];
 }
 
+- (void)setTintColor:(UIColor *)tintColor
+{
+    [super setTintColor:tintColor];
+    self.imageView.tintColor = tintColor;
+}
+
 #pragma mark - UIControl
 
 - (void)setHighlighted:(BOOL)highlighted

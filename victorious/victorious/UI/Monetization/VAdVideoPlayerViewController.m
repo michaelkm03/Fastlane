@@ -77,8 +77,10 @@
     self.adViewController.adServerMonetizationDetails = self.adDetails;
     if (self.monetizationPartner != VMonetizationPartnerTremor)
     {
+        CGFloat width = CGRectGetWidth(self.view.bounds);
+        CGFloat topInset = 40.0f;
         self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
+        self.adViewController.view.frame = CGRectMake(0.0f, topInset, width, width - topInset);
     }
     [self addChildViewController:self.adViewController];
     [self.view addSubview:self.adViewController.view];

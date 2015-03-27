@@ -10,6 +10,8 @@
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
+#import "VDependencyManager+VScaffoldViewController.h"
+#import "VRootViewController.h"
 
 static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
 static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
@@ -67,13 +69,12 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 - (void)applyTheme
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    NSString *tintColorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
+    VDependencyManager *dependencyManager = [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] dependencyManagerForNavigationBar];
     
-    UIColor *progressColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIColor *progressColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.progressBar setProgressColor:progressColor];
     
-    UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
+    UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     for ( UIButton *button in @[ self.buttonBack, self.buttonExit, self.buttonOpenURL ])
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -81,11 +82,11 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
         button.tintColor = tintColor;
     }
     
-    self.view.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.view.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.labelTitle.textColor = tintColor;
     
-    NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
-    self.labelTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
+    //Was heading2font on template C
+    self.labelTitle.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
 - (void)updateHeaderState

@@ -36,12 +36,13 @@
 
 #import "MBProgressHUD.h"
 
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorizedAction.h"
 #import "VNavigationController.h"
 #import "VObjectManager+Login.h"
 #import "UIStoryboard+VMainStoryboard.h"
 
 #import "VTrackingManager.h"
+#import "VDependencyManager.h"
 
 @interface VUserSearchViewController () <UITextFieldDelegate>
 
@@ -63,6 +64,8 @@
 @property (nonatomic, assign) NSInteger charCount;
 @property (nonatomic, strong) VUser *selectedUser;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 - (IBAction)closeButtonAction:(id)sender;
@@ -74,10 +77,38 @@ static const NSInteger kSearchResultLimit = 100;
 
 @implementation VUserSearchViewController
 
-+ (instancetype)newFromStoryboard
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
+    userSearchViewController.dependencyManager = dependencyManager;
     return userSearchViewController;
+}
+
+#pragma mark - Init
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    _searchContext = VObjectManagerSearchContextDiscover;
 }
 
 - (void)viewDidLoad
@@ -107,6 +138,11 @@ static const NSInteger kSearchResultLimit = 100;
 
     // SET CHAR COUNTER
     self.charCount = 0;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     // SET THE SEARCH FIELD ACTIVE
     [self.searchField becomeFirstResponder];
@@ -122,6 +158,7 @@ static const NSInteger kSearchResultLimit = 100;
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventSearchDidAppear];
+    [self.searchField resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -177,14 +214,15 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)composeMessageToUser:(VUser *)profile
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectUserFromSearchRecipient];
     
-    VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
-    [self.navigationController pushViewController:composeController animated:YES];
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+    {
+        VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
+        [self.navigationController pushViewController:composeController animated:YES];
+    }];
 }
 
 - (void)runUserSearch:(id)sender
@@ -221,7 +259,7 @@ static const NSInteger kSearchResultLimit = 100;
         [self.activityIndicatorView startAnimating];
         [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
                                                           limit:kSearchResultLimit
-                                                        context:VObjectManagerSearchContextUserTag
+                                                        context:self.searchContext
                                                withSuccessBlock:searchSuccess
                                                       failBlock:searchFail];
     }
@@ -394,25 +432,24 @@ static const NSInteger kSearchResultLimit = 100;
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = profile;
     cell.haveRelationship = haveRelationship;
+    cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
-
-        if ([mainUser.following containsObject:profile])
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:self.dependencyManager];
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+         {
+             if ([mainUser.following containsObject:profile])
+             {
+                 [self unfollowFriendAction:profile];
+             }
+             else
+             {
+                 [self followFriendAction:profile];
+             }
+         }];
     };
     return cell;
 }

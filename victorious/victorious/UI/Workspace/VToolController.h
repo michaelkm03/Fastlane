@@ -40,6 +40,13 @@
 
 - (instancetype)initWithTools:(NSArray /* NSArray of tools that conform to <VWorkspaceTool> */ *)tools NS_DESIGNATED_INITIALIZER;
 
+@property (nonatomic, copy) void (^canRenderAndExportChangeBlock)(BOOL canRenderAndExport);
+
+/**
+ *  Called when the tool controller generates a snapshot for the given mediaURL.
+ */
+@property (nonatomic, copy) void (^snapshotImageBecameAvailable)(UIImage *snapshotImage);
+
 /**
  *  Call this method to export an asset.
  */
@@ -69,5 +76,10 @@
  *  The delegate to notify about new canvas/inspector viewControllers.
  */
 @property (nonatomic, weak) id <VToolControllerDelegate> delegate;
+
+/**
+ *  The media URL to use for editing.
+ */
+@property (nonatomic, strong) NSURL *mediaURL;
 
 @end

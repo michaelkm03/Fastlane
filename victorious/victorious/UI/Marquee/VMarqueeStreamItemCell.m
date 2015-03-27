@@ -22,6 +22,8 @@
 #import "VStreamWebViewController.h"
 #import "UIView+Autolayout.h"
 
+#import "VDependencyManager.h"
+
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;
 static CGFloat const kVDetailHideTime = 0.3f;
@@ -58,19 +60,9 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     [super awakeFromNib];
     
-    self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
     self.profileImageButton.layer.borderWidth = 4;
     
-    NSString *textColorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVLinkColor : kVMainTextColor;
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:textColorKey];
-    
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    
-    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] )
-    {
-        self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
-        self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
-    }
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -99,7 +91,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
         
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
-        self.profileImageButton.hidden = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
         
         if ( [sequence isWebContent] )
         {
@@ -117,6 +108,39 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];
+    [self restartHideTimer];
+}
+
+- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
+{
+    if ( self.hideMarqueePosterImage == hideMarqueePosterImage )
+    {
+        return;
+    }
+    
+    _hideMarqueePosterImage = hideMarqueePosterImage;
+    self.profileImageButton.hidden = self.hideMarqueePosterImage;
+    if ( self.hideMarqueePosterImage )
+    {
+        self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
+        self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
+        [self layoutIfNeeded];
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( _dependencyManager != nil )
+    {
+        self.detailsBackgroundView.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileImageButton.layer.borderColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
+    }
+}
+
+- (void)restartHideTimer
+{
     [self.hideTimer invalidate];
     self.hideTimer = [NSTimer scheduledTimerWithTimeInterval:kVDetailVisibilityDuration
                                                       target:self
@@ -146,6 +170,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
     
+    [self.layer removeAllAnimations];
     if ( animated )
     {
         [UIView animateWithDuration:kVDetailBounceTime animations:^
@@ -165,7 +190,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     else
     {
         self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
-        [self setNeedsLayout];
+        [self setNeedsDisplay];
     }
 }
 

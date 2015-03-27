@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
- 
-
 #import <Foundation/Foundation.h>
 
 @protocol VAnimatedTransition;
@@ -42,9 +40,18 @@
 @property (nonatomic, readonly, strong) UIViewController *toViewController;
 
 /**
- Useful for some animation effects
+ Useful for some animation effects.  If you want this to be populated for your transition,
+ make sure to return YES on in `requiresImageViewFromOriginViewController` method of
+ `VAnimatedTransition` protocol.
  */
 @property (nonatomic, readonly, strong) UIView *snapshotOfOriginView;
+
+/**
+ Useful for some animation effects.  If you want this to be populated for your transition,
+ make sure to return YES on in `requiresImageViewFromWindow: method of
+ `VAnimatedTransition` protocol.
+ */
+@property (nonatomic, readonly, strong) UIView *snapshotOfWindow;
 
 /**
  The total duration of the transition taking place

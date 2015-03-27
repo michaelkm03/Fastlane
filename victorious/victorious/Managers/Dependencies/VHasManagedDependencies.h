@@ -14,7 +14,7 @@
  Objects conforming to this protocol have dependencies
  that are managed by an instance of VDependencyManager
  */
-@protocol VHasManagedDependancies <NSObject>
+@protocol VHasManagedDependencies <NSObject>
 
 @optional // One or more of the following three methods should be implemented.
 

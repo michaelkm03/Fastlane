@@ -11,13 +11,16 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorizedAction.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
+#import "VDependencyManager.h"
+
+static NSString * const kVFollowerCellName = @"followerCell";
 
 @interface VFollowingTableViewController ()
 
@@ -28,11 +31,21 @@
 
 @implementation VFollowingTableViewController
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _dependencyManager = dependencyManager;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:kVFollowerCellName bundle:nil] forCellReuseIdentifier:kVFollowerCellName];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -69,6 +82,20 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueProfileFollowing forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 #pragma mark - Friend Actions
@@ -202,29 +229,30 @@
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     BOOL haveRelationship = [mainUser.following containsObject:profile];
 
-    VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
+    VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:kVFollowerCellName forIndexPath:indexPath];
     cell.profile = self.following[indexPath.row];
     cell.showButton = NO;
     cell.haveRelationship = haveRelationship;
+    cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
+        // Check for authorization first
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:self.dependencyManager];
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+         {
+             if ([mainUser.following containsObject:profile])
+             {
+                 [self unfollowFriendAction:profile];
+             }
+             else
+             {
+                 [self followFriendAction:profile];
+             }
+         }];
 
-        if ([mainUser.following containsObject:profile])
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
     };
     return cell;
 }
@@ -232,16 +260,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser  *user = self.following[indexPath.row];
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
-    {
-        [self loadMoreFollowings];
-    }
 }
 
 - (IBAction)refresh:(id)sender
@@ -326,7 +346,7 @@
     {
         NSString *msg, *title;
         
-        self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+        self.isMe = [[VObjectManager sharedManager] mainUser] != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue;
         
         if (self.isMe)
         {
@@ -339,7 +359,7 @@
             msg = NSLocalizedString(@"ProfileNotFollowingMessage", @"");
         }
         
-        VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
         self.tableView.backgroundView = notFollowingView;
         notFollowingView.titleLabel.text = title;
         notFollowingView.messageLabel.text = msg;

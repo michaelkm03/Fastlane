@@ -40,6 +40,10 @@
     {
         NSRange range = [[userCheckResults objectAtIndex:i] rangeAtIndex:0];
         VTag *tag = [VTag tagWithUserString:[rawString substringWithRange:range] andTagStringAttributes:tagStringAttributes];
+        if ( tag == nil )
+        {
+            continue;
+        }
         [foundTags incrementTag:tag];
         [attributedString replaceCharactersInRange:range withAttributedString:[self delimitedAttributedString:tag.displayString withDelimiterAttributes:defaultStringAttributes]];
     }
@@ -52,6 +56,10 @@
     {
         NSRange range = [[hashtagCheckResults objectAtIndex:i] rangeAtIndex:0];
         VTag *tag = [VTag tagWithHashtagString:[rawString substringWithRange:range] andTagStringAttributes:tagStringAttributes];
+        if ( tag == nil )
+        {
+            continue;
+        }
         [foundTags incrementTag:tag];
         [attributedString replaceCharactersInRange:range withAttributedString:[self delimitedAttributedString:tag.displayString withDelimiterAttributes:defaultStringAttributes]];
     }
@@ -163,7 +171,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
-                      userRegex = [NSRegularExpression regularExpressionWithPattern:@"@\\{.+?:(.+?)\\}"
+                      userRegex = [NSRegularExpression regularExpressionWithPattern:@"@\\{(.+?):(.+?)\\}"
                                                                             options:0
                                                                               error:nil];
                   });
@@ -198,18 +206,17 @@
       withTagDictionary:(VTagDictionary *)tagDictionary
                   range:(NSRangePointer)range
 {
-    if (index >= (NSInteger)attributedString.string.length)
+    if (index >= (NSInteger)attributedString.string.length || tagDictionary.count == 0)
     {
         return NO;
     }
-    
-    NSDictionary *attrs = [attributedString attributesAtIndex:index effectiveRange:range];
+    UIColor *textColor = [attributedString attribute:NSForegroundColorAttributeName atIndex:index longestEffectiveRange:range inRange:NSMakeRange(0, attributedString.length)];
     NSString *key = [attributedString.string substringWithRange:*range];
     VTag *tag = [tagDictionary tagForKey:key];
     
     if ( tag )
     {
-        if ( ![[tag.tagStringAttributes objectForKey:NSForegroundColorAttributeName] isEqual:[attrs objectForKey:NSForegroundColorAttributeName]] )
+        if ( ![[tag.tagStringAttributes objectForKey:NSForegroundColorAttributeName] isEqual:textColor] )
         {
             return NO; //The attributes in the string do not match those from our tag, so no match
         }

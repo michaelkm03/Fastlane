@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Discover-->
         <scene sceneID="2pY-Wy-vV0">
             <objects>
-                <viewController storyboardIdentifier="discover" title="Discover" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Uac-Xm-78P" customClass="VDiscoverContainerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="discover" title="Discover" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Uac-Xm-78P" customClass="VDiscoverContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2Uc-gO-ISV"/>
                         <viewControllerLayoutGuide type="bottom" id="Qyw-ZJ-fmq"/>
@@ -82,7 +82,7 @@
                                         </state>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="tcb-RO-Azu" secondAttribute="centerY" constant="0.5" id="0uI-ug-Dcf"/>
                                     <constraint firstItem="YDu-Qa-a39" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" id="CCj-JC-CI5"/>
@@ -101,17 +101,19 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EwB-Hd-HRW" firstAttribute="leading" secondItem="00k-Lh-ofH" secondAttribute="leading" id="Di4-2i-6JX"/>
                             <constraint firstItem="J1F-4E-CYS" firstAttribute="leading" secondItem="00k-Lh-ofH" secondAttribute="leading" id="E2C-qz-Luq"/>
                             <constraint firstAttribute="trailing" secondItem="J1F-4E-CYS" secondAttribute="trailing" id="N1F-Oh-Bhh"/>
                             <constraint firstAttribute="trailing" secondItem="EwB-Hd-HRW" secondAttribute="trailing" id="Xmc-bp-l9c"/>
                             <constraint firstItem="EwB-Hd-HRW" firstAttribute="top" secondItem="J1F-4E-CYS" secondAttribute="bottom" id="eWC-if-DCv"/>
-                            <constraint firstItem="J1F-4E-CYS" firstAttribute="top" secondItem="2Uc-gO-ISV" secondAttribute="bottom" constant="-20" placeholder="YES" id="f0K-c7-FvG"/>
+                            <constraint firstItem="J1F-4E-CYS" firstAttribute="top" secondItem="2Uc-gO-ISV" secondAttribute="bottom" placeholder="YES" id="f0K-c7-FvG"/>
                             <constraint firstItem="Qyw-ZJ-fmq" firstAttribute="top" secondItem="EwB-Hd-HRW" secondAttribute="bottom" id="k5Z-Zc-79N"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="searchBarContainer" destination="J1F-4E-CYS" id="aWz-o5-Syx"/>
                         <outlet property="searchBarHeightConstraint" destination="kyv-Ne-LMK" id="Ogb-9H-fsw"/>
@@ -126,9 +128,9 @@
         <!--Discover View Controller-->
         <scene sceneID="cXh-TP-ncW">
             <objects>
-                <tableViewController clearsSelectionOnViewWillAppear="NO" id="VvC-UZ-wr7" customClass="VDiscoverViewController" sceneMemberID="viewController">
+                <tableViewController automaticallyAdjustsScrollViewInsets="NO" clearsSelectionOnViewWillAppear="NO" id="VvC-UZ-wr7" customClass="VDiscoverViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="csC-mH-JaC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="513"/>
+                        <rect key="frame" x="0.0" y="44" width="320" height="513"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <connections>
@@ -136,7 +138,7 @@
                             <outlet property="delegate" destination="VvC-UZ-wr7" id="xh6-s5-qr4"/>
                         </connections>
                     </tableView>
-                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </tableViewController>
@@ -147,7 +149,7 @@
         <!--Users And Tags Search View Controller-->
         <scene sceneID="s5y-QJ-vNI">
             <objects>
-                <viewController storyboardIdentifier="search" id="yFr-Wo-U07" customClass="VUsersAndTagsSearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="search" extendedLayoutIncludesOpaqueBars="YES" id="yFr-Wo-U07" customClass="VUsersAndTagsSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RWd-Yq-4gI"/>
                         <viewControllerLayoutGuide type="bottom" id="azt-9F-nzR"/>
@@ -286,6 +288,7 @@
                             <constraint firstItem="0Rk-A9-Gp7" firstAttribute="leading" secondItem="4bU-TV-jqn" secondAttribute="leading" id="nU1-ya-pp9"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="ZAL-or-M7x"/>
                     <connections>
                         <outlet property="closeButton" destination="uO5-OM-4av" id="uNw-cr-J5t"/>
