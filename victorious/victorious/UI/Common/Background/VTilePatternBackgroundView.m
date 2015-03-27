@@ -171,7 +171,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     self.yReplicatorLayer.frame = CGRectMake( 0, 0, self.image.size.width, self.image.size.height);
     // Add 2 since we start with the original layer completely offscreen
     self.yReplicatorLayer.instanceCount = CEIL(CGRectGetHeight(self.bounds)/self.image.size.height) + 2;
-    self.yReplicatorLayer.instanceDelay = 0.0f;;
+    self.yReplicatorLayer.instanceDelay = 0.0f;
     self.yReplicatorLayer.instanceTransform = CATransform3DMakeTranslation(0, self.image.size.height, 0);
     
     [interpolationContainer.layer addSublayer:self.yReplicatorLayer];
@@ -200,7 +200,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 {
     UIImage *renderedImage = [self.renderedImageCache objectForKey:self.tintColor];
     
-    if (renderedImage)
+    if (renderedImage != nil)
     {
         return renderedImage;
     }
