@@ -19,7 +19,7 @@
         _lineHeightMultipler   = 1.6;
         _verticalSpacing       = 2;
         _lineOffsetMultiplier  = 0.4f;
-        _horizontalSpacing     = 3;
+        _horizontalSpacing     = 4;
         _maxTextLength         = 200;
         _backgroundColor       = [UIColor whiteColor];
     }

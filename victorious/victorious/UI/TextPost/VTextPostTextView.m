@@ -20,9 +20,14 @@
 
 - (void)drawRect:(CGRect)rect
 {
+    //NSArray *debugColors = @[ [UIColor redColor], [UIColor yellowColor], [UIColor blueColor], [UIColor redColor], [UIColor yellowColor], [UIColor blueColor], [UIColor redColor], [UIColor yellowColor], [UIColor blueColor] ];
+
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect( context, rect );
     
+    self.clipsToBounds = NO;
+    
+    int i = 0;
     for ( NSValue *value in self.backgroundFrames )
     {
         CGRect frame = [value CGRectValue];
@@ -32,6 +37,7 @@
         }
         CGContextAddRect( context, frame );
         CGContextSetFillColorWithColor( context, self.backgroundFrameColor.CGColor );
+        //CGContextSetFillColorWithColor( context, ([(UIColor *)[debugColors objectAtIndex:i++] colorWithAlphaComponent:0.5f]).CGColor );
         CGContextFillRect( context, frame );
     }
 }

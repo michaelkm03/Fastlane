@@ -17,7 +17,6 @@
                       maxWidth:(CGFloat)maxWidth;
 
 - (void)updateTextViewBackground:(VTextPostTextView *)textView
-                   configuraiton:(VTextPostConfiguration *)configuration
                    calloutRanges:(NSArray *)calloutRanges;
 
 @end

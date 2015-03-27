@@ -10,6 +10,13 @@
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
 #import "VTextPostConfiguration.h"
+#import "NSArray+VMap.h"
+
+@interface VTextLayoutHelper()
+
+@property (nonatomic, strong) IBOutlet VTextPostConfiguration *configuration;
+
+@end
 
 @implementation VTextLayoutHelper
 
@@ -40,10 +47,10 @@
 }
 
 - (void)updateTextViewBackground:(VTextPostTextView *)textView
-                   configuraiton:(VTextPostConfiguration *)configuration
                    calloutRanges:(NSArray *)calloutRanges
 {
-    textView.backgroundFrameColor = [configuration.backgroundColor colorWithAlphaComponent:0.5f];
+    textView.backgroundFrameColor = self.configuration.backgroundColor;
+    //textView.backgroundFrameColor = [self.configuration.backgroundColor colorWithAlphaComponent:0.5f];
     
     // Calculate the actual line count a bit differently, since the one above is not as accurate while typing
     CGRect singleCharRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, 1 )];
@@ -68,8 +75,8 @@
     {
         // Calculate individual rects for each line to draw in the background of text view
         CGRect lineRect = totalRect;
-        lineRect.size.height = singleCharRect.size.height - configuration.verticalSpacing;
-        lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * configuration.lineOffsetMultiplier;
+        lineRect.size.height = singleCharRect.size.height - self.configuration.verticalSpacing;
+        lineRect.origin.y = singleCharRect.size.height * i + singleCharRect.size.height * self.configuration.lineOffsetMultiplier;
         if ( i < lineFragmentRects.count )
         {
             // If this is the last line, use the line fragment rects collected above
@@ -93,18 +100,69 @@
         NSValue *rangeValueObject = calloutRanges[i];
         NSRange range = [rangeValueObject rangeValue];
         CGRect boundingRect = [textView.layoutManager boundingRectForGlyphRange:range inTextContainer:textView.textContainer];
-        boundingRect.size.height = singleCharRect.size.height - configuration.verticalSpacing;
-        boundingRect.origin.y += boundingRect.size.height * configuration.lineOffsetMultiplier;
+        boundingRect.size.height = singleCharRect.size.height - self.configuration.verticalSpacing;
+        boundingRect.origin.y += boundingRect.size.height * self.configuration.lineOffsetMultiplier;
         [calloutRects addObject:[NSValue valueWithCGRect:boundingRect]];
     }
     
-    NSArray *concatonated = [backgroundFrames arrayByAddingObjectsFromArray:calloutRects];
-    textView.backgroundFrames = [NSArray arrayWithArray:concatonated];
+#warning DIVIDE CALLOUTS BY LINE THEN USE BELOW:
+    
+    NSMutableArray *allLines = [[NSMutableArray alloc] init];
+    for ( NSValue *value in backgroundFrames )
+    {
+        NSArray *lineRects = [self separatedRectsFromRect:value.CGRectValue withCalloutRects:calloutRects];
+        [allLines addObjectsFromArray:lineRects];
+    }
+    textView.backgroundFrames = [NSArray arrayWithArray:allLines];
 }
 
 - (NSArray *)separatedRectsFromRect:(CGRect)sourceRect withCalloutRects:(NSArray *)calloutRects
 {
-    return @[ [NSValue valueWithCGRect:sourceRect] ];
+    const CGFloat space = self.configuration.horizontalSpacing;
+    
+    if ( calloutRects.count == 0 )
+    {
+        return @[ [NSValue valueWithCGRect:sourceRect] ];
+    }
+    
+    CGRect currentSourceRect = sourceRect;
+    NSMutableArray *rects = [[NSMutableArray alloc] init];
+    for ( NSValue *value in calloutRects )
+    {
+        CGRect calloutRect = [value CGRectValue];
+        
+        CGRect leftSlice;
+        CGRect middleRemainder;
+        CGFloat amount = CGRectGetMinX(calloutRect) - CGRectGetMinX(currentSourceRect);
+        CGRectDivide( currentSourceRect, &leftSlice, &middleRemainder, amount, CGRectMinXEdge );
+        [rects addObject:[NSValue valueWithCGRect:leftSlice]];
+        
+        CGRect middleSlice;
+        CGRect rightSlice;
+        amount = CGRectGetMaxX(calloutRect) - CGRectGetMinX(middleRemainder);
+        CGRectDivide( middleRemainder, &middleSlice, &rightSlice, amount, CGRectMinXEdge );
+        [rects addObject:[NSValue valueWithCGRect:middleSlice]];
+        
+        currentSourceRect = rightSlice;
+    }
+    [rects addObject:[NSValue valueWithCGRect:currentSourceRect]];
+    
+    // Add spacing
+    __block NSUInteger i = 0;
+    return [rects v_map:^NSValue *(NSValue *value)
+            {
+                CGRect rect = value.CGRectValue;
+                if ( i > 0 )
+                {
+                    rect.origin.x += space * 0.5f;
+                }
+                if ( i < rects.count )
+                {
+                    rect.size.width -= space;
+                }
+                i++;
+                return [NSValue valueWithCGRect:rect];
+            }];
 }
 
 @end

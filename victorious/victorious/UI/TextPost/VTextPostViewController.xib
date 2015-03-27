@@ -55,7 +55,11 @@
             </constraints>
             <point key="canvasLocation" x="774" y="689"/>
         </view>
-        <customObject id="jkY-iK-feB" customClass="VTextLayoutHelper"/>
+        <customObject id="jkY-iK-feB" customClass="VTextLayoutHelper">
+            <connections>
+                <outlet property="configuration" destination="uf6-RX-Z66" id="IhN-D9-Dca"/>
+            </connections>
+        </customObject>
         <customObject id="8k4-hD-YQP" customClass="VTextPostHashtagContraints"/>
         <customObject id="uf6-RX-Z66" customClass="VTextPostConfiguration"/>
     </objects>

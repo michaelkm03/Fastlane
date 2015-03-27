@@ -66,7 +66,7 @@
 
 - (void)setDefaultValues
 {
-    self.text = @"What's #hashyhashy on your #hash mind?  What's #hashyhashy on your #hash mind?";
+    self.text = @"Ha #agfdfd ah #ta hs #tg";
 }
 
 - (void)setText:(NSString *)text
@@ -133,7 +133,6 @@
     
     NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:_text includeHashSymbol:YES];
     [self.textLayoutHelper updateTextViewBackground:self.textView
-                                      configuraiton:self.configuration
                                       calloutRanges:hashtagCalloutRanges];
 }
 
