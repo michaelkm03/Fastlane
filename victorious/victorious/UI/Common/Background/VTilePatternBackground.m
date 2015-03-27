@@ -30,7 +30,7 @@ static NSString * const kPatternImageKey = @"image";
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithDependencyManager:dependencyManager];
-    if (self)
+    if (self != nil)
     {
         _patternTintColor = [dependencyManager colorForKey:kPatternTintColorKey];
         _patternImage = [dependencyManager imageForKey:kPatternImageKey];
@@ -40,14 +40,14 @@ static NSString * const kPatternImageKey = @"image";
 
 - (UIView *)viewForBackground
 {
-    VTilePatternBackgroundView *tilePatterBackgroundView = [[VTilePatternBackgroundView alloc] initWithFrame:CGRectZero];
+    VTilePatternBackgroundView *tilePatternBackgroundView = [[VTilePatternBackgroundView alloc] initWithFrame:CGRectZero];
     
-    tilePatterBackgroundView.color = self.patternTintColor;
-    tilePatterBackgroundView.image = self.patternImage;
-    tilePatterBackgroundView.tiltParallaxEnabled = self.tiltParallaxEnabled;
-    tilePatterBackgroundView.shimmerAnimationActive = self.shimmerAnimationActive;
+    tilePatternBackgroundView.color = self.patternTintColor;
+    tilePatternBackgroundView.image = self.patternImage;
+    tilePatternBackgroundView.tiltParallaxEnabled = self.tiltParallaxEnabled;
+    tilePatternBackgroundView.shimmerAnimationActive = self.shimmerAnimationActive;
     
-    return tilePatterBackgroundView;
+    return tilePatternBackgroundView;
 }
 
 @end

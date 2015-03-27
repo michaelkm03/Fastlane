@@ -37,7 +37,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if (self != nil)
     {
         [self sharedInit];
     }
@@ -47,7 +47,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if (self)
+    if (self != nil)
     {
         [self sharedInit];
     }
