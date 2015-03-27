@@ -147,7 +147,6 @@
 - (NSArray *)separatedRectsFromRect:(CGRect)sourceRect withCalloutRects:(NSArray *)calloutRects
 {
     const CGFloat space = self.configuration.horizontalSpacing;
-    const CGFloat cleanupMargin = 15;
     
     if ( calloutRects.count == 0 )
     {
@@ -178,6 +177,7 @@
     
     // Filter out any small fragment rects that couldn't contain even a character,
     // which ussually occur when a callout was the last word on the line
+    const CGFloat cleanupMargin = 10;
     NSPredicate *filterPredicate = [NSPredicate predicateWithBlock:^BOOL(NSValue *rectValue, NSDictionary *bindings)
                                     {
                                         CGRect rect = rectValue.CGRectValue;

@@ -17,12 +17,11 @@
 
 @implementation VHashtagType
 
-- (instancetype)initWithHashtagText:(NSString *)hashtagText isDefault:(BOOL)isDefault
+- (instancetype)initWithHashtagText:(NSString *)hashtagText
 {
     self = [super init];
     if (self)
     {
-        _isDefault = isDefault;
         _hashtagText = hashtagText;
     }
     return self;

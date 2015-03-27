@@ -15,4 +15,8 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
+- (void)reloadWithCompletion:(void(^)(NSArray *tools))completion;
+
+- (id<VWorkspaceTool>)toolForHashtag:(NSString *)hashtagText;
+
 @end

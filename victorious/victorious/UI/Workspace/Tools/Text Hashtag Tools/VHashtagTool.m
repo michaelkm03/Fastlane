@@ -9,12 +9,8 @@
 #import "VHashtagTool.h"
 #import "VDependencyManager.h"
 #import "VEditTextToolViewController.h"
-#import "VToolPicker.h"
 #import "NSArray+VMap.h"
 #import "VHashtagPickerDataSource.h"
-#import "VObjectManager+Discover.h"
-#import "NSArray+VMap.h"
-#import "VHashtag.h"
 #import "VHashtagType.h"
 
 static NSString * const kTitleKey = @"title";
@@ -29,7 +25,7 @@ static NSString * const kPickerKey = @"picker";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIImage *selectedIcon;
 @property (nonatomic, strong) VEditTextToolViewController *canvasToolViewController;
-@property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
+@property (nonatomic, readwrite) UIViewController <VToolPicker> *toolPicker;
 
 @end
 
@@ -45,10 +41,26 @@ static NSString * const kPickerKey = @"picker";
         _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
         _selectedIcon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kSelectedIconKey][kImageURLKey]];
         
-        _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
-        _toolPicker.dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        VHashtagPickerDataSource *dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager];
         
-        [self loadTrendingHashtags];
+        _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        _toolPicker.dataSource = dataSource;
+        
+        [dataSource reloadWithCompletion:^(NSArray *hashtagTools)
+         {
+             NSArray *testingTags = @[ [[VHashtagType alloc] initWithHashtagText:@"test1"],
+                                       [[VHashtagType alloc] initWithHashtagText:@"test2"],
+                                       [[VHashtagType alloc] initWithHashtagText:@"test3"],
+                                       [[VHashtagType alloc] initWithHashtagText:@"test4"],
+                                       [[VHashtagType alloc] initWithHashtagText:@"test5"],
+                                       [[VHashtagType alloc] initWithHashtagText:@"test6"],
+                                       [[VHashtagType alloc] initWithHashtagText:@"test7"] ];
+             hashtagTools = [hashtagTools arrayByAddingObjectsFromArray:testingTags];
+             self.toolPicker.dataSource.tools = hashtagTools;
+             [self.toolPicker reloadData];
+         }];
+        
+        
     }
     return self;
 }
@@ -63,43 +75,9 @@ static NSString * const kPickerKey = @"picker";
     return (UIViewController *)self.toolPicker;
 }
 
-- (void)updateTools:(NSArray *)hashtagTools
-{
-    VHashtagType *defaultNoHashtag = [[VHashtagType alloc] initWithHashtagText:@"(None)" isDefault:YES];
-    NSArray *toolsWithDefault = [@[defaultNoHashtag] arrayByAddingObjectsFromArray:hashtagTools];
-    
-    _toolPicker.dataSource.tools = toolsWithDefault;
-    [_toolPicker reloadData];
-}
-
 - (void)selectDefault
 {
     [_toolPicker selectToolAtIndex:0];
-}
-
-#pragma mark - Loading Remote Data
-
-- (void)loadTrendingHashtags
-{
-    [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         NSArray *hashtagTools = [resultObjects v_map:^VHashtagType *(VHashtag *hashtag)
-         {
-             if ( [hashtag isKindOfClass:[VHashtag class]] )
-             {
-                 VHashtagType *hashtagType = [[VHashtagType alloc] initWithHashtagText:hashtag.tag isDefault:NO];
-                 return hashtagType;
-             }
-             else
-             {
-                 return nil;
-             }
-         }];
-         
-         [self updateTools:hashtagTools];
-         [self selectDefault];
-     }
-                                               failBlock:nil];
 }
 
 @end

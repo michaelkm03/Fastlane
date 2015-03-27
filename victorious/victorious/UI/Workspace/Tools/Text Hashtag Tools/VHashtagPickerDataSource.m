@@ -11,6 +11,9 @@
 #import "VWorkspaceTool.h"
 #import "VDependencyManager.h"
 #import "VHashtagType.h"
+#import "VObjectManager+Discover.h"
+#import "NSArray+VMap.h"
+#import "VHashtag.h"
 
 @interface VHashtagPickerDataSource ()
 
@@ -30,6 +33,19 @@
         _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (id<VWorkspaceTool>)toolForHashtag:(NSString *)hashtagText
+{
+    for ( VHashtagType<VWorkspaceTool> *tool in self.tools )
+    {
+        if ( [tool isKindOfClass:[VHashtagType class]] && [tool.hashtagText isEqualToString:hashtagText] )
+        {
+            return tool;
+        }
+    }
+    
+    return nil;
 }
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
@@ -53,6 +69,35 @@
     hashtagCell.selectedColor = [self.dependencyManager colorForKey:@"color.link"];
     hashtagCell.title = hashtagType.hashtagText;
     return hashtagCell;
+}
+
+- (void)reloadWithCompletion:(void(^)(NSArray *tools))completion
+{
+    [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         NSArray *hashtagTools = [resultObjects v_map:^VHashtagType *(VHashtag *hashtag)
+                                  {
+                                      if ( [hashtag isKindOfClass:[VHashtag class]] )
+                                      {
+                                          return [[VHashtagType alloc] initWithHashtagText:hashtag.tag];
+                                      }
+                                      else
+                                      {
+                                          return nil;
+                                      }
+                                  }];
+         if ( completion != nil )
+         {
+             completion( hashtagTools );
+         }
+     }
+                                               failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if ( completion != nil )
+         {
+             completion( nil );
+         }
+     }];
 }
 
 @end

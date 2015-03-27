@@ -13,6 +13,7 @@
 #import "VTextPostHashtagContraints.h"
 #import "VTextPostConfiguration.h"
 #import "VHashTags.h"
+#import "NSArray+VMap.h"
 
 @interface VTextPostViewController () <UITextViewDelegate>
 
@@ -98,16 +99,59 @@
     self.overlayButton.hidden = NO;
 }
 
-- (void)addHashtag:(NSString *)hashtagText
-{
-    [self.supplementalHashtags addObject:[VHashTags stringWithPrependedHashmarkFromString:hashtagText]];
-    NSLog( @"supplementalHashtags = %@", self.supplementalHashtags );
-}
-
 - (NSString *)completedText
 {
 #warning TODO: Add selected trending hashtags
     return _text;
+}
+
+#pragma mark - Supplemental hashtags
+
+- (void)addHashtag:(NSString *)hashtagText
+{
+    if ( hashtagText.length == 0 )
+    {
+        return;
+    }
+    
+    NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
+    if ( ![self.supplementalHashtags containsObject:hashtagTextWithHashMark] )
+    {
+        [self.supplementalHashtags addObject:hashtagTextWithHashMark];
+        self.text = [NSString stringWithFormat:@"%@ %@", self.text, hashtagTextWithHashMark];
+    }
+}
+
+- (void)removeHashtag:(NSString *)hashtagText
+{
+    if ( hashtagText.length == 0 )
+    {
+        return;
+    }
+    
+    NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
+    if ( [self.supplementalHashtags containsObject:hashtagTextWithHashMark] )
+    {
+        [self.supplementalHashtags removeObject:hashtagTextWithHashMark];
+        self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
+    }
+}
+
+- (NSArray *)deletedHastagsFromTextView:(UITextView *)textView inRange:(NSRange)range
+{
+    NSString *deletedText = [textView.text substringWithRange:range];
+    if ( deletedText.length > 0 )
+    {
+        NSArray *hashtagsBefore = [VHashTags getHashTags:textView.text includeHashMark:YES];
+        NSString *textAfterDeletion = [textView.text stringByReplacingOccurrencesOfString:deletedText withString:@""];
+        NSArray *hashtagsAfter = [VHashTags getHashTags:textAfterDeletion includeHashMark:YES];
+        NSPredicate *filterPrediate = [NSPredicate predicateWithBlock:^BOOL(NSString *hashtag, NSDictionary *bindings)
+                                       {
+                                           return ![hashtagsAfter containsObject:hashtag];
+                                       }];
+        return [hashtagsBefore filteredArrayUsingPredicate:filterPrediate];
+    }
+    return @[];
 }
 
 #pragma mark - IBActions
@@ -160,6 +204,19 @@
     {
         [textView resignFirstResponder];
         return NO;
+    }
+    
+    if ( self.delegate != nil )
+    {
+        NSArray *deletedHashtags = [self deletedHastagsFromTextView:textView inRange:range];
+        if ( deletedHashtags.count > 0 )
+        {
+            NSArray *deletedHashtagsWithoutHashmarks = [deletedHashtags v_map:^NSString *(NSString *string)
+            {
+                return [string stringByReplacingOccurrencesOfString:@"#" withString:@""];
+            }];
+            [self.delegate textPostViewController:self didDeleteHashtags:deletedHashtagsWithoutHashmarks];
+        }
     }
     
     return textView.text.length + text.length < self.configuration.maxTextLength;

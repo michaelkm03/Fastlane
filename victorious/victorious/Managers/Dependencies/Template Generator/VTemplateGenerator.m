@@ -75,6 +75,10 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 static NSString * const kColorKey = @"color";
 static NSString * const kColorOptionsKey = @"colorOptions";
 
+static NSString * const kPickerSelectionMode = @"pickerSelectionMode";
+static const NSInteger kPickerSelectionModeSingle = 0; ///< See VTickerPickerSelectionMode
+static const NSInteger kPickerSelectionModeMultiple = 1; ///< See VTickerPickerSelectionMode
+
 // Text properties
 static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
@@ -429,6 +433,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
+                     kPickerSelectionMode: @(kPickerSelectionModeMultiple),
                      }
              };
 }
@@ -448,6 +453,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
+                     kPickerSelectionMode: @(kPickerSelectionModeSingle),
                      },
              kColorOptionsKey : @[
                      @{ kTitleKey : @"Red",

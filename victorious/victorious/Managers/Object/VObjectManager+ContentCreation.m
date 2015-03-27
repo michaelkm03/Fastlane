@@ -83,7 +83,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSDictionary *parameters = @{ @"content" : textContent,
                                   @"background_color" : backgroundColor ?: [NSNull null] };
     
-    return [self GET:@"/api/text/create"
+    return [self POST:@"/api/text/create"
               object:nil
           parameters:parameters
         successBlock:success

@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
+@class VTextPostViewController;
+
+@protocol VTextPostViewControllerDelegate <NSObject>
+
+- (void)textPostViewController:(VTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags;
+
+@end
+
 @interface VTextPostViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) NSString *text;
@@ -17,7 +25,11 @@
 
 @property (nonatomic, readonly) NSString *completedText;
 
+@property (nonatomic, weak) id<VTextPostViewControllerDelegate> delegate;
+
 - (void)addHashtag:(NSString *)hashtagText;
+
+- (void)removeHashtag:(NSString *)hashtagText;
 
 - (void)startEditingText;
 

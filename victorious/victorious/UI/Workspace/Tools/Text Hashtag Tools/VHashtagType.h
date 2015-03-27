@@ -11,9 +11,8 @@
 
 @interface VHashtagType : NSObject <VWorkspaceTool>
 
-- (instancetype)initWithHashtagText:(NSString *)hashtagText isDefault:(BOOL)isDefault;
+- (instancetype)initWithHashtagText:(NSString *)hashtagText;
 
-@property (nonatomic, assign, readonly) BOOL isDefault;
 @property (nonatomic, strong, readonly) NSString *hashtagText;
 
 @end

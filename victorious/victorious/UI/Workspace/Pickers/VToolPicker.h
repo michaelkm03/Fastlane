@@ -20,6 +20,9 @@
 
 - (void)toolPicker:(id<VToolPicker>)toolPicker didSelectItemAtIndex:(NSInteger)index;
 
+@optional
+- (void)toolPicker:(id<VToolPicker>)toolPicker didDeselectItemAtIndex:(NSInteger)index;
+
 @end
 
 /**
@@ -43,6 +46,7 @@
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.
 
 - (void)selectToolAtIndex:(NSInteger)index;
+- (void)deselectToolAtIndex:(NSInteger)index;
 - (void)reloadData;
 
 @end
