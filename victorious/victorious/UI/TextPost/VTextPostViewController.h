@@ -23,8 +23,6 @@
 
 @property (nonatomic, assign, getter=isEditable) BOOL editable;
 
-@property (nonatomic, readonly) NSString *completedText;
-
 @property (nonatomic, weak) id<VTextPostViewControllerDelegate> delegate;
 
 - (void)addHashtag:(NSString *)hashtagText;

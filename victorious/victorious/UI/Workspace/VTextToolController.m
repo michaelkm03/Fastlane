@@ -98,7 +98,7 @@
 - (NSString *)currentText
 {
     VEditTextToolViewController *editTextViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
-    return editTextViewController.textPostViewController.completedText;
+    return editTextViewController.textPostViewController.text;
 }
 
 - (void)setPickerDelegate:(id<VToolPickerDelegate>)delegate forSubtools:(NSArray *)subtools

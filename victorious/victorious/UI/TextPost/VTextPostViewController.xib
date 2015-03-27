@@ -6,12 +6,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VTextPostViewController">
             <connections>
-                <outlet property="configuration" destination="uf6-RX-Z66" id="cbv-QS-uEE"/>
                 <outlet property="hashtagConstraints" destination="8k4-hD-YQP" id="knV-Bh-AQC"/>
                 <outlet property="overlayButton" destination="i2B-mB-7tj" id="rh2-Sy-fb3"/>
                 <outlet property="textLayoutHelper" destination="jkY-iK-feB" id="aGJ-dU-4Zg"/>
                 <outlet property="textView" destination="EdJ-vJ-rzg" id="CvN-ia-c6B"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="HSK-lU-PKi"/>
+                <outlet property="viewModel" destination="uf6-RX-Z66" id="cbv-QS-uEE"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -57,10 +57,10 @@
         </view>
         <customObject id="jkY-iK-feB" customClass="VTextLayoutHelper">
             <connections>
-                <outlet property="configuration" destination="uf6-RX-Z66" id="IhN-D9-Dca"/>
+                <outlet property="viewModel" destination="uf6-RX-Z66" id="IhN-D9-Dca"/>
             </connections>
         </customObject>
         <customObject id="8k4-hD-YQP" customClass="VTextPostHashtagContraints"/>
-        <customObject id="uf6-RX-Z66" customClass="VTextPostConfiguration"/>
+        <customObject id="uf6-RX-Z66" customClass="VTextPostViewModel"/>
     </objects>
 </document>

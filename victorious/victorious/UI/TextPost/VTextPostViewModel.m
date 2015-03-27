@@ -1,15 +1,15 @@
 //
-//  VTextPostConfiguration.m
+//  VTextPostViewModel.m
 //  victorious
 //
 //  Created by Patrick Lynch on 3/25/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VTextPostConfiguration.h"
+#import "VTextPostViewModel.h"
 #import "VDependencyManager.h"
 
-@implementation VTextPostConfiguration
+@implementation VTextPostViewModel
 
 - (instancetype)init
 {

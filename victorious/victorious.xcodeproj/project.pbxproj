@@ -485,8 +485,7 @@
 		A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
-		A7A921FD1AC3609B00F4755E /* VTextPostHashtagContraints.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FC1AC3609B00F4755E /* VTextPostHashtagContraints.m */; };
-		A7A922001AC362F700F4755E /* VTextPostConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */; };
+		A7A922001AC362F700F4755E /* VTextPostViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A921FF1AC362F700F4755E /* VTextPostViewModel.m */; };
 		A7A922581AC4B52A00F4755E /* VWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922571AC4B52A00F4755E /* VWorkspaceViewController.m */; };
 		A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922611AC6166600F4755E /* VContentTextCell.m */; };
 		A7A922641AC61B3500F4755E /* VContentTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7A922631AC61B3500F4755E /* VContentTextCell.xib */; };
@@ -1682,10 +1681,8 @@
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
-		A7A921FB1AC3609B00F4755E /* VTextPostHashtagContraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostHashtagContraints.h; sourceTree = "<group>"; };
-		A7A921FC1AC3609B00F4755E /* VTextPostHashtagContraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostHashtagContraints.m; sourceTree = "<group>"; };
-		A7A921FE1AC362F700F4755E /* VTextPostConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostConfiguration.h; sourceTree = "<group>"; };
-		A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostConfiguration.m; sourceTree = "<group>"; };
+		A7A921FE1AC362F700F4755E /* VTextPostViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostViewModel.h; sourceTree = "<group>"; };
+		A7A921FF1AC362F700F4755E /* VTextPostViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostViewModel.m; sourceTree = "<group>"; };
 		A7A922561AC4B52A00F4755E /* VWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceViewController.h; sourceTree = "<group>"; };
 		A7A922571AC4B52A00F4755E /* VWorkspaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceViewController.m; sourceTree = "<group>"; };
 		A7A922601AC6166600F4755E /* VContentTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentTextCell.h; sourceTree = "<group>"; };
@@ -4081,15 +4078,13 @@
 			children = (
 				A793A9421AC22CF7007F32EE /* VTextLayoutHelper.h */,
 				A793A9431AC22CF7007F32EE /* VTextLayoutHelper.m */,
-				A7A921FE1AC362F700F4755E /* VTextPostConfiguration.h */,
-				A7A921FF1AC362F700F4755E /* VTextPostConfiguration.m */,
-				A7A921FB1AC3609B00F4755E /* VTextPostHashtagContraints.h */,
-				A7A921FC1AC3609B00F4755E /* VTextPostHashtagContraints.m */,
 				A793A93A1AC22C8C007F32EE /* VTextPostTextView.h */,
 				A793A93B1AC22C8C007F32EE /* VTextPostTextView.m */,
 				A793A93C1AC22C8C007F32EE /* VTextPostViewController.h */,
 				A793A93D1AC22C8C007F32EE /* VTextPostViewController.m */,
 				A793A93E1AC22C8C007F32EE /* VTextPostViewController.xib */,
+				A7A921FE1AC362F700F4755E /* VTextPostViewModel.h */,
+				A7A921FF1AC362F700F4755E /* VTextPostViewModel.m */,
 			);
 			path = TextPost;
 			sourceTree = "<group>";
@@ -5951,7 +5946,7 @@
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
-				A7A922001AC362F700F4755E /* VTextPostConfiguration.m in Sources */,
+				A7A922001AC362F700F4755E /* VTextPostViewModel.m in Sources */,
 				DBDBE6EE1A16736C00DA1BB2 /* VAdBreak.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */,
 				A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */,
@@ -6065,7 +6060,6 @@
 				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
 				A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */,
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
-				A7A921FD1AC3609B00F4755E /* VTextPostHashtagContraints.m in Sources */,
 				A7D288141A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m in Sources */,
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
 				A793A9401AC22C8C007F32EE /* VTextPostViewController.m in Sources */,

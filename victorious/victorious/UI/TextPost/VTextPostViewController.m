@@ -10,8 +10,7 @@
 #import "VTextLayoutHelper.h"
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
-#import "VTextPostHashtagContraints.h"
-#import "VTextPostConfiguration.h"
+#import "VTextPostViewModel.h"
 #import "VHashTags.h"
 #import "NSArray+VMap.h"
 
@@ -24,8 +23,7 @@
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textView;
 @property (nonatomic, weak) IBOutlet UIButton *overlayButton;
 
-@property (nonatomic, strong) IBOutlet VTextPostHashtagContraints *hashtagConstraints;
-@property (nonatomic, strong) IBOutlet VTextPostConfiguration *configuration;
+@property (nonatomic, strong) IBOutlet VTextPostViewModel *viewModel;
 @property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
 @property (nonatomic, strong) NSMutableSet *supplementalHashtags;
 
@@ -99,12 +97,6 @@
     self.overlayButton.hidden = NO;
 }
 
-- (NSString *)completedText
-{
-#warning TODO: Add selected trending hashtags
-    return _text;
-}
-
 #pragma mark - Supplemental hashtags
 
 - (void)addHashtag:(NSString *)hashtagText
@@ -168,16 +160,16 @@
 
 - (void)updateTextView
 {
-    NSDictionary *attributes = [self.configuration textAttributesWithDependencyManager:self.dependencyManager];
+    NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:_text attributes:attributes];
     
     NSArray *hashtagRanges = [VHashTags detectHashTags:_text];
-    NSDictionary *hashtagAttributes = [self.configuration hashtagTextAttributesWithDependencyManager:self.dependencyManager];
+    NSDictionary *hashtagAttributes = [self.viewModel hashtagTextAttributesWithDependencyManager:self.dependencyManager];
     [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:hashtagAttributes];
     
     NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:_text includeHashSymbol:YES];
     
-    [self.textLayoutHelper addWordPaddingWithVaule:self.configuration.calloutWordPadding
+    [self.textLayoutHelper addWordPaddingWithVaule:self.viewModel.calloutWordPadding
                                 toAttributedString:attributedText
                                  withCalloutRanges:hashtagCalloutRanges];
     
@@ -219,7 +211,7 @@
         }
     }
     
-    return textView.text.length + text.length < self.configuration.maxTextLength;
+    return textView.text.length + text.length < self.viewModel.maxTextLength;
 }
 
 @end

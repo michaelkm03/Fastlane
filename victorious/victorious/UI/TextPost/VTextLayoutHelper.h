@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VDependencyManager, VTextPostConfiguration, VTextPostTextView;
+@class VDependencyManager, VTextPostViewModel, VTextPostTextView;
 
 @interface VTextLayoutHelper : NSObject
 

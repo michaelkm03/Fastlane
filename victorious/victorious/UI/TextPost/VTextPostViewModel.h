@@ -1,5 +1,5 @@
 //
-//  VTextPostConfiguration.h
+//  VTextPostViewModel.h
 //  victorious
 //
 //  Created by Patrick Lynch on 3/25/15.
@@ -10,7 +10,7 @@
 
 @class VDependencyManager;
 
-@interface VTextPostConfiguration : NSObject
+@interface VTextPostViewModel : NSObject
 
 @property (nonatomic, assign, readonly) CGFloat lineHeightMultipler;  ///< Multiplied by font's `pointSize` to get optimal line height
 @property (nonatomic, assign, readonly) CGFloat verticalSpacing;
