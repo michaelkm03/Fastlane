@@ -14,8 +14,8 @@
 // Dependencies
 #import "VDependencyManager.h"
 
-static NSString * const kPatternTintColorKey = @"patternTintColor";
-static NSString * const kPatternImageKey = @"patternImage";
+static NSString * const kPatternTintColorKey = @"color";
+static NSString * const kPatternImageKey = @"image";
 @interface VTilePatternBackground ()
 
 @property (nonatomic, copy) UIColor *patternTintColor;
@@ -42,8 +42,8 @@ static NSString * const kPatternImageKey = @"patternImage";
 {
     VTilePatternBackgroundView *tilePatterBackgroundView = [[VTilePatternBackgroundView alloc] initWithFrame:CGRectZero];
     
-    tilePatterBackgroundView.patternTintColor = self.patternTintColor;
-    tilePatterBackgroundView.patternImage = self.patternImage;
+    tilePatterBackgroundView.color = self.patternTintColor;
+    tilePatterBackgroundView.image = self.patternImage;
     tilePatterBackgroundView.tiltParallaxEnabled = self.tiltParallaxEnabled;
     tilePatterBackgroundView.shimmerAnimationActive = self.shimmerAnimationActive;
     

@@ -703,10 +703,10 @@
 		D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EC36E81AB3EC7600FB0CEB /* VAssetLoader.m */; };
 		D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EC36EB1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m */; };
 		D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F12A6C1A6F093900E99B3D /* VPublishParameters.m */; };
-		D8F8B1E61AC4BE1200AA2DB7 /* templateWithCellBackground.json in Resources */ = {isa = PBXBuildFile; fileRef = D8F8B1E51AC4BE1200AA2DB7 /* templateWithCellBackground.json */; };
 		D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1E81AC4C27600AA2DB7 /* VDependencyManager+VBackground.m */; };
 		D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1EB1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m */; };
 		D8F8B1EF1AC4C4CF00AA2DB7 /* VTilePatternBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1EE1AC4C4CF00AA2DB7 /* VTilePatternBackground.m */; };
+		D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundHost.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundHost.m */; };
 		D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */; };
 		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
 		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
@@ -2085,7 +2085,6 @@
 		D8ECB8F11A5C7CD200C8F67A /* VVideoWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoWorkspaceTool.h; sourceTree = "<group>"; };
 		D8F12A6B1A6F093900E99B3D /* VPublishParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishParameters.h; sourceTree = "<group>"; };
 		D8F12A6C1A6F093900E99B3D /* VPublishParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishParameters.m; sourceTree = "<group>"; };
-		D8F8B1E51AC4BE1200AA2DB7 /* templateWithCellBackground.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = templateWithCellBackground.json; sourceTree = "<group>"; };
 		D8F8B1E71AC4C27600AA2DB7 /* VDependencyManager+VBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VBackground.h"; sourceTree = "<group>"; };
 		D8F8B1E81AC4C27600AA2DB7 /* VDependencyManager+VBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VBackground.m"; sourceTree = "<group>"; };
 		D8F8B1EA1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTilePatternBackgroundView.h; sourceTree = "<group>"; };
@@ -2093,6 +2092,8 @@
 		D8F8B1ED1AC4C4CF00AA2DB7 /* VTilePatternBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTilePatternBackground.h; sourceTree = "<group>"; };
 		D8F8B1EE1AC4C4CF00AA2DB7 /* VTilePatternBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTilePatternBackground.m; sourceTree = "<group>"; };
 		D8F8B1F01AC4C89E00AA2DB7 /* VBackgroundHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBackgroundHost.h; sourceTree = "<group>"; };
+		D8F8B1F11AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VBackgroundHost.h"; sourceTree = "<group>"; };
+		D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VBackgroundHost.m"; sourceTree = "<group>"; };
 		D8FC09051A51DBC100E5FBE4 /* VPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPlaceholderTextView.h; sourceTree = "<group>"; };
 		D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlaceholderTextView.m; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3284,6 +3285,8 @@
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
 				D8F8B1E71AC4C27600AA2DB7 /* VDependencyManager+VBackground.h */,
 				D8F8B1E81AC4C27600AA2DB7 /* VDependencyManager+VBackground.m */,
+				D8F8B1F11AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundHost.h */,
+				D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundHost.m */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -4168,7 +4171,6 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
-				D8F8B1E51AC4BE1200AA2DB7 /* templateWithCellBackground.json */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
@@ -5205,7 +5207,6 @@
 				03FD87D919F96FB700D93BAA /* VSuggestedPersonCollectionViewCell.xib in Resources */,
 				036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
-				D8F8B1E61AC4BE1200AA2DB7 /* templateWithCellBackground.json in Resources */,
 				DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */,
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
@@ -5751,6 +5752,7 @@
 				D816F7E41A966A0B00120798 /* UIScrollView+VCenterContent.m in Sources */,
 				F04A7C8E1AB37E440092A374 /* VSleekStreamCellActionView.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
+				D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundHost.m in Sources */,
 				DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */,
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				A743E7E01A08160300339CB3 /* VFileCache.m in Sources */,

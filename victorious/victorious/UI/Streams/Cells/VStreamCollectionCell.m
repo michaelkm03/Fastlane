@@ -369,4 +369,11 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [self playVideo];
 }
 
+#pragma mark - VBackgroundHost
+
+- (UIView *)v_backgroundHost
+{
+    return self.backgroundContainer;
+}
+
 @end

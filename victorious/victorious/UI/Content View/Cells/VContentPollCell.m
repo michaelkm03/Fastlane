@@ -256,4 +256,5 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 {
     return self.backgroundContainer;
 }
+
 @end

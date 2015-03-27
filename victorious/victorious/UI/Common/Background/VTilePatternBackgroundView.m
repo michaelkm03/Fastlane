@@ -16,6 +16,8 @@
 #define CEIL ceilf
 #endif
 
+static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
+
 @interface VTilePatternBackgroundView ()
 
 @property (nonatomic, assign) BOOL hasLayedOutPatternBackground;
@@ -25,8 +27,6 @@
 @property (nonatomic, strong) CAReplicatorLayer *xReplicatorLayer;
 @property (nonatomic, strong) CAReplicatorLayer *yReplicatorLayer;
 @property (nonatomic, strong) NSCache *renderedImageCache;
-
-@property (nonatomic, strong) UIImage *tiledImage;
 
 @end
 
@@ -56,18 +56,79 @@
 
 - (void)sharedInit
 {
-    self.tiledImage = [UIImage imageNamed:@"pat_geometric"];
-    self.renderedImageCache = [[NSCache alloc] init];
+    _image = [UIImage imageNamed:@"pat_geometric"];
+    _renderedImageCache = [[NSCache alloc] init];
 }
 
-#pragma mark - UIView
+#pragma mark - Property Accessors
 
-- (void)setPatternTintColor:(UIColor *)patternTinitColor
+- (void)setColor:(UIColor *)color
 {
-    _patternTintColor = patternTinitColor;
+    if ([_color isEqual:color])
+    {
+        return;
+    }
+    
+    _color = color;
     
     self.replicatedLayer.contents = (id)[self patternImage].CGImage;
 }
+
+- (void)setImage:(UIImage *)image
+{
+    if ((_image == image) || (image == nil))
+    {
+        return;
+    }
+    
+    _image = image;
+    
+    [self.renderedImageCache removeAllObjects];
+    [self layoutSubviews];
+    self.replicatedLayer.contents = (id)[self patternImage].CGImage;
+}
+
+- (void)setTiltParallaxEnabled:(BOOL)tiltParallaxEnabled
+{
+    if (_tiltParallaxEnabled == tiltParallaxEnabled)
+    {
+        return;
+    }
+    
+    _tiltParallaxEnabled = tiltParallaxEnabled;
+    
+    if (tiltParallaxEnabled)
+    {
+        [self.interpolationView v_addMotionEffectsWithMagnitude:-self.image.size.width*0.5f];
+    }
+    else
+    {
+        [self.interpolationView v_addMotionEffectsWithMagnitude:0.0f];
+    }
+}
+
+- (void)setShimmerAnimationActive:(BOOL)shimmerAnimationActive
+{
+    if (_shimmerAnimationActive == shimmerAnimationActive)
+    {
+        return;
+    }
+    
+    _shimmerAnimationActive = shimmerAnimationActive;
+    
+    if (shimmerAnimationActive)
+    {
+        [self.replicatedLayer addAnimation:[self breathingAnimation]
+                                    forKey:kShimmerAnimationKey];
+    }
+    else
+    {
+        [self.replicatedLayer removeAnimationForKey:kShimmerAnimationKey];
+        self.replicatedLayer.opacity = 1.0f;
+    }
+}
+
+#pragma mark - UIView
 
 - (void)layoutSubviews
 {
@@ -75,13 +136,13 @@
     
     if (self.hasLayedOutPatternBackground)
     {
-        [self.interpolationView v_addMotionEffectsWithMagnitude:-self.tiledImage.size.width*0.5f];
-        [self.replicatedLayer addAnimation:[self breathingAnimation] forKey:@"breathingAnimation"];
+        [self.interpolationView v_addMotionEffectsWithMagnitude:-self.image.size.width*0.5f];
+        [self.replicatedLayer addAnimation:[self breathingAnimation] forKey:kShimmerAnimationKey];
         return;
     }
     
-    if (self.tiledImage.size.width == 0.0f ||
-        self.tiledImage.size.height == 0.0f)
+    if (self.image.size.width == 0.0f ||
+        self.image.size.height == 0.0f)
     {
         return;
     }
@@ -95,32 +156,32 @@
     [self addSubview:interpolationContainer];
     self.interpolationView = interpolationContainer;
     
-    [interpolationContainer v_addMotionEffectsWithMagnitude:-self.tiledImage.size.width*0.5f];
+    [interpolationContainer v_addMotionEffectsWithMagnitude:-self.image.size.width*0.5f];
     
     self.xReplicatorLayer = [CAReplicatorLayer layer];
-    self.xReplicatorLayer.frame = CGRectMake( 0, 0, self.tiledImage.size.width, self.tiledImage.size.height);
+    self.xReplicatorLayer.frame = CGRectMake( 0, 0, self.image.size.width, self.image.size.height);
     // Add 2 since we start with the original layer completely offscreen
-    self.xReplicatorLayer.instanceCount = CEIL(CGRectGetWidth(self.bounds)/self.tiledImage.size.width) + 2;
+    self.xReplicatorLayer.instanceCount = CEIL(CGRectGetWidth(self.bounds)/self.image.size.width) + 2;
     self.xReplicatorLayer.instanceDelay = 0.0f;
-    self.xReplicatorLayer.instanceTransform = CATransform3DMakeTranslation(self.tiledImage.size.width, 0, 0);
+    self.xReplicatorLayer.instanceTransform = CATransform3DMakeTranslation(self.image.size.width, 0, 0);
     
     [interpolationContainer.layer addSublayer:self.xReplicatorLayer];
     
     self.yReplicatorLayer = [CAReplicatorLayer layer];
-    self.yReplicatorLayer.frame = CGRectMake( 0, 0, self.tiledImage.size.width, self.tiledImage.size.height);
+    self.yReplicatorLayer.frame = CGRectMake( 0, 0, self.image.size.width, self.image.size.height);
     // Add 2 since we start with the original layer completely offscreen
-    self.yReplicatorLayer.instanceCount = CEIL(CGRectGetHeight(self.bounds)/self.tiledImage.size.height) + 2;
+    self.yReplicatorLayer.instanceCount = CEIL(CGRectGetHeight(self.bounds)/self.image.size.height) + 2;
     self.yReplicatorLayer.instanceDelay = 0.0f;;
-    self.yReplicatorLayer.instanceTransform = CATransform3DMakeTranslation(0, self.tiledImage.size.height, 0);
+    self.yReplicatorLayer.instanceTransform = CATransform3DMakeTranslation(0, self.image.size.height, 0);
     
     [interpolationContainer.layer addSublayer:self.yReplicatorLayer];
     
     self.replicatedLayer = [CALayer layer];
     self.replicatedLayer.contents = (id)[self patternImage].CGImage;
-    self.replicatedLayer.frame = CGRectMake( -self.tiledImage.size.width,
-                                            -self.tiledImage.size.height,
-                                            self.tiledImage.size.width,
-                                            self.tiledImage.size.height);
+    self.replicatedLayer.frame = CGRectMake( -self.image.size.width,
+                                            -self.image.size.height,
+                                            self.image.size.width,
+                                            self.image.size.height);
     
     [self.xReplicatorLayer addSublayer:self.replicatedLayer];
     [self.yReplicatorLayer addSublayer:self.xReplicatorLayer];
@@ -144,25 +205,37 @@
         return renderedImage;
     }
     
-    UIColor *blendColor = [self.patternTintColor colorWithAlphaComponent:0.85f];
+    if (CGColorGetAlpha(self.color.CGColor) == 0.0f)
+    {
+        return self.image;
+    }
+    
+    UIColor *blendColor = [self.color colorWithAlphaComponent:0.85f];
     
     if (blendColor == nil)
     {
-        return self.tiledImage;
+        return self.image;
     }
     
-    UIGraphicsBeginImageContext(self.tiledImage.size);
+    UIGraphicsBeginImageContext(self.image.size);
     {
         CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(), blendColor.CGColor);
-        CGContextFillRect(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, self.tiledImage.size.width, self.tiledImage.size.height));
-        [self.tiledImage drawInRect:CGRectMake(0, 0, self.tiledImage.size.width, self.tiledImage.size.height) blendMode:kCGBlendModeColorDodge alpha:1.0f];
+        CGContextFillRect(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, self.image.size.width, self.image.size.height));
+        [self.image drawInRect:CGRectMake(0, 0, self.image.size.width, self.image.size.height) blendMode:kCGBlendModeColorDodge alpha:1.0f];
         renderedImage = UIGraphicsGetImageFromCurrentImageContext();
     }
     UIGraphicsEndImageContext();
     
-    [self.renderedImageCache setObject:renderedImage forKey:self.tintColor];
-    
-    return renderedImage;
+    if (renderedImage != nil)
+    {
+        [self.renderedImageCache setObject:renderedImage forKey:self.tintColor];
+        
+        return renderedImage;
+    }
+    else
+    {
+        return self.image;
+    }
 }
 
 - (CABasicAnimation *)breathingAnimation
