@@ -69,7 +69,7 @@
          [lineFragmentRects addObject:[NSValue valueWithCGRect:usedRect]];
      }];
     
-    __block NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
+    __block NSMutableArray *backgroundLineFrames = [[NSMutableArray alloc] init];
     NSUInteger numLines = totalRect.size.height / singleCharRect.size.height;
     for ( NSUInteger i = 0; i < numLines; i++ )
     {
@@ -91,34 +91,43 @@
                 lineRect.size.width = lastWordBoundingRect.size.width + lastWordBoundingRect.size.height * 0.3;
             }
         }
-        [backgroundFrames addObject:[NSValue valueWithCGRect:lineRect]];
+        [backgroundLineFrames addObject:[NSValue valueWithCGRect:lineRect]];
     }
     
-    __block NSMutableArray *calloutRects = [[NSMutableArray alloc] init];
-    for ( NSUInteger i = 0; i < calloutRanges.count; i++ )
+    NSMutableArray *calloutRects = [[NSMutableArray alloc] initWithCapacity:numLines];
+    for ( NSUInteger i = 0; i < numLines; i++ )
     {
-        NSValue *rangeValueObject = calloutRanges[i];
+        [calloutRects addObject:[[NSMutableArray alloc] init]];
+    }
+    
+    for ( NSValue *rangeValueObject in calloutRanges )
+    {
         NSRange range = [rangeValueObject rangeValue];
-        CGRect boundingRect = [textView.layoutManager boundingRectForGlyphRange:range inTextContainer:textView.textContainer];
-        boundingRect.size.height = singleCharRect.size.height - self.configuration.verticalSpacing;
-        boundingRect.origin.y += boundingRect.size.height * self.configuration.lineOffsetMultiplier;
-        [calloutRects addObject:[NSValue valueWithCGRect:boundingRect]];
+        textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX );
+        CGRect rect = [textView.layoutManager boundingRectForGlyphRange:range inTextContainer:textView.textContainer];
+        rect.size.height = singleCharRect.size.height - self.configuration.verticalSpacing;
+        rect.origin.y += rect.size.height * self.configuration.lineOffsetMultiplier;
+        
+        NSUInteger lineNumber = CGRectGetMinY(rect) / totalRect.size.height * numLines;
+       [[calloutRects objectAtIndex:lineNumber] addObject:[NSValue valueWithCGRect:rect]];
     }
     
-#warning DIVIDE CALLOUTS BY LINE THEN USE BELOW:
-    
-    NSMutableArray *allLines = [[NSMutableArray alloc] init];
-    for ( NSValue *value in backgroundFrames )
+    NSMutableArray *allFrames = [[NSMutableArray alloc] init];
+    for ( NSUInteger i = 0; i < backgroundLineFrames.count; i++ )
     {
-        NSArray *lineRects = [self separatedRectsFromRect:value.CGRectValue withCalloutRects:calloutRects];
-        [allLines addObjectsFromArray:lineRects];
+        CGRect backgroundFrame = ((NSValue *)backgroundLineFrames[i]).CGRectValue;
+        NSArray *calloutsForLine = calloutRects[i];
+        NSArray *lineRects = [self separatedRectsFromRect:backgroundFrame withCalloutRects:calloutsForLine];
+        [allFrames addObjectsFromArray:lineRects];
     }
-    textView.backgroundFrames = [NSArray arrayWithArray:allLines];
+    
+    textView.backgroundFrames = [NSArray arrayWithArray:allFrames];
 }
 
 - (NSArray *)separatedRectsFromRect:(CGRect)sourceRect withCalloutRects:(NSArray *)calloutRects
 {
     const CGFloat space = self.configuration.horizontalSpacing;
+    const CGFloat cleanupMargin = 15;
     
     if ( calloutRects.count == 0 )
     {
@@ -147,9 +156,18 @@
     }
     [rects addObject:[NSValue valueWithCGRect:currentSourceRect]];
     
-    // Add spacing
+    // Filter out any small fragment rects that couldn't contain even a character,
+    // which ussually occur when a callout was the last word on the line
+    NSPredicate *filterPredicate = [NSPredicate predicateWithBlock:^BOOL(NSValue *rectValue, NSDictionary *bindings)
+                                    {
+                                        CGRect rect = rectValue.CGRectValue;
+                                        return CGRectGetWidth(rect) > cleanupMargin;
+                                    }];
+    NSArray *output = [rects filteredArrayUsingPredicate:filterPredicate];
+    
+    // Add spacing in between slices
     __block NSUInteger i = 0;
-    return [rects v_map:^NSValue *(NSValue *value)
+    return [output v_map:^NSValue *(NSValue *value)
             {
                 CGRect rect = value.CGRectValue;
                 if ( i > 0 )
@@ -161,6 +179,16 @@
                     rect.size.width -= space;
                 }
                 i++;
+                
+                // If the callout was the first word of the line, sometimes it will offset
+                // a bit, in which case we'd like to realign it to the left side.
+                // Maybe only necessary for left justirfied?
+                /*if ( rect.origin.x < cleanupMargin )
+                {
+                    rect.size.width += cleanupMargin - rect.origin.x;
+                    rect.origin.x = 0;
+                }*/
+                
                 return [NSValue valueWithCGRect:rect];
             }];
 }

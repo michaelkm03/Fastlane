@@ -66,7 +66,7 @@
 
 - (void)setDefaultValues
 {
-    self.text = @"Ha #agfdfd ah #ta hs #tg";
+    self.text = @"Sample text with #hashtags that will spread to #different lines and count #each one now another #line and still one more #line to come.";
 }
 
 - (void)setText:(NSString *)text
