@@ -192,6 +192,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
             self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
             [self.contentContainer addSubview:self.textPostViewController.view];
             [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+            self.textPostViewController.text = asset.data;
             
 #warning Background color is required
             // http://jira.victorious.com/browse/API-1224

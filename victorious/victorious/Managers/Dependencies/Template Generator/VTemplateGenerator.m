@@ -74,6 +74,7 @@ static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 static NSString * const kColorKey = @"color";
 static NSString * const kColorOptionsKey = @"colorOptions";
+static NSString * const kDefaultTextKey = @"defaultText";
 
 static NSString * const kPickerSelectionMode = @"pickerSelectionMode";
 static const NSInteger kPickerSelectionModeSingle = 0; ///< See VTickerPickerSelectionMode
@@ -299,6 +300,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 {
     return @{
              kClassNameKey: @"workspaceText",
+             kDefaultTextKey: @"What's on your mind?",
              VDependencyManagerEditTextWorkspaceKey: @{
                      kClassNameKey: @"workspace.screen",
                      kToolsKey: @[

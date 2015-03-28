@@ -9,26 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
-@class VTextPostViewController;
-
-@protocol VTextPostViewControllerDelegate <NSObject>
-
-- (void)textPostViewController:(VTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags;
-
-@end
+@class VTextPostViewModel;
 
 @interface VTextPostViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) NSString *text;
 
-@property (nonatomic, assign, getter=isEditable) BOOL editable;
+@property (nonatomic, readonly) UITextView *textView;
 
-@property (nonatomic, weak) id<VTextPostViewControllerDelegate> delegate;
+@property (nonatomic, strong, readonly) IBOutlet VTextPostViewModel *viewModel;
 
-- (void)addHashtag:(NSString *)hashtagText;
-
-- (void)removeHashtag:(NSString *)hashtagText;
-
-- (void)startEditingText;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

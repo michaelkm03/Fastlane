@@ -6,10 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VTextPostViewController">
             <connections>
-                <outlet property="hashtagConstraints" destination="8k4-hD-YQP" id="knV-Bh-AQC"/>
-                <outlet property="overlayButton" destination="i2B-mB-7tj" id="rh2-Sy-fb3"/>
                 <outlet property="textLayoutHelper" destination="jkY-iK-feB" id="aGJ-dU-4Zg"/>
-                <outlet property="textView" destination="EdJ-vJ-rzg" id="CvN-ia-c6B"/>
+                <outlet property="textPostTextView" destination="EdJ-vJ-rzg" id="m0R-s5-8DF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="HSK-lU-PKi"/>
                 <outlet property="viewModel" destination="uf6-RX-Z66" id="cbv-QS-uEE"/>
             </connections>
@@ -33,25 +31,12 @@
                         <outlet property="delegate" destination="-1" id="qvi-UH-K6A"/>
                     </connections>
                 </textView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i2B-mB-7tj" userLabel="Overlay Button">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="overlayButtonTapped:" destination="-1" eventType="touchUpInside" id="F4y-Ny-rbr"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="i2B-mB-7tj" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7qu-id-1I9"/>
                 <constraint firstItem="EdJ-vJ-rzg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="DfA-4J-TQo"/>
-                <constraint firstItem="i2B-mB-7tj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="FXv-KF-OLT"/>
-                <constraint firstAttribute="trailing" secondItem="i2B-mB-7tj" secondAttribute="trailing" id="PB6-YC-caY"/>
                 <constraint firstAttribute="trailing" secondItem="EdJ-vJ-rzg" secondAttribute="trailing" constant="10" id="gKH-In-kGk"/>
                 <constraint firstAttribute="centerY" secondItem="EdJ-vJ-rzg" secondAttribute="centerY" id="nCR-gS-ReL"/>
-                <constraint firstAttribute="bottom" secondItem="i2B-mB-7tj" secondAttribute="bottom" id="yiJ-cB-4bl"/>
             </constraints>
             <point key="canvasLocation" x="774" y="689"/>
         </view>
@@ -60,7 +45,6 @@
                 <outlet property="viewModel" destination="uf6-RX-Z66" id="IhN-D9-Dca"/>
             </connections>
         </customObject>
-        <customObject id="8k4-hD-YQP" customClass="VTextPostHashtagContraints"/>
         <customObject id="uf6-RX-Z66" customClass="VTextPostViewModel"/>
     </objects>
 </document>
