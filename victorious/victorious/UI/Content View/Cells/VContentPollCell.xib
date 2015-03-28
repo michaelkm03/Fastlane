@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,6 +13,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hiO-tg-gJb" userLabel="Background Container">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pdl-Z7-86h" userLabel="Answer A Container">
                         <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
                         <subviews>
@@ -125,7 +129,10 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="j2c-vu-8qs" secondAttribute="trailing" id="7eD-Qf-RDc"/>
                 <constraint firstItem="pdl-Z7-86h" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="7s8-Vf-KN9"/>
+                <constraint firstItem="hiO-tg-gJb" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="Dve-qG-SsY"/>
                 <constraint firstItem="pJM-g6-c8F" firstAttribute="width" secondItem="pdl-Z7-86h" secondAttribute="width" id="F73-uJ-4Oj"/>
+                <constraint firstAttribute="bottom" secondItem="hiO-tg-gJb" secondAttribute="bottom" id="GCo-Tb-ebu"/>
+                <constraint firstItem="hiO-tg-gJb" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="I2D-SL-EXE"/>
                 <constraint firstAttribute="bottom" secondItem="j2c-vu-8qs" secondAttribute="bottom" id="NYg-jB-klJ"/>
                 <constraint firstItem="MH8-gE-tUo" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" constant="8" id="Sp7-lL-iaV"/>
                 <constraint firstAttribute="bottom" secondItem="pJM-g6-c8F" secondAttribute="bottom" id="UpP-Bt-X4s"/>
@@ -133,6 +140,7 @@
                 <constraint firstItem="j2c-vu-8qs" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" constant="60" id="cct-ec-LzR"/>
                 <constraint firstAttribute="trailing" secondItem="pJM-g6-c8F" secondAttribute="trailing" id="edM-UE-uWI"/>
                 <constraint firstItem="pdl-Z7-86h" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" id="eoM-Od-01d"/>
+                <constraint firstAttribute="trailing" secondItem="hiO-tg-gJb" secondAttribute="trailing" id="f1Q-by-kj1"/>
                 <constraint firstItem="r7x-ug-XeL" firstAttribute="top" secondItem="vZY-Jm-za8" secondAttribute="top" constant="60" id="gPM-42-jkr"/>
                 <constraint firstItem="pJM-g6-c8F" firstAttribute="leading" secondItem="pdl-Z7-86h" secondAttribute="trailing" constant="2" id="qIk-Qc-Kin"/>
                 <constraint firstAttribute="bottom" secondItem="r7x-ug-XeL" secondAttribute="bottom" id="qRa-JW-OqO"/>
@@ -152,7 +160,9 @@
                 <outlet property="answerBResultView" destination="j2c-vu-8qs" id="pVd-mF-9tS"/>
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
                 <outlet property="answerBVideoPlayerContainer" destination="AKp-ON-QNR" id="bGj-Sc-RLN"/>
+                <outlet property="backgroundContainer" destination="hiO-tg-gJb" id="HuK-La-Kvo"/>
                 <outlet property="numberOfVotersLabel" destination="cBg-45-xOC" id="N4P-Ky-CLK"/>
+                <outlet property="parallaxPatternView" destination="hiO-tg-gJb" id="O7W-ji-X58"/>
                 <outlet property="pollCountContainer" destination="MH8-gE-tUo" id="T54-j0-fKF"/>
             </connections>
             <point key="canvasLocation" x="80" y="170"/>

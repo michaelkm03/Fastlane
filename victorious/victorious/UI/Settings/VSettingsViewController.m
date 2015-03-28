@@ -96,7 +96,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     
     NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
-#if defined(DEBUG) || defined(QA) || defined(STAGING)
+#ifdef V_SHOW_BUILD_NUMBER_IN_SETTINGS
     appVersionString = [appVersionString stringByAppendingFormat:@" (%@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
 #endif
     
