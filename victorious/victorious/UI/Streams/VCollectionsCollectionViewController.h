@@ -8,6 +8,6 @@
 
 #import "VAbstractDirectoryCollectionViewController.h"
 
-@interface VPlaylistCollectionViewController : VAbstractDirectoryCollectionViewController
+@interface VCollectionsCollectionViewController : VAbstractDirectoryCollectionViewController
 
 @end

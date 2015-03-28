@@ -775,9 +775,9 @@
 		F04A7CB91AB7E1980092A374 /* VInsetStreamCollectionCellPoll.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04A7CB81AB7E1980092A374 /* VInsetStreamCollectionCellPoll.xib */; };
 		F04A7CBD1AB874A10092A374 /* VSleekStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A7CBC1AB874A10092A374 /* VSleekStreamCellFactory.m */; };
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
-		F06F10B91AC1E0220062E1D1 /* VPlaylistCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10B71AC1E0220062E1D1 /* VPlaylistCollectionViewController.m */; };
-		F06F10C01AC1E11C0062E1D1 /* VDirectoryPlaylistCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10BF1AC1E11C0062E1D1 /* VDirectoryPlaylistCell.m */; };
-		F06F10C21AC1E13A0062E1D1 /* VDirectoryPlaylistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06F10C11AC1E13A0062E1D1 /* VDirectoryPlaylistCell.xib */; };
+		F06F10B91AC1E0220062E1D1 /* VCollectionsCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10B71AC1E0220062E1D1 /* VCollectionsCollectionViewController.m */; };
+		F06F10C01AC1E11C0062E1D1 /* VDirectoryCollectionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10BF1AC1E11C0062E1D1 /* VDirectoryCollectionsCell.m */; };
+		F06F10C21AC1E13A0062E1D1 /* VDirectoryCollectionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06F10C11AC1E13A0062E1D1 /* VDirectoryCollectionsCell.xib */; };
 		F06F10C61AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10C51AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m */; };
 		F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */; };
 		F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
@@ -2206,11 +2206,11 @@
 		F05AA97E1A83F6E3002F8917 /* VInlineSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineSearchTableViewController.h; sourceTree = "<group>"; };
 		F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineSearchTableViewController.m; sourceTree = "<group>"; };
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
-		F06F10B61AC1E0220062E1D1 /* VPlaylistCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPlaylistCollectionViewController.h; sourceTree = "<group>"; };
-		F06F10B71AC1E0220062E1D1 /* VPlaylistCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlaylistCollectionViewController.m; sourceTree = "<group>"; };
-		F06F10BE1AC1E11C0062E1D1 /* VDirectoryPlaylistCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryPlaylistCell.h; sourceTree = "<group>"; };
-		F06F10BF1AC1E11C0062E1D1 /* VDirectoryPlaylistCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryPlaylistCell.m; sourceTree = "<group>"; };
-		F06F10C11AC1E13A0062E1D1 /* VDirectoryPlaylistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryPlaylistCell.xib; sourceTree = "<group>"; };
+		F06F10B61AC1E0220062E1D1 /* VCollectionsCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionsCollectionViewController.h; sourceTree = "<group>"; };
+		F06F10B71AC1E0220062E1D1 /* VCollectionsCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionsCollectionViewController.m; sourceTree = "<group>"; };
+		F06F10BE1AC1E11C0062E1D1 /* VDirectoryCollectionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionsCell.h; sourceTree = "<group>"; };
+		F06F10BF1AC1E11C0062E1D1 /* VDirectoryCollectionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryCollectionsCell.m; sourceTree = "<group>"; };
+		F06F10C11AC1E13A0062E1D1 /* VDirectoryCollectionsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryCollectionsCell.xib; sourceTree = "<group>"; };
 		F06F10C41AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractDirectoryCollectionViewController.h; sourceTree = "<group>"; };
 		F06F10C51AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractDirectoryCollectionViewController.m; sourceTree = "<group>"; };
 		F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionaryTests.m; sourceTree = "<group>"; };
@@ -3696,9 +3696,9 @@
 				A7299E8D1AA5331000B6BC1F /* VDirectorySeeMoreItemCell.h */,
 				A7299E8E1AA5331000B6BC1F /* VDirectorySeeMoreItemCell.m */,
 				A7299E8F1AA5331000B6BC1F /* VDirectorySeeMoreItemCell.xib */,
-				F06F10BE1AC1E11C0062E1D1 /* VDirectoryPlaylistCell.h */,
-				F06F10BF1AC1E11C0062E1D1 /* VDirectoryPlaylistCell.m */,
-				F06F10C11AC1E13A0062E1D1 /* VDirectoryPlaylistCell.xib */,
+				F06F10BE1AC1E11C0062E1D1 /* VDirectoryCollectionsCell.h */,
+				F06F10BF1AC1E11C0062E1D1 /* VDirectoryCollectionsCell.m */,
+				F06F10C11AC1E13A0062E1D1 /* VDirectoryCollectionsCell.xib */,
 				A7299EA91AA7854600B6BC1F /* VDirectoryCellDecorator.h */,
 				A7299EAA1AA7854600B6BC1F /* VDirectoryCellDecorator.m */,
 			);
@@ -5053,8 +5053,8 @@
 				A7299EA51AA7842100B6BC1F /* VDirectoryViewController.m */,
 				F028CF4C1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.h */,
 				F028CF4D1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m */,
-				F06F10B61AC1E0220062E1D1 /* VPlaylistCollectionViewController.h */,
-				F06F10B71AC1E0220062E1D1 /* VPlaylistCollectionViewController.m */,
+				F06F10B61AC1E0220062E1D1 /* VCollectionsCollectionViewController.h */,
+				F06F10B71AC1E0220062E1D1 /* VCollectionsCollectionViewController.m */,
 			);
 			name = Directories;
 			sourceTree = "<group>";
@@ -5244,7 +5244,7 @@
 				03F6E2671AB79E090017826E /* Workspace.storyboard in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
 				036F387B1A0C4DEA0014DF66 /* MavenPro-Regular.ttf in Resources */,
-				F06F10C21AC1E13A0062E1D1 /* VDirectoryPlaylistCell.xib in Resources */,
+				F06F10C21AC1E13A0062E1D1 /* VDirectoryCollectionsCell.xib in Resources */,
 				A7D7079B1A7C144C00D9993F /* VEndCardActionCell.xib in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */,
@@ -5535,7 +5535,7 @@
 				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
 				D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
-				F06F10C01AC1E11C0062E1D1 /* VDirectoryPlaylistCell.m in Sources */,
+				F06F10C01AC1E11C0062E1D1 /* VDirectoryCollectionsCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
@@ -5788,7 +5788,7 @@
 				D8D945F61A2E8A760089D271 /* VWorkspaceViewController.m in Sources */,
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
-				F06F10B91AC1E0220062E1D1 /* VPlaylistCollectionViewController.m in Sources */,
+				F06F10B91AC1E0220062E1D1 /* VCollectionsCollectionViewController.m in Sources */,
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
 				D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */,
 				BEEDF46119D2337B000DF6F5 /* VStreamItem.m in Sources */,

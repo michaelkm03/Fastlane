@@ -10,7 +10,9 @@
 
 @class VStreamItem;
 
-@interface VDirectoryPlaylistCell : VBaseCollectionViewCell
+@interface VDirectoryCollectionsCell : VBaseCollectionViewCell
+
+- (void)animate:(BOOL)animate toVisible:(BOOL)visible afterDelay:(CGFloat)delay;
 
 /**
  *  The VStream used to populate fields on the cell.

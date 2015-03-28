@@ -6,14 +6,28 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VDirectoryPlaylistCell.h"
+#import "VDirectoryCollectionsCell.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VDependencyManager.h"
 #import "UIView+MotionEffects.h"
 
-@interface VDirectoryPlaylistCell ()
+static const CGFloat kTextInset = 8.0f;
+static const CGFloat kParallaxScrollMovementAmount = 30.0f;
+static const CGFloat kParallaxTiltMovementAmount = 10.0f;
+static const CGFloat kPreferredLabelHeight = 27.0f;
+static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kTextInset * 2 );
+static const CGFloat kContentRatio = 0.4375; //140 / 320 (from spec)
+
+//Animation constants
+static const CGFloat kAnimationDuration = 0.5f;
+static const CGFloat kSpringDamping = 0.7f;
+static const CGFloat kInitialSpringVelocity = 0.4f;
+static const CGFloat kStartAnimationScale = 0.8f;
+
+
+@interface VDirectoryCollectionsCell ()
 
 /**
  The label that will hold the streamItem name
@@ -43,17 +57,9 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelRightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomConstraint;
 
-@property (nonatomic, assign) BOOL setImage;
-
 @end
 
-static const CGFloat kTextInset = 8.0f;
-static const CGFloat kParallaxScrollMovementAmount = 30.0f;
-static const CGFloat kParallaxTiltMovementAmount = 10.0f;
-static const CGFloat kPreferredLabelHeight = 27.0f;
-static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kTextInset * 2 );
-
-@implementation VDirectoryPlaylistCell
+@implementation VDirectoryCollectionsCell
 
 - (void)awakeFromNib
 {
@@ -65,11 +71,43 @@ static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kText
     {
         constraint.constant = kTextInset;
     }
+    [self layoutIfNeeded];
     
     self.previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.previewImageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
     
     [self.previewImageView v_addMotionEffectsWithMagnitude:kParallaxTiltMovementAmount];
+}
+
+- (void)animate:(BOOL)animate toVisible:(BOOL)visible afterDelay:(CGFloat)delay
+{
+    CGFloat targetAlpha = 1.0f;
+    CGFloat targetTransform = 1.0f;
+    if ( !visible )
+    {
+        targetAlpha = 0.0f;
+        targetTransform = kStartAnimationScale;
+    }
+    
+    if ( animate )
+    {
+        [UIView animateWithDuration:kAnimationDuration
+                              delay:delay
+             usingSpringWithDamping:kSpringDamping
+              initialSpringVelocity:kInitialSpringVelocity
+                            options:0
+                         animations:^
+        {
+            self.alpha = targetAlpha;
+            self.transform = CGAffineTransformMakeScale(targetTransform, targetTransform);
+                         }
+                         completion:nil];
+    }
+    else
+    {
+        self.alpha = targetAlpha;
+        self.transform = CGAffineTransformMakeScale(targetTransform, targetTransform);
+    }
 }
 
 - (void)setStream:(VStreamItem *)stream
@@ -92,19 +130,25 @@ static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kText
 
 - (void)updateNameLabelText:(NSString *)text
 {
+    [self.nameLabel setText:text];
+    [self updateNameLabelConstraints];
+}
+
+- (void)updateNameLabelConstraints
+{
     UILabel *nameLabel = self.nameLabel;
-    [nameLabel setText:text];
     NSDictionary *attributes = nil;
     UIFont *font = nameLabel.font;
     if ( nameLabel.font )
     {
         attributes = @{ NSFontAttributeName : font };
     }
-    CGSize maxSize = CGSizeMake(CGRectGetWidth(nameLabel.bounds), CGFLOAT_MAX);
-    CGFloat textHeight = CGRectGetHeight([text boundingRectWithSize:maxSize
-                                                            options:NSStringDrawingUsesLineFragmentOrigin
-                                                         attributes:attributes
-                                                            context:NULL]);
+    CGFloat width = CGRectGetWidth(nameLabel.bounds);
+    CGSize maxSize = CGSizeMake(width, CGFLOAT_MAX);
+    CGFloat textHeight = CGRectGetHeight([self.nameLabel.text boundingRectWithSize:maxSize
+                                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                                        attributes:attributes
+                                                                           context:NULL]);
     
     CGFloat containerHeight = kPreferredContainerHeight;
     CGFloat fittingContainerHeight = kTextInset * 2 + textHeight;
@@ -135,7 +179,8 @@ static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kText
     frame.origin.y = ( self.parallaxYOffset * ( kParallaxScrollMovementAmount / 2 ) ) - ( kParallaxScrollMovementAmount / 2 );
     if ( !CGRectEqualToRect(self.previewImageView.frame, frame) )
     {
-        [self.previewImageView setFrame:frame];
+        self.previewImageView.frame = frame;
+        [self layoutIfNeeded];
     }
 }
 
@@ -146,6 +191,13 @@ static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kText
     self.labelContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    [self updateNameLabelConstraints];
+}
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    CGFloat width = CGRectGetWidth(bounds);
+    return CGSizeMake( width, kContentRatio * width );
 }
 
 @end

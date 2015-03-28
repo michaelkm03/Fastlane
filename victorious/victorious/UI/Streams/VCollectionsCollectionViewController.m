@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VPlaylistCollectionViewController.h"
-#import "VDirectoryPlaylistCell.h"
+#import "VCollectionsCollectionViewController.h"
+#import "VDirectoryCollectionsCell.h"
 
 #import "VStreamItem+Fetcher.h"
 #import "VStream+Fetcher.h"
@@ -22,20 +22,36 @@ static const CGFloat kPlaylistCellHeight = 140.0f;
 
 static const CGFloat kStatusBarHeight = 20.0f;
 
-@interface VPlaylistCollectionViewController ()
+/**
+ Divides the delay applied to animations on first load of collection view:
+ at 1: all cells animate at the same time
+ below 1: cells animate from bottom to top
+ above 1: cells animate from top to bottom
+ */
+static const CGFloat kAnimationPropogationDivisor = 3.5f;
+
+@interface VCollectionsCollectionViewController ()
+
+@property (nonatomic, assign) BOOL shouldAnimateCells;
 
 @end
 
-@implementation VPlaylistCollectionViewController
+@implementation VCollectionsCollectionViewController
 
 - (NSString *)cellIdentifier
 {
-    return [VDirectoryPlaylistCell suggestedReuseIdentifier];
+    return [VDirectoryCollectionsCell suggestedReuseIdentifier];
 }
 
 - (UINib *)cellNib
 {
-    return [VDirectoryPlaylistCell nibForCell];
+    return [VDirectoryCollectionsCell nibForCell];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.shouldAnimateCells = YES;
 }
 
 #pragma mark - CollectionViewDelegate
@@ -44,8 +60,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat width = CGRectGetWidth(collectionView.bounds);
-    return CGSizeMake( width, kPlaylistCellHeight );
+    return [VDirectoryCollectionsCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -76,13 +91,13 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (void)updateParallaxOffsetOfVisibleCells
 {
-    for ( VDirectoryPlaylistCell *playlistCell in self.collectionView.visibleCells )
+    for ( VDirectoryCollectionsCell *playlistCell in self.collectionView.visibleCells )
     {
         [self updateParallaxYOffsetOfCell:playlistCell withYOrigin:CGRectGetMinY(playlistCell.frame)];
     }
 }
 
-- (void)updateParallaxYOffsetOfCell:(VDirectoryPlaylistCell *)playlistCell withYOrigin:(CGFloat)yOrigin
+- (void)updateParallaxYOffsetOfCell:(VDirectoryCollectionsCell *)playlistCell withYOrigin:(CGFloat)yOrigin
 {
     //Determine and set the parallaxYOffset for the provided cell.
     
@@ -128,8 +143,8 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = [VDirectoryPlaylistCell suggestedReuseIdentifier];
-    VDirectoryPlaylistCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    NSString *identifier = [VDirectoryCollectionsCell suggestedReuseIdentifier];
+    VDirectoryCollectionsCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.stream = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     cell.dependencyManager = self.dependencyManager;
     CGFloat interLineSpace = [self collectionView:self.collectionView layout:self.collectionView.collectionViewLayout minimumLineSpacingForSectionAtIndex:0];
@@ -138,6 +153,21 @@ static const CGFloat kStatusBarHeight = 20.0f;
     CGFloat yOrigin = indexPath.row * (kPlaylistCellHeight + interLineSpace) + kStatusBarHeight;
     [self updateParallaxYOffsetOfCell:cell withYOrigin:yOrigin];
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( self.shouldAnimateCells )
+    {
+        CGFloat collectionViewHeight = CGRectGetHeight(collectionView.bounds);
+        CGFloat percentageDownscreen = CGRectGetMinY(cell.frame) / collectionViewHeight;
+        [(VDirectoryCollectionsCell *)cell animate:NO toVisible:NO afterDelay:0.0f];
+        [(VDirectoryCollectionsCell *)cell animate:YES toVisible:YES afterDelay:percentageDownscreen / kAnimationPropogationDivisor];
+        if ( CGRectGetMaxY(cell.frame) > collectionViewHeight )
+        {
+            self.shouldAnimateCells = NO;
+        }
+    }
 }
 
 @end
