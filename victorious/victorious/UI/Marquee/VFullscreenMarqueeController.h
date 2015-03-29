@@ -7,12 +7,7 @@
 //
 
 #import "VAbstractMarqueeController.h"
-
-@protocol VFullscreenMarqueeControllerDelegate <VMarqueeControllerDelegate>
-
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path;
-
-@end
+#import "VFullscreenMarqueeControllerDelegate.h"
 
 @class VFullscreenMarqueeTabIndicatorView;
 

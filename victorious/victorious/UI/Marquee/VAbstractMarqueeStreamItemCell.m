@@ -32,4 +32,11 @@
     return CGSizeZero;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    self.streamItem = nil;
+}
+
 @end

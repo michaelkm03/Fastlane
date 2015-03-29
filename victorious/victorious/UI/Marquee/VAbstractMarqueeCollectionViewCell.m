@@ -35,7 +35,7 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    NSAssert(false, @"Subclasses must override this function");
+    NSAssert(false, @"Subclasses must override desiredSizeWithCollectionViewBounds: in VAbstractMarqueeCollectionViewCell");
     return CGSizeZero;
 }
 

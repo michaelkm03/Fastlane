@@ -30,6 +30,7 @@ static CGFloat const kVDetailHideTime = 0.3f;
 static CGFloat const kVDetailBounceHeight = 8.0f;
 static CGFloat const kVDetailBounceTime = 0.15f;
 static CGFloat const kTitleOffsetForTemplateC = 6.5f;
+static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
 
 @interface VFullscreenMarqueeStreamItemCell ()
 
@@ -51,17 +52,13 @@ static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 
 @end
 
-static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 360 width
-
 @implementation VFullscreenMarqueeStreamItemCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.profileImageButton.layer.borderWidth = 4;
-    
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.profileImageButton.layer.borderWidth = CGRectGetHeight(self.profileImageButton.bounds) / 2;
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -219,11 +216,17 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
 }
 
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    CGFloat width = CGRectGetWidth(bounds);
+    CGFloat height = floorf(width * kVCellHeightRatio);
+    return CGSizeMake(width, height);
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     
-    self.streamItem = nil;
     [self setDetailsContainerVisible:YES animated:NO];
 }
 
@@ -233,13 +236,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     {
         [self.delegate cell:self selectedUser:((VSequence *)self.streamItem).user];
     }
-}
-
-+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
-{
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = width * kVCellHeightRatio;
-    return CGSizeMake(width, height);
 }
 
 @end

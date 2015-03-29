@@ -12,6 +12,8 @@
 #import "VStreamItem.h"
 #import "VStream.h"
 
+NSString * const kMarqueeURLKey = @"marqueeURL";
+
 @interface VAbstractMarqueeController () <UICollectionViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, readwrite) NSInteger currentPage;
@@ -135,8 +137,6 @@
     VAbstractMarqueeStreamItemCell *cell;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[self cellSuggestedReuseIdentifier] forIndexPath:indexPath];
-    CGSize size = [self desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
-    cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
     cell.dependencyManager = self.dependencyManager;
     

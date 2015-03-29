@@ -26,7 +26,6 @@
 
 static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
 static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
-static const CGFloat kMarqueeBufferHeight = 3;
 
 @interface VFullscreenMarqueeCollectionCell()
 
@@ -102,9 +101,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    CGSize size = [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
-    size.height += kMarqueeBufferHeight;
-    return size;
+    return [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
 }
 
 @end

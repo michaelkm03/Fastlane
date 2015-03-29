@@ -80,6 +80,10 @@
 	<string>VInsetStreamCellFactory</string>
 	<key>sleek.streamCell</key>
 	<string>VSleekStreamCellFactory</string>
+	<key>fullscreen.marqueeCell</key>
+	<string>VFullscreenMarqueeCellFactory</string>
+	<key>blurred.marqueeCell</key>
+	<string>VBlurredMarqueeCellFactory</string>
 	<key>titleOverlay.streamCell</key>
 	<string>VTitleOverlayStreamCellFactory</string>
 </dict>

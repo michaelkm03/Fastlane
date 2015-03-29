@@ -12,7 +12,7 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
 #import "VStreamCollectionCell.h"
-#import "VFullscreenMarqueeCollectionCell.h"
+#import "VAbstractMarqueeCollectionViewCell.h"
 
 #warning Temporary
 #import "VRootViewController.h"
@@ -23,7 +23,6 @@
 #import "VCreatePollViewController.h"
 #import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"
-#import "VFullscreenMarqueeController.h"
 #import "VSequenceActionController.h"
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
@@ -69,11 +68,13 @@
 #import "VAuthorizedAction.h"
 
 #import "VInsetStreamCellFactory.h"
+#import "VMarqueeCellFactory.h"
+#import "VFullscreenMarqueeControllerDelegate.h"
+#import "VFullscreenMarqueeController.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
-static NSString * const kMarqueeURLKey = @"marqueeURL";
 
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
@@ -83,18 +84,19 @@ static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
+NSString * const VStreamCollectionViewControllerMarqueeComponentKey = @"marqueeCell";
 
 static NSString * const kRemixStreamKey = @"remixStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
-@interface VStreamCollectionViewController () <VFullscreenMarqueeControllerDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VFullscreenMarqueeControllerDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
-@property (strong, nonatomic) VFullscreenMarqueeController *marquee;
 @property (nonatomic, strong) id<VStreamCellFactory> streamCellFactory;
+@property (nonatomic, strong) id<VMarqueeCellFactory> marqueeCellFactory;
 
 @property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 @property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
@@ -105,7 +107,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 @property (nonatomic, assign) BOOL canAddContent;
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
-@property (nonatomic, strong) NSString *marqueeURLString;
 
 @end
 
@@ -145,14 +146,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     streamCollectionVC.dependencyManager = dependencyManager;
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
-    
-    NSString *marqueeURLString = [dependencyManager stringForKey:kMarqueeURLKey];
-    
-    if ( marqueeURLString != nil )
-    {
-        streamCollectionVC.marqueeURLString = marqueeURLString;
-        streamCollectionVC.shouldDisplayMarquee = [dependencyManager stringForKey:kMarqueeURLKey] != nil;
-    }
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
@@ -194,7 +187,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)dealloc
 {
-    self.marquee = nil;
     self.streamDataSource.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -207,11 +199,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.sequenceActionController = [[VSequenceActionController alloc] init];
     self.sequenceActionController.dependencyManager = self.dependencyManager;
     
-    [self.collectionView registerNib:[VFullscreenMarqueeCollectionCell nibForCell]
-          forCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]];
-    
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
+    
+    self.marqueeCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VMarqueeCellFactory) forKey:VStreamCollectionViewControllerMarqueeComponentKey];
+    self.marqueeCellFactory.delegate = self;
+    [self.marqueeCellFactory registerCellsWithCollectionView:self.collectionView];
+    self.streamDataSource.hasHeaderCell = self.marqueeCellFactory != nil;
     
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
@@ -247,7 +241,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
          We already have marquee content so we need to restart the timer to make sure the marquee continues
          to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
-        [self.marquee enableTimer];
+        [self.marqueeCellFactory enableTimer];
     }
 
     for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
@@ -291,33 +285,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.preloadImageCache = nil;
 }
 
-#pragma mark - Properties
-
-- (VFullscreenMarqueeController *)marquee
+- (BOOL)shouldDisplayMarquee
 {
-    if (!_marquee)
-    {
-        VStream *marquee = [VStream streamForPath:[self.marqueeURLString v_pathComponent] inContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
-        _marquee = [[VFullscreenMarqueeController alloc] initWithStream:marquee];
-        
-        //The top of the template C hack
-        _marquee.hideMarqueePosterImage = [self hideMarqueePosterImage];
-        _marquee.dependencyManager = self.dependencyManager;
-        _marquee.delegate = self;
-    }
-    return _marquee;
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VBaseCollectionViewCell *baseCollectionViewCell, NSUInteger idx, BOOL *stop)
-    {
-        if ( [baseCollectionViewCell isKindOfClass:[VFullscreenMarqueeCollectionCell class]] )
-        {
-            ((VFullscreenMarqueeCollectionCell *)baseCollectionViewCell).dependencyManager = dependencyManager;
-        }
-    }];
+    return self.marqueeCellFactory != nil && [self.dependencyManager stringForKey:kMarqueeURLKey] != nil;
 }
 
 - (NSCache *)preloadImageCache
@@ -330,17 +300,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     return _preloadImageCache;
 }
 
+#pragma mark - Properties
+
 - (void)setCurrentStream:(VStream *)currentStream
 {
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
-}
-
-- (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
-{
-    _shouldDisplayMarquee = shouldDisplayMarquee;
-    self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
 }
 
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
@@ -415,7 +381,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)marqueeRefreshedContent:(VFullscreenMarqueeController *)marquee
 {
-    self.streamDataSource.hasHeaderCell = self.marquee.streamDataSource.count;
+    self.streamDataSource.hasHeaderCell = marquee.streamDataSource.count != 0;
 }
 
 - (void)marquee:(VFullscreenMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
@@ -467,13 +433,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
         previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
+        [self showContentViewForSequence:sequence withPreviewImage:previewImageView.image];
     }
-    else if ([cell isKindOfClass:[VFullscreenMarqueeCollectionCell class]])
-    {
-        previewImageView = ((VFullscreenMarqueeCollectionCell *)cell).currentPreviewImageView;
-    }
-    
-    [self showContentViewForSequence:sequence withPreviewImage:previewImageView.image];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -482,7 +443,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
-        return [VFullscreenMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
+        return [self.marqueeCellFactory sizeWithCollectionViewBounds:collectionView.bounds];
     }
     else
     {
@@ -517,14 +478,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
-        VFullscreenMarqueeCollectionCell *cell = [dataSource.collectionView dequeueReusableCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]
-                                                                                            forIndexPath:indexPath];
-        cell.hideMarqueePosterImage = [self hideMarqueePosterImage];
-        cell.marquee = self.marquee;
-        CGSize desiredSize = [VFullscreenMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
-        cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
-        [cell restartAutoScroll];
-        return cell;
+        return [self.marqueeCellFactory marqueeCellForCollectionView:self.collectionView
+                                                         atIndexPath:indexPath];
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
@@ -538,12 +493,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
-}
-
-//According to design we could have the poster's profile images added back to marquee content at a later day, but for now it should be hidden at all times.
-- (BOOL)hideMarqueePosterImage
-{
-    return YES;
 }
 
 - (void)preloadSequencesAfterIndexPath:(NSIndexPath *)indexPath forDataSource:(VStreamCollectionViewDataSource *)dataSource

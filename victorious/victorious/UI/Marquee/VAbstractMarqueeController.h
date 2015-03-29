@@ -8,17 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "VStreamCollectionViewDataSource.h"
+#import "VMarqueeControllerDelegate.h"
+
+extern NSString * const kMarqueeURLKey;
 
 @class VDependencyManager, VStream, VStreamItem, VStreamCollectionViewDataSource, VTimerManager, VUser, VAbstractMarqueeController;
-
-@protocol VMarqueeControllerDelegate <NSObject>
-
-@required
-
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image;
-- (void)marqueeRefreshedContent:(VAbstractMarqueeController *)marquee;
-
-@end
 
 @interface VAbstractMarqueeController : NSObject <VStreamCollectionDataDelegate>
 
@@ -34,6 +28,7 @@
 - (instancetype)initWithStream:(VStream *)stream;
 - (void)disableTimer;
 - (void)enableTimer;
+- (void)selectNextTab;
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock;
 
 - (NSTimeInterval)timerFireInterval;

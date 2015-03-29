@@ -8,6 +8,7 @@
 #import "VCreatorInfoHelper.h"
 #import "VDependencyManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "NSURL+Validator.h"
 #import "VAppInfo.h"
 
 @interface VCreatorInfoHelper ()
@@ -26,7 +27,7 @@
     NSURL *profileImageURL = appInfo.profileImageURL;
     
     
-    if ( ![self stringIsValidForDisplay:ownerName] || ![self isValidURL:profileImageURL] )
+    if ( ![self stringIsValidForDisplay:ownerName] || ![profileImageURL isValidURL] )
     {
         // If there's no valid data to show for this creator, hide these views
         self.creatorNameLabel.hidden = YES;
@@ -56,11 +57,6 @@
 - (BOOL)stringIsValidForDisplay:(NSString *)string
 {
     return string != nil && ![string isEqualToString:@""];
-}
-
-- (BOOL)isValidURL:(NSURL *)url
-{
-    return url != nil && ![url.absoluteString isEqualToString:@""];
 }
 
 @end

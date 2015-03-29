@@ -31,7 +31,7 @@
 
 - (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return [VFullscreenMarqueeCollectionCell desiredSizeWithCollectionViewBounds:bounds];
+    return [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
 }
 
 - (NSTimeInterval)timerFireInterval

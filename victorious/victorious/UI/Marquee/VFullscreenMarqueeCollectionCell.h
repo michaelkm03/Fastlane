@@ -10,7 +10,6 @@
 
 #import "VAbstractMarqueeCollectionViewCell.h"
 
-
 @interface VFullscreenMarqueeCollectionCell : VAbstractMarqueeCollectionViewCell
 
 @property (nonatomic, assign) BOOL hideMarqueePosterImage;
