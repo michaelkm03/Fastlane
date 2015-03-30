@@ -38,7 +38,7 @@ static NSString * const kStreamURLKey = @"streamURL";
     return streamDirectory;
 }
 
-#pragma mark VHasManagedDependencies conforming initializer
+#pragma mark - VHasManagedDependencies conforming initializer
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -48,7 +48,7 @@ static NSString * const kStreamURLKey = @"streamURL";
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
 
-#pragma mark - UIView overrides
+#pragma mark - Shared setup
 
 - (void)viewDidLoad
 {
@@ -83,18 +83,6 @@ static NSString * const kStreamURLKey = @"streamURL";
     [self refresh:self.refreshControl];
 }
 
-- (NSString *)cellIdentifier
-{
-    NSAssert(false, @"Must be overridden by subclasses");
-    return nil;
-}
-
-- (UINib *)cellNib
-{
-    NSAssert(false, @"Must be overridden by subclasses");
-    return nil;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -106,6 +94,20 @@ static NSString * const kStreamURLKey = @"streamURL";
 - (BOOL)shouldAutorotate
 {
     return NO;
+}
+
+#pragma mark - Functions that must be overridden
+
+- (NSString *)cellIdentifier
+{
+    NSAssert(false, @"Must be overridden by subclasses");
+    return nil;
+}
+
+- (UINib *)cellNib
+{
+    NSAssert(false, @"Must be overridden by subclasses");
+    return nil;
 }
 
 @end

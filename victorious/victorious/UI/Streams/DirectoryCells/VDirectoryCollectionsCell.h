@@ -12,6 +12,9 @@
 
 @interface VDirectoryCollectionsCell : VBaseCollectionViewCell
 
+/**
+ *  Animates the opacity and size of the cell to or from the "visible" state. A cell in the invisible state is slightly smaller and completely transparent.
+ */
 - (void)animate:(BOOL)animate toVisible:(BOOL)visible afterDelay:(CGFloat)delay;
 
 /**

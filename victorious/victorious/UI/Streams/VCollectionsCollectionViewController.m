@@ -84,36 +84,6 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self updateParallaxOffsetOfVisibleCells];
-}
-
-- (void)updateParallaxOffsetOfVisibleCells
-{
-    for ( VDirectoryCollectionsCell *playlistCell in self.collectionView.visibleCells )
-    {
-        [self updateParallaxYOffsetOfCell:playlistCell withYOrigin:CGRectGetMinY(playlistCell.frame)];
-    }
-}
-
-- (void)updateParallaxYOffsetOfCell:(VDirectoryCollectionsCell *)playlistCell withYOrigin:(CGFloat)yOrigin
-{
-    //Determine and set the parallaxYOffset for the provided cell.
-    
-    CGFloat cellHeight = CGRectGetHeight(playlistCell.bounds);
-    CGFloat contentOffset = self.collectionView.contentOffset.y;
-    
-    //Represents entire range where the ENTIRE cell is visible. Must remove "topInset" (the status bar height) from the collectionViewBounds height because it isn't otherwise accounted for and the status bar appears in front of the visible cells
-    CGFloat yRange = CGRectGetHeight(self.collectionView.bounds) - kStatusBarHeight + cellHeight;
-    
-    //This will provide a value in the range [-1, 0] such that the cell is just touching the status bar at -1 and just touching the bottom of the collection view bounds at 0
-    CGFloat unnormalizedYOffset = ( contentOffset - ( yOrigin - kStatusBarHeight ) - cellHeight ) / yRange;
-    
-    //We need to pass in values in the range [-1, 1] for the parallaxYOffset to have proper image displaying. Noramlize the value we yOffset value we have by multiplying by 2 and adding 1.
-    playlistCell.parallaxYOffset = ( unnormalizedYOffset * 2 ) + 1;
-}
-
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
@@ -168,6 +138,38 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
             self.shouldAnimateCells = NO;
         }
     }
+}
+
+#pragma mark - Parallax updating
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self updateParallaxOffsetOfVisibleCells];
+}
+
+- (void)updateParallaxOffsetOfVisibleCells
+{
+    for ( VDirectoryCollectionsCell *playlistCell in self.collectionView.visibleCells )
+    {
+        [self updateParallaxYOffsetOfCell:playlistCell withYOrigin:CGRectGetMinY(playlistCell.frame)];
+    }
+}
+
+- (void)updateParallaxYOffsetOfCell:(VDirectoryCollectionsCell *)playlistCell withYOrigin:(CGFloat)yOrigin
+{
+    //Determine and set the parallaxYOffset for the provided cell.
+    
+    CGFloat cellHeight = CGRectGetHeight(playlistCell.bounds);
+    CGFloat contentOffset = self.collectionView.contentOffset.y;
+    
+    //Represents entire range where the ENTIRE cell is visible. Must remove "topInset" (the status bar height) from the collectionViewBounds height because it isn't otherwise accounted for and the status bar appears in front of the visible cells
+    CGFloat yRange = CGRectGetHeight(self.collectionView.bounds) - kStatusBarHeight + cellHeight;
+    
+    //This will provide a value in the range [-1, 0] such that the cell is just touching the status bar at -1 and just touching the bottom of the collection view bounds at 0
+    CGFloat unnormalizedYOffset = ( contentOffset - ( yOrigin - kStatusBarHeight ) - cellHeight ) / yRange;
+    
+    //We need to pass in values in the range [-1, 1] for the parallaxYOffset to have proper image displaying. Noramlize the value we yOffset value we have by multiplying by 2 and adding 1.
+    playlistCell.parallaxYOffset = ( unnormalizedYOffset * 2 ) + 1;
 }
 
 @end
