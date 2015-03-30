@@ -124,7 +124,11 @@
     if ( [selectedTool isKindOfClass:[VHashtagType class]] )
     {
         VHashtagType *hashtagType = (VHashtagType *)selectedTool;
-        [self.textPostViewController addHashtag:hashtagType.hashtagText];
+        BOOL selectionSucceeded = [self.textPostViewController addHashtag:hashtagType.hashtagText];
+        if ( !selectionSucceeded )
+        {
+            [toolPicker deselectToolAtIndex:index];
+        }
     }
     else if ( [selectedTool isKindOfClass:[VColorType class]] )
     {

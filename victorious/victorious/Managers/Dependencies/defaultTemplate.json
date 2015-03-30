@@ -1,4 +1,136 @@
 {
+    "workspaceText" : {
+        "name" : "workspaceText",
+        "defaultText" : "Type your text here!",
+        "editTextWorkspace" : {
+            "name" : "workspace.screen",
+            "tools" : [
+                       {
+                       "filterIndex" : 0,
+                       "picker" : {
+                       "name" : "vertical.picker",
+                       "pickerSelectionMode" : "singleSelection"
+                       },
+                       "title" : "hashtag",
+                       "icon" : {
+                       "imageURL" : "hashtagIcon"
+                       },
+                       "name" : "hashtag.tool",
+                       "selectedIcon" : {
+                       "imageURL" : "hashtagIcon_selected"
+                       }
+                       },
+                       {
+                       "selectedIcon" : {
+                       "imageURL" : "textColorIcon_selected"
+                       },
+                       "picker" : {
+                       "name" : "vertical.picker",
+                       "pickerSelectionMode" : "multipleSelection"
+                       },
+                       "filterIndex" : 1,
+                       "colorOptions" : [
+                                         {
+                                         "title" : "Red",
+                                         "color" : {
+                                         "red" : 181,
+                                         "alpha" : 1,
+                                         "blue" : 48,
+                                         "green" : 35
+                                         }
+                                         },
+                                         {
+                                         "title" : "Magenta",
+                                         "color" : {
+                                         "red" : 233,
+                                         "alpha" : 1,
+                                         "blue" : 106,
+                                         "green" : 89
+                                         }
+                                         },
+                                         {
+                                         "title" : "Orange",
+                                         "color" : {
+                                         "red" : 233,
+                                         "alpha" : 1,
+                                         "blue" : 71,
+                                         "green" : 112
+                                         }
+                                         },
+                                         {
+                                         "title" : "Peach",
+                                         "color" : {
+                                         "red" : 247,
+                                         "alpha" : 1,
+                                         "blue" : 99,
+                                         "green" : 200
+                                         }
+                                         },
+                                         {
+                                         "title" : "Yellow",
+                                         "color" : {
+                                         "red" : 233,
+                                         "alpha" : 1,
+                                         "blue" : 33,
+                                         "green" : 167
+                                         }
+                                         },
+                                         {
+                                         "title" : "Green",
+                                         "color" : {
+                                         "red" : 134,
+                                         "alpha" : 1,
+                                         "blue" : 121,
+                                         "green" : 199
+                                         }
+                                         },
+                                         {
+                                         "title" : "Teal",
+                                         "color" : {
+                                         "red" : 22,
+                                         "alpha" : 1,
+                                         "blue" : 160,
+                                         "green" : 160
+                                         }
+                                         },
+                                         {
+                                         "title" : "Blue",
+                                         "color" : {
+                                         "red" : 60,
+                                         "alpha" : 1,
+                                         "blue" : 195,
+                                         "green" : 129
+                                         }
+                                         },
+                                         {
+                                         "title" : "Purple",
+                                         "color" : {
+                                         "red" : 102,
+                                         "alpha" : 1,
+                                         "blue" : 156,
+                                         "green" : 71
+                                         }
+                                         },
+                                         {
+                                         "title" : "Black",
+                                         "color" : {
+                                         "red" : 44,
+                                         "alpha" : 1,
+                                         "blue" : 35,
+                                         "green" : 39
+                                         }
+                                         }
+                                         ],
+                       "title" : "color",
+                       "name" : "textColor.tool",
+                       "icon" : {
+                       "imageURL" : "textColorIcon"
+                       }
+                       }
+                       ],
+            "id" : "2C30A9D0-F437-4872-97E9-C6D2787053BF"
+        }
+    },
     "defaultWorkspaceDestination" : {
         "name" : "hiddenWorkspace",
         "imageWorkspace" : {

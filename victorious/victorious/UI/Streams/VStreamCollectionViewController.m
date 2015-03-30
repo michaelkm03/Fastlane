@@ -268,8 +268,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self updateCurrentlyPlayingMediaAsset];
     
 #warning TESTING ONLY: Jumpts right to text workspace
-    //self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
-    //[self.workspacePresenter presentTextOnlyWorkspace];
+    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
+    [self.workspacePresenter presentTextOnlyWorkspace];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

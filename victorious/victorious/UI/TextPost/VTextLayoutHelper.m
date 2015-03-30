@@ -59,11 +59,52 @@
     return [NSArray arrayWithArray:lines];
 }
 
+- (NSString *)stringByRemovingEmptySpacesInText:(NSString *)text betweenCalloutRanges:(NSArray *)calloutRanges
+{
+    if ( calloutRanges.count == 0 || text.length == 0 )
+    {
+        return text;
+    }
+    
+    NSMutableArray *rangesToReplace = [[NSMutableArray alloc] init];
+    
+    for ( NSUInteger i = 0; i < calloutRanges.count-1; i++ )
+    {
+        NSRange currentRange = ((NSValue *)[calloutRanges objectAtIndex:i]).rangeValue;
+        NSRange nextRange = ((NSValue *)[calloutRanges objectAtIndex:i+1]).rangeValue;
+        NSRange spaceRange = NSMakeRange( currentRange.location + currentRange.length, nextRange.location - (currentRange.location + currentRange.length) );
+        NSString *textBetweenCallotus = [text substringWithRange:spaceRange];
+        if ( [textBetweenCallotus isEqualToString:@" "] )
+        {
+            [rangesToReplace addObject:[NSValue valueWithRange:spaceRange]];
+        }
+    }
+    
+    NSMutableString *output = [text mutableCopy];
+    int offset = 0;
+    for ( NSUInteger i = 0; i < rangesToReplace.count - offset; i++ )
+    {
+        NSUInteger offsetIndex = i - offset;
+        NSRange spaceRange = ((NSValue *)[rangesToReplace objectAtIndex:offsetIndex]).rangeValue;
+        [output replaceCharactersInRange:spaceRange withString:@""];
+        offset += spaceRange.length;
+    }
+    
+    return output;
+}
+
 - (void)updateTextViewBackground:(VTextPostTextView *)textView
                    calloutRanges:(NSArray *)calloutRanges
 {
     textView.backgroundFrameColor = self.viewModel.backgroundColor;
     //textView.backgroundFrameColor = [self.viewModel.backgroundColor colorWithAlphaComponent:0.5f];
+    
+    BOOL didAddSpaceCharacterToEmptyTextView = NO;
+    if ( textView.text.length == 0 )
+    {
+        textView.text = @" ";
+        didAddSpaceCharacterToEmptyTextView = YES;
+    }
     
     // Calculate the actual line count a bit differently, since the one above is not as accurate while typing
     CGRect singleCharRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, 1 )];
@@ -81,6 +122,11 @@
      {
          [lineFragmentRects addObject:[NSValue valueWithCGRect:usedRect]];
      }];
+    
+    if ( didAddSpaceCharacterToEmptyTextView )
+    {
+        textView.text = @"";
+    }
     
     __block NSMutableArray *backgroundLineFrames = [[NSMutableArray alloc] init];
     NSUInteger numLines = totalRect.size.height / singleCharRect.size.height;

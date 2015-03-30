@@ -23,4 +23,7 @@
              toAttributedString:(NSMutableAttributedString *)attributedString
               withCalloutRanges:(NSArray *)calloutRanges;
 
+- (NSString *)stringByRemovingEmptySpacesInText:(NSString *)text
+                           betweenCalloutRanges:(NSArray *)calloutRanges;
+
 @end

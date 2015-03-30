@@ -41,6 +41,8 @@
 {
     [super viewDidLoad];
     
+    self.textView.selectable = NO;
+    
     [self updateTextView];
     
     [self updateTextIsSelectable];
@@ -59,10 +61,8 @@
 {
     _text = text;
     
-    if ( _text.length == 0 )
-    {
-        _text = @" ";
-    }
+    //NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
+    //_text = [self.textLayoutHelper stringByRemovingEmptySpacesInText:text betweenCalloutRanges:hashtagCalloutRanges];
     
     [self updateTextView];
 }
@@ -106,14 +106,13 @@
     NSDictionary *hashtagAttributes = [self.viewModel hashtagTextAttributesWithDependencyManager:self.dependencyManager];
     [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:hashtagAttributes];
     
-    NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:_text includeHashSymbol:YES];
+    NSArray *hashtagCalloutRanges = @[]; //[VHashTags detectHashTags:self.text includeHashSymbol:YES];
     
-    [self.textLayoutHelper addWordPaddingWithVaule:self.viewModel.calloutWordPadding
+    /*[self.textLayoutHelper addWordPaddingWithVaule:self.viewModel.calloutWordPadding
                                 toAttributedString:attributedText
-                                 withCalloutRanges:hashtagCalloutRanges];
+                                 withCalloutRanges:hashtagCalloutRanges];*/
     
     self.textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
-    
     [self.textLayoutHelper updateTextViewBackground:self.textPostTextView calloutRanges:hashtagCalloutRanges];
     
     self.textView.selectable = wasSelected;

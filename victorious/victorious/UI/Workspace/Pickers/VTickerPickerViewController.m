@@ -33,7 +33,8 @@
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.dependencyManager = dependencyManager;
     toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    toolPicker.selectionMode = [VTickerPickerSelection selectionModeFromString:[dependencyManager stringForKey:VTickerPickerSelectionModeKey]];
+    VTickerPickerSelectionMode selectionMode = [VTickerPickerSelection selectionModeFromString:[dependencyManager stringForKey:VTickerPickerSelectionModeKey]];
+    toolPicker.selectionMode = selectionMode < 0 ? VTickerPickerSelectionModeSingle : selectionMode;
     return toolPicker;
 }
 

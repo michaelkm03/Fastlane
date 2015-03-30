@@ -300,7 +300,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 {
     return @{
              kClassNameKey: @"workspaceText",
-             kDefaultTextKey: @"What's on your mind?",
+             kDefaultTextKey: @"Type your text here!",
              VDependencyManagerEditTextWorkspaceKey: @{
                      kClassNameKey: @"workspace.screen",
                      kToolsKey: @[

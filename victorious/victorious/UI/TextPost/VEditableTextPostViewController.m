@@ -21,6 +21,9 @@ static NSString * const kDefaultTextKey = @"defaultText";
 @property (nonatomic, strong) NSString *placeholderText;
 @property (nonatomic, strong) UIButton *overlayButton;
 
+@property (nonatomic, assign) BOOL isEditing;
+@property (nonatomic, assign) BOOL isShowingPlaceholderText;
+
 @end
 
 @implementation VEditableTextPostViewController
@@ -38,58 +41,50 @@ static NSString * const kDefaultTextKey = @"defaultText";
 {
     [super viewDidLoad];
     
+    self.isShowingPlaceholderText = YES;
+    
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
-    [self.view addSubview:self.overlayButton];
+    [self.view insertSubview:self.overlayButton atIndex:0];
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];
     [self.overlayButton addTarget:self action:@selector(overlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
-    self.text = self.placeholderText;
+    [self restorePlaceholderText];
     
     self.supplementalHashtags = [[NSMutableSet alloc] init];
-}
-
-#pragma mark -
-
-- (void)startEditingText
-{
-    [self.textView becomeFirstResponder];
+    
     self.textView.userInteractionEnabled = YES;
     self.textView.editable = YES;
-    self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
-    self.overlayButton.hidden = YES;
-}
-
-- (void)stopEditingText
-{
-    self.textView.userInteractionEnabled = NO;
-    self.textView.editable = NO;
-    [self.textView resignFirstResponder];
-    self.overlayButton.hidden = NO;
 }
 
 #pragma mark - Supplemental hashtags
 
-- (void)addHashtag:(NSString *)hashtagText
+- (BOOL)addHashtag:(NSString *)hashtagText
 {
     if ( hashtagText.length == 0 )
     {
-        return;
+        return NO;
     }
     
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
-    if ( ![self.supplementalHashtags containsObject:hashtagTextWithHashMark] )
+    NSUInteger lengthWithAddedHashtag = self.text.length + hashtagText.length;
+    if ( ![self.supplementalHashtags containsObject:hashtagTextWithHashMark] && lengthWithAddedHashtag < self.viewModel.maxTextLength )
     {
+        [self clearPlaceholderText];
         [self.supplementalHashtags addObject:hashtagTextWithHashMark];
-        self.text = [NSString stringWithFormat:@"%@ %@", self.text, hashtagTextWithHashMark];
+        NSString *space = [self isLastCharacterASpace:self.text] ? @"" : @" ";
+        self.text = [NSString stringWithFormat:@"%@%@%@", self.text, space, hashtagTextWithHashMark];
+        return YES;
     }
+    
+    return NO;
 }
 
-- (void)removeHashtag:(NSString *)hashtagText
+- (BOOL)removeHashtag:(NSString *)hashtagText
 {
     if ( hashtagText.length == 0 )
     {
-        return;
+        return NO;
     }
     
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
@@ -97,17 +92,22 @@ static NSString * const kDefaultTextKey = @"defaultText";
     {
         [self.supplementalHashtags removeObject:hashtagTextWithHashMark];
         self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
+        if ( [self isLastCharacterASpace:self.text] )
+        {
+            self.text = [self.text substringToIndex:self.text.length-1];
+        }
+        return YES;
     }
+    
+    return NO;
 }
 
-- (NSArray *)deletedHastagsFromTextView:(UITextView *)textView inRange:(NSRange)range
+- (NSArray *)deletedHastagsFromTextBefore:(NSString *)textBefore textAfter:(NSString *)textAfter
 {
-    NSString *deletedText = [textView.text substringWithRange:range];
-    if ( deletedText.length > 0 )
+    if ( textBefore.length > 0 )
     {
-        NSArray *hashtagsBefore = [VHashTags getHashTags:textView.text includeHashMark:YES];
-        NSString *textAfterDeletion = [textView.text stringByReplacingOccurrencesOfString:deletedText withString:@""];
-        NSArray *hashtagsAfter = [VHashTags getHashTags:textAfterDeletion includeHashMark:YES];
+        NSArray *hashtagsBefore = [VHashTags getHashTags:textBefore includeHashMark:YES];
+        NSArray *hashtagsAfter = [VHashTags getHashTags:textAfter includeHashMark:YES];
         NSPredicate *filterPrediate = [NSPredicate predicateWithBlock:^BOOL(NSString *hashtag, NSDictionary *bindings)
                                        {
                                            return ![hashtagsAfter containsObject:hashtag];
@@ -117,7 +117,41 @@ static NSString * const kDefaultTextKey = @"defaultText";
     return @[];
 }
 
+- (BOOL)isLastCharacterASpace:(NSString *)string
+{
+    if ( string.length == 0 )
+    {
+        return NO;
+    }
+    return [[string substringFromIndex:string.length-1] isEqualToString:@" "];
+}
+
+#pragma mark - Placeholder text
+
+- (void)clearPlaceholderText
+{
+    if ( self.isShowingPlaceholderText )
+    {
+        self.isShowingPlaceholderText = NO;
+        self.text = @"";
+    }
+}
+
+- (void)restorePlaceholderText
+{
+    if ( self.supplementalHashtags.count == 0 && self.text.length == 0 )
+    {
+        self.text = self.placeholderText;
+        self.isShowingPlaceholderText = YES;
+    }
+}
+
 #pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [self clearPlaceholderText];
+}
 
 - (void)textViewDidChange:(UITextView *)textView
 {
@@ -126,7 +160,8 @@ static NSString * const kDefaultTextKey = @"defaultText";
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [self stopEditingText];
+    [self restorePlaceholderText];
+    [textView resignFirstResponder];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -139,14 +174,20 @@ static NSString * const kDefaultTextKey = @"defaultText";
     
     if ( self.delegate != nil )
     {
-        NSArray *deletedHashtags = [self deletedHastagsFromTextView:textView inRange:range];
+        NSString *textAfterDeletion = [textView.text stringByReplacingCharactersInRange:range withString:@""];
+        NSArray *deletedHashtags = [self deletedHastagsFromTextBefore:textView.text textAfter:textAfterDeletion];
         if ( deletedHashtags.count > 0 )
         {
             NSArray *deletedHashtagsWithoutHashmarks = [deletedHashtags v_map:^NSString *(NSString *string)
                                                         {
                                                             return [string stringByReplacingOccurrencesOfString:@"#" withString:@""];
                                                         }];
-            [self.delegate textPostViewController:self didDeleteHashtags:deletedHashtagsWithoutHashmarks];
+            [deletedHashtags enumerateObjectsUsingBlock:^(NSString *hashtag, NSUInteger idx, BOOL *stop)
+            {
+                [self.supplementalHashtags removeObject:hashtag];
+            }];
+            [self.delegate textPostViewController:self
+                                didDeleteHashtags:deletedHashtagsWithoutHashmarks];
         }
     }
     
@@ -157,7 +198,7 @@ static NSString * const kDefaultTextKey = @"defaultText";
 
 - (void)overlayButtonTapped:(UIButton *)sender
 {
-    [self startEditingText];
+    [self.textView resignFirstResponder];
 }
 
 @end

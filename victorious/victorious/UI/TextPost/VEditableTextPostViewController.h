@@ -14,16 +14,16 @@
 
 - (void)textPostViewController:(VTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags;
 
+- (void)textPostViewController:(VTextPostViewController *)textPostViewController didAddHashtags:(NSArray *)addedHashtags;
+
 @end
 
 @interface VEditableTextPostViewController : VTextPostViewController <VHasManagedDependencies>
 
 @property (nonatomic, weak) id<VEditableTextPostViewControllerDelegate> delegate;
 
-- (void)addHashtag:(NSString *)hashtagText;
+- (BOOL)addHashtag:(NSString *)hashtagText;
 
-- (void)removeHashtag:(NSString *)hashtagText;
-
-- (void)startEditingText;
+- (BOOL)removeHashtag:(NSString *)hashtagText;
 
 @end
