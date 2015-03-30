@@ -954,8 +954,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
                 textCell.dependencyManager = self.dependencyManager;
-                [textCell setTextContent:self.viewModel.textContent
-                     withBackgroundColor:self.viewModel.textBackgroundColor];
+                [textCell setTextContent:self.viewModel.textContent withBackgroundColor:self.viewModel.textBackgroundColor];
                 return textCell;
             }
             case VContentViewTypePoll:

@@ -13,6 +13,7 @@
 		0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318B1A18425B004E9781 /* VMenuCollectionViewDataSource.m */; };
 		030931901A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318F1A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m */; };
 		030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931921A184285004E9781 /* VNavigationMenuItem.m */; };
+		030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 030E514E1AC35B5A0011C558 /* VPseudoProduct.m */; };
 		0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */; };
 		0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D05D19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m */; };
 		0314D06119B4666A00FA363C /* NSManagedObject+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D06019B4666A00FA363C /* NSManagedObject+RestKit.m */; };
@@ -416,8 +417,8 @@
 		A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0C51AB7971400C35063 /* VColorOptionCell.m */; };
 		A75ED0C81AB7971400C35063 /* VColorOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0C61AB7971400C35063 /* VColorOptionCell.xib */; };
 		A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */; };
-		A75ED0D61AB79EB500C35063 /* VEditTextToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0CE1AB79EB500C35063 /* VEditTextToolViewController.m */; };
-		A75ED0D71AB79EB500C35063 /* VEditTextToolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0CF1AB79EB500C35063 /* VEditTextToolViewController.xib */; };
+		A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0CE1AB79EB500C35063 /* VTextCanvasToolViewController.m */; };
+		A75ED0D71AB79EB500C35063 /* VTextCanvasToolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0CF1AB79EB500C35063 /* VTextCanvasToolViewController.xib */; };
 		A75ED0D81AB79EB500C35063 /* VEnterTextTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */; };
 		A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0DD1AB7BC3E00C35063 /* VHashtagType.m */; };
 		A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0E01AB7BEFC00C35063 /* VColorType.m */; };
@@ -730,6 +731,10 @@
 		D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EC36E81AB3EC7600FB0CEB /* VAssetLoader.m */; };
 		D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EC36EB1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m */; };
 		D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F12A6C1A6F093900E99B3D /* VPublishParameters.m */; };
+		D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1E81AC4C27600AA2DB7 /* VDependencyManager+VBackground.m */; };
+		D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1EB1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m */; };
+		D8F8B1EF1AC4C4CF00AA2DB7 /* VTilePatternBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1EE1AC4C4CF00AA2DB7 /* VTilePatternBackground.m */; };
+		D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */; };
 		D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */; };
 		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
 		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
@@ -857,6 +862,8 @@
 		0309318F1A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuCollectionViewDataSourceTests.m; sourceTree = "<group>"; };
 		030931911A184285004E9781 /* VNavigationMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationMenuItem.h; sourceTree = "<group>"; };
 		030931921A184285004E9781 /* VNavigationMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationMenuItem.m; sourceTree = "<group>"; };
+		030E514D1AC35B5A0011C558 /* VPseudoProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPseudoProduct.h; sourceTree = "<group>"; };
+		030E514E1AC35B5A0011C558 /* VPseudoProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPseudoProduct.m; sourceTree = "<group>"; };
 		0310DC491989A6AB0092DF50 /* NSString+VStringWithData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VStringWithData.h"; sourceTree = "<group>"; };
 		0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VStringWithData.m"; sourceTree = "<group>"; };
 		0314D05C19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+RotationMethodForwarding.h"; sourceTree = "<group>"; };
@@ -1394,6 +1401,7 @@
 		3F9B6655187F80780046F826 /* NSDate+timeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeSince.h"; sourceTree = "<group>"; };
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
+		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollCell.xib; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		669EBBDF1A30239100DE317D /* VBasicToolPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBasicToolPickerCell.h; sourceTree = "<group>"; };
@@ -1425,14 +1433,14 @@
 		A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTestDelegate.m; sourceTree = "<group>"; };
 		A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableRow.h; sourceTree = "<group>"; };
 		A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTableRow.m; sourceTree = "<group>"; };
-		A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseManager.h; path = Purchases/VPurchaseManager.h; sourceTree = "<group>"; };
-		A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseManager.m; path = Purchases/VPurchaseManager.m; sourceTree = "<group>"; };
-		A70FC1081A2D558200F5BBDE /* VPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchase.h; path = Purchases/VPurchase.h; sourceTree = "<group>"; };
-		A70FC1091A2D558200F5BBDE /* VPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchase.m; path = Purchases/VPurchase.m; sourceTree = "<group>"; };
-		A70FC10E1A2D619300F5BBDE /* VProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProduct.h; path = Purchases/VProduct.h; sourceTree = "<group>"; };
-		A70FC10F1A2D619300F5BBDE /* VProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProduct.m; path = Purchases/VProduct.m; sourceTree = "<group>"; };
-		A70FC1111A2D61A000F5BBDE /* VProductsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProductsRequest.h; path = Purchases/VProductsRequest.h; sourceTree = "<group>"; };
-		A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProductsRequest.m; path = Purchases/VProductsRequest.m; sourceTree = "<group>"; };
+		A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseManager.h; sourceTree = "<group>"; };
+		A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseManager.m; sourceTree = "<group>"; };
+		A70FC1081A2D558200F5BBDE /* VPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchase.h; sourceTree = "<group>"; };
+		A70FC1091A2D558200F5BBDE /* VPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchase.m; sourceTree = "<group>"; };
+		A70FC10E1A2D619300F5BBDE /* VProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProduct.h; sourceTree = "<group>"; };
+		A70FC10F1A2D619300F5BBDE /* VProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProduct.m; sourceTree = "<group>"; };
+		A70FC1111A2D61A000F5BBDE /* VProductsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProductsRequest.h; sourceTree = "<group>"; };
+		A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProductsRequest.m; sourceTree = "<group>"; };
 		A70FC1231A31207400F5BBDE /* VVoteSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteSettings.h; sourceTree = "<group>"; };
 		A70FC1241A31207400F5BBDE /* VVoteSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettings.m; sourceTree = "<group>"; };
 		A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizedActionTests.m; sourceTree = "<group>"; };
@@ -1549,9 +1557,9 @@
 		A75ED0C61AB7971400C35063 /* VColorOptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VColorOptionCell.xib; sourceTree = "<group>"; };
 		A75ED0C91AB798F100C35063 /* VColorPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VColorPickerDataSource.h; sourceTree = "<group>"; };
 		A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VColorPickerDataSource.m; sourceTree = "<group>"; };
-		A75ED0CD1AB79EB500C35063 /* VEditTextToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditTextToolViewController.h; sourceTree = "<group>"; };
-		A75ED0CE1AB79EB500C35063 /* VEditTextToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditTextToolViewController.m; sourceTree = "<group>"; };
-		A75ED0CF1AB79EB500C35063 /* VEditTextToolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEditTextToolViewController.xib; sourceTree = "<group>"; };
+		A75ED0CD1AB79EB500C35063 /* VTextCanvasToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextCanvasToolViewController.h; sourceTree = "<group>"; };
+		A75ED0CE1AB79EB500C35063 /* VTextCanvasToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextCanvasToolViewController.m; sourceTree = "<group>"; };
+		A75ED0CF1AB79EB500C35063 /* VTextCanvasToolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTextCanvasToolViewController.xib; sourceTree = "<group>"; };
 		A75ED0D01AB79EB500C35063 /* VEnterTextTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnterTextTool.h; sourceTree = "<group>"; };
 		A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnterTextTool.m; sourceTree = "<group>"; };
 		A75ED0DC1AB7BC3E00C35063 /* VHashtagType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagType.h; sourceTree = "<group>"; };
@@ -1670,8 +1678,8 @@
 		A7A2E0031A38E44B00F8C705 /* VPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseViewController.h; path = Purchases/VPurchaseViewController.h; sourceTree = "<group>"; };
 		A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseViewController.m; path = Purchases/VPurchaseViewController.m; sourceTree = "<group>"; };
 		A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Purchases.storyboard; path = Purchases/Purchases.storyboard; sourceTree = "<group>"; };
-		A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseRecord.h; path = Purchases/VPurchaseRecord.h; sourceTree = "<group>"; };
-		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseRecord.m; path = Purchases/VPurchaseRecord.m; sourceTree = "<group>"; };
+		A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseRecord.h; sourceTree = "<group>"; };
+		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecord.m; sourceTree = "<group>"; };
 		A7A343D91A8A8452000F0BCF /* VContentViewAlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewAlertHelper.h; sourceTree = "<group>"; };
 		A7A343DA1A8A8452000F0BCF /* VContentViewAlertHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewAlertHelper.m; sourceTree = "<group>"; };
 		A7A343E01A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowingStreamCollectionViewController.h; sourceTree = "<group>"; };
@@ -1719,7 +1727,7 @@
 		A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewController.m; sourceTree = "<group>"; };
 		A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewDataSource.h; sourceTree = "<group>"; };
 		A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewDataSource.m; sourceTree = "<group>"; };
-		A7AEF9C01A83F26400A3D3A0 /* VPurchaseDebugSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VPurchaseDebugSettings.h; path = Purchases/VPurchaseDebugSettings.h; sourceTree = "<group>"; };
+		A7AEF9C01A83F26400A3D3A0 /* VPurchaseDebugSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPurchaseDebugSettings.h; sourceTree = "<group>"; };
 		A7AEF9C21A83F2AD00A3D3A0 /* VFollowersTextFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFollowersTextFormatter.h; path = Formatters/VFollowersTextFormatter.h; sourceTree = "<group>"; };
 		A7AEF9C31A83F2AD00A3D3A0 /* VFollowersTextFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFollowersTextFormatter.m; path = Formatters/VFollowersTextFormatter.m; sourceTree = "<group>"; };
 		A7AEF9C41A83F2AD00A3D3A0 /* VLargeNumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLargeNumberFormatter.h; path = Formatters/VLargeNumberFormatter.h; sourceTree = "<group>"; };
@@ -2154,8 +2162,18 @@
 		D8ECB8F11A5C7CD200C8F67A /* VVideoWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoWorkspaceTool.h; sourceTree = "<group>"; };
 		D8F12A6B1A6F093900E99B3D /* VPublishParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishParameters.h; sourceTree = "<group>"; };
 		D8F12A6C1A6F093900E99B3D /* VPublishParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishParameters.m; sourceTree = "<group>"; };
+		D8F8B1E71AC4C27600AA2DB7 /* VDependencyManager+VBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VBackground.h"; sourceTree = "<group>"; };
+		D8F8B1E81AC4C27600AA2DB7 /* VDependencyManager+VBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VBackground.m"; sourceTree = "<group>"; };
+		D8F8B1EA1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTilePatternBackgroundView.h; sourceTree = "<group>"; };
+		D8F8B1EB1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTilePatternBackgroundView.m; sourceTree = "<group>"; };
+		D8F8B1ED1AC4C4CF00AA2DB7 /* VTilePatternBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTilePatternBackground.h; sourceTree = "<group>"; };
+		D8F8B1EE1AC4C4CF00AA2DB7 /* VTilePatternBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTilePatternBackground.m; sourceTree = "<group>"; };
+		D8F8B1F01AC4C89E00AA2DB7 /* VBackgroundContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBackgroundContainer.h; sourceTree = "<group>"; };
+		D8F8B1F11AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VBackgroundContainer.h"; sourceTree = "<group>"; };
+		D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VBackgroundContainer.m"; sourceTree = "<group>"; };
 		D8FC09051A51DBC100E5FBE4 /* VPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPlaceholderTextView.h; sourceTree = "<group>"; };
 		D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlaceholderTextView.m; sourceTree = "<group>"; };
+		D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.stable.xcconfig"; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DB2D6F9D1A802B080050F963 /* VSearchResultsTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSearchResultsTransition.h; sourceTree = "<group>"; };
@@ -2540,6 +2558,8 @@
 				D836883C19C36FF200070F22 /* UICollectionView */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
 				0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */,
+				D84558FE1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.h */,
+				D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */,
 				A7A390C31A32441E00709812 /* VButton.h */,
 				A7A390C41A32441E00709812 /* VButton.m */,
 				0314D35019B46B5E00FA363C /* VCommentTextAndMediaView.h */,
@@ -2583,8 +2603,6 @@
 				F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */,
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
-				D84558FE1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.h */,
-				D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3344,6 +3362,10 @@
 				D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */,
 				D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
+				D8F8B1E71AC4C27600AA2DB7 /* VDependencyManager+VBackground.h */,
+				D8F8B1E81AC4C27600AA2DB7 /* VDependencyManager+VBackground.m */,
+				D8F8B1F11AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.h */,
+				D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -3545,6 +3567,7 @@
 			children = (
 				03C185CE19B4308400E27D05 /* VAnimation.h */,
 				A74293991AAFE4A400532948 /* VAuthorizationContext.h */,
+				D8F8B1F01AC4C89E00AA2DB7 /* VBackgroundContainer.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -3646,6 +3669,8 @@
 				E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */,
 				910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */,
 				E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */,
+				D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */,
+				62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -3678,6 +3703,8 @@
 				A70FC10F1A2D619300F5BBDE /* VProduct.m */,
 				A70FC1111A2D61A000F5BBDE /* VProductsRequest.h */,
 				A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */,
+				030E514D1AC35B5A0011C558 /* VPseudoProduct.h */,
+				030E514E1AC35B5A0011C558 /* VPseudoProduct.m */,
 				A70FC1081A2D558200F5BBDE /* VPurchase.h */,
 				A70FC1091A2D558200F5BBDE /* VPurchase.m */,
 				A7AEF9C01A83F26400A3D3A0 /* VPurchaseDebugSettings.h */,
@@ -3686,7 +3713,7 @@
 				A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */,
 				A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */,
 			);
-			name = Purchases;
+			path = Purchases;
 			sourceTree = "<group>";
 		};
 		A716FC2F1AAE2DDB0032AA40 /* Helpers */ = {
@@ -3867,9 +3894,9 @@
 		A75ED0CC1AB79EB500C35063 /* Text EntryTools */ = {
 			isa = PBXGroup;
 			children = (
-				A75ED0CD1AB79EB500C35063 /* VEditTextToolViewController.h */,
-				A75ED0CE1AB79EB500C35063 /* VEditTextToolViewController.m */,
-				A75ED0CF1AB79EB500C35063 /* VEditTextToolViewController.xib */,
+				A75ED0CD1AB79EB500C35063 /* VTextCanvasToolViewController.h */,
+				A75ED0CE1AB79EB500C35063 /* VTextCanvasToolViewController.m */,
+				A75ED0CF1AB79EB500C35063 /* VTextCanvasToolViewController.xib */,
 				A75ED0D01AB79EB500C35063 /* VEnterTextTool.h */,
 				A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */,
 			);
@@ -4855,6 +4882,10 @@
 				D876E2011A9DA6DD002CAA29 /* VBlurredImageBackground.m */,
 				D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */,
 				D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */,
+				D8F8B1ED1AC4C4CF00AA2DB7 /* VTilePatternBackground.h */,
+				D8F8B1EE1AC4C4CF00AA2DB7 /* VTilePatternBackground.m */,
+				D8F8B1EA1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.h */,
+				D8F8B1EB1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m */,
 				D876E2031A9DA6EB002CAA29 /* VTranslucentBackground.h */,
 				D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */,
 			);
@@ -5405,7 +5436,7 @@
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
 				A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */,
 				0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */,
-				A75ED0D71AB79EB500C35063 /* VEditTextToolViewController.xib in Resources */,
+				A75ED0D71AB79EB500C35063 /* VTextCanvasToolViewController.xib in Resources */,
 				0390087619F3A11A00FD7EDF /* followerCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
@@ -5726,6 +5757,7 @@
 				A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */,
 				0314D07219B4670A00FA363C /* UIImage+Resize.m in Sources */,
 				A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */,
+				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
 				A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */,
 				A716FC3C1AAE2DDB0032AA40 /* VLinkTextViewHelper.m in Sources */,
 				A77AD4F11A1FD8B600142F24 /* VAlertControllerAdvanced.m in Sources */,
@@ -5796,6 +5828,7 @@
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
 				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
 				A7299EA71AA7842100B6BC1F /* VDirectoryViewController.m in Sources */,
+				D8F8B1EF1AC4C4CF00AA2DB7 /* VTilePatternBackground.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7299E941AA5331000B6BC1F /* VDirectorySeeMoreItemCell.m in Sources */,
 				A7E398731A362578000E4CAC /* NSData+AES.m in Sources */,
@@ -5906,6 +5939,7 @@
 				D816F7E41A966A0B00120798 /* UIScrollView+VCenterContent.m in Sources */,
 				F04A7C8E1AB37E440092A374 /* VSleekStreamCellActionView.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
+				D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */,
 				DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */,
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
@@ -5982,6 +6016,7 @@
 				0314D48019B46B5E00FA363C /* VCommentCell.m in Sources */,
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				DBDBE6F11A16766400DA1BB2 /* VSequence.m in Sources */,
+				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */,
 				D8E39BDD19CB7C80007FD86A /* VContentVideoCell.m in Sources */,
@@ -6019,7 +6054,7 @@
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				D8E39BDC19CB7C80007FD86A /* VContentPollCell.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
-				A75ED0D61AB79EB500C35063 /* VEditTextToolViewController.m in Sources */,
+				A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				0314D4D419B46B5E00FA363C /* VUserSearchViewController.m in Sources */,
@@ -6124,6 +6159,7 @@
 				A7AEF9B91A83F1C300A3D3A0 /* VStreamCollectionViewController.m in Sources */,
 				A7AEF9BA1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m in Sources */,
 				0314D4C419B46B5E00FA363C /* VUserProfileViewController.m in Sources */,
+				030E514F1AC35B5A0011C558 /* VPseudoProduct.m in Sources */,
 				0314D4AB19B46B5E00FA363C /* VMessageContainerViewController.m in Sources */,
 				D82EA50E1A577FF70008FD3E /* VVideoFrameRateComposition.m in Sources */,
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
@@ -6416,6 +6452,119 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		030E514A1AC342F20011C558 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_OBJC_NSCFERROR = NO;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DefaultEnvironment = Production;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"V_NO_SWITCH_ENVIRONMENTS=1",
+				);
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				ONLY_ACTIVE_ARCH = NO;
+				ProductPrefix = "";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+					"-Wno-unused-parameter",
+				);
+			};
+			name = Release;
+		};
+		030E514B1AC342F20011C558 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
+				INFOPLIST_FILE = AppSpecific/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
+				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DNDEBUG",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		030E514C1AC342F20011C558 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+				);
+				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALIDATE_TRACKING = NO;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		03D63828191874590084FFC8 /* Staging */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6442,7 +6591,10 @@
 				DefaultEnvironment = Staging;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = "STAGING=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
+					"V_SHOW_BUILD_NUMBER_IN_SETTINGS=1",
+				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
@@ -6558,6 +6710,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
+					"V_SHOW_BUILD_NUMBER_IN_SETTINGS=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
@@ -6584,7 +6738,7 @@
 			};
 			name = Debug;
 		};
-		BE171DA71868BE64004E5202 /* Release */ = {
+		BE171DA71868BE64004E5202 /* Stable */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -6612,7 +6766,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"V_NO_SWITCH_ENVIRONMENTS=1",
+					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
+					"V_SHOW_BUILD_NUMBER_IN_SETTINGS=1",
 				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -6637,7 +6792,7 @@
 					"-Wno-unused-parameter",
 				);
 			};
-			name = Release;
+			name = Stable;
 		};
 		BE171DA91868BE64004E5202 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6672,9 +6827,9 @@
 			};
 			name = Debug;
 		};
-		BE171DAA1868BE64004E5202 /* Release */ = {
+		BE171DAA1868BE64004E5202 /* Stable */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */;
+			baseConfigurationReference = D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -6684,12 +6839,6 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COCOAPODS=1",
-					"V_NO_RESET_PURCHASES=1",
-					"V_NO_TRACKING_ALERTS=1",
-				);
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -6707,7 +6856,7 @@
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
-			name = Release;
+			name = Stable;
 		};
 		BE171DAC1868BE64004E5202 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6740,9 +6889,9 @@
 			};
 			name = Debug;
 		};
-		BE171DAD1868BE64004E5202 /* Release */ = {
+		BE171DAD1868BE64004E5202 /* Stable */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */;
+			baseConfigurationReference = 62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -6765,7 +6914,7 @@
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
-			name = Release;
+			name = Stable;
 		};
 		BE4055A318A41BEE00092AE1 /* QA */ = {
 			isa = XCBuildConfiguration;
@@ -6798,7 +6947,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"QA=1",
+					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
+					"V_SHOW_BUILD_NUMBER_IN_SETTINGS=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
@@ -6894,7 +7044,8 @@
 				BE171DA61868BE64004E5202 /* Debug */,
 				BE4055A318A41BEE00092AE1 /* QA */,
 				03D63828191874590084FFC8 /* Staging */,
-				BE171DA71868BE64004E5202 /* Release */,
+				BE171DA71868BE64004E5202 /* Stable */,
+				030E514A1AC342F20011C558 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -6905,7 +7056,8 @@
 				BE171DA91868BE64004E5202 /* Debug */,
 				BE4055A418A41BEE00092AE1 /* QA */,
 				03D63829191874590084FFC8 /* Staging */,
-				BE171DAA1868BE64004E5202 /* Release */,
+				BE171DAA1868BE64004E5202 /* Stable */,
+				030E514B1AC342F20011C558 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -6916,7 +7068,8 @@
 				BE171DAC1868BE64004E5202 /* Debug */,
 				BE4055A518A41BEE00092AE1 /* QA */,
 				03D6382A191874590084FFC8 /* Staging */,
-				BE171DAD1868BE64004E5202 /* Release */,
+				BE171DAD1868BE64004E5202 /* Stable */,
+				030E514C1AC342F20011C558 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -11,14 +11,14 @@
 #import "VWorkspaceViewController.h"
 #import "VTextToolController.h"
 #import "VRootViewController.h"
-#import "VEditTextToolViewController.h"
+#import "VTextCanvasToolViewController.h"
 #import "VWorkspaceTool.h"
 
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 @property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
-@property (nonatomic, strong) VEditTextToolViewController *textToolViewController;
+@property (nonatomic, strong) VTextCanvasToolViewController *textCanvasToolViewController;
 
 @end
 
@@ -33,7 +33,7 @@
         _textWorkspaceViewController = [self createTextWorkspaceWithDependencyManager:dependencyManager];
         
         // 2. Create the worksapce canvas
-        _textToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
+        _textCanvasToolViewController = [VTextCanvasToolViewController newWithDependencyManager:dependencyManager];
         
         // 3. Create the tool controller using workspace as delegate
         _textWorkspaceViewController.toolController = [self createToolControllerWithDependencyManager:dependencyManager delegate:_textWorkspaceViewController];
@@ -43,7 +43,7 @@
          {
              if ( [tool respondsToSelector:@selector(setSharedCanvasToolViewController:)] )
              {
-                 [tool setSharedCanvasToolViewController:_textToolViewController];
+                 [tool setSharedCanvasToolViewController:_textCanvasToolViewController];
              }
          }];
         

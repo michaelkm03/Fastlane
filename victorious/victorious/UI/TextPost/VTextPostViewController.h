@@ -15,10 +15,12 @@
 
 @property (nonatomic, strong) NSString *text;
 
-@property (nonatomic, readonly) UITextView *textView;
-
 @property (nonatomic, strong, readonly) IBOutlet VTextPostViewModel *viewModel;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, assign) BOOL isTextSelectable;
+
+@property (nonatomic, readonly) UITextView *textView;
 
 @end

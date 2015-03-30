@@ -30,8 +30,6 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect( context, rect );
     
-    self.clipsToBounds = NO;
-    
     for ( NSValue *value in self.backgroundFrames )
     {
         CGRect frame = [value CGRectValue];

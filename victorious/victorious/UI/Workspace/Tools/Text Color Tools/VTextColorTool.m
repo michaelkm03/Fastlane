@@ -8,7 +8,7 @@
 
 #import "VTextColorTool.h"
 #import "VDependencyManager.h"
-#import "VEditTextToolViewController.h"
+#import "VTextCanvasToolViewController.h"
 #import "VTickerPickerViewController.h"
 #import "VColorPickerDataSource.h"
 #import "VColorType.h"
@@ -24,7 +24,7 @@ static NSString * const kPickerKey = @"picker";
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIImage *selectedIcon;
-@property (nonatomic, strong) VEditTextToolViewController *canvasToolViewController;
+@property (nonatomic, strong) VTextCanvasToolViewController *canvasToolViewController;
 @property (nonatomic, strong, readwrite) VTickerPickerViewController *toolPicker;
 
 @end
@@ -49,7 +49,7 @@ static NSString * const kPickerKey = @"picker";
 
 - (void)setSharedCanvasToolViewController:(UIViewController *)viewController
 {
-    _canvasToolViewController = (VEditTextToolViewController *)viewController;
+    _canvasToolViewController = (VTextCanvasToolViewController *)viewController;
 }
 
 - (UIViewController *)inspectorToolViewController

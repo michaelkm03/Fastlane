@@ -10,11 +10,21 @@
 
 @interface VContentImageCell ()
 
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, assign) BOOL updatedImageBounds;
 
 @end
 
 @implementation VContentImageCell
+
+#pragma mark - NSObject
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.shrinkingContentView = self.contentImageView;
+}
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
@@ -22,6 +32,8 @@
 {
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
 }
+
+#pragma mark - UIView
 
 - (void)setBounds:(CGRect)bounds
 {
@@ -38,11 +50,11 @@
     }
 }
 
-- (void)awakeFromNib
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
 {
-    [super awakeFromNib];
-    
-    self.shrinkingContentView = self.contentImageView;
+    return self.backgroundContainer;
 }
 
 @end

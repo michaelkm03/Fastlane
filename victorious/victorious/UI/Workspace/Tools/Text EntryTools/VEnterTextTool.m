@@ -8,26 +8,7 @@
 
 #import "VEnterTextTool.h"
 #import "VDependencyManager.h"
-#import "VEditTextToolViewController.h"
-
-@interface VEnterTextTool ()
-
-@property (nonatomic, strong) VEditTextToolViewController *canvasToolViewController;
-
-@end
 
 @implementation VEnterTextTool
-
-#pragma mark - VHasManagedDependencies
-
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self = [super init];
-    if (self)
-    {
-        _canvasToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
-    }
-    return self;
-}
 
 @end

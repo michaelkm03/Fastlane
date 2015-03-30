@@ -31,6 +31,11 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
 
+// Dependencies
+#import "VDependencyManager+VBackground.h"
+
+// Views + Helpers
+#import "VBackground.h"
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
 #import "UIView+Autolayout.h"
@@ -39,6 +44,8 @@
 #import "VTextPostViewController.h"
 
 @interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
+
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
@@ -151,9 +158,18 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
-    
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
-                           placeholderImage:[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]]];
+
+    NSURL *imageUrl;
+    if ([sequence isImage])
+    {
+        imageUrl = [NSURL URLWithString:[self.sequence.firstNode imageAsset].data];
+    }
+    else
+    {
+        imageUrl = [NSURL URLWithString:self.sequence.previewImagesObject];
+    }
+    [self.previewImageView fadeInImageAtURL:imageUrl
+                           placeholderImage:nil];
     
     [self setDescriptionText:self.sequence.name];
     
@@ -170,7 +186,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
             self.isPlayButtonVisible = NO;
             [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
                                         loop:self.videoAsset.loop.boolValue
-                               audioMuted:self.videoAsset.audioMuted.boolValue];
+                                  audioMuted:self.videoAsset.audioMuted.boolValue];
         }
         else
         {
@@ -205,14 +221,15 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 {
     [super setDependencyManager:dependencyManager];
     
-    if ( dependencyManager != nil )
+    if ( dependencyManager == nil )
     {
-        self.streamCellHeaderView.dependencyManager = dependencyManager;
-        
-        self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
-        self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
-        [self refreshDescriptionAttributes];
+        return;
     }
+    
+    self.streamCellHeaderView.dependencyManager = dependencyManager;
+    self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+    self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
+    [self refreshDescriptionAttributes];
 }
 
 - (BOOL)canPlayVideo
@@ -374,6 +391,13 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
     [self playVideo];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.backgroundContainer;
 }
 
 @end

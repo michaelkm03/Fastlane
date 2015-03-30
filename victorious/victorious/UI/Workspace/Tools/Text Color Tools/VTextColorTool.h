@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VWorkspaceTool.h"
-#import "VEditTextToolViewController.h"
+#import "VTextCanvasToolViewController.h"
 
 @class VTickerPickerViewController;
 

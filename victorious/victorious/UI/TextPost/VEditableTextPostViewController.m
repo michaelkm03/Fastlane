@@ -44,6 +44,7 @@ static NSString * const kDefaultTextKey = @"defaultText";
     [self.overlayButton addTarget:self action:@selector(overlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
+    self.text = self.placeholderText;
     
     self.supplementalHashtags = [[NSMutableSet alloc] init];
 }
@@ -53,12 +54,16 @@ static NSString * const kDefaultTextKey = @"defaultText";
 - (void)startEditingText
 {
     [self.textView becomeFirstResponder];
+    self.textView.userInteractionEnabled = YES;
+    self.textView.editable = YES;
     self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
     self.overlayButton.hidden = YES;
 }
 
 - (void)stopEditingText
 {
+    self.textView.userInteractionEnabled = NO;
+    self.textView.editable = NO;
     [self.textView resignFirstResponder];
     self.overlayButton.hidden = NO;
 }

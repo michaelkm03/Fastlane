@@ -11,6 +11,7 @@
 #import "VVoteType.h"
 
 NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
+static NSString * const kImageURLKey = @"imageURL";
 
 @interface VVoteType ()
 
@@ -47,12 +48,16 @@ NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
 
 - (NSString *)iconImage
 {
-    return [self.dependencyManager stringForKey:@"icon"];
+    NSDictionary *imageDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class]
+                                                                         forKey:@"icon"];
+    return imageDictionary[kImageURLKey];
 }
 
 - (NSString *)iconImageLarge
 {
-    return [self.dependencyManager stringForKey:@"iconLarge"];
+    NSDictionary *imageDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class]
+                                                                         forKey:@"iconLarge"];
+    return imageDictionary[kImageURLKey];
 }
 
 - (NSArray *)images

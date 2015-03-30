@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VBaseCollectionViewCell.h"
-
 #import "VContentCell.h"
 
 /// A UICollectionViewCell for displaying image content.

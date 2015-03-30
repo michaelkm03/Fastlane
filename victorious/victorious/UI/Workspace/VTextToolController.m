@@ -7,7 +7,7 @@
 //
 
 #import "VTextToolController.h"
-#import "VEditTextToolViewController.h"
+#import "VTextCanvasToolViewController.h"
 #import "VCanvasView.h"
 #import "VToolPicker.h"
 #import "VHashtagType.h"
@@ -16,12 +16,13 @@
 #import "VHashtagTool.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VHashtagPickerDataSource.h"
+#import "VEditableTextPostViewController.h"
 
-@interface VTextToolController() <VToolPickerDelegate, VTextPostViewControllerDelegate>
+@interface VTextToolController() <VToolPickerDelegate, VEditableTextPostViewControllerDelegate>
 
 @property (nonatomic, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
-@property (nonatomic, readonly, weak) VTextPostViewController *textPostViewController;
+@property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
 
 @end
 
@@ -97,8 +98,7 @@
 
 - (NSString *)currentText
 {
-    VEditTextToolViewController *editTextViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
-    return editTextViewController.textPostViewController.text;
+    return self.textPostViewController.text;
 }
 
 - (void)setPickerDelegate:(id<VToolPickerDelegate>)delegate forSubtools:(NSArray *)subtools
@@ -112,7 +112,7 @@
 
 - (VTextPostViewController *)textPostViewController
 {
-    VEditTextToolViewController *editTextViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
+    VTextCanvasToolViewController *editTextViewController = (VTextCanvasToolViewController *)self.selectedTool.canvasToolViewController;
     return editTextViewController.textPostViewController;
 }
 

@@ -91,6 +91,10 @@
         
         _dependencyManager = dependencyManager;
         
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
+        
+        _currentNode = [sequence firstNode];
+        
         if ([sequence isPoll])
         {
             _type = VContentViewTypePoll;
@@ -99,40 +103,49 @@
         {
             _type = VContentViewTypeVideo;
             _realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] init];
+            _currentAsset = [self mediaAssetFromSequence:sequence];
         }
         else if ([sequence isGIFVideo])
         {
             _type = VContentViewTypeGIFVideo;
+            _currentAsset = [self mediaAssetFromSequence:sequence];
         }
         else if ([sequence isImage])
         {
             _type = VContentViewTypeImage;
+            _currentAsset = [self mediaAssetFromSequence:sequence];
         }
         else if ( [sequence isText] )
         {
             _type = VContentViewTypeText;
+            _currentAsset = [_currentNode textAsset];
         }
         else
         {
             // Fall back to image.
             _type = VContentViewTypeImage;
-        }
-        
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
-
-        _currentNode = [sequence firstNode];
-        
-        
-        _currentAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
-        if ( _currentAsset == nil )
-        {
-            _currentAsset = [_currentNode imageAsset];
+            _currentAsset = [self mediaAssetFromSequence:sequence];
         }
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
     }
     return self;
+}
+
+- (VAsset *)mediaAssetFromSequence:(VSequence *)sequence
+{
+    VAsset *videoAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
+    if ( videoAsset != nil )
+    {
+        return videoAsset;
+    }
+    else
+    {
+        return [_currentNode imageAsset];
+    }
+    
+    return nil;
 }
 
 - (id)init
@@ -644,6 +657,9 @@
             case VContentViewTypeVideo:
                 shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
                 break;
+            case VContentViewTypeText:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareTextFormat", nil), self.sequence.name, self.sequence.user.name];
+                break;
             case VContentViewTypeInvalid:
                 break;
         }
@@ -663,6 +679,9 @@
                 break;
             case VContentViewTypeVideo:
                 shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
+                break;
+            case VContentViewTypeText:
+                shareText = NSLocalizedString(@"UGCShareTextFormat", nil);
                 break;
             case VContentViewTypeInvalid:
                 break;

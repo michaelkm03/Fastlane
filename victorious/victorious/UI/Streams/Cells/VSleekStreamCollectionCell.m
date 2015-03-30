@@ -7,10 +7,16 @@
 //
 
 #import "VSleekStreamCollectionCell.h"
-#import "VSleekStreamCellActionView.h"
+
+// Stream Support
 #import "VSequence+Fetcher.h"
-#import "NSString+VParseHelp.h"
+
+// Dependencies
 #import "VDependencyManager.h"
+
+// Views + Helpers
+#import "VSleekStreamCellActionView.h"
+#import "NSString+VParseHelp.h"
 #import "VStreamCellHeaderView.h"
 
 const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -25,6 +31,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 @interface VSleekStreamCollectionCell ()
 
+@property (nonatomic, weak) IBOutlet UIView *backgroundHost;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 
@@ -124,6 +131,15 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     return 0;
 }
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.backgroundHost;
+}
+
+#pragma mark - Class Methods
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {

@@ -40,13 +40,21 @@
     }
 }
 
+- (VTextPostViewController *)textPostViewController
+{
+    if ( _textPostViewController == nil )
+    {
+        _textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+        _textPostViewController.isTextSelectable = YES;
+        [self.contentView addSubview:_textPostViewController.view];
+        [self.contentView v_addFitToParentConstraintsToSubview:_textPostViewController.view];
+    }
+    return _textPostViewController;
+}
+
 - (void)setTextContent:(NSString *)text withBackgroundColor:(UIColor *)backgroundColor
 {
-    [self cleanupTextPost];
-    
-    self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-    [self.contentView addSubview:self.textPostViewController.view];
-    [self.contentView v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+    self.textPostViewController.text = text;
     self.textPostViewController.view.backgroundColor = backgroundColor;
 }
 

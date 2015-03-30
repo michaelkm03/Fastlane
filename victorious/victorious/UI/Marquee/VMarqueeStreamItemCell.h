@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-#import "VSharedCollectionReusableViewMethods.h"
+#import "VBaseCollectionViewCell.h"
 
 extern CGFloat const kVDetailVisibilityDuration;
 extern CGFloat const kVDetailHideDuration;
@@ -27,7 +26,7 @@ extern CGFloat const kVDetailHideDuration;
 /**
  *  A cell that displays a streamItem for a Marquee
  */
-@interface VMarqueeStreamItemCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
+@interface VMarqueeStreamItemCell : VBaseCollectionViewCell
 
 /**
  Adjust the visibility of the "detail" view on the bottom of the marquee cell.

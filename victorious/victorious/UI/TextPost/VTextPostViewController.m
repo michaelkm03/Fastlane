@@ -42,6 +42,8 @@
     [super viewDidLoad];
     
     [self updateTextView];
+    
+    [self updateTextIsSelectable];
 }
 
 - (void)viewDidLayoutSubviews
@@ -72,7 +74,20 @@
     return self.textPostTextView;
 }
 
+- (void)setIsTextSelectable:(BOOL)isTextSelectable
+{
+    _isTextSelectable = isTextSelectable;
+    
+    [self updateTextIsSelectable];
+}
+
 #pragma mark - Drawing and layout
+
+- (void)updateTextIsSelectable
+{
+    self.textView.userInteractionEnabled = self.isTextSelectable;
+    self.textView.selectable = self.isTextSelectable;
+}
 
 - (void)updateTextView
 {
@@ -80,6 +95,9 @@
     {
         return;
     }
+    
+    const BOOL wasSelected = self.textView.selectable;
+    self.textView.selectable = YES;
     
     NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:_text attributes:attributes];
@@ -97,6 +115,8 @@
     self.textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
     
     [self.textLayoutHelper updateTextViewBackground:self.textPostTextView calloutRanges:hashtagCalloutRanges];
+    
+    self.textView.selectable = wasSelected;
 }
 
 @end
