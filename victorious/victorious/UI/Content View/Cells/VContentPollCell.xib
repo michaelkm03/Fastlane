@@ -162,7 +162,6 @@
                 <outlet property="answerBVideoPlayerContainer" destination="AKp-ON-QNR" id="bGj-Sc-RLN"/>
                 <outlet property="backgroundContainer" destination="hiO-tg-gJb" id="HuK-La-Kvo"/>
                 <outlet property="numberOfVotersLabel" destination="cBg-45-xOC" id="N4P-Ky-CLK"/>
-                <outlet property="parallaxPatternView" destination="hiO-tg-gJb" id="O7W-ji-X58"/>
                 <outlet property="pollCountContainer" destination="MH8-gE-tUo" id="T54-j0-fKF"/>
             </connections>
             <point key="canvasLocation" x="80" y="170"/>
