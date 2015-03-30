@@ -101,6 +101,12 @@ static const CGFloat kShadowOpacity = 0.4f;
     self.imageViewContianer.transform = CGAffineTransformMakeRotation(contentRotation * - M_PI);
 }
 
+- (void)setContentScale:(CGFloat)contentScale
+{
+    _contentScale = contentScale;
+    self.imageViewContianer.transform = CGAffineTransformMakeScale(contentScale, contentScale);
+}
+
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);

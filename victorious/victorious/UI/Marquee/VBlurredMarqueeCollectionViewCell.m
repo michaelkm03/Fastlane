@@ -17,6 +17,9 @@
 #import "VAbstractMarqueeController.h"
 #import <FBKVOController.h>
 
+static const CGFloat kRotationDivisor = 6.0f;
+static const CGFloat kScaleDivisor = 10.0f;
+
 @interface VBlurredMarqueeCollectionViewCell ()
 
 @property (nonatomic, strong) VStream *stream;
@@ -109,7 +112,9 @@
         for ( VBlurredMarqueeStreamItemCell *streamItemCell in self.collectionView.visibleCells )
         {
             NSIndexPath *indexPath = [self.collectionView indexPathForCell:streamItemCell];
-            streamItemCell.contentRotation = ( newOffset - (CGFloat)indexPath.row ) / 5.0;
+            CGFloat relativeOffset = newOffset - indexPath.row;
+            streamItemCell.contentRotation = ( relativeOffset ) / kRotationDivisor;
+            streamItemCell.contentScale = 1 - ( fabs( relativeOffset ) / kScaleDivisor );
         }
     }
 }
