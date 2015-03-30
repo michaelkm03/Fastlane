@@ -265,13 +265,17 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
                                                               destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
                                                                  onDestructiveButton:^
                                                  {
-                                                     welf.completionBlock(NO, nil, nil);
+                                                     [welf callCompletionWithSuccess:NO
+                                                                        previewImage:nil
+                                                                    renderedMediaURL:nil];
                                                  }
                                                           otherButtonTitlesAndBlocks:nil, nil];
         [confirmExitActionSheet showInView:self.view];
         return;
     }
-    self.completionBlock(NO, nil, nil);
+    [self callCompletionWithSuccess:NO
+                       previewImage:nil
+                   renderedMediaURL:nil];
 }
 
 - (IBAction)publish:(id)sender
@@ -298,10 +302,9 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
          }
          else
          {
-             if (welf.completionBlock != nil)
-             {
-                 welf.completionBlock(YES, previewImage, renderedMediaURL);
-             }
+             [welf callCompletionWithSuccess:YES
+                                previewImage:previewImage
+                            renderedMediaURL:renderedMediaURL];
          }
      }];
 }
@@ -388,6 +391,17 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 }
 
 #pragma mark - Private Methods
+
+- (void)callCompletionWithSuccess:(BOOL)success
+                     previewImage:(UIImage *)previewImage
+                 renderedMediaURL:(NSURL *)renderedMediaURL
+{
+    self.keyboardManager = nil;
+    if (self.completionBlock != nil)
+    {
+        self.completionBlock(success, previewImage, renderedMediaURL);
+    }
+}
 
 - (void)keyboardWillShowWithFrameBegin:(CGRect)beginFrame
                               frameEnd:(CGRect)endFrame
