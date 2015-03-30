@@ -74,7 +74,7 @@ static NSString * const kTitleKey = @"title";
     VColorOptionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     VColorType *colorType = self.tools[ indexPath.row ];
     cell.font = [self.dependencyManager fontForKey:@"font.button2"];
-    [cell setColor:colorType.color withTitle:colorType.title];
+    [cell setColor:colorType.color withTitle:NSLocalizedString( colorType.title, nil )];
     
     return cell;
 }

@@ -483,3 +483,15 @@
 "AuthorizationContextViewProfile"               = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are. ";
 "AuthorizationContextAddComment"                = "Join in on the conversation! We want to hear what you have to say. Create an account and you'll be on your way!";
 "AuthorizationContextInbox"                     = "We are so excited to have you join our community and message fans. Just create an account so you can send and receive messages!";
+
+"Standard"  = "Standard";   // The default color before a selection is made
+"Red"       = "Red";        // The color red
+"Magenta"   = "Magenta";    // The color, a pink/red
+"Orange"    = "Orange";     // The color orange
+"Peach"     = "Peach";      // The color, a light yellow/orange
+"Yellow"    = "Yellow";     // The color yellow
+"Green"     = "Green";      // The color green
+"Teal"      = "Teal";       // The color, a blue/green
+"Blue"      = "Blue";       // The color blue
+"Purple"    = "Purple";     // The color purp[le
+"Black"     = "Black";      // The color black

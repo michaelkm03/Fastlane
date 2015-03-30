@@ -10,12 +10,7 @@
 
 #import "VHasManagedDependencies.h"
 #import "VToolPicker.h"
-
-typedef NS_ENUM( NSInteger, VTickerPickerSelectionMode )
-{
-    VTickerPickerSelectionModeSingle,
-    VTickerPickerSelectionModeMultiple
-};
+#import "VTickerPickerSelection.h"
 
 /**
  *  VTickerPickerViewController is a tool picker via conformance to the VToolPicker protocol.

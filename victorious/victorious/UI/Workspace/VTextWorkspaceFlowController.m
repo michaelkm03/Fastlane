@@ -13,6 +13,7 @@
 #import "VRootViewController.h"
 #import "VTextCanvasToolViewController.h"
 #import "VWorkspaceTool.h"
+#import "NSDictionary+VJSONLogging.h"
 
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate>
 

@@ -10,8 +10,6 @@
 #import "VDependencyManager.h"
 #import "VBasicToolPickerCell.h"
 
-static NSString * const kPickerSelectionMode = @"pickerSelectionMode";
-
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -35,7 +33,7 @@ static NSString * const kPickerSelectionMode = @"pickerSelectionMode";
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.dependencyManager = dependencyManager;
     toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    toolPicker.selectionMode = (VTickerPickerSelectionMode)[dependencyManager numberForKey:kPickerSelectionMode].integerValue;
+    toolPicker.selectionMode = [VTickerPickerSelection selectionModeFromString:[dependencyManager stringForKey:VTickerPickerSelectionModeKey]];
     return toolPicker;
 }
 
