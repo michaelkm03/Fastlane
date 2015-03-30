@@ -21,11 +21,11 @@ static const CGFloat kImageTopConstraintHeight = 30.0f;
 static const CGFloat kLabelBottomConstraintHeight = 10.0f;
 static const CGFloat kImageHorizontalInset = 55.0f;
 static const CGFloat kLabelHeight = 70.0f;
+static const CGFloat kShadowOffsetY = 6.0f;
+static const CGFloat kShadowOpacity = 0.4f;
 
 @interface VBlurredMarqueeStreamItemCell ()
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageLeftConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageRightConstraint;
@@ -33,6 +33,9 @@ static const CGFloat kLabelHeight = 70.0f;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
+
+@property (nonatomic, weak) IBOutlet UIView *imageViewContianer;
+
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
@@ -40,6 +43,15 @@ static const CGFloat kLabelHeight = 70.0f;
 @end
 
 @implementation VBlurredMarqueeStreamItemCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.contentRotation = 0.0f;
+    self.imageViewContianer.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.imageViewContianer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
+    self.imageViewContianer.layer.shadowOpacity = kShadowOpacity;
+}
 
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
@@ -81,6 +93,12 @@ static const CGFloat kLabelHeight = 70.0f;
     
     NSString *contentUrl = (NSString *)sequence.previewData;
     [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
+}
+
+- (void)setContentRotation:(CGFloat)contentRotation
+{
+    _contentRotation = contentRotation;
+    self.imageViewContianer.transform = CGAffineTransformMakeRotation(contentRotation * - M_PI);
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

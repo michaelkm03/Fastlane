@@ -14,7 +14,7 @@ extern NSString * const kMarqueeURLKey;
 
 @class VDependencyManager, VStream, VStreamItem, VStreamCollectionViewDataSource, VTimerManager, VUser, VAbstractMarqueeController;
 
-@interface VAbstractMarqueeController : NSObject <VStreamCollectionDataDelegate>
+@interface VAbstractMarqueeController : NSObject <VStreamCollectionDataDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak) id <VMarqueeControllerDelegate> delegate;
 @property (nonatomic, strong) UICollectionView *collectionView;///<The colletion view used to display the streamItems

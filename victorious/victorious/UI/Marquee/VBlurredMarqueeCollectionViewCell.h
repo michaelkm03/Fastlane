@@ -8,8 +8,6 @@
 
 #import "VAbstractMarqueeCollectionViewCell.h"
 
-@class VStreamItem;
-
 @interface VBlurredMarqueeCollectionViewCell : VAbstractMarqueeCollectionViewCell
 
 @end

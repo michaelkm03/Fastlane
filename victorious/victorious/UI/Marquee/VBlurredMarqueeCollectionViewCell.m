@@ -105,6 +105,12 @@
         CGFloat newOffset = point.x / CGRectGetWidth(self.bounds);
         self.crossfadingBlurredImageView.offset = newOffset;
         self.crossfadingLabel.offset = newOffset;
+        
+        for ( VBlurredMarqueeStreamItemCell *streamItemCell in self.collectionView.visibleCells )
+        {
+            NSIndexPath *indexPath = [self.collectionView indexPathForCell:streamItemCell];
+            streamItemCell.contentRotation = ( newOffset - (CGFloat)indexPath.row ) / 5.0;
+        }
     }
 }
 

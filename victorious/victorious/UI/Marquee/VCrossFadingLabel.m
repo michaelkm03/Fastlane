@@ -43,6 +43,16 @@
         [self updateToString:desiredText withAttributes:self.textAttributes];
     }
     
+    CGFloat maxOffset = (CGFloat)( self.strings.count - 1 );
+    if ( offset < 0.0f )
+    {
+        offset = 0.0f;
+    }
+    else if ( offset >= maxOffset )
+    {
+        offset = maxOffset;
+    }
+    
     _offset = offset;
     
     CGFloat alpha = offset - floorf(offset);

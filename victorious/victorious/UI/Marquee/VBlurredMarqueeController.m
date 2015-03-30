@@ -13,9 +13,13 @@
 #import "VTimerManager.h"
 
 static const CGFloat kVisibilityDuration = 5.0f;
-static const CGFloat kAnimationDuration = 5.0f;
+static const CGFloat kOffsetOvershoot = 20.0f;
 
-@interface VBlurredMarqueeController () <UIScrollViewDelegate>
+@interface VBlurredMarqueeController ()
+
+@property (nonatomic, assign) CGPoint overshootTarget;
+@property (nonatomic, assign) CGPoint offsetTarget;
+@property (nonatomic, assign) BOOL shouldAnimateToTarget;
 
 @end
 
@@ -41,22 +45,32 @@ static const CGFloat kAnimationDuration = 5.0f;
     CGFloat pageWidth = self.collectionView.frame.size.width;
     NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
     currentPage ++;
+    CGFloat overshootAmount = kOffsetOvershoot;
     if (currentPage == (NSInteger)self.streamDataSource.count)
     {
         currentPage = 0;
+        overshootAmount = - overshootAmount;
     }
     
-    [UIView animateWithDuration:kAnimationDuration
-                          delay:0.0f
-         usingSpringWithDamping:0.5f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
-                     animations:^
-     {
-#warning NEED TO FIND A WAY AROUND THIS
-         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
-     }
-                     completion:nil];
+    CGPoint point = CGPointMake(pageWidth * currentPage + overshootAmount, self.collectionView.contentOffset.y);
+    self.overshootTarget = point;
+    point.x -= overshootAmount;
+    self.offsetTarget = point;
+    self.shouldAnimateToTarget = YES;
+    [self.collectionView setContentOffset:self.overshootTarget animated:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    if ( self.shouldAnimateToTarget )
+    {
+        if ( CGPointEqualToPoint(scrollView.contentOffset, self.overshootTarget) )
+        {
+            [self.collectionView setContentOffset:self.offsetTarget animated:YES];
+            self.shouldAnimateToTarget = NO;
+        }
+    }
 }
 
 //Let the container handle the selection.

@@ -44,8 +44,8 @@
 - (void)commonInit
 {
     self.imageView = [[UIImageView alloc] init];
-    self.imageView.backgroundColor = [UIColor blackColor];
-    self.backgroundColor = [UIColor purpleColor];
+    self.imageView.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor];
     [self addSubview:self.imageView];
     [self v_addFitToParentConstraintsToSubview:self.imageView];
 }
@@ -118,6 +118,18 @@
         //There are no imageViews to update, just get out
         return;
     }
+    
+    CGFloat maxOffset = (CGFloat)( self.imageViewContainers.count - 1 );
+    if ( offset < 0.0f )
+    {
+        offset = 0.0f;
+    }
+    else if ( offset >= maxOffset )
+    {
+        offset = maxOffset;
+    }
+    
+    _offset = offset;
 
     //Todo: SPEED TEST TO DETERMINE WHEN THIS PERFORMANCE SHIFT NEEDS TO HAPPEN
     if ( self.imageViewContainers.count > 5 )
@@ -126,16 +138,13 @@
         NSArray *previouslyVisibleImageViewContainers = [self visibleImageViewsForOffset:self.offset];
         for ( VImageViewContainer *imageViewContainer in previouslyVisibleImageViewContainers )
         {
-            if ( ![currentlyVisibleImageViewContainers containsObject:imageViewContainer] )
-            {
-                //The imageView we're inspecting is no longer visible, set it's alpha to 0
-                imageViewContainer.alpha = 0.0f;
-            }
-            else
+            CGFloat targetAlpha = 0.0f;
+            if ( [currentlyVisibleImageViewContainers containsObject:imageViewContainer] )
             {
                 CGFloat targetAlpha = fabsf(offset - (CGFloat)[currentlyVisibleImageViewContainers indexOfObject:imageViewContainer]);
-                imageViewContainer.alpha = targetAlpha;
+                targetAlpha *= targetAlpha;
             }
+            imageViewContainer.alpha = targetAlpha;
         }
     }
     else
@@ -156,8 +165,6 @@
             imageViewContainer.alpha = targetAlpha;
         }
     }
-    
-    _offset = offset;
 }
 
 - (NSArray *)visibleImageViewsForOffset:(CGFloat)offset

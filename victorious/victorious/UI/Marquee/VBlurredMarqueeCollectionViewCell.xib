@@ -15,7 +15,7 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KbE-9l-IFh" customClass="VCrossFadingImageView">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="238"/>
-                        <color key="backgroundColor" red="1" green="0.059377636859999999" blue="0.1569865916" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Pas-Uw-m0a">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="238"/>
