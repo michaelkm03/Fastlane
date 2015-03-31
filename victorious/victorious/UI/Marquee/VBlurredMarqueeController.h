@@ -8,8 +8,12 @@
 
 #import "VAbstractMarqueeController.h"
 
+@class VCrossFadingImageView, VCrossFadingLabel;
+
 @interface VBlurredMarqueeController : VAbstractMarqueeController
 
 @property (nonatomic, assign) CGPoint contentOffset;
+@property (nonatomic, weak) VCrossFadingImageView *crossfadingBlurredImageView;
+@property (nonatomic, weak) VCrossFadingLabel *crossfadingLabel;
 
 @end

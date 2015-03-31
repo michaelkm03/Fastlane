@@ -32,9 +32,9 @@ static const CGFloat kShadowOpacity = 0.4f;
 
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 
-@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
-
 @property (nonatomic, weak) IBOutlet UIView *imageViewContianer;
+
+@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -47,7 +47,6 @@ static const CGFloat kShadowOpacity = 0.4f;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.contentRotation = 0.0f;
     self.imageViewContianer.layer.shadowColor = [UIColor blackColor].CGColor;
     self.imageViewContianer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
     self.imageViewContianer.layer.shadowOpacity = kShadowOpacity;
@@ -93,18 +92,6 @@ static const CGFloat kShadowOpacity = 0.4f;
     
     NSString *contentUrl = (NSString *)sequence.previewData;
     [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
-}
-
-- (void)setContentRotation:(CGFloat)contentRotation
-{
-    _contentRotation = contentRotation;
-    self.imageViewContianer.transform = CGAffineTransformMakeRotation(contentRotation * - M_PI);
-}
-
-- (void)setContentScale:(CGFloat)contentScale
-{
-    _contentScale = contentScale;
-    self.imageViewContianer.transform = CGAffineTransformMakeScale(contentScale, contentScale);
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

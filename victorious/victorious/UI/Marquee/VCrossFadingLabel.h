@@ -16,5 +16,6 @@
 @property (nonatomic, readonly) NSArray *strings;
 @property (nonatomic, strong) NSDictionary *textAttributes;
 @property (nonatomic, assign) CGFloat offset;
+@property (nonatomic, assign) BOOL opaqueOutsideArrayRange;
 
 @end

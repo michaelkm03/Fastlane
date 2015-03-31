@@ -27,7 +27,7 @@
 static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
 static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 
-@interface VFullscreenMarqueeCollectionCell()
+@interface VFullscreenMarqueeCollectionCell() <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
 @property (nonatomic, strong) VFullscreenMarqueeTabIndicatorView *tabView;

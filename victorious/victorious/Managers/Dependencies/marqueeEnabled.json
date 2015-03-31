@@ -72,7 +72,7 @@
                   "showComments" : true
                 },
                 "marqueeCell" : {
-                    "name" : "blurred.marqueeCell",
+                    "name" : "fullscreen.marqueeCell",
                     "marqueeURL" : "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream\/marquee\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%"
                 },
                 "title" : "Recent",

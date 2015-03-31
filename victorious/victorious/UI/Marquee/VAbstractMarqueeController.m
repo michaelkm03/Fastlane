@@ -72,6 +72,7 @@ NSString * const kMarqueeURLKey = @"marqueeURL";
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
     NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
+    [self enableTimer];
     if ( currentPage != self.currentPage )
     {
         self.currentPage = currentPage;

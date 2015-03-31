@@ -47,8 +47,8 @@
     [self.marquee refreshWithSuccess:^(void)
      {
          [self.marquee enableTimer];
-         [self.collectionView reloadData];
          [self updatedFromRefresh];
+         
      } failure:nil];
 }
 

@@ -23,6 +23,12 @@ static const CGFloat kTextViewInset = 22.0f; // Needs to be sum of textview inse
 const CGFloat kInsetCellTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
 
+@interface VInsetStreamCollectionCell ()
+
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+
+@end
+
 @implementation VInsetStreamCollectionCell
 
 - (void)awakeFromNib
@@ -148,6 +154,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
     [self.commentsLabel setText:commentsString];
     self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.backgroundContainer;
 }
 
 @end

@@ -21,15 +21,15 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1up-Eh-bZJ">
                         <rect key="frame" x="55" y="30" width="261" height="261"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gtk-Im-f1d">
+                                <rect key="frame" x="0.0" y="0.0" width="261" height="261"/>
+                            </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="cla-XG-VT6">
                                 <rect key="frame" x="98" y="96" width="65" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="4dC-xn-Yq5"/>
                                     <constraint firstAttribute="height" constant="70" id="y5S-fw-qOf"/>
                                 </constraints>
-                            </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gtk-Im-f1d">
-                                <rect key="frame" x="0.0" y="0.0" width="261" height="261"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

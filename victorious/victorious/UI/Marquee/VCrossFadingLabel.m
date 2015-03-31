@@ -32,7 +32,7 @@
     }
     else if ( targetIndex >= (NSInteger)self.strings.count )
     {
-        targetIndex = self.strings.count;
+        targetIndex = self.strings.count - 1;
     }
     
     NSString *desiredText = self.strings[targetIndex];
@@ -42,15 +42,27 @@
         //Text has changed!
         [self updateToString:desiredText withAttributes:self.textAttributes];
     }
-    
+
     CGFloat maxOffset = (CGFloat)( self.strings.count - 1 );
-    if ( offset < 0.0f )
+
+    if ( !self.opaqueOutsideArrayRange )
     {
-        offset = 0.0f;
+        if ( offset < - 0.5f || offset > maxOffset + 0.5f )
+        {
+            self.alpha = 0.0f;
+            return;
+        }
     }
-    else if ( offset >= maxOffset )
+    else
     {
-        offset = maxOffset;
+        if ( offset < 0.0f )
+        {
+            offset = 0.0f;
+        }
+        else if ( offset >= maxOffset )
+        {
+            offset = maxOffset;
+        }
     }
     
     _offset = offset;

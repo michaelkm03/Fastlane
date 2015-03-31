@@ -100,7 +100,7 @@
         
         imageViewContainer.alpha = 0.0f;
         
-        [imageViewContainer.imageView setBlurredImageWithURL:imageURL placeholderImage:placeholderImage tintColor:[UIColor clearColor]];
+        [imageViewContainer.imageView setBlurredImageWithURL:imageURL placeholderImage:placeholderImage tintColor:tintColor];
         
         [self addSubview:imageViewContainer];
         
@@ -184,11 +184,11 @@
     }
     else if ( lowIndex < 0 )
     {
-        return [self.imageViewContainers firstObject];
+        return @[[self.imageViewContainers firstObject]];
     }
     else if ( lowIndex >= (NSInteger)self.imageViewContainers.count )
     {
-        return [self.imageViewContainers lastObject];
+        return @[[self.imageViewContainers lastObject]];
     }
     
     if ( lowIndex != highIndex && highIndex > 0 && highIndex < (NSInteger)self.imageViewContainers.count )

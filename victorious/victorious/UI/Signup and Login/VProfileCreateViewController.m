@@ -260,7 +260,7 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationPortrait;
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (BOOL)prefersStatusBarHidden
