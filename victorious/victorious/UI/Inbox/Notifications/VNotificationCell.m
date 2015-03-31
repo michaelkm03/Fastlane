@@ -11,8 +11,9 @@
 #import "VThemeManager.h"
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
+#import "VDefaultProfileImageView.h"
 
-CGFloat const kVNotificationCellHeight = 72;
+CGFloat const kVNotificationCellHeight = 56;
 
 @implementation VNotificationCell
 
@@ -29,15 +30,6 @@ CGFloat const kVNotificationCellHeight = 72;
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
 //    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-//    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-//    self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    
-    self.notificationWho.clipsToBounds = YES;
-    self.notificationWho.layer.cornerRadius = CGRectGetHeight(self.notificationWho.bounds)/2;
-    self.notificationWho.layer.borderColor = self.backgroundColor.CGColor;
-    self.notificationWho.layer.borderWidth = 1.0f;
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
@@ -47,45 +39,22 @@ CGFloat const kVNotificationCellHeight = 72;
     return VNotificationTypeComment;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.backgroundColor = [self.notification.isRead boolValue] ? [UIColor whiteColor] : [UIColor colorWithWhite:0.95 alpha:1.0];
+}
+
 - (void)setNotification:(VNotification *)notification
 {
     _notification = notification;
     
-    self.usernameLabel.text  = notification.user.name;
-    
-    [self.notificationWho setImage:[UIImage imageNamed:@"user-icon"]];
+//    [self.notificationWho setImage:[UIImage imageNamed:@"user-icon"]];
+    [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
     self.accessoryType = [self.notification.deeplink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
-    VNotificationType notificationType = [self getTypeForNotification:self.notification];
-    NSMutableString *message = [NSMutableString stringWithCapacity:64];
-    switch (notificationType)
-    {
-        case VNotificationTypeNewFollow:
-            [message appendString:NSLocalizedString(@"NotificationNewFollow", @"")];
-            break;
-        case VNotificationTypeComment:
-            [message appendString:NSLocalizedString(@"NotificationComment", @"")];
-            break;
-        case VNotificationTypeFriendJoined:
-            [message appendString:NSLocalizedString(@"NotificationFriendJoined", @"")];
-            break;
-        case VNotificationTypeRepost:
-            [message appendString:NSLocalizedString(@"NotificationRepost", @"")];
-            break;
-        case VNotificationTypePollResponse:
-            [message appendString:NSLocalizedString(@"NotificationPollResponse", @"")];
-            break;
-        case VNotificationTypeRemix:
-            [message appendString:NSLocalizedString(@"NotificationRemix", @"")];
-            break;
-            
-        default:
-            [message appendString:NSLocalizedString(@"NotificationUnknown", @"")];
-            break;
-    }
-    self.messageLabel.text = message;
-//    self.messageLabel.text = @"notification message goes here and now it's really long to wrap onto 2 lines.";
-    self.dateLabel.text = [notification.postedAt timeSince];
+    self.messageLabel.text = notification.body;
+    self.dateLabel.text = [notification.createdAt timeSince];
     
     if ([notification.deeplink length] > 0)
     {

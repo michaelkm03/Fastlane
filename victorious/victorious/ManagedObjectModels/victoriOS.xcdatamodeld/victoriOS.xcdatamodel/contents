@@ -137,7 +137,9 @@
     </entity>
     <entity name="Notification" representedClassName="VNotification" syncable="YES">
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="deeplink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isRead" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="notifyType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
@@ -284,7 +286,7 @@
         <element name="Message" positionX="1582" positionY="-271" width="128" height="195"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
-        <element name="Notification" positionX="1582" positionY="135" width="128" height="208"/>
+        <element name="Notification" positionX="1582" positionY="135" width="128" height="240"/>
         <element name="NotificationSettings" positionX="693" positionY="-648" width="128" height="150"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>

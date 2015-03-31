@@ -13,13 +13,19 @@
 
 @interface VNotification : NSManagedObject
 
+@property (nonatomic, retain) NSString * body;
+@property (nonatomic, retain) NSString * deeplink;
+@property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSString * notifyType;
 @property (nonatomic, retain) NSDate * postedAt;
-@property (nonatomic, retain) NSNumber * userId;
 @property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSString * subject;
+@property (nonatomic, retain) NSNumber * userId;
+@property (nonatomic, retain) NSString * imageURL;
+@property (nonatomic, retain) NSDate * createdAt;
+
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) VMessage *message;
 @property (nonatomic, retain) VComment *comment;
-@property (nonatomic, retain) NSString * deeplink;
 
 @end

@@ -48,29 +48,10 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     return viewController;
 }
 
-/*
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"VNotificationsViewController"];
-    if (self)
-    {
-        _dependencyManager = dependencyManager;
-        self.title = @"Notifications";
-        self.navigationItem.rightBarButtonItem = nil;
-        
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    }
-    return self;
-}
- */
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark -  Container Child
 
@@ -87,6 +68,8 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     // Do any additional setup after loading the view.
     self.tableView.contentInset = self.v_layoutInsets;
     self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = kVNotificationCellHeight;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,13 +84,13 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
+    [[VTrackingManager sharedInstance] startEvent:@"Notifications"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
+    [[VTrackingManager sharedInstance] endEvent:@"Notifications"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -117,17 +100,6 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     // Dispose of any resources that can be recreated.
 }
 
-/*
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
@@ -135,7 +107,6 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     RKObjectManager *manager = [RKObjectManager sharedManager];
     
     NSFetchRequest *fetchRequest = nil;
-//    NSSortDescriptor *sort = [[NSSortDescriptor alloc] init];
     
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
@@ -203,10 +174,12 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     return NO;
 }
 
+/*
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return kVNotificationCellHeight;
 }
+ */
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {

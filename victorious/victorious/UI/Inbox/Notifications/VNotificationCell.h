@@ -22,14 +22,14 @@ typedef NS_ENUM(NSInteger, VNotificationType) {
 
 extern CGFloat const kVNotificationCellHeight;
 
-@class VNotification;
+@class VNotification, VDefaultProfileImageView;
 
 @interface VNotificationCell : VTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *notificationWho;
+@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *notificationWho;
 @property (strong, nonatomic) VNotification *notification;
 
 @end

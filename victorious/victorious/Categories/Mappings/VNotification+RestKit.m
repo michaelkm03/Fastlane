@@ -20,14 +20,19 @@
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"id" : VSelectorName(remoteId),
-                                  @"user_id" : VSelectorName(userId),
+                                  @"body" : VSelectorName(body),
+                                  @"deeplink" : VSelectorName(deeplink),
+                                  @"is_read" : VSelectorName(isRead),
                                   @"notify_type" : VSelectorName(notifyType),
+                                  @"posted_at" : VSelectorName(postedAt),
+                                  @"id" : VSelectorName(remoteId),
+                                  @"subject" : VSelectorName(subject),
+                                  @"user_id" : VSelectorName(userId),
+                                  @"creator_profile_image_url" : VSelectorName(imageURL),
+                                  @"created_at" : VSelectorName(createdAt),
                                   @"user" : VSelectorName(user),
                                   @"message" : VSelectorName(message),
-                                  @"comment" : VSelectorName(comment),
-                                  @"posted_at" : VSelectorName(postedAt),
-                                  @"deeplink" : VSelectorName(deeplink)
+                                  @"comment" : VSelectorName(comment)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
