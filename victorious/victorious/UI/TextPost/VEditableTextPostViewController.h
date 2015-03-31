@@ -10,17 +10,24 @@
 #import "VTextPostViewController.h"
 #import "VHasManagedDependencies.h"
 
+@class VEditableTextPostViewController;
+
 @protocol VEditableTextPostViewControllerDelegate <NSObject>
 
-- (void)textPostViewController:(VTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags;
+- (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags;
 
-- (void)textPostViewController:(VTextPostViewController *)textPostViewController didAddHashtags:(NSArray *)addedHashtags;
+- (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didAddHashtags:(NSArray *)addedHashtags;
+
+- (void)textPostViewControllerDidUpdateText:(VEditableTextPostViewController *)textPostViewController;
 
 @end
+
 
 @interface VEditableTextPostViewController : VTextPostViewController <VHasManagedDependencies>
 
 @property (nonatomic, weak) id<VEditableTextPostViewControllerDelegate> delegate;
+
+@property (nonatomic, readonly) NSString *workingText;
 
 - (BOOL)addHashtag:(NSString *)hashtagText;
 

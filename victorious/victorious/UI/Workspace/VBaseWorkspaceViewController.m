@@ -322,17 +322,23 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
     
     void (^animations)() = ^()
     {
-        self.inspectorToolViewController.view.userInteractionEnabled = NO;
-        self.inspectorToolViewController.view.alpha = kInspectorToolDisabledAlpha;
+        if ( self.disablesNonCanvasItemsOnKeyboardAppearance )
+        {
+            self.inspectorToolViewController.view.userInteractionEnabled = NO;
+            self.inspectorToolViewController.view.alpha = kInspectorToolDisabledAlpha;
+            [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+             {
+                 [item setEnabled:NO];
+             }];
+        }
         
-        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
-        self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
-        self.inspectorToolViewController.view.frame = inspectorFrame;
-        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-         {
-             [item setEnabled:NO];
-         }];
-        [self.view layoutIfNeeded];
+        if ( self.adjustsCanvasViewFrameOnKeyboardAppearance )
+        {
+            self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
+            self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+            self.inspectorToolViewController.view.frame = inspectorFrame;
+            [self.view layoutIfNeeded];
+        }
     };
     
     [UIView animateWithDuration:animationDuration
@@ -356,15 +362,21 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
     
     void (^animations)() = ^()
     {
-        self.inspectorToolViewController.view.userInteractionEnabled = YES;
-        self.inspectorToolViewController.view.alpha = 1.0f;
+        if ( self.disablesNonCanvasItemsOnKeyboardAppearance )
+        {
+            self.inspectorToolViewController.view.userInteractionEnabled = YES;
+            self.inspectorToolViewController.view.alpha = 1.0f;
+            [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+             {
+                 [item setEnabled:YES];
+             }];
+        }
         
-        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
-        [self.view layoutIfNeeded];
-        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-         {
-             [item setEnabled:YES];
-         }];
+        if ( self.adjustsCanvasViewFrameOnKeyboardAppearance )
+        {
+            self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
+            [self.view layoutIfNeeded];
+        }
     };
     
     [UIView animateWithDuration:animationDuration

@@ -41,20 +41,35 @@ static NSString * const kDefaultTextKey = @"defaultText";
 {
     [super viewDidLoad];
     
-    self.isShowingPlaceholderText = YES;
-    
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
     [self.view insertSubview:self.overlayButton atIndex:0];
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];
     [self.overlayButton addTarget:self action:@selector(overlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
-    [self restorePlaceholderText];
-    
     self.supplementalHashtags = [[NSMutableSet alloc] init];
     
     self.textView.userInteractionEnabled = YES;
     self.textView.editable = YES;
+    
+    self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
+    [self updatePlaceholderText];
+    
+    [self updateDelegate];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self updateDelegate];
+}
+
+- (void)updateDelegate
+{
+    if ( self.delegate != nil )
+    {
+        [self.delegate textPostViewControllerDidUpdateText:self];
+    }
 }
 
 #pragma mark - Supplemental hashtags
@@ -70,9 +85,8 @@ static NSString * const kDefaultTextKey = @"defaultText";
     NSUInteger lengthWithAddedHashtag = self.text.length + hashtagText.length;
     if ( ![self.supplementalHashtags containsObject:hashtagTextWithHashMark] && lengthWithAddedHashtag < self.viewModel.maxTextLength )
     {
-        [self clearPlaceholderText];
         [self.supplementalHashtags addObject:hashtagTextWithHashMark];
-        NSString *space = [self isLastCharacterASpace:self.text] ? @"" : @" ";
+        NSString *space = [self isLastCharacterASpace:self.text] || self.text.length == 0 ? @"" : @" ";
         self.text = [NSString stringWithFormat:@"%@%@%@", self.text, space, hashtagTextWithHashMark];
         return YES;
     }
@@ -126,23 +140,43 @@ static NSString * const kDefaultTextKey = @"defaultText";
     return [[string substringFromIndex:string.length-1] isEqualToString:@" "];
 }
 
-#pragma mark - Placeholder text
-
-- (void)clearPlaceholderText
+- (void)setText:(NSString *)text
 {
-    if ( self.isShowingPlaceholderText )
-    {
-        self.isShowingPlaceholderText = NO;
-        self.text = @"";
-    }
+    // This keeps the cursor position the same after adding hashtags in superclass
+    NSRange selectedRange = self.textView.selectedRange;
+    [super setText:text];
+    self.textView.selectedRange = selectedRange;
 }
 
-- (void)restorePlaceholderText
+#pragma mark - Placeholder text
+
+- (void)updatePlaceholderText
 {
-    if ( self.supplementalHashtags.count == 0 && self.text.length == 0 )
+    if ( [self shouldShowPlaceholderText] )
     {
         self.text = self.placeholderText;
         self.isShowingPlaceholderText = YES;
+    }
+    else
+    {
+        self.isShowingPlaceholderText = NO;
+    }
+}
+
+- (BOOL)shouldShowPlaceholderText
+{
+    return self.supplementalHashtags.count == 0 && self.text.length == 0;
+}
+
+- (NSString *)workingText
+{
+    if ( self.isShowingPlaceholderText )
+    {
+        return @"";
+    }
+    else
+    {
+        return self.text;
     }
 }
 
@@ -150,17 +184,19 @@ static NSString * const kDefaultTextKey = @"defaultText";
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    [self clearPlaceholderText];
+    self.isEditing = YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.text = textView.text;
+    
+    [self updateDelegate];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [self restorePlaceholderText];
+    self.isEditing = NO;
     [textView resignFirstResponder];
 }
 
@@ -168,6 +204,7 @@ static NSString * const kDefaultTextKey = @"defaultText";
 {
     if ( [text isEqualToString:@"\n"] )
     {
+        self.isEditing = NO;
         [textView resignFirstResponder];
         return NO;
     }
@@ -186,8 +223,7 @@ static NSString * const kDefaultTextKey = @"defaultText";
             {
                 [self.supplementalHashtags removeObject:hashtag];
             }];
-            [self.delegate textPostViewController:self
-                                didDeleteHashtags:deletedHashtagsWithoutHashmarks];
+            [self.delegate textPostViewController:self didDeleteHashtags:deletedHashtagsWithoutHashmarks];
         }
     }
     
@@ -198,7 +234,24 @@ static NSString * const kDefaultTextKey = @"defaultText";
 
 - (void)overlayButtonTapped:(UIButton *)sender
 {
-    [self.textView resignFirstResponder];
+    if ( self.isEditing )
+    {
+        self.isEditing = NO;
+        [self updatePlaceholderText];
+        [self.textView resignFirstResponder];
+    }
+    else
+    {
+        if ( self.isShowingPlaceholderText )
+        {
+            self.text = @"";
+            self.isShowingPlaceholderText = NO;
+        }
+        self.isEditing = YES;
+        [self.textView becomeFirstResponder];
+    }
+    
+    [self updateDelegate];
 }
 
 @end

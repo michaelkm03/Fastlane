@@ -147,9 +147,9 @@
     }
 }
 
-#pragma mark - VTextPostViewControllerDelegate
+#pragma mark - VVEditableTextPostViewControllerDelegate
 
-- (void)textPostViewController:(VTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags
+- (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags
 {
     VHashtagPickerDataSource *dataSource = self.hashtagTool.toolPicker.dataSource;
     [deletedHashtags enumerateObjectsUsingBlock:^(NSString *hashtag, NSUInteger idx, BOOL *stop)
@@ -161,6 +161,28 @@
             [self.hashtagTool.toolPicker deselectToolAtIndex:index];
         }
     }];
+}
+
+- (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didAddHashtags:(NSArray *)addedHashtags
+{
+    VHashtagPickerDataSource *dataSource = self.hashtagTool.toolPicker.dataSource;
+    [addedHashtags enumerateObjectsUsingBlock:^(NSString *hashtag, NSUInteger idx, BOOL *stop)
+     {
+         id<VWorkspaceTool> tool = [dataSource toolForHashtag:hashtag];
+         if ( tool != nil )
+         {
+             NSInteger index = [dataSource.tools indexOfObject:tool];
+             [self.hashtagTool.toolPicker selectToolAtIndex:index];
+         }
+     }];
+}
+
+- (void)textPostViewControllerDidUpdateText:(VEditableTextPostViewController *)textPostViewController
+{
+    if ( self.textToolDelegate != nil )
+    {
+        [self.textToolDelegate textDidUpdate:textPostViewController.workingText];
+    }
 }
 
 @end

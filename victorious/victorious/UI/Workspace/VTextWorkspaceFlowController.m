@@ -15,7 +15,7 @@
 #import "VWorkspaceTool.h"
 #import "NSDictionary+VJSONLogging.h"
 
-@interface VTextWorkspaceFlowController() <UINavigationControllerDelegate>
+@interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextToolControllerDelegate>
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 @property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
@@ -30,16 +30,19 @@
     self = [super init];
     if ( self )
     {
-        // 1. Create the text workspace
+        // Create the text workspace
         _textWorkspaceViewController = [self createTextWorkspaceWithDependencyManager:dependencyManager];
         
-        // 2. Create the worksapce canvas
+        // Create the worksapce canvas
         _textCanvasToolViewController = [VTextCanvasToolViewController newWithDependencyManager:dependencyManager];
         
-        // 3. Create the tool controller using workspace as delegate
-        _textWorkspaceViewController.toolController = [self createToolControllerWithDependencyManager:dependencyManager delegate:_textWorkspaceViewController];
+        // Create the tool controller and set up delegates
+        VTextToolController *toolController = [self createToolControllerWithDependencyManager:dependencyManager];
+        toolController.textToolDelegate = self;
+        toolController.delegate = _textWorkspaceViewController;
+        _textWorkspaceViewController.toolController = toolController;
         
-        // 4. Add tools to the tool controller
+        // Add tools to the tool controller
         [_textWorkspaceViewController.toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
          {
              if ( [tool respondsToSelector:@selector(setSharedCanvasToolViewController:)] )
@@ -48,7 +51,7 @@
              }
          }];
         
-        // 5. Create the nav controller and present the workspace
+        // Create the nav controller and present the workspace
         _flowNavigationController = [[UINavigationController alloc] init];
         _flowNavigationController.navigationBarHidden = YES;
         [_flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
@@ -56,13 +59,12 @@
     return self;
 }
 
-- (VTextToolController *)createToolControllerWithDependencyManager:(VDependencyManager *)dependencyManager delegate:(id<VToolControllerDelegate>)delegate
+- (VTextToolController *)createToolControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSDictionary *textWorkspace = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"editTextWorkspace"];
     VDependencyManager *workspaceDependency = [dependencyManager childDependencyManagerWithAddedConfiguration:textWorkspace];
     NSArray *workspaceTools = [workspaceDependency workspaceTools];
     VTextToolController *toolController = [[VTextToolController alloc] initWithTools:workspaceTools];
-    toolController.delegate = delegate;
     return toolController;
 }
 
@@ -86,6 +88,15 @@
 - (UIViewController *)flowRootViewController
 {
     return self.flowNavigationController;
+}
+
+#pragma mark - VTextToolControllerDelegate
+
+- (void)textDidUpdate:(NSString *)text
+{
+    BOOL enabled = text.length > 0;
+    NSLog( @"text = %@", text );
+    [self.textWorkspaceViewController.continueButton setEnabled:enabled];
 }
 
 @end

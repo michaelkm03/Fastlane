@@ -38,6 +38,8 @@ static const CGFloat kGradientMagnitude = 20.0f;
     if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
     {
         VWorkspaceViewController *workvc = (VWorkspaceViewController *)toViewController;
+        workvc.disablesNonCanvasItemsOnKeyboardAppearance = YES;
+        workvc.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
         [workvc bringTopChromeOutOfView];
         [workvc bringBottomChromeOutOfView];
         

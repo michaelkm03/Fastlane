@@ -8,7 +8,13 @@
 
 #import "VToolController.h"
 
-@class VDependencyManager;
+@class VDependencyManager, VTextToolController;
+
+@protocol VTextToolControllerDelegate <NSObject>
+
+- (void)textDidUpdate:(NSString *)text;
+
+@end
 
 @interface VTextToolController : VToolController
 
@@ -22,5 +28,7 @@
 @property (nonatomic, strong) NSString *text;
 
 @property (nonatomic, strong) NSString *hashtagText;
+
+@property (nonatomic, strong) id<VTextToolControllerDelegate> textToolDelegate;
 
 @end

@@ -353,6 +353,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     if ([self.capturedMediaURL v_hasImageExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        workspaceViewController.disablesNonCanvasItemsOnKeyboardAppearance = YES;
+        workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
         workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
     }
