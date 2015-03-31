@@ -91,7 +91,7 @@
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
 
 "NoNotificationsTitle"       =   "NO NOTIFICATIONS RIGHT NOW";
-"NoNotificationsMessage"     =   "As you engage with the %COMMUNITYNAME% through commenting, remixing or posting new content, they'll engage more with you.  Find their reactions here.";
+"NoNotificationsMessage"     =   "As you engage with the community through commenting, remixing or posting new content, they'll engage more with you.  Find their reactions here.";
 "NotificationUnknown" =   "did something interesting.";
 "NotificationNewFollow" =   "is now following you.";
 "NotificationComment" =   "commented on your post ";

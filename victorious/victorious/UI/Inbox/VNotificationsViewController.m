@@ -170,7 +170,9 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
         noMessageView.titleLabel.text = NSLocalizedString(@"NoNotificationsTitle", @"");
+        noMessageView.titleLabel.textColor = [UIColor whiteColor];
         noMessageView.messageLabel.text = NSLocalizedString(@"NoNotificationsMessage", @"");
+        noMessageView.messageLabel.textColor = [UIColor whiteColor];
         noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
         self.tableView.backgroundView = noMessageView;
     }
