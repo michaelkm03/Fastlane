@@ -103,6 +103,7 @@
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 static NSString * const kViewModelKey = @"contentViewViewModel";
+static NSString * const kPollBallotIconKey = @"orImage";
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate>
 
@@ -1017,6 +1018,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                     self.ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
                                                                                 forIndexPath:indexPath];
                 }
+                self.ballotCell.orImageView.image = [self.dependencyManager imageForKey:kPollBallotIconKey];
                 self.ballotCell.answerA = self.viewModel.answerALabelText;
                 self.ballotCell.answerB = self.viewModel.answerBLabelText;
                 

@@ -25,4 +25,6 @@ typedef NS_ENUM(NSInteger, VBallot)
 @property (nonatomic, copy) void (^answerASelectionHandler)(void);
 @property (nonatomic, copy) void (^answerBSelectionHandler)(void);
 
+@property (nonatomic, weak) IBOutlet UIImageView *orImageView;
+
 @end

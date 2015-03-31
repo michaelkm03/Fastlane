@@ -62,6 +62,7 @@
             <connections>
                 <outlet property="answerAButton" destination="RLX-ox-fAJ" id="rSj-bE-9CU"/>
                 <outlet property="answerBButton" destination="3EP-fw-qmv" id="IMm-LP-De3"/>
+                <outlet property="orImageView" destination="cJJ-Gf-HxN" id="Unb-C9-TnU"/>
             </connections>
             <point key="canvasLocation" x="-265" y="27"/>
         </collectionViewCell>
