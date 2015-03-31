@@ -194,6 +194,7 @@
               [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
               
               node.sequence.hasReposted = @(YES);
+              [node.sequence.managedObjectContext save:nil];
               
               if ( completion != nil )
               {
@@ -205,6 +206,8 @@
               if ( error.code == kVSequenceAlreadyReposted )
               {
                   [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+                  node.sequence.hasReposted = @(YES);
+                  [node.sequence.managedObjectContext save:nil];
               }
               
               if ( completion != nil )

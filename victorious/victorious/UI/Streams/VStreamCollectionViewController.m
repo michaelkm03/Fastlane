@@ -605,11 +605,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
 }
 
-- (BOOL)hasRepostedSequence:(VSequence *)sequence
-{
-    return [sequence.hasReposted boolValue];
-}
-
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     // Error checking

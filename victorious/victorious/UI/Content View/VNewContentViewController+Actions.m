@@ -90,11 +90,11 @@
     
     if (self.viewModel.sequence.canRepost)
     {
-        NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
+        NSString *localizedRepostRepostedText = [self.viewModel.sequence.hasReposted boolValue] ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
                                                                actionIcon:[UIImage imageNamed:@"icon_repost"]
                                                                detailText:self.viewModel.repostCountText
-                                                                  enabled:!self.viewModel.hasReposted];
+                                                                  enabled:![self.viewModel.sequence.hasReposted boolValue]];
         repostItem.selectionHandler = ^(VActionItem *item)
         {
             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]

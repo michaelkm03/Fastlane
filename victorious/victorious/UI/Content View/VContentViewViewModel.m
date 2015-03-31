@@ -118,7 +118,7 @@
 
         _currentNode = [sequence firstNode];
         
-        
+        _hasReposted = [sequence.hasReposted boolValue];
         _currentAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
         if ( _currentAsset == nil )
         {
