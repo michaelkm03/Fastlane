@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VBaseCollectionViewCell.h"
+#import "VSwipeCollectionViewCell.h"
 #import "VComment.h"
 
 @class VCommentTextAndMediaView;
@@ -14,7 +14,7 @@
 /**
  *  UICollectionViewCell for representing a general comment on an item.
  */
-@interface VContentCommentsCell : VBaseCollectionViewCell
+@interface VContentCommentsCell : VSwipeCollectionViewCell
 
 @property (nonatomic, strong) VComment *comment;
 @property (nonatomic, readonly) NSURL *mediaURL;

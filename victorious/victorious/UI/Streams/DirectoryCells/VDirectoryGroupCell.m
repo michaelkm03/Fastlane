@@ -67,10 +67,13 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super setDependencyManager:dependencyManager];
-    
-    self.nameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    self.nameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    _dependencyManager = dependencyManager;
+ 
+    if ( dependencyManager != nil )
+    {
+        self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    }
     
     [self.collectionView reloadData];
 }
