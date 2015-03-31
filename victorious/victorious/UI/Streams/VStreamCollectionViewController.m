@@ -607,7 +607,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (BOOL)hasRepostedSequence:(VSequence *)sequence
 {
-    return [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];;
+    return [sequence.hasReposted boolValue];
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
