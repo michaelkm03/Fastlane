@@ -126,7 +126,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     }
     
     return @{
-             NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+             NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey],
              NSForegroundColorAttributeName : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
              };
 }
