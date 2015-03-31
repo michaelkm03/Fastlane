@@ -347,6 +347,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     
     __weak typeof(self) welf = self;
     VWorkspaceViewController *workspaceViewController;
+    workspaceViewController.activityText = NSLocalizedString( @"Rendering...", @"" );
+    workspaceViewController.continueText = NSLocalizedString( @"Continue", @"" );
+    workspaceViewController.confirmCancelMessage = NSLocalizedString( @"This will discard any content from the camera", @"" );
     if ([self.capturedMediaURL v_hasImageExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];

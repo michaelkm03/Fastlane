@@ -16,7 +16,7 @@
 @property (nonatomic, strong) UIView *selectionIndicatorView;
 @property (nonatomic, strong) UIColor *accentColor;
 @property (nonatomic, strong) NSIndexPath *blockScrollingSelectionUntilReached;
-
+@property (nonatomic, strong) NSIndexPath *selectedToolIndexPath;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
 @end
@@ -125,6 +125,7 @@
     {
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
         self.blockScrollingSelectionUntilReached = indexPath;
+        self.selectedToolIndexPath = indexPath;
     }
     [self.delegate toolPicker:self didSelectItemAtIndex:indexPath.row];
 }
@@ -162,6 +163,7 @@
     [self.collectionView selectItemAtIndexPath:indexPathForPoint
                                       animated:YES
                                 scrollPosition:UICollectionViewScrollPositionNone];
+    self.selectedToolIndexPath = indexPathForPoint;
     [self.delegate toolPicker:self didSelectItemAtIndex:indexPathForPoint.row];
 }
 

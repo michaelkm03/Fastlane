@@ -26,6 +26,8 @@
 "BackButton"            =   "Back";
 "Exit"                  =   "Exit";
 "Publish"               =   "Publish";
+"Publishing..."         =   "Publishing...";
+"Rendering..."          =   "Rendering...";
 "Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
 "Share"                 =   "Share";
@@ -33,6 +35,7 @@
 "Profile"               =   "Profile";
 "Settings"              =   "Settings";
 "Save"                  =   "Save";
+"Continue"              =   "Continue";
 
 "Featured"              =   "Featured";
 "Recent"                =   "Recent";

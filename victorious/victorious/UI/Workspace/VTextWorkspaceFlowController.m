@@ -74,7 +74,10 @@
         [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
     };
     workspace.showCloseButton = YES;
-    workspace.continueText = @"Publish";
+    workspace.continueText = NSLocalizedString( @"Publish", @"Label for button that will publish content." );
+    workspace.activityText = NSLocalizedString( @"Publishing...", @"Label indicating that content is being published." );
+    workspace.confirmCancelMessage = NSLocalizedString( @"This will discard any content added to your post", @"" );
+    workspace.shouldConfirmCancels = YES;
     return workspace;
 }
 

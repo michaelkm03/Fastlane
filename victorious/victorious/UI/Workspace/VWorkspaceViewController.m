@@ -94,7 +94,7 @@
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
-    hudForView.labelText = NSLocalizedString(@"Rendering...", @"");
+    hudForView.labelText = self.activityText;
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishWorkspaceEdits];
     
@@ -125,7 +125,7 @@
 - (void)confirmCancel
 {
     __weak typeof(self) welf = self;
-    UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
+    UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:self.confirmCancelMessage
                                                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                                   onCancelButton:nil
                                                           destructiveButtonTitle:NSLocalizedString(@"Discard", nil)

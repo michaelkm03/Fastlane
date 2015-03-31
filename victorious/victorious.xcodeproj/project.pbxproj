@@ -4064,6 +4064,17 @@
 			path = "Alert Controller/Categories";
 			sourceTree = "<group>";
 		};
+		A77B11651ACA34910018E932 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D8D945F41A2E8A760089D271 /* VBaseWorkspaceViewController.h */,
+				D8D945F51A2E8A760089D271 /* VBaseWorkspaceViewController.m */,
+				A7A922561AC4B52A00F4755E /* VWorkspaceViewController.h */,
+				A7A922571AC4B52A00F4755E /* VWorkspaceViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
 		A780ED4A1A933D9300A8CD5D /* Photo Filters */ = {
 			isa = PBXGroup;
 			children = (
@@ -4927,13 +4938,16 @@
 				669EBBDE1A30234A00DE317D /* Pickers */,
 				D8D945F71A2EA51D0089D271 /* Tools */,
 				D80A94D31A535DFA0035D788 /* Video */,
+				A77B11651ACA34910018E932 /* View Controllers */,
 				D8C1FD091A69DF0B0072892B /* VImageToolController.h */,
 				D8C1FD0A1A69DF0B0072892B /* VImageToolController.m */,
 				D86BF3481A42234500C9F420 /* VPublishViewController.h */,
 				D86BF3491A42234500C9F420 /* VPublishViewController.m */,
+				034D1A8B1AAFF00200EB7B2D /* VPublishViewController.xib */,
 				A74293961AAF906700532948 /* VTextToolController.h */,
 				A74293971AAF906700532948 /* VTextToolController.m */,
-				034D1A8B1AAFF00200EB7B2D /* VPublishViewController.xib */,
+				A75ED0401AB1FEA300C35063 /* VTextWorkspaceFlowController.h */,
+				A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */,
 				D8C1FD031A69C0F60072892B /* VToolController.h */,
 				D8C1FD041A69C0F60072892B /* VToolController.m */,
 				D8C1FD0C1A69DF1D0072892B /* VVideoToolController.h */,
@@ -4944,12 +4958,6 @@
 				D814040A1AB372320099EC4B /* VWorkspacePresenter.m */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
 				D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */,
-				D8D945F41A2E8A760089D271 /* VBaseWorkspaceViewController.h */,
-				D8D945F51A2E8A760089D271 /* VBaseWorkspaceViewController.m */,
-				A7A922561AC4B52A00F4755E /* VWorkspaceViewController.h */,
-				A7A922571AC4B52A00F4755E /* VWorkspaceViewController.m */,
-				A75ED0401AB1FEA300C35063 /* VTextWorkspaceFlowController.h */,
-				A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */,
 				03F6E2691AB79E090017826E /* Workspace.storyboard */,
 			);
 			path = Workspace;
