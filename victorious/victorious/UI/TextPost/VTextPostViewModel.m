@@ -9,6 +9,14 @@
 #import "VTextPostViewModel.h"
 #import "VDependencyManager.h"
 
+@interface VTextPostViewModel()
+
+@property (nonatomic, strong) NSDictionary *textAttributes;
+@property (nonatomic, strong) NSDictionary *calloutAttributes;
+@property (nonatomic, strong) NSDictionary *placeholderAttributes;
+
+@end
+
 @implementation VTextPostViewModel
 
 - (instancetype)init
@@ -29,18 +37,38 @@
 
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
-    return @{ NSFontAttributeName: font ?: @"",
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
-              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
+    if ( _textAttributes == nil )
+    {
+        UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
+        _textAttributes = @{ NSFontAttributeName: font ?: @"",
+                             NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
+                             NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
+    }
+    return _textAttributes;
 }
 
-- (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+- (NSDictionary *)calloutAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
-    return @{ NSFontAttributeName: font ?: @"",
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
-              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
+    if ( _calloutAttributes == nil )
+    {
+        UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
+        _calloutAttributes = @{ NSFontAttributeName: font ?: @"",
+                                NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
+                                NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
+    }
+    return _calloutAttributes;
+}
+
+- (NSDictionary *)placeholderAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    if ( _placeholderAttributes == nil )
+    {
+        UIFont *font = [dependencyManager fontForKey:@"font.heading1"];
+        _placeholderAttributes = @{ NSFontAttributeName: font ?: @"",
+                                    NSForegroundColorAttributeName: [[dependencyManager colorForKey:@"color.text.content"] colorWithAlphaComponent:0.5f],
+                                NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
+    }
+    return _placeholderAttributes;
 }
 
 - (NSParagraphStyle *)paragraphStyleWithFont:(UIFont *)font

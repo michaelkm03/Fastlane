@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
-@class VTextPostViewModel;
+@class VTextPostViewModel, VTextPostTextView;
 
 @interface VTextPostViewController : UIViewController <VHasManagedDependencies>
 
@@ -21,6 +21,11 @@
 
 @property (nonatomic, assign) BOOL isTextSelectable;
 
-@property (nonatomic, readonly) UITextView *textView;
+@property (nonatomic, readonly) VTextPostTextView *textView;
+
+- (void)updateTextView:(VTextPostTextView *)textPostTextView
+              withText:(NSString *)text
+        textAttributes:(NSDictionary *)textAttributes
+     calloutAttributes:(NSDictionary *)calloutAttributes;
 
 @end

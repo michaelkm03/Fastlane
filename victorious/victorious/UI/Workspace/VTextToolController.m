@@ -147,7 +147,12 @@
     }
 }
 
-#pragma mark - VVEditableTextPostViewControllerDelegate
+- (BOOL)canPublish
+{
+    return self.textPostViewController.textOutput.length > 0;
+}
+
+#pragma mark - VEditableTextPostViewControllerDelegate
 
 - (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags
 {
@@ -177,12 +182,9 @@
      }];
 }
 
-- (void)textPostViewControllerDidUpdateText:(VEditableTextPostViewController *)textPostViewController
+- (void)textDidUpdate:(NSString *)text
 {
-    if ( self.textToolDelegate != nil )
-    {
-        [self.textToolDelegate textDidUpdate:textPostViewController.workingText];
-    }
+    [self.textListener textDidUpdate:text];
 }
 
 @end

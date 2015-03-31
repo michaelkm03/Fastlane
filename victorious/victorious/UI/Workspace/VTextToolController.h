@@ -7,14 +7,9 @@
 //
 
 #import "VToolController.h"
+#import "VTextListener.h"
 
 @class VDependencyManager, VTextToolController;
-
-@protocol VTextToolControllerDelegate <NSObject>
-
-- (void)textDidUpdate:(NSString *)text;
-
-@end
 
 @interface VTextToolController : VToolController
 
@@ -25,10 +20,8 @@
  */
 @property (nonatomic, assign) NSUInteger defaultTool;
 
-@property (nonatomic, strong) NSString *text;
+@property (nonatomic, readonly) BOOL canPublish;
 
-@property (nonatomic, strong) NSString *hashtagText;
-
-@property (nonatomic, strong) id<VTextToolControllerDelegate> textToolDelegate;
+@property (nonatomic, strong) id<VTextListener> textListener;
 
 @end

@@ -1642,6 +1642,7 @@
 		A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+VBlocks.m"; sourceTree = "<group>"; };
 		A77AD4FF1A2011E000142F24 /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
 		A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
+		A77B11691ACB42890018E932 /* VTextListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTextListener.h; sourceTree = "<group>"; };
 		A77FB9211A897200003E9AA2 /* UIColor+VBrightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VBrightness.h"; sourceTree = "<group>"; };
 		A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VBrightness.m"; sourceTree = "<group>"; };
 		A780ED4B1A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIFilter+VPhotoFilterComponentConformance.h"; sourceTree = "<group>"; };
@@ -4944,6 +4945,7 @@
 				D86BF3481A42234500C9F420 /* VPublishViewController.h */,
 				D86BF3491A42234500C9F420 /* VPublishViewController.m */,
 				034D1A8B1AAFF00200EB7B2D /* VPublishViewController.xib */,
+				A77B11691ACB42890018E932 /* VTextListener.h */,
 				A74293961AAF906700532948 /* VTextToolController.h */,
 				A74293971AAF906700532948 /* VTextToolController.m */,
 				A75ED0401AB1FEA300C35063 /* VTextWorkspaceFlowController.h */,

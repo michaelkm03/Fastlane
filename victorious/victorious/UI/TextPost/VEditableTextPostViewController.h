@@ -9,16 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "VTextPostViewController.h"
 #import "VHasManagedDependencies.h"
+#import "VTextListener.h"
 
 @class VEditableTextPostViewController;
 
-@protocol VEditableTextPostViewControllerDelegate <NSObject>
+@protocol VEditableTextPostViewControllerDelegate <NSObject, VTextListener>
 
 - (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags;
 
 - (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didAddHashtags:(NSArray *)addedHashtags;
-
-- (void)textPostViewControllerDidUpdateText:(VEditableTextPostViewController *)textPostViewController;
 
 @end
 
@@ -27,7 +26,7 @@
 
 @property (nonatomic, weak) id<VEditableTextPostViewControllerDelegate> delegate;
 
-@property (nonatomic, readonly) NSString *workingText;
+@property (nonatomic, readonly) NSString *textOutput;
 
 - (BOOL)addHashtag:(NSString *)hashtagText;
 

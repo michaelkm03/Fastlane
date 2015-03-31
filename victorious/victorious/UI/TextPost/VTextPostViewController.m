@@ -41,6 +41,7 @@
 {
     [super viewDidLoad];
     
+    self.textView.text = @"";
     self.textView.selectable = NO;
     
     [self updateTextView];
@@ -61,15 +62,22 @@
 {
     _text = text;
     
-    //NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
-    //_text = [self.textLayoutHelper stringByRemovingEmptySpacesInText:text betweenCalloutRanges:hashtagCalloutRanges];
+    NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
+    _text = [self.textLayoutHelper stringByRemovingEmptySpacesInText:text betweenCalloutRanges:hashtagCalloutRanges];
     
     [self updateTextView];
 }
 
+- (void)updateTextView
+{
+    NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
+    NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
+    [self updateTextView:self.textPostTextView withText:_text textAttributes:attributes calloutAttributes:calloutAttributes];
+}
+
 #pragma mark - public
 
-- (UITextView *)textView
+- (VTextPostTextView *)textView
 {
     return self.textPostTextView;
 }
@@ -89,33 +97,39 @@
     self.textView.selectable = self.isTextSelectable;
 }
 
-- (void)updateTextView
+- (void)updateTextView:(VTextPostTextView *)textPostTextView
+              withText:(NSString *)text
+        textAttributes:(NSDictionary *)textAttributes
+     calloutAttributes:(NSDictionary *)calloutAttributes
 {
-    if ( self.text == nil )
+    if ( text == nil )
     {
-        return;
+        text = @"";
     }
     
-    const BOOL wasSelected = self.textView.selectable;
-    self.textView.selectable = YES;
+    const BOOL wasSelected = textPostTextView.selectable;
+    textPostTextView.selectable = YES;
     
-    NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:_text attributes:attributes];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:textAttributes];
     
-    NSArray *hashtagRanges = [VHashTags detectHashTags:_text];
-    NSDictionary *hashtagAttributes = [self.viewModel hashtagTextAttributesWithDependencyManager:self.dependencyManager];
-    [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:hashtagAttributes];
+    NSArray *hashtagRanges = [VHashTags detectHashTags:text];
     
-    NSArray *hashtagCalloutRanges = @[]; //[VHashTags detectHashTags:self.text includeHashSymbol:YES];
+    NSArray *hashtagCalloutRanges = nil;
+    if ( calloutAttributes != nil )
+    {
+        [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:calloutAttributes];
+        
+        hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
+        
+        [self.textLayoutHelper addWordPaddingWithVaule:self.viewModel.calloutWordPadding
+                                    toAttributedString:attributedText
+                                     withCalloutRanges:hashtagCalloutRanges];
+    }
     
-    /*[self.textLayoutHelper addWordPaddingWithVaule:self.viewModel.calloutWordPadding
-                                toAttributedString:attributedText
-                                 withCalloutRanges:hashtagCalloutRanges];*/
+    textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
+    [self.textLayoutHelper updateTextViewBackground:textPostTextView calloutRanges:hashtagCalloutRanges];
     
-    self.textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
-    [self.textLayoutHelper updateTextViewBackground:self.textPostTextView calloutRanges:hashtagCalloutRanges];
-    
-    self.textView.selectable = wasSelected;
+    textPostTextView.selectable = wasSelected;
 }
 
 @end

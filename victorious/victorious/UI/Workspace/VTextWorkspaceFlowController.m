@@ -14,8 +14,10 @@
 #import "VTextCanvasToolViewController.h"
 #import "VWorkspaceTool.h"
 #import "NSDictionary+VJSONLogging.h"
+#import "VEditableTextPostViewController.h"
+#import "VTextListener.h"
 
-@interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextToolControllerDelegate>
+@interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener>
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 @property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
@@ -38,7 +40,7 @@
         
         // Create the tool controller and set up delegates
         VTextToolController *toolController = [self createToolControllerWithDependencyManager:dependencyManager];
-        toolController.textToolDelegate = self;
+        toolController.textListener = self;
         toolController.delegate = _textWorkspaceViewController;
         _textWorkspaceViewController.toolController = toolController;
         
@@ -90,12 +92,11 @@
     return self.flowNavigationController;
 }
 
-#pragma mark - VTextToolControllerDelegate
+#pragma mark - VTextListener
 
 - (void)textDidUpdate:(NSString *)text
 {
-    BOOL enabled = text.length > 0;
-    NSLog( @"text = %@", text );
+    BOOL enabled = self.textCanvasToolViewController.textPostViewController.textOutput.length > 0;
     [self.textWorkspaceViewController.continueButton setEnabled:enabled];
 }
 

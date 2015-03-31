@@ -28,8 +28,13 @@
     {
         NSRange range = rangeValueObject.rangeValue;
         NSNumber *padding = @( wordPadding );
-        [attributedString addAttribute:NSKernAttributeName value:padding range:NSMakeRange( range.location - 1, 1 )];
-        [attributedString addAttribute:NSKernAttributeName value:padding range:NSMakeRange( range.location - 1 + range.length, 1 )];
+        if ( range.location > 0 )
+        {
+            NSRange startRange = NSMakeRange( range.location - 1, 1 );
+            [attributedString addAttribute:NSKernAttributeName value:padding range:startRange];
+        }
+        NSRange endRange = NSMakeRange( range.location - 1 + range.length, 1 );
+        [attributedString addAttribute:NSKernAttributeName value:padding range:endRange];
     }
 }
 

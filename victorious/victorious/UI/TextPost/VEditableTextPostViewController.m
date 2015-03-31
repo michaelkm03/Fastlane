@@ -12,6 +12,7 @@
 #import "VTextPostViewModel.h"
 #import "VDependencyManager.h"
 #import "UIView+AutoLayout.h"
+#import "VTextPostTextView.h"
 
 static NSString * const kDefaultTextKey = @"defaultText";
 
@@ -23,6 +24,10 @@ static NSString * const kDefaultTextKey = @"defaultText";
 
 @property (nonatomic, assign) BOOL isEditing;
 @property (nonatomic, assign) BOOL isShowingPlaceholderText;
+@property (nonatomic, assign) BOOL hasAppeared;
+
+@property (nonatomic, strong) NSArray *deletedHashtags;
+@property (nonatomic, strong) NSArray *addedHashtags;
 
 @end
 
@@ -52,24 +57,30 @@ static NSString * const kDefaultTextKey = @"defaultText";
     self.textView.editable = YES;
     
     self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
-    [self updatePlaceholderText];
-    
-    [self updateDelegate];
+    [self showPlaceholderText];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self updateDelegate];
+    [self.delegate textDidUpdate:self.textOutput];
 }
 
-- (void)updateDelegate
+- (void)viewDidAppear:(BOOL)animated
 {
-    if ( self.delegate != nil )
+    [super viewDidAppear:animated];
+    
+    if ( !self.hasAppeared )
     {
-        [self.delegate textPostViewControllerDidUpdateText:self];
+        self.isEditing = YES;
+        self.hasAppeared = YES;
     }
+}
+
+- (NSString *)textOutput
+{
+    return self.isShowingPlaceholderText ? @"" : self.text;
 }
 
 #pragma mark - Supplemental hashtags
@@ -83,11 +94,19 @@ static NSString * const kDefaultTextKey = @"defaultText";
     
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
     NSUInteger lengthWithAddedHashtag = self.text.length + hashtagText.length;
-    if ( ![self.supplementalHashtags containsObject:hashtagTextWithHashMark] && lengthWithAddedHashtag < self.viewModel.maxTextLength )
+    if ( ![self.supplementalHashtags containsObject:hashtagTextWithHashMark] &&
+         lengthWithAddedHashtag < self.viewModel.maxTextLength &&
+         ![self.text containsString:hashtagTextWithHashMark] )
     {
         [self.supplementalHashtags addObject:hashtagTextWithHashMark];
+        
+        [self hidePlaceholderText];
+        
         NSString *space = [self isLastCharacterASpace:self.text] || self.text.length == 0 ? @"" : @" ";
         self.text = [NSString stringWithFormat:@"%@%@%@", self.text, space, hashtagTextWithHashMark];
+        
+        [self.delegate textDidUpdate:self.textOutput];
+        
         return YES;
     }
     
@@ -105,30 +124,39 @@ static NSString * const kDefaultTextKey = @"defaultText";
     if ( [self.supplementalHashtags containsObject:hashtagTextWithHashMark] )
     {
         [self.supplementalHashtags removeObject:hashtagTextWithHashMark];
+        
         self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
         if ( [self isLastCharacterASpace:self.text] )
         {
             self.text = [self.text substringToIndex:self.text.length-1];
         }
+        
+        [self showPlaceholderText];
+        
+        [self.delegate textDidUpdate:self.textOutput];
+        
         return YES;
     }
     
     return NO;
 }
 
-- (NSArray *)deletedHastagsFromTextBefore:(NSString *)textBefore textAfter:(NSString *)textAfter
+- (void)getHashtagsAdded:(NSArray **)added deleted:(NSArray **)deleted withBeforeText:(NSString *)beforeText afterText:(NSString *)afterText
 {
-    if ( textBefore.length > 0 )
-    {
-        NSArray *hashtagsBefore = [VHashTags getHashTags:textBefore includeHashMark:YES];
-        NSArray *hashtagsAfter = [VHashTags getHashTags:textAfter includeHashMark:YES];
-        NSPredicate *filterPrediate = [NSPredicate predicateWithBlock:^BOOL(NSString *hashtag, NSDictionary *bindings)
-                                       {
-                                           return ![hashtagsAfter containsObject:hashtag];
-                                       }];
-        return [hashtagsBefore filteredArrayUsingPredicate:filterPrediate];
-    }
-    return @[];
+    NSArray *hashtagsBefore = [VHashTags getHashTags:beforeText includeHashMark:YES];
+    NSArray *hashtagsAfter = [VHashTags getHashTags:afterText includeHashMark:YES];
+    
+    NSPredicate *addedFilter = [NSPredicate predicateWithBlock:^BOOL(NSString *hashtag, NSDictionary *bindings)
+                                {
+                                    return ![hashtagsBefore containsObject:hashtag];
+                                }];
+    *added = [hashtagsAfter filteredArrayUsingPredicate:addedFilter];
+    
+    NSPredicate *deletedFilter = [NSPredicate predicateWithBlock:^BOOL(NSString *hashtag, NSDictionary *bindings)
+                                  {
+                                      return ![hashtagsAfter containsObject:hashtag];
+                                  }];
+    *deleted = [hashtagsBefore filteredArrayUsingPredicate:deletedFilter];
 }
 
 - (BOOL)isLastCharacterASpace:(NSString *)string
@@ -150,33 +178,24 @@ static NSString * const kDefaultTextKey = @"defaultText";
 
 #pragma mark - Placeholder text
 
-- (void)updatePlaceholderText
+- (void)showPlaceholderText
 {
-    if ( [self shouldShowPlaceholderText] )
+    if ( self.text.length == 0 && self.supplementalHashtags.count == 0 )
     {
-        self.text = self.placeholderText;
         self.isShowingPlaceholderText = YES;
-    }
-    else
-    {
-        self.isShowingPlaceholderText = NO;
+        self.text = self.placeholderText;
+        self.textView.alpha = 0.5f;
+        self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
     }
 }
 
-- (BOOL)shouldShowPlaceholderText
-{
-    return self.supplementalHashtags.count == 0 && self.text.length == 0;
-}
-
-- (NSString *)workingText
+- (void)hidePlaceholderText
 {
     if ( self.isShowingPlaceholderText )
     {
-        return @"";
-    }
-    else
-    {
-        return self.text;
+        self.text = @"";
+        self.isShowingPlaceholderText = NO;
+        self.textView.alpha = 1.0;
     }
 }
 
@@ -189,15 +208,49 @@ static NSString * const kDefaultTextKey = @"defaultText";
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    self.text = textView.text;
+    self.text = self.textView.text;
     
-    [self updateDelegate];
+    [self updateAddedAndDeletedHashtags];
+    
+    [self.delegate textDidUpdate:self.textOutput];
+}
+
+- (void)updateAddedAndDeletedHashtags
+{
+    if ( self.delegate == nil )
+    {
+        return;
+    }
+    
+    NSString *(^removeHashmarkBlock)(NSString *) = ^NSString *(NSString *string)
+    {
+        return [string stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    };
+    
+    if ( self.deletedHashtags.count > 0 )
+    {
+        NSArray *deletedHashtagsWithoutHashmarks = [self.deletedHashtags v_map:removeHashmarkBlock];
+        [self.deletedHashtags enumerateObjectsUsingBlock:^(NSString *hashtag, NSUInteger idx, BOOL *stop)
+         {
+             [self.supplementalHashtags removeObject:hashtag];
+         }];
+        [self.delegate textPostViewController:self didDeleteHashtags:deletedHashtagsWithoutHashmarks];
+    }
+    
+    if ( self.addedHashtags.count > 0 )
+    {
+        [self.delegate textPostViewController:self didAddHashtags:[self.addedHashtags v_map:removeHashmarkBlock]];
+    }
+    
+    self.deletedHashtags = nil;
+    self.addedHashtags = nil;
+    
+    [self.delegate textDidUpdate:self.textOutput];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     self.isEditing = NO;
-    [textView resignFirstResponder];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -205,53 +258,50 @@ static NSString * const kDefaultTextKey = @"defaultText";
     if ( [text isEqualToString:@"\n"] )
     {
         self.isEditing = NO;
-        [textView resignFirstResponder];
         return NO;
     }
     
     if ( self.delegate != nil )
     {
-        NSString *textAfterDeletion = [textView.text stringByReplacingCharactersInRange:range withString:@""];
-        NSArray *deletedHashtags = [self deletedHastagsFromTextBefore:textView.text textAfter:textAfterDeletion];
-        if ( deletedHashtags.count > 0 )
-        {
-            NSArray *deletedHashtagsWithoutHashmarks = [deletedHashtags v_map:^NSString *(NSString *string)
-                                                        {
-                                                            return [string stringByReplacingOccurrencesOfString:@"#" withString:@""];
-                                                        }];
-            [deletedHashtags enumerateObjectsUsingBlock:^(NSString *hashtag, NSUInteger idx, BOOL *stop)
-            {
-                [self.supplementalHashtags removeObject:hashtag];
-            }];
-            [self.delegate textPostViewController:self didDeleteHashtags:deletedHashtagsWithoutHashmarks];
-        }
+        NSString *textAfter = [textView.text stringByReplacingCharactersInRange:range withString:text];
+        NSArray *deletedHashtags;
+        NSArray *addedHashtags;
+        
+        [self getHashtagsAdded:&addedHashtags deleted:&deletedHashtags withBeforeText:textView.text afterText:textAfter];
+        
+        self.deletedHashtags = deletedHashtags;
+        self.addedHashtags = addedHashtags;
     }
+    
+    [self hidePlaceholderText];
     
     return textView.text.length + text.length < self.viewModel.maxTextLength;
 }
 
 #pragma mark - Actions
 
-- (void)overlayButtonTapped:(UIButton *)sender
+- (void)setIsEditing:(BOOL)isEditing
 {
-    if ( self.isEditing )
+    if ( isEditing == _isEditing )
     {
-        self.isEditing = NO;
-        [self updatePlaceholderText];
-        [self.textView resignFirstResponder];
+        return;
+    }
+    _isEditing = isEditing;
+    if ( _isEditing )
+    {
+        [self.textView becomeFirstResponder];
     }
     else
     {
-        if ( self.isShowingPlaceholderText )
-        {
-            self.text = @"";
-            self.isShowingPlaceholderText = NO;
-        }
-        self.isEditing = YES;
-        [self.textView becomeFirstResponder];
+        [self.textView resignFirstResponder];
+        
+        [self showPlaceholderText];
     }
-    
-    [self updateDelegate];
+}
+
+- (void)overlayButtonTapped:(UIButton *)sender
+{
+    self.isEditing = !self.isEditing;
 }
 
 @end

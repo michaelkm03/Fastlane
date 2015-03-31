@@ -22,6 +22,8 @@
 
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
 
-- (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
+- (NSDictionary *)calloutAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+- (NSDictionary *)placeholderAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

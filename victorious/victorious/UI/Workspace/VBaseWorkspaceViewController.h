@@ -42,6 +42,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 @property (nonatomic, strong) NSNumber *initalEditState;
 
 @property (nonatomic, assign) BOOL showCloseButton;
+@property (nonatomic, assign) BOOL continueButtonEnabled;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *continueButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *backButton;
 
