@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -37,24 +37,32 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0yG-Rl-S8H" userLabel="Content Container">
                         <rect key="frame" x="0.0" y="52" width="302" height="302"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="chp-4I-fi1">
+                                <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1KY-vY-sth" userLabel="Preview Image View">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6ry-iE-omC" customClass="VVideoView">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
-                                <color key="backgroundColor" red="1" green="0.059377636859999999" blue="0.1569865916" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="chp-4I-fi1" secondAttribute="trailing" id="04h-oR-nvm"/>
                             <constraint firstItem="1KY-vY-sth" firstAttribute="leading" secondItem="0yG-Rl-S8H" secondAttribute="leading" id="0LS-Fg-non"/>
+                            <constraint firstItem="chp-4I-fi1" firstAttribute="leading" secondItem="0yG-Rl-S8H" secondAttribute="leading" id="E1Q-gH-xAV"/>
                             <constraint firstAttribute="trailing" secondItem="1KY-vY-sth" secondAttribute="trailing" id="Gak-nU-3zA"/>
                             <constraint firstAttribute="width" secondItem="0yG-Rl-S8H" secondAttribute="height" multiplier="1:1" id="R8e-sY-ZPg"/>
                             <constraint firstAttribute="bottom" secondItem="6ry-iE-omC" secondAttribute="bottom" id="Y9L-rI-dQc"/>
                             <constraint firstAttribute="trailing" secondItem="6ry-iE-omC" secondAttribute="trailing" id="d8A-nF-9gm"/>
                             <constraint firstItem="6ry-iE-omC" firstAttribute="leading" secondItem="0yG-Rl-S8H" secondAttribute="leading" id="dhC-oU-qPd"/>
                             <constraint firstAttribute="bottom" secondItem="1KY-vY-sth" secondAttribute="bottom" id="fWt-X9-fsK"/>
+                            <constraint firstAttribute="bottom" secondItem="chp-4I-fi1" secondAttribute="bottom" id="htX-oB-zu9"/>
+                            <constraint firstItem="chp-4I-fi1" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="top" id="u8J-lv-SP2"/>
                             <constraint firstItem="1KY-vY-sth" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="top" id="xLa-Fu-dyf"/>
                             <constraint firstItem="6ry-iE-omC" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="top" id="xax-CD-ppi"/>
                         </constraints>
@@ -92,6 +100,7 @@
                 <outlet property="actionView" destination="gyd-x0-d0C" id="oSU-c4-1E5"/>
                 <outlet property="actionViewBottomConstraint" destination="wVb-eX-0SM" id="jxt-Zp-Ub6"/>
                 <outlet property="actionViewTopConstraint" destination="LCa-Vw-jCf" id="my1-eP-1ne"/>
+                <outlet property="backgroundHost" destination="chp-4I-fi1" id="xVp-nm-cpl"/>
                 <outlet property="captionTextView" destination="6Ls-Bo-1cB" id="Zde-ol-mjp"/>
                 <outlet property="captionTextViewBottomConstraint" destination="KUq-xP-egX" id="YEA-rn-45b"/>
                 <outlet property="captionTextViewTopConstraint" destination="stU-iI-F8H" id="Adn-Ga-Hsh"/>

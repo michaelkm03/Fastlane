@@ -8,20 +8,21 @@
 
 #import "VMarqueeStreamItemCell.h"
 
-#import "VDefaultProfileButton.h"
-
+// Stream Support
 #import "VStreamItem+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
-
-#import "UIImageView+VLoadingAnimations.h"
-#import "UIImage+ImageCreation.h"
-
-#import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VStreamWebViewController.h"
-#import "UIView+Autolayout.h"
 
+// Views + Helpers
+#import "VDefaultProfileButton.h"
+#import "UIView+Autolayout.h"
+#import "UIImageView+VLoadingAnimations.h"
+#import "UIImage+ImageCreation.h"
+#import "VThemeManager.h"
+
+// Dependencies
 #import "VDependencyManager.h"
 
 CGFloat const kVDetailVisibilityDuration = 3.0f;
@@ -35,13 +36,13 @@ static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsHeightLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
@@ -70,16 +71,10 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     _streamItem = streamItem;
     
     self.nameLabel.text = streamItem.name;
-    if ( self.nameLabel.text != nil )
-    {
-        CGFloat detailsHeight = [self detailContainerHeightForText:self.nameLabel.text withFont:[self.nameLabel font]];
-        self.detailsHeightLayoutConstraint.constant = detailsHeight;
-        [self layoutIfNeeded];
-    }
-    
+
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
-                           placeholderImage:[UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+                           placeholderImage:nil];
     
     self.detailsBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -131,11 +126,12 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    if ( _dependencyManager != nil )
+    
+    if ( dependencyManager != nil )
     {
-        self.detailsBackgroundView.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileImageButton.layer.borderColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
+        self.detailsBackgroundView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileImageButton.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
     }
 }
 
@@ -147,15 +143,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
                                                     selector:@selector(hideDetailContainer)
                                                     userInfo:nil
                                                      repeats:NO];
-}
-
-#pragma mark - Detail height determination
-
-- (CGFloat)detailContainerHeightForText:(NSString *)text withFont:(UIFont *)font
-{
-    CGFloat maxWidth = CGRectGetWidth(self.nameLabel.bounds);
-    CGRect textBounds = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:NULL];
-    return ABS(self.labelBottomLayoutConstraint.constant) + ABS(self.labelTopLayoutConstraint.constant) + CGRectGetMinY(self.detailsBackgroundView.frame) + CGRectGetHeight(textBounds) + kVDetailBounceHeight;
 }
 
 #pragma mark - Detail container animation
@@ -170,7 +157,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
     
-    [self.layer removeAllAnimations];
     if ( animated )
     {
         [UIView animateWithDuration:kVDetailBounceTime animations:^
@@ -190,7 +176,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     else
     {
         self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
-        [self setNeedsDisplay];
     }
 }
 
@@ -211,6 +196,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     if ( self.webViewController == nil )
     {
         self.webViewController = [[VStreamWebViewController alloc] init];
+        self.webViewController.view.backgroundColor = [UIColor clearColor];
         [self.webViewContainer addSubview:self.webViewController.view];
         [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
         self.previewImageView.hidden = YES;
@@ -254,6 +240,13 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     CGFloat width = CGRectGetWidth(bounds);
     CGFloat height = width * kVCellHeightRatio;
     return CGSizeMake(width, height);
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.backgroundContainer;
 }
 
 @end

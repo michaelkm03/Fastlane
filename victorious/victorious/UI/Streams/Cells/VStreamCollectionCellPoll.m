@@ -61,13 +61,11 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
     self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];
     self.secondAssetUrl = [NSURL URLWithString:self.secondAnswer.thumbnailUrl];
     
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
-    
     [self.previewImageView fadeInImageAtURL:self.firstAssetUrl
-                           placeholderImage:placeholderImage];
+                           placeholderImage:nil];
     
     [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
-                          placeholderImage:placeholderImage];
+                          placeholderImage:nil];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

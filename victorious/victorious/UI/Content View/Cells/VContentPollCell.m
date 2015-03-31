@@ -8,19 +8,20 @@
 
 #import "VContentPollCell.h"
 
-// Subviews
+// Views + Helpers
 #import "VResultView.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 // Theme
 #import "VThemeManager.h"
 
 #import "VCVideoPlayerViewController.h"
 
-#import <SDWebImage/UIImageView+WebCache.h>
-
 static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @interface VContentPollCell () <VCVideoPlayerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIView *backgroundContainer;
 
 @property (nonatomic, weak, readwrite) IBOutlet UIView *answerAContainer;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *answerBContainer;
@@ -39,9 +40,6 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @property (nonatomic, strong) VCVideoPlayerViewController *aVideoPlayerViewController;
 @property (nonatomic, strong) VCVideoPlayerViewController *bVideoPlayerViewController;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *answerAContainerViewWidth;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *answerBContainerViewWidth;
 
 @property (nonatomic, assign, readwrite) BOOL answerBIsVideo;
 @property (nonatomic, assign, readwrite) BOOL answerAIsVideo;
@@ -250,6 +248,13 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
              completion();
          }
      }];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.backgroundContainer;
 }
 
 @end

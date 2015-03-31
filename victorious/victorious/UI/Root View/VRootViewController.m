@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
+@property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
 
 @end
 
@@ -82,6 +83,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 + (instancetype)rootViewController
@@ -327,7 +330,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSURL *deeplink = [NSURL URLWithString:pushNotification[kDeeplinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
 
-    if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
+    if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && self.properlyBackgrounded )
     {
         [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
         if ( [self.sessionTimer shouldNewSessionStartNow] )
@@ -404,6 +407,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    self.properlyBackgrounded = YES;
+    
     NSURL *url = notification.userInfo[UIApplicationLaunchOptionsURLKey];
     if ( url != nil )
     {
@@ -417,6 +422,16 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [self handlePushNotification:pushNotification];
         return;
     }
+}
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification
+{
+    self.properlyBackgrounded = YES;
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    self.properlyBackgrounded = NO;
 }
 
 #pragma mark - VLoadingViewControllerDelegate

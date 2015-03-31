@@ -7,13 +7,22 @@
 //
 
 #import "VStreamCollectionCellWebContent.h"
+
+// API
 #import "VSequence+Fetcher.h"
 
+// Controllers
 #import "VStreamWebViewController.h"
+
+// Views + Helpers
 #import "UIView+Autolayout.h"
+
+// Dependencies
+#import "VDependencyManager.h"
 
 @interface VStreamCollectionCellWebContent ()
 
+@property (weak, nonatomic) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 
@@ -26,6 +35,7 @@
     [super awakeFromNib];
     
     self.webViewController = [[VStreamWebViewController alloc] init];
+    self.webViewController.view.backgroundColor = [UIColor clearColor];
     [self.webViewContainer addSubview:self.webViewController.view];
     [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
 }
@@ -40,6 +50,13 @@
 - (CGRect)mediaContentFrame
 {
     return self.frame;
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.backgroundContainer;
 }
 
 @end

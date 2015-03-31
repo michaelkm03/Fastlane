@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -15,20 +15,24 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="449"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TlZ-3e-RyI" customClass="VTilePatternBackgroundView">
+                        <rect key="frame" x="0.0" y="50" width="320" height="322"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4hb-9q-so0" userLabel="left Image View">
                         <rect key="frame" x="0.0" y="50" width="160" height="322"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DYL-sd-dM5" userLabel="right Image View">
                         <rect key="frame" x="160" y="50" width="160" height="322"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8QT-3n-Tuc" userLabel="Shade View">
                         <rect key="frame" x="0.0" y="50" width="320" height="322"/>
                         <subviews>
                             <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f5h-ld-LK6">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="322"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Wr-Fl-cRV">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="274"/>
@@ -98,13 +102,17 @@
             </view>
             <constraints>
                 <constraint firstItem="DYL-sd-dM5" firstAttribute="top" secondItem="4hb-9q-so0" secondAttribute="top" id="7qB-Uq-kR4"/>
+                <constraint firstItem="4hb-9q-so0" firstAttribute="top" secondItem="TlZ-3e-RyI" secondAttribute="top" id="FJy-aW-vGg"/>
                 <constraint firstItem="8QT-3n-Tuc" firstAttribute="leading" secondItem="4hb-9q-so0" secondAttribute="leading" id="J2K-sc-v4r"/>
                 <constraint firstItem="8QT-3n-Tuc" firstAttribute="top" secondItem="EGy-dZ-mCE" secondAttribute="bottom" id="LY4-cr-4uh"/>
                 <constraint firstAttribute="trailing" secondItem="DYL-sd-dM5" secondAttribute="trailing" id="Mgr-4e-wdA"/>
+                <constraint firstItem="4hb-9q-so0" firstAttribute="bottom" secondItem="TlZ-3e-RyI" secondAttribute="bottom" id="NV0-qo-OLo"/>
                 <constraint firstItem="DYL-sd-dM5" firstAttribute="width" secondItem="4hb-9q-so0" secondAttribute="width" id="NVx-dI-dro"/>
                 <constraint firstAttribute="bottom" secondItem="R7e-A2-yzh" secondAttribute="bottom" constant="28" id="Nzv-Le-NQI"/>
+                <constraint firstAttribute="trailing" secondItem="TlZ-3e-RyI" secondAttribute="trailing" id="Ptk-GI-Thg"/>
                 <constraint firstItem="R7e-A2-yzh" firstAttribute="top" secondItem="8QT-3n-Tuc" secondAttribute="bottom" constant="8" id="RgP-R9-e0l"/>
                 <constraint firstItem="DYL-sd-dM5" firstAttribute="height" secondItem="4hb-9q-so0" secondAttribute="height" id="S4U-HN-dbh"/>
+                <constraint firstItem="TlZ-3e-RyI" firstAttribute="leading" secondItem="Afq-NV-r8v" secondAttribute="leading" id="SSs-hk-Ek4"/>
                 <constraint firstItem="4hb-9q-so0" firstAttribute="leading" secondItem="Afq-NV-r8v" secondAttribute="leading" id="Uht-dr-eFp"/>
                 <constraint firstItem="R7e-A2-yzh" firstAttribute="leading" secondItem="Afq-NV-r8v" secondAttribute="leading" constant="-1" id="VyO-dC-UIK"/>
                 <constraint firstItem="8QT-3n-Tuc" firstAttribute="top" secondItem="4hb-9q-so0" secondAttribute="top" id="XH4-10-epx"/>

@@ -158,18 +158,8 @@
                        andDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSParameterAssert(sequence != nil);
-    VStream *stream = [VStream remixStreamForSequence:sequence];
-    stream.name = NSLocalizedString(@"Remixes", nil);
-    VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:stream];
-    streamCollection.dependencyManager = self.dependencyManager;
-    
-    VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
-    noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
-    noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
-    noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
-    streamCollection.noContentView = noRemixView;
-    
-    [navigationController pushViewController:streamCollection animated:YES];
+    VStreamCollectionViewController *remixStream = [dependencyManager remixStreamForSequence:sequence];
+    [navigationController pushViewController:remixStream animated:YES];
 }
 
 #pragma mark - Repost
