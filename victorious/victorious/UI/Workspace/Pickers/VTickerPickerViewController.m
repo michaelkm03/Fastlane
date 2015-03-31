@@ -57,6 +57,7 @@
     ({
         UIView *selectionView = [[UIView alloc] initWithFrame:[self selectionFrame]];
         selectionView.backgroundColor = [self.accentColor colorWithAlphaComponent:0.5f];
+        selectionView.userInteractionEnabled = NO;
         [self.collectionView addSubview:selectionView];
         [self.collectionView sendSubviewToBack:selectionView];
         selectionView;

@@ -18,4 +18,9 @@
  */
 @interface VMenuCollectionViewCell : VBaseCollectionViewCell <VNavigationMenuItemCell>
 
+/**
+ An instance of VDependencyManager for supplying theme colors and fonts
+ */
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
