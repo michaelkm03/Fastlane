@@ -193,6 +193,8 @@
               
               [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
               
+              node.sequence.hasReposted = @(YES);
+              
               if ( completion != nil )
               {
                   completion( YES );
