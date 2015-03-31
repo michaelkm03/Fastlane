@@ -35,4 +35,9 @@
  */
 @property (nonatomic, readonly) VBackground *background;
 
+/**
+ *  Selected icon color. 
+ */
+@property (nonatomic, readonly) UIColor *selectedIconColor;
+
 @end
