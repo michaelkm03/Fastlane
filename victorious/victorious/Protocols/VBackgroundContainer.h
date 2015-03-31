@@ -13,7 +13,7 @@
  */
 @protocol VBackgroundContainer <NSObject>
 
-@optional
+@required
 
 /**
  *  Protocol conformers should implement this method if they are able to support a VBackground being added to the returned view's hierarchy.

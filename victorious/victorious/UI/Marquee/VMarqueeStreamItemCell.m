@@ -132,12 +132,13 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super setDependencyManager:dependencyManager];
-    if ( self.dependencyManager != nil )
+    _dependencyManager = dependencyManager;
+    
+    if ( dependencyManager != nil )
     {
-        self.detailsBackgroundView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.nameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileImageButton.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
+        self.detailsBackgroundView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileImageButton.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
     }
 }
 
