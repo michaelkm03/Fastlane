@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VNotAuthorizedDataSource;
+@class VDependencyManager, VNotAuthorizedDataSource;
 
 /**
  *  A delegate informing about a request for login.
@@ -23,7 +23,7 @@
 @end
 
 /**
- A simple UICollecitonViewDataSource that populates the collectionview
+ A simple UICollectionViewDataSource that populates the collectionview
  provided in its initializer with a single cell to inform the user they 
  are not currently authorized. Provides a block-based callback when the
  user requests authorization. 
@@ -40,7 +40,7 @@
  *  Note: The collection view dataSource and delegate properties are left 
  *  untouched in this method and the collection view is not retained.
  */
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCollectionView:(UICollectionView *)collectionView dependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 /**
  *  A delegate conforming to VNotAuthorizedDataSourceDelegate.

@@ -730,7 +730,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 {
     if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
     {
-        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
+        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
         self.notLoggedInDataSource.delegate = self;
         self.collectionView.dataSource = self.notLoggedInDataSource;
         [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
