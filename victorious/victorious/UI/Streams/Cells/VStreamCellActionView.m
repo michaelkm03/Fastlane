@@ -204,7 +204,6 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
                           animations:^
           {
               [self updateRepostButtonForRepostState];
-              // We're using autolayout for sizing the views
               self.repostButton.transform = CGAffineTransformMakeScale( kScaleScaledUp, kScaleScaledUp );
               self.repostButton.alpha = kRepostedDisabledAlpha;
           }
