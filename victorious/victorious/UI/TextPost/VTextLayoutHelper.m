@@ -24,44 +24,29 @@
              toAttributedString:(NSMutableAttributedString *)attributedString
                 withCalloutRanges:(NSArray *)calloutRanges
 {
+    //NSRange previousRange = NSMakeRange( 0, 0 );
     for ( NSValue *rangeValueObject in calloutRanges )
     {
         NSRange range = rangeValueObject.rangeValue;
-        NSNumber *padding = @( wordPadding );
-        if ( range.location > 0 )
+        if ( range.location > 0 )  //< Exclude first word
         {
             NSRange startRange = NSMakeRange( range.location - 1, 1 );
-            [attributedString addAttribute:NSKernAttributeName value:padding range:startRange];
+            CGFloat padding = wordPadding;
+            /*if ( previousRange.length > 0 ) //< If we have a value form the last loop
+            {
+                NSInteger numberOfSpacesFromLastCallout = range.location - (previousRange.location + previousRange.length);
+                if ( numberOfSpacesFromLastCallout == 0 )
+                {
+                    padding = wordPadding * 2.0;
+                }
+            }*/
+            [attributedString addAttribute:NSKernAttributeName value:@(padding) range:startRange];
         }
         NSRange endRange = NSMakeRange( range.location - 1 + range.length, 1 );
-        [attributedString addAttribute:NSKernAttributeName value:padding range:endRange];
+        [attributedString addAttribute:NSKernAttributeName value:@(wordPadding) range:endRange];
+        
+        //previousRange = range;
     }
-}
-
-- (NSArray *)textLinesFromText:(NSString *)text
-                withAttributes:(NSDictionary *)attributes
-                      maxWidth:(CGFloat)maxWidth
-{
-    NSMutableArray *lines = [[NSMutableArray alloc] init];
-    NSMutableArray *allWords = [NSMutableArray arrayWithArray:[text componentsSeparatedByString:@" "]];
-    
-    NSInteger maxIterations = allWords.count;
-    for ( NSInteger i = 0; i < maxIterations && allWords.count > 0; i++ )
-    {
-        NSMutableString *currentLine = [[NSMutableString alloc] init];
-        while ( [[currentLine stringByAppendingFormat:@" %@", allWords.firstObject] sizeWithAttributes:attributes].width < maxWidth )
-        {
-            [currentLine appendFormat:@" %@", allWords.firstObject];
-            [allWords removeObjectAtIndex:0];
-            if ( allWords.count == 0 )
-            {
-                break;
-            }
-        }
-        [lines addObject:currentLine];
-    }
-    
-    return [NSArray arrayWithArray:lines];
 }
 
 - (NSString *)stringByRemovingEmptySpacesInText:(NSString *)text betweenCalloutRanges:(NSArray *)calloutRanges
@@ -98,11 +83,32 @@
     return output;
 }
 
+- (CGRect)lineRectFromLineRect:(CGRect)lineRect adjustedForSpacesAtEndofTextView:(VTextPostTextView *)textView withGlyphRange:(NSRange)glyphRange
+{
+    CGRect output = lineRect;
+    if ( glyphRange.location + glyphRange.length <= textView.text.length )
+    {
+        NSString *lineText = [textView.text substringWithRange:glyphRange];
+        NSRange lastCharacterInLineRange = NSMakeRange( lineText.length-1, 1 );
+        while ( [[lineText substringWithRange:lastCharacterInLineRange] isEqualToString:@" "] )
+        {
+            NSRange lastCharacterGlobalRange = NSMakeRange( glyphRange.location + lastCharacterInLineRange.location, 1 );
+            CGRect lastCharacterRect = [textView boundingRectForCharacterRange:lastCharacterGlobalRange];
+            output.size.width -= lastCharacterRect.size.width;
+            if ( lastCharacterInLineRange.location == 0 )
+            {
+                break;
+            }
+            lastCharacterInLineRange.location -= 1;
+        }
+    }
+    return output;
+}
+
 - (void)updateTextViewBackground:(VTextPostTextView *)textView
                    calloutRanges:(NSArray *)calloutRanges
 {
     textView.backgroundFrameColor = self.viewModel.backgroundColor;
-    //textView.backgroundFrameColor = [self.viewModel.backgroundColor colorWithAlphaComponent:0.5f];
     
     BOOL didAddSpaceCharacterToEmptyTextView = NO;
     if ( textView.text.length == 0 )
@@ -111,7 +117,7 @@
         didAddSpaceCharacterToEmptyTextView = YES;
     }
     
-    // Calculate the actual line count a bit differently, since the one above is not as accurate while typing
+    // Calculate the actual line count
     CGRect singleCharRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, 1 )];
     CGRect totalRect = [textView boundingRectForCharacterRange:NSMakeRange( 0, textView.attributedText.string.length)];
     totalRect.size = [textView sizeThatFits:CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX )];
@@ -125,7 +131,8 @@
                                                                                        NSTextContainer *textContainer,
                                                                                        NSRange glyphRange, BOOL *stop )
      {
-         [lineFragmentRects addObject:[NSValue valueWithCGRect:usedRect]];
+         CGRect lineRect = [self lineRectFromLineRect:usedRect adjustedForSpacesAtEndofTextView:textView withGlyphRange:glyphRange];
+         [lineFragmentRects addObject:[NSValue valueWithCGRect:lineRect]];
      }];
     
     if ( didAddSpaceCharacterToEmptyTextView )

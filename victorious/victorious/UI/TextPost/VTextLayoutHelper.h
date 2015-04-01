@@ -18,17 +18,6 @@
 @interface VTextLayoutHelper : NSObject
 
 /**
- Divides a text string into lines using all of its size properties when
- styled with the provided attributes that fits within the provided maximum width.
- 
- @return An array of strings each of which represents one line of text when
- rendered according to the supplied parameters.
- */
-- (NSArray *)textLinesFromText:(NSString *)text
-                withAttributes:(NSDictionary *)attributes
-                      maxWidth:(CGFloat)maxWidth;
-
-/**
  The main method that calculated the background frames required to meet the
  design of the text post test.
  

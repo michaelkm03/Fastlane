@@ -14,4 +14,7 @@
 
 - (void)present;
 
+#warning TESTING ONLY: Remove from header
+- (void)presentTextOnlyWorkspace;
+
 @end
