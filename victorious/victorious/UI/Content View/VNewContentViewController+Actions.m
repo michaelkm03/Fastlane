@@ -171,11 +171,11 @@
                                                                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                                                                  {
                                                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                                     [self.delegate newContentViewControllerDidDeleteContent:self];
+                                                                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                                  }
                                                                                                      failBlock:^(NSOperation *operation, NSError *error)
                                                                  {
-                                                                     [self.delegate newContentViewControllerDidDeleteContent:self];
+                                                                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                                  }];
                                                             }
                                                                      otherButtonTitlesAndBlocks:nil, nil];
