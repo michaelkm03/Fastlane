@@ -66,7 +66,7 @@ static NSString * const kContentViewComponentKey = @"contentView";
     }
     else
     {
-        VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromStoryboard];
+        VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:self.dependencyManager];
         viewController.sequence = sequence;
         return viewController;
     }

@@ -67,7 +67,7 @@ static NSString * const kAlphaKey = @"alpha";
 static NSString * const kScreensKey = @"screens";
 static NSString * const kSelectorKey =  @"selector";
 static NSString * const kTitleImageKey = @"titleImage";
-static NSString * const kContentView= @"contentView";
+static NSString * const kContentView = @"contentView";
 
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
