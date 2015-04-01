@@ -418,11 +418,16 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
+        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
         for (VStreamItem *streamItem in resultObjects)
         {
             if ( [streamItem isKindOfClass:[VStream class]] && [(VStream *)streamItem hasMarquee] )
             {
-                stream.marqueeItems = [(VStream *)stream marqueeItems];
+                for (VStreamItem *marqueeItem in ((VStream *)streamItem).marqueeItems )
+                {
+                    VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
+                    [marqueeItems addObject:streamItemInContext];
+                }
             }
             else
             {
@@ -431,6 +436,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             }
         }
         stream.streamItems = streamItems;
+        stream.marqueeItems = marqueeItems;
         
         // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
         stream.trackingIdentifier = fullResponse[ @"stream_id" ];
