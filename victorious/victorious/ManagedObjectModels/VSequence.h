@@ -44,6 +44,8 @@
 @property (nonatomic, retain) VEndCard *endCard;
 @property (nonatomic, retain) VEndCard *parentEndCard;
 @property (nonatomic, retain) NSSet *voteResults;
+@property (nonatomic, retain) NSNumber *hasReposted;
+
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)

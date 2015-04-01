@@ -134,16 +134,17 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 {
     [super layoutSubviews];
     
+    if (self.image.size.width == 0.0f ||
+        self.image.size.height == 0.0f)
+    {
+        return;
+    }
+    
     if (self.hasLayedOutPatternBackground)
     {
         [self.interpolationView v_addMotionEffectsWithMagnitude:-self.image.size.width*0.5f];
         [self.replicatedLayer addAnimation:[self breathingAnimation] forKey:kShimmerAnimationKey];
-        return;
-    }
-    
-    if (self.image.size.width == 0.0f ||
-        self.image.size.height == 0.0f)
-    {
+        [self updateReplicantCount];
         return;
     }
 
@@ -160,8 +161,6 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     
     self.xReplicatorLayer = [CAReplicatorLayer layer];
     self.xReplicatorLayer.frame = CGRectMake( 0, 0, self.image.size.width, self.image.size.height);
-    // Add 2 since we start with the original layer completely offscreen
-    self.xReplicatorLayer.instanceCount = CEIL(CGRectGetWidth(self.bounds)/self.image.size.width) + 2;
     self.xReplicatorLayer.instanceDelay = 0.0f;
     self.xReplicatorLayer.instanceTransform = CATransform3DMakeTranslation(self.image.size.width, 0, 0);
     
@@ -169,8 +168,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     
     self.yReplicatorLayer = [CAReplicatorLayer layer];
     self.yReplicatorLayer.frame = CGRectMake( 0, 0, self.image.size.width, self.image.size.height);
-    // Add 2 since we start with the original layer completely offscreen
-    self.yReplicatorLayer.instanceCount = CEIL(CGRectGetHeight(self.bounds)/self.image.size.height) + 2;
+
     self.yReplicatorLayer.instanceDelay = 0.0f;
     self.yReplicatorLayer.instanceTransform = CATransform3DMakeTranslation(0, self.image.size.height, 0);
     
@@ -186,6 +184,8 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     [self.xReplicatorLayer addSublayer:self.replicatedLayer];
     [self.yReplicatorLayer addSublayer:self.xReplicatorLayer];
     
+    [self updateReplicantCount];
+    
     self.hasLayedOutPatternBackground = YES;
     
     self.xReplicatorLayer.instanceDelay = 0.1f;
@@ -195,6 +195,13 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 }
 
 #pragma mark - Private
+
+- (void)updateReplicantCount
+{
+    // Add 2 since we start with the original layer completely offscreen
+    self.xReplicatorLayer.instanceCount = CEIL(CGRectGetWidth(self.bounds)/self.image.size.width) + 2;
+    self.yReplicatorLayer.instanceCount = CEIL(CGRectGetHeight(self.bounds)/self.image.size.height) + 2;
+}
 
 - (UIImage *)patternImage
 {

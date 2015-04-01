@@ -25,7 +25,6 @@
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
 #import "VSequenceActionController.h"
-#import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
 
@@ -405,8 +404,12 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     __weak typeof(self) weakSelf = self;
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^void
+    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
          [weakSelf.workspacePresenter present];
      }];
@@ -596,6 +599,15 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self willRepostSequence:sequence fromView:view completion:nil];
 }
 
+- (BOOL)canRepostSequence:(VSequence *)sequence
+{
+    if (sequence.canRepost && ([VObjectManager sharedManager].mainUser != nil))
+    {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion
 {
     [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode] completion:completion];
@@ -604,11 +616,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
-}
-
-- (BOOL)hasRepostedSequence:(VSequence *)sequence
-{
-    return [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];;
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view

@@ -104,7 +104,6 @@
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
-static NSString * const kViewModelKey = @"contentViewViewModel";
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate>
 
@@ -186,14 +185,6 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     viewModel.delegate = contentViewController;
     
     return contentViewController;
-}
-
-#pragma mark - VHasManagedDependencies Factory Method
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VContentViewViewModel *viewModel = [dependencyManager templateValueOfType:[VContentViewViewModel class] forKey:kViewModelKey];
-    return [self contentViewControllerWithViewModel:viewModel dependencyManager:dependencyManager];
 }
 
 #pragma mark - Dealloc
@@ -681,8 +672,12 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 - (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
 {
     __weak typeof(self) welf = self;
-    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^
+    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          // Use the provided index path of the selected emotive ballistic that trigger the notificiation
          // to perform the authorized action once authorization is successful
          NSIndexPath *experienceEnhancerIndexPath = notification.userInfo[ @"experienceEnhancerIndexPath" ];
@@ -715,7 +710,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 - (IBAction)pressedClose:(id)sender
 {
     [self removeCollectionViewFromContainer];
-    [self.delegate newContentViewControllerDidClose:self];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private Mehods
@@ -1036,8 +1031,13 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)
                 {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^
+                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
                     {
+                        if (!authorized)
+                        {
+                            return;
+                        }
+                        
                         [welf.viewModel answerPollWithAnswer:VPollAnswerA
                                                   completion:^(BOOL succeeded, NSError *error)
                          {
@@ -1048,8 +1048,13 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 };
                 self.ballotCell.answerBSelectionHandler = ^(void)
                 {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^
+                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
                      {
+                         if (!authorized)
+                         {
+                             return;
+                         }
+                         
                          [welf.viewModel answerPollWithAnswer:VPollAnswerB
                                                    completion:^(BOOL succeeded, NSError *error)
                           {
@@ -1347,8 +1352,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
+         
          [welf submitCommentWithText:inputAccessoryView.composedText];
          
          [inputAccessoryView clearTextAndResign];
@@ -1372,8 +1382,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          [welf addMediaToComment];
      }];
 }
@@ -1400,8 +1414,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
     
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          welf.enteringRealTimeComment = YES;
          welf.realtimeCommentBeganTime = welf.videoCell.currentTime;
      }];
@@ -1698,7 +1716,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                                              depenencyManager:self.dependencyManager];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
-    contentViewController.delegate = self.delegate;
     
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
@@ -1763,17 +1780,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
 {
     return NO;
-}
-
-@end
-
-#pragma mark - 
-
-@implementation VDependencyManager (VNewContentViewController)
-
-- (VNewContentViewController *)contentViewControllerForKey:(NSString *)key withViewModel:(VContentViewViewModel *)viewModel
-{
-    return [self templateValueOfType:[VNewContentViewController class] forKey:key withAddedDependencies:@{ kViewModelKey: viewModel }];
 }
 
 @end

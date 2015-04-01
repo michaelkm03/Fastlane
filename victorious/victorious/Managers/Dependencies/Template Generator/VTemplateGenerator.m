@@ -67,6 +67,7 @@ static NSString * const kAlphaKey = @"alpha";
 static NSString * const kScreensKey = @"screens";
 static NSString * const kSelectorKey =  @"selector";
 static NSString * const kTitleImageKey = @"titleImage";
+static NSString * const kContentView = @"contentView";
 
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
@@ -205,7 +206,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                           kBlueKey: @66,
                                                                           kAlphaKey: @1
                                                                           },
-                                                                  VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
+                                                                  kContentView: [self contentViewComponent],
                                                                   };
     }
     else
@@ -220,7 +221,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                    VScaffoldViewControllerFirstTimeContentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
-                                                                   VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
+                                                                   kContentView: [self contentViewComponent],
                                                                    };
     }
 

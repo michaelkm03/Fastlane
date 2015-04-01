@@ -152,7 +152,9 @@
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
-    return [authorization performFromViewController:self context:VAuthorizationContextAddComment completion:^{}];
+    return [authorization performFromViewController:self
+                                            context:VAuthorizationContextAddComment
+                                         completion:^(BOOL authorized){}];
 }
 
 - (IBAction)pressedBackButton:(id)sender

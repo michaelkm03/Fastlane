@@ -127,6 +127,15 @@
             _currentAsset = [self mediaAssetFromSequence:sequence];
         }
         
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
+        
+        _hasReposted = [sequence.hasReposted boolValue];
+        _currentAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
+        if ( _currentAsset == nil )
+        {
+            _currentAsset = [_currentNode imageAsset];
+        }
+        
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
     }

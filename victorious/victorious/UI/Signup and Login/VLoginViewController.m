@@ -81,9 +81,9 @@
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^void
      {
-         if ( success && self.authorizedAction != nil )
+         if ( self.authorizedAction != nil )
          {
-             self.authorizedAction();
+             self.authorizedAction(success);
          }
      }];
 }

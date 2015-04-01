@@ -59,7 +59,7 @@
 	<key>hashtagStream.screen</key>
 	<string>VHashtagStreamCollectionViewController</string>
 	<key>standard.contentView</key>
-	<string>VNewContentViewController</string>
+	<string>VContentViewFactory</string>
 	<key>animated.voteType</key>
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>

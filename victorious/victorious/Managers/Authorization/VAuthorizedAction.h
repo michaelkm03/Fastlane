@@ -39,6 +39,6 @@
  */
 - (BOOL)performFromViewController:(UIViewController *)presentingViewController
                           context:(VAuthorizationContext)authorizationContext
-                       completion:(void(^)())completionActionBlock;
+                       completion:(void(^)(BOOL authorized))completionActionBlock;
 
 @end

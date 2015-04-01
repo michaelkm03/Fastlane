@@ -503,7 +503,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
          {  
             if ( self.authorizedAction != nil && success )
             {
-                self.authorizedAction();
+                self.authorizedAction(YES);
             }
         }];
     }
