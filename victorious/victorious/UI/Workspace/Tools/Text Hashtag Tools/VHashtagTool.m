@@ -48,19 +48,9 @@ static NSString * const kPickerKey = @"picker";
         
         [dataSource reloadWithCompletion:^(NSArray *hashtagTools)
          {
-             NSArray *testingTags = @[ [[VHashtagType alloc] initWithHashtagText:@"test1"],
-                                       [[VHashtagType alloc] initWithHashtagText:@"test2"],
-                                       [[VHashtagType alloc] initWithHashtagText:@"test3"],
-                                       [[VHashtagType alloc] initWithHashtagText:@"test4"],
-                                       [[VHashtagType alloc] initWithHashtagText:@"test5"],
-                                       [[VHashtagType alloc] initWithHashtagText:@"test6"],
-                                       [[VHashtagType alloc] initWithHashtagText:@"test7"] ];
-             hashtagTools = [hashtagTools arrayByAddingObjectsFromArray:testingTags];
              self.toolPicker.dataSource.tools = hashtagTools;
              [self.toolPicker reloadData];
          }];
-        
-        
     }
     return self;
 }
