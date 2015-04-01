@@ -3,34 +3,32 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}Fitness Blender</string>
+	<string>${ProductPrefix}Ryan Higa</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}fitnessblender</string>
+	<string>com.getvictorious.${ProductPrefix}ryanhiga</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1607506779482075</string>
+				<string>fb817762231624736</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1607506779482075</string>
+	<string>817762231624736</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>iuzemJAgn1BvvjqcUpUvi0OVO</string>
+	<string>TcNvErJDRhbneJyTgFLi42iCT</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>oSDvDScUmWTDRdCczy4XFwu0593WPLWWjkjuO8aar99vv9ChC5</string>
+	<string>a6z1Hi45DjSLj2ikWcXlh7jHViWXolcekAWxopMwGdtLn1G0jn</string>
 	<key>VictoriousAppID</key>
-	<integer>31</integer>
+	<integer>35</integer>
 	<key>StagingAppID</key>
-	<integer>45</integer>
+	<integer>49</integer>
 	<key>QAAppID</key>
-	<integer>29</integer>
-	<key>GAID</key>
-	<string></string>
+	<integer>33</integer>
 	<key>CreatorSalutation</key>
-	<string>Fitness Blender</string>
+	<string>Official Ryan Higa</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
 </dict>
