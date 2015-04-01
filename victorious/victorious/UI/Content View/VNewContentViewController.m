@@ -676,8 +676,12 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 - (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
 {
     __weak typeof(self) welf = self;
-    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^
+    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          // Use the provided index path of the selected emotive ballistic that trigger the notificiation
          // to perform the authorized action once authorization is successful
          NSIndexPath *experienceEnhancerIndexPath = notification.userInfo[ @"experienceEnhancerIndexPath" ];
@@ -1023,8 +1027,13 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)
                 {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^
+                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
                     {
+                        if (!authorized)
+                        {
+                            return;
+                        }
+                        
                         [welf.viewModel answerPollWithAnswer:VPollAnswerA
                                                   completion:^(BOOL succeeded, NSError *error)
                          {
@@ -1035,8 +1044,13 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 };
                 self.ballotCell.answerBSelectionHandler = ^(void)
                 {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^
+                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
                      {
+                         if (!authorized)
+                         {
+                             return;
+                         }
+                         
                          [welf.viewModel answerPollWithAnswer:VPollAnswerB
                                                    completion:^(BOOL succeeded, NSError *error)
                           {
@@ -1332,8 +1346,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
+         
          [welf submitCommentWithText:inputAccessoryView.composedText];
          
          [inputAccessoryView clearTextAndResign];
@@ -1357,8 +1376,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          [welf addMediaToComment];
      }];
 }
@@ -1385,8 +1408,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
     
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          welf.enteringRealTimeComment = YES;
          welf.realtimeCommentBeganTime = welf.videoCell.currentTime;
      }];

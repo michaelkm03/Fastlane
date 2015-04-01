@@ -90,17 +90,22 @@
     
     if (self.viewModel.sequence.canRepost)
     {
-        NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
+        NSString *localizedRepostRepostedText = [self.viewModel.sequence.hasReposted boolValue] ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
                                                                actionIcon:[UIImage imageNamed:@"icon_repost"]
                                                                detailText:self.viewModel.repostCountText
-                                                                  enabled:!self.viewModel.hasReposted];
+                                                                  enabled:![self.viewModel.sequence.hasReposted boolValue]];
         repostItem.selectionHandler = ^(VActionItem *item)
         {
             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                                  dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
              {
+                 if (!authorized)
+                 {
+                     return;
+                 }
+                 
                  if ( !contentViewController.viewModel.hasReposted)
                  {
                      [actionSheetViewController setLoading:YES forItem:item];
@@ -227,8 +232,12 @@
             
             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                                  dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
              {
+                 if (!authorized)
+                 {
+                     return;
+                 }
                  [contentViewController dismissViewControllerAnimated:YES
                                                            completion:^
                   {
