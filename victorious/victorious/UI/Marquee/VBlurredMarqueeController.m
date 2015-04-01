@@ -83,15 +83,17 @@ static const CGFloat kOffsetOvershoot = 20.0f;
          
          NSMutableArray *previewImages = [[NSMutableArray alloc] init];
          NSMutableArray *contentNames = [[NSMutableArray alloc] init];
+         
          for ( VStreamItem *streamItem in strongSelf.stream.streamItems )
          {
              NSArray *previewImagePaths = streamItem.previewImagePaths;
              if ( previewImagePaths.count > 0 )
              {
                  [previewImages addObject:[NSURL URLWithString:[previewImagePaths firstObject]]];
+                 [contentNames addObject:streamItem.name];
              }
-             [contentNames addObject:streamItem.name];
          }
+         
          
          UIColor *linkColor = [strongSelf.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 
