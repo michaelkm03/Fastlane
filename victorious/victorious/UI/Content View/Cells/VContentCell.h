@@ -8,8 +8,9 @@
 
 #import "VBaseCollectionViewCell.h"
 #import "VEndCardViewController.h"
+#import "VBackgroundContainer.h"
 
-@interface VContentCell : VBaseCollectionViewCell
+@interface VContentCell : VBaseCollectionViewCell <VBackgroundContainer>
 
 /**
  *  An array of UIImages to use for the animation.

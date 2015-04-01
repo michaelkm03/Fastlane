@@ -7,13 +7,14 @@
 //
 
 #import "VBaseCollectionViewCell.h"
+#import "VBackgroundContainer.h"
 
 typedef void (^VAnswerSelectionBlock)(BOOL isVideo, NSURL *mediaURL);
 
 /**
  *  A UICollectionViewCell for displaying poll content.
  */
-@interface VContentPollCell : VBaseCollectionViewCell
+@interface VContentPollCell : VBaseCollectionViewCell <VBackgroundContainer>
 
 @property (nonatomic) NSString *numberOfVotersText;
 

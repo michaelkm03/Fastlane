@@ -15,7 +15,7 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hiO-tg-gJb" userLabel="Background Container">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pdl-Z7-86h" userLabel="Answer A Container">
                         <rect key="frame" x="0.0" y="0.0" width="159" height="320"/>
@@ -38,7 +38,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="KbT-8J-Bx0" firstAttribute="bottom" secondItem="Od3-Kk-qNW" secondAttribute="bottom" id="1K1-O7-v5V"/>
                             <constraint firstItem="KbT-8J-Bx0" firstAttribute="leading" secondItem="pdl-Z7-86h" secondAttribute="leading" id="OA5-FO-xep"/>
@@ -75,7 +75,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="36J-hZ-MxW" firstAttribute="bottom" secondItem="bJW-Xk-MbI" secondAttribute="bottom" id="Fd2-ia-MRt"/>
                             <constraint firstItem="36J-hZ-MxW" firstAttribute="bottom" secondItem="AKp-ON-QNR" secondAttribute="bottom" id="LEd-Ox-lD2"/>
@@ -126,6 +126,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="j2c-vu-8qs" secondAttribute="trailing" id="7eD-Qf-RDc"/>
                 <constraint firstItem="pdl-Z7-86h" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="7s8-Vf-KN9"/>
@@ -164,7 +165,7 @@
                 <outlet property="numberOfVotersLabel" destination="cBg-45-xOC" id="N4P-Ky-CLK"/>
                 <outlet property="pollCountContainer" destination="MH8-gE-tUo" id="T54-j0-fKF"/>
             </connections>
-            <point key="canvasLocation" x="80" y="170"/>
+            <point key="canvasLocation" x="350" y="174"/>
         </collectionViewCell>
     </objects>
 </document>
