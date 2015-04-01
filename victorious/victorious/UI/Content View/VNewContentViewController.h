@@ -12,31 +12,12 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 
-@class VDependencyManager, VSequenceActionController, VNewContentViewController, VAuthorizedAction;
-
-@protocol VNewContentViewControllerDelegate  <NSObject>
-
-/**
- *  When NCV has called this delegate method it has already begun destroying it's internal view hierarchy. It should be dismissed at this point.
- */
-- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController;
-
-/**
- *  NCV has issues an API request to delete itself and is giving the delegate a chance to reload it's list of items.
- */
-- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController;
-
-@end
+@class VDependencyManager, VSequenceActionController, VAuthorizedAction;
 
 /**
  *  The content view controller.
  */
 @interface VNewContentViewController : UIViewController <VHasManagedDependencies>
-
-/**
- *  VNewContentViewController informs its delegate when it is ready to be dismissed or performed a deletion action.
- */
-@property (nonatomic, weak) id <VNewContentViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -60,11 +41,5 @@
 @property (nonatomic, strong) UIImage *placeholderImage;
 
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
-
-@end
-
-@interface VDependencyManager (VNewContentViewController)
-
-- (VNewContentViewController *)contentViewControllerForKey:(NSString *)key withViewModel:(VContentViewViewModel *)viewModel;
 
 @end

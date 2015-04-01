@@ -20,11 +20,6 @@
 extern NSString * const VScaffoldViewControllerMenuComponentKey;
 
 /**
- The key that identifies the content view component in VDependencyManager
- */
-extern NSString * const VScaffoldViewControllerContentViewComponentKey;
-
-/**
  The key that identifies the profile view component in VDependencyManager
  */
 extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;

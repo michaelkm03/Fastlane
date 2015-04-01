@@ -25,7 +25,6 @@
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
 #import "VSequenceActionController.h"
-#import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
 

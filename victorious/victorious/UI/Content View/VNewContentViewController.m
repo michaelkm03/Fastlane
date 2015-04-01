@@ -102,7 +102,6 @@
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
-static NSString * const kViewModelKey = @"contentViewViewModel";
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate>
 
@@ -183,14 +182,6 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     viewModel.delegate = contentViewController;
     
     return contentViewController;
-}
-
-#pragma mark - VHasManagedDependencies Factory Method
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VContentViewViewModel *viewModel = [dependencyManager templateValueOfType:[VContentViewViewModel class] forKey:kViewModelKey];
-    return [self contentViewControllerWithViewModel:viewModel dependencyManager:dependencyManager];
 }
 
 #pragma mark - Dealloc
@@ -714,7 +705,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 - (IBAction)pressedClose:(id)sender
 {
     [self removeCollectionViewFromContainer];
-    [self.delegate newContentViewControllerDidClose:self];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private Mehods
@@ -1710,7 +1701,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                                              depenencyManager:self.dependencyManager];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
-    contentViewController.delegate = self.delegate;
     
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
@@ -1775,17 +1765,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
 {
     return NO;
-}
-
-@end
-
-#pragma mark - 
-
-@implementation VDependencyManager (VNewContentViewController)
-
-- (VNewContentViewController *)contentViewControllerForKey:(NSString *)key withViewModel:(VContentViewViewModel *)viewModel
-{
-    return [self templateValueOfType:[VNewContentViewController class] forKey:key withAddedDependencies:@{ kViewModelKey: viewModel }];
 }
 
 @end

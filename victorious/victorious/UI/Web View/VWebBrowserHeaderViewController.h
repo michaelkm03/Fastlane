@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
 #import "VProgressBarView.h"
 
 @protocol VWebBrowserHeaderViewDelegate <NSObject>
@@ -21,8 +22,9 @@
 
 @end
 
-@interface VWebBrowserHeaderViewController : UIViewController
+@interface VWebBrowserHeaderViewController : UIViewController <VHasManagedDependencies>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VWebBrowserHeaderViewDelegate> browserDelegate;
 
 - (void)updateHeaderState;
