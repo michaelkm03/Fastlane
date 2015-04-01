@@ -7,7 +7,6 @@
 //
 
 #import "VBaseCollectionViewCell.h"
-#import "VBackgroundContainer.h"
 
 typedef void (^VAnswerSelectionBlock)(BOOL isVideo, NSURL *mediaURL);
 
