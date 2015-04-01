@@ -192,6 +192,7 @@
      {
          if (!authorized)
          {
+             completion(NO);
              return;
          }
          [[VObjectManager sharedManager] repostNode:node
