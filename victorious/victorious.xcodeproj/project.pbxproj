@@ -462,6 +462,7 @@
 		A77AD4FB1A1FF33100142F24 /* VAlertControllerAdvancedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FA1A1FF33100142F24 /* VAlertControllerAdvancedTests.m */; };
 		A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */; };
 		A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */; };
+		A77B116C1ACB64BB0018E932 /* VEditableTextPostHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A77B116B1ACB64BB0018E932 /* VEditableTextPostHashtagHelper.m */; };
 		A77FB9231A897201003E9AA2 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */; };
 		A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED4C1A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m */; };
 		A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = A780ED4D1A933D9300A8CD5D /* filters.xml */; };
@@ -1643,6 +1644,8 @@
 		A77AD4FF1A2011E000142F24 /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
 		A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
 		A77B11691ACB42890018E932 /* VTextListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTextListener.h; sourceTree = "<group>"; };
+		A77B116A1ACB64BB0018E932 /* VEditableTextPostHashtagHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditableTextPostHashtagHelper.h; sourceTree = "<group>"; };
+		A77B116B1ACB64BB0018E932 /* VEditableTextPostHashtagHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditableTextPostHashtagHelper.m; sourceTree = "<group>"; };
 		A77FB9211A897200003E9AA2 /* UIColor+VBrightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VBrightness.h"; sourceTree = "<group>"; };
 		A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VBrightness.m"; sourceTree = "<group>"; };
 		A780ED4B1A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIFilter+VPhotoFilterComponentConformance.h"; sourceTree = "<group>"; };
@@ -4123,6 +4126,8 @@
 		A793A9391AC22C8C007F32EE /* TextPost */ = {
 			isa = PBXGroup;
 			children = (
+				A77B116A1ACB64BB0018E932 /* VEditableTextPostHashtagHelper.h */,
+				A77B116B1ACB64BB0018E932 /* VEditableTextPostHashtagHelper.m */,
 				A7A922651AC6314600F4755E /* VEditableTextPostViewController.h */,
 				A7A922661AC6314600F4755E /* VEditableTextPostViewController.m */,
 				A793A9421AC22CF7007F32EE /* VTextLayoutHelper.h */,
@@ -6054,6 +6059,7 @@
 				F028F3BE1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
+				A77B116C1ACB64BB0018E932 /* VEditableTextPostHashtagHelper.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,

@@ -105,7 +105,7 @@
 - (void)deselectToolAtIndex:(NSInteger)index
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    [self.collectionView cellForItemAtIndexPath:indexPath].selected = NO;
     [self itemDeselectedAtIndexPath:indexPath];
 }
 
