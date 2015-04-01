@@ -75,7 +75,8 @@
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
-    paragraphStyle.hyphenationFactor = 0.0f;
+    //paragraphStyle.hyphenationFactor = 0.0f;
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
     paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = ((CGFloat)font.pointSize) * self.lineHeightMultipler;
     return paragraphStyle;
 }

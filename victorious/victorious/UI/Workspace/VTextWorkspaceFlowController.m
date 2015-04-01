@@ -43,6 +43,7 @@
         toolController.textListener = self;
         toolController.delegate = _textWorkspaceViewController;
         _textWorkspaceViewController.toolController = toolController;
+        _textWorkspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
         
         // Add tools to the tool controller
         [_textWorkspaceViewController.toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)

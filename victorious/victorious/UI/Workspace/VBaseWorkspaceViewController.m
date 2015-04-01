@@ -326,17 +326,24 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
     
     // We don't want the inspector to move here
     CGRect inspectorFrame = self.inspectorToolViewController.view.frame;
-    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-     {
-         [self.view removeConstraint:constraint];
-     }];
+    if ( self.adjustsCanvasViewFrameOnKeyboardAppearance )
+    {
+        [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+         {
+             [self.view removeConstraint:constraint];
+         }];
+    }
     
     void (^animations)() = ^()
     {
-        if ( self.disablesNonCanvasItemsOnKeyboardAppearance )
+        if ( self.disablesInpectorOnKeyboardAppearance )
         {
             self.inspectorToolViewController.view.userInteractionEnabled = NO;
             self.inspectorToolViewController.view.alpha = kInspectorToolDisabledAlpha;
+        }
+        
+        if ( self.disablesNavigationItemsOnKeyboardAppearance )
+        {
             [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
              {
                  [item setEnabled:NO];
@@ -373,10 +380,13 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
     
     void (^animations)() = ^()
     {
-        if ( self.disablesNonCanvasItemsOnKeyboardAppearance )
+        if ( self.disablesInpectorOnKeyboardAppearance )
         {
             self.inspectorToolViewController.view.userInteractionEnabled = YES;
             self.inspectorToolViewController.view.alpha = 1.0f;
+        }
+        if ( self.disablesNavigationItemsOnKeyboardAppearance )
+        {
             [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
              {
                  [item setEnabled:YES];
