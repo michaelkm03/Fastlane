@@ -15,8 +15,6 @@
 // SubViews
 #import "VExperienceEnhancerBar.h"
 #import "VHistogramBarView.h"
-#import "VDependencyManager+VBackgroundContainer.h"
-#import "VBackground.h"
 #import "UIView+AutoLayout.h"
 
 // Images
@@ -916,7 +914,6 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
             {
                 VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
-                [self.dependencyManager addBackgroundToBackgroundHost:imageCell];
                 [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
                                               placeholderImage:self.placeholderImage?:nil];
                 self.contentCell = imageCell;
@@ -940,7 +937,6 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 videoCell.loop = self.viewModel.loop;
                 videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
                 videoCell.audioMuted = self.viewModel.audioMuted;
-                [self.dependencyManager addBackgroundToBackgroundHost:videoCell];
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
                 __weak typeof(self) welf = self;
@@ -970,7 +966,6 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 }
                 __weak typeof(pollCell) weakPollCell = pollCell;
                 __weak typeof(self) welf = self;
-                [self.dependencyManager addBackgroundToBackgroundHost:pollCell];
                 pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
                     NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
