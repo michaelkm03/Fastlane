@@ -138,17 +138,16 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="72F-7l-zgu" id="6KX-KD-PH7"/>
-                        <outlet property="tickerPickerSelection" destination="ImU-dp-AXh" id="hf2-ty-g12"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6g5-5H-Uze" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="ImU-dp-AXh" customClass="VTickerPickerSelection"/>
             </objects>
             <point key="canvasLocation" x="-116" y="402"/>
         </scene>
         <!--Crop Tool View Controller-->
         <scene sceneID="3yx-bR-QwV">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="VCropToolViewController" id="68P-kQ-eWn" customClass="VCropToolViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
@@ -173,9 +172,52 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="550" y="343"/>
+        </scene>
+        <!--Multiple Picker View Controller-->
+        <scene sceneID="Jsz-Ch-OUc">
+            <objects>
+                <viewController storyboardIdentifier="VMultiplePickerViewController" id="Xk2-Zv-tuo" customClass="VMultiplePickerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tAf-q3-G6q"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ltx-tt-Fus"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="K8p-a6-nls">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gk8-ZG-gG1">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="2x0-Y4-BSb">
+                                    <size key="itemSize" width="300" height="44"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="delegate" destination="Xk2-Zv-tuo" id="AY0-Lt-2vz"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ltx-tt-Fus" firstAttribute="top" secondItem="gk8-ZG-gG1" secondAttribute="bottom" id="2OJ-Pe-XAn"/>
+                            <constraint firstItem="gk8-ZG-gG1" firstAttribute="top" secondItem="tAf-q3-G6q" secondAttribute="bottom" id="7Hp-wV-eNh"/>
+                            <constraint firstItem="gk8-ZG-gG1" firstAttribute="leading" secondItem="K8p-a6-nls" secondAttribute="leading" id="8XS-QD-aEt"/>
+                            <constraint firstAttribute="trailing" secondItem="gk8-ZG-gG1" secondAttribute="trailing" id="CV6-5c-kj7"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="collectionView" destination="gk8-ZG-gG1" id="s7W-11-BHj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TIj-W6-35e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-756" y="402"/>
         </scene>
     </scenes>
     <resources>

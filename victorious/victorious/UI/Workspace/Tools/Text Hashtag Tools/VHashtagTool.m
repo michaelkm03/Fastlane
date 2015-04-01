@@ -25,7 +25,7 @@ static NSString * const kPickerKey = @"picker";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIImage *selectedIcon;
 @property (nonatomic, strong) VTextCanvasToolViewController *canvasToolViewController;
-@property (nonatomic, readwrite) UIViewController <VToolPicker> *toolPicker;
+@property (nonatomic, readwrite) UIViewController <VCollectionToolPicker, VMultipleToolPicker> *toolPicker;
 
 @end
 
@@ -42,7 +42,7 @@ static NSString * const kPickerKey = @"picker";
         _selectedIcon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kSelectedIconKey][kImageURLKey]];
         
         // Create objects
-        _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        _toolPicker = (UIViewController<VCollectionToolPicker, VMultipleToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         VHashtagPickerDataSource *dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager];
         
         // Set up references
@@ -70,7 +70,7 @@ static NSString * const kPickerKey = @"picker";
 
 - (void)selectDefault
 {
-    [_toolPicker selectToolAtIndex:0];
+    [self.toolPicker selectToolAtIndex:0];
 }
 
 @end

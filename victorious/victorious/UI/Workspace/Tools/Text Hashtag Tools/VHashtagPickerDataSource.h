@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VToolPicker.h"
+#import "VMultipleToolPicker.h"
+#import "VCollectionToolPicker.h"
 
 @class VDependencyManager;
 
-@interface VHashtagPickerDataSource : NSObject <VToolPickerDataSource>
+@interface VHashtagPickerDataSource : NSObject <VCollectionToolPickerDataSource>
 
-@property (nonatomic, weak) id<VToolPicker> toolPicker;
+@property (nonatomic, weak) id<VCollectionToolPicker> toolPicker;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 

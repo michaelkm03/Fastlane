@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "VWorkspaceTool.h"
-#import "VToolPicker.h"
+#import "VMultipleToolPicker.h"
+#import "VCollectionToolPicker.h"
 
 @interface VHashtagTool : NSObject <VWorkspaceTool>
 
-@property (nonatomic, readonly) UIViewController <VToolPicker> *toolPicker;
+@property (nonatomic, readonly) UIViewController <VCollectionToolPicker, VMultipleToolPicker> *toolPicker;
 
 @end

@@ -76,10 +76,6 @@ static NSString * const kColorKey = @"color";
 static NSString * const kColorOptionsKey = @"colorOptions";
 static NSString * const kDefaultTextKey = @"defaultText";
 
-static NSString * const kPickerSelectionMode = @"pickerSelectionMode";
-static NSString * const kPickerSelectionModeSingle = @"multipleSelection";
-static NSString * const kPickerSelectionModeMultiple = @"singleSelection";
-
 // Text properties
 static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
@@ -434,8 +430,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                      },
              kPickerKey:
                  @{
-                     kClassNameKey: @"vertical.picker",
-                     kPickerSelectionMode: kPickerSelectionModeMultiple,
+                     kClassNameKey: @"vertical.multiplePicker"
                      }
              };
 }
@@ -454,8 +449,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                      },
              kPickerKey:
                  @{
-                     kClassNameKey: @"vertical.picker",
-                     kPickerSelectionMode: kPickerSelectionModeSingle,
+                     kClassNameKey: @"vertical.picker"
                      },
              kColorOptionsKey : @[
                      @{ kTitleKey : @"Red",

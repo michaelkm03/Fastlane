@@ -7,7 +7,7 @@
 //
 
 #import "VFilterTool.h"
-#import "VToolPicker.h"
+#import "VCollectionToolPicker.h"
 #import "VFilterTypeTool.h"
 
 #import "NSArray+VMap.h"
@@ -30,7 +30,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 @interface VFilterTool () <VToolPickerDelegate>
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
+@property (nonatomic, strong) UIViewController <VCollectionToolPicker, VToolPicker> *toolPicker;
 @property (nonatomic, strong) VFilterTypeTool *selectedFilter;
 @property (nonatomic, strong) VCanvasView *canvasView;
 
@@ -52,7 +52,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
-        _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        _toolPicker = (UIViewController<VCollectionToolPicker, VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         _icon = [dependencyManager imageForKey:kIconKey];
         _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
         
@@ -79,10 +79,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
             return imageFilter;
         }];
         
-        id<VToolPickerDataSource> dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        id<VCollectionToolPickerDataSource> dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager];
         dataSource.tools = filterTools;
         _toolPicker.dataSource = dataSource;
-        _toolPicker.delegate = self;
+        _toolPicker.pickerDelegate = self;
     }
     return self;
 }
@@ -118,9 +118,9 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     _canvasView = canvasView;
 }
 
-- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectItemAtIndex:(NSInteger)index
+- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectTool:(id<VWorkspaceTool>)tool
 {
-    VFilterTypeTool<VWorkspaceTool> *selectedTool = [toolPicker.dataSource.tools objectAtIndex:index];
+    VFilterTypeTool<VWorkspaceTool> *selectedTool = tool;
     
     self.canvasView.filter = selectedTool.filter;
     self.selectedFilter = selectedTool;

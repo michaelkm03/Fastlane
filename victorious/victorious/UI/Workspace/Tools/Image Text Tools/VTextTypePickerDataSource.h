@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VToolPicker.h"
+#import "VCollectionToolPicker.h"
 
 @class VDependencyManager;
 
-@interface VTextTypePickerDataSource : NSObject <VToolPickerDataSource>
+@interface VTextTypePickerDataSource : NSObject <VCollectionToolPickerDataSource>
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 

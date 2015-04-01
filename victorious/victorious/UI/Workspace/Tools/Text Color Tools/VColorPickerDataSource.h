@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "VColorPickerDataSource.h"
-#import "VToolPicker.h"
+#import "VCollectionToolPicker.h"
 
 @class VDependencyManager;
 
-@interface VColorPickerDataSource : NSObject <VToolPickerDataSource>
+@interface VColorPickerDataSource : NSObject <VCollectionToolPickerDataSource>
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 

@@ -18,7 +18,7 @@
 #import "VHashtagPickerDataSource.h"
 #import "VEditableTextPostViewController.h"
 
-@interface VTextToolController() <VToolPickerDelegate, VEditableTextPostViewControllerDelegate>
+@interface VTextToolController() <VMultipleToolPickerDelegate, VEditableTextPostViewControllerDelegate>
 
 @property (nonatomic, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
@@ -40,11 +40,6 @@
     return self;
 }
 
-- (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
-{
-    [super setSelectedTool:selectedTool];
-}
-
 - (void)setupDefaultTool
 {
     if ( self.tools == nil || self.tools.count == 0 )
@@ -52,22 +47,23 @@
         NSAssert( NO, @"Cannot set up default tool because there are no tools." );
     }
     
-    [self setPickerDelegate:self forSubtools:self.tools];
-    
     [self setSelectedTool:self.tools.firstObject];
     
     [self.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
-         id<VToolPicker> toolPicker = (id<VToolPicker>)tool.inspectorToolViewController;
          if ( [tool isKindOfClass:[VTextColorTool class]] )
          {
+             id<VToolPicker> toolPicker = (id<VToolPicker>)tool.inspectorToolViewController;
+             toolPicker.pickerDelegate = self;
              self.textColorTool = tool;
+             [self toolPicker:toolPicker didSelectTool:toolPicker.selectedTool]; //< Select first color
          }
          else if ( [tool isKindOfClass:[VHashtagTool class]] )
          {
+             id<VMultipleToolPicker> toolPicker = (id<VMultipleToolPicker>)tool.inspectorToolViewController;
+             toolPicker.multiplePickerDelegate = self;
              self.hashtagTool = tool;
          }
-         [self toolPicker:toolPicker didSelectItemAtIndex:0];
      }];
     
     self.textPostViewController.delegate = self;
@@ -101,26 +97,33 @@
     return self.textPostViewController.text;
 }
 
-- (void)setPickerDelegate:(id<VToolPickerDelegate>)delegate forSubtools:(NSArray *)subtools
-{
-    [subtools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
-     {
-         id<VToolPicker> toolPicker = (id<VToolPicker>)tool.inspectorToolViewController;
-         toolPicker.delegate = delegate;
-     }];
-}
-
 - (VTextPostViewController *)textPostViewController
 {
     VTextCanvasToolViewController *editTextViewController = (VTextCanvasToolViewController *)self.selectedTool.canvasToolViewController;
     return editTextViewController.textPostViewController;
 }
 
+- (BOOL)canPublish
+{
+    return self.textPostViewController.textOutput.length > 0;
+}
+
 #pragma mark - VToolPickerDelegate
 
-- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectItemAtIndex:(NSInteger)index
+- (void)toolPicker:(id<VCollectionToolPicker>)toolPicker didSelectTool:(id<VWorkspaceTool>)tool
 {
-    id selectedTool = toolPicker.dataSource.tools[ index ];
+    if ( [tool isKindOfClass:[VColorType class]] )
+    {
+        VColorType *colorType = (VColorType *)tool;
+        self.textPostViewController.view.backgroundColor = colorType.color;
+    }
+}
+
+#pragma mark - VMultipleToolPickerDelegate
+
+- (void)toolPicker:(id<VMultipleToolPicker>)toolPicker didSelectItemAtIndex:(NSInteger)index
+{
+    id selectedTool = ((id<VCollectionToolPicker>) toolPicker).dataSource.tools[ index ];
     if ( [selectedTool isKindOfClass:[VHashtagType class]] )
     {
         VHashtagType *hashtagType = (VHashtagType *)selectedTool;
@@ -130,26 +133,16 @@
             [toolPicker deselectToolAtIndex:index];
         }
     }
-    else if ( [selectedTool isKindOfClass:[VColorType class]] )
-    {
-        VColorType *colorType = (VColorType *)selectedTool;
-        self.textPostViewController.view.backgroundColor = colorType.color;
-    }
 }
 
-- (void)toolPicker:(id<VToolPicker>)toolPicker didDeselectItemAtIndex:(NSInteger)index
+- (void)toolPicker:(id<VMultipleToolPicker>)toolPicker didDeselectItemAtIndex:(NSInteger)index
 {
-    id selectedTool = toolPicker.dataSource.tools[ index ];
+    id selectedTool = ((id<VCollectionToolPicker>) toolPicker).dataSource.tools[ index ];
     if ( [selectedTool isKindOfClass:[VHashtagType class]] )
     {
         VHashtagType *hashtagType = (VHashtagType *)selectedTool;
         [self.textPostViewController removeHashtag:hashtagType.hashtagText];
     }
-}
-
-- (BOOL)canPublish
-{
-    return self.textPostViewController.textOutput.length > 0;
 }
 
 #pragma mark - VEditableTextPostViewControllerDelegate

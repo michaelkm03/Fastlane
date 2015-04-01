@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VToolPicker.h"
+#import "VCollectionToolPicker.h"
 
 @class VDependencyManager;
 
-@interface VFilterPickerDataSource : NSObject <VToolPickerDataSource>
+@interface VFilterPickerDataSource : NSObject <VCollectionToolPickerDataSource>
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 

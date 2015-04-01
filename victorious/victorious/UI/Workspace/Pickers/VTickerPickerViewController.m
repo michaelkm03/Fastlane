@@ -19,15 +19,12 @@
 @property (nonatomic, strong) NSIndexPath *selectedToolIndexPath;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
-@property (nonatomic, strong) IBOutlet VTickerPickerSelection *tickerPickerSelection;
-
 @end
 
 @implementation VTickerPickerViewController
 
-@synthesize delegate;
-@synthesize dataSource;
-@synthesize selectedTool;
+@synthesize pickerDelegate; //< VToolPicker
+@synthesize dataSource; //< VCollectionToolPicker
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -35,8 +32,6 @@
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.dependencyManager = dependencyManager;
     toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    VTickerPickerSelectionMode selectionMode = [VTickerPickerSelection selectionModeFromString:[dependencyManager stringForKey:VTickerPickerSelectionModeKey]];
-    toolPicker.selectionMode = selectionMode < 0 ? VTickerPickerSelectionModeSingle : selectionMode;
     return toolPicker;
 }
 
@@ -48,32 +43,29 @@
     self.collectionView.dataSource = nil;
 }
 
-#pragma mark - UIViewController
-#pragma mark Lifecycle Methods
+#pragma mark - UIViewController Lifecycle Methods
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.collectionView.allowsMultipleSelection = self.selectionMode != VTickerPickerSelectionModeSingle;
+    self.collectionView.allowsMultipleSelection = YES;
     self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
-    NSAssert( self.dataSource != nil, @"A VTickerPickerViewController must have a VToolPickerDataSource property set." );
+    NSAssert( self.dataSource != nil, @"A VTickerPickerViewController must have a VCollectionToolPickerDataSource property set." );
     
     self.collectionView.dataSource = self.dataSource;
     [self.dataSource registerCellsWithCollectionView:self.collectionView];
     [self.collectionView reloadData];
     
-    if ( self.selectionMode == VTickerPickerSelectionModeSingle )
-    {
-        [self addSelectionIndicatorView];
-    }
+    [self addSelectionIndicatorView];
     
-    [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+    NSIndexPath *defaultIndexPathSelection = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.collectionView selectItemAtIndexPath:defaultIndexPathSelection
                                       animated:NO
                                 scrollPosition:UICollectionViewScrollPositionNone];
-    
-    [self.delegate toolPicker:self didSelectItemAtIndex:0];
+    self.selectedToolIndexPath = defaultIndexPathSelection;
+    [self.pickerDelegate toolPicker:self didSelectTool:self.selectedTool];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -95,24 +87,11 @@
     layout.sectionInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.collectionView.bounds) - singleCellHeight, 0);
 }
 
-#pragma mark - VToolPicker Public selection methods
+#pragma mark - VPickerDelegate
 
-- (BOOL)toolIsSelectedAtIndex:(NSInteger)index
+- (id<VWorkspaceTool>)selectedTool
 {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    return [self.tickerPickerSelection isIndexPathSelected:indexPath];
-}
-
-- (void)selectToolAtIndex:(NSInteger)index
-{
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    [self itemSelectedAtIndexPath:indexPath];
-}
-
-- (void)deselectToolAtIndex:(NSInteger)index
-{
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    [self itemDeselectedAtIndexPath:indexPath];
+    return [self.dataSource tools][self.selectedToolIndexPath.row];
 }
 
 #pragma mark - Selection management
@@ -124,36 +103,6 @@
     self.selectionIndicatorView.userInteractionEnabled = NO;
     [self.collectionView addSubview:self.selectionIndicatorView];
     [self.collectionView sendSubviewToBack:self.selectionIndicatorView];
-}
-
-- (void)itemSelectedAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ( self.selectionMode == VTickerPickerSelectionModeSingle )
-    {
-        [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
-        self.blockScrollingSelectionUntilReached = indexPath;
-        self.selectedToolIndexPath = indexPath;
-    }
-    else if ( self.selectionMode == VTickerPickerSelectionModeMultiple )
-    {
-        [self.tickerPickerSelection indexPathWasSelected:indexPath];
-        [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
-    }
-    [self.delegate toolPicker:self didSelectItemAtIndex:indexPath.row];
-}
-
-- (void)itemDeselectedAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ( [self.delegate respondsToSelector:@selector(toolPicker:didDeselectItemAtIndex:)] )
-    {
-        [self.delegate toolPicker:self didDeselectItemAtIndex:indexPath.row];
-    }
-    
-    if ( self.selectionMode == VTickerPickerSelectionModeMultiple )
-    {
-        [self.tickerPickerSelection indexPathWasDeselected:indexPath];
-        [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
-    }
 }
 
 - (void)selectRowOnScroll
@@ -182,7 +131,7 @@
                                       animated:YES
                                 scrollPosition:UICollectionViewScrollPositionNone];
     self.selectedToolIndexPath = indexPathForPoint;
-    [self.delegate toolPicker:self didSelectItemAtIndex:indexPathForPoint.row];
+    [self.pickerDelegate toolPicker:self didSelectTool:self.selectedTool];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -216,22 +165,18 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self itemSelectedAtIndexPath:indexPath];
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self itemDeselectedAtIndexPath:indexPath];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+    self.blockScrollingSelectionUntilReached = indexPath;
+    self.selectedToolIndexPath = indexPath;
+    
+    [self.pickerDelegate toolPicker:self didSelectTool:self.selectedTool];
 }
 
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ( self.selectionMode == VTickerPickerSelectionModeSingle )
-    {
-        [self selectRowOnScroll];
-    }
+    [self selectRowOnScroll];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -252,7 +197,7 @@
     }
 }
 
-#pragma mark - VToolPicker
+#pragma mark - VCollectionToolPicker
 
 - (void)reloadData
 {

@@ -20,6 +20,8 @@
 	<string>VCropToolViewController</string>
 	<key>vertical.picker</key>
 	<string>VTickerPickerViewController</string>
+	<key>vertical.multiplePicker</key>
+	<string>VMultiplePickerViewController</string>
 	<key>filter.tool</key>
 	<string>VFilterTool</string>
 	<key>quote.tool</key>

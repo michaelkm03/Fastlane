@@ -57,7 +57,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
         _toolPicker.dataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager];
-        _toolPicker.delegate = self;
+        _toolPicker.pickerDelegate = self;
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [dependencyManager imageForKey:kIconKey];
         _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
@@ -156,18 +156,16 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     return self.canvasToolViewController.userEnteredText;
 }
 
-- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectItemAtIndex:(NSInteger)index
+- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectTool:(id<VWorkspaceTool>)tool
 {
     BOOL activeToolWasUndefined = self.activeTextTool == nil;
-
-    id <VWorkspaceTool> selectedTool = [toolPicker.dataSource.tools objectAtIndex:index];
     
-    self.activeTextTool = selectedTool;
+    self.activeTextTool = tool;
     
     // The first time the tool is selected, it is the default selection, not a user action
     if ( !activeToolWasUndefined )
     {
-        NSDictionary *params = @{ VTrackingKeyName : selectedTool.title ?: @"" };
+        NSDictionary *params = @{ VTrackingKeyName : self.activeTextTool.title ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTextType parameters:params];
     }
 }

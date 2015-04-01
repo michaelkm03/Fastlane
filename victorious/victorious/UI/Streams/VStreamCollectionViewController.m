@@ -266,10 +266,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
-    
-#warning TESTING ONLY
-    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
-    [self.workspacePresenter presentTextOnlyWorkspace];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

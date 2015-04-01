@@ -1,38 +1,20 @@
 //
-//  TickerPickerSelection.m
+//  VMultiplePickerSelection.m
 //  victorious
 //
 //  Created by Patrick Lynch on 3/30/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VTickerPickerSelection.h"
+#import "VMultiplePickerSelection.h"
 
-NSString * const VTickerPickerSelectionModeKey = @"pickerSelectionMode";
-NSString * const VTickerPickerSelectionSingle = @"multipleSelection";
-NSString * const VTickerPickerSelectionMultiple = @"singleSelection";
-
-@interface VTickerPickerSelection()
+@interface VMultiplePickerSelection()
 
 @property (nonatomic, strong) NSMutableSet *selectedIndexPaths;
 
 @end
 
-@implementation VTickerPickerSelection
-
-+ (VTickerPickerSelectionMode)selectionModeFromString:(NSString *)string
-{
-    if ( [string isEqualToString:VTickerPickerSelectionSingle] )
-    {
-        return VTickerPickerSelectionModeSingle;
-    }
-    else if ( [string isEqualToString:VTickerPickerSelectionMultiple] )
-    {
-        return VTickerPickerSelectionModeMultiple;
-    }
-    
-    return -1;
-}
+@implementation VMultiplePickerSelection
 
 - (void)resetSelectedIndexPaths
 {
