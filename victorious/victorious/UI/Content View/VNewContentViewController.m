@@ -15,7 +15,6 @@
 // SubViews
 #import "VExperienceEnhancerBar.h"
 #import "VHistogramBarView.h"
-#import "UIView+AutoLayout.h"
 
 // Images
 #import "UIImage+ImageCreation.h"
@@ -918,7 +917,6 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                                               placeholderImage:self.placeholderImage?:nil];
                 self.contentCell = imageCell;
                 self.contentCell.endCardDelegate = self;
-                
                 return imageCell;
             }
             case VContentViewTypeGIFVideo:
@@ -928,7 +926,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 {
                     return self.videoCell;
                 }
-                
+
                 VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
                 videoCell.tracking = self.viewModel.sequence.tracking;
@@ -941,11 +939,11 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 self.contentCell = videoCell;
                 __weak typeof(self) welf = self;
                 [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
-                 {
-                     const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
-                     welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
-                     welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-                 }];
+                {
+                    const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
+                    welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
+                    welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
+                }];
                 videoCell.endCardDelegate = self;
                 videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
                 return videoCell;
