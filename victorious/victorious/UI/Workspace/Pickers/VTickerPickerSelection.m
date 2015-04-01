@@ -12,6 +12,12 @@ NSString * const VTickerPickerSelectionModeKey = @"pickerSelectionMode";
 NSString * const VTickerPickerSelectionSingle = @"multipleSelection";
 NSString * const VTickerPickerSelectionMultiple = @"singleSelection";
 
+@interface VTickerPickerSelection()
+
+@property (nonatomic, strong) NSMutableSet *selectedIndexPaths;
+
+@end
+
 @implementation VTickerPickerSelection
 
 + (VTickerPickerSelectionMode)selectionModeFromString:(NSString *)string
@@ -26,6 +32,35 @@ NSString * const VTickerPickerSelectionMultiple = @"singleSelection";
     }
     
     return -1;
+}
+
+- (void)resetSelectedIndexPaths
+{
+    self.selectedIndexPaths = nil;
+}
+
+- (void)indexPathWasSelected:(NSIndexPath *)indexPath
+{
+    [self.selectedIndexPaths addObject:indexPath];
+}
+
+- (void)indexPathWasDeselected:(NSIndexPath *)indexPath
+{
+    [self.selectedIndexPaths removeObject:indexPath];
+}
+
+- (BOOL)isIndexPathSelected:(NSIndexPath *)indexPath
+{
+    return [self.selectedIndexPaths containsObject:indexPath];
+}
+
+- (NSMutableSet *)selectedIndexPaths
+{
+    if ( _selectedIndexPaths == nil )
+    {
+        _selectedIndexPaths = [[NSMutableSet alloc] init];
+    }
+    return _selectedIndexPaths;
 }
 
 @end

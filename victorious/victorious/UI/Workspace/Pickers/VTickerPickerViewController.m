@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSIndexPath *selectedToolIndexPath;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
+@property (nonatomic, strong) IBOutlet VTickerPickerSelection *tickerPickerSelection;
+
 @end
 
 @implementation VTickerPickerViewController
@@ -95,17 +97,21 @@
 
 #pragma mark - VToolPicker Public selection methods
 
+- (BOOL)toolIsSelectedAtIndex:(NSInteger)index
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    return [self.tickerPickerSelection isIndexPathSelected:indexPath];
+}
+
 - (void)selectToolAtIndex:(NSInteger)index
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    [self.collectionView cellForItemAtIndexPath:indexPath].selected = YES;
     [self itemSelectedAtIndexPath:indexPath];
 }
 
 - (void)deselectToolAtIndex:(NSInteger)index
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    [self.collectionView cellForItemAtIndexPath:indexPath].selected = NO;
     [self itemDeselectedAtIndexPath:indexPath];
 }
 
@@ -128,6 +134,11 @@
         self.blockScrollingSelectionUntilReached = indexPath;
         self.selectedToolIndexPath = indexPath;
     }
+    else if ( self.selectionMode == VTickerPickerSelectionModeMultiple )
+    {
+        [self.tickerPickerSelection indexPathWasSelected:indexPath];
+        [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
+    }
     [self.delegate toolPicker:self didSelectItemAtIndex:indexPath.row];
 }
 
@@ -136,6 +147,12 @@
     if ( [self.delegate respondsToSelector:@selector(toolPicker:didDeselectItemAtIndex:)] )
     {
         [self.delegate toolPicker:self didDeselectItemAtIndex:indexPath.row];
+    }
+    
+    if ( self.selectionMode == VTickerPickerSelectionModeMultiple )
+    {
+        [self.tickerPickerSelection indexPathWasDeselected:indexPath];
+        [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
     }
 }
 
@@ -189,6 +206,11 @@
          }
      }];
     
+    return YES;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
     return YES;
 }
 

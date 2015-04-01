@@ -41,9 +41,12 @@ static NSString * const kPickerKey = @"picker";
         _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
         _selectedIcon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kSelectedIconKey][kImageURLKey]];
         
+        // Create objects
+        _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         VHashtagPickerDataSource *dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager];
         
-        _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        // Set up references
+        dataSource.toolPicker = _toolPicker;
         _toolPicker.dataSource = dataSource;
         
         [dataSource reloadWithCompletion:^(NSArray *hashtagTools)

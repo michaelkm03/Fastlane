@@ -138,9 +138,11 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="72F-7l-zgu" id="6KX-KD-PH7"/>
+                        <outlet property="tickerPickerSelection" destination="ImU-dp-AXh" id="hf2-ty-g12"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6g5-5H-Uze" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="ImU-dp-AXh" customClass="VTickerPickerSelection"/>
             </objects>
             <point key="canvasLocation" x="-116" y="402"/>
         </scene>

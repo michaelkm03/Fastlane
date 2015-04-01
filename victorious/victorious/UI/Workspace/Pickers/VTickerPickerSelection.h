@@ -22,4 +22,12 @@ typedef NS_ENUM( NSInteger, VTickerPickerSelectionMode )
 
 + (VTickerPickerSelectionMode)selectionModeFromString:(NSString *)string;
 
+- (void)resetSelectedIndexPaths;
+
+- (void)indexPathWasSelected:(NSIndexPath *)indexPath;
+
+- (void)indexPathWasDeselected:(NSIndexPath *)indexPath;
+
+- (BOOL)isIndexPathSelected:(NSIndexPath *)indexPath;
+
 @end

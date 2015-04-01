@@ -45,6 +45,7 @@
 @property (nonatomic, strong) id<VToolPickerDelegate> delegate;
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.
 
+- (BOOL)toolIsSelectedAtIndex:(NSInteger)index;
 - (void)selectToolAtIndex:(NSInteger)index;
 - (void)deselectToolAtIndex:(NSInteger)index;
 - (void)reloadData;

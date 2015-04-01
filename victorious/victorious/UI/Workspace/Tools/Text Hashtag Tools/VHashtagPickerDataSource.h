@@ -13,6 +13,8 @@
 
 @interface VHashtagPickerDataSource : NSObject <VToolPickerDataSource>
 
+@property (nonatomic, weak) id<VToolPicker> toolPicker;
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)reloadWithCompletion:(void(^)(NSArray *tools))completion;

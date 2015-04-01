@@ -67,6 +67,11 @@
     VHashtagOptionCell *hashtagCell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     hashtagCell.font = [self.dependencyManager fontForKey:@"font.button"];
     hashtagCell.selectedColor = [self.dependencyManager colorForKey:@"color.link"];
+    hashtagCell.selected = [self.toolPicker toolIsSelectedAtIndex:indexPath.row];
+    if ( hashtagCell.selected )
+    {
+        [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:0];
+    }
     hashtagCell.title = hashtagType.hashtagText;
     return hashtagCell;
 }
