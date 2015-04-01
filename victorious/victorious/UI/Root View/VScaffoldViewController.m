@@ -109,6 +109,16 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 - (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
     VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    
+    NSString *reason = nil;
+    if ( ![contentViewFactory canDisplaySequence:sequence localizedReason:&reason] )
+    {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:reason preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OKButton", @"") style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
+    
     UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence commentID:commentID placeholderImage:placeholderImage];
     if ( contentView != nil )
     {

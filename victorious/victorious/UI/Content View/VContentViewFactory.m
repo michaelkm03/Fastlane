@@ -55,11 +55,41 @@ static NSString * const kContentViewComponentKey = @"contentView";
     return contentNav;
 }
 
+- (BOOL)canDisplaySequence:(VSequence *)sequence localizedReason:(NSString *__autoreleasing *)reason
+{
+    if ( [sequence isWebContent] )
+    {
+        NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
+        if ( [self isCustomScheme:sequenceContentURL] )
+        {
+            if ( [[UIApplication sharedApplication] canOpenURL:sequenceContentURL] )
+            {
+                return YES;
+            }
+            else
+            {
+                if ( reason != nil )
+                {
+                    *reason = NSLocalizedString(@"Sorry, I can't display that right now", @"User has tapped a link that goes nowhere");
+                }
+                return NO;
+            }
+        }
+        else
+        {
+            return YES;
+        }
+    }
+    else
+    {
+        return YES;
+    }
+}
+
 - (UIViewController *)webContentViewControllerWithSequence:(VSequence *)sequence
 {
     NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
-    const BOOL isCustomScheme = [sequenceContentURL.scheme rangeOfString:@"http"].location != 0;
-    if ( isCustomScheme && [[UIApplication sharedApplication] canOpenURL:sequenceContentURL] )
+    if ( [self isCustomScheme:sequenceContentURL] )
     {
         [[UIApplication sharedApplication] openURL:sequenceContentURL];
         return nil;
@@ -70,6 +100,11 @@ static NSString * const kContentViewComponentKey = @"contentView";
         viewController.sequence = sequence;
         return viewController;
     }
+}
+
+- (BOOL)isCustomScheme:(NSURL *)url
+{
+    return [url.scheme rangeOfString:@"http"].location != 0;
 }
 
 @end

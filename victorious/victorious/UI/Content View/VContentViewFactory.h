@@ -26,6 +26,15 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 /**
+ Checks to make sure the specified sequence is capable of being displayed.
+ 
+ @param reason If the return value is NO, this string is set to a user-displayable explanation of why we can't display the sequence.
+ 
+ @return YES if calling -contentViewForSequence:commentID:placeholderImage: and passing this sequence will be successful.
+ */
+- (BOOL)canDisplaySequence:(VSequence *)sequence localizedReason:(NSString **)reason;
+
+/**
  Instantiates and returns a content view primed to display the given
  sequence. If the sequence contains a deeplink to another app, this
  method returns nil and -[UIApplication openURL:] will be called.
