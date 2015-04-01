@@ -14,7 +14,7 @@ typedef void (^VAnswerSelectionBlock)(BOOL isVideo, NSURL *mediaURL);
 /**
  *  A UICollectionViewCell for displaying poll content.
  */
-@interface VContentPollCell : VBaseCollectionViewCell <VBackgroundContainer>
+@interface VContentPollCell : VBaseCollectionViewCell
 
 @property (nonatomic) NSString *numberOfVotersText;
 

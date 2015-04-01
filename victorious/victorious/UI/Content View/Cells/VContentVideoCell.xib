@@ -13,10 +13,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CUZ-Hn-axa" userLabel="Background Container">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </view>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Rhs-CS-W7B">
                         <rect key="frame" x="142" y="141" width="37" height="37"/>
                     </activityIndicatorView>
@@ -35,11 +31,7 @@
             </view>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="CUZ-Hn-axa" secondAttribute="trailing" id="3wR-vM-VYA"/>
                 <constraint firstItem="rko-52-7C5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="atE-VE-I8O" secondAttribute="leading" constant="10" id="Gzj-OR-6fy"/>
-                <constraint firstAttribute="bottom" secondItem="CUZ-Hn-axa" secondAttribute="bottom" id="HVX-YP-8dj"/>
-                <constraint firstItem="CUZ-Hn-axa" firstAttribute="top" secondItem="atE-VE-I8O" secondAttribute="top" id="SyJ-o1-N9H"/>
-                <constraint firstItem="CUZ-Hn-axa" firstAttribute="leading" secondItem="atE-VE-I8O" secondAttribute="leading" id="ho2-AA-Y7F"/>
                 <constraint firstAttribute="centerY" secondItem="Rhs-CS-W7B" secondAttribute="centerY" constant="0.5" id="i9g-rA-BHn"/>
                 <constraint firstAttribute="centerX" secondItem="Rhs-CS-W7B" secondAttribute="centerX" constant="-0.5" id="jjd-IF-eum"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rko-52-7C5" secondAttribute="trailing" constant="10" id="klG-7c-ftW"/>
@@ -47,7 +39,6 @@
                 <constraint firstAttribute="centerX" secondItem="rko-52-7C5" secondAttribute="centerX" id="rMn-wm-leZ"/>
             </constraints>
             <connections>
-                <outlet property="backgroundContainer" destination="CUZ-Hn-axa" id="IVI-ge-sGm"/>
                 <outlet property="failureRetryButton" destination="rko-52-7C5" id="7ib-rD-cdT"/>
                 <outlet property="loadingIndicator" destination="Rhs-CS-W7B" id="axc-P6-FpH"/>
             </connections>

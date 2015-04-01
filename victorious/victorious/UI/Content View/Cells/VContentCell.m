@@ -242,11 +242,4 @@
     [self.endCardDelegate actionCellSelected:actionCell atIndex:index];
 }
 
-#pragma mark - VBackgroundContainer
-
-- (UIView *)backgroundContainerView
-{
-    return nil;
-}
-
 @end
