@@ -11,6 +11,9 @@
 
 @class VDependencyManager, VTextToolController;
 
+/**
+ A VToolController that handles creating text posts within the workspace.
+ */
 @interface VTextToolController : VToolController
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -20,8 +23,15 @@
  */
 @property (nonatomic, assign) NSUInteger defaultTool;
 
+/**
+ Indicates whether the text post being created in its current state
+ meets all requirements to be published.
+ */
 @property (nonatomic, readonly) BOOL canPublish;
 
+/**
+ An object that can receive updates when the text post is edited.
+ */
 @property (nonatomic, strong) id<VTextListener> textListener;
 
 @end
