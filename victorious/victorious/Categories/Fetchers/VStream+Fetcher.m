@@ -16,7 +16,7 @@
 #import "VPaginationManager.h"
 #import "NSCharacterSet+VURLParts.h"
 
-NSString * const VStreamFollowerStreamPath = @"/api/sequence/follows_detail_list_by_stream/";
+NSString * const VStreamFollowerStreamPath = @"/api/sequence/follows_detail_list_by_stream_with_marquee/";
 
 NSString * const VStreamFilterTypeRecent = @"recent";
 NSString * const VStreamFilterTypePopular = @"popular";
@@ -26,6 +26,11 @@ NSString * const VStreamFilterTypePopular = @"popular";
 - (BOOL)isHashtagStream
 {
     return self.hashtag != nil;
+}
+
+- (BOOL)hasMarquee
+{
+    return self.marqueeItems.count > 0;
 }
 
 + (VStream *)streamForUser:(VUser *)user

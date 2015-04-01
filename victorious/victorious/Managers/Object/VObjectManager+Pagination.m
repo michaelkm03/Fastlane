@@ -24,6 +24,8 @@
 
 #import "NSCharacterSet+VURLParts.h"
 #import "NSString+VParseHelp.h"
+#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
@@ -418,8 +420,15 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
         for (VStreamItem *streamItem in resultObjects)
         {
-            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
-            [streamItems addObject:streamItemInContext];
+            if ( [streamItem isKindOfClass:[VStream class]] && [(VStream *)streamItem hasMarquee] )
+            {
+                stream.marqueeItems = [(VStream *)stream marqueeItems];
+            }
+            else
+            {
+                VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+                [streamItems addObject:streamItemInContext];
+            }
         }
         stream.streamItems = streamItems;
         

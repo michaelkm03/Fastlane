@@ -45,6 +45,26 @@
                                                                                          toKeyPath:VSelectorName(streamItems)
                                                                                        withMapping:[[self class] streamItemMapping]];
     [mapping addPropertyMapping:sequenceMapping];
+
+    return mapping;
+}
+
++ (RKEntityMapping *)marqueeContentMapping
+{
+    NSDictionary *propertyMap = [[self class] propertyMap];
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:[self entityName]
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    RKRelationshipMapping *marqueeMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"marquee"
+                                                                                        toKeyPath:VSelectorName(marqueeItems)
+                                                                                      withMapping:[[self class] listByStreamMapping]];
+    [mapping addPropertyMapping:marqueeMapping];
     
     return mapping;
 }
@@ -93,16 +113,52 @@
 + (NSArray *)descriptors
 {
     return @[
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
                                                           method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:page/:perpage"
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:streamId/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:stream/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:streamId/:filterId/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:category/:filtername"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
                                                           method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:filterId/:page/:perpage"
-                                                         keyPath:@"payload"
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:streamId/:page/:perpage"
+                                                         keyPath:@"payload.content"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:stream/:page/:perpage"
+                                                         keyPath:@"payload.content"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:streamId/:filterId/:page/:perpage"
+                                                         keyPath:@"payload.content"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:category/:filtername"
+                                                         keyPath:@"payload.content"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
               ];
 }

@@ -14,6 +14,7 @@
 #import "VTracking+RestKit.h"
 #import "VAdBreak+RestKit.h"
 #import "VEndCard+RestKit.h"
+#import "VStream+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -110,12 +111,6 @@
                                                       pathPattern:@"/api/sequence/hot_detail_list_by_stream/:stream/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:category/:filtername"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
               [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                            method:RKRequestMethodGET
@@ -141,17 +136,7 @@
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:stream/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:filterId/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+
               ];
 }
 

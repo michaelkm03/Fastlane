@@ -16,6 +16,7 @@
 @dynamic count;
 @dynamic filterName;
 @dynamic streamItems;
+@dynamic marqueeItems;
 @dynamic hashtag;
 @dynamic trackingIdentifier;
 @dynamic isUserPostAllowed;
