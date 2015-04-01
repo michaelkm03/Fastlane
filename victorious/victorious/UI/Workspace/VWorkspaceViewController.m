@@ -90,6 +90,13 @@
     self.toolController.delegate = self;
 }
 
+#pragma mark - Target/Action
+
+- (IBAction)publish:(id)sender
+{
+    [self publishContent];
+}
+
 - (void)publishContent
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
@@ -114,12 +121,35 @@
          }
          else
          {
-             if (welf.completionBlock != nil)
-             {
-                 welf.completionBlock(YES, previewImage, renderedMediaURL);
-             }
+             [welf callCompletionWithSuccess:YES
+                                previewImage:previewImage
+                            renderedMediaURL:renderedMediaURL];
          }
      }];
+}
+
+- (IBAction)close:(id)sender
+{
+    if (self.shouldConfirmCancels)
+    {
+        __weak typeof(self) welf = self;
+        UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
+                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                                      onCancelButton:nil
+                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
+                                                                 onDestructiveButton:^
+                                                 {
+                                                     [welf callCompletionWithSuccess:NO
+                                                                        previewImage:nil
+                                                                    renderedMediaURL:nil];
+                                                 }
+                                                          otherButtonTitlesAndBlocks:nil, nil];
+        [confirmExitActionSheet showInView:self.view];
+        return;
+    }
+    [self callCompletionWithSuccess:NO
+                       previewImage:nil
+                   renderedMediaURL:nil];
 }
 
 - (void)confirmCancel
@@ -135,31 +165,6 @@
                                              }
                                                       otherButtonTitlesAndBlocks:nil, nil];
     [confirmExitActionSheet showInView:self.view];
-}
-
-- (void)bringTopChromeOutOfView
-{
-    [super bringTopChromeOutOfView];
-    
-    self.blurredBackgroundImageView.alpha = 0.0f;
-}
-
-- (void)bringBottomChromeOutOfView
-{
-    [super bringBottomChromeOutOfView];
-    
-    self.blurredBackgroundImageView.alpha = 0.0f;
-}
-
-- (void)bringChromeIntoView
-{
-    // We are returning from being below the top of the nav stack show the image view
-    if (self.blurredBackgroundImageView.image != nil)
-    {
-        self.blurredBackgroundImageView.alpha = 1.0f;
-    }
-    
-    [super bringChromeIntoView];
 }
 
 @end

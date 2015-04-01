@@ -69,7 +69,6 @@
 "ProfileRequired"       =   "Please provide the following:";
 "ProfileRequiredPhoto"  =   "Profile image";
 "ProfileRequiredName"   =   "Name";
-"ProfileRequiredLoc"    =   "Location";
 "ProfileRequiredToS"    =   "Agree to our terms";
 "ProfileRequiredTagLine"=   "Your tagline";
 "ProfileUpdateFailed"   =   "Profile Update Failed";

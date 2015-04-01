@@ -603,7 +603,6 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     const BOOL isProfileImageRequired = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage];
     
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
-                         (self.locationTextField.text.length > 0) &&
                          (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired) &&
                          ([self.agreeSwitch isOn]));
     
@@ -618,11 +617,6 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     if (!self.usernameTextField.text.length > 0)
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
-    }
-    
-    if (!self.locationTextField.text.length > 0)
-    {
-        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
     if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && isProfileImageRequired)

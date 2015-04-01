@@ -115,6 +115,7 @@
 {
     self.selectionIndicatorView = [[UIView alloc] initWithFrame:[self selectionFrame]];
     self.selectionIndicatorView.backgroundColor = [self.accentColor colorWithAlphaComponent:0.5f];
+    self.selectionIndicatorView.userInteractionEnabled = NO;
     [self.collectionView addSubview:self.selectionIndicatorView];
     [self.collectionView sendSubviewToBack:self.selectionIndicatorView];
 }

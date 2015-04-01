@@ -5,34 +5,22 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}iVictorious</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}iVictorious</string>
+	<string>com.getvictorious.${ProductPrefix}ivictorious</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>${ProductPrefix}iVictorious</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb1374328719478033</string>
+				<string>fb816327885127751</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
-	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
-	<key>TestflightReleaseAppToken</key>
-	<string>cf005ed4-9ec5-47cc-8b50-8e889ae38476</string>
-	<key>TestflightQAAppToken</key>
-	<string>793c00b5-2e29-4553-8bef-18dda27b10f8</string>
-	<key>TestflightStagingAppToken</key>
-	<string>c2e02537-3da4-4ae0-99fe-77df4cec3d38</string>
+	<string>816327885127751</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>LubB9WRysMX1Q2oE5Q15VDS9J</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>AYlYTpHwc0B5QkSpifyDmVRrM29ZXLWgIovXc7CyZBf36wTFW2</string>
 	<key>VictoriousAppID</key>
 	<integer>0</integer>
 	<key>StagingAppID</key>

@@ -7,12 +7,12 @@
 //
 
 #import "VContentTextCell.h"
-#import "VEditableTextPostViewController.h"
+#import "VTextPostViewController.h"
 #import "UIView+AutoLayout.h"
 
 @interface VContentTextCell()
 
-@property (nonatomic, strong) VEditableTextPostViewController *textPostViewController;
+@property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -40,11 +40,11 @@
     }
 }
 
-- (VEditableTextPostViewController *)textPostViewController
+- (VTextPostViewController *)textPostViewController
 {
     if ( _textPostViewController == nil )
     {
-        _textPostViewController = [VEditableTextPostViewController newWithDependencyManager:self.dependencyManager];
+        _textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
         _textPostViewController.isTextSelectable = YES;
         [self.contentView addSubview:_textPostViewController.view];
         [self.contentView v_addFitToParentConstraintsToSubview:_textPostViewController.view];

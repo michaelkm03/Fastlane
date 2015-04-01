@@ -186,6 +186,17 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
     self.keyboardManager.stopCallingHandlerBlocks = YES;
 }
 
+- (void)callCompletionWithSuccess:(BOOL)success
+                     previewImage:(UIImage *)previewImage
+                 renderedMediaURL:(NSURL *)renderedMediaURL
+{
+    self.keyboardManager = nil;
+    if (self.completionBlock != nil)
+    {
+        self.completionBlock(success, previewImage, renderedMediaURL);
+    }
+}
+
 #pragma mark - Target/Action
 
 - (IBAction)close:(id)sender

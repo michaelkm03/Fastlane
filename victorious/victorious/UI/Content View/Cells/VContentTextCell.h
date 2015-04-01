@@ -10,6 +10,8 @@
 
 @interface VContentTextCell : VContentCell
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 - (void)setTextContent:(NSString *)text withBackgroundColor:(UIColor *)backgroundColor;
 
 @end

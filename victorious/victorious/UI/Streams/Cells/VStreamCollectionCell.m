@@ -219,7 +219,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super setDependencyManager:dependencyManager];
+    _dependencyManager = dependencyManager;
     
     if ( dependencyManager == nil )
     {
