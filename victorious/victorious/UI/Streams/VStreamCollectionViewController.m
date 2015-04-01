@@ -404,8 +404,12 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     __weak typeof(self) weakSelf = self;
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^void
+    [authorization performFromViewController:self context:VAuthorizationContextCreatePost completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
          [weakSelf.workspacePresenter present];
      }];
@@ -593,6 +597,15 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self willRepostSequence:sequence fromView:view completion:nil];
+}
+
+- (BOOL)canRepostSequence:(VSequence *)sequence
+{
+    if (sequence.canRepost && ([VObjectManager sharedManager].mainUser != nil))
+    {
+        return YES;
+    }
+    return NO;
 }
 
 - (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion

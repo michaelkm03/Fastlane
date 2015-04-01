@@ -181,7 +181,9 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
     }
 
     self.repostButton.enabled = NO;
-    [self.sequenceActionsDelegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
+    [self.sequenceActionsDelegate willRepostSequence:self.sequence
+                                            fromView:self
+                                          completion:^(BOOL didSucceed)
      {
          self.repostButton.enabled = YES;
          if (!didSucceed)

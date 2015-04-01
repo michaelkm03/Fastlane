@@ -125,8 +125,13 @@
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^
+    [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
+         
          VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                                                   forKey:VDependencyManagerWorkspaceFlowKey
                                                                                    withAddedDependencies:addedDependencies];
@@ -183,8 +188,12 @@
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^
+    [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          [[VObjectManager sharedManager] repostNode:node
                                            withName:nil
                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
