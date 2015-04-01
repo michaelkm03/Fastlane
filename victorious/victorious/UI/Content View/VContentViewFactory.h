@@ -28,7 +28,7 @@
 /**
  Checks to make sure the specified sequence is capable of being displayed.
  
- @param reason If the return value is NO, this string is set to a user-displayable explanation of why we can't display the sequence.
+ @param reason If the return value is NO, this string is set to a user-friendly explanation of why we can't display the sequence.
  
  @return YES if calling -contentViewForSequence:commentID:placeholderImage: and passing this sequence will be successful.
  */
