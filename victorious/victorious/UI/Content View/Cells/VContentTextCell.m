@@ -13,6 +13,7 @@
 @interface VContentTextCell()
 
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
+@property (weak, nonatomic) IBOutlet UIView *contentContainer;
 
 @end
 
@@ -24,32 +25,25 @@
     return CGSizeMake( CGRectGetWidth(bounds), minSide );
 }
 
-- (void)prepareForReuse
+- (void)awakeFromNib
 {
-    [super prepareForReuse];
+    [super awakeFromNib];
     
-    [self cleanupTextPost];
+    self.shrinkingContentView = self.contentContainer;
 }
 
-- (void)cleanupTextPost
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ( self.textPostViewController != nil )
+    _dependencyManager = dependencyManager;
+    
+    if ( self.textPostViewController == nil )
     {
-        [self.textPostViewController.view removeFromSuperview];
-        self.textPostViewController = nil;
+        self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+        self.textPostViewController.isTextSelectable = YES;
+        [self.contentContainer addSubview:self.textPostViewController.view];
+        [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+        self.shrinkingContentView = self.textPostViewController.view;
     }
-}
-
-- (VTextPostViewController *)textPostViewController
-{
-    if ( _textPostViewController == nil )
-    {
-        _textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-        _textPostViewController.isTextSelectable = YES;
-        [self.contentView addSubview:_textPostViewController.view];
-        [self.contentView v_addFitToParentConstraintsToSubview:_textPostViewController.view];
-    }
-    return _textPostViewController;
 }
 
 - (void)setTextContent:(NSString *)text withBackgroundColor:(UIColor *)backgroundColor

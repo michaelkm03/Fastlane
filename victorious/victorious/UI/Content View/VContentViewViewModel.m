@@ -103,12 +103,12 @@
         {
             _type = VContentViewTypeVideo;
             _realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] init];
-            _currentAsset = [self mediaAssetFromSequence:sequence];
+            _currentAsset = [_currentNode httpLiveStreamingAsset];
         }
         else if ([sequence isGIFVideo])
         {
             _type = VContentViewTypeGIFVideo;
-            _currentAsset = [self mediaAssetFromSequence:sequence];
+            _currentAsset = [_currentNode mp4Asset];
         }
         else if ([sequence isImage])
         {
@@ -130,7 +130,7 @@
         _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
         
         _hasReposted = [sequence.hasReposted boolValue];
-        _currentAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
+        
         if ( _currentAsset == nil )
         {
             _currentAsset = [_currentNode imageAsset];

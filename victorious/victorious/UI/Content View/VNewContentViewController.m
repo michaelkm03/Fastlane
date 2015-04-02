@@ -950,6 +950,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                                        forIndexPath:indexPath];
                 textCell.dependencyManager = self.dependencyManager;
                 [textCell setTextContent:self.viewModel.textContent withBackgroundColor:self.viewModel.textBackgroundColor];
+                self.contentCell = textCell;
                 return textCell;
             }
             case VContentViewTypePoll:
