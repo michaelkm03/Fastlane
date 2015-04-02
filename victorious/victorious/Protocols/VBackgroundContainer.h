@@ -16,11 +16,11 @@
 @required
 
 /**
- *  Protocol conformers should implement this method if they are able to support a VBackground being added to the returned
- *  view's hierarchy.
+ *  Protocol conformers implement this method to provide a background container view. Callers will be able to add 
+ *  backgrounds to this view.
  *
- *  @return A view that can become the superview of a new background. Return nil if no background can be added or if a 
- *  background has already been added and only one is required.
+ *  @return A view that can become the superview of a new background. Return nil if no background can be added or is
+ *  required.
  */
 - (UIView *)backgroundContainerView;
 
