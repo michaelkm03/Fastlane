@@ -5400,7 +5400,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
+			shellScript = "#!/bin/bash\n\n#BUILD_NUMBER=$(git rev-list HEAD --count)\n#TARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n#/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
 		};
 		589F0499A2CD6F9EB3A82CC5 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
