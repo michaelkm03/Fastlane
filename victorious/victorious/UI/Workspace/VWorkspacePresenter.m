@@ -22,9 +22,6 @@
 // Tracking
 #import "VTrackingManager.h"
 
-// Login
-#import "VRootViewController.h"
-
 @interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;

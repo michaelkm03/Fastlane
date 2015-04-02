@@ -16,7 +16,6 @@
 #import "VTrimControl.h"
 
 // Dependencies
-#import "VRootViewController.h"
 #import "VDependencyManager.h"
 
 static NSString *const emptyCellIdentifier = @"emptyCell";

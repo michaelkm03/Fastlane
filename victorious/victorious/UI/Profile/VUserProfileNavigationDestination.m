@@ -9,7 +9,6 @@
 #import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
-#import "VRootViewController.h"
 #import "VScaffoldViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"

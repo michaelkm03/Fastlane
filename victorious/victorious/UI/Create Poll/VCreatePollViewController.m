@@ -21,7 +21,6 @@
 #import "VVideoToolController.h"
 
 #import "VDependencyManager.h"
-#import "VRootViewController.h"
 
 static const NSInteger kMinLength = 2;
 

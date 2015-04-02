@@ -1,5 +1,5 @@
 //
-//  VStreamsSubViewController.m
+//  VCommentsTableViewController.m
 //  victoriOS
 //
 //  Created by Gary Philipp on 12/12/13.
@@ -9,7 +9,6 @@
 #import "VCommentsTableViewController.h"
 #import "VCommentTextAndMediaView.h"
 #import "VRTCUserPostedAtFormatter.h"
-#import "VRootViewController.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 
 #import "VLoginViewController.h"
