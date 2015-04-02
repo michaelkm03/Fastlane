@@ -207,7 +207,7 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser  *user = self.searchResults[indexPath.row];
-    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
