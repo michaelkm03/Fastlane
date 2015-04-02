@@ -11,14 +11,9 @@
 
 @class VUser;
 
-extern NSString * const VUserProfileFindFriendsIconKey;
-
 @interface VUserProfileViewController : VStreamCollectionViewController
 
-@property   (nonatomic, readonly) VUser                  *profile;
-
-+ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager;
-+ (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
+@property (nonatomic, readonly) VUser *profile;
 
 /**
  *  While this property is YES, the viewController will listen for
@@ -26,6 +21,12 @@ extern NSString * const VUserProfileFindFriendsIconKey;
  *  display a "logged out" version of its UI.
  */
 @property (nonatomic, assign) BOOL representsMainUser;
+
+/**
+ Are you sure this is the method you want to use? In almost every case, you should
+ use the -userProfileViewControllerWithUser: category on VDependencyManager.
+ */
++ (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
 
