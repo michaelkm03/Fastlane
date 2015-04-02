@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}Michelle Phan</string>
+	<string>${ProductPrefix}M[ish]</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.getvictorious.${ProductPrefix}michellephan</string>
 	<key>CFBundleURLTypes</key>
