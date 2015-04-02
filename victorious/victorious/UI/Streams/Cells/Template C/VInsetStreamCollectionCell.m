@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <FBKVOController.h>
+
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager.h"
 #import "VInsetStreamCollectionCell.h"
@@ -114,10 +116,20 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
     [super setSequence:sequence];
     self.actionView.sequence = sequence;
     [self reloadCommentsCount];
     [self setupActionBar];
+    
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:sequence
+                        keyPath:NSStringFromSelector(@selector(hasReposted))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf setupActionBar];
+     }];
 }
 
 - (void)setupActionBar
