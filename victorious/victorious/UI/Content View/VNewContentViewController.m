@@ -767,6 +767,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
+    commentCell.dependencyManager = self.dependencyManager;
     commentCell.comment = self.viewModel.comments[index];
     commentCell.commentAndMediaView.textView.tagTapDelegate = self;
     commentCell.swipeViewController.controllerDelegate = self;
@@ -1215,7 +1216,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             VComment *comment = self.viewModel.comments[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                       commentBody:comment.text
-                                                      andHasMedia:comment.hasMedia];
+                                                         hasMedia:comment.hasMedia
+                                                dependencyManager:self.dependencyManager];
             return CGSizeMake( minBound, size.height );
         }
         case VContentViewSectionCount:
