@@ -987,7 +987,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
                                                                  forIndexPath:indexPath];
-                questionCell.question = self.viewModel.sequence.name;
+                questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
+                                                                        attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
                 return questionCell;
             }
             
@@ -1197,7 +1198,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         case VContentViewSectionHistogramOrQuestion:
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                CGSize ret = [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                CGSize ret = [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
+                                                                   attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
+                                                                  maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];
                 return  ret;
             }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];

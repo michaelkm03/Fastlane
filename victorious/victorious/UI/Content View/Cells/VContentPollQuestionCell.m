@@ -10,6 +10,11 @@
 
 #import "VThemeManager.h"
 
+static CGFloat const kMinimumCellHeight = 90.0f;
+static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
+
+static NSCache *_sharedSizingCache = nil;
+
 @interface VContentPollQuestionCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel;
@@ -18,9 +23,43 @@
 
 @implementation VContentPollQuestionCell
 
++ (NSCache *)sharedSizingCache
+{
+    if (_sharedSizingCache == nil)
+    {
+        _sharedSizingCache = [[NSCache alloc] init];
+    }
+    return _sharedSizingCache;
+}
+
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 90);
+    return CGSizeMake(CGRectGetWidth(bounds), kMinimumCellHeight);
+}
+
++ (CGSize)actualSizeWithQuestion:(NSString *)quesiton
+                      attributes:(NSDictionary *)attributes
+                     maximumSize:(CGSize)maxSize
+{
+    NSString *keyForQuestionBoundsAndAttribute = [NSString stringWithFormat:@"%@, %@", quesiton, NSStringFromCGSize(maxSize)];
+    
+    NSValue *cachedValue = [[self sharedSizingCache] objectForKey:keyForQuestionBoundsAndAttribute];
+    if (cachedValue != nil)
+    {
+        return [cachedValue CGSizeValue];
+    }
+    
+    CGRect boundingRect = [quesiton boundingRectWithSize:CGSizeMake(maxSize.width - kLabelInset.left - kLabelInset.right, maxSize.height)
+                                                 options:NSStringDrawingUsesLineFragmentOrigin
+                                              attributes:attributes
+                                                 context:[[NSStringDrawingContext alloc] init]];
+    
+    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, CGRectGetHeight(boundingRect) + kLabelInset.top + kLabelInset.bottom));
+
+    [[self sharedSizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
+                                 forKey:keyForQuestionBoundsAndAttribute];
+    
+    return sizedPoll;
 }
 
 - (void)awakeFromNib
@@ -29,10 +68,10 @@
     self.questionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
-- (void)setQuestion:(NSString *)question
+- (void)setQuestion:(NSAttributedString *)question
 {
     _question = [question copy];
-    self.questionLabel.text = _question;
+    self.questionLabel.attributedText = _question;
 }
 
 @end
