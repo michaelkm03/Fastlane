@@ -6,15 +6,17 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 #import <UIKit/UIKit.h>
 
 @class VSequence;
 
-@interface VWebBrowserViewController : UIViewController
+@interface VWebBrowserViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VSequence *sequence;
 
-+ (VWebBrowserViewController *)instantiateFromStoryboard;
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)loadUrl:(NSURL *)url;
 

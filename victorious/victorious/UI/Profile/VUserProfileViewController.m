@@ -418,8 +418,12 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          VFindFriendsViewController *ffvc = [VFindFriendsViewController newWithDependencyManager:self.dependencyManager];
          [ffvc setShouldAutoselectNewFriends:NO];
          [self.navigationController pushViewController:ffvc animated:YES];
@@ -549,8 +553,13 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
+         
          VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
          composeController.presentingFromProfile = YES;
          
@@ -572,8 +581,13 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     VAuthorizationContext context = self.isMe ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:context completion:^
+    [authorization performFromViewController:self context:context completion:^(BOOL authorized)
      {
+         if (!authorization)
+         {
+             return;
+         }
+         
          if ( self.isMe )
          {
              [self performSegueWithIdentifier:@"toEditProfile" sender:self];
@@ -730,7 +744,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 {
     if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
     {
-        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
+        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
         self.notLoggedInDataSource.delegate = self;
         self.collectionView.dataSource = self.notLoggedInDataSource;
         [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]

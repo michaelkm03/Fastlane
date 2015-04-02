@@ -7,10 +7,11 @@
 //
 
 #import "VBaseCollectionViewCell.h"
+#import "VBackgroundContainer.h"
 
 @class VSequence;
 
-@interface VStreamCollectionCellWebContent : VBaseCollectionViewCell
+@interface VStreamCollectionCellWebContent : VBaseCollectionViewCell <VBackgroundContainer>
 
 @property (nonatomic, strong) VSequence *sequence;
 

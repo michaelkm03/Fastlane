@@ -31,6 +31,8 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
  */
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 /**
     The item cell delegate that will respond to selections made within the collectionView contained in this cell
  */
