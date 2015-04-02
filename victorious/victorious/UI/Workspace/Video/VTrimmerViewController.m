@@ -38,10 +38,23 @@ static const CGFloat kTimelineLabelPadding = 20.0f;
 
 @property (nonatomic, strong) UIView *currentPlayBackOverlayView;
 @property (nonatomic, strong) NSLayoutConstraint *currentPlayBackWidthConstraint;
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VTrimmerViewController
+
+#pragma mark - VHasManagedDependencies
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _dependencyManager = dependencyManager;
+    }
+    return self;
+}
 
 #pragma mark - UIViewController
 
@@ -321,7 +334,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     NSString *title = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%.2f", CMTimeGetSeconds(time)]];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
-                                                                       attributes:@{NSFontAttributeName: [[[VRootViewController rootViewController] dependencyManager] fontForKey:VDependencyManagerHeading2FontKey]}];
+                                                                       attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
 }
 
 - (CGFloat)timelineWidthPerSecond
@@ -363,7 +376,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.titleLabel.text = self.title;
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.font = [[[VRootViewController rootViewController] dependencyManager] fontForKey:VDependencyManagerHeading2FontKey];
+    self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.titleLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:self.titleLabel];
