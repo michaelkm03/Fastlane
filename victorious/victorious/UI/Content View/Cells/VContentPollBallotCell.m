@@ -10,8 +10,10 @@
 
 #import "UIImage+ImageCreation.h"
 
-// Theme
 #import "VThemeManager.h"
+
+static NSCache *_sharedSizingCache = nil;
+static CGFloat const kMinimumHeight = 60.0f;
 
 @interface VContentPollBallotCell ()
 
@@ -22,11 +24,38 @@
 
 @implementation VContentPollBallotCell
 
++ (NSCache *)sharedSizingCache
+{
+    if (_sharedSizingCache == nil)
+    {
+        _sharedSizingCache = [[NSCache alloc] init];
+    }
+    return _sharedSizingCache;
+}
+
++ (CGSize)actualSizeWithAnswerA:(NSAttributedString *)answerA
+                        answerB:(NSAttributedString *)answerB
+                    maximumSize:(CGSize)maximumSize
+{
+    CGSize maxSizeA = CGSizeMake(maximumSize.width/2, maximumSize.height);
+    CGSize maxSizeB = CGSizeMake(maximumSize.width/2, maximumSize.height);
+    
+    CGRect boundingRectA = [answerA boundingRectWithSize:maxSizeA
+                                                 options:NSStringDrawingUsesLineFragmentOrigin
+                                                 context:[[NSStringDrawingContext alloc] init]];
+    CGRect boundingRectB = [answerA boundingRectWithSize:maxSizeB
+                                                 options:NSStringDrawingUsesLineFragmentOrigin
+                                                 context:[[NSStringDrawingContext alloc] init]];
+    
+    return CGSizeMake(maximumSize.width,
+                      MAX(kMinimumHeight, MAX(CGRectGetHeight(boundingRectA), CGRectGetHeight(boundingRectB))));
+}
+
 #pragma mark - VSharedCollectionReusableViewMethods
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 60);
+    return CGSizeMake(CGRectGetWidth(bounds), 60.0f);
 }
 
 #pragma mark - NSObject
@@ -42,24 +71,22 @@
     
     self.answerAButton.titleLabel.numberOfLines = 0;
     self.answerBButton.titleLabel.numberOfLines = 0;
-    self.answerAButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.answerBButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
 }
 
 #pragma mark - Property Accessors
 
-- (void)setAnswerA:(NSString *)answerA
+- (void)setAnswerA:(NSAttributedString *)answerA
 {
     _answerA = [answerA copy];
-    [self.answerAButton setTitle:_answerA
-                        forState:UIControlStateNormal];
+    [self.answerAButton setAttributedTitle:_answerA
+                                  forState:UIControlStateNormal];
 }
 
 - (void)setAnswerB:(NSString *)answerB
 {
     _answerB = [answerB copy];
-    [self.answerBButton setTitle:_answerB
-                       forState:UIControlStateNormal];
+    [self.answerBButton setAttributedTitle:_answerB
+                                  forState:UIControlStateNormal];
 }
 
 #pragma mark - Public Methods

@@ -1012,8 +1012,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                     self.ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
                                                                                 forIndexPath:indexPath];
                 }
-                self.ballotCell.answerA = self.viewModel.answerALabelText;
-                self.ballotCell.answerB = self.viewModel.answerBLabelText;
+                self.ballotCell.answerA = [[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.answerB = [[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
                 
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)
@@ -1205,7 +1205,13 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                return [VContentPollBallotCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                CGSize sizedBallot = [VContentPollBallotCell actualSizeWithAnswerA:[[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText
+                                                                                                                   attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
+                                                                           answerB:[[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText
+                                                                                                                   attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
+                                                                       maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
+                VLog(@"%@", NSStringFromCGSize(sizedBallot));
+                return sizedBallot;
             }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
