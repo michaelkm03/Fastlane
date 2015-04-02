@@ -14,11 +14,15 @@
 
 static NSCache *_sharedSizingCache = nil;
 static CGFloat const kMinimumHeight = 60.0f;
+static UIEdgeInsets const kAnswerInsets = { 10, 0, 10, 0};
+static CGFloat const kOrSizeInset = 40.0f;
 
 @interface VContentPollBallotCell ()
 
 @property (weak, nonatomic) IBOutlet UIButton *answerAButton;
 @property (weak, nonatomic) IBOutlet UIButton *answerBButton;
+@property (weak, nonatomic) IBOutlet UILabel *aLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bLabel;
 
 @end
 
@@ -37,18 +41,34 @@ static CGFloat const kMinimumHeight = 60.0f;
                         answerB:(NSAttributedString *)answerB
                     maximumSize:(CGSize)maximumSize
 {
-    CGSize maxSizeA = CGSizeMake(maximumSize.width/2, maximumSize.height);
-    CGSize maxSizeB = CGSizeMake(maximumSize.width/2, maximumSize.height);
+    NSString *keyForParameters = [NSString stringWithFormat:@"%@,%@,%@", answerA.string, answerB.string, NSStringFromCGSize(maximumSize)];
     
+    NSValue *cachedValue = [[self sharedSizingCache] objectForKey:keyForParameters];
+    if (cachedValue != nil)
+    {
+        return [cachedValue CGSizeValue];
+    }
+    
+    CGSize maxSizeA = CGSizeMake(maximumSize.width/2 - kOrSizeInset, maximumSize.height);
+    CGSize maxSizeB = CGSizeMake(maximumSize.width/2 - kOrSizeInset, maximumSize.height);
+
     CGRect boundingRectA = [answerA boundingRectWithSize:maxSizeA
                                                  options:NSStringDrawingUsesLineFragmentOrigin
                                                  context:[[NSStringDrawingContext alloc] init]];
-    CGRect boundingRectB = [answerA boundingRectWithSize:maxSizeB
+    CGRect boundingRectB = [answerB boundingRectWithSize:maxSizeB
                                                  options:NSStringDrawingUsesLineFragmentOrigin
                                                  context:[[NSStringDrawingContext alloc] init]];
     
-    return CGSizeMake(maximumSize.width,
-                      MAX(kMinimumHeight, MAX(CGRectGetHeight(boundingRectA), CGRectGetHeight(boundingRectB))));
+    CGFloat maxBoundingHeight = MAX(CGRectGetHeight(boundingRectA), CGRectGetHeight(boundingRectB));
+    maxBoundingHeight = maxBoundingHeight + kAnswerInsets.top + kAnswerInsets.bottom;
+    
+    CGSize totalSize = CGSizeMake(maximumSize.width,
+                                  MAX(kMinimumHeight, maxBoundingHeight));
+    
+    [[self sharedSizingCache] setObject:[NSValue valueWithCGSize:totalSize]
+                                 forKey:keyForParameters];
+    
+    return totalSize;
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods
@@ -78,15 +98,13 @@ static CGFloat const kMinimumHeight = 60.0f;
 - (void)setAnswerA:(NSAttributedString *)answerA
 {
     _answerA = [answerA copy];
-    [self.answerAButton setAttributedTitle:_answerA
-                                  forState:UIControlStateNormal];
+    self.aLabel.attributedText = _answerA;
 }
 
 - (void)setAnswerB:(NSString *)answerB
 {
     _answerB = [answerB copy];
-    [self.answerBButton setAttributedTitle:_answerB
-                                  forState:UIControlStateNormal];
+    self.bLabel.attributedText = _answerB;
 }
 
 #pragma mark - Public Methods
@@ -135,12 +153,45 @@ static CGFloat const kMinimumHeight = 60.0f;
     }
 }
 
+- (IBAction)touchDownA:(id)sender
+{
+    [self setHighlighted:YES onLabel:self.aLabel];
+}
+
+- (IBAction)touchUpA:(id)sender
+{
+    [self setHighlighted:NO onLabel:self.aLabel];
+}
+
 - (IBAction)selectedAnswerB:(id)sender
 {
     if (self.answerBSelectionHandler)
     {
         self.answerBSelectionHandler();
     }
+}
+
+- (IBAction)touchDownB:(id)sender
+{
+    [self setHighlighted:YES onLabel:self.bLabel];
+}
+
+- (IBAction)touchUpB:(id)sender
+{
+    [self setHighlighted:NO onLabel:self.bLabel];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+               onLabel:(UILabel *)label
+{
+    [UIView animateWithDuration:0.1f
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^
+     {
+         label.alpha = highlighted ? 0.5f : 1.0f;
+     }
+                     completion:nil];
 }
 
 @end

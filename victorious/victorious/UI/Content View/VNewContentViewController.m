@@ -1210,7 +1210,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                            answerB:[[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText
                                                                                                                    attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
                                                                        maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
-                VLog(@"%@", NSStringFromCGSize(sizedBallot));
                 return sizedBallot;
             }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
