@@ -16,7 +16,7 @@
 
 // Depenedency Management
 #import "VDependencyManager.h"
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 
 // Rendering
 #import "CIImage+VImage.h"

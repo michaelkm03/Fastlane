@@ -9,7 +9,7 @@
 #import "VWorkspaceViewController.h"
 
 // Dependency Management
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 
 // Views
 #import "VCanvasView.h"

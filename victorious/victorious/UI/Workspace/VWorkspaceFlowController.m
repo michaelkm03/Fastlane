@@ -88,7 +88,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
     VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
     VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:@"defaultWorkspaceDestination"
+                                                                                              forKey:VDependencyManagerWorkspaceFlowKey
                                                                                withAddedDependencies:injectedDependencies];
     return workspaceFlowController;
 }

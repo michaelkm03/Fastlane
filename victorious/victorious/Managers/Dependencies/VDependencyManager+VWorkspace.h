@@ -1,5 +1,5 @@
 //
-//  VDependencyManager+VWorkspaceTool.h
+//  VDependencyManager+VWorkspace.h
 //  victorious
 //
 //  Created by Michael Sena on 12/2/14.
@@ -8,7 +8,7 @@
 
 #import "VDependencyManager.h"
 
-@interface VDependencyManager (VWorkspaceTool)
+@interface VDependencyManager (VWorkspace)
 
 /** 
  The top-level tools in a workspace. Each item implements the VWorkspaceTool protocol.
