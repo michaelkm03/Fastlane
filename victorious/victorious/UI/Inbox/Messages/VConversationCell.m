@@ -7,7 +7,6 @@
 //
 
 #import "VConversationCell.h"
-#import "VThemeManager.h"
 #import "NSDate+timeSince.h"
 #import "VConversation+RestKit.h"
 #import "VMessage+RestKit.h"
@@ -28,15 +27,19 @@ CGFloat const kVConversationCellHeight = 72;
     [super awakeFromNib];
 
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
     self.dateLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
-    
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+        self.usernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+        self.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    }
 }
 
 - (void)setConversation:(VConversation *)conversation
@@ -60,7 +63,7 @@ CGFloat const kVConversationCellHeight = 72;
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:self.conversation.user];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.conversation.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
