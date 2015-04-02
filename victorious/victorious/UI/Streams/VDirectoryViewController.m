@@ -31,6 +31,7 @@
 #import "VSettingManager.h"
 #import "VDirectoryCellDecorator.h"
 #import "NSString+VParseHelp.h"
+#import <FBKVOController.h>
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 static NSString * const kStreamURLKey = @"streamURL";
@@ -57,6 +58,25 @@ static CGFloat const kDirectoryInset = 10.0f;
     streamDirectory.dependencyManager = dependencyManager;
     
     return streamDirectory;
+}
+
+- (void)setCurrentStream:(VStream *)currentStream
+{
+    [super setCurrentStream:currentStream];
+    [self addKVOToMarqueeItemsOfStream:currentStream];
+}
+
+- (void)addKVOToMarqueeItemsOfStream:(VStream *)stream
+{
+    [self.KVOController observe:stream
+                        keyPath:@"marqueeItems"
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(marqueeItemsUpdated)];
+}
+
+- (void)marqueeItemsUpdated
+{
+    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
 }
 
 #pragma mark VHasManagedDependencies conforming initializer
