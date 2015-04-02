@@ -179,8 +179,13 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     {
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
          {
+             if (!authorized)
+             {
+                 return;
+             }
+             
              if ([mainUser.following containsObject:profile])
              {
                  [self unfollowFriendAction:profile];

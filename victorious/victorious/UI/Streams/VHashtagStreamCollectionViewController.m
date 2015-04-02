@@ -143,8 +143,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^void
+    [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          if ( self.isFollowingSelectedHashtag )
          {
              [self unfollowHashtag];

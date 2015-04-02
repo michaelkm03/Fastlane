@@ -129,7 +129,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     {
         [self.actionView addRemixButton];
     }
-    if ( [self.sequence canRepost] )
+    if ( [self.sequence canRepost] || [self.sequence.hasReposted boolValue] )
     {
         [self.actionView addRepostButton];
     }

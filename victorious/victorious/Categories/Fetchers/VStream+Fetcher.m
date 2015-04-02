@@ -16,8 +16,6 @@
 #import "VPaginationManager.h"
 #import "NSCharacterSet+VURLParts.h"
 
-NSString * const VStreamFollowerStreamPath = @"/api/sequence/follows_detail_list_by_stream_with_marquee/";
-
 NSString * const VStreamFilterTypeRecent = @"recent";
 NSString * const VStreamFilterTypePopular = @"popular";
 

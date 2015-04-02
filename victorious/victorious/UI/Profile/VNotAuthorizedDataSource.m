@@ -11,15 +11,18 @@
 
 @interface VNotAuthorizedDataSource () <VNotAuthorizedProfileCollectionViewCellDelegate>
 
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VNotAuthorizedDataSource
 
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView
+- (instancetype)initWithCollectionView:(UICollectionView *)collectionView dependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if (self != nil)
     {
+        _dependencyManager = dependencyManager;
         [collectionView registerNib:[VNotAuthorizedProfileCollectionViewCell nibForCell]
          forCellWithReuseIdentifier:[VNotAuthorizedProfileCollectionViewCell suggestedReuseIdentifier]];
     }
@@ -39,6 +42,7 @@
     VNotAuthorizedProfileCollectionViewCell *notAuthorizedCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VNotAuthorizedProfileCollectionViewCell suggestedReuseIdentifier]
                                                                                                            forIndexPath:indexPath];
     notAuthorizedCell.delegate = self;
+    notAuthorizedCell.dependencyManager = self.dependencyManager;
     return notAuthorizedCell;
 }
 

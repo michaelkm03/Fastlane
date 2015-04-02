@@ -13,8 +13,6 @@
 extern NSString * const VStreamFilterTypeRecent;
 extern NSString * const VStreamFilterTypePopular;
 
-extern NSString * const VStreamFollowerStreamPath;
-
 @interface VStream (Fetcher)
 
 - (BOOL)isHashtagStream;

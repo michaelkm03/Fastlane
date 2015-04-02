@@ -152,40 +152,47 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
 - (void)addRepostButton
 {
     self.repostButton = [self addButtonWithImageKey:VStreamCellActionViewRepostIconKey];
-    [self.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self updateRepostButtonForRepostState];
+}
+
+- (void)updateRepostButtonForRepostState
+{
+    BOOL hasRespoted = [self.sequence.hasReposted boolValue];
     
-    BOOL hasRespoted = NO;
-    if ( [self.sequenceActionsDelegate respondsToSelector:@selector(hasRepostedSequence:)] )
+    if (hasRespoted)
     {
-        hasRespoted = [self.sequenceActionsDelegate hasRepostedSequence:self.sequence];
+        NSString *imageName = [[[self class] buttonImages] objectForKey:VStreamCellActionViewRepostSuccessIconKey];
+        UIImage *selectedImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.repostButton setImage:selectedImage forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     self.repostButton.alpha = hasRespoted ? kRepostedDisabledAlpha : 1.0f;
-    NSString *imageKey = hasRespoted ? VStreamCellActionViewRepostSuccessIconKey : VStreamCellActionViewRepostIconKey;
-    NSString *normalStateImageName = [[[self class] buttonImages] objectForKey:imageKey];
-    [self.repostButton setImage:[UIImage imageNamed:normalStateImageName] forState:UIControlStateNormal];
 }
 
 - (void)repostAction:(id)sender
 {
-    if ( ![self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)] ||
-         ![self.sequenceActionsDelegate respondsToSelector:@selector(hasRepostedSequence:)] )
+    if ( ![self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)] )
     {
         return;
     }
-    
-    if ( [self.sequenceActionsDelegate hasRepostedSequence:self.sequence] )
-    {
-        return;
-    }
-    
-    self.repostButton.alpha = kRepostedDisabledAlpha;
-    
-    [self.sequenceActionsDelegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
+
+    self.repostButton.enabled = NO;
+    [self.sequenceActionsDelegate willRepostSequence:self.sequence
+                                            fromView:self
+                                          completion:^(BOOL didSucceed)
      {
+         self.repostButton.enabled = YES;
+         if (!didSucceed)
+         {
+             [self updateRepostButtonForRepostState];
+             return;
+         }
+         
          self.isAnimatingButton = YES;
-         NSString *imageName = [[[self class] buttonImages] objectForKey:VStreamCellActionViewRepostSuccessIconKey];
-         [self.repostButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
          
          [UIView animateWithDuration:0.15f
                                delay:0.0f
@@ -194,7 +201,9 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
                              options:kNilOptions
                           animations:^
           {
+              [self updateRepostButtonForRepostState];
               self.repostButton.transform = CGAffineTransformMakeScale( kScaleScaledUp, kScaleScaledUp );
+              self.repostButton.alpha = kRepostedDisabledAlpha;
           }
                           completion:^(BOOL finished)
           {

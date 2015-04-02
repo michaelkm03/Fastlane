@@ -48,5 +48,6 @@
 @dynamic voteResults;
 @dynamic endCard;
 @dynamic parentEndCard;
+@dynamic hasReposted;
 
 @end
