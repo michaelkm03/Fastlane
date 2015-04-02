@@ -68,7 +68,7 @@
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
-                                   VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
+                                   VCreatePollViewController *createViewController = [VCreatePollViewController newWithDependencyManager:self.dependencyManager];
                                    __weak typeof(self) welf = self;
                                    createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
                                    {
