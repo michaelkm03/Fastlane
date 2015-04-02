@@ -24,11 +24,13 @@
 
 #import "VTimerManager.h"
 
+#import "VStream.h"
+
 static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
 static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 static const CGFloat kMarqueeBufferHeight = 3;
 
-@interface VMarqueeCollectionCell()
+@interface VMarqueeCollectionCell() <VMarqueeDataDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
@@ -96,14 +98,14 @@ static const CGFloat kMarqueeBufferHeight = 3;
     marquee.tabView = self.tabView;
     self.hideMarqueePosterImage = marquee.hideMarqueePosterImage;
     
-    self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
-    
-    [self.marquee refreshWithSuccess:^(void)
-     {
-         self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
-         [self.marquee enableTimer];
-         [self.collectionView reloadData];
-     } failure:nil];
+    self.tabView.numberOfTabs = self.marquee.stream.marqueeItems.count;
+    marquee.dataDelegate = self;
+}
+
+- (void)marquee:(VMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
+{
+    self.tabView.numberOfTabs = self.marquee.stream.marqueeItems.count;
+    [self.marquee enableTimer];
 }
 
 - (VStreamItem *)currentItem
@@ -113,8 +115,8 @@ static const CGFloat kMarqueeBufferHeight = 3;
 
 - (UIImageView *)currentPreviewImageView
 {
-    NSIndexPath *path = [self.marquee.streamDataSource indexPathForItem:[self currentItem]];
-    VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[self.collectionView cellForItemAtIndexPath:path];
+    NSUInteger index = [self.marquee.stream.marqueeItems indexOfObject:[self currentItem]];
+    VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     return cell.previewImageView;
 }
 

@@ -70,9 +70,9 @@
 #import "VInsetStreamCellFactory.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <FBKVOController.h>
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
-static NSString * const kMarqueeURLKey = @"marqueeURL";
 
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
@@ -87,7 +87,7 @@ static NSString * const kRemixStreamKey = @"remixStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
-@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
+@interface VStreamCollectionViewController () <VMarqueeSelectionDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -104,7 +104,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 @property (nonatomic, assign) BOOL canAddContent;
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
-@property (nonatomic, strong) NSString *marqueeURLString;
 
 @end
 
@@ -144,14 +143,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     streamCollectionVC.dependencyManager = dependencyManager;
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
-    
-    NSString *marqueeURLString = [dependencyManager stringForKey:kMarqueeURLKey];
-    
-    if ( marqueeURLString != nil )
-    {
-        streamCollectionVC.marqueeURLString = marqueeURLString;
-        streamCollectionVC.shouldDisplayMarquee = [dependencyManager stringForKey:kMarqueeURLKey] != nil;
-    }
+    [streamCollectionVC addKVOToMarqueeItemsOfStream:stream];
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
@@ -296,13 +288,12 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     if (!_marquee)
     {
-        VStream *marquee = [VStream streamForPath:[self.marqueeURLString v_pathComponent] inContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
-        _marquee = [[VMarqueeController alloc] initWithStream:marquee];
+        _marquee = [[VMarqueeController alloc] initWithStream:self.currentStream];
         
         //The top of the template C hack
         _marquee.hideMarqueePosterImage = [self hideMarqueePosterImage];
         _marquee.dependencyManager = self.dependencyManager;
-        _marquee.delegate = self;
+        _marquee.selectionDelegate = self;
     }
     return _marquee;
 }
@@ -334,12 +325,20 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
+    [self addKVOToMarqueeItemsOfStream:currentStream];
 }
 
-- (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
+- (void)addKVOToMarqueeItemsOfStream:(VStream *)stream
 {
-    _shouldDisplayMarquee = shouldDisplayMarquee;
-    self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
+    [self.KVOController observe:stream
+                        keyPath:NSStringFromSelector(@selector(marqueeItems))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(marqueeItemsUpdated)];
+}
+
+- (void)marqueeItemsUpdated
+{
+    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
 }
 
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
@@ -415,11 +414,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 }
 
 #pragma mark - VMarqueeDelegate
-
-- (void)marqueeRefreshedContent:(VMarqueeController *)marquee
-{
-    self.streamDataSource.hasHeaderCell = self.marquee.streamDataSource.count;
-}
 
 - (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
 {

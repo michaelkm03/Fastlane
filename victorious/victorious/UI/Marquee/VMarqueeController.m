@@ -21,12 +21,13 @@
 #import "VThemeManager.h"
 #import "VTimerManager.h"
 
-@interface VMarqueeController () <VStreamCollectionDataDelegate, VMarqueeCellDelegate>
+#import <FBKVOController.h>
+
+@interface VMarqueeController () <VMarqueeCellDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
 
 @property (nonatomic, strong) VStream *stream;
-@property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;
 @property (nonatomic, strong) VStreamItem *currentStreamItem;
 @property (nonatomic, assign) NSInteger currentPage;
 
@@ -47,11 +48,10 @@
     if (self)
     {
         _stream = stream;
-        _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
-        _streamDataSource.delegate = self;
-        _streamDataSource.collectionView = _collectionView;
-        _collectionView.dataSource = _streamDataSource;
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
         _currentPage = 0;
+        [self addKVOToMarqueeItemsOfStream:stream];
     }
     return self;
 }
@@ -68,9 +68,8 @@
 - (void)setCollectionView:(UICollectionView *)collectionView
 {
     _collectionView = collectionView;
-    self.streamDataSource.collectionView = _collectionView;
     collectionView.delegate = self;
-    collectionView.dataSource = self.streamDataSource;
+    collectionView.dataSource = self;
 }
 
 - (void)selectNextTab
@@ -78,7 +77,7 @@
     CGFloat pageWidth = self.collectionView.frame.size.width;
     NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
     currentPage ++;
-    if (currentPage == (NSInteger)self.streamDataSource.count)
+    if (currentPage == (NSInteger)self.stream.marqueeItems.count)
     {
         currentPage = 0;
     }
@@ -89,24 +88,8 @@
 - (void)scrolledToPage:(NSInteger)currentPage
 {
     self.tabView.currentlySelectedTab = currentPage;
-    self.currentStreamItem = [self.streamDataSource itemAtIndexPath:[NSIndexPath indexPathForRow:currentPage inSection:0]];
+    self.currentStreamItem = [self.stream.marqueeItems objectAtIndex:currentPage];
     [self enableTimer];
-}
-
-- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
-{
-    [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
-     ^{
-         [self scrolledToPage:0];
-         
-         [self.delegate marqueeRefreshedContent:self];
-         
-         if (successBlock)
-         {
-             successBlock();
-         }
-     }
-                                      failure:failureBlock];
 }
 
 #pragma mark - CollectionViewDelegate
@@ -121,7 +104,7 @@
 //Let the container handle the selection.
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
+    VStreamItem *item = [self.stream.marqueeItems objectAtIndex:indexPath.row];
     VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
     UIImage *previewImage = nil;
     if ( [cell isKindOfClass:[VMarqueeStreamItemCell class]] )
@@ -129,7 +112,7 @@
         previewImage = cell.previewImageView.image;
     }
     
-    [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
+    [self.selectionDelegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
     [self.autoScrollTimerManager invalidate];
 }
 
@@ -151,6 +134,25 @@
      }];
 }
 
+- (void)setStream:(VStream *)stream
+{
+    _stream = stream;
+    [self addKVOToMarqueeItemsOfStream:stream];
+}
+
+- (void)addKVOToMarqueeItemsOfStream:(VStream *)stream
+{
+    [self.KVOController observe:stream
+                        keyPath:@"marqueeItems"
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(marqueeItemsUpdated)];
+}
+
+- (void)marqueeItemsUpdated
+{
+    [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -160,7 +162,7 @@
     if ( currentPage != self.currentPage )
     {
         self.currentPage = currentPage;
-        if ( (NSUInteger) self.currentPage < self.streamDataSource.count )
+        if ( (NSUInteger) self.currentPage < self.stream.marqueeItems.count )
         {
             [self scrolledToPage:self.currentPage];
         }
@@ -182,7 +184,7 @@
                                                                               userInfo:nil
                                                                                repeats:NO];
     NSInteger currentPage = self.currentPage;
-    if ( currentPage < [[self streamDataSource] collectionView:self.collectionView numberOfItemsInSection:0] )
+    if ( currentPage < [self collectionView:self.collectionView numberOfItemsInSection:0] )
     {
         [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *cell, NSUInteger idx, BOOL *stop)
          {
@@ -200,15 +202,25 @@
 
 - (void)cell:(VMarqueeStreamItemCell *)cell selectedUser:(VUser *)user
 {
-    [self.delegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
+    [self.selectionDelegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
     [self.autoScrollTimerManager invalidate];
 }
 
-#pragma mark - VStreamCollectionDataDelegate
+#pragma mark - UICollectionViewDataSource
 
-- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.stream.marqueeItems.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VStreamItem *item = [self.stream.marqueeItems objectAtIndex:indexPath.row];
     VMarqueeStreamItemCell *cell;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier] forIndexPath:indexPath];
