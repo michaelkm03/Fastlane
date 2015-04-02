@@ -19,8 +19,14 @@
  */
 @protocol VEditableTextPostViewControllerDelegate <NSObject, VTextListener>
 
+/**
+ Called when the user removes a hashtag during text editing in an in-progress text post.
+ */
 - (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didDeleteHashtags:(NSArray *)deletedHashtags;
 
+/**
+ Called when the user adds a hashtag during text editing in an in-progress text post.
+ */
 - (void)textPostViewController:(VEditableTextPostViewController *)textPostViewController didAddHashtags:(NSArray *)addedHashtags;
 
 @end

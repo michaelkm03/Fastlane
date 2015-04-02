@@ -14,17 +14,20 @@
 #import "UIView+AutoLayout.h"
 #import "VTextPostTextView.h"
 #import "VEditableTextPostHashtagHelper.h"
+#import "VContentInputAccessoryView.h"
 
 static NSString * const kDefaultTextKey = @"defaultText";
 static NSString * const kCharacterLimit = @"characterLimit";
+static const CGFloat kAccessoryViewHeight = 44.0f;
 
-@interface VEditableTextPostViewController() <UITextViewDelegate>
+@interface VEditableTextPostViewController() <UITextViewDelegate, VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, strong) NSString *placeholderText;
 @property (nonatomic, strong) UIButton *overlayButton;
 
 @property (nonatomic, assign) BOOL isEditing;
 @property (nonatomic, assign) BOOL isShowingPlaceholderText;
+@property (nonatomic, assign) NSUInteger characterCountMax;
 @property (nonatomic, assign) BOOL hasAppeared;
 
 @property (nonatomic, strong) VEditableTextPostHashtagHelper *hashtagHelper;
@@ -53,11 +56,19 @@ static NSString * const kCharacterLimit = @"characterLimit";
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];
     [self.overlayButton addTarget:self action:@selector(overlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
+    self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
+    self.characterCountMax = [self.dependencyManager numberForKey:kCharacterLimit].integerValue;
+    [self showPlaceholderText];
+    
     self.textView.userInteractionEnabled = YES;
     self.textView.editable = YES;
-    
-    self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
-    [self showPlaceholderText];
+    CGRect accessoryFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kAccessoryViewHeight );
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:accessoryFrame];
+    inputAccessoryView.textInputView = self.textView;
+    inputAccessoryView.maxCharacterLength = self.characterCountMax;
+    inputAccessoryView.delegate = self;
+    inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.textView.inputAccessoryView = inputAccessoryView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -91,7 +102,7 @@ static NSString * const kCharacterLimit = @"characterLimit";
     }
     
     NSUInteger lengthWithAddedHashtag = self.text.length + hashtagText.length;
-    BOOL lengthWillBeWithinMaximum = lengthWithAddedHashtag < self.viewModel.maxTextLength;
+    BOOL lengthWillBeWithinMaximum = lengthWithAddedHashtag < self.characterCountMax;;
     if ( !lengthWillBeWithinMaximum )
     {
         return NO;
@@ -127,29 +138,35 @@ static NSString * const kCharacterLimit = @"characterLimit";
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
     NSRange rangeOfHashtag = [self.text rangeOfString:hashtagTextWithHashMark];
     
-    NSString *stringToReplace = hashtagTextWithHashMark;
-    
-    NSRange characterAfterHashtagRange = NSMakeRange( rangeOfHashtag.location + rangeOfHashtag.length, 1 );
-    NSRange characterBeforeHashtagRange = NSMakeRange( rangeOfHashtag.location - 1, 1 );
-    
-    const BOOL isThereASpaceAfterTheHashtag = [[self.text substringWithRange:characterAfterHashtagRange] isEqualToString:@" "];
-    if ( isThereASpaceAfterTheHashtag )
+    if ( rangeOfHashtag.location != NSNotFound )
     {
-        // Remove the space after the hastag as well
-        stringToReplace = [stringToReplace stringByAppendingString:@" "];
-        rangeOfHashtag.length++;
+        NSString *stringToReplace = hashtagTextWithHashMark;
+        NSRange characterAfterHashtagRange = NSMakeRange( rangeOfHashtag.location + rangeOfHashtag.length - 1, 1 );
+        NSRange characterBeforeHashtagRange = NSMakeRange( rangeOfHashtag.location - 1, 1 );
+        
+        if ( rangeOfHashtag.location + rangeOfHashtag.length < self.text.length )
+        {
+            const BOOL isThereASpaceAfterTheHashtag = [[self.text substringWithRange:characterAfterHashtagRange] isEqualToString:@" "];
+            if ( isThereASpaceAfterTheHashtag )
+            {
+                // Remove the space after the hastag as well
+                stringToReplace = [stringToReplace stringByAppendingString:@" "];
+                rangeOfHashtag.length++;
+            }
+        }
+        if ( rangeOfHashtag.location > 0 )
+        {
+            const BOOL isThereASpaceBeforeTheHashtag = [[self.text substringWithRange:characterBeforeHashtagRange] isEqualToString:@" "];
+            if ( isThereASpaceBeforeTheHashtag )
+            {
+                // Remove the space after the hastag as well
+                stringToReplace = [NSString stringWithFormat:@" %@", stringToReplace];
+                rangeOfHashtag.location--;
+                rangeOfHashtag.length++;
+            }
+        }
+        self.text = [self.text stringByReplacingOccurrencesOfString:stringToReplace withString:@""];
     }
-    const BOOL isThereASpaceBeforeTheHashtag = [[self.text substringWithRange:characterBeforeHashtagRange] isEqualToString:@" "];
-    if ( isThereASpaceBeforeTheHashtag )
-    {
-        // Remove the space after the hastag as well
-        stringToReplace = [NSString stringWithFormat:@" %@", stringToReplace];
-        rangeOfHashtag.location--;
-        rangeOfHashtag.length++;
-    }
-    self.text = [self.text stringByReplacingOccurrencesOfString:stringToReplace withString:@""];
-    
-    self.textView.selectedRange = NSMakeRange( rangeOfHashtag.location, 0 );
 
     [self showPlaceholderText];
     
@@ -169,7 +186,7 @@ static NSString * const kCharacterLimit = @"characterLimit";
         if ( replacementRange.location > 0 )
         {
             NSRange characterBeforeSelectedRange = NSMakeRange( replacementRange.location-1, 1 );
-            isSpaceRequired = [[self.text substringWithRange:characterBeforeSelectedRange] isEqualToString:@" "];
+            isSpaceRequired = ![[self.text substringWithRange:characterBeforeSelectedRange] isEqualToString:@" "];
         }
         
         NSString *stringReplacement = [NSString stringWithFormat:@"%@%@%@", (isSpaceRequired ? @" " : @""), hashtagTextWithHashMark, @" "];
@@ -293,16 +310,27 @@ static NSString * const kCharacterLimit = @"characterLimit";
         return NO;
     }
     
+    NSString *textAfter = [textView.text stringByReplacingCharactersInRange:range withString:text];
     if ( self.delegate != nil )
     {
-        NSString *textAfter = [textView.text stringByReplacingCharactersInRange:range withString:text];
-        
         [self.hashtagHelper collectHashtagEditsFromBeforeText:textView.text toAfterText:textAfter];
     }
     
     [self hidePlaceholderText];
     
-    return textView.text.length + text.length < self.viewModel.maxTextLength;
+    return YES; //textAfter.length < self.characterCountMax;
+}
+
+#pragma mark - VContentInputAccessoryViewDelegate
+
+- (BOOL)shouldLimitTextEntryForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
+    return YES;
+}
+
+- (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
+    return YES;
 }
 
 @end

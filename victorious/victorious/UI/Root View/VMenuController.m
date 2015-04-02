@@ -96,7 +96,7 @@ static char kKVOContext;
     UIEdgeInsets desiredInsets = UIEdgeInsetsZero;
     
     if (extraSpace > 0)
-    {   
+    {
         desiredInsets = UIEdgeInsetsMake(extraSpace * 0.5f, 0.0f, extraSpace * 0.5f, 0.0);
     }
     

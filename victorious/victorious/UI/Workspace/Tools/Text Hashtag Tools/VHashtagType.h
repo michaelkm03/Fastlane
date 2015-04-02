@@ -9,10 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "VWorkspaceTool.h"
 
+/**
+ A workspace tool that represents a hashtag option from a picker menu.
+ */
 @interface VHashtagType : NSObject <VWorkspaceTool>
 
 - (instancetype)initWithHashtagText:(NSString *)hashtagText;
 
+/**
+ The text of the hashtag.
+ */
 @property (nonatomic, strong, readonly) NSString *hashtagText;
 
 @end

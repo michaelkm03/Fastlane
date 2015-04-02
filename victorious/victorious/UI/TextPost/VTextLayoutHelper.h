@@ -37,9 +37,9 @@
  adjusts the kerning in the text attributes to provide enough space between callout and
  non-callout words to match the design.
  */
-- (void)addWordPaddingWithVaule:(NSInteger)wordPadding
-             toAttributedString:(NSMutableAttributedString *)attributedString
-              withCalloutRanges:(NSArray *)calloutRanges;
+- (void)setAdditionalKerningWithVaule:(CGFloat)additionalKerning
+                   toAttributedString:(NSMutableAttributedString *)attributedString
+                    withCalloutRanges:(NSArray *)calloutRanges;
 
 /**
  Checks a string for single sapces between two strings that will be rendered as callouts

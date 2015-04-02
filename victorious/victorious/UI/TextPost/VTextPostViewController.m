@@ -121,9 +121,9 @@
         
         hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
         
-        [self.textLayoutHelper addWordPaddingWithVaule:self.viewModel.calloutWordPadding
-                                    toAttributedString:attributedText
-                                     withCalloutRanges:hashtagCalloutRanges];
+        [self.textLayoutHelper setAdditionalKerningWithVaule:self.viewModel.calloutWordKerning
+                                          toAttributedString:attributedText
+                                           withCalloutRanges:hashtagCalloutRanges];
     }
     
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];

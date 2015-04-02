@@ -45,7 +45,7 @@
     return NO;
 }
 
-- (void)setHashtagModificationsWithBeforeText:(NSString *)beforeText afterText:(NSString *)afterText
+- (void)collectHashtagEditsFromBeforeText:(NSString *)beforeText toAfterText:(NSString *)afterText
 {
     NSArray *hashtagsBefore = [VHashTags getHashTags:beforeText includeHashMark:YES];
     NSArray *hashtagsAfter = [VHashTags getHashTags:afterText includeHashMark:YES];
@@ -69,7 +69,7 @@
     self.collectedHashtagsRemoved = [[hashtagsBefore filteredArrayUsingPredicate:removedFilter] v_map:removeHashmarkBlock];
 }
 
-- (void)resetCachedModifications
+- (void)resetCollectedHashtagEdits
 {
     self.collectedHashtagsAdded = nil;
     self.collectedHashtagsRemoved = nil;

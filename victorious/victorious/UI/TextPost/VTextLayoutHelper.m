@@ -20,9 +20,9 @@
 
 @implementation VTextLayoutHelper
 
-- (void)addWordPaddingWithVaule:(NSInteger)wordPadding
-             toAttributedString:(NSMutableAttributedString *)attributedString
-                withCalloutRanges:(NSArray *)calloutRanges
+- (void)setAdditionalKerningWithVaule:(CGFloat)additionalKerning
+                   toAttributedString:(NSMutableAttributedString *)attributedString
+                    withCalloutRanges:(NSArray *)calloutRanges
 {
     //NSRange previousRange = NSMakeRange( 0, 0 );
     for ( NSValue *rangeValueObject in calloutRanges )
@@ -31,7 +31,7 @@
         if ( range.location > 0 )  //< Exclude first word
         {
             NSRange startRange = NSMakeRange( range.location - 1, 1 );
-            CGFloat padding = wordPadding;
+            CGFloat padding = additionalKerning;
             /*if ( previousRange.length > 0 ) //< If we have a value form the last loop
             {
                 NSInteger numberOfSpacesFromLastCallout = range.location - (previousRange.location + previousRange.length);
@@ -43,7 +43,7 @@
             [attributedString addAttribute:NSKernAttributeName value:@(padding) range:startRange];
         }
         NSRange endRange = NSMakeRange( range.location - 1 + range.length, 1 );
-        [attributedString addAttribute:NSKernAttributeName value:@(wordPadding) range:endRange];
+        [attributedString addAttribute:NSKernAttributeName value:@(additionalKerning) range:endRange];
         
         //previousRange = range;
     }
@@ -189,7 +189,7 @@
     // mixing into with the background line frames.  See comments within the following loop
     // for more information on how this is being done
     textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX );
-    const CGFloat spaceOffset = (self.viewModel.calloutWordPadding + self.viewModel.horizontalSpacing) * 0.5f;
+    const CGFloat spaceOffset = (self.viewModel.calloutWordKerning + self.viewModel.horizontalSpacing) * 0.5f;
     for ( NSUInteger i = 0; i < calloutRanges.count; i++ )
     {
         NSValue *rangeValueObject = calloutRanges[i];

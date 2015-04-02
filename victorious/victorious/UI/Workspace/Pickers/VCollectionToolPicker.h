@@ -19,6 +19,11 @@
 
 @property (nonatomic, strong) NSArray *tools;
 
+/**
+ As the only class that knows about the cells being used for display,
+ the method allows a collection view ask the data source to register those
+ cells in order to be prepared for dequeuing and display.
+ */
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
 
 @end
@@ -28,8 +33,16 @@
  */
 @protocol VCollectionToolPicker <NSObject>
 
+/**
+ The collection view data source that loads and manages the data to display
+ as well as configuring and supplying cells to display.
+ */
 @property (nonatomic, strong) id<VCollectionToolPickerDataSource> dataSource;
 
+/**
+ Reloads the collection view, which asks its data source for a fresh batch
+ of configured cells.
+ */
 - (void)reloadData;
 
 @end

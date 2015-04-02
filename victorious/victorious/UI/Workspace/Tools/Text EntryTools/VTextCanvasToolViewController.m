@@ -53,18 +53,4 @@
     self.buttonCamera.alpha = 0.0f;
 }
 
-- (void)setImageControlsVisible:(BOOL)visible animated:(BOOL)animated
-{
-    [UIView animateWithDuration:1.5f
-                          delay:0.0f
-         usingSpringWithDamping:0.5f
-          initialSpringVelocity:0.5f
-                        options:kNilOptions animations:^
-     {
-         self.buttonImageSearch.alpha = visible ? 1.0f : 0.0f;
-         self.buttonCamera.alpha = visible ? 1.0f : 0.0f;
-     }
-                     completion:nil];
-}
-
 @end

@@ -16,8 +16,7 @@
 @property (nonatomic, assign, readonly) CGFloat verticalSpacing; ///< A value that determines how the height of a background frame relates to the height of a line of text
 @property (nonatomic, assign, readonly) CGFloat lineOffsetMultiplier; ///< A value that is used in conjuction with an attributed text's intrinsic height to properly align background frames
 @property (nonatomic, assign, readonly) CGFloat horizontalSpacing; ///< The amount of space between normal and callout text
-@property (nonatomic, assign, readonly) NSUInteger maxTextLength; ///< The maximum lengrth of a text post
-@property (nonatomic, assign, readonly) NSUInteger calloutWordPadding; ///< The amount of padding on the left and right of a called out word, within its backgroudn frame
+@property (nonatomic, assign, readonly) CGFloat calloutWordKerning; ///< The amount of padding on the left and right of a called out word, within its backgroudn frame
 @property (nonatomic, readonly) UIColor *backgroundColor; ///< The color of the text post background frames
 
 /**

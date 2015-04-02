@@ -421,7 +421,6 @@
 		A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */; };
 		A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0CE1AB79EB500C35063 /* VTextCanvasToolViewController.m */; };
 		A75ED0D71AB79EB500C35063 /* VTextCanvasToolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0CF1AB79EB500C35063 /* VTextCanvasToolViewController.xib */; };
-		A75ED0D81AB79EB500C35063 /* VEnterTextTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */; };
 		A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0DD1AB7BC3E00C35063 /* VHashtagType.m */; };
 		A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0E01AB7BEFC00C35063 /* VColorType.m */; };
 		A75ED0E91AB8CC0A00C35063 /* VStreamContentPermissionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0E81AB8CC0A00C35063 /* VStreamContentPermissionsTests.m */; };
@@ -1568,8 +1567,6 @@
 		A75ED0CD1AB79EB500C35063 /* VTextCanvasToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextCanvasToolViewController.h; sourceTree = "<group>"; };
 		A75ED0CE1AB79EB500C35063 /* VTextCanvasToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextCanvasToolViewController.m; sourceTree = "<group>"; };
 		A75ED0CF1AB79EB500C35063 /* VTextCanvasToolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTextCanvasToolViewController.xib; sourceTree = "<group>"; };
-		A75ED0D01AB79EB500C35063 /* VEnterTextTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnterTextTool.h; sourceTree = "<group>"; };
-		A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnterTextTool.m; sourceTree = "<group>"; };
 		A75ED0DC1AB7BC3E00C35063 /* VHashtagType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagType.h; sourceTree = "<group>"; };
 		A75ED0DD1AB7BC3E00C35063 /* VHashtagType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagType.m; sourceTree = "<group>"; };
 		A75ED0DF1AB7BEFC00C35063 /* VColorType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VColorType.h; sourceTree = "<group>"; };
@@ -3922,8 +3919,6 @@
 				A75ED0CD1AB79EB500C35063 /* VTextCanvasToolViewController.h */,
 				A75ED0CE1AB79EB500C35063 /* VTextCanvasToolViewController.m */,
 				A75ED0CF1AB79EB500C35063 /* VTextCanvasToolViewController.xib */,
-				A75ED0D01AB79EB500C35063 /* VEnterTextTool.h */,
-				A75ED0D11AB79EB500C35063 /* VEnterTextTool.m */,
 			);
 			path = "Text EntryTools";
 			sourceTree = "<group>";
@@ -6175,7 +6170,6 @@
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				A74C87FA1ABA5859004D2E16 /* VCreatorInfoHelper.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */,
-				A75ED0D81AB79EB500C35063 /* VEnterTextTool.m in Sources */,
 				A761C9D41A48B1E500F0D0F9 /* UIView+AutoLayout.m in Sources */,
 				A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */,
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,

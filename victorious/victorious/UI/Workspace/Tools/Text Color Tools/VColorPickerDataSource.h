@@ -12,6 +12,10 @@
 
 @class VDependencyManager;
 
+/**
+ A datasource for a VCollectionToolPicker that provides color options while
+ editing during content creation, usually for a text post.
+ */
 @interface VColorPickerDataSource : NSObject <VCollectionToolPickerDataSource>
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;

@@ -34,8 +34,6 @@
 	<string>VTextTool</string>
 	<key>textType.tool</key>
 	<string>VTextTypeTool</string>
-	<key>enterText.tool</key>
-	<string>VEnterTextTool</string>
 	<key>hashtag.tool</key>
 	<string>VHashtagTool</string>
 	<key>textColor.tool</key>
