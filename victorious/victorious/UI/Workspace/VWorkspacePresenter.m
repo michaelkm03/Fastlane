@@ -8,6 +8,7 @@
 
 #import "VWorkspacePresenter.h"
 
+#import "VDependencyManager+VWorkspace.h"
 #import "VObjectManager+Users.h"
 
 // Creation UI
@@ -24,15 +25,17 @@
 
 @interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
 
 @end
 
 @implementation VWorkspacePresenter
 
-+ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
++ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencyManager:(VDependencyManager *)dependencyManager
 {
     VWorkspacePresenter *workspacePresenter = [[self alloc] init];
+    workspacePresenter.dependencyManager = dependencyManager;
     workspacePresenter.viewControllerToPresentOn = viewControllerToPresentOn;
     return workspacePresenter;
 }
@@ -84,15 +87,16 @@
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
     
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
-                                                                                                                                                 VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
-                                                                                                                                                 VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{
+        VWorkspaceFlowControllerInitialCaptureStateKey: @(initialCaptureState),
+        VImageToolControllerInitialImageEditStateKey: @(initialImageEdit),
+        VVideoToolControllerInitalVideoEditStateKey: @(initialVideoEdit) }];
     workspaceFlowController.videoEnabled = YES;
     workspaceFlowController.delegate = self;
     
     [self.viewControllerToPresentOn presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
+                                                 animated:YES
+                                               completion:nil];
 }
 
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
