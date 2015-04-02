@@ -71,6 +71,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#import "VDirectoryViewController.h"
+
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 static NSString * const kMarqueeURLKey = @"marqueeURL";
 
@@ -86,6 +88,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 static NSString * const kRemixStreamKey = @"remixStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
+static NSString * const kMarqueeTargetDirectory = @"marqueeDirectoryTarget";
 
 @interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -430,6 +433,18 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         [self showContentViewForSequence:(VSequence *)streamItem withPreviewImage:image];
+    }
+    else if ( [streamItem isSingleStream] )
+    {
+        VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
+        viewController.dependencyManager = self.dependencyManager;
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else if ( [streamItem isStreamOfStreams] )
+    {
+        VDirectoryViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryViewController class] forKey:kMarqueeTargetDirectory];
+        
+        [self.navigationController pushViewController:directory animated:YES];
     }
 }
 
