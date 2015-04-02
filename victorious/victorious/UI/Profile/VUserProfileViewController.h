@@ -17,10 +17,6 @@ extern NSString * const VUserProfileFindFriendsIconKey;
 
 @property   (nonatomic, readonly) VUser                  *profile;
 
-//Total hack versions to the 1.9 release out the door... Replace once depedencyManagers have been propogated down to all the
-+ (instancetype)rootDependencyProfileWithRemoteId:(NSNumber *)remoteId;
-+ (instancetype)rootDependencyProfileWithUser:(VUser *)user;
-
 + (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager;
 + (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
 

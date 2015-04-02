@@ -12,7 +12,6 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
-#import "VRootViewController.h"
 #import "VFollowerTableViewController.h"
 #import "VFollowingTableViewController.h"
 #import "VMessageContainerViewController.h"
@@ -54,8 +53,12 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
  According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
  */
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
+
+// dependency manager keys
+static NSString * const kUserProfileViewComponentKey = @"userProfileView";
 static NSString * const kUserKey = @"user";
 static NSString * const kUserRemoteIdKey = @"remoteId";
+
 NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
@@ -82,17 +85,6 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 @end
 
 @implementation VUserProfileViewController
-
-#warning Incredibly hacky
-+ (instancetype)rootDependencyProfileWithRemoteId:(NSNumber *)remoteId
-{
-    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithRemoteId:remoteId];
-}
-
-+ (instancetype)rootDependencyProfileWithUser:(VUser *)user
-{
-    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithUser:user];
-}
 
 + (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -833,13 +825,13 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 - (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
 {
     NSAssert(user != nil, @"user cannot be nil");
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserKey: user }];
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:kUserProfileViewComponentKey withAddedDependencies:@{ kUserKey: user }];
 }
 
 - (VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId
 {
     NSAssert(remoteId != nil, @"remoteId cannot be nil");
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserRemoteIdKey: remoteId }];
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:kUserProfileViewComponentKey withAddedDependencies:@{ kUserRemoteIdKey: remoteId }];
 }
 
 @end
