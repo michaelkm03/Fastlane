@@ -110,6 +110,9 @@
 {
     textView.backgroundFrameColor = self.viewModel.backgroundColor;
     
+    // When the text is actually empty, we will need to draw a background frame of a certain size
+    // to prevent having no background frame or undefined background frame behavior caused by using
+    // a text rectangle with 0 width.  So, if we have empty text, we'll just work with a single space
     BOOL didAddSpaceCharacterToEmptyTextView = NO;
     if ( textView.text.length == 0 )
     {
@@ -135,11 +138,16 @@
          [lineFragmentRects addObject:[NSValue valueWithCGRect:lineRect]];
      }];
     
+    // If started with empty text and had to add a space character, we should now revert back to
+    // empty text.  The calculations before this point depending on a non-zero width of text,
+    // but going forward we can and should handle the zero width.
     if ( didAddSpaceCharacterToEmptyTextView )
     {
         textView.text = @"";
     }
     
+    // We're going to create an array of rectangles, each of which is sized to encompass a
+    // line of text.  We'll store that in `backgroundLinesFrames`.
     __block NSMutableArray *backgroundLineFrames = [[NSMutableArray alloc] init];
     NSUInteger numLines = totalRect.size.height / singleCharRect.size.height;
     for ( NSUInteger i = 0; i < numLines; i++ )
@@ -169,27 +177,80 @@
         [backgroundLineFrames addObject:[NSValue valueWithCGRect:lineRect]];
     }
     
+    // Creates a mutable array that contains another mutable array for each line.
+    // Each of these subarrays will contains callout rectangles for the callouts on that line.
     NSMutableArray *calloutRects = [[NSMutableArray alloc] initWithCapacity:numLines];
     for ( NSUInteger i = 0; i < numLines; i++ )
     {
         [calloutRects addObject:[[NSMutableArray alloc] init]];
     }
     
+    // Now we'll process each callout, apply some special calculations for formatting and
+    // mixing into with the background line frames.  See comments within the following loop
+    // for more information on how this is being done
+    textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX );
     const CGFloat spaceOffset = (self.viewModel.calloutWordPadding + self.viewModel.horizontalSpacing) * 0.5f;
-    for ( NSValue *rangeValueObject in calloutRanges )
+    for ( NSUInteger i = 0; i < calloutRanges.count; i++ )
     {
+        NSValue *rangeValueObject = calloutRanges[i];
         NSRange range = [rangeValueObject rangeValue];
-        textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX );
-        CGRect rect = [textView.layoutManager boundingRectForGlyphRange:range inTextContainer:textView.textContainer];
-        rect.origin.y += rect.size.height * self.viewModel.lineOffsetMultiplier;
-        rect.size.height = singleCharRect.size.height - self.viewModel.verticalSpacing;
-        rect.origin.x -= spaceOffset;
-        rect.size.width += spaceOffset;
         
-        NSUInteger lineNumber = CGRectGetMinY(rect) / totalRect.size.height * numLines;
-       [[calloutRects objectAtIndex:lineNumber] addObject:[NSValue valueWithCGRect:rect]];
+        // Callout ranges can span onto multiple lines, which generate callout rectangles that are
+        // too large, and whose min and max X values no longer line up with the beginning and ends of the actual text.
+        // So, we'll need to detect any callout ranges that will span onto multiple lines and break them apart
+        // into as many subranges distributed across those multiple lines
+        NSMutableArray *calloutLineRanges = [[NSMutableArray alloc] init];
+        NSRange currentLineRange = NSMakeRange( range.location, 1 );
+        NSRange totalRange = NSMakeRange( range.location, 1 );
+        NSUInteger currentCalloutLine = 1;
+        const NSUInteger len = range.location + range.length;
+        for ( NSUInteger r = range.location; r < len; r++ )
+        {
+            CGRect calloutRect = [textView.layoutManager boundingRectForGlyphRange:totalRange inTextContainer:textView.textContainer];
+            NSUInteger lineOfCurrentSingleCharacter = ceil( calloutRect.size.height / singleCharRect.size.height );
+            
+            // If the `calloutRect` extends onto a new line, we'll add the current subrange and
+            // continue iterating to build another subrange starting on the new line
+            if ( lineOfCurrentSingleCharacter > currentCalloutLine )
+            {
+                [calloutLineRanges addObject:[NSValue valueWithRange:NSMakeRange( currentLineRange.location, currentLineRange.length-1)]];
+                currentLineRange = NSMakeRange( r, 1 );
+                currentCalloutLine = lineOfCurrentSingleCharacter;
+            }
+            
+            // If we've reach the end of the loop before hitting a new line, add the current
+            // subrange that we've been build since the last line
+            if ( r == len-1 )
+            {
+                [calloutLineRanges addObject:[NSValue valueWithRange:currentLineRange]];
+            }
+            
+            // Keep expanding the total range and current line range on each loop
+            // moving forward character by character to detect an additionally required line
+            totalRange.length++;
+            currentLineRange.length++;
+        }
+        
+        // Now we can calculate the callout rectangles and apply some edits to their
+        // dimensions to be sized and spaces as we expect for the design
+        for ( NSValue *value in calloutLineRanges )
+        {
+            NSRange calloutRange = value.rangeValue;
+            CGRect rect = [textView.layoutManager boundingRectForGlyphRange:calloutRange inTextContainer:textView.textContainer];
+            rect.origin.y += singleCharRect.size.height * self.viewModel.lineOffsetMultiplier;
+            rect.size.height = singleCharRect.size.height - self.viewModel.verticalSpacing;
+            rect.origin.x -= spaceOffset;
+            rect.size.width += spaceOffset;
+            
+            NSUInteger lineNumber = CGRectGetMinY(rect) / totalRect.size.height * numLines;
+            [[calloutRects objectAtIndex:lineNumber] addObject:[NSValue valueWithCGRect:rect]];
+        }
     }
     
+    // Now we have `backgroundLineFrames`, each element of which contains a frame that encompasses the text of each line,
+    // as well as `calloutRects`, each element of which is an array that contains callouts for each line.
+    // Using `separatedRectsFromRect:withCalloutRects`, we shall divide the background frame into
+    // smaller rectangles that fill the gaps between the callout rectangles, giving us the effect required to match the intended design.
     NSMutableArray *allFrames = [[NSMutableArray alloc] init];
     for ( NSUInteger i = 0; i < backgroundLineFrames.count; i++ )
     {
