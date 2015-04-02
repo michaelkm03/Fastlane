@@ -15,8 +15,6 @@ static const CGFloat VCommentButtonContentRightInset = 3.0f; ///< Inset of comme
 static const CGFloat VButtonHeight = 36.0f; ///< Height of action buttons
 static const CGFloat VCommentButtonWidth = 68.0f; ///< Width of comment button
 
-static NSString * const VStreamCellActionViewGifIconKey = @"gifIcon"; ///< Key for "gif" icon
-static NSString * const VStreamCellActionViewMemeIconKey = @"memeIcon"; ///< Key for "meme" icon
 static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; ///< Key for "comment" icon
 
 @interface VSleekStreamCellActionView ()
@@ -107,6 +105,8 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 
 - (void)gifAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
     if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
         [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditGIF];
@@ -121,6 +121,8 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 
 - (void)memeAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
     if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
         [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditSnapshot];

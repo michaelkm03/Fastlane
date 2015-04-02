@@ -22,10 +22,10 @@ static CGFloat const kScaleScaledUp             = 1.4f;
 static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 NSString * const VStreamCellActionViewShareIconKey = @"shareIcon";
-NSString * const VStreamCellActionViewRemixIconKey = @"remixIcon";
+NSString * const VStreamCellActionViewGifIconKey = @"gifIcon";
+NSString * const VStreamCellActionViewMemeIconKey = @"memeIcon";
 NSString * const VStreamCellActionViewRepostIconKey = @"repostIcon";
 NSString * const VStreamCellActionViewRepostSuccessIconKey = @"repostSuccessIcon";
-NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
 
 @interface VStreamCellActionView()
 
@@ -68,7 +68,7 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
         totalButtonWidths += CGRectGetWidth(button.bounds);
     }
     
-    CGFloat separatorSpace = ( CGRectGetWidth(self.bounds) - totalButtonWidths - VStreamCellActionViewActionButtonBuffer * 2 ) / ( self.actionButtons.count - 1 );
+    CGFloat separatorSpace = ( CGRectGetWidth(self.bounds) - totalButtonWidths ) / ( self.actionButtons.count );
     
     for (NSUInteger i = 0; i < self.actionButtons.count; i++)
     {
@@ -76,11 +76,11 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
         CGRect frame = button.frame;
         if (i == 0)
         {
-            frame.origin.x = VStreamCellActionViewActionButtonBuffer;
+            frame.origin.x = separatorSpace / 2;
         }
         else if (i == self.actionButtons.count-1)
         {
-            frame.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) - VStreamCellActionViewActionButtonBuffer;
+            frame.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) - ( separatorSpace / 2 );
         }
         else
         {
@@ -133,19 +133,35 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
     }
 }
 
-- (void)addRemixButton
+- (void)addGifButton
 {
-    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewRemixIconKey];
-    [button addTarget:self action:@selector(remixAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewGifIconKey];
+    [button addTarget:self action:@selector(gifAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)remixAction:(id)sender
+- (void)gifAction:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
     if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
         [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditGIF];
+    }
+}
+
+- (void)addMemeButton
+{
+    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewMemeIconKey];
+    [button addTarget:self action:@selector(memeAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)memeAction:(id)sender
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
+    {
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditSnapshot];
     }
 }
 
@@ -224,23 +240,6 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
      }];
 }
 
-- (void)addMoreButton
-{
-    UIButton *button = [self addButtonWithImageKey:VStreamCellActionViewMoreIconKey];
-    [button addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)moreAction:(id)sender
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
-    
-    // TODO: Currently, this "More" button is just skipping ahead to the "Flag" actionsheet confirmation.  This may need to be sorted out in the future.
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willFlagSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willFlagSequence:self.sequence fromView:self];
-    }
-}
-
 - (UIButton *)addButtonWithImageKey:(NSString *)imageKey
 {
     NSString *imageName = [[[self class] buttonImages] objectForKey:imageKey];
@@ -268,10 +267,10 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
                   {
                       buttonImages = @{
                                        VStreamCellActionViewShareIconKey : @"shareIcon-C",
-                                       VStreamCellActionViewRemixIconKey : @"remixIcon-C",
+                                       VStreamCellActionViewGifIconKey : @"gifIcon-C",
+                                       VStreamCellActionViewMemeIconKey : @"memeIcon-C",
                                        VStreamCellActionViewRepostIconKey : @"repostIcon-C",
-                                       VStreamCellActionViewRepostSuccessIconKey : @"repostIcon-success-C",
-                                       VStreamCellActionViewMoreIconKey : @"overflowBtn-C"
+                                       VStreamCellActionViewRepostSuccessIconKey : @"repostIcon-success-C"
                                        };
                   });
     return buttonImages;

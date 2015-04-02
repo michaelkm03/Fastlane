@@ -3,16 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "remix_icon.png"
+      "filename" : "shareIcon-C.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "remix_icon@2x.png"
+      "filename" : "shareIcon-C@2x.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "shareIcon-C@3x.png"
     }
   ],
   "info" : {
