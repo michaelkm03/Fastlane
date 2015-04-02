@@ -955,7 +955,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 }
                 __weak typeof(pollCell) weakPollCell = pollCell;
                 __weak typeof(self) welf = self;
-                
                 pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
                     NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
