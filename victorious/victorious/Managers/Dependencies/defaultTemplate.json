@@ -2,6 +2,7 @@
     "workspaceText": {
         "name": "workspaceText",
         "defaultText": "Type your text here!",
+        "characterLimit" : 140,
         "editTextWorkspace": {
             "name": "workspace.screen",
             "tools": [

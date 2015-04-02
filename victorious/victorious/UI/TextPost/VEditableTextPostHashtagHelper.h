@@ -18,18 +18,22 @@
 @interface VEditableTextPostHashtagHelper : NSObject
 
 /**
- An array of hashtags that were recently removed, cached here to reference if needed.
+ An array of hashtags that were removed after calling `collectHashtagEditsFromBeforeText:toAfterText`
+ and collected here to evaluate.
  */
-@property (nonatomic, strong, readonly) NSArray *removed;
+@property (nonatomic, strong, readonly) NSArray *collectedHashtagsRemoved;
 
 /**
- An array of hashtags that were recently added, cached here to reference if needed.
+ An array of hashtags that were added after calling `collectHashtagEditsFromBeforeText:toAfterText`
+ and collected here to evaluate.
  */
-@property (nonatomic, strong, readonly) NSArray *added;
+@property (nonatomic, strong, readonly) NSArray *collectedHashtagsAdded;
 
 /**
  A list of strings that represents which hastags have been added into some text
- that is managed elsewhere.
+ that is managed elsewhere.  This exists to manage the state of hashtags in that text
+ so that a user's edits to a text view containing the text or programmatic insertions and
+ removals of hashtags are tracked.
  */
 @property (nonatomic, strong, readonly) NSMutableSet *embeddedHashtags;
 
@@ -49,13 +53,16 @@
 
 /**
  Determines any added or removed hashtags in the change from `beforeText` to `afterText`,
- caching those added or removed hashtags in the `added` or `removed properties of this class.
+ collectiong those added or removed hashtags in the `collectedHashtagsAdded` or
+ `collectedHashtagsRemoved` properties of this class.  This is used to detect hashtags removed while
+ a user is editing text in a text view.
  */
-- (void)setHashtagModificationsWithBeforeText:(NSString *)beforeText afterText:(NSString *)afterText;
+- (void)collectHashtagEditsFromBeforeText:(NSString *)beforeText toAfterText:(NSString *)afterText;
 
 /**
- Clears `removed` and `added`, the cached arrays of added/removed hashtags.
+ Clears `collectedHashtagsRemoved` and `collectedHashtagsAdded`, arrays of added/removed hashtags
+ collected after calling  `collectHashtagEditsFromBeforeText:toAfterText`;
  */
-- (void)resetCachedModifications;
+- (void)resetCollectedHashtagEdits;
 
 @end

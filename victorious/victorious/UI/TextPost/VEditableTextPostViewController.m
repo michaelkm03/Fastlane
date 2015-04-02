@@ -16,6 +16,7 @@
 #import "VEditableTextPostHashtagHelper.h"
 
 static NSString * const kDefaultTextKey = @"defaultText";
+static NSString * const kCharacterLimit = @"characterLimit";
 
 @interface VEditableTextPostViewController() <UITextViewDelegate>
 
@@ -113,7 +114,7 @@ static NSString * const kDefaultTextKey = @"defaultText";
     }
     
     const BOOL didRemove = [self.hashtagHelper removeHashtag:hashtagText];
-    if ( didRemove && ![self.hashtagHelper.removed containsObject:hashtagText] )
+    if ( didRemove && ![self.hashtagHelper.collectedHashtagsRemoved containsObject:hashtagText] )
     {
         [self removeHashtagFromText:hashtagText];
     }
@@ -177,7 +178,7 @@ static NSString * const kDefaultTextKey = @"defaultText";
         self.textView.selectedRange = NSMakeRange( rangeOfAddedString.location + rangeOfAddedString.length + 1, 0 );
     }
     
-    [self.delegate textDidUpdate:self.textOutput];
+    [self.delegate textDidUpdate:self.textOutput];  
 }
 
 - (void)setText:(NSString *)text
@@ -272,11 +273,11 @@ static NSString * const kDefaultTextKey = @"defaultText";
         return [string stringByReplacingOccurrencesOfString:@"#" withString:@""];
     };
     
-    [self.delegate textPostViewController:self didDeleteHashtags:[self.hashtagHelper.removed v_map:removeHashmarkBlock]];
-    [self.delegate textPostViewController:self didAddHashtags:[self.hashtagHelper.added v_map:removeHashmarkBlock]];
+    [self.delegate textPostViewController:self didDeleteHashtags:[self.hashtagHelper.collectedHashtagsRemoved v_map:removeHashmarkBlock]];
+    [self.delegate textPostViewController:self didAddHashtags:[self.hashtagHelper.collectedHashtagsAdded v_map:removeHashmarkBlock]];
     [self.delegate textDidUpdate:self.textOutput];
     
-    [self.hashtagHelper resetCachedModifications];
+    [self.hashtagHelper resetCollectedHashtagEdits];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
@@ -296,7 +297,7 @@ static NSString * const kDefaultTextKey = @"defaultText";
     {
         NSString *textAfter = [textView.text stringByReplacingCharactersInRange:range withString:text];
         
-        [self.hashtagHelper setHashtagModificationsWithBeforeText:textView.text afterText:textAfter];
+        [self.hashtagHelper collectHashtagEditsFromBeforeText:textView.text toAfterText:textAfter];
     }
     
     [self hidePlaceholderText];

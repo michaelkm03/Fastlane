@@ -76,6 +76,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 static NSString * const kColorKey = @"color";
 static NSString * const kColorOptionsKey = @"colorOptions";
 static NSString * const kDefaultTextKey = @"defaultText";
+static NSString * const kCharacterLimit = @"characterLimit";
 
 // Text properties
 static NSString * const kFontNameKey = @"fontName";
@@ -297,6 +298,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 {
     return @{
              kClassNameKey: @"workspaceText",
+             kCharacterLimit: @140,
              kDefaultTextKey: @"Type your text here!",
              VDependencyManagerEditTextWorkspaceKey: @{
                      kClassNameKey: @"workspace.screen",

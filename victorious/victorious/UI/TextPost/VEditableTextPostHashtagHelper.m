@@ -12,8 +12,8 @@
 
 @interface VEditableTextPostHashtagHelper()
 
-@property (nonatomic, strong, readwrite) NSArray *removed;
-@property (nonatomic, strong, readwrite) NSArray *added;
+@property (nonatomic, strong, readwrite) NSArray *collectedHashtagsRemoved;
+@property (nonatomic, strong, readwrite) NSArray *collectedHashtagsAdded;
 
 @end
 
@@ -60,19 +60,19 @@
                                     hashtag = [hashtag stringByReplacingOccurrencesOfString:@"#" withString:@""];
                                     return ![hashtagsBefore containsObject:hashtag];
                                 }];
-    self.added = [[hashtagsAfter filteredArrayUsingPredicate:addedFilter] v_map:removeHashmarkBlock];
+    self.collectedHashtagsAdded = [[hashtagsAfter filteredArrayUsingPredicate:addedFilter] v_map:removeHashmarkBlock];
     
     NSPredicate *removedFilter = [NSPredicate predicateWithBlock:^BOOL(NSString *hashtag, NSDictionary *bindings)
                                   {
                                       return ![hashtagsAfter containsObject:hashtag];
                                   }];
-    self.removed = [[hashtagsBefore filteredArrayUsingPredicate:removedFilter] v_map:removeHashmarkBlock];
+    self.collectedHashtagsRemoved = [[hashtagsBefore filteredArrayUsingPredicate:removedFilter] v_map:removeHashmarkBlock];
 }
 
 - (void)resetCachedModifications
 {
-    self.added = nil;
-    self.removed = nil;
+    self.collectedHashtagsAdded = nil;
+    self.collectedHashtagsRemoved = nil;
 }
 
 @end
