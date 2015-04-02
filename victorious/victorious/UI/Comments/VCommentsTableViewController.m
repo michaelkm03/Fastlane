@@ -291,7 +291,7 @@
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:comment.user];
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:comment.user];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
