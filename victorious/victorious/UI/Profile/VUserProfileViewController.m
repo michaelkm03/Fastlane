@@ -560,7 +560,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
              return;
          }
          
-         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
+         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile dependencyManager:self.dependencyManager];
          composeController.presentingFromProfile = YES;
          
          if ([self.navigationController.viewControllers containsObject:composeController])
