@@ -57,7 +57,7 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="C_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
                         <rect key="frame" x="120" y="-12" width="80" height="72"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="72" id="58y-gN-AuV"/>
@@ -93,11 +93,12 @@
                 <outlet property="answerAButton" destination="RLX-ox-fAJ" id="rSj-bE-9CU"/>
                 <outlet property="answerBButton" destination="3EP-fw-qmv" id="IMm-LP-De3"/>
                 <outlet property="bLabel" destination="88j-ED-vL9" id="8sr-Fl-Hkt"/>
+                <outlet property="orImageView" destination="cJJ-Gf-HxN" id="6pd-RJ-JAN"/>
             </connections>
             <point key="canvasLocation" x="-265" y="27"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="PollBarOr" width="65" height="72"/>
+        <image name="C_pollOr" width="65" height="72"/>
     </resources>
 </document>
