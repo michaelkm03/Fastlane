@@ -125,9 +125,15 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     __weak typeof(self) welf = self;
     [self.KVOController observe:sequence
                         keyPath:NSStringFromSelector(@selector(hasReposted))
-                        options:NSKeyValueObservingOptionNew
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                           block:^(id observer, id object, NSDictionary *change)
      {
+         NSNumber *oldValue = change[NSKeyValueChangeOldKey];
+         NSNumber *newValue = change[NSKeyValueChangeNewKey];
+         if ([newValue boolValue] == [oldValue boolValue])
+         {
+             return;
+         }
          [welf.actionView updateRepostButtonAnimated:YES];
      }];
 }
