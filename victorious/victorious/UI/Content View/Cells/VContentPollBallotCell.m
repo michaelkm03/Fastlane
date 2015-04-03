@@ -12,7 +12,6 @@
 
 #import "VThemeManager.h"
 
-static NSCache *_sharedSizingCache = nil;
 static CGFloat const kMinimumHeight = 60.0f;
 static UIEdgeInsets const kAnswerInsets = { 10, 0, 10, 0};
 static CGFloat const kOrSizeInset = 40.0f;
@@ -28,13 +27,21 @@ static CGFloat const kOrSizeInset = 40.0f;
 
 @implementation VContentPollBallotCell
 
-+ (NSCache *)sharedSizingCache
++ (NSMutableDictionary *)sharedSizingCache
 {
-    if (_sharedSizingCache == nil)
+    static dispatch_once_t onceToken;
+    static NSMutableDictionary *sizingCache;
+    dispatch_once(&onceToken, ^
     {
-        _sharedSizingCache = [[NSCache alloc] init];
-    }
-    return _sharedSizingCache;
+        sizingCache = [[NSMutableDictionary alloc] init];
+    });
+    
+    return sizingCache;
+}
+
++ (void)clearSizingCache
+{
+    [[self sharedSizingCache] removeAllObjects];
 }
 
 + (CGSize)actualSizeWithAnswerA:(NSAttributedString *)answerA
@@ -79,6 +86,11 @@ static CGFloat const kOrSizeInset = 40.0f;
 }
 
 #pragma mark - NSObject
+
+- (void)dealloc
+{
+    [[self class] clearSizingCache];
+}
 
 - (void)awakeFromNib
 {
