@@ -21,8 +21,6 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @interface VContentPollCell () <VCVideoPlayerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *backgroundContainer;
-
 @property (nonatomic, weak, readwrite) IBOutlet UIView *answerAContainer;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *answerBContainer;
 
@@ -248,13 +246,6 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
              completion();
          }
      }];
-}
-
-#pragma mark - VBackgroundContainer
-
-- (UIView *)backgroundContainerView
-{
-    return self.backgroundContainer;
 }
 
 @end
