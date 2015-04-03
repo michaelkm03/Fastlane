@@ -13,8 +13,6 @@
 static CGFloat const kMinimumCellHeight = 90.0f;
 static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
-static NSCache *_sharedSizingCache = nil;
-
 @interface VContentPollQuestionCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel;
@@ -23,13 +21,19 @@ static NSCache *_sharedSizingCache = nil;
 
 @implementation VContentPollQuestionCell
 
-+ (NSCache *)sharedSizingCache
++ (NSMutableDictionary *)sharedSizingCache
 {
-    if (_sharedSizingCache == nil)
-    {
-        _sharedSizingCache = [[NSCache alloc] init];
-    }
-    return _sharedSizingCache;
+    static dispatch_once_t onceToken;
+    static NSMutableDictionary *sizeCache;
+    dispatch_once(&onceToken, ^{
+        sizeCache = [[NSMutableDictionary alloc] init];
+    });
+    return sizeCache;
+}
+
++ (void)clearCache
+{
+    [[self sharedSizingCache] removeAllObjects];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -58,8 +62,12 @@ static NSCache *_sharedSizingCache = nil;
 
     [[self sharedSizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
                                  forKey:keyForQuestionBoundsAndAttribute];
-    
     return sizedPoll;
+}
+
+- (void)dealloc
+{
+    [[self class] clearCache];
 }
 
 - (void)awakeFromNib
