@@ -27,21 +27,17 @@ static CGFloat const kOrSizeInset = 40.0f;
 
 @implementation VContentPollBallotCell
 
-+ (NSMutableDictionary *)sharedSizingCache
+static NSCache *_sharedSizingCache = nil;
+
+static NSMutableDictionary *sizingCache;
+
++ (NSCache *)sharedSizingCache
 {
     static dispatch_once_t onceToken;
-    static NSMutableDictionary *sizingCache;
-    dispatch_once(&onceToken, ^
-    {
-        sizingCache = [[NSMutableDictionary alloc] init];
+    dispatch_once(&onceToken, ^{
+        _sharedSizingCache = [[NSCache alloc] init];
     });
-    
-    return sizingCache;
-}
-
-+ (void)clearSizingCache
-{
-    [[self sharedSizingCache] removeAllObjects];
+    return _sharedSizingCache;
 }
 
 + (CGSize)actualSizeWithAnswerA:(NSAttributedString *)answerA
@@ -55,7 +51,7 @@ static CGFloat const kOrSizeInset = 40.0f;
     {
         return [cachedValue CGSizeValue];
     }
-    
+
     CGSize maxSizeA = CGSizeMake(maximumSize.width/2 - kOrSizeInset, maximumSize.height);
     CGSize maxSizeB = CGSizeMake(maximumSize.width/2 - kOrSizeInset, maximumSize.height);
 
@@ -86,11 +82,6 @@ static CGFloat const kOrSizeInset = 40.0f;
 }
 
 #pragma mark - NSObject
-
-- (void)dealloc
-{
-    [[self class] clearSizingCache];
-}
 
 - (void)awakeFromNib
 {
