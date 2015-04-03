@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Ryan Higa</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}ryanhiga</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb817762231624736</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>817762231624736</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>TcNvErJDRhbneJyTgFLi42iCT</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>a6z1Hi45DjSLj2ikWcXlh7jHViWXolcekAWxopMwGdtLn1G0jn</string>
+	<key>VictoriousAppID</key>
+	<integer>35</integer>
+	<key>StagingAppID</key>
+	<integer>49</integer>
+	<key>QAAppID</key>
+	<integer>33</integer>
+	<key>CreatorSalutation</key>
+	<string>Official Ryan Higa</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
+</dict>
+</plist>

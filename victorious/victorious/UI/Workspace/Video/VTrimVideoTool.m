@@ -78,7 +78,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         NSNumber *frameDurationTimescale = [dependencyManager numberForKey:kVideoFrameDurationTimescale];
         _frameDuration = CMTimeMake((int)[frameDurationValue unsignedIntegerValue], (int)[frameDurationTimescale unsignedIntegerValue]);
         
-        _trimViewController = [[VTrimmerViewController alloc] initWithNibName:nil bundle:nil];
+        _trimViewController = [[VTrimmerViewController alloc] initWithDependencyManager:dependencyManager];
         _trimViewController.title = _title;
         _trimViewController.delegate = self;
         

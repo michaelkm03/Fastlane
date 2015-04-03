@@ -12,6 +12,7 @@
 
 #import "VGoogleAnalyticsTracking.h"
 #import "VCommentsTableViewController.h"
+#import "VDependencyManager.h"
 #import "VKeyboardBarViewController.h"
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
@@ -22,7 +23,6 @@
 #import "UIImage+ImageCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VAuthorizedAction.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
@@ -53,7 +53,7 @@
     [self.backgroundImage removeFromSuperview];
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
     
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
     [newBackgroundView setExtraLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                        placeholderImage:placeholderImage];
     
@@ -66,16 +66,16 @@
     [super viewDidLoad];
     
     //Load the image on first load
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                      placeholderImage:placeholderImage];
     
     
     [self.backButton setImage:[self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    self.backButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.backButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     
-    self.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     self.titleLabel.text =  NSLocalizedString(@"Comments", "");
     //Need to manually add this again so it appears over everything else.
     [self.view addSubview:self.backButton];
@@ -97,8 +97,7 @@
 {
     if (_conversationTableViewController == nil)
     {
-        VCommentsTableViewController *streamsCommentsController =
-        [self.storyboard instantiateViewControllerWithIdentifier:@"comments"];
+        VCommentsTableViewController *streamsCommentsController = [VCommentsTableViewController newWithDependencyManager:self.dependencyManager];
         streamsCommentsController.delegate = self;
         streamsCommentsController.sequence = self.sequence;
         _conversationTableViewController = streamsCommentsController;

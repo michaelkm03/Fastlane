@@ -136,7 +136,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     
     if ( messageViewController == nil )
     {
-        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser];
+        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:self.dependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }
     [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
@@ -190,6 +190,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
         VConversation  *info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
         [(VConversationCell *)theCell setConversation:info];
         ((VConversationCell *)theCell).parentTableViewController = self;
+        ((VConversationCell *)theCell).dependencyManager = self.dependencyManager;
     }
     else
     {

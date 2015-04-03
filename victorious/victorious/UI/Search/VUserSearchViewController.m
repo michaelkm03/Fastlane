@@ -224,7 +224,7 @@ static const NSInteger kSearchResultLimit = 100;
         {
             return;
         }
-        VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
+        VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile dependencyManager:self.dependencyManager];
         [self.navigationController pushViewController:composeController animated:YES];
     }];
 }
