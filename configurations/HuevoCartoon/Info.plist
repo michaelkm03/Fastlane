@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}BeautyLiciousInsider</string>
+	<string>${ProductPrefix}Huevo Cartoon</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.iADAPPT.${ProductPrefix}bli</string>
+	<string>com.getvictorious.${ProductPrefix}huevocartoon</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1620694648150736</string>
+				<string>fb1805566716335355</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1620694648150736</string>
+	<string>1805566716335355</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>IjPoW6imBavSlG6ilYGmBEkvc</string>
+	<string>7XYNCbpYwFSohgzLvkojx4GRZ</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>TgJvzxvp8jn9GnC9BRXUGrbai4BJYt64cOFzWf6Mb2tb7Rkyzx</string>
+	<string>1IrqANeceGfiTeL7JcYqgneHTJKXvPpakJORIuEU8AMk9sTIno</string>
 	<key>VictoriousAppID</key>
-	<integer>30</integer>
+	<integer>41</integer>
 	<key>StagingAppID</key>
-	<integer>44</integer>
+	<integer>55</integer>
 	<key>QAAppID</key>
-	<integer>28</integer>
+	<integer>39</integer>
 	<key>GAID</key>
 	<string></string>
 	<key>CreatorSalutation</key>
-	<string>TBD</string>
+	<string>Huevo Cartoon</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
 </dict>
