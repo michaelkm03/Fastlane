@@ -12,8 +12,6 @@
 #import "VAdVideoPlayerViewController.h"
 #import "VEndCard.h"
 #import "UIView+Autolayout.h"
-
-#import "VRootViewController.h"
 #import "VDependencyManager.h"
 
 static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;

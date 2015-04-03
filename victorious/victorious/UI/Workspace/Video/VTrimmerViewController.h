@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 @import CoreMedia;
 
 @class VTrimmerViewController;
@@ -52,7 +54,7 @@
 /**
  *  A ViewController that manages seeking and trimming for an individual timeline.
  */
-@interface VTrimmerViewController : UIViewController
+@interface VTrimmerViewController : UIViewController <VHasManagedDependencies>
 
 /**
  *  Yes if the trimmer is currently changing the trim range 
@@ -94,5 +96,10 @@
  *  A thumbnail data source.
  */
 @property (nonatomic, weak) id <VTrimmerThumbnailDataSource> thumbnailDataSource;
+
+/**
+ Initializes a new instance of VTrimmerViewController with an instance of VDependencyManager
+ */
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 @end
