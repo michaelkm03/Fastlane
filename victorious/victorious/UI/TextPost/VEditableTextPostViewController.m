@@ -25,7 +25,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 @property (nonatomic, strong) NSString *placeholderText;
 @property (nonatomic, strong) UIButton *overlayButton;
 
-@property (nonatomic, assign) BOOL isEditing;
 @property (nonatomic, assign) BOOL isShowingPlaceholderText;
 @property (nonatomic, assign) NSUInteger characterCountMax;
 @property (nonatomic, assign) BOOL hasAppeared;

@@ -50,6 +50,12 @@
 @property (nonatomic, readonly) NSString *textOutput;
 
 /**
+ Triggers the text view to become or resign first responder and updates internal
+ state to reflect the appearance of the keybaord and prepare for user input.
+ */
+@property (nonatomic, assign) BOOL isEditing;
+
+/**
  Programmatically embed a hashtag in the text at the currently selelected range.
  */
 - (BOOL)addHashtag:(NSString *)hashtagText;
@@ -58,5 +64,6 @@
  Programmatically remnove a hashtag from the text being edited.
  */
 - (BOOL)removeHashtag:(NSString *)hashtagText;
+
 
 @end

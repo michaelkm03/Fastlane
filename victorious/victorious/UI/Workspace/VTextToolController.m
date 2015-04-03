@@ -71,6 +71,8 @@
 
 - (void)exportWithSourceAsset:(NSURL *)source withCompletion:(void (^)(BOOL, NSURL *, UIImage *, NSError *))completion
 {
+    self.textPostViewController.isEditing = NO;
+    
     [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
                                            backgroundColor:[self currentColorSelection]
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
