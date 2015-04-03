@@ -24,7 +24,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gtk-Im-f1d">
                                 <rect key="frame" x="0.0" y="0.0" width="261" height="261"/>
                             </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="cla-XG-VT6">
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="C_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="cla-XG-VT6">
                                 <rect key="frame" x="98" y="96" width="65" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="4dC-xn-Yq5"/>
@@ -62,15 +62,15 @@
                 <outlet property="foregroundImageLeftConstraint" destination="2eQ-Qc-ttf" id="fjr-2j-eeY"/>
                 <outlet property="foregroundImageRightConstraint" destination="Clw-V6-n8e" id="JxV-nQ-yWV"/>
                 <outlet property="foregroundImageTopConstraint" destination="iyZ-Bn-MUF" id="LIV-p7-v8P"/>
-                <outlet property="imageViewContianer" destination="1up-Eh-bZJ" id="hKk-a7-bnR"/>
+                <outlet property="imageViewContainer" destination="1up-Eh-bZJ" id="6J5-SL-8ot"/>
                 <outlet property="pollOrImageView" destination="cla-XG-VT6" id="sM6-1Q-1tW"/>
                 <outlet property="previewImageView" destination="gtk-Im-f1d" id="9pZ-wh-jog"/>
-                <outlet property="webViewContainer" destination="AQf-vO-2an" id="6dz-Nb-4DX"/>
+                <outlet property="webViewContainer" destination="1up-Eh-bZJ" id="29S-z5-Lz0"/>
             </connections>
             <point key="canvasLocation" x="514.5" y="341.5"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="PollBarOr" width="65" height="72"/>
+        <image name="C_pollOr" width="65" height="72"/>
     </resources>
 </document>

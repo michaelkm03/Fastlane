@@ -49,12 +49,22 @@
 - (void)sharedInit
 {
     self.minimumPressDuration = 99999.0f;
-    self.linkTextAttributes = @{
-                                NSForegroundColorAttributeName : [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
-                                };
-    self.linkTextTouchAttributes = @{
-                                     NSForegroundColorAttributeName : [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorWithAlphaComponent:0.5f],
-                                     };
+    UIColor *linkForegroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    if (linkForegroundColor != nil)
+    {
+        self.linkTextAttributes = @{
+                                    NSForegroundColorAttributeName : linkForegroundColor,
+                                        };
+    }
+    
+    UIColor *highlightedLinkForegroundColor = [linkForegroundColor colorWithAlphaComponent:0.5f];
+    if (highlightedLinkForegroundColor)
+    {
+        self.linkTextTouchAttributes = @{
+                                         NSForegroundColorAttributeName : highlightedLinkForegroundColor,
+                                         };
+    }
+    
 }
 
 #pragma mark - UITextView Overrides

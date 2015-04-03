@@ -8,7 +8,7 @@
 
 #import "VKeyboardBarContainerViewController.h"
 
-@class VUnreadMessageCountCoordinator, VUser;
+@class VDependencyManager, VUnreadMessageCountCoordinator, VUser;
 
 @interface VMessageContainerViewController : VKeyboardBarContainerViewController
 
@@ -17,6 +17,6 @@
 @property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic, assign) BOOL presentingFromProfile;
 
-+ (instancetype)messageViewControllerForUser:(VUser *)otherUser;
++ (instancetype)messageViewControllerForUser:(VUser *)otherUser dependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

@@ -38,15 +38,11 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 
 @property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
-@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
-@property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsHeightLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
-@property (nonatomic, strong) VStreamWebViewController *webViewController;
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 
@@ -68,13 +64,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [super setStreamItem:streamItem];
     
     self.nameLabel.text = streamItem.name;
-    if ( self.nameLabel.text != nil )
-    {
-        CGFloat detailsHeight = [self detailContainerHeightForText:self.nameLabel.text withFont:[self.nameLabel font]];
-        self.detailsHeightLayoutConstraint.constant = detailsHeight;
-        [self layoutIfNeeded];
-    }
-    
+
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
                            placeholderImage:nil];
@@ -89,15 +79,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
         
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
-        
-        if ( [sequence isWebContent] )
-        {
-            [self setupWebViewWithSequence:sequence];
-        }
-        else
-        {
-            [self cleanupWebView];
-        }
     }
     else
     {
@@ -149,15 +130,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
                                                      repeats:NO];
 }
 
-#pragma mark - Detail height determination
-
-- (CGFloat)detailContainerHeightForText:(NSString *)text withFont:(UIFont *)font
-{
-    CGFloat maxWidth = CGRectGetWidth(self.nameLabel.bounds);
-    CGRect textBounds = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:NULL];
-    return ABS(self.labelBottomLayoutConstraint.constant) + ABS(self.labelTopLayoutConstraint.constant) + CGRectGetMinY(self.detailsBackgroundView.frame) + CGRectGetHeight(textBounds) + kVDetailBounceHeight;
-}
-
 #pragma mark - Detail container animation
 
 //Selector hit by timer
@@ -170,7 +142,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
     
-    [self.layer removeAllAnimations];
     if ( animated )
     {
         [UIView animateWithDuration:kVDetailBounceTime animations:^
@@ -190,35 +161,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     else
     {
         self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
-        [self setNeedsDisplay];
     }
-}
-
-#pragma mark - Cell setup
-
-- (void)cleanupWebView
-{
-    if ( self.webViewController != nil )
-    {
-        [self.webViewController.view removeFromSuperview];
-        self.webViewController = nil;
-        self.previewImageView.hidden = NO;
-    }
-}
-
-- (void)setupWebViewWithSequence:(VSequence *)sequence
-{
-    if ( self.webViewController == nil )
-    {
-        self.webViewController = [[VStreamWebViewController alloc] init];
-        self.webViewController.view.backgroundColor = [UIColor clearColor];
-        [self.webViewContainer addSubview:self.webViewController.view];
-        [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
-        self.previewImageView.hidden = YES;
-    }
-    
-    NSString *contentUrl = (NSString *)sequence.previewData;
-    [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

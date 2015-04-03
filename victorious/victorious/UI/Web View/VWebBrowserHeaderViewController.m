@@ -10,8 +10,7 @@
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
-#import "VDependencyManager+VScaffoldViewController.h"
-#import "VRootViewController.h"
+#import "VDependencyManager.h"
 
 static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
 static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
@@ -69,12 +68,14 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 - (void)applyTheme
 {
-    VDependencyManager *dependencyManager = [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] dependencyManagerForNavigationBar];
-    
-    UIColor *progressColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    if ( self.dependencyManager == nil )
+    {
+        return;
+    }
+    UIColor *progressColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.progressBar setProgressColor:progressColor];
     
-    UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     for ( UIButton *button in @[ self.buttonBack, self.buttonExit, self.buttonOpenURL ])
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -82,11 +83,10 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
         button.tintColor = tintColor;
     }
     
-    self.view.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.labelTitle.textColor = tintColor;
     
-    //Was heading2font on template C
-    self.labelTitle.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
 - (void)updateHeaderState
@@ -110,6 +110,15 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
      } completion:nil];
     
     self.buttonBack.enabled = [self.browserDelegate canGoBack];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( [self isViewLoaded] )
+    {
+        [self applyTheme];
+    }
 }
 
 - (void)setLoadingProgress:(float)loadingProgress

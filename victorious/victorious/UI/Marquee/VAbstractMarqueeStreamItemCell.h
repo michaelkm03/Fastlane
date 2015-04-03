@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) VStreamItem *streamItem; ///<Stream item to display
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

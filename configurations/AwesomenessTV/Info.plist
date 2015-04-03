@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}AwesomenessTV</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}awesomenesstv</string>
+	<string>tv.awesomeness.${ProductPrefix}AwesomenessTV</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

@@ -42,7 +42,7 @@
 
 - (BOOL)performFromViewController:(UIViewController *)presentingViewController
                                       context:(VAuthorizationContext)authorizationContext
-                                      completion:(void(^)())completionActionBlock
+                                      completion:(void(^)(BOOL authorized))completionActionBlock
 {
     NSParameterAssert( completionActionBlock != nil );
     NSParameterAssert( presentingViewController != nil );
@@ -71,7 +71,7 @@
     }
     else
     {
-        completionActionBlock();
+        completionActionBlock(YES);
         return YES;
     }
 }

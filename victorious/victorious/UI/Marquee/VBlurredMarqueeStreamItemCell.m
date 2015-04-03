@@ -30,15 +30,9 @@ static const CGFloat kShadowOpacity = 0.4f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageLeftConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageRightConstraint;
 
-@property (nonatomic, weak) IBOutlet UIView *webViewContainer;
-
-@property (nonatomic, weak) IBOutlet UIView *imageViewContianer;
-
-@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
+@property (nonatomic, weak) IBOutlet UIView *imageViewContainer;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-@property (nonatomic, strong) VStreamWebViewController *webViewController;
 
 @end
 
@@ -47,9 +41,9 @@ static const CGFloat kShadowOpacity = 0.4f;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.imageViewContianer.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.imageViewContianer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
-    self.imageViewContianer.layer.shadowOpacity = kShadowOpacity;
+    self.imageViewContainer.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.imageViewContainer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
+    self.imageViewContainer.layer.shadowOpacity = kShadowOpacity;
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -67,31 +61,6 @@ static const CGFloat kShadowOpacity = 0.4f;
         self.pollOrImageView.hidden = ![sequence isPoll];
         
     }
-    
-}
-
-- (void)cleanupWebView
-{
-    if ( self.webViewController != nil )
-    {
-        [self.webViewController.view removeFromSuperview];
-        self.webViewController = nil;
-        self.previewImageView.hidden = NO;
-    }
-}
-
-- (void)setupWebViewWithSequence:(VSequence *)sequence
-{
-    if ( self.webViewController == nil )
-    {
-        self.webViewController = [[VStreamWebViewController alloc] init];
-        [self.webViewContainer addSubview:self.webViewController.view];
-        [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
-        self.previewImageView.hidden = YES;
-    }
-    
-    NSString *contentUrl = (NSString *)sequence.previewData;
-    [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

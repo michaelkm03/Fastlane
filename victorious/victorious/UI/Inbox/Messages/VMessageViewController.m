@@ -26,17 +26,29 @@
 #import "VUserProfileViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VDefaultProfileImageView.h"
+#import "UIStoryboard+VMainStoryboard.h"
+
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
 @property (nonatomic, readwrite) VMessageTableDataSource *tableDataSource;
+@property (nonatomic, strong)    VDependencyManager      *dependencyManager;
 @property (nonatomic)            BOOL                     shouldScrollToBottom;
 @property (nonatomic)            BOOL                     refreshFailed;
 
 @end
 
 @implementation VMessageViewController
+
+#pragma mark - VHasManagedDependencies conforming factory method
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VMessageViewController *messageViewController = (VMessageViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"messages"];
+    messageViewController.dependencyManager = dependencyManager;
+    return messageViewController;
+}
 
 - (void)setOtherUser:(VUser *)otherUser
 {
@@ -182,7 +194,7 @@
     }
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:message.sender];
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:message.sender];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
