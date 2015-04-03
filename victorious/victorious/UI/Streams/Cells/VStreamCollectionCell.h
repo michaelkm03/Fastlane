@@ -13,6 +13,7 @@
 #import "VSequenceActionsSender.h"
 #import "VBackgroundContainer.h"
 #import "VBaseCollectionViewCell.h"
+#import "VStreamCellActionView.h"
 
 @class VSequence, VStreamCellHeaderView, VStreamCollectionCell, CCHLinkTextView;
 /**
@@ -78,5 +79,10 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 - (void)setDescriptionText:(NSString *)text;
 
 - (NSUInteger)maxCaptionLines;
+
+/**
+ *  An actionview for this stream collection cell. Returns nil for this class. Override in subclasses so that repost updates can be sent to the action view.
+ */
+- (VStreamCellActionView *)actionView;
 
 @end

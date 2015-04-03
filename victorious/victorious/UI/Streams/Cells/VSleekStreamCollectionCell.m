@@ -100,15 +100,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.actionView.sequence = sequence;
     [self setupActionBar];
     [self reloadCommentsCount];
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(hasReposted))
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         [welf.actionView updateRepostButtonAnimated:YES];
-     }];
 }
 
 - (void)setupActionBar
