@@ -21,19 +21,20 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
 @implementation VContentPollQuestionCell
 
-+ (NSMutableDictionary *)sharedSizingCache
+static NSMutableDictionary *sizeCache;
+
++ (NSMutableDictionary *)sizingCache
 {
-    static dispatch_once_t onceToken;
-    static NSMutableDictionary *sizeCache;
-    dispatch_once(&onceToken, ^{
+    if (sizeCache == nil)
+    {
         sizeCache = [[NSMutableDictionary alloc] init];
-    });
+    }
     return sizeCache;
 }
 
 + (void)clearCache
 {
-    [[self sharedSizingCache] removeAllObjects];
+    sizeCache = nil;
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -41,27 +42,27 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
     return CGSizeMake(CGRectGetWidth(bounds), kMinimumCellHeight);
 }
 
-+ (CGSize)actualSizeWithQuestion:(NSString *)quesiton
++ (CGSize)actualSizeWithQuestion:(NSString *)question
                       attributes:(NSDictionary *)attributes
                      maximumSize:(CGSize)maxSize
 {
-    NSString *keyForQuestionBoundsAndAttribute = [NSString stringWithFormat:@"%@, %@", quesiton, NSStringFromCGSize(maxSize)];
+    NSString *keyForQuestionBoundsAndAttribute = [NSString stringWithFormat:@"%@, %@", question, NSStringFromCGSize(maxSize)];
     
-    NSValue *cachedValue = [[self sharedSizingCache] objectForKey:keyForQuestionBoundsAndAttribute];
+    NSValue *cachedValue = [[self sizingCache] objectForKey:keyForQuestionBoundsAndAttribute];
     if (cachedValue != nil)
     {
         return [cachedValue CGSizeValue];
     }
     
-    CGRect boundingRect = [quesiton boundingRectWithSize:CGSizeMake(maxSize.width - kLabelInset.left - kLabelInset.right, maxSize.height)
+    CGRect boundingRect = [question boundingRectWithSize:CGSizeMake(maxSize.width - kLabelInset.left - kLabelInset.right, maxSize.height)
                                                  options:NSStringDrawingUsesLineFragmentOrigin
                                               attributes:attributes
                                                  context:[[NSStringDrawingContext alloc] init]];
     
     CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, CGRectGetHeight(boundingRect) + kLabelInset.top + kLabelInset.bottom));
 
-    [[self sharedSizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
-                                 forKey:keyForQuestionBoundsAndAttribute];
+    [[self sizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
+                           forKey:keyForQuestionBoundsAndAttribute];
     return sizedPoll;
 }
 

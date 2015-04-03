@@ -19,7 +19,7 @@
  *
  *  @return An appropriate size for the parameters.
  */
-+ (CGSize)actualSizeWithQuestion:(NSString *)quesiton
++ (CGSize)actualSizeWithQuestion:(NSString *)question
                       attributes:(NSDictionary *)attributes
                      maximumSize:(CGSize)maxSize;
 
