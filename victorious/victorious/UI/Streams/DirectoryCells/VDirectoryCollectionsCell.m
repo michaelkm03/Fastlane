@@ -186,12 +186,15 @@ static const CGFloat kStartAnimationScale = 0.8f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super setDependencyManager:dependencyManager];
+    _dependencyManager = dependencyManager;
     
-    self.labelContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    [self updateNameLabelConstraints];
+    if ( dependencyManager != nil )
+    {
+        self.labelContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+        [self updateNameLabelConstraints];
+    }
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

@@ -8,7 +8,7 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@class VStreamItem;
+@class VStreamItem, VDependencyManager;
 
 @interface VDirectoryCollectionsCell : VBaseCollectionViewCell
 
@@ -26,5 +26,7 @@
  *  A value in the range of [-1,1] that will be used to update the offset of the preview image inside the cell
  */
 @property (nonatomic, assign) CGFloat parallaxYOffset;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

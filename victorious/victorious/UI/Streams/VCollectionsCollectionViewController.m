@@ -15,7 +15,7 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VScaffoldViewController.h"
 
-#import "VDirectoryViewController.h"
+#import "VGroupedStreamCollectionViewController.h"
 #import "VStreamCollectionViewController.h"
 
 static const CGFloat kPlaylistCellHeight = 140.0f;
@@ -74,9 +74,9 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     }
     else if ([item isKindOfClass:[VStream class]])
     {
-        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
-        sos.dependencyManager = self.dependencyManager;
-        [self.navigationController pushViewController:sos animated:YES];
+        VGroupedStreamCollectionViewController *groupedStreamCollectionViewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+        groupedStreamCollectionViewController.dependencyManager = self.dependencyManager;
+        [self.navigationController pushViewController:groupedStreamCollectionViewController animated:YES];
     }
     else if ([item isKindOfClass:[VSequence class]])
     {
