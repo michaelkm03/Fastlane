@@ -136,6 +136,7 @@
 
 - (void)setStream:(VStream *)stream
 {
+    [self.KVOController unobserve:self.stream keyPath:[self marqueeItemsKeyPath]];
     _stream = stream;
     [self addKVOToMarqueeItemsOfStream:stream];
 }
@@ -143,9 +144,14 @@
 - (void)addKVOToMarqueeItemsOfStream:(VStream *)stream
 {
     [self.KVOController observe:stream
-                        keyPath:@"marqueeItems"
+                        keyPath:[self marqueeItemsKeyPath]
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(marqueeItemsUpdated)];
+}
+
+- (NSString *)marqueeItemsKeyPath
+{
+    return NSStringFromSelector(@selector(marqueeItems));
 }
 
 - (void)marqueeItemsUpdated

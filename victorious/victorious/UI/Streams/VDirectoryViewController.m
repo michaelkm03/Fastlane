@@ -67,6 +67,7 @@ static CGFloat const kDirectoryInset = 10.0f;
 
 - (void)setCurrentStream:(VStream *)currentStream
 {
+    [self.KVOController unobserve:self.currentStream keyPath:[self marqueeItemsKeyPath]];
     [super setCurrentStream:currentStream];
     [self addKVOToMarqueeItemsOfStream:currentStream];
 }
@@ -74,9 +75,14 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (void)addKVOToMarqueeItemsOfStream:(VStream *)stream
 {
     [self.KVOController observe:stream
-                        keyPath:@"marqueeItems"
+                        keyPath:[self marqueeItemsKeyPath]
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(marqueeItemsUpdated)];
+}
+
+- (NSString *)marqueeItemsKeyPath
+{
+    return NSStringFromSelector(@selector(marqueeItems));
 }
 
 - (void)marqueeItemsUpdated

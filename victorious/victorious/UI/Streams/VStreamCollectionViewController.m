@@ -140,7 +140,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     streamCollectionVC.dependencyManager = dependencyManager;
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
-    [streamCollectionVC addKVOToMarqueeItemsOfStream:stream];
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
@@ -323,6 +322,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
+    [self.KVOController unobserve:self.currentStream keyPath:[self marqueeItemsKeyPath]];
     [super setCurrentStream:currentStream];
     [self addKVOToMarqueeItemsOfStream:currentStream];
 }
@@ -330,9 +330,14 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)addKVOToMarqueeItemsOfStream:(VStream *)stream
 {
     [self.KVOController observe:stream
-                        keyPath:NSStringFromSelector(@selector(marqueeItems))
+                        keyPath:[self marqueeItemsKeyPath]
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(marqueeItemsUpdated)];
+}
+
+- (NSString *)marqueeItemsKeyPath
+{
+    return NSStringFromSelector(@selector(marqueeItems));
 }
 
 - (void)marqueeItemsUpdated

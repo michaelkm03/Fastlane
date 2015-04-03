@@ -419,23 +419,20 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
         NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
-        for (VStreamItem *streamItem in resultObjects)
+        
+        VStream *fullStream = [resultObjects lastObject];
+
+        //Strip the marqueeItems and streamItems from the newly returned stream
+        for (VStreamItem *marqueeItem in fullStream.marqueeItems )
         {
-            if ( [streamItem isKindOfClass:[VStream class]] && [(VStream *)streamItem hasMarquee] )
-            {
-                //We've found a streamItem that contains all the marqueeItems we should have in our marqueeItems set
-                for (VStreamItem *marqueeItem in ((VStream *)streamItem).marqueeItems )
-                {
-                    VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
-                    [marqueeItems addObject:streamItemInContext];
-                }
-            }
-            else
-            {
-                //We've found a normal streamItem, just add it to our streamItems array
-                VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
-                [streamItems addObject:streamItemInContext];
-            }
+            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
+            [marqueeItems addObject:streamItemInContext];
+        }
+        
+        for (VStreamItem *streamItem in fullStream.streamItems)
+        {
+            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+            [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
         stream.marqueeItems = marqueeItems;
@@ -509,7 +506,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     {
         NSString *streamIDPathPart = [(stream.remoteId ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
         NSString *streamFilterPathPart = [(stream.filterName ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-        apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_stream/%@/%@/%@/%@", streamIDPathPart, streamFilterPathPart, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+        apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_stream_with_marquee/%@/%@/%@/%@", streamIDPathPart, streamFilterPathPart, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     }
     else
     {

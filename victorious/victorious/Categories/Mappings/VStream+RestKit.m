@@ -29,7 +29,7 @@
              };
 }
 
-//This will map stream items from the "stream_items"-keyed array of streams inside the payload
+//This will map stream items from the "stream_items"-keyed array of streams inside each stream in the payload
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = [[self class] propertyMap];
@@ -50,8 +50,8 @@
     return mapping;
 }
 
-//This will map stream items from the "marquee"-keyed array of the payload into the marqueeItems ordered set
-+ (RKEntityMapping *)marqueeContentMapping
+//This will map from the top level
++ (RKEntityMapping *)payloadContentMapping
 {
     NSDictionary *propertyMap = [[self class] propertyMap];
     
@@ -67,6 +67,11 @@
                                                                                         toKeyPath:VSelectorName(marqueeItems)
                                                                                       withMapping:[[self class] listByStreamMapping]];
     [mapping addPropertyMapping:marqueeMapping];
+    
+    RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"content"
+                                                                                        toKeyPath:VSelectorName(streamItems)
+                                                                                      withMapping:[[self class] listByStreamMapping]];
+    [mapping addPropertyMapping:contentMapping];
     
     return mapping;
 }
@@ -116,101 +121,53 @@
 {
     //Many of these are not being used currently, but at risk of missing any, I've updated the restkit mapping to work with all versions of the detail_list_by_stream endpoint that were present in the VSequence descriptors
     return @[
-             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:streamId/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
-             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:stream/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
-             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:streamId/:filterId/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
-             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:category/:filtername"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
-             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_category_with_marquee/:category"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
-             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_category_with_marquee/:category/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
-             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_hashtag_with_marquee/:hashtag/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
-             [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/remixes_by_sequence_with_marquee/:sequenceID/:page/:perpage"
                                                          keyPath:@"payload"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
-                                                          method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:streamId/:page/:perpage"
-                                                         keyPath:@"payload.content"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
-                                                          method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:stream/:page/:perpage"
-                                                         keyPath:@"payload.content"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
-                                                          method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:streamId/:filterId/:page/:perpage"
-                                                         keyPath:@"payload.content"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
-                                                          method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_marquee/:category/:filtername"
-                                                         keyPath:@"payload.content"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
-                                                          method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_category_with_marquee/:category"
-                                                         keyPath:@"payload.content"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
-                                                          method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_category_with_marquee/:category/:page/:perpage"
-                                                         keyPath:@"payload.content"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
-                                                          method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_hashtag_with_marquee/:hashtag/:page/:perpage"
-                                                         keyPath:@"payload.content"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
-             [RKResponseDescriptor responseDescriptorWithMapping:[self listByStreamMapping]
-                                                          method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/remixes_by_sequence_with_marquee/:sequenceID/:page/:perpage"
-                                                         keyPath:@"payload.content"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
               ];
 }
 
