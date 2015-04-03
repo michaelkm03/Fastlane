@@ -21,20 +21,15 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
 @implementation VContentPollQuestionCell
 
-static NSMutableDictionary *sizeCache;
-
-+ (NSMutableDictionary *)sizingCache
++ (NSCache *)sizingCache
 {
-    if (sizeCache == nil)
+    static NSCache *_sizeCache;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
     {
-        sizeCache = [[NSMutableDictionary alloc] init];
-    }
-    return sizeCache;
-}
-
-+ (void)clearCache
-{
-    sizeCache = nil;
+        _sizeCache = [[NSCache alloc] init];
+    });
+    return _sizeCache;
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -64,11 +59,6 @@ static NSMutableDictionary *sizeCache;
     [[self sizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
                            forKey:keyForQuestionBoundsAndAttribute];
     return sizedPoll;
-}
-
-- (void)dealloc
-{
-    [[self class] clearCache];
 }
 
 - (void)awakeFromNib
