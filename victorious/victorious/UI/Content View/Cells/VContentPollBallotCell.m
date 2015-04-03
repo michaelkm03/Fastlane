@@ -27,12 +27,11 @@ static CGFloat const kOrSizeInset = 40.0f;
 
 @implementation VContentPollBallotCell
 
-static NSCache *_sharedSizingCache = nil;
-
 static NSMutableDictionary *sizingCache;
 
 + (NSCache *)sharedSizingCache
 {
+    static NSCache *_sharedSizingCache = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedSizingCache = [[NSCache alloc] init];
