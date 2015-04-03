@@ -12,7 +12,6 @@
 #import "VNoContentView.h"
 #import "VButton.h"
 #import "VDependencyManager.h"
-#import "VRootViewController.h"
 
 @interface VNotAuthorizedProfileCollectionViewCell ()
 

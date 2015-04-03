@@ -1,5 +1,5 @@
 //
-//  VStreamsSubViewController.m
+//  VCommentsTableViewController.m
 //  victoriOS
 //
 //  Created by Gary Philipp on 12/12/13.
@@ -8,9 +8,7 @@
 
 #import "VCommentsTableViewController.h"
 #import "VCommentTextAndMediaView.h"
-#import "VThemeManager.h"
 #import "VRTCUserPostedAtFormatter.h"
-#import "VRootViewController.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 
 #import "VLoginViewController.h"
@@ -48,6 +46,8 @@
 #import "VTagSensitiveTextView.h"
 #import "VHashtagStreamCollectionViewController.h"
 
+#import "UIStoryboard+VMainStoryboard.h"
+
 @import Social;
 
 @interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate>
@@ -59,10 +59,20 @@
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 @property (nonatomic, strong) NSArray *comments;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VCommentsTableViewController
+
+#pragma mark - VHasManagedDependencies conforming factory method
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VCommentsTableViewController *streamsCommentsController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"comments"];
+    streamsCommentsController.dependencyManager = dependencyManager;
+    return streamsCommentsController;
+}
 
 #pragma mark - UIViewController
 
@@ -255,7 +265,7 @@
     //Ugly, but only way I can think of to reliably update to proper string formatting per each cell
     NSDictionary *defaultStringAttributes = cell.commentTextView.textFont ? [VCommentTextAndMediaView attributesForTextWithFont:cell.commentTextView.textFont] : [VCommentTextAndMediaView attributesForText];
     NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
-    [tagStringAttributes setObject:[[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]] forKey:NSForegroundColorAttributeName];
+    tagStringAttributes[NSForegroundColorAttributeName] = [self.dependencyManager colorForKey:[VTagStringFormatter defaultDependencyManagerTagColorKey]];
     [cell.commentTextView.textView setupWithDatabaseFormattedText:comment.text
                                                     tagAttributes:tagStringAttributes
                                                 defaultAttributes:defaultStringAttributes
@@ -280,7 +290,7 @@
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:comment.user];
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:comment.user];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -299,14 +309,13 @@
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else
     {
         //Tapped a hashtag, show a hashtag view controller
-        VDependencyManager *dependencyManager = [[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager];
-        VHashtagStreamCollectionViewController *hashtagViewController = [dependencyManager hashtagStreamWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        VHashtagStreamCollectionViewController *hashtagViewController = [self.dependencyManager hashtagStreamWithHashtag:[tag.displayString.string substringFromIndex:1]];
         [self.navigationController pushViewController:hashtagViewController animated:YES];
     }
 }
