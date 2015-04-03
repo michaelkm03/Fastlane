@@ -14,8 +14,8 @@
 #import "VDefaultProfileImageView.h"
 #import "VCommentTextAndMediaView.h"
 
-// Theme
-#import "VThemeManager.h"
+// Dependency Manager
+#import "VDependencyManager.h"
 
 // Formatting
 #import "UIImage+ImageCreation.h"
@@ -85,12 +85,13 @@ static NSCache *_sharedImageCache = nil;
 
 + (CGSize)sizeWithFullWidth:(CGFloat)width
                 commentBody:(NSString *)commentBody
-                andHasMedia:(BOOL)hasMedia
+                   hasMedia:(BOOL)hasMedia
+          dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
                                                                        text:commentBody
                                                                   withMedia:hasMedia
-                                                                    andFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]];
+                                                                    andFont:[dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
     CGFloat finalHeight = textHeight + kTextInsets.top + kTextInsets.bottom;
     return CGSizeMake(width, finalHeight);
 }
@@ -114,11 +115,6 @@ static NSCache *_sharedImageCache = nil;
 
     [self prepareContentAndMediaView];
     
-    self.commentersUsernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    self.commentersUsernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.timestampLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.realtimeCommentLocationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.commentAndMediaView.textFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.commentersAvatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self setupSwipeView];
@@ -170,6 +166,19 @@ static NSCache *_sharedImageCache = nil;
 }
 
 #pragma mark - Property Accessor
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.commentersUsernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+        self.commentersUsernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.timestampLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+        self.realtimeCommentLocationLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+        self.commentAndMediaView.textFont = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    }
+}
 
 - (void)setComment:(VComment *)comment
 {
@@ -335,9 +344,8 @@ static NSCache *_sharedImageCache = nil;
         return _tagStringAttributes;
     }
     
-    NSDictionary *defaultStringAttributes = self.defaultStringAttributes;
-    NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
-    [tagStringAttributes setObject:[[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]] forKey:NSForegroundColorAttributeName];
+    NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:self.defaultStringAttributes];
+    tagStringAttributes[NSForegroundColorAttributeName] = [self.dependencyManager colorForKey:[VTagStringFormatter defaultDependencyManagerTagColorKey]];
     _tagStringAttributes = tagStringAttributes;
     return _tagStringAttributes;
 }

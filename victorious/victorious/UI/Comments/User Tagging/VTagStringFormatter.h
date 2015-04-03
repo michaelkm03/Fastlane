@@ -88,11 +88,6 @@
 + (NSString *)defaultDependencyManagerTagColorKey;
 
 /**
- String key for tag color from theme manager
- */
-+ (NSString *)defaultThemeManagerTagColorKey;
-
-/**
  Shared delimiter string used as delimiter on either side of tag strings for easy recognition and formatting
  */
 + (NSString *)delimiterString;
