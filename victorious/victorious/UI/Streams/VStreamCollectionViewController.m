@@ -88,7 +88,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 static NSString * const kRemixStreamKey = @"remixStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
-static NSString * const kMarqueeTargetDirectory = @"marqueeDirectoryTarget";
+static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -430,7 +430,7 @@ static NSString * const kMarqueeTargetDirectory = @"marqueeDirectoryTarget";
                               VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
     
-    if ( [streamItem isKindOfClass:[VSequence class]] )
+    /*if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         [self showContentViewForSequence:(VSequence *)streamItem withPreviewImage:image];
     }
@@ -441,11 +441,11 @@ static NSString * const kMarqueeTargetDirectory = @"marqueeDirectoryTarget";
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else if ( [streamItem isStreamOfStreams] )
-    {
-        VDirectoryViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryViewController class] forKey:kMarqueeTargetDirectory];
+    {*/
+        VDirectoryViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryViewController class] forKey:kMarqueeDestinationDirectory];
         
         [self.navigationController pushViewController:directory animated:YES];
-    }
+    //}
 }
 
 - (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
