@@ -233,9 +233,9 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     if ( self.streamDataSource.hasHeaderCell )
     {
-        //Return edge insets for marquee cell
         if ( section == 0 )
         {
+            //Return edge insets for marquee cell (which only need to account for the nav bar)
             return UIEdgeInsetsMake(self.topInset,
                                     0,
                                     0,
@@ -243,12 +243,15 @@ static CGFloat const kDirectoryInset = 10.0f;
         }
         else
         {
+            //Return edge insets for the directory cells (note, don't need to apply the topInset since the marquee is accounting for it)
             return UIEdgeInsetsMake(kDirectoryInset,
                                     kDirectoryInset,
                                     0,
                                     kDirectoryInset);
         }
     }
+    
+    //Return edge insets for directory cells with top inset (to account for nav bar)
     return UIEdgeInsetsMake(self.topInset + kDirectoryInset,
                             kDirectoryInset,
                             0,
@@ -281,7 +284,7 @@ static CGFloat const kDirectoryInset = 10.0f;
 
 - (VMarqueeController *)marqueeController
 {
-    if ( !_marqueeController )
+    if ( _marqueeController == nil )
     {
         _marqueeController = [[VMarqueeController alloc] initWithStream:self.streamDataSource.stream];
         

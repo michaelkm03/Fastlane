@@ -29,6 +29,7 @@
              };
 }
 
+//This will map stream items from the "stream_items"-keyed array of streams inside the payload
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = [[self class] propertyMap];
@@ -49,6 +50,7 @@
     return mapping;
 }
 
+//This will map stream items from the "marquee"-keyed array of the payload into the marqueeItems ordered set
 + (RKEntityMapping *)marqueeContentMapping
 {
     NSDictionary *propertyMap = [[self class] propertyMap];
@@ -112,6 +114,7 @@
 
 + (NSArray *)descriptors
 {
+    //Many of these are not being used currently, but at risk of missing any, I've updated the restkit mapping to work with all versions of the detail_list_by_stream endpoint that were present in the VSequence descriptors
     return @[
              [RKResponseDescriptor responseDescriptorWithMapping:[self marqueeContentMapping]
                                                           method:RKRequestMethodGET

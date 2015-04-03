@@ -423,6 +423,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         {
             if ( [streamItem isKindOfClass:[VStream class]] && [(VStream *)streamItem hasMarquee] )
             {
+                //We've found a streamItem that contains all the marqueeItems we should have in our marqueeItems set
                 for (VStreamItem *marqueeItem in ((VStream *)streamItem).marqueeItems )
                 {
                     VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
@@ -431,6 +432,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             }
             else
             {
+                //We've found a normal streamItem, just add it to our streamItems array
                 VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
                 [streamItems addObject:streamItemInContext];
             }
