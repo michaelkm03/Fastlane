@@ -17,6 +17,7 @@
 #import "VStreamItem+Fetcher.h"
 #import "UIImage+ImageCreation.h"
 #import "VDependencyManager.h"
+#import "NSURL+Validator.h"
 
 static const CGFloat kVisibilityDuration = 5.0f;
 static const CGFloat kOffsetOvershoot = 20.0f;
@@ -83,15 +84,25 @@ static const CGFloat kOffsetOvershoot = 20.0f;
          
          NSMutableArray *previewImages = [[NSMutableArray alloc] init];
          NSMutableArray *contentNames = [[NSMutableArray alloc] init];
+         NSMutableOrderedSet *validStreamItems = [[NSMutableOrderedSet alloc] initWithArray:[strongSelf.stream.streamItems array]];
          for ( VStreamItem *streamItem in strongSelf.stream.streamItems )
          {
              NSArray *previewImagePaths = streamItem.previewImagePaths;
              if ( previewImagePaths.count > 0 )
              {
-                 [previewImages addObject:[NSURL URLWithString:[previewImagePaths firstObject]]];
+                 NSURL *previewImageURL = [NSURL URLWithString:[previewImagePaths firstObject]];
+                 if ( [previewImageURL isValidURL] )
+                 {
+                     [previewImages addObject:previewImageURL];
+                     [contentNames addObject:streamItem.name];
+                     continue; //Continue to avoid removing the streamItem from the validStreamItems
+                 }
              }
-             [contentNames addObject:streamItem.name];
+             
+             //If we reach this part of the loop, we don't have a valid previewImageURL, so this streamItem is invalid for display; remove it from the validStreamItems array
+             [validStreamItems removeObject:streamItem];
          }
+         strongSelf.stream.streamItems = [validStreamItems copy];
          
          UIColor *linkColor = [strongSelf.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 
@@ -116,6 +127,11 @@ static const CGFloat kOffsetOvershoot = 20.0f;
          successBlock();
      }
                       failure:failureBlock];
+}
+
+- (BOOL)stringIsValidForURL:(NSString *)stringForURL
+{
+    return stringForURL != nil && ![stringForURL isEqualToString:@""];
 }
 
 - (NSDictionary *)labelTextAttributes

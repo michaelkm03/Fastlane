@@ -43,7 +43,7 @@
 
 - (void)commonInit
 {
-    self.imageView = [[UIImageView alloc] init];
+    self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
     self.imageView.backgroundColor = [UIColor clearColor];
     self.backgroundColor = [UIColor clearColor];
     [self addSubview:self.imageView];
@@ -91,11 +91,6 @@
     self.imageURLs = imageURLs;
     for (NSURL *imageURL in imageURLs)
     {
-        if ( ![imageURL isValidURL] )
-        {
-            continue;
-        }
-        
         VImageViewContainer *imageViewContainer = [[VImageViewContainer alloc] initWithFrame:self.bounds];
         
         imageViewContainer.alpha = 0.0f;
