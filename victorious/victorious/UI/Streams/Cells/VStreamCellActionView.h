@@ -38,6 +38,13 @@ extern NSString * const VStreamCellActionViewMoreIconKey; ///< Key for "more" ic
 - (void)addRepostButton;
 - (void)addMoreButton;
 
+/**
+ *  Use this method to force the repost button to update based on what the sequence action delegate returns.
+ *
+ *  @param animated Whether or not ot animate the update.
+ */
+- (void)updateRepostButtonAnimated:(BOOL)animated;
+
 + (NSDictionary *)buttonImages;
 
 @property (nonatomic, readonly) NSMutableArray *actionButtons;

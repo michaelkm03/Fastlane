@@ -128,7 +128,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         [welf setupActionBar];
+         [welf.actionView updateRepostButtonAnimated:YES];
      }];
 }
 

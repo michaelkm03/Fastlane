@@ -107,7 +107,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         [welf setupActionBar];
+         [welf.actionView updateRepostButtonAnimated:YES];
      }];
 }
 

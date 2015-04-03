@@ -186,40 +186,53 @@ NSString * const VStreamCellActionViewMoreIconKey = @"moreIcon";
                                           completion:^(BOOL didSucceed)
      {
          self.repostButton.enabled = YES;
-         if (!didSucceed)
-         {
-             [self updateRepostButtonForRepostState];
-             return;
-         }
-         
-         self.isAnimatingButton = YES;
-         
-         [UIView animateWithDuration:0.15f
+     }];
+}
+
+- (void)updateRepostButtonAnimated:(BOOL)animated
+{
+    void (^animationStateUpdate)(void) = ^void(void)
+    {
+        [self updateRepostButtonForRepostState];
+    };
+
+    if (!animated)
+    {
+        animationStateUpdate();
+        return;
+    }
+    
+    if (self.isAnimatingButton)
+    {
+        return;
+    }
+    
+    self.isAnimatingButton = YES;
+    [UIView animateWithDuration:0.15f
+                          delay:0.0f
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.8f
+                        options:kNilOptions
+                     animations:^
+     {
+         animationStateUpdate();
+         self.repostButton.transform = CGAffineTransformMakeScale( kScaleScaledUp, kScaleScaledUp );
+         self.repostButton.alpha = kRepostedDisabledAlpha;
+     }
+                     completion:^(BOOL finished)
+     {
+         [UIView animateWithDuration:0.5f
                                delay:0.0f
-              usingSpringWithDamping:1.0f
-               initialSpringVelocity:0.8f
+              usingSpringWithDamping:0.8f
+               initialSpringVelocity:0.9f
                              options:kNilOptions
                           animations:^
           {
-              [self updateRepostButtonForRepostState];
-              self.repostButton.transform = CGAffineTransformMakeScale( kScaleScaledUp, kScaleScaledUp );
-              self.repostButton.alpha = kRepostedDisabledAlpha;
+              self.repostButton.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
           }
                           completion:^(BOOL finished)
           {
-              [UIView animateWithDuration:0.5f
-                                    delay:0.0f
-                   usingSpringWithDamping:0.8f
-                    initialSpringVelocity:0.9f
-                                  options:kNilOptions
-                               animations:^
-               {
-                   self.repostButton.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
-               }
-                               completion:^(BOOL finished)
-               {
-                   self.isAnimatingButton = NO;
-               }];
+              self.isAnimatingButton = NO;
           }];
      }];
 }
