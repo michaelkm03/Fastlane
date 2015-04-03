@@ -178,6 +178,11 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     self.canShowContent = NO;
 }
 
+- (BOOL)canShowMarquee
+{
+    return NO;
+}
+
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad

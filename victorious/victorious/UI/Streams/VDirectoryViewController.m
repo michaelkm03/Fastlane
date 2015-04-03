@@ -33,15 +33,20 @@
 #import "NSString+VParseHelp.h"
 #import <FBKVOController.h>
 
+#import "VMarqueeCollectionCell.h"
+#import "VMarqueeController.h"
+#import "VUserProfileViewController.h"
+
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 static NSString * const kStreamURLKey = @"streamURL";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VMarqueeSelectionDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
+@property (nonatomic, strong) VMarqueeController *marqueeController;
 
 @end
 
@@ -79,6 +84,18 @@ static CGFloat const kDirectoryInset = 10.0f;
     self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VBaseCollectionViewCell *baseCollectionViewCell, NSUInteger idx, BOOL *stop)
+     {
+         if ( [baseCollectionViewCell isKindOfClass:[VMarqueeCollectionCell class]] )
+         {
+             ((VMarqueeCollectionCell *)baseCollectionViewCell).dependencyManager = dependencyManager;
+         }
+     }];
+}
+
 #pragma mark VHasManagedDependencies conforming initializer
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -104,6 +121,9 @@ static CGFloat const kDirectoryInset = 10.0f;
     [self.collectionView registerNib:[VDirectoryItemCell nibForCell]
           forCellWithReuseIdentifier:[VDirectoryItemCell suggestedReuseIdentifier]];
     
+    [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
+          forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
+    
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
@@ -113,12 +133,32 @@ static CGFloat const kDirectoryInset = 10.0f;
     [self refresh:self.refreshControl];
 }
 
+- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
+{
+    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
+                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
+    
+    [self navigateToDisplayStreamItem:streamItem];
+}
+
+- (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+{
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     // Layout may have changed between awaking from nib and being added to the container of the SoS
     [self.collectionView.collectionViewLayout invalidateLayout];
+    
+    if ( self.streamDataSource.hasHeaderCell )
+    {
+        [self.marqueeController enableTimer];
+    }
 }
 
 - (BOOL)shouldAutorotate
@@ -132,6 +172,12 @@ static CGFloat const kDirectoryInset = 10.0f;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( self.streamDataSource.hasHeaderCell && indexPath.section == 0 )
+    {
+        //Return size for the marqueeCell
+        return [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
+    
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
     
     CGFloat width = CGRectGetWidth(collectionView.bounds);
@@ -154,6 +200,11 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
+    [self navigateToDisplayStreamItem:streamItem];
+}
+
+- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem
+{
     if ( streamItem.isContent )
     {
         VSequence *sequence = (VSequence *)streamItem;
@@ -180,6 +231,24 @@ static CGFloat const kDirectoryInset = 10.0f;
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
+    if ( self.streamDataSource.hasHeaderCell )
+    {
+        //Return edge insets for marquee cell
+        if ( section == 0 )
+        {
+            return UIEdgeInsetsMake(self.topInset,
+                                    0,
+                                    0,
+                                    0);
+        }
+        else
+        {
+            return UIEdgeInsetsMake(kDirectoryInset,
+                                    kDirectoryInset,
+                                    0,
+                                    kDirectoryInset);
+        }
+    }
     return UIEdgeInsetsMake(self.topInset + kDirectoryInset,
                             kDirectoryInset,
                             0,
@@ -191,12 +260,36 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
+    
+    if ( dataSource.hasHeaderCell && indexPath.section == 0 )
+    {
+        NSString *identifier = [VMarqueeCollectionCell suggestedReuseIdentifier];
+        VMarqueeCollectionCell *marqueeCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                                             forIndexPath:indexPath];
+        marqueeCell.marquee = self.marqueeController;
+        [marqueeCell restartAutoScroll];
+        return marqueeCell;
+    }
+    
     NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
     VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                           forIndexPath:indexPath];
     [self.cellDecorator populateCell:directoryCell withStreamItem:item];
     [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
     return directoryCell;
+}
+
+- (VMarqueeController *)marqueeController
+{
+    if ( !_marqueeController )
+    {
+        _marqueeController = [[VMarqueeController alloc] initWithStream:self.streamDataSource.stream];
+        
+        _marqueeController.hideMarqueePosterImage = YES;
+        _marqueeController.dependencyManager = self.dependencyManager;
+        _marqueeController.selectionDelegate = self;
+    }
+    return _marqueeController;
 }
 
 @end

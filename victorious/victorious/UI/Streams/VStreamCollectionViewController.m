@@ -151,6 +151,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
+    streamCollectionVC.canShowMarquee = YES;
+    
     return streamCollectionVC;
 }
 
@@ -338,7 +340,10 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)marqueeItemsUpdated
 {
-    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
+    if ( self.canShowMarquee )
+    {
+        self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
+    }
 }
 
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
@@ -429,20 +434,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
 {
-    //If this cell is from the profile we should disable going to the profile
-    BOOL fromProfile = NO;
-    for (UIViewController *vc in self.navigationController.viewControllers)
-    {
-        if ([vc isKindOfClass:[VUserProfileViewController class]])
-        {
-            fromProfile = YES;
-        }
-    }
-    if (fromProfile)
-    {
-        return;
-    }
-    
     VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
