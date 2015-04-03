@@ -27,6 +27,9 @@
  */
 @property (nonatomic, assign) CGFloat parallaxYOffset;
 
+/**
+ *  The dependencyManager that will be used to style the cell
+ */
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

@@ -65,7 +65,7 @@ static const CGFloat kStartAnimationScale = 0.8f;
 {
     [super awakeFromNib];
     
-    //Resetting constants is less
+    //Reset all constraints to the textInset constant
     NSArray *layoutConstraints = @[ self.labelTopConstraint, self.labelRightConstraint, self.labelLeftConstraint, self.labelBottomConstraint ];
     for ( NSLayoutConstraint *constraint in layoutConstraints )
     {
