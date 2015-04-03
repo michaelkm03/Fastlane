@@ -98,7 +98,7 @@
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
 {
     [self presentCreateFlowWithInitialCaptureState:initialCaptureState
-                             initialImageEditState:VImageToolControllerInitialImageEditStateText
+                             initialImageEditState:VImageToolControllerInitialImageEditStateFilter
                           andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
