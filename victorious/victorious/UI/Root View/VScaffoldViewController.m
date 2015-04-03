@@ -26,7 +26,6 @@
 #import <MBProgressHUD.h>
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
-NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";

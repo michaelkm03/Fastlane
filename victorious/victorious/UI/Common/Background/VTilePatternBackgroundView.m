@@ -150,6 +150,11 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 
     self.layer.masksToBounds = YES;
     
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+    backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    backgroundImageView.backgroundColor = [UIColor colorWithPatternImage:[self patternImage]];
+    [self addSubview:backgroundImageView];
+    
     UIView *interpolationContainer = [[UIView alloc] initWithFrame:self.bounds];
     interpolationContainer.translatesAutoresizingMaskIntoConstraints = NO;
     interpolationContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
