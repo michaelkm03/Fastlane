@@ -32,6 +32,7 @@ static CGFloat const kVDetailBounceHeight = 8.0f;
 static CGFloat const kVDetailBounceTime = 0.15f;
 static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
+static NSString * const kVOrIconKey = @"orIcon";
 
 @interface VFullscreenMarqueeStreamItemCell ()
 
@@ -129,6 +130,8 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.profileImageButton.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+        UIImage *orIcon = [dependencyManager imageForKey:kVOrIconKey];
+        self.pollOrImageView.image = orIcon;
     }
 }
 

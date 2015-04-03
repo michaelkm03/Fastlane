@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#define LOG_API_RESPONSES 0
+#define LOG_API_RESPONSES 1
 
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
@@ -87,7 +87,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 #endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
-        template = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"marqueeEnabled" ofType:@"json"]] options:0 error:nil];
         template = [self concatenateTemplateWithDefaultTemplate:template];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
