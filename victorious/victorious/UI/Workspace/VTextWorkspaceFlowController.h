@@ -16,6 +16,8 @@
  */
 @interface VTextWorkspaceFlowController : NSObject <VHasManagedDependencies, VNavigationDestination>
 
++ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
+
 /**
  *  Present this viewcontroller.
  *  @note: The WorkspaceFlowController IS retained by this viewcontroller.

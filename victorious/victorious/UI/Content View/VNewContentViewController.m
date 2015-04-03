@@ -105,6 +105,8 @@
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
+static NSString * const kPollBallotIconKey = @"orIcon";
+
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
@@ -772,6 +774,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
+    commentCell.dependencyManager = self.dependencyManager;
     commentCell.comment = self.viewModel.comments[index];
     commentCell.commentAndMediaView.textView.tagTapDelegate = self;
     commentCell.swipeViewController.controllerDelegate = self;
@@ -788,7 +791,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:wCommentCell.comment.user];
+        VUserProfileViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -798,7 +801,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else
@@ -969,7 +972,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 }
                 __weak typeof(pollCell) weakPollCell = pollCell;
                 __weak typeof(self) welf = self;
-                
                 pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
                     NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
@@ -1026,6 +1028,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                     self.ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
                                                                                 forIndexPath:indexPath];
                 }
+                self.ballotCell.orImageView.image = [self.dependencyManager imageForKey:kPollBallotIconKey];
                 self.ballotCell.answerA = self.viewModel.answerALabelText;
                 self.ballotCell.answerB = self.viewModel.answerBLabelText;
                 
@@ -1231,7 +1234,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             VComment *comment = self.viewModel.comments[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                       commentBody:comment.text
-                                                      andHasMedia:comment.hasMedia];
+                                                         hasMedia:comment.hasMedia
+                                                dependencyManager:self.dependencyManager];
             return CGSizeMake( minBound, size.height );
         }
         case VContentViewSectionCount:

@@ -68,6 +68,7 @@ static NSString * const kScreensKey = @"screens";
 static NSString * const kSelectorKey =  @"selector";
 static NSString * const kTitleImageKey = @"titleImage";
 static NSString * const kContentView = @"contentView";
+static NSString * const kUserProfileView = @"userProfileView";
 
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
@@ -195,7 +196,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
-                                                                  VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                  kUserProfileView: [self profileScreen],
                                                                   VScaffoldViewControllerFirstTimeContentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   @"appearance": @{
@@ -219,7 +220,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                    VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.enabledTemplate == VTemplateTypeC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
-                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                   kUserProfileView: [self profileScreen],
                                                                    VScaffoldViewControllerFirstTimeContentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
                                                                    kContentView: [self contentViewComponent],

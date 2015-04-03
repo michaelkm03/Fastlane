@@ -180,11 +180,6 @@
     XCTAssertNotNil([VTagStringFormatter defaultDependencyManagerTagColorKey], @"dependency manager tag color key should not be nil");
 }
 
-- (void)testDefaultThemeManagerTagColorKey
-{
-    XCTAssertNotNil([VTagStringFormatter defaultThemeManagerTagColorKey], @"dependency manager tag color key should not be nil");
-}
-
 - (void)testDelimiterString
 {
     XCTAssertNotNil([VTagStringFormatter delimiterString], @"dependency manager tag color key should not be nil");

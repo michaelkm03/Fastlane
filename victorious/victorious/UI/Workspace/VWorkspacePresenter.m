@@ -23,11 +23,6 @@
 // Tracking
 #import "VTrackingManager.h"
 
-// Login
-#import "VRootViewController.h"
-
-#import "VTemplateGenerator.h"
-
 @interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
@@ -111,20 +106,14 @@
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
 {
     [self presentCreateFlowWithInitialCaptureState:initialCaptureState
-                             initialImageEditState:VImageToolControllerInitialImageEditStateText
+                             initialImageEditState:VImageToolControllerInitialImageEditStateFilter
                           andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
 - (void)presentTextOnlyWorkspace
 {
-    
-    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    VTextWorkspaceFlowController *textWorkspaceController = [globalDependencyManager templateValueOfType:[VTextWorkspaceFlowController class]
-                                                                                              forKey:VDependencyManagerTextWorkspaceFlowKey];
-    
-    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController
-                                                 animated:YES
-                                               completion:nil];
+    VTextWorkspaceFlowController *textWorkspaceController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:nil];
+    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate

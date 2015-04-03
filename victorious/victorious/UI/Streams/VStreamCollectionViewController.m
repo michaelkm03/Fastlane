@@ -14,9 +14,6 @@
 #import "VStreamCollectionCell.h"
 #import "VMarqueeCollectionCell.h"
 
-#warning Temporary
-#import "VRootViewController.h"
-
 //Controllers
 #import "VAlertController.h"
 #import "VCommentsContainerViewController.h"
@@ -450,7 +447,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
@@ -583,7 +580,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     [self.sequenceActionController showRemixOnViewController:self
                                                 withSequence:sequence
-                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager
+                                        andDependencyManager:self.dependencyManager
                                               preloadedImage:nil
                                             defaultVideoEdit:defaultEdit
                                                   completion:nil];

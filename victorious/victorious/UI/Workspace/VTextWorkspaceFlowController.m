@@ -27,6 +27,12 @@
 
 @implementation VTextWorkspaceFlowController
 
++ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VDependencyManager *dependencyManagerToUse = dependencyManager ?: [[VRootViewController rootViewController] dependencyManager];
+    return [dependencyManagerToUse templateValueOfType:[VTextWorkspaceFlowController class] forKey:VDependencyManagerTextWorkspaceFlowKey];
+}
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
