@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 @class VMessageTableDataSource, VUnreadMessageCountCoordinator, VUser;
 
-@interface VMessageViewController : UITableViewController
+@interface VMessageViewController : UITableViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VUser *otherUser; ///< The user with whom the logged-in user is conversing
 @property (nonatomic, strong, readonly) VMessageTableDataSource *tableDataSource;
@@ -19,5 +21,10 @@
  Resets back to NO on every appearance.
  */
 @property (nonatomic) BOOL shouldRefreshOnAppearance;
+
+/**
+ Creates a new instance of VMessageViewController by passing in an instance of VDependencyManager
+ */
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

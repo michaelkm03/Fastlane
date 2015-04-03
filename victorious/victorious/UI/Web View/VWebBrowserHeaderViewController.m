@@ -11,7 +11,6 @@
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
-#import "VRootViewController.h"
 
 static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
 static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
