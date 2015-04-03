@@ -106,7 +106,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [(VSleekStreamCellActionView *)self.actionView addCommentsButton];
     
     [self.actionView addShareButton];
-    if ( [self.sequence canRepost] )
+    if ( [self.sequence canRepost] || [self.sequence.hasReposted boolValue] )
     {
         [self.actionView addRepostButton];
     }

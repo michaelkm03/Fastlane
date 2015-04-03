@@ -21,6 +21,7 @@
 #import "VBackground.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VBadgeStringFormatter.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VWorkspaceShimDestination.h"
 
@@ -29,6 +30,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong, readwrite) VBackground *background;
 @property (nonatomic, strong) NSArray *badgeProviders;
+@property (nonatomic, retain) UIColor *unselectedIconColor;
 
 @end
 
@@ -41,6 +43,8 @@
     {
         _dependencyManager = dependencyManager;
         _background = [dependencyManager templateValueOfType:[VBackground class] forKey:@"background"];
+        _selectedIconColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        _unselectedIconColor = [dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
     }
     return self;
 }
@@ -86,7 +90,7 @@
         }
         
         shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
-                                                                      image:menuItem.icon
+                                                                      image:[[menuItem.icon v_imageByMaskingImageWithColor:self.unselectedIconColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
                                                               selectedImage:menuItem.selectedIcon];
         shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         [wrappedMenuItems addObject:shimViewController];
@@ -113,7 +117,7 @@
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
     
     // Track any additional events unique to this menu item
-#warning Hacky until proper template-based tracking can solve the problem of tracking event `UserDidSelectCreatePost`
+    // Hacky until proper template-based tracking can solve the problem of tracking event `UserDidSelectCreatePost`
     if ( [menuItem.destination isKindOfClass:[VWorkspaceShimDestination class]] )
     {
         NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueTabBar };

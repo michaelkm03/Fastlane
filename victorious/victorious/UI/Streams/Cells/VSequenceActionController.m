@@ -82,7 +82,7 @@
         return NO;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:sequence.user];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:sequence.user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
     return YES;
@@ -125,8 +125,13 @@
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^
+    [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
+         
          VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                                                   forKey:VDependencyManagerWorkspaceFlowKey
                                                                                    withAddedDependencies:addedDependencies];
@@ -183,8 +188,13 @@
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^
+    [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             completion(NO);
+             return;
+         }
          [[VObjectManager sharedManager] repostNode:node
                                            withName:nil
                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
@@ -192,6 +202,9 @@
               node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
               
               [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+              
+              node.sequence.hasReposted = @(YES);
+              [node.sequence.managedObjectContext save:nil];
               
               if ( completion != nil )
               {
@@ -203,6 +216,8 @@
               if ( error.code == kVSequenceAlreadyReposted )
               {
                   [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+                  node.sequence.hasReposted = @(YES);
+                  [node.sequence.managedObjectContext save:nil];
               }
               
               if ( completion != nil )

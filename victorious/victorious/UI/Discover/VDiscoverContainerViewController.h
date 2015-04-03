@@ -13,8 +13,6 @@
 
 @interface VDiscoverContainerViewController : UIViewController <VHasManagedDependencies, VNavigationDestination, UINavigationControllerDelegate>
 
-+ (VDiscoverContainerViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
-
 @property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
 

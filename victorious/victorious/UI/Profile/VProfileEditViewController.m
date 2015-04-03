@@ -128,7 +128,7 @@
  */
 - (BOOL)validateInputs
 {
-    if (self.usernameTextField.text.length && self.locationTextField.text.length)
+    if (self.usernameTextField.text.length)
     {
         return YES;
     }
@@ -140,12 +140,7 @@
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
     }
-    
-    if (!self.locationTextField.text.length)
-    {
-        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
-    }
-    
+        
     NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditProfileValidationDidFail parameters:params];
     

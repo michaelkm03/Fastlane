@@ -6,18 +6,18 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VBaseCollectionViewCell.h"
-#import "VComment.h"
+#import "VSwipeCollectionViewCell.h"
 
-@class VCommentTextAndMediaView;
+@class VComment, VCommentTextAndMediaView, VDependencyManager;
 
 /**
  *  UICollectionViewCell for representing a general comment on an item.
  */
-@interface VContentCommentsCell : VBaseCollectionViewCell
+@interface VContentCommentsCell : VSwipeCollectionViewCell
 
 @property (nonatomic, strong) VComment *comment;
 @property (nonatomic, readonly) NSURL *mediaURL;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, copy) void (^onMediaTapped)();
 @property (nonatomic, copy) void (^onUserProfileTapped)();
@@ -43,6 +43,7 @@
  */
 + (CGSize)sizeWithFullWidth:(CGFloat)width
                 commentBody:(NSString *)commentBody
-                andHasMedia:(BOOL)hasMedia;
+                   hasMedia:(BOOL)hasMedia
+          dependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

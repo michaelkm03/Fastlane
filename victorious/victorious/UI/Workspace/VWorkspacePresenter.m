@@ -22,9 +22,6 @@
 // Tracking
 #import "VTrackingManager.h"
 
-// Login
-#import "VRootViewController.h"
-
 @interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
@@ -101,7 +98,7 @@
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
 {
     [self presentCreateFlowWithInitialCaptureState:initialCaptureState
-                             initialImageEditState:VImageToolControllerInitialImageEditStateText
+                             initialImageEditState:VImageToolControllerInitialImageEditStateFilter
                           andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
