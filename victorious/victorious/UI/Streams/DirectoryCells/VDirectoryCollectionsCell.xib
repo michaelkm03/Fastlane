@@ -17,10 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="430" height="184"/>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OaF-GJ-m0F" userLabel="LabelContainer">
-                        <rect key="frame" x="116" y="66" width="198" height="53"/>
+                        <rect key="frame" x="116" y="71" width="198" height="43"/>
                         <subviews>
-                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9U-eu-AgN">
-                                <rect key="frame" x="13" y="13" width="172" height="27"/>
+                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9U-eu-AgN">
+                                <rect key="frame" x="8" y="8" width="182" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -29,11 +29,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="198" id="ICy-cu-aqQ"/>
-                            <constraint firstItem="t9U-eu-AgN" firstAttribute="top" secondItem="OaF-GJ-m0F" secondAttribute="top" constant="13" id="Ibi-GH-pzM"/>
-                            <constraint firstItem="t9U-eu-AgN" firstAttribute="leading" secondItem="OaF-GJ-m0F" secondAttribute="leading" constant="13" id="JdW-Xb-wVM"/>
-                            <constraint firstAttribute="trailing" secondItem="t9U-eu-AgN" secondAttribute="trailing" constant="13" id="RTF-KA-vAV"/>
-                            <constraint firstAttribute="bottom" secondItem="t9U-eu-AgN" secondAttribute="bottom" constant="13" id="hNv-nR-XLq"/>
-                            <constraint firstAttribute="height" constant="53" id="vPO-CN-hjJ"/>
+                            <constraint firstItem="t9U-eu-AgN" firstAttribute="top" secondItem="OaF-GJ-m0F" secondAttribute="top" constant="8" id="Ibi-GH-pzM"/>
+                            <constraint firstItem="t9U-eu-AgN" firstAttribute="leading" secondItem="OaF-GJ-m0F" secondAttribute="leading" constant="8" id="JdW-Xb-wVM"/>
+                            <constraint firstAttribute="trailing" secondItem="t9U-eu-AgN" secondAttribute="trailing" constant="8" id="RTF-KA-vAV"/>
+                            <constraint firstAttribute="bottom" secondItem="t9U-eu-AgN" secondAttribute="bottom" constant="8" id="hNv-nR-XLq"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="vPO-CN-hjJ"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -45,12 +45,7 @@
             </constraints>
             <size key="customSize" width="201" height="-218"/>
             <connections>
-                <outlet property="labelBottomConstraint" destination="hNv-nR-XLq" id="UXB-aJ-xQE"/>
                 <outlet property="labelContainer" destination="OaF-GJ-m0F" id="04e-mB-fj7"/>
-                <outlet property="labelContainerHeightConstraint" destination="vPO-CN-hjJ" id="LZ9-WK-guZ"/>
-                <outlet property="labelLeftConstraint" destination="JdW-Xb-wVM" id="kbM-35-Rlf"/>
-                <outlet property="labelRightConstraint" destination="RTF-KA-vAV" id="QiW-Qh-Xeb"/>
-                <outlet property="labelTopConstraint" destination="Ibi-GH-pzM" id="5th-yX-hKj"/>
                 <outlet property="nameLabel" destination="t9U-eu-AgN" id="2rz-ev-zL0"/>
                 <outlet property="previewImageView" destination="GLN-gq-q4u" id="vqo-2C-vVS"/>
             </connections>

@@ -133,7 +133,7 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
         CGFloat percentageDownscreen = CGRectGetMinY(cell.frame) / collectionViewHeight;
         [(VDirectoryCollectionsCell *)cell animate:NO toVisible:NO afterDelay:0.0f];
         [(VDirectoryCollectionsCell *)cell animate:YES toVisible:YES afterDelay:percentageDownscreen / kAnimationPropogationDivisor];
-        if ( CGRectGetMaxY(cell.frame) > collectionViewHeight )
+        if ( CGRectGetMaxY(cell.frame) > collectionViewHeight || indexPath.row == [collectionView numberOfItemsInSection:indexPath.section] - 1 )
         {
             self.shouldAnimateCells = NO;
         }
@@ -164,6 +164,9 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     
     //Represents entire range where the ENTIRE cell is visible. Must remove "topInset" (the status bar height) from the collectionViewBounds height because it isn't otherwise accounted for and the status bar appears in front of the visible cells
     CGFloat yRange = CGRectGetHeight(self.collectionView.bounds) - kStatusBarHeight + cellHeight;
+    
+    //Protects against the possibility of yRange being zero (in case our cell height is changed to the height of the whole screen for some reason)
+    yRange = fmax( yRange, 1.0f );
     
     //This will provide a value in the range [-1, 0] such that the cell is just touching the status bar at -1 and just touching the bottom of the collection view bounds at 0
     CGFloat unnormalizedYOffset = ( contentOffset - ( yOrigin - kStatusBarHeight ) - cellHeight ) / yRange;

@@ -100,13 +100,13 @@ static NSString * const kStreamURLKey = @"streamURL";
 
 - (NSString *)cellIdentifier
 {
-    NSAssert(false, @"Must be overridden by subclasses");
+    NSAssert(false, @"cellIdentifier must be overridden by subclasses");
     return nil;
 }
 
 - (UINib *)cellNib
 {
-    NSAssert(false, @"Must be overridden by subclasses");
+    NSAssert(false, @"cellNib must be overridden by subclasses");
     return nil;
 }
 

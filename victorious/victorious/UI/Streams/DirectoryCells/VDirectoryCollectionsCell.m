@@ -13,11 +13,8 @@
 #import "VDependencyManager.h"
 #import "UIView+MotionEffects.h"
 
-static const CGFloat kTextInset = 8.0f;
 static const CGFloat kParallaxScrollMovementAmount = 30.0f;
 static const CGFloat kParallaxTiltMovementAmount = 10.0f;
-static const CGFloat kPreferredLabelHeight = 27.0f;
-static const CGFloat kPreferredContainerHeight = kPreferredLabelHeight + ( kTextInset * 2 );
 static const CGFloat kContentRatio = 0.4375; //140 / 320 (from spec)
 
 //Animation constants
@@ -44,19 +41,6 @@ static const CGFloat kStartAnimationScale = 0.8f;
  */
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 
-/**
- Describes the height of the view containing the name label
- */
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelContainerHeightConstraint;
-
-/**
- Describe the left, right, top, and bottom constraints used to inset the label from it's containing view
- */
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelLeftConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelRightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomConstraint;
-
 @end
 
 @implementation VDirectoryCollectionsCell
@@ -64,14 +48,6 @@ static const CGFloat kStartAnimationScale = 0.8f;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    //Reset all constraints to the textInset constant
-    NSArray *layoutConstraints = @[ self.labelTopConstraint, self.labelRightConstraint, self.labelLeftConstraint, self.labelBottomConstraint ];
-    for ( NSLayoutConstraint *constraint in layoutConstraints )
-    {
-        constraint.constant = kTextInset;
-    }
-    [self layoutIfNeeded];
     
     self.previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.previewImageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
@@ -97,10 +73,10 @@ static const CGFloat kStartAnimationScale = 0.8f;
               initialSpringVelocity:kInitialSpringVelocity
                             options:0
                          animations:^
-        {
-            self.alpha = targetAlpha;
-            self.transform = CGAffineTransformMakeScale(targetTransform, targetTransform);
-                         }
+         {
+             self.alpha = targetAlpha;
+             self.transform = CGAffineTransformMakeScale(targetTransform, targetTransform);
+         }
                          completion:nil];
     }
     else
@@ -113,51 +89,10 @@ static const CGFloat kStartAnimationScale = 0.8f;
 - (void)setStream:(VStreamItem *)stream
 {
     _stream = stream;
-    id previewImageObject = stream.previewImagesObject;
-    NSString *imageURL = nil;
-    if ( [previewImageObject isKindOfClass:[NSArray class]] )
-    {
-        imageURL = [previewImageObject firstObject];
-    }
-    else if ( [previewImageObject isKindOfClass:[NSString class]] )
-    {
-        imageURL = previewImageObject;
-    }
+    NSString *imageURL = [stream.previewImagePaths firstObject];
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:imageURL]
                            placeholderImage:nil];
-    [self updateNameLabelText:stream.name];
-}
-
-- (void)updateNameLabelText:(NSString *)text
-{
-    [self.nameLabel setText:text];
-    [self updateNameLabelConstraints];
-}
-
-- (void)updateNameLabelConstraints
-{
-    UILabel *nameLabel = self.nameLabel;
-    NSDictionary *attributes = nil;
-    UIFont *font = nameLabel.font;
-    if ( nameLabel.font )
-    {
-        attributes = @{ NSFontAttributeName : font };
-    }
-    CGFloat width = CGRectGetWidth(nameLabel.bounds);
-    CGSize maxSize = CGSizeMake(width, CGFLOAT_MAX);
-    CGFloat textHeight = CGRectGetHeight([self.nameLabel.text boundingRectWithSize:maxSize
-                                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                                        attributes:attributes
-                                                                           context:NULL]);
-    
-    CGFloat containerHeight = kPreferredContainerHeight;
-    CGFloat fittingContainerHeight = kTextInset * 2 + textHeight;
-    if ( containerHeight < fittingContainerHeight )
-    {
-        //If our preferred container height is too short to properly fit the text, then use the newly calculated fittingContainerHeight
-        containerHeight = fittingContainerHeight;
-    }
-    self.labelContainerHeightConstraint.constant = containerHeight;
+    self.nameLabel.text = stream.name;
 }
 
 - (void)layoutSubviews
@@ -193,7 +128,6 @@ static const CGFloat kStartAnimationScale = 0.8f;
         self.labelContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-        [self updateNameLabelConstraints];
     }
 }
 
