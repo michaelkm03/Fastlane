@@ -19,8 +19,6 @@ extern NSString * const VInboxContainerViewControllerInboxPushReceivedNotificati
 
 @interface VInboxViewController : VFetchedResultsTableViewController <VMultipleContainerChild>
 
-//@property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
-
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;
 

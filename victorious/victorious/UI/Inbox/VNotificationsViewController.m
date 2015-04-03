@@ -24,6 +24,8 @@
 #import "VRootViewController.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
+static CGFloat const kVNotificationCellHeight = 56;
+static int const kNotificationFetchBatchSize = 50;
 
 @interface VNotificationsViewController ()
 
@@ -94,12 +96,6 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
@@ -112,7 +108,7 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
     
     [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
+    [fetchRequest setFetchBatchSize:kNotificationFetchBatchSize];
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:manager.managedObjectStore.mainQueueManagedObjectContext
@@ -156,13 +152,11 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell    *theCell;
+    VNotificationCell *theCell = [tableView dequeueReusableCellWithIdentifier:kNotificationCellViewIdentifier forIndexPath:indexPath];
     
-    theCell = [tableView dequeueReusableCellWithIdentifier:kNotificationCellViewIdentifier forIndexPath:indexPath];
-    
-    VNotification  *info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [(VNotificationCell *)theCell setNotification:info];
-    ((VNotificationCell *)theCell).parentTableViewController = self;
+    VNotification *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [theCell setNotification:info];
+    theCell.parentTableViewController = self;
     
     return theCell;
 }
@@ -173,13 +167,6 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 {
     return NO;
 }
-
-/*
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return kVNotificationCellHeight;
-}
- */
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -221,7 +208,14 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
-//        [self.messageCountCoordinator updateUnreadMessageCount];
+        VFailBlock fail = ^(NSOperation *operation, NSError *error)
+        {
+        };
+        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        {
+            [self.tableView reloadData];
+        };
+        [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
     };
     
     [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
@@ -238,16 +232,7 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
-    /*
-    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
-    {
-        [self.messageCountCoordinator updateUnreadMessageCount];
-    }
-    else
-    {
-        self.badgeNumber = 0;
-    }
-     */
+    // Placeholder for dealing with badges.
 }
 
 @end

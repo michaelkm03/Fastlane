@@ -33,7 +33,6 @@
 
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
-//static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 @interface VInboxViewController ()
 
@@ -76,27 +75,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return viewController;
 }
 
-/*
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
-    if (self)
-    {
-        _dependencyManager = dependencyManager;
-        self.title = NSLocalizedString(@"Messages", @"");
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(userSearchAction:)];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    }
-    return self;
-}
- */
-
 - (void)dealloc
 {
     self.messageCountCoordinator = nil; // calling property setter to remove KVO
@@ -120,12 +98,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.tableView.contentInset = self.v_layoutInsets;
     self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
     
-//    self.modeSelectControl.selectedSegmentIndex = kMessageModeSelect;
-//    [self modeSelected:self.modeSelectControl];
-    
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-//    self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -234,24 +207,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return NO;
 }
 
-#pragma mark - Segmented Control
-
-/*
-- (void)toggleFilterControl:(NSInteger)idx
-{
-    VModeSelect = idx;
-    NSLog(@"\n\n-----\nSelected Index = %lu\n-----\n\n", (unsigned long)VModeSelect);
-    
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-    }
-    
-    self.fetchedResultsController = nil;
-    [self performFetch];
-}
- */
-
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
@@ -339,20 +294,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     UITableViewCell    *theCell;
 
-//    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
-//    {
-        theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-        VConversation  *info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [(VConversationCell *)theCell setConversation:info];
-        ((VConversationCell *)theCell).parentTableViewController = self;
-//    }
-//    else
-//    {
-//        theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-//        VNotification *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//        [(VNotificationCell *)theCell setNotifcation:info];
-//        ((VNotificationCell *)theCell).parentTableViewController = self;
-//    }
+    theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
+    VConversation  *info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [(VConversationCell *)theCell setConversation:info];
+    ((VConversationCell *)theCell).parentTableViewController = self;
 
     return theCell;
 }
@@ -361,14 +306,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
-//    {
-        return YES;
-//    }
-//    else
-//    {
-//        return NO;
-//    }
+    return YES;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -439,12 +377,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
-//- (IBAction)modeSelected:(id)sender
-//{
-//    self.fetchedResultsController = nil;
-//    [self performFetch];
-//}
-
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
@@ -471,16 +403,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         [self.messageCountCoordinator updateUnreadMessageCount];
     };
 
-//    if (VModeSelect == kMessageModeSelect)
-//    {
-        [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
+    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
                                                             successBlock:success failBlock:fail];
-//    }
-//    else if (VModeSelect == kNotificationModeSelect)
-//    {
-//        [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-//                                                             successBlock:success failBlock:fail];
-//    }
 }
 
 - (void)loadNextPageAction

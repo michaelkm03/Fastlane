@@ -695,7 +695,6 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                       kTitleKey: NSLocalizedString(@"Inbox", @""),
                       kScreensKey: @[
                               @{
-//                                  kIDKey: self.inboxRecentID,
                                   kClassNameKey: @"inbox.screen",
                                   kTitleKey: NSLocalizedString(@"Messages", @""),
                                   },
@@ -705,37 +704,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                   }
                               ]
                       },
-//              kInitialKey: @{
-//                      kReferenceIDKey: self.inboxRecentID,
-//                      },
               };
-
-    
-  
-  
-    
-    /*
-    UIImage *headerImage = [self homeHeaderImage];
-    if ( headerImage != nil )
-    {
-        inboxScreen[kTitleImageKey] = headerImage;
-    }
-     */
-    
-    
-    return @{
-             kIdentifierKey: @"Menu Inbox",
-             kTitleKey: NSLocalizedString(@"Inbox", @""),
-             kIconKey: @{
-                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox", TEMPLATE_ICON_PREFIX],
-                     },
-             kSelectedIconKey: @{
-                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
-                     },
-             kDestinationKey: @{
-                     kClassNameKey: @"inbox.screen"
-                     }
-             };
 }
 
 - (NSDictionary *)settingsMenuItem
