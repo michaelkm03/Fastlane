@@ -165,12 +165,12 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
     dispatch_once(&onceToken, ^(void)
                   {
                       buttonImages = @{
-                                       VStreamCellActionViewShareIconKey : @"shareIcon-D",
-                                       VStreamCellActionViewRepostIconKey : @"repostIcon-D",
-                                       VStreamCellActionViewRepostSuccessIconKey : @"repostIcon-success-D",
-                                       VStreamCellActionViewCommentIconKey : @"commentIcon-D",
-                                       VStreamCellActionViewMemeIconKey : @"memeIcon-D",
-                                       VStreamCellActionViewGifIconKey : @"gifIcon-D"
+                                       VStreamCellActionViewShareIconKey : @"D_shareIcon",
+                                       VStreamCellActionViewRepostIconKey : @"D_repostIcon",
+                                       VStreamCellActionViewRepostSuccessIconKey : @"D_repostIcon-success",
+                                       VStreamCellActionViewCommentIconKey : @"D_commentIcon",
+                                       VStreamCellActionViewMemeIconKey : @"D_memeIcon",
+                                       VStreamCellActionViewGifIconKey : @"D_gifIcon"
                                        };
                   });
     return buttonImages;

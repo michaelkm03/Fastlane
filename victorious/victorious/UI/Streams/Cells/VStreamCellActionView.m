@@ -266,11 +266,11 @@ NSString * const VStreamCellActionViewRepostSuccessIconKey = @"repostSuccessIcon
     dispatch_once(&onceToken, ^(void)
                   {
                       buttonImages = @{
-                                       VStreamCellActionViewShareIconKey : @"shareIcon-C",
-                                       VStreamCellActionViewGifIconKey : @"gifIcon-C",
-                                       VStreamCellActionViewMemeIconKey : @"memeIcon-C",
-                                       VStreamCellActionViewRepostIconKey : @"repostIcon-C",
-                                       VStreamCellActionViewRepostSuccessIconKey : @"repostIcon-success-C"
+                                       VStreamCellActionViewShareIconKey : @"C_shareIcon",
+                                       VStreamCellActionViewGifIconKey : @"C_gifIcon",
+                                       VStreamCellActionViewMemeIconKey : @"C_memeIcon",
+                                       VStreamCellActionViewRepostIconKey : @"C_repostIcon",
+                                       VStreamCellActionViewRepostSuccessIconKey : @"C_repostIcon-success"
                                        };
                   });
     return buttonImages;
