@@ -44,7 +44,8 @@ if [ "device" == $Deploy ]; then
     fi
     dest="platform=iOS,id=$UDID"
 else
-    dest='platform=iOS Simulator,name=iPhone 6,OS=8.2'
+    osvsn=`xcodebuild -showsdks | grep Simulator | tail -1 |  awk -F " " '{print $4}'` 
+    dest='platform=iOS Simulator,name=iPhone 6,OS='$osvsn
 fi
 
 
