@@ -55,9 +55,9 @@ static const CGFloat kBorderWidth = 0.5f;
 
 #pragma mark - Property Accessors
 
-- (void)setPreviewImagePath:(NSString *)previeWImagePath placeholderImage:(UIImage *)placeholderImage
+- (void)setPreviewImagePath:(NSString *)previewImagePath placeholderImage:(UIImage *)placeholderImage
 {
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:previeWImagePath]
+    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:previewImagePath]
                            placeholderImage:placeholderImage];
 }
 

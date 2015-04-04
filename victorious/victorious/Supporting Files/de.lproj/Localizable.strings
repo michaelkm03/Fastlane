@@ -257,7 +257,7 @@
 "HashtagUnsubscribeError" = "Entschuldige, beim Versuch, diesem Hashtag zu entfolgen, ist ein Fehler aufgetreten. Bitte versuche es erneut.";
 
 /* No comment provided by engineer. */
-"Home" = "Zuhause";
+"Home" = "Startseite";
 
 /* No comment provided by engineer. */
 "HourAgo" = "1 Std.";
@@ -922,3 +922,4 @@
 /* No comment provided by engineer. */
 "searching" = "suchen";
 
+"User already exists" = "Nutzer bereits existiert";
