@@ -2245,7 +2245,6 @@
 		F04DC6BC1AC728D100FBCD50 /* NSURL+Validator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Validator.m"; sourceTree = "<group>"; };
 		F04DC6BE1AC7791300FBCD50 /* VCrossFadingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingLabel.h; sourceTree = "<group>"; };
 		F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingLabel.m; sourceTree = "<group>"; };
-		F04DC6C11AC7792A00FBCD50 /* VCrossFadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingView.h; sourceTree = "<group>"; };
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurredMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F05AA97E1A83F6E3002F8917 /* VInlineSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineSearchTableViewController.h; sourceTree = "<group>"; };
@@ -5117,7 +5116,6 @@
 		F04DC6CB1ACA4AEC00FBCD50 /* CrossFadingViews */ = {
 			isa = PBXGroup;
 			children = (
-				F04DC6C11AC7792A00FBCD50 /* VCrossFadingView.h */,
 				F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */,
 				F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */,
 				F04DC6BE1AC7791300FBCD50 /* VCrossFadingLabel.h */,

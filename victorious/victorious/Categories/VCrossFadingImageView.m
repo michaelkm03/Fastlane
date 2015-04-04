@@ -55,6 +55,7 @@
 @interface VCrossFadingImageView ()
 
 @property (nonatomic, strong) NSMutableArray *imageViewContainers;
+@property (nonatomic, readwrite) NSArray *imageURLs;
 
 @end
 
@@ -86,7 +87,7 @@
     self.offset = 0.0f;
 }
 
-- (void)setCrossFadingImageWithURLs:(NSArray *)imageURLs tintColor:(UIColor *)tintColor andPlaceholderImage:(UIImage *)placeholderImage
+- (void)setupWithImageURLs:(NSArray *)imageURLs tintColor:(UIColor *)tintColor andPlaceholderImage:(UIImage *)placeholderImage
 {
     self.imageURLs = imageURLs;
     for (NSURL *imageURL in imageURLs)

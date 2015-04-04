@@ -10,6 +10,9 @@
 
 @interface NSURL (Validator)
 
+/**
+   returns NO if the url's absolute string is an empty string
+ */
 - (BOOL)isValidURL;
 
 @end

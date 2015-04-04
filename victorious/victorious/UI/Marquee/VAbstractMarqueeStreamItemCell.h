@@ -13,9 +13,9 @@
 
 @interface VAbstractMarqueeStreamItemCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
-@property (nonatomic, strong) VStreamItem *streamItem; ///<Stream item to display
-@property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VStreamItem *streamItem; ///< Stream item to display
+@property (nonatomic, weak) IBOutlet UIImageView *previewImageView; ///< The primary imageView containing a previewImage of the content this cell is representing
+@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView; ///< The imageView containing the or icon that is displayed for polls in the marquee
+@property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependencyManager that is used to style the cell and the content it displays
 
 @end

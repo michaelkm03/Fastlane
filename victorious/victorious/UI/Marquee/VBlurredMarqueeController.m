@@ -108,7 +108,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
          
          UIColor *linkColor = [strongSelf.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 
-             [strongSelf.crossfadingBlurredImageView setCrossFadingImageWithURLs:[NSArray arrayWithArray:previewImages] tintColor:[linkColor colorWithAlphaComponent:0.4f] andPlaceholderImage:[UIImage resizeableImageWithColor:linkColor]];
+             [strongSelf.crossfadingBlurredImageView setupWithImageURLs:[NSArray arrayWithArray:previewImages] tintColor:[linkColor colorWithAlphaComponent:0.4f] andPlaceholderImage:[UIImage resizeableImageWithColor:linkColor]];
              
              [strongSelf.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[strongSelf labelTextAttributes]];
              
