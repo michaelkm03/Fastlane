@@ -411,7 +411,7 @@
 "captionIsntPublished"  =   "Your content hasn't been published yet! If you go back, your caption will be lost.";
 
 "SupportEmailSubject"   =   "Feedback";
-"SupportEmailSubjectWithName" = "Feedback on";
+"SupportEmailSubjectWithName" = "Feedback on %@";
 
 "DiscoverSuggestedPeopleError"  = "Sorry, unable to load suggested people.";
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
@@ -433,8 +433,6 @@
 "OS Version:"           = "OS Version:";
 "App Version:"          = "App Version:";
 "AreYouSureYouWantToDelete" = "Are you sure you want to delete?";
-
-"ITEMS"                 = "ITEMS";
 
 "ShareFacebook"         = "Share to Facebook";
 "ShareTwitter"          = "Share to Twitter";

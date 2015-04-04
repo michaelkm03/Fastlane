@@ -339,7 +339,7 @@ static NSString * const kSupportEmailKey = @"email.support";
         if ( creatorName != nil )
         {
             NSString *subjectWithCreatorNameFormat = NSLocalizedString(@"SupportEmailSubjectWithName", @"Feedback / Help");
-            messageSubject = [NSString stringWithFormat:@"%@ %@", subjectWithCreatorNameFormat, creatorName];
+            messageSubject = [NSString stringWithFormat:subjectWithCreatorNameFormat, creatorName];
             
             messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
                                      NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo], creatorName];
