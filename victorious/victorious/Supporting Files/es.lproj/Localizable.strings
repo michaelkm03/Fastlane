@@ -922,3 +922,4 @@
 /* No comment provided by engineer. */
 "searching" = "buscando";
 
+"User already exists" = "El usuario ya existe";
