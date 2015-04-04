@@ -85,6 +85,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
          NSMutableArray *previewImages = [[NSMutableArray alloc] init];
          NSMutableArray *contentNames = [[NSMutableArray alloc] init];
          NSMutableOrderedSet *validStreamItems = [[NSMutableOrderedSet alloc] initWithArray:[strongSelf.stream.streamItems array]];
+         
          for ( VStreamItem *streamItem in strongSelf.stream.streamItems )
          {
              NSArray *previewImagePaths = streamItem.previewImagePaths;
@@ -103,6 +104,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
              [validStreamItems removeObject:streamItem];
          }
          strongSelf.stream.streamItems = [validStreamItems copy];
+         
          
          UIColor *linkColor = [strongSelf.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 
