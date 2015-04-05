@@ -489,3 +489,6 @@
 "AuthorizationContextAddComment"                = "Join in on the conversation! We want to hear what you have to say. Create an account and you'll be on your way!";
 "AuthorizationContextInbox"                     = "We are so excited to have you join our community and message fans. Just create an account so you can send and receive messages!";
 "AuthorizationContextNotification"              = "We are so excited to have you join our community and communicate with fans. Just create an account and you will be notified about important information!";
+
+"create a meme" = "create a meme";
+"quote" = "quote";
