@@ -244,7 +244,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     if ( messageViewController == nil )
     {
-        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser];
+        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:self.dependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }
     [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
