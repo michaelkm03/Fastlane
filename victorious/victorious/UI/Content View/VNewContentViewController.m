@@ -103,6 +103,8 @@
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
+static NSString * const kPollBallotIconKey = @"orIcon";
+
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
@@ -767,6 +769,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
+    commentCell.dependencyManager = self.dependencyManager;
     commentCell.comment = self.viewModel.comments[index];
     commentCell.commentAndMediaView.textView.tagTapDelegate = self;
     commentCell.swipeViewController.controllerDelegate = self;
@@ -783,7 +786,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:wCommentCell.comment.user];
+        VUserProfileViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -793,7 +796,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else
@@ -955,7 +958,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 }
                 __weak typeof(pollCell) weakPollCell = pollCell;
                 __weak typeof(self) welf = self;
-                
                 pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
                     NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
@@ -987,7 +989,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
                                                                  forIndexPath:indexPath];
-                questionCell.question = self.viewModel.sequence.name;
+                questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
+                                                                        attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
                 return questionCell;
             }
             
@@ -1012,8 +1015,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                     self.ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
                                                                                 forIndexPath:indexPath];
                 }
-                self.ballotCell.answerA = self.viewModel.answerALabelText;
-                self.ballotCell.answerB = self.viewModel.answerBLabelText;
+
+                self.ballotCell.answerA = [[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.answerB = [[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
                 
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)
@@ -1197,7 +1201,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         case VContentViewSectionHistogramOrQuestion:
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                CGSize ret = [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                CGSize ret = [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
+                                                                   attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
+                                                                  maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];
                 return  ret;
             }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
@@ -1205,7 +1211,12 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                return [VContentPollBallotCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                CGSize sizedBallot = [VContentPollBallotCell actualSizeWithAnswerA:[[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText
+                                                                                                                   attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
+                                                                           answerB:[[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText
+                                                                                                                   attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
+                                                                       maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
+                return sizedBallot;
             }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
@@ -1215,7 +1226,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             VComment *comment = self.viewModel.comments[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                       commentBody:comment.text
-                                                      andHasMedia:comment.hasMedia];
+                                                         hasMedia:comment.hasMedia
+                                                dependencyManager:self.dependencyManager];
             return CGSizeMake( minBound, size.height );
         }
         case VContentViewSectionCount:

@@ -6,15 +6,21 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 @class VSequence, VUser, VComment;
 
 @protocol VCommentsTableViewControllerDelegate;
 
-#import "VKeyboardBarViewController.h"
+@interface VCommentsTableViewController : UITableViewController <VHasManagedDependencies>
 
-@interface VCommentsTableViewController : UITableViewController
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, weak) id<VCommentsTableViewControllerDelegate> delegate;
+
+/**
+ Creates a new instance of VCommentsTableViewController by passing in an instance of VDependencyManager
+ */
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)addedNewComment:(VComment *)comment;
 

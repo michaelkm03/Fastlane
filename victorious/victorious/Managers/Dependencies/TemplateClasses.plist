@@ -58,6 +58,8 @@
 	<string>VGroupedStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
+	<key>collections.screen</key>
+	<string>VCollectionsCollectionViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>

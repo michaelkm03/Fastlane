@@ -81,7 +81,7 @@
                                                                          dependencyManager:self.dependencyManager];
     
     XCTAssertThrows( [authroizedAction performFromViewController:self.viewController context:VAuthorizationContextDefault completion:nil]);
-    XCTAssertThrows( [authroizedAction performFromViewController:nil context:VAuthorizationContextDefault completion:^{}]);
+    XCTAssertThrows( [authroizedAction performFromViewController:nil context:VAuthorizationContextDefault completion:^(BOOL authorized){}]);
     XCTAssertThrows( [authroizedAction performFromViewController:nil context:VAuthorizationContextDefault completion:nil]);
 }
 
@@ -92,7 +92,7 @@
     __block BOOL didPerformAction = NO;
     BOOL result = [self.authroizedAction performFromViewController:self.viewController
                                                        context:VAuthorizationContextDefault
-                                                       completion:^
+                                                       completion:^(BOOL authorized)
                    {
                        didPerformAction = YES;
                    }];
@@ -107,7 +107,7 @@
     __block BOOL didPerformAction = NO;
     BOOL result = [self.authroizedAction performFromViewController:self.viewController
                                                        context:VAuthorizationContextDefault
-                                                       completion:^
+                                                       completion:^(BOOL authorized)
                    {
                        didPerformAction = YES;
                    }];
@@ -122,7 +122,7 @@
     __block BOOL didPerformAction = NO;
     BOOL result = [self.authroizedAction performFromViewController:self.viewController
                                                        context:VAuthorizationContextDefault
-                                                       completion:^
+                                                       completion:^(BOOL authorized)
                    {
                        didPerformAction = YES;
                    }];

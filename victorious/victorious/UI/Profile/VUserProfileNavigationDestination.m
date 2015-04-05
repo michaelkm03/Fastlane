@@ -9,7 +9,6 @@
 #import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
-#import "VRootViewController.h"
 #import "VScaffoldViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
@@ -78,7 +77,7 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
         NSInteger userID = [[url v_firstNonSlashPathComponent] integerValue];
         if ( userID != 0 )
         {
-            VUserProfileViewController *profileVC = [VUserProfileViewController rootDependencyProfileWithRemoteId:@(userID)];
+            VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithRemoteId:@(userID)];
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 completion(profileVC);

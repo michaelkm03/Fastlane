@@ -147,11 +147,6 @@
     return VDependencyManagerLinkColorKey;
 }
 
-+ (NSString *)defaultThemeManagerTagColorKey
-{
-    return kVLinkColor;
-}
-
 + (NSString *)delimiterString
 {
     static NSString *delimiterString;
