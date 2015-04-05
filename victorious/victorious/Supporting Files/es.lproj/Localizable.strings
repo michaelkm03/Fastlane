@@ -203,7 +203,7 @@
 "ErrorPushNotificationsUnknown" = "Error al cargar las notificaciones .\nPor favor, intentar más tarde.";
 
 /* No comment provided by engineer. */
-"FBSafety" = "No guardamos tus contraseñas y nunca publicaremos algo sintsu permiso.";
+"FBSafety" = "No guardamos tus contraseñas y nunca publicaremos algo sin tu permiso.";
 
 /* No comment provided by engineer. */
 "FOLLOWERS" = "SEGUIDORES";
