@@ -68,7 +68,7 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-#import "VDirectoryViewController.h"
+#import "VAbstractDirectoryCollectionViewController.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 static NSString * const kMarqueeURLKey = @"marqueeURL";
@@ -439,7 +439,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     else if ( [streamItem isStreamOfStreams] )
     {
-        VDirectoryViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryViewController class] forKey:kMarqueeDestinationDirectory];
+        VAbstractDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VAbstractDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
         
         [self.navigationController pushViewController:directory animated:YES];
     }
