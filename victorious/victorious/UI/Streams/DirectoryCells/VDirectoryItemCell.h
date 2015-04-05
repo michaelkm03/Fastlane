@@ -10,8 +10,6 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@class VStreamItem;
-
 extern const CGFloat kDirectoryItemBaseHeight;
 extern const CGFloat kDirectoryItemStackHeight;
 extern const CGFloat kDirectoryItemBaseWidth;
@@ -31,7 +29,7 @@ extern const CGFloat kDirectoryItemBaseWidth;
  */
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
-- (void)setPreviewImagePath:(NSString *)previeWImagePath placeholderImage:(UIImage *)placeholderImage;
+- (void)setPreviewImagePath:(NSString *)previewImagePath placeholderImage:(UIImage *)placeholderImage;
 
 @property (nonatomic, assign) BOOL showVideo;
 

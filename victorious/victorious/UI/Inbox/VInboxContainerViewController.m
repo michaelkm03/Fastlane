@@ -17,7 +17,6 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
-#import "VRootViewController.h"
 #import "VSettingManager.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VConstants.h"

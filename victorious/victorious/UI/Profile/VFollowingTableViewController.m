@@ -241,8 +241,13 @@ static NSString * const kVFollowerCellName = @"followerCell";
         // Check for authorization first
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
          {
+             if (!authorized)
+             {
+                 return;
+             }
+             
              if ([mainUser.following containsObject:profile])
              {
                  [self unfollowFriendAction:profile];
@@ -260,7 +265,7 @@ static NSString * const kVFollowerCellName = @"followerCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser  *user = self.following[indexPath.row];
-    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

@@ -49,7 +49,7 @@
 	<key>hashtagStream.screen</key>
 	<string>VHashtagStreamCollectionViewController</string>
 	<key>standard.contentView</key>
-	<string>VNewContentViewController</string>
+	<string>VContentViewFactory</string>
 	<key>animated.voteType</key>
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>
@@ -58,6 +58,8 @@
 	<string>VGroupedStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
+	<key>collections.screen</key>
+	<string>VCollectionsCollectionViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>

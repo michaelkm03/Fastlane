@@ -22,6 +22,6 @@
  The action the user is attempting to perform, stored with any object that is
  providing an authorization process.
  */
-@property (nonatomic, copy) void (^authorizedAction)();
+@property (nonatomic, copy) void (^authorizedAction)(BOOL authorized);
 
 @end

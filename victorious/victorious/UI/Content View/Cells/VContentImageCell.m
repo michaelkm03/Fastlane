@@ -10,7 +10,6 @@
 
 @interface VContentImageCell ()
 
-@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, assign) BOOL updatedImageBounds;
 
 @end
@@ -48,13 +47,6 @@
         self.updatedImageBounds = YES;
         self.contentImageView.frame = bounds;
     }
-}
-
-#pragma mark - VBackgroundContainer
-
-- (UIView *)backgroundContainerView
-{
-    return self.backgroundContainer;
 }
 
 @end

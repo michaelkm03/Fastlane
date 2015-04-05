@@ -8,6 +8,7 @@
 
 #import "VBaseCollectionViewCell.h"
 #import "VEndCardViewController.h"
+#import "VBackgroundContainer.h"
 
 @interface VContentCell : VBaseCollectionViewCell
 

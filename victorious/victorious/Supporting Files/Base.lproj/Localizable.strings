@@ -70,6 +70,8 @@
 "ProfileRequiredTagLine"=   "Your tagline";
 "ProfileUpdateFailed"   =   "Profile Update Failed";
 
+"User already exists"   =   "User already exists";
+
 "WereSorry"             =   "We're Sorry";
 "ErrorOccured"          =   "For some reason we can't connect to the server. Please try again later!";
 

@@ -107,8 +107,12 @@
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+    [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          VUser *mainUser = [[VObjectManager sharedManager] mainUser];
          if ([mainUser.following containsObject:cell.profile])
          {

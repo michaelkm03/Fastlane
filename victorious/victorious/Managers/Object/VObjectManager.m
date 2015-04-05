@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSArray+VMap.h"
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
 #import "VMultipartFormDataWriter.h"
@@ -192,8 +193,13 @@
         }
         else if (error.errorCode)
         {
+            NSArray *localizedErrorMessages = [error.errorMessages v_map:^id(NSString *message)
+            {
+                return NSLocalizedString(message, @"");
+            }];
+            
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
-                                             userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
+                                             userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
             
             if (failBlock)
