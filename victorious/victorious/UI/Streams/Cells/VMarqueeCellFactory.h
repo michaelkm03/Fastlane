@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VMarqueeControllerDelegate.h"
 
 @class VStreamItem, VAbstractMarqueeCollectionViewCell;
 
@@ -36,6 +37,6 @@
  */
 - (void)enableTimer;
 
-@property (nonatomic, weak) id delegate;
+@property (nonatomic, weak) id <VMarqueeControllerDelegate> delegate;
 
 @end

@@ -60,7 +60,7 @@
         self.marqueeCollectionCell = cell;
     }
 
-    [self.marqueeCollectionCell restartAutoScroll];
+    [self.marquee enableTimer];
     return self.marqueeCollectionCell;
 }
 

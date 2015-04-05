@@ -41,7 +41,7 @@ extern CGFloat const kVDetailHideDuration;
  */
 - (void)restartHideTimer;
 
-@property (nonatomic, weak) id <VFullscreenMarqueeCellDelegate> delegate;
-@property (nonatomic, assign) BOOL hideMarqueePosterImage;
+@property (nonatomic, weak) id <VFullscreenMarqueeCellDelegate> delegate; ///< The delegate that will recieve messages when a user is selected from marquee content
+@property (nonatomic, assign) BOOL hideMarqueePosterImage; ///< Toggles display of poster's profile image in the center of the marquee content
 
 @end

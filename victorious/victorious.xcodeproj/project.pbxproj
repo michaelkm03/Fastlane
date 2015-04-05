@@ -785,12 +785,12 @@
 		F04DC6C01AC7791300FBCD50 /* VCrossFadingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
-		F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */; };
-		F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */; };
 		F06F10B91AC1E0220062E1D1 /* VCollectionsCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10B71AC1E0220062E1D1 /* VCollectionsCollectionViewController.m */; };
 		F06F10C01AC1E11C0062E1D1 /* VDirectoryCollectionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10BF1AC1E11C0062E1D1 /* VDirectoryCollectionsCell.m */; };
 		F06F10C21AC1E13A0062E1D1 /* VDirectoryCollectionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06F10C11AC1E13A0062E1D1 /* VDirectoryCollectionsCell.xib */; };
 		F06F10C61AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10C51AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m */; };
+		F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */; };
+		F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */; };
 		F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */; };
 		F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
 		F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E3551AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m */; };
@@ -2250,10 +2250,6 @@
 		F05AA97E1A83F6E3002F8917 /* VInlineSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineSearchTableViewController.h; sourceTree = "<group>"; };
 		F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineSearchTableViewController.m; sourceTree = "<group>"; };
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
-		F06F10CF1AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeCollectionViewCell.h; sourceTree = "<group>"; };
-		F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeCollectionViewCell.m; sourceTree = "<group>"; };
-		F06F10D21AC3B4E60062E1D1 /* VAbstractMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeController.h; sourceTree = "<group>"; };
-		F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeController.m; sourceTree = "<group>"; };
 		F06F10B61AC1E0220062E1D1 /* VCollectionsCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionsCollectionViewController.h; sourceTree = "<group>"; };
 		F06F10B71AC1E0220062E1D1 /* VCollectionsCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionsCollectionViewController.m; sourceTree = "<group>"; };
 		F06F10BE1AC1E11C0062E1D1 /* VDirectoryCollectionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionsCell.h; sourceTree = "<group>"; };
@@ -2261,6 +2257,10 @@
 		F06F10C11AC1E13A0062E1D1 /* VDirectoryCollectionsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryCollectionsCell.xib; sourceTree = "<group>"; };
 		F06F10C41AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractDirectoryCollectionViewController.h; sourceTree = "<group>"; };
 		F06F10C51AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractDirectoryCollectionViewController.m; sourceTree = "<group>"; };
+		F06F10CF1AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeCollectionViewCell.h; sourceTree = "<group>"; };
+		F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeCollectionViewCell.m; sourceTree = "<group>"; };
+		F06F10D21AC3B4E60062E1D1 /* VAbstractMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeController.h; sourceTree = "<group>"; };
+		F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeController.m; sourceTree = "<group>"; };
 		F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionaryTests.m; sourceTree = "<group>"; };
 		F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatterTests.m; sourceTree = "<group>"; };
 		F089E3541AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeStreamItemCell.h; sourceTree = "<group>"; };
@@ -2275,7 +2275,7 @@
 		F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
 		F089E3651AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeCellFactory.h; sourceTree = "<group>"; };
 		F089E3661AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFullscreenMarqueeCellFactory.m; sourceTree = "<group>"; };
-		F089E36A1AC4C6320076DC4D /* VMarqueeCellFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMarqueeCellFactory.h; sourceTree = "<group>"; };
+		F089E36A1AC4C6320076DC4D /* VMarqueeCellFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VMarqueeCellFactory.h; path = ../Streams/Cells/VMarqueeCellFactory.h; sourceTree = "<group>"; };
 		F089E36B1AC4CDBC0076DC4D /* VMarqueeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeControllerDelegate.h; sourceTree = "<group>"; };
 		F08CDB9A1AC4D3C6006763B1 /* VFullscreenMarqueeControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeControllerDelegate.h; sourceTree = "<group>"; };
 		F08CDB9B1AC4E448006763B1 /* marqueeEnabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = marqueeEnabled.json; sourceTree = "<group>"; };
@@ -4043,7 +4043,6 @@
 				A7AEF9791A83F1C300A3D3A0 /* VStreamCellHeaderView.m */,
 				A7AEF97A1A83F1C300A3D3A0 /* VStreamCellHeaderView.xib */,
 				0308B1121AB2A80900144E53 /* VStreamCellFactory.h */,
-				F089E36A1AC4C6320076DC4D /* VMarqueeCellFactory.h */,
 				0308B1131AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.h */,
 				0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */,
 				A7AEF97C1A83F1C300A3D3A0 /* VStreamCollectionCell.h */,
@@ -5125,6 +5124,7 @@
 				F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */,
 				F04DC6BE1AC7791300FBCD50 /* VCrossFadingLabel.h */,
 				F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */,
+				F089E36A1AC4C6320076DC4D /* VMarqueeCellFactory.h */,
 			);
 			name = CrossFadingViews;
 			sourceTree = "<group>";
@@ -5138,6 +5138,21 @@
 			);
 			name = "Inline Search";
 			path = "inline search";
+			sourceTree = "<group>";
+		};
+		F06F10C31AC201B90062E1D1 /* Directories */ = {
+			isa = PBXGroup;
+			children = (
+				F06F10C41AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.h */,
+				F06F10C51AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m */,
+				A7299EA41AA7842100B6BC1F /* VDirectoryViewController.h */,
+				A7299EA51AA7842100B6BC1F /* VDirectoryViewController.m */,
+				F028CF4C1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.h */,
+				F028CF4D1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m */,
+				F06F10B61AC1E0220062E1D1 /* VCollectionsCollectionViewController.h */,
+				F06F10B71AC1E0220062E1D1 /* VCollectionsCollectionViewController.m */,
+			);
+			name = Directories;
 			sourceTree = "<group>";
 		};
 		F06F10CB1AC37F9E0062E1D1 /* Fullscreen */ = {
@@ -5178,21 +5193,6 @@
 				F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */,
 			);
 			name = Blurred;
-			sourceTree = "<group>";
-		};
-		F06F10C31AC201B90062E1D1 /* Directories */ = {
-			isa = PBXGroup;
-			children = (
-				F06F10C41AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.h */,
-				F06F10C51AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m */,
-				A7299EA41AA7842100B6BC1F /* VDirectoryViewController.h */,
-				A7299EA51AA7842100B6BC1F /* VDirectoryViewController.m */,
-				F028CF4C1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.h */,
-				F028CF4D1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m */,
-				F06F10B61AC1E0220062E1D1 /* VCollectionsCollectionViewController.h */,
-				F06F10B71AC1E0220062E1D1 /* VCollectionsCollectionViewController.m */,
-			);
-			name = Directories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -63,27 +63,10 @@
     self.marquee.dependencyManager = dependencyManager;
 }
 
-- (VStreamItem *)currentItem
-{
-    return self.marquee.currentStreamItem;
-}
-
-- (UIImageView *)currentPreviewImageView
-{
-    NSIndexPath *path = [self.marquee.streamDataSource indexPathForItem:[self currentItem]];
-    VAbstractMarqueeStreamItemCell *cell = (VAbstractMarqueeStreamItemCell *)[self.collectionView cellForItemAtIndexPath:path];
-    return cell.previewImageView;
-}
-
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     [self.marquee.autoScrollTimerManager invalidate];
-}
-
-- (void)restartAutoScroll
-{
-    [self.marquee enableTimer];
 }
 
 #pragma mark - UIResponder

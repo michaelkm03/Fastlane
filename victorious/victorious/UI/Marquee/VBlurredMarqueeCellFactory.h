@@ -15,7 +15,7 @@
 @interface VBlurredMarqueeCellFactory : NSObject <VMarqueeCellFactory>
 
 /**
- Initializes the stream cell factory with an instance of VDependencyManager
+    Initializes the stream cell factory with an instance of VDependencyManager
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
