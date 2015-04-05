@@ -800,7 +800,6 @@
 		F089E3621AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3611AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib */; };
 		F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */; };
 		F089E3671AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E3661AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.m */; };
-		F08CDB9C1AC4E448006763B1 /* marqueeEnabled.json in Resources */ = {isa = PBXBuildFile; fileRef = F08CDB9B1AC4E448006763B1 /* marqueeEnabled.json */; };
 		F08CDB9F1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F08CDB9E1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.m */; };
 		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */; };
@@ -2278,7 +2277,6 @@
 		F089E36A1AC4C6320076DC4D /* VMarqueeCellFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VMarqueeCellFactory.h; path = ../Streams/Cells/VMarqueeCellFactory.h; sourceTree = "<group>"; };
 		F089E36B1AC4CDBC0076DC4D /* VMarqueeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeControllerDelegate.h; sourceTree = "<group>"; };
 		F08CDB9A1AC4D3C6006763B1 /* VFullscreenMarqueeControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeControllerDelegate.h; sourceTree = "<group>"; };
-		F08CDB9B1AC4E448006763B1 /* marqueeEnabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = marqueeEnabled.json; sourceTree = "<group>"; };
 		F08CDB9D1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCellFactory.h; sourceTree = "<group>"; };
 		F08CDB9E1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurredMarqueeCellFactory.m; sourceTree = "<group>"; };
 		F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextView.h; sourceTree = "<group>"; };
@@ -3330,7 +3328,6 @@
 				D8B88F981ABA93E400DBAEA0 /* defaultTemplate.json */,
 				036F4E751A1302E600F9E721 /* Template Generator */,
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
-				F08CDB9B1AC4E448006763B1 /* marqueeEnabled.json */,
 				039D02A91A1043D300DB9236 /* VDependencyManager.h */,
 				039D02AA1A1043D300DB9236 /* VDependencyManager.m */,
 				0386E1FE1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.h */,
@@ -5441,7 +5438,6 @@
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
 				036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */,
-				F08CDB9C1AC4E448006763B1 /* marqueeEnabled.json in Resources */,
 				DB2A493F19DF44A500CB687B /* VUserProfileHeaderView.xib in Resources */,
 				036F386A1A0C4DEA0014DF66 /* DeliusUnicase-Regular.ttf in Resources */,
 				F04A7CB51AB7E0E40092A374 /* VInsetStreamCellHeaderView.xib in Resources */,
