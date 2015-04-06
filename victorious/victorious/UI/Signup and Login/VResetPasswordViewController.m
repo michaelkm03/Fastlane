@@ -108,7 +108,7 @@
     [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YesButton", @"" ) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }]];
-    [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NoButton", @"" ) style:UIAlertActionStyleCancel handler:NULL]];
+    [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NoButton", @"" ) style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:confirmCancel animated:YES completion:nil];
 }
 
