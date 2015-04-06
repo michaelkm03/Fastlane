@@ -34,6 +34,14 @@
 				<string>fb1374328719478033</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.getvictorious.deeplinking.scheme</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>vapp1</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>
@@ -151,6 +159,8 @@
 	</array>
 	<key>VictoriousAppID</key>
 	<integer>1</integer>
+	<key>VictoriousGenericURLScheme</key>
+	<string>vthisapp</string>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 </dict>
