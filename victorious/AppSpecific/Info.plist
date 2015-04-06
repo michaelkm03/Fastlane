@@ -34,12 +34,6 @@
 				<string>fb1374328719478033</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}victorious</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>

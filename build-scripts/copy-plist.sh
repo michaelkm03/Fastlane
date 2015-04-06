@@ -75,9 +75,16 @@ do
     if [ $N == 0 ]; then
         /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes Array" "$DESTINATION"
     fi
-    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes: dict" "$DESTINATION"
     /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes Array" "$DESTINATION"
     /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes: string $SCHEME" "$DESTINATION"
 
     let N=$N+1
 done
+
+########### Generate Custom URL Scheme for app
+
+APP_ID=$(/usr/libexec/PlistBuddy -c "Print VictoriousAppID" "$SOURCE" 2> /dev/null)
+CUSTOM_SCHEME="vapp$APP_ID"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLName string com.getvictorious.deeplinking.scheme" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes Array" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes: string $CUSTOM_SCHEME" "$DESTINATION"
