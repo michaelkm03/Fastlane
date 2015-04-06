@@ -15,8 +15,6 @@
 #import "VButton.h"
 #import "VInlineValidationTextField.h"
 
-#import "VActionSheetViewController.h"
-
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
@@ -110,7 +108,7 @@
     [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"YesButton", @"" ) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }]];
-    [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NoButton", @"" ) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}]];
+    [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"NoButton", @"" ) style:UIAlertActionStyleCancel handler:NULL]];
     [self presentViewController:confirmCancel animated:YES completion:nil];
 }
 
