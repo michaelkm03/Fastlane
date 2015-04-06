@@ -19,10 +19,8 @@ typedef void (^VDeeplinkHandlerCompletionBlock)(UIViewController *viewController
 @protocol VNavigationDestination;
 
 /**
- Objects conforming to this protocol are
- able to provide a view controller for
- displaying content pointed to by a
- deep link.
+ Objects conforming to this protocol are able to provide a view controller for
+ displaying content pointed to by a deep link.
  */
 @protocol VDeeplinkHandler <NSObject>
 
@@ -39,5 +37,15 @@ typedef void (^VDeeplinkHandlerCompletionBlock)(UIViewController *viewController
          returned, the completion block MUST NOT be called.
  */
 - (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion;
+
+- (BOOL)requiresAuthorization;
+
+- (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url;
+
+@end
+
+@protocol VDeeplinkSupporter <NSObject>
+
+- (id<VDeeplinkHandler>)deeplinkHandler;
 
 @end

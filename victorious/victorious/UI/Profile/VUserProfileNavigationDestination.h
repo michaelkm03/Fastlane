@@ -17,7 +17,7 @@
 /**
  A navigation destination of the current user's own profile
  */
-@interface VUserProfileNavigationDestination : NSObject <VDeeplinkHandler, VHasManagedDependencies, VNavigationDestination>
+@interface VUserProfileNavigationDestination : NSObject <VDeeplinkSupporter, VHasManagedDependencies, VNavigationDestination>
 
 @property (nonatomic, strong, readonly) VObjectManager *objectManager; ///< The object manager provided in the -init call
 

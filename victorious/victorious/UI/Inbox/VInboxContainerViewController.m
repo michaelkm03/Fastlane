@@ -20,13 +20,14 @@
 #import "VSettingManager.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VConstants.h"
+#import "VInboxDeepLinkHandler.h"
 
 @interface VInboxContainerViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *noMessagesView;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesMessageLabel;
-@property (weak, nonatomic) VInboxViewController *inboxViewController;
+@property (weak, nonatomic, readwrite) VInboxViewController *inboxViewController;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
@@ -148,46 +149,13 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     return VAuthorizationContextInbox;
 }
 
-#pragma mark - VDeeplinkHandler methods
+#pragma mark - VDeeplinkSupporter methods
 
-- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+- (id<VDeeplinkHandler>)deeplinkHandler
 {
-    if ( ![self.dependencyManager.objectManager authorized] )
-    {
-        return NO;
-    }
-    
-    if ( [url.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
-    {
-        NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
-        if ( conversationID != 0 )
-        {
-            [[VObjectManager sharedManager] conversationByID:@(conversationID)
-                                                successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-            {
-                VConversation *conversation = (VConversation *)[resultObjects firstObject];
-                if ( conversation == nil )
-                {
-                    completion(nil);
-                }
-                else
-                {
-                    completion(self);
-                    dispatch_async(dispatch_get_main_queue(), ^(void)
-                    {
-                        [self.inboxViewController displayConversationForUser:conversation.user];
-                    });
-                }
-            }
-                                                   failBlock:^(NSOperation *operation, NSError *error)
-            {
-                VLog(@"Failed to load conversation with error: %@", [error localizedDescription]);
-                completion(nil);
-            }];
-            return YES;
-        }
-    }
-    return NO;
+    VInboxDeepLinkHandler *handler = [[VInboxDeepLinkHandler alloc] init];
+    handler.inboxContainerViewController = self;
+    return handler;
 }
 
 #pragma mark - NSNotification handlers
