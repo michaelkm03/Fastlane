@@ -17,7 +17,6 @@
 #import "VStreamItem+Fetcher.h"
 #import "UIImage+ImageCreation.h"
 #import "VDependencyManager.h"
-#import "NSURL+Validator.h"
 
 static const CGFloat kVisibilityDuration = 5.0f;
 static const CGFloat kOffsetOvershoot = 20.0f;
@@ -92,7 +91,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
              if ( previewImagePaths.count > 0 )
              {
                  NSURL *previewImageURL = [NSURL URLWithString:[previewImagePaths firstObject]];
-                 if ( [previewImageURL isValidURL] )
+                 if ( ![previewImageURL.absoluteString isEqualToString:@""] )
                  {
                      [previewImages addObject:previewImageURL];
                      [contentNames addObject:streamItem.name];
@@ -105,26 +104,25 @@ static const CGFloat kOffsetOvershoot = 20.0f;
          }
          strongSelf.stream.streamItems = [validStreamItems copy];
          
-         
          UIColor *linkColor = [strongSelf.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 
-             [strongSelf.crossfadingBlurredImageView setupWithImageURLs:[NSArray arrayWithArray:previewImages] tintColor:[linkColor colorWithAlphaComponent:0.4f] andPlaceholderImage:[UIImage resizeableImageWithColor:linkColor]];
-             
-             [strongSelf.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[strongSelf labelTextAttributes]];
-             
+         [strongSelf.crossfadingBlurredImageView setupWithImageURLs:[NSArray arrayWithArray:previewImages] tintColor:[linkColor colorWithAlphaComponent:0.4f] andPlaceholderImage:[UIImage resizeableImageWithColor:linkColor]];
+         
+         [strongSelf.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[strongSelf labelTextAttributes]];
+         
+         if ( !strongSelf.showedInitialDisplayAnimation )
+         {
              strongSelf.crossfadingLabel.alpha = 0.0f;
              
-             if ( !strongSelf.showedInitialDisplayAnimation )
-             {
-                 [strongSelf.collectionView layoutIfNeeded];
-                 
-                 strongSelf.showedInitialDisplayAnimation = YES;
-                 CGPoint startOffset = CGPointMake( - CGRectGetWidth(strongSelf.collectionView.bounds), 0.0f );
-                 [strongSelf.collectionView setContentOffset:startOffset animated:NO];
-                 
-                 strongSelf.collectionView.hidden = NO;
-                 [strongSelf selectNextTab];
-             }
+             [strongSelf.collectionView layoutIfNeeded];
+             
+             strongSelf.showedInitialDisplayAnimation = YES;
+             CGPoint startOffset = CGPointMake( - CGRectGetWidth(strongSelf.collectionView.bounds), 0.0f );
+             [strongSelf.collectionView setContentOffset:startOffset animated:NO];
+             
+             strongSelf.collectionView.hidden = NO;
+             [strongSelf selectNextTab];
+         }
          
          successBlock();
      }
@@ -194,6 +192,24 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     
     [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
     [self.autoScrollTimerManager invalidate];
+}
+
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+{
+    [collectionView registerNib:[VBlurredMarqueeCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]];
+}
+
+- (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
+{
+    VBlurredMarqueeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]
+                                                                                        forIndexPath:indexPath];
+    cell.dependencyManager = self.dependencyManager;
+    cell.marquee = self;
+    CGSize desiredSize = [VBlurredMarqueeCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+    
+    [self enableTimer];
+    return cell;
 }
 
 @end

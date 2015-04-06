@@ -57,12 +57,6 @@
     //Point for subclasses to override if they want to do anything after refresh
 }
 
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    self.marquee.dependencyManager = dependencyManager;
-}
-
 - (void)prepareForReuse
 {
     [super prepareForReuse];

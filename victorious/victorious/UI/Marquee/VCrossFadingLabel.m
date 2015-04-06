@@ -16,11 +16,36 @@
 
 @implementation VCrossFadingLabel
 
+- (instancetype)init
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _offset = 0.0f;
+    }
+    return self;
+}
+
 - (void)setupWithStrings:(NSArray *)strings andTextAttributes:(NSDictionary *)textAttributes
 {
+    if ( [self.strings isEqualToArray:strings] && [textAttributes isEqualToDictionary:textAttributes] )
+    {
+        //Nothing to update, return to avoid unnecessary label setup
+        return;
+    }
+    
     self.strings = strings;
     self.textAttributes = textAttributes;
-    self.offset = 0.0f;
+    [self updateLabelForOffset:self.offset];
+}
+
+- (void)updateLabelForOffset:(CGFloat)offset
+{
+    CGFloat alpha = offset - floorf(offset);
+    alpha -= 0.5f; //Move the whole signal down to get it in range [-0.5, 0.5]
+    alpha = fabs(alpha); //Take the abs value to get it in range [0, 0.5] with peaks where remainder was, originally, 0 or 1
+    alpha *= 2; //Multiply by 2 to get the proper scale [0, 1]
+    self.alpha = alpha;
 }
 
 - (void)setOffset:(CGFloat)offset
@@ -67,11 +92,7 @@
     
     _offset = offset;
     
-    CGFloat alpha = offset - floorf(offset);
-    alpha -= 0.5f; //Move the whole signal down to get it in range [-0.5, 0.5]
-    alpha = fabs(alpha); //Take the abs value to get it in range [0, 0.5] with peaks where remainder was, originally, 0 or 1
-    alpha *= 2; //Multiply by 2 to get the proper scale [0, 1]
-    self.alpha = alpha;
+    [self updateLabelForOffset:offset];
 }
 
 - (void)setTextAttributes:(NSDictionary *)textAttributes

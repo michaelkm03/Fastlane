@@ -12,7 +12,7 @@
 
 extern NSString * const kMarqueeURLKey;
 
-@class VDependencyManager, VStream, VStreamItem, VStreamCollectionViewDataSource, VTimerManager, VUser, VAbstractMarqueeController;
+@class VDependencyManager, VStream, VStreamItem, VStreamCollectionViewDataSource, VTimerManager, VUser, VAbstractMarqueeController, VAbstractMarqueeCollectionViewCell;
 
 @interface VAbstractMarqueeController : NSObject <VStreamCollectionDataDelegate, UIScrollViewDelegate>
 
@@ -26,11 +26,21 @@ extern NSString * const kMarqueeURLKey;
 @property (nonatomic, readonly) NSInteger currentPage; ///< The current page of marquee content being displayed
 
 /**
-    Sets up the marquee with the streamItems from the provided stream.
- 
-    @param stream The stream whose streamItems should be displayed in the marquee.
+ Initializes the marquee cell factory with an instance of VDependencyManager
  */
-- (instancetype)initWithStream:(VStream *)stream;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+
+/**
+ Sends -registerClass:forCellWithReuseIdentifier: and -registerNib:forCellWithReuseIdentifier:
+ messages to the collection view. Should be called as soon as the collection view is
+ initialized.
+ */
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
+
+/**
+ Returns a configured marquee cell. This MUST be overridden by subclasses
+ */
+- (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
 
 /**
     Invalidates the auto-scrolling timer

@@ -7,10 +7,14 @@
 //
 
 #import "VAbstractMarqueeController.h"
+#import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeStreamItemCell.h"
 #import "VTimerManager.h"
 #import "VStreamItem.h"
-#import "VStream.h"
+#import "VStream+Fetcher.h"
+#import "VDependencyManager.h"
+#import "NSString+VParseHelp.h"
+#import "VObjectManager.h"
 
 NSString * const kMarqueeURLKey = @"marqueeURL";
 
@@ -24,17 +28,18 @@ NSString * const kMarqueeURLKey = @"marqueeURL";
 
 @implementation VAbstractMarqueeController
 
-- (instancetype)initWithStream:(VStream *)stream
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
-        _stream = stream;
-        _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
+        _stream = [VStream streamForPath:[[dependencyManager stringForKey:kMarqueeURLKey] v_pathComponent] inContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
+        _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:_stream];
         _streamDataSource.delegate = self;
         _streamDataSource.collectionView = _collectionView;
         _collectionView.dataSource = _streamDataSource;
         _currentPage = 0;
+        _dependencyManager = dependencyManager;
     }
     return self;
 }
@@ -42,12 +47,6 @@ NSString * const kMarqueeURLKey = @"marqueeURL";
 - (NSString *)cellSuggestedReuseIdentifier
 {
     return [VAbstractMarqueeStreamItemCell suggestedReuseIdentifier];
-}
-
-- (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
-{
-    NSAssert(false, @"Subclasses must override desiredSizeWithCollectionViewBounds: in VAbstractMarqueeController");
-    return CGSizeZero;
 }
 
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
@@ -85,9 +84,9 @@ NSString * const kMarqueeURLKey = @"marqueeURL";
 - (void)selectNextTab
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
+    NSUInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
     currentPage ++;
-    if (currentPage == (NSInteger)self.streamDataSource.count)
+    if (currentPage == self.streamDataSource.count)
     {
         currentPage = 0;
     }
@@ -167,6 +166,23 @@ NSString * const kMarqueeURLKey = @"marqueeURL";
         _collectionView.delegate = nil;
     }
     [_autoScrollTimerManager invalidate];
+}
+
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+{
+    NSAssert(false, @"registerCellsWithCollectionView: must be implemented by subclasses of VAbstractMarqueeCellFactory");
+}
+
+- (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
+{
+    NSAssert(false, @"marqueeCellForCollectionView:atIndexPath: must be implemented by subclasses of VAbstractMarqueeCellFactory");
+    return nil;
+}
+
+- (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    NSAssert(false, @"Subclasses must override desiredSizeWithCollectionViewBounds: in VAbstractMarqueeController");
+    return CGSizeZero;
 }
 
 @end

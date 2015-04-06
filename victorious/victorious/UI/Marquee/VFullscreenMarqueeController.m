@@ -29,6 +29,16 @@
 
 @implementation VFullscreenMarqueeController
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super initWithDependencyManager:dependencyManager];
+    if ( self != nil )
+    {
+        _hideMarqueePosterImage = YES;
+    }
+    return self;
+}
+
 - (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
@@ -110,6 +120,26 @@
 {
     [self.delegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
     [self.autoScrollTimerManager invalidate];
+}
+
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+{
+    [collectionView registerNib:[VFullscreenMarqueeCollectionCell nibForCell] forCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]];
+}
+
+- (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
+{
+    VFullscreenMarqueeCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]
+                                                                                       forIndexPath:indexPath];
+    cell.dependencyManager = self.dependencyManager;
+    cell.marquee = self;
+    self.tabView.currentlySelectedTab = self.currentPage;
+    CGSize desiredSize = [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+    cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
+    
+    [self enableTimer];
+    return cell;
 }
 
 @end

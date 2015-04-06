@@ -64,7 +64,6 @@
 #import "VAuthorizedAction.h"
 
 #import "VInsetStreamCellFactory.h"
-#import "VMarqueeCellFactory.h"
 #import "VFullscreenMarqueeControllerDelegate.h"
 #import "VFullscreenMarqueeController.h"
 
@@ -92,7 +91,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (nonatomic, strong) id<VStreamCellFactory> streamCellFactory;
-@property (nonatomic, strong) id<VMarqueeCellFactory> marqueeCellFactory;
+@property (nonatomic, strong) VAbstractMarqueeController *marqueeCellController;
 
 @property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 @property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
@@ -198,10 +197,10 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
     
-    self.marqueeCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VMarqueeCellFactory) forKey:VStreamCollectionViewControllerMarqueeComponentKey];
-    self.marqueeCellFactory.delegate = self;
-    [self.marqueeCellFactory registerCellsWithCollectionView:self.collectionView];
-    self.streamDataSource.hasHeaderCell = self.marqueeCellFactory != nil;
+    self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
+    self.marqueeCellController.delegate = self;
+    [self.marqueeCellController registerCellsWithCollectionView:self.collectionView];
+    self.streamDataSource.hasHeaderCell = self.marqueeCellController != nil;
     
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
@@ -237,7 +236,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
          We already have marquee content so we need to restart the timer to make sure the marquee continues
          to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
-        [self.marqueeCellFactory enableTimer];
+        [self.marqueeCellController enableTimer];
     }
 
     for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
@@ -279,11 +278,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [super didReceiveMemoryWarning];
     
     self.preloadImageCache = nil;
-}
-
-- (BOOL)shouldDisplayMarquee
-{
-    return self.marqueeCellFactory != nil && [self.dependencyManager stringForKey:kMarqueeURLKey] != nil;
 }
 
 - (NSCache *)preloadImageCache
@@ -443,7 +437,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
-        return [self.marqueeCellFactory sizeWithCollectionViewBounds:collectionView.bounds];
+        return [self.marqueeCellController desiredSizeWithCollectionViewBounds:collectionView.bounds];
     }
     else
     {
@@ -478,8 +472,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
-        return [self.marqueeCellFactory marqueeCellForCollectionView:self.collectionView
-                                                         atIndexPath:indexPath];
+        return [self.marqueeCellController marqueeCellForCollectionView:self.collectionView
+                                                            atIndexPath:indexPath];
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];

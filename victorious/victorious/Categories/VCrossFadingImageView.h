@@ -1,5 +1,5 @@
 //
-//  UIImageView+CrossFading.h
+//  VCrossFadingImageView.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/28/15.

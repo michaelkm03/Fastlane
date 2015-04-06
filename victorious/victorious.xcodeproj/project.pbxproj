@@ -781,7 +781,6 @@
 		F04A7CB91AB7E1980092A374 /* VInsetStreamCollectionCellPoll.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04A7CB81AB7E1980092A374 /* VInsetStreamCollectionCellPoll.xib */; };
 		F04A7CBD1AB874A10092A374 /* VSleekStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A7CBC1AB874A10092A374 /* VSleekStreamCellFactory.m */; };
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
-		F04DC6BD1AC728D100FBCD50 /* NSURL+Validator.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6BC1AC728D100FBCD50 /* NSURL+Validator.m */; };
 		F04DC6C01AC7791300FBCD50 /* VCrossFadingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
@@ -799,8 +798,6 @@
 		F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E35F1AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m */; };
 		F089E3621AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3611AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib */; };
 		F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */; };
-		F089E3671AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E3661AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.m */; };
-		F08CDB9F1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F08CDB9E1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.m */; };
 		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
@@ -2240,8 +2237,6 @@
 		F04A7CBC1AB874A10092A374 /* VSleekStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekStreamCellFactory.m; sourceTree = "<group>"; };
 		F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCrossFadingImageView.h; path = ../../Categories/VCrossFadingImageView.h; sourceTree = "<group>"; };
 		F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCrossFadingImageView.m; path = ../../Categories/VCrossFadingImageView.m; sourceTree = "<group>"; };
-		F04DC6BB1AC728D100FBCD50 /* NSURL+Validator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Validator.h"; sourceTree = "<group>"; };
-		F04DC6BC1AC728D100FBCD50 /* NSURL+Validator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Validator.m"; sourceTree = "<group>"; };
 		F04DC6BE1AC7791300FBCD50 /* VCrossFadingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingLabel.h; sourceTree = "<group>"; };
 		F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingLabel.m; sourceTree = "<group>"; };
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
@@ -2272,13 +2267,8 @@
 		F089E35F1AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurredMarqueeStreamItemCell.m; sourceTree = "<group>"; };
 		F089E3611AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeCollectionViewCell.xib; sourceTree = "<group>"; };
 		F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBlurredMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
-		F089E3651AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeCellFactory.h; sourceTree = "<group>"; };
-		F089E3661AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFullscreenMarqueeCellFactory.m; sourceTree = "<group>"; };
-		F089E36A1AC4C6320076DC4D /* VMarqueeCellFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VMarqueeCellFactory.h; path = ../Streams/Cells/VMarqueeCellFactory.h; sourceTree = "<group>"; };
 		F089E36B1AC4CDBC0076DC4D /* VMarqueeControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeControllerDelegate.h; sourceTree = "<group>"; };
 		F08CDB9A1AC4D3C6006763B1 /* VFullscreenMarqueeControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeControllerDelegate.h; sourceTree = "<group>"; };
-		F08CDB9D1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCellFactory.h; sourceTree = "<group>"; };
-		F08CDB9E1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurredMarqueeCellFactory.m; sourceTree = "<group>"; };
 		F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextView.h; sourceTree = "<group>"; };
 		F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagSensitiveTextView.m; sourceTree = "<group>"; };
 		F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextViewDelegate.h; sourceTree = "<group>"; };
@@ -4389,8 +4379,6 @@
 				03484C061930294D00403FB1 /* NSURL+MediaType.m */,
 				0330D4291A6F5BAE007EEEE4 /* NSURL+VPathHelper.h */,
 				0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */,
-				F04DC6BB1AC728D100FBCD50 /* NSURL+Validator.h */,
-				F04DC6BC1AC728D100FBCD50 /* NSURL+Validator.m */,
 				BE799BAF19C8DF4B0023CE88 /* OrderedSets */,
 				0314D06219B466C100FA363C /* UIActivityViewController+VStatusBarHandling.h */,
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
@@ -5121,7 +5109,6 @@
 				F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */,
 				F04DC6BE1AC7791300FBCD50 /* VCrossFadingLabel.h */,
 				F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */,
-				F089E36A1AC4C6320076DC4D /* VMarqueeCellFactory.h */,
 			);
 			name = CrossFadingViews;
 			sourceTree = "<group>";
@@ -5166,8 +5153,6 @@
 				0390087319F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib */,
 				BE2C071019D5E842002AB82A /* VFullscreenMarqueeTabIndicatorView.h */,
 				BE2C071119D5E842002AB82A /* VFullscreenMarqueeTabIndicatorView.m */,
-				F089E3651AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.h */,
-				F089E3661AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.m */,
 			);
 			name = Fullscreen;
 			sourceTree = "<group>";
@@ -5184,8 +5169,6 @@
 				F089E35E1AC486620076DC4D /* VBlurredMarqueeStreamItemCell.h */,
 				F089E35F1AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m */,
 				F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */,
-				F08CDB9D1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.h */,
-				F08CDB9E1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.m */,
 				F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */,
 				F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */,
 			);
@@ -5763,7 +5746,6 @@
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				DB531B501A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m in Sources */,
-				F08CDB9F1AC4FE80006763B1 /* VBlurredMarqueeCellFactory.m in Sources */,
 				A77FB9231A897201003E9AA2 /* UIColor+VBrightness.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
@@ -5982,8 +5964,6 @@
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
 				0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
-				F089E3671AC4C0100076DC4D /* VFullscreenMarqueeCellFactory.m in Sources */,
-				F04DC6BD1AC728D100FBCD50 /* NSURL+Validator.m in Sources */,
 				0314D4EF19B46B5E00FA363C /* VLoginWithEmailViewController.m in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */,
 				A716FC3D1AAE2DDB0032AA40 /* VAuthorizationContextHelper.m in Sources */,

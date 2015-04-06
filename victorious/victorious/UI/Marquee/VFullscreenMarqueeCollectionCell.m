@@ -95,6 +95,7 @@ static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 - (void)updatedFromRefresh
 {
     self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
+    self.tabView.currentlySelectedTab = self.marquee.currentPage;
 }
 
 #pragma mark - desiredCellSize
