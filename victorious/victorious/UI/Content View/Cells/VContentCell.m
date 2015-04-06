@@ -225,6 +225,11 @@
     }
 }
 
+- (void)cleanup
+{
+    [self.displayLink invalidate];
+}
+
 #pragma mark - VEndCardViewControllerDelegate
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
