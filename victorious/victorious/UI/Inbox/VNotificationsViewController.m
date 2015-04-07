@@ -16,7 +16,8 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Login.h"
 #import "VDependencyManager+VObjectManager.h"
-
+#import "VAuthorizationContext.h"
+#import "VNavigationDestination.h"
 
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
@@ -27,7 +28,7 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 56;
 static int const kNotificationFetchBatchSize = 50;
 
-@interface VNotificationsViewController ()
+@interface VNotificationsViewController () <VNavigationDestination>
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 
@@ -53,6 +54,13 @@ static int const kNotificationFetchBatchSize = 50;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - VNavigationDestination
+
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextNotification;
 }
 
 #pragma mark -  Container Child
