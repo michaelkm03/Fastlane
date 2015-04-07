@@ -69,6 +69,8 @@
 "NotLoggedInMessage"    =   "Oops! It looks like you're not logged in.";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
+"You're not logged in!" =   "You're not logged in!";
+"ProfileNotLoggedInMessage" = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are.";
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
 "ProfileIncomplete"     =   "Profile Incomplete";
@@ -79,8 +81,10 @@
 "ProfileRequiredToS"    =   "Agree to our terms";
 "ProfileRequiredTagLine"=   "Your tagline";
 "ProfileUpdateFailed"   =   "Profile Update Failed";
+"Profile load failed!"  =   "Profile load failed!";
 
 "User already exists"   =   "User already exists";
+"Sorry, I can't display that right now" = "Sorry, I can't display that right now";
 
 "WereSorry"             =   "We're Sorry";
 "ErrorOccured"          =   "For some reason we can't connect to the server. Please try again later!";
@@ -322,6 +326,9 @@
 "ResetPasswordYesCancelButton" = "Yes, cancel";
 "ResetPasswordNoContinueButton" = "No, continue";
 
+"Error Resetting Password" = "Error Resetting Password";
+"Please check your network connection or try again later." = "Please check your network connection or try again later.";
+
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
 "Resend Email"           =   "Resend Email";
@@ -519,6 +526,8 @@
 "Create a GIF" = "Create a GIF";
 "GIF" = "GIF";
 "quote" = "quote";
+"GIF MODE" = "GIF MODE";
+"VIDEO MODE" = "VIDEO MODE";
 "Write a caption (optional)" = "Write a caption (optional)";
 "Rendering..." = "Rendering...";
 "Render failure" = "Render failure";

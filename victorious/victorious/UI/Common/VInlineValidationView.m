@@ -64,7 +64,7 @@
     self.inlineValidationLabel = [[UILabel alloc] initWithFrame:self.bounds];
     self.inlineValidationLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.inlineValidationLabel.textAlignment = NSTextAlignmentLeft;
-    self.inlineValidationLabel.text = NSLocalizedString(@"EvmailValidation", @"");
+    self.inlineValidationLabel.text = NSLocalizedString(@"EmailValidation", @"");
     self.inlineValidationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     self.inlineValidationLabel.textColor = [UIColor redColor];
     [self addSubview:self.inlineValidationLabel];
