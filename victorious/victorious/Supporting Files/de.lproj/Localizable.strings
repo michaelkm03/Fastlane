@@ -262,13 +262,13 @@
 "HourAgo" = "1 Std.";
 "HoursAgo" = "%dh";
 "Yesterday" = "1T";
-"DaysAgo" = "%dd";
+"DaysAgo" = "%dt";
 "LastWeek" = "1W";
 "WeeksAgo" = "%dw";
 "LastMonth" = "1Mo";
 "MonthsAgo" = "%dmo";
 "LastYear" = "1J";
-"YearsAgo" = "%dy";
+"YearsAgo" = "%dj";
 
 "Minute" = "Minute";
 "Hour" = "Stunde";
@@ -285,7 +285,7 @@
 "JustAMoment" = "Einen Moment bitte";
 "LocatingVideo" = "Video wird gefunden...";
 "DownloadingVideo" = "Video wird heruntergeladen...";
-"Stitching" = "Stitching...";
+"Stitching" = "Verknüpfung wird hergestellt...";
 
 "SegmentDownloadFail" = "Auf das Video kann nicht zugegriffen werden";
 
@@ -517,7 +517,7 @@
 "This will discard any content from the camera" = "Dies wird alle Inhalte von der Kamera verwerfen";
 "Discard" = "Verwerfen";
 
-"#nofilter" = "#nofilter";
+"#nofilter" = "#keinfilter";
 "create a meme" = "ein mem schaffen";
 "create a quote" = "Zitat erstellen";
 "Create a GIF" = "GIF erstellen";
