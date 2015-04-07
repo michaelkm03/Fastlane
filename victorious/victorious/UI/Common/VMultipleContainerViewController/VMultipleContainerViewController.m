@@ -201,13 +201,23 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
-    [self resetNavigationItem];
+    [self resetNavigationItemForIndex:index];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
     id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
     [viewController viewControllerSelected:isDefaultSelection];
+}
+
+- (void)resetNavigationItemForIndex:(NSUInteger)index
+{
+    [self resetNavigationItem];
+    UIViewController<VMultipleContainerChild> *viewController = self.viewControllers[ index ];
+    if ([viewController.navigationItem.rightBarButtonItems count] > 0)
+    {
+        self.navigationItem.rightBarButtonItems = viewController.navigationItem.rightBarButtonItems;
+    }
 }
 
 - (void)resetNavigationItem
