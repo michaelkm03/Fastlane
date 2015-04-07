@@ -38,6 +38,13 @@ extern NSString * const VStreamCellActionViewRepostSuccessIconKey; ///< Key for 
 - (void)addMemeButton;
 - (void)addRepostButton;
 
+/**
+ *  Use this method to force the repost button to update based on what the sequence action delegate returns.
+ *
+ *  @param animated Whether or not ot animate the update.
+ */
+- (void)updateRepostButtonAnimated:(BOOL)animated;
+
 + (NSDictionary *)buttonImages;
 
 @property (nonatomic, readonly) NSMutableArray *actionButtons;

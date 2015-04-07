@@ -120,7 +120,6 @@
 		0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D42C19B46B5E00FA363C /* VResetPasswordViewController.m */; };
 		0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D43019B46B5E00FA363C /* VSignupWithEmailViewController.m */; };
 		0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44419B46B5E00FA363C /* VTableViewCell.m */; };
-		0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */; };
 		0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D50919B46BCB00FA363C /* UIView+Masking.m */; };
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
@@ -719,7 +718,6 @@
 		DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494519DF44CF00CB687B /* settings.storyboard */; };
 		DB2A494719DF44EE00CB687B /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494919DF44EE00CB687B /* login.storyboard */; };
 		DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495119DF451600CB687B /* FindFriendsTableView.xib */; };
-		DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */; };
 		DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */; };
 		DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */; };
 		DB51C54219F86971005AA7B6 /* VAdBreakFallback+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB51C54119F86971005AA7B6 /* VAdBreakFallback+RestKit.m */; };
@@ -826,7 +824,6 @@
 		0308B0ED1AB20B2C00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Profile.strings; sourceTree = "<group>"; };
 		0308B0EE1AB20B2C00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		0308B0F11AB20B2D00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
-		0308B0F21AB20B2D00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VEphemeralTimerView.strings; sourceTree = "<group>"; };
 		0308B0F81AB20B2E00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
 		0308B0F91AB20B2F00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VUserProfileHeaderView.strings; sourceTree = "<group>"; };
 		0308B0FA1AB20B2F00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ActionSheet.strings; sourceTree = "<group>"; };
@@ -1065,8 +1062,6 @@
 		0314D43019B46B5E00FA363C /* VSignupWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSignupWithEmailViewController.m; sourceTree = "<group>"; };
 		0314D44319B46B5E00FA363C /* VTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableViewCell.h; sourceTree = "<group>"; };
 		0314D44419B46B5E00FA363C /* VTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewCell.m; sourceTree = "<group>"; };
-		0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEphemeralTimerView.h; sourceTree = "<group>"; };
-		0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEphemeralTimerView.m; sourceTree = "<group>"; };
 		0314D50819B46BCB00FA363C /* UIView+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Masking.h"; sourceTree = "<group>"; };
 		0314D50919B46BCB00FA363C /* UIView+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masking.m"; sourceTree = "<group>"; };
 		0326BBB819A8183800D995DA /* VPushNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPushNotificationManager.h; sourceTree = "<group>"; };
@@ -1094,7 +1089,6 @@
 		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
 		034D1A571AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
 		034D1A581AAF5A8700EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VUserProfileHeaderView.strings; sourceTree = "<group>"; };
-		034D1A591AAF5A8700EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VEphemeralTimerView.strings; sourceTree = "<group>"; };
 		034D1A5F1AAF5A8800EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
 		034D1A611AAF5A8900EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		034D1A621AAF5A8900EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Discover.strings; sourceTree = "<group>"; };
@@ -1250,7 +1244,6 @@
 		0390088119F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInviteFriendTableViewCell.xib; sourceTree = "<group>"; };
 		0390088319F3A63C00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
 		0390088419F3A64600FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
-		0390088F19F3A99100FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
 		0394203A1AB7A4F20087ADFA /* VInsetStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCellFactory.h; sourceTree = "<group>"; };
 		0394203B1AB7A4F20087ADFA /* VInsetStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCellFactory.m; sourceTree = "<group>"; };
 		0394203D1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCollectionCellPoll.h; sourceTree = "<group>"; };
@@ -1374,7 +1367,6 @@
 		03D94C2B19DE155400BFAA27 /* NSObject+VMethodSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+VMethodSwizzling.h"; sourceTree = "<group>"; };
 		03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+VMethodSwizzling.m"; sourceTree = "<group>"; };
 		03F24A8E1A23FC620011D46A /* VProvidesNavigationMenuItemBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProvidesNavigationMenuItemBadge.h; sourceTree = "<group>"; };
-		03F28F4919F4459D008BB3F7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VEphemeralTimerView.strings; sourceTree = "<group>"; };
 		03F28F4A19F44728008BB3F7 /* VCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCommentCell.xib; sourceTree = "<group>"; };
 		03F6E2681AB79E090017826E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Workspace.storyboard; sourceTree = "<group>"; };
 		03F6E26A1AB79E100017826E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Workspace.strings; sourceTree = "<group>"; };
@@ -2955,9 +2947,6 @@
 				A7AEF9931A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.h */,
 				A7AEF9941A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m */,
 				F06F10C31AC201B90062E1D1 /* Directories */,
-				0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */,
-				0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */,
-				DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */,
 				A7A343E01A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.h */,
 				A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */,
 				A7A343E31A8D896C000F0BCF /* VHashtagStreamCollectionViewController.h */,
@@ -5348,7 +5337,6 @@
 				036F38821A0C4DEA0014DF66 /* Oswald-Light.ttf in Resources */,
 				036F38891A0C4DEA0014DF66 /* PT_Serif-Web-Bold.ttf in Resources */,
 				D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */,
-				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
 				A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */,
 				03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */,
@@ -5769,7 +5757,6 @@
 				0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */,
 				F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */,
 				BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */,
-				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
 				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
@@ -6374,17 +6361,6 @@
 				0308B0F11AB20B2D00144E53 /* de */,
 			);
 			name = FindFriendsTableView.xib;
-			sourceTree = "<group>";
-		};
-		DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0390088F19F3A99100FD7EDF /* Base */,
-				03F28F4919F4459D008BB3F7 /* es */,
-				034D1A591AAF5A8700EB7B2D /* fr */,
-				0308B0F21AB20B2D00144E53 /* de */,
-			);
-			name = VEphemeralTimerView.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

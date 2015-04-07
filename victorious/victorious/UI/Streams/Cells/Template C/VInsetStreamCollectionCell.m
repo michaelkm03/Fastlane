@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <FBKVOController.h>
+
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager.h"
 #import "VInsetStreamCollectionCell.h"
@@ -26,6 +28,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 @interface VInsetStreamCollectionCell ()
 
 @property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak) IBOutlet VStreamCellActionView *cellActionView;
 
 @end
 
@@ -79,6 +82,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     };
 }
 
+- (VStreamCellActionView *)actionView
+{
+    return self.cellActionView;
+}
+
 - (NSString *)headerViewNibName
 {
     return @"VInsetStreamCellHeaderView";
@@ -114,6 +122,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
     [super setSequence:sequence];
     self.actionView.sequence = sequence;
     [self reloadCommentsCount];
