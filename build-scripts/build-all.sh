@@ -107,7 +107,7 @@ popd > /dev/null
 ### Package the individual apps
 
 applyConfiguration(){
-    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive
+    ./build-scripts/apply-config.sh "$1" $CONFIGURATION -a victorious.xcarchive
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
         exit 1

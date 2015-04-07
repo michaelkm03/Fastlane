@@ -5,13 +5,14 @@
 
 SOURCE=$1
 DESTINATION=$2
-P_FLAG=$3
+CONFIGURATION=$3
 PRODUCT_PREFIX=$4
+P_FLAG=$5
 
 if [ "$SOURCE" == "" -o "$DESTINATION" == "" ]; then
-    echo "Usage: $0 <source> <destination> [-p <PRODUCT_PREFIX>]"
+    echo "Usage: $0 <source> <destination> <configuration> [-p <PRODUCT_PREFIX>]"
     echo ""
-    echo "PRODUCT_PREFIX, if supplied, will be used to replaces instances of ${ProductPrefix}"
+    echo "PRODUCT_PREFIX, if supplied, will be used to replace instances of \${ProductPrefix}."
     exit 1
 fi
 
@@ -83,8 +84,20 @@ done
 
 ########### Generate Custom URL Scheme for app
 
-APP_ID=$(/usr/libexec/PlistBuddy -c "Print VictoriousAppID" "$SOURCE" 2> /dev/null)
-CUSTOM_SCHEME="vapp$APP_ID"
+# Default App ID key: the plist key that contains the app ID that corresponds to the configuration we're building.
+if [ "$CONFIGURATION" == "Release" -o "$CONFIGURATION" == "Stable" ]; then
+    DEFAULT_APP_ID_KEY="VictoriousAppID"
+elif [ "$CONFIGURATION" == "Staging" ]; then
+    DEFAULT_APP_ID_KEY="StagingAppID"
+elif [ "$CONFIGURATION" == "QA" ]; then
+    DEFAULT_APP_ID_KEY="QAAppID"
+else
+    DEFAULT_APP_ID_KEY="VictoriousAppID"
+fi
+
+APP_ID=$(/usr/libexec/PlistBuddy -c "Print ${DEFAULT_APP_ID_KEY}" "$SOURCE" 2> /dev/null)
+CUSTOM_SCHEME="${PRODUCT_PREFIX}vapp${APP_ID}"
+
 /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLName string com.getvictorious.deeplinking.scheme" "$DESTINATION"
 /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes Array" "$DESTINATION"
 /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes: string $CUSTOM_SCHEME" "$DESTINATION"

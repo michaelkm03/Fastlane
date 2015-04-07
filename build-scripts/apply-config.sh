@@ -5,11 +5,12 @@
 ###########
 
 FOLDER=$1
-A_FLAG=$2
-XCARCHIVE_PATH=$3
+CONFIGURATION=$2
+A_FLAG=$3
+XCARCHIVE_PATH=$4
 
 if [ "$FOLDER" == "" ]; then
-    echo "Usage: `basename $0` <folder> [-a <archive path>]"
+    echo "Usage: `basename $0` <folder> <configuration> [-a <archive path>]"
     echo ""
     echo "If -a is specified, this script will modify an .xcarchive."
     echo "Otherwise, the current source directory is modified."
@@ -68,7 +69,7 @@ if [ "$A_FLAG" == "-a" ]; then
         echo "ProductPrefix key not found in info.plist."
         exit 1
     fi
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" -p "$PRODUCT_PREFIX"
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $CONFIGURATION -p "$PRODUCT_PREFIX" 
 else
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist"
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $CONFIGURATION
 fi
