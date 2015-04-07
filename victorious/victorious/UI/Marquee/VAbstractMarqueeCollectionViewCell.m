@@ -44,9 +44,9 @@
     _marquee = marquee;
     marquee.collectionView = self.collectionView;
     
-    [self.marquee refreshWithSuccess:^(void)
+    [_marquee refreshWithSuccess:^(void)
      {
-         [self.marquee enableTimer];
+         [_marquee enableTimer];
          [self updatedFromRefresh];
          
      } failure:nil];

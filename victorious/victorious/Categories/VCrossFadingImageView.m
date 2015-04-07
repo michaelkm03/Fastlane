@@ -10,46 +10,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
-
-//Defining a simple container to contain an imageView
-@interface VImageViewContainer : UIView
-
-@property (nonatomic, strong) UIImageView *imageView;
-
-@end
-
-@implementation VImageViewContainer
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if ( self != nil )
-    {
-        [self commonInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if ( self != nil )
-    {
-        [self commonInit];
-    }
-    return self;
-}
-
-- (void)commonInit
-{
-    self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-    self.imageView.backgroundColor = [UIColor clearColor];
-    self.backgroundColor = [UIColor clearColor];
-    [self addSubview:self.imageView];
-    [self v_addFitToParentConstraintsToSubview:self.imageView];
-}
-
-@end
+#import "VImageViewContainer.h"
 
 @interface VCrossFadingImageView ()
 

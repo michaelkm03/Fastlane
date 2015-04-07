@@ -803,6 +803,7 @@
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0ADB0621ACF68F90069DF0D /* blurredMarquee.json in Resources */ = {isa = PBXBuildFile; fileRef = F0ADB0611ACF68F90069DF0D /* blurredMarquee.json */; };
+		F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ADB0671AD367970069DF0D /* VImageViewContainer.m */; };
 		F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390B81A852C7E00EE70C7 /* VTag.m */; };
 		F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
 		F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C21A88502D00EE70C7 /* VTagDictionary.m */; };
@@ -2278,6 +2279,8 @@
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0ADB0611ACF68F90069DF0D /* blurredMarquee.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blurredMarquee.json; sourceTree = "<group>"; };
+		F0ADB0661AD367970069DF0D /* VImageViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageViewContainer.h; sourceTree = "<group>"; };
+		F0ADB0671AD367970069DF0D /* VImageViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageViewContainer.m; sourceTree = "<group>"; };
 		F0B390B71A852C7E00EE70C7 /* VTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTag.h; sourceTree = "<group>"; };
 		F0B390B81A852C7E00EE70C7 /* VTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTag.m; sourceTree = "<group>"; };
 		F0B390BC1A8535E300EE70C7 /* VTagTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagTests.m; sourceTree = "<group>"; };
@@ -5105,6 +5108,8 @@
 		F04DC6CB1ACA4AEC00FBCD50 /* CrossFadingViews */ = {
 			isa = PBXGroup;
 			children = (
+				F0ADB0661AD367970069DF0D /* VImageViewContainer.h */,
+				F0ADB0671AD367970069DF0D /* VImageViewContainer.m */,
 				F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */,
 				F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */,
 				F04DC6BE1AC7791300FBCD50 /* VCrossFadingLabel.h */,
@@ -5619,6 +5624,7 @@
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				F06F10C61AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m in Sources */,
+				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				0314D07019B4670A00FA363C /* UIImage+ImageCreation.m in Sources */,
 				A7299EAB1AA7854600B6BC1F /* VDirectoryCellDecorator.m in Sources */,
