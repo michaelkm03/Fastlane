@@ -30,7 +30,7 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    [self.collectionView registerNib:[VBlurredMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VBlurredMarqueeStreamItemCell suggestedReuseIdentifier]];
+    [self.marqueeCollectionView registerNib:[VBlurredMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VBlurredMarqueeStreamItemCell suggestedReuseIdentifier]];
 }
 
 - (void)setMarquee:(VBlurredMarqueeController *)marquee

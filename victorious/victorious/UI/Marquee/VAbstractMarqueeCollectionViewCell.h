@@ -24,6 +24,6 @@
  */
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VAbstractMarqueeController *marquee; ///< The marquee controller that manages the collection view displayed inside this cell
-@property (nonatomic, weak, readonly) UICollectionView *collectionView; ///< The collection view displayed inside this marquee collection view cell
+@property (nonatomic, weak, readonly) UICollectionView *marqueeCollectionView; ///< The collection view displayed inside this marquee collection view cell
 
 @end

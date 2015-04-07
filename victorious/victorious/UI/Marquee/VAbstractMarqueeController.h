@@ -23,7 +23,7 @@ extern NSString * const kMarqueeURLKey;
 @property (nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource; ///<The VStreamCollectionViewDataSource for the object.
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependencyManager used to style the streamItem cells that are managed by this marquee controller. This is automatically set by the marquee collection view cell associated with this marquee controller
-@property (nonatomic, readonly) NSInteger currentPage; ///< The current page of marquee content being displayed
+@property (nonatomic, readonly) NSUInteger currentPage; ///< The current page of marquee content being displayed
 
 /**
  Initializes the marquee cell factory with an instance of VDependencyManager

@@ -17,10 +17,11 @@
 #import "VObjectManager.h"
 
 NSString * const kMarqueeURLKey = @"marqueeURL";
+static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 @interface VAbstractMarqueeController () <UICollectionViewDelegate, UIScrollViewDelegate>
 
-@property (nonatomic, readwrite) NSInteger currentPage;
+@property (nonatomic, readwrite) NSUInteger currentPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
 @property (nonatomic, readwrite) VStreamItem *currentStreamItem;
 
@@ -70,11 +71,11 @@ NSString * const kMarqueeURLKey = @"marqueeURL";
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
+    NSUInteger currentPage = MAX( 0, self.collectionView.contentOffset.x / pageWidth );
     if ( currentPage != self.currentPage )
     {
         self.currentPage = currentPage;
-        if ( (NSUInteger) self.currentPage < self.streamDataSource.count )
+        if ( self.currentPage < self.streamDataSource.count )
         {
             [self scrolledToPage:self.currentPage];
         }
@@ -84,8 +85,7 @@ NSString * const kMarqueeURLKey = @"marqueeURL";
 - (void)selectNextTab
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSUInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
-    currentPage ++;
+    NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
     if (currentPage == self.streamDataSource.count)
     {
         currentPage = 0;
@@ -118,7 +118,7 @@ NSString * const kMarqueeURLKey = @"marqueeURL";
 
 - (NSTimeInterval)timerFireInterval
 {
-    return 5.0f;
+    return kDefaultMarqueeTimerFireDuration;
 }
 
 #pragma mark - VStreamCollectionDataDelegate

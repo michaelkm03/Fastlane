@@ -45,7 +45,7 @@
             </constraints>
             <size key="customSize" width="428" height="278"/>
             <connections>
-                <outlet property="collectionView" destination="f4U-R2-d0M" id="dw7-fz-VuH"/>
+                <outlet property="marqueeCollectionView" destination="f4U-R2-d0M" id="qCb-Tx-7sn"/>
                 <outlet property="tabContainerView" destination="6L3-2K-X3f" id="au1-cf-Fz3"/>
             </connections>
         </collectionViewCell>

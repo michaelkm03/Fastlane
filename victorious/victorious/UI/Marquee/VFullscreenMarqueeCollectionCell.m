@@ -39,7 +39,7 @@ static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 
 - (void)awakeFromNib
 {
-    [self.collectionView registerNib:[VFullscreenMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VFullscreenMarqueeStreamItemCell suggestedReuseIdentifier]];
+    [self.marqueeCollectionView registerNib:[VFullscreenMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VFullscreenMarqueeStreamItemCell suggestedReuseIdentifier]];
     
     self.tabView = [[VFullscreenMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.bounds];
     self.tabView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -68,7 +68,7 @@ static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
         self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatio;
         
         self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-        self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+        self.marqueeCollectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     }
     else
     {

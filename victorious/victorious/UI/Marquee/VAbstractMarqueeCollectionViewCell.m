@@ -14,7 +14,7 @@
 
 @interface VAbstractMarqueeCollectionViewCell ()
 
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UICollectionView *marqueeCollectionView;
 
 @end
 
@@ -42,7 +42,7 @@
 - (void)setMarquee:(VAbstractMarqueeController *)marquee
 {
     _marquee = marquee;
-    marquee.collectionView = self.collectionView;
+    marquee.collectionView = self.marqueeCollectionView;
     
     [_marquee refreshWithSuccess:^(void)
      {

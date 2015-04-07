@@ -37,7 +37,7 @@ static NSString * const kOrIconKey = @"orIcon";
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    NSAssert(false, @"subclasses must override this function");
+    NSAssert(false, @"desiredSizeWithCollectionViewBounds: must be overridden by subclasses of VAbstractMarqueeStreamItemCell");
     return CGSizeZero;
 }
 
