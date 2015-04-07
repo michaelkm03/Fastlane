@@ -16,8 +16,8 @@
 "Owner" = "Eigentümer";
 "Inbox" = "Posteingang";
 "Comments" = "Kommentare";
-/* No translations available yet: "Remixes" = "Remixes"; */
-/* No translations available yet: "OK" = "OK"; */
+"Remixes" = "Remixes";
+"OK" = "OK";
 "CancelButton" = "Abbrechen";
 "DeleteButton" = "Löschen";
 "ConfirmButton" = "Bestätigen";
@@ -43,12 +43,12 @@
 "Following" = "Folgen";
 "FOLLOWERS" = "FOLLOWER";
 "FOLLOWING" = "FOLGEN";
-/* No translations available yet: "NumStreams" = "%@ STREAMS"; */
+"NumStreams" = "%@ STREAMS";
 "NumItems" = "%@ ELEMENTE";
 
-/* No translations available yet: "TimeSeparator" = ":"; */
-/* No translations available yet: "InvalidTimePlaceholder" = "-:--"; */
-/* No translations available yet: "%ld+" = "%ld+"; */
+"TimeSeparator" = ":";
+"InvalidTimePlaceholder" = "-:--";
+"%ld+" = "%ld+";
 
 "Log in here" = "Hier anmelden";
 "Already Registered?" = "Bereits registriert?";
@@ -69,22 +69,22 @@
 "NotLoggedInMessage" = "Ups! Du scheinst nicht angemeldet zu sein.";
 "SignupFail" = "Kontoerstellung fehlgeschlagen";
 "AccountUpdateFail" = "Kontoaktualisierung fehlgeschlagen";
-/* No translations available yet: "You're not logged in!" = "You're not logged in!"; */
-/* No translations available yet: "ProfileNotLoggedInMessage" = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are."; */
+"You're not logged in!" = "Du bist nicht angemeldet!";
+"ProfileNotLoggedInMessage" = "Hier gibt‘s noch nichts zu sehen! Wir freuen uns riesig, dich in unserer Community zu haben. Erstelle ein Konto, um allen zu zeigen, wie einzigartig du bist.";
 "ProfileSaveFail" = "Deine Profildaten konnten wegen eines Serverfehlers nicht gespeichert werden";
 "ProfileSave" = "Dein Profil wird hochgeladen";
 "ProfileIncomplete" = "Profil unvollständig";
 "ProfileAborted" = "Du kannst ein paar Funktionen erst dann verwenden, wenn dein Profil vervollständigt wurde.";
 "ProfileRequired" = "Bitte gib Folgendes ein:";
 "ProfileRequiredPhoto" = "Profilbild";
-/* No translations available yet: "ProfileRequiredName" = "Name"; */
+"ProfileRequiredName" = "Name";
 "ProfileRequiredToS" = "Akzeptiere unsere Nutzungsbedingungen";
 "ProfileRequiredTagLine" = "Dein Slogan";
 "ProfileUpdateFailed" = "Profilaktualisierung fehlgeschlagen";
-/* No translations available yet: "Profile load failed!" = "Profile load failed!"; */
+"Profile load failed!" = "Laden des Profils fehlgeschlagen!";
 
 "User already exists" = "Nutzer bereits existiert";
-/* No translations available yet: "Sorry, I can't display that right now" = "Sorry, I can't display that right now"; */
+"Sorry, I can't display that right now" = "Leider kann dies gerade nicht angezeigt werden";
 
 "WereSorry" = "Entschuldige";
 "ErrorOccured" = "Aus irgendeinem Grund können wir keine Verbindung zum Server herstellen. Bitte versuche es später erneut!";
@@ -123,7 +123,7 @@
 "ProfileNotFollowingMessage" = "Baue eine Gemeinschaft, indem du anderen Nutzern folgst und sie ermunterst, dir zu folgen.";
 
 "SuggestedFollowersNone" = "Keine Follower";
-/* No translations available yet: "SuggestedFollowersSing" = "%@ Follower"; */
+"SuggestedFollowersSing" = "%@ Follower";
 "SuggestedFollowersPlur" = "%@ Follower";
 "SuggestedFollowersK" = "%@ Follower";
 
@@ -143,7 +143,7 @@
 "EmailShareSubjectFormat" = "Sieh dir diesen Beitrag von der %@-App an!"; //Check out this post from the <creator name> app!
 
 
-/* No translations available yet: "Facebook" = "Facebook"; */
+"Facebook" = "Facebook";
 "FacebookFailed" = "Verbindung zu Facebook konnte nicht hergestellt werden.";
 
 "Search people and hashtags" = "Nach Personen oder Hashtags suchen";
@@ -229,7 +229,7 @@
 "ConversationDelError" = "Gespräch kann nicht gelöscht werden";
 "ConversationSendError" = "Deine Nachricht konnte nicht gesendet werden";
 
-/* No translations available yet: "Normal" = "Normal"; */
+"Normal" = "Normal";
 
 "ClosePreviewConfirm" = "Möchtest du dieses Fenster wirklich schließen? Deine Kreation wird verloren gehen.";
 "Stay" = "Bleiben";
@@ -249,28 +249,28 @@
 
 "VideoPlayFailed" = "Video konnte nicht wiedergegeben werden";
 "See More" = "Weitere ansehen";
-/* No translations available yet: "..." = "..."; */
+"..." = "...";
 
 "PostWillExpire" = "Beitrag wird ablaufen";
 "CancelExpiration" = "Ablauf abbrechen?";
 "CancelExirationConfirm" = "Willst du wirklich das Einstellen eines Ablaufdatums abbrechen?";
 
 "Now" = "Jetzt";
-/* No translations available yet: "SecondsAgo" = "%ds"; */
+"SecondsAgo" = "%ds";
 "MinuteAgo" = "1 Min.";
-/* No translations available yet: "MinutesAgo" = "%dm"; */
+"MinutesAgo" = "%dm";
 "HourAgo" = "1 Std.";
-/* No translations available yet: "HoursAgo" = "%dh"; */
+"HoursAgo" = "%dh";
 "Yesterday" = "1T";
-/* No translations available yet: "DaysAgo" = "%dd"; */
+"DaysAgo" = "%dd";
 "LastWeek" = "1W";
-/* No translations available yet: "WeeksAgo" = "%dw"; */
+"WeeksAgo" = "%dw";
 "LastMonth" = "1Mo";
-/* No translations available yet: "MonthsAgo" = "%dmo"; */
+"MonthsAgo" = "%dmo";
 "LastYear" = "1J";
-/* No translations available yet: "YearsAgo" = "%dy"; */
+"YearsAgo" = "%dy";
 
-/* No translations available yet: "Minute" = "Minute"; */
+"Minute" = "Minute";
 "Hour" = "Stunde";
 "Day" = "Tag";
 "Week" = "Woche";
@@ -285,7 +285,7 @@
 "JustAMoment" = "Einen Moment bitte";
 "LocatingVideo" = "Video wird gefunden...";
 "DownloadingVideo" = "Video wird heruntergeladen...";
-/* No translations available yet: "Stitching" = "Stitching..."; */
+"Stitching" = "Stitching...";
 
 "SegmentDownloadFail" = "Auf das Video kann nicht zugegriffen werden";
 
@@ -319,12 +319,12 @@
 "ResetPasswordNewEqualsCurrentMessage" = "Bitte gib ein Passwort, das sich von deinem aktuellen Passwort utnerscheidet.";
 
 "ResetPasswordConfirmCancelTitle" = "Bestätigen";
-/* No translations available yet: "ResetPasswordConfirmCancelMessage" = "Do you want to cancel your password reset?"; */
-/* No translations available yet: "ResetPasswordYesCancelButton" = "Yes, cancel"; */
-/* No translations available yet: "ResetPasswordNoContinueButton" = "No, continue"; */
+"ResetPasswordConfirmCancelMessage" = "Möchtest du das Zurücksetzen deines Passworts abbrechen?";
+"ResetPasswordYesCancelButton" = "Ja, abbrechen";
+"ResetPasswordNoContinueButton" = "Nein, fortsetzen";
 
-/* No translations available yet: "Error Resetting Password" = "Error Resetting Password"; */
-/* No translations available yet: "Please check your network connection or try again later." = "Please check your network connection or try again later."; */
+"Error Resetting Password" = "Fehler beim Zurücksetzen des Passworts";
+"Please check your network connection or try again later." = "Bitte überprüfe deine Netzwerkverbindung oder versuche es erneut.";
 
 "EnterResetCodeMessage" = "Eine E-Mail wurde an diese Adresse gesendet mit Anweisungen zum Zurücksetzen deines Passworts.";
 "EnterCodeTitle" = "CODE EINGEBEN";
@@ -381,13 +381,13 @@
 "UserBannedMessage" = "Leider bist du ein gesperrtes Community-Mitglied. Du kannst nach wie vor Inhalte ansehen, kannst aber nichts veröffentlichen oder mit anderen interagieren.";
 
 "AddDescription" = "Füge eine Bechreibung hinzu... und die #hashtags nicht vergessen";
-/* No translations available yet: "AddDescriptionAnchor" = "#hashtags"; */
+"AddDescriptionAnchor" = "#hashtags";
 "InsertTextHere" = "Text hier einfügen";
 
 "NotConnected" = "Nicht verbunden";
 "ConnectedTo" = "Verbunden mit %@";
 
-/* No translations available yet: "Version" = "Version %@"; */
+"Version" = "Version %@";
 
 "ToSText" = "Nutzungsbedingungen";
 "ToSAgreement" = "Ich bin mindestens 13 Jahre alt und akzeptiere die Nutzungsbedingungen";
@@ -400,12 +400,12 @@
 "Report/Flag" = "Melden/Markieren";
 "CreatedBy" = "ERSTELLT VON";
 "remixes" = "Remixes";
-/* No translations available yet: "Remix" = "Remix"; */
+"Remix" = "Remix";
 "reposts" = "Reposts";
-/* No translations available yet: "REPOSTS" = "Reposts"; */
+"REPOSTS" = "Reposts";
 "REMIXES" = "REPOSTEN";
 "Repost" = "Reposten";
-/* No translations available yet: "Reposted" = "Reposted"; */
+"Reposted" = "Regeposted";
 "RepostContentView" = " REPOSTEN";
 "RepostedContentView" = " REGEPOSTED";
 "Comment" = "Kommentar";
@@ -471,7 +471,7 @@
 "Always" = "Immer";
 "Never" = "Niemals";
 "Only on Wifi" = "Nur über WiFi";
-/* No translations available yet: "NotificationSettingSectionFeeds" = "Feeds"; */
+"NotificationSettingSectionFeeds" = "Feeds";
 "NotificationSettingSectionPeople" = "Leute";
 "Open Settings" = "Einstellungen öffnen";
 
@@ -516,14 +516,14 @@
 "This will discard any content from the camera" = "Dies wird alle Inhalte von der Kamera verwerfen";
 "Discard" = "Verwerfen";
 
-/* No translations available yet: "#nofilter" = "#nofilter"; */
+"#nofilter" = "#nofilter";
 "create a meme" = "ein mem schaffen";
-/* No translations available yet: "create a quote" = "create a quote"; */
+"create a quote" = "Zitat erstellen";
 "Create a GIF" = "GIF erstellen";
-/* No translations available yet: "GIF" = "GIF"; */
-/* No translations available yet: "quote" = "quote"; */
-/* No translations available yet: "GIF MODE" = "GIF MODE"; */
-/* No translations available yet: "VIDEO MODE" = "VIDEO MODE"; */
+"GIF" = "GIF";
+"quote" = "Zitat";
+"GIF MODE" = "GIF-MODUS";
+"VIDEO MODE" = "VIDEO-MODUS";
 "Write a caption (optional)" = "Bildunterschrift eingeben (optional)";
 "Rendering..." = "Wiedergabe...";
 "Render failure" = "Wiedergabe fehlgeschlagen";

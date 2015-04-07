@@ -22,8 +22,17 @@
 /* Class = "UILabel"; text = "In-App Purchases"; ObjectID = "16U-jQ-75p"; */
 "16U-jQ-75p.text" = "In-App-Käufe";
 
+/* Class = "UITableViewSection"; headerTitle = "Video"; ObjectID = "32G-4D-L9h"; */
+"32G-4D-L9h.headerTitle" = "Video";
+
+/* Class = "UILabel"; text = "Tracking"; ObjectID = "A70-cw-6uE"; */
+"A70-cw-6uE.text" = "Tracken";
+
 /* Class = "UITextField"; placeholder = "New Password"; ObjectID = "AVA-KF-9I3"; */
 "AVA-KF-9I3.placeholder" = "Mindestens 8 Zeichen";
+
+/* Class = "UINavigationItem"; title = "Tracking"; ObjectID = "Er4-Xd-8gm"; */
+"Er4-Xd-8gm.title" = "Tracken";
 
 /* Class = "UILabel"; text = "Product"; ObjectID = "IJf-ZD-6J8"; */
 "IJf-ZD-6J8.text" = "Produkt";
@@ -33,6 +42,12 @@
 
 /* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
 "LM5-sK-eej.normalTitle" = "Abmelden";
+
+/* Class = "UINavigationItem"; title = "Autoplay"; ObjectID = "MMO-h3-iOL"; */
+"MMO-h3-iOL.title" = "Autoplay";
+
+/* Class = "UIButton"; normalTitle = "Action"; ObjectID = "N5S-6f-jb6"; */
+"N5S-6f-jb6.normalTitle" = "Action";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "OZa-mN-lgJ"; */
 "OZa-mN-lgJ.text" = "Beschriftung";
