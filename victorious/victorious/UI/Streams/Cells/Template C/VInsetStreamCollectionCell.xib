@@ -110,11 +110,11 @@
             </constraints>
             <size key="customSize" width="543" height="290"/>
             <connections>
-                <outlet property="actionView" destination="LDv-jo-7gZ" id="1oO-81-IEN"/>
                 <outlet property="backgroundContainer" destination="cYN-Ie-nea" id="1KV-bH-CHV"/>
                 <outlet property="captionTextView" destination="QyC-HK-x2o" id="cMd-VE-Gge"/>
                 <outlet property="captionTextViewBottomConstraint" destination="u0E-OZ-gY2" id="zUj-rx-H7e"/>
                 <outlet property="captionTextViewTopConstraint" destination="A3e-xE-iUM" id="OUm-Pz-YPf"/>
+                <outlet property="cellActionView" destination="LDv-jo-7gZ" id="68A-oz-UVy"/>
                 <outlet property="commentHeightConstraint" destination="NDj-86-whc" id="JEg-AB-qBh"/>
                 <outlet property="commentLabelBottomConstraint" destination="rXC-pD-yT2" id="Hqm-PP-cMD"/>
                 <outlet property="commentsLabel" destination="cW4-bM-sNC" id="luq-a5-YM5"/>
@@ -126,7 +126,7 @@
                 <outlet property="streamCellHeaderView" destination="W6W-Ju-9kU" id="8fB-eK-iAA"/>
                 <outlet property="videoPlayerView" destination="N8i-0p-V1f" id="Gys-9u-d7Z"/>
             </connections>
-            <point key="canvasLocation" x="326" y="350.5"/>
+            <point key="canvasLocation" x="88" y="110.5"/>
         </collectionViewCell>
     </objects>
     <resources>
