@@ -11,12 +11,33 @@
 
 #import "VRTCUserPostedAtFormatter.h"
 #import "VThemeManager.h"
+#import "VDependencyManager.h"
 
 @interface VVRTCUserPostedAtFormatterTests : XCTestCase
 
 @end
 
 @implementation VVRTCUserPostedAtFormatterTests
+
+- (void)setUp
+{
+    //Setup the shared theme manager with a dependency manager so that the VRTCUserPostedAtFormatter can use it
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:@{
+                                                                                                kVLinkColor : @{
+                                                                                                        @"red" : @255,
+                                                                                                        @"green" : @0,
+                                                                                                        @"blue" : @255,
+                                                                                                        @"alpha" : @255
+                                                                                                        },
+                                                                                                kVLabel2Font : @{
+                                                                                                        @"fontSize" : @10,
+                                                                                                        @"fontName" : @"STHeitiSC-Light"
+                                                                                                        }
+                                                                                                }
+                                                            dictionaryOfClassesByTemplateName:nil];
+    [[VThemeManager sharedThemeManager] setDependencyManager:dependencyManager];
+}
 
 - (void)testNilArguments
 {
