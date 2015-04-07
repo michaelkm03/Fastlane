@@ -307,6 +307,11 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Invalid New Password";
 "ResetPasswordNewEqualsCurrentMessage" = "Please enter a password that is different than your current password.";
 
+"ResetPasswordConfirmCancelTitle" = "Confirm";
+"ResetPasswordConfirmCancelMessage" = "Do you want to cancel your password reset?";
+"ResetPasswordYesCancelButton" = "Yes, cancel";
+"ResetPasswordNoContinueButton" = "No, continue";
+
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
 "Resend Email"           =   "Resend Email";

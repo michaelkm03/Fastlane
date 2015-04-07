@@ -128,9 +128,10 @@ static NSCache *_sharedImageCache = nil;
     self.commentAndMediaView.mediaThumbnailView.image = nil;
     self.commentAndMediaView.mediaThumbnailView.hidden = YES;
     
+    __weak typeof(self) welf = self;
     self.commentAndMediaView.onMediaTapped = ^(void)
     {
-        [self tappedOnMedia];
+        [welf tappedOnMedia];
     };
 }
 
