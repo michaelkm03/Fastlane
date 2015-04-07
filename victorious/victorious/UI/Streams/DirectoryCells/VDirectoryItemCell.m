@@ -24,6 +24,10 @@ static const CGFloat kBorderWidth = 0.5f;
 @interface VDirectoryItemCell()
 
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewImageTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewImageLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewImageTrailingConstraint;
+
 @property (nonatomic, weak) IBOutlet UIView *streamItemContainerOrTopStackItem;
 @property (nonatomic, weak) IBOutlet VExtendedView *topStack;
 @property (nonatomic, weak) IBOutlet VExtendedView *middleStack;
@@ -34,6 +38,17 @@ static const CGFloat kBorderWidth = 0.5f;
 @end
 
 @implementation VDirectoryItemCell
+
+#pragma mark - Initialization
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.previewImageTopConstraint.constant = kBorderWidth;
+    self.previewImageLeadingConstraint.constant = kBorderWidth;
+    self.previewImageTrailingConstraint.constant = kBorderWidth;
+}
 
 #pragma mark - Sizing Methods
 
