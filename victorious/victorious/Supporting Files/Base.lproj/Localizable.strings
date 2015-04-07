@@ -305,7 +305,9 @@
 "ResetPasswordNewEqualsCurrentMessage" = "Please enter a password that is different than your current password.";
 
 "ResetPasswordConfirmCancelTitle" = "Confirm";
-"ResetPasswordConfirmCancelMessage" = "Are you sure you want to cancel your password reset dialogue?";
+"ResetPasswordConfirmCancelMessage" = "Do you want to cancel your password reset?";
+"ResetPasswordYesCancelButton" = "Yes, cancel";
+"ResetPasswordNoContinueButton" = "No, continue";
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
