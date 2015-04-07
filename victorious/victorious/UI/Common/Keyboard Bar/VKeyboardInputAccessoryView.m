@@ -278,7 +278,7 @@ shouldChangeTextInRange:(NSRange)range
 
 - (NSDictionary *)textEntryAttributes
 {
-    return @{ NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey] };
+    return @{ NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey] ?: @"" };
 }
 
 - (void)updateSendButton
