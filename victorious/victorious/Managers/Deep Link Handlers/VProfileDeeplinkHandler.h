@@ -16,6 +16,6 @@
  */
 @interface VProfileDeeplinkHandler : NSObject <VDeeplinkHandler>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 @end

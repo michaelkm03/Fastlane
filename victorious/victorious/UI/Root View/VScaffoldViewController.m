@@ -63,8 +63,8 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
     //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
     //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/1677"];
-    //[self performSelector:@selector(navigateToDeeplinkURL:) withObject:testDeepLinkURL afterDelay:1.0];
+    NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/1677"];
+    [self performSelector:@selector(navigateToDeeplinkURL:) withObject:testDeepLinkURL afterDelay:1.0];
 }
 
 #pragma mark - First Time User Experience
@@ -219,10 +219,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 - (id<VDeeplinkHandler>)deeplinkHandler
 {
-    VContentDeepLinkHandler *contentViewDeepLinkHandler = [[VContentDeepLinkHandler alloc] init];
-    contentViewDeepLinkHandler.dependencyManager = self.dependencyManager;
-    contentViewDeepLinkHandler.scaffoldViewController = self;
-    return contentViewDeepLinkHandler;
+    return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - Navigation

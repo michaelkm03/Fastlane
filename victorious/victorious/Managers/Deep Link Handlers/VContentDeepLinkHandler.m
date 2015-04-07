@@ -12,11 +12,34 @@
 #import "VScaffoldViewController.h"
 #import <MBProgressHUD.h>
 #import "NSURL+VPathHelper.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
+@interface VContentDeepLinkHandler()
+
+@property (nonatomic, weak) VScaffoldViewController *scaffoldViewController;
+@property (nonatomic, weak) VDependencyManager *dependencyManager;
+
+@end
+
 @implementation VContentDeepLinkHandler
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if (self)
+    {
+        _dependencyManager = dependencyManager;
+        NSParameterAssert( dependencyManager != nil );
+        NSParameterAssert( [self.dependencyManager objectManager] != nil );
+                              
+        _scaffoldViewController = [dependencyManager scaffoldViewController];
+        NSParameterAssert( _scaffoldViewController != nil );
+    }
+    return self;
+}
 
 - (BOOL)requiresAuthorization
 {

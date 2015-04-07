@@ -14,7 +14,29 @@
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
 
+@interface VInboxDeepLinkHandler()
+
+@property (nonatomic, weak) VInboxContainerViewController *inboxContainerViewController;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@end
+
 @implementation VInboxDeepLinkHandler
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+             inboxContainerViewController:(VInboxContainerViewController *)inboxContainerViewController
+{
+    self = [super init];
+    if (self)
+    {
+        _dependencyManager = dependencyManager;
+        NSParameterAssert( dependencyManager != nil );
+        
+        _inboxContainerViewController = inboxContainerViewController;
+        NSParameterAssert( _inboxContainerViewController != nil );
+    }
+    return self;
+}
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
 {

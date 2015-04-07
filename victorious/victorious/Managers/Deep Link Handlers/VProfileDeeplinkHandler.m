@@ -13,7 +13,25 @@
 
 static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
+@interface VProfileDeeplinkHandler ()
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@end
+
+
 @implementation VProfileDeeplinkHandler
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if (self)
+    {
+        _dependencyManager = dependencyManager;
+        NSParameterAssert( dependencyManager != nil );
+    }
+    return self;
+}
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
 {

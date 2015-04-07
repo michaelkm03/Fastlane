@@ -153,9 +153,8 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
 
 - (id<VDeeplinkHandler>)deeplinkHandler
 {
-    VInboxDeepLinkHandler *handler = [[VInboxDeepLinkHandler alloc] init];
-    handler.inboxContainerViewController = self;
-    return handler;
+    return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager
+                                       inboxContainerViewController:self];
 }
 
 #pragma mark - NSNotification handlers

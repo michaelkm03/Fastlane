@@ -14,13 +14,10 @@
 /**
  Displays a content view for deeplink URLs that point to content views.
  
- @return YES if the given URL was a content URL, or NO if it was
- some other kind of deep link.
+ @return YES if the given URL was a content URL, or NO if it was some other kind of deep link.
  */
 @interface VContentDeepLinkHandler : NSObject <VDeeplinkHandler>
 
-@property (nonatomic, weak) VScaffoldViewController *scaffoldViewController;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 @end

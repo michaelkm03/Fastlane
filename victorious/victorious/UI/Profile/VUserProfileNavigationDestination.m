@@ -65,9 +65,7 @@
 
 - (id<VDeeplinkHandler>)deeplinkHandler
 {
-    VProfileDeeplinkHandler *deeplinkHandler = [[VProfileDeeplinkHandler alloc] init];
-    deeplinkHandler.dependencyManager = self.dependencyManager;
-    return deeplinkHandler;
+    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 @end
