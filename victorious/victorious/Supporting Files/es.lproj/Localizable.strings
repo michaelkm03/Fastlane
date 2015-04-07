@@ -397,10 +397,11 @@
 
 "RTCUserPostedAtSyntax" = "%@ a %@";//e.g. "Username at 0:04"
 
-"Report/Flag" = "Reporar/marcar";
+"Report/Flag" = "Reportar/señalar";
 "CreatedBy" = "CREADO POR";
 "remixes" = "remixes";
 "Remix" = "Remix";
+"RemixVerb" = "Remezclar";
 "reposts" = "Republicaciones";
 "REPOSTS" = "Vueltos a publicar";
 "REMIXES" = "Remixes";

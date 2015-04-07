@@ -218,7 +218,7 @@
 {
     if ([self.viewModel.sequence canRemix])
     {
-        NSString *remixActionTitle = NSLocalizedString(@"Remix", @"");
+        NSString *remixActionTitle = NSLocalizedString(@"RemixVerb", @"");
         if ([self.viewModel.sequence isVideo])
         {
             remixActionTitle = NSLocalizedString(@"GIF", @"");
