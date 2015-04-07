@@ -11,6 +11,9 @@
 
 @class VDependencyManager;
 
+/**
+ Handles deep links related to showing user profiles.
+ */
 @interface VProfileDeeplinkHandler : NSObject <VDeeplinkHandler>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

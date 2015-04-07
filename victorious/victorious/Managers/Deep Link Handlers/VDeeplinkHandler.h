@@ -8,15 +8,31 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol VNavigationDestination, VDeeplinkHandler;
+
+/**
+ Conformers of this protocol are indicating they provide deep link support by implementing
+ the `deeplinkHandler` property, returning a `VDeeplinkHanlder` object that is dedicated to
+ validating and responding to deep link URLs.
+ */
+@protocol VDeeplinkSupporter <NSObject>
+
+/**
+ Carries out the sole purpose of this protocol, which is to provide a `VDeeplinkHandler` object
+ that will handle deep links on behalf of the current object (usually a UIViewController conforming
+ to VNavigationDestination).
+ */
+- (id<VDeeplinkHandler>)deeplinkHandler;
+
+@end
+
 /**
  Completion block for deeplink handlers.
  
- @param viewController The view controller to display. Usually you should pass "self", but not always. 
-                       If nil, navigation is cancelled and an error is displayed to the user.
+ @param viewController The view controller to display. Usually you should pass "self", but not always.
+ If nil, navigation is cancelled and an error is displayed to the user.
  */
 typedef void (^VDeeplinkHandlerCompletionBlock)(UIViewController *viewController);
-
-@protocol VNavigationDestination;
 
 /**
  Objects conforming to this protocol are able to provide a view controller for
@@ -38,14 +54,17 @@ typedef void (^VDeeplinkHandlerCompletionBlock)(UIViewController *viewController
  */
 - (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion;
 
+/**
+ Indicates that the deep link destination cannot be shown to users who are not authorized (logged in).
+ Calling code will check this method and displa the proper prompt to the user before displaying
+ the ultimate deep link destination if authorization succeeded.
+ */
 - (BOOL)requiresAuthorization;
 
+/**
+ Checks the URL for requisite structure and data.
+ @return YES if his object can handle the deep link and no errors in the URL were found.
+ */
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url;
-
-@end
-
-@protocol VDeeplinkSupporter <NSObject>
-
-- (id<VDeeplinkHandler>)deeplinkHandler;
 
 @end

@@ -33,7 +33,6 @@
         return NO;
     }
     
-#warning See about refactoring this code to a synchronous version that returns a view controller immediately and lets that view controller handle loading the conversation once it it has been loaded and presented.
     NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
     [[VObjectManager sharedManager] conversationByID:@(conversationID)
                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
