@@ -40,5 +40,4 @@
     [self v_addFitToParentConstraintsToSubview:self.imageView];
 }
 
-
 @end

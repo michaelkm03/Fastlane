@@ -120,6 +120,8 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     
     if ( !self.showedInitialDisplayAnimation )
     {
+        self.collectionView.hidden = NO;
+
         self.crossfadingLabel.alpha = 0.0f;
         
         [self.collectionView layoutIfNeeded];
@@ -205,6 +207,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
                                                                                         forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.marquee = self;
+    self.collectionView.hidden = !self.showedInitialDisplayAnimation;
     CGSize desiredSize = [VBlurredMarqueeCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
     

@@ -15,11 +15,12 @@
 #import "VDependencyManager.h"
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
+#import "VDependencyManager+VObjectManager.h"
 
 NSString * const kMarqueeURLKey = @"marqueeURL";
 static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
-@interface VAbstractMarqueeController () <UICollectionViewDelegate, UIScrollViewDelegate>
+@interface VAbstractMarqueeController ()
 
 @property (nonatomic, readwrite) NSUInteger currentPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
@@ -34,12 +35,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     self = [super init];
     if ( self != nil )
     {
-        _stream = [VStream streamForPath:[[dependencyManager stringForKey:kMarqueeURLKey] v_pathComponent] inContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
-        _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:_stream];
-        _streamDataSource.delegate = self;
-        _streamDataSource.collectionView = _collectionView;
-        _collectionView.dataSource = _streamDataSource;
-        _currentPage = 0;
+        NSString *streamPath = [[dependencyManager stringForKey:kMarqueeURLKey] v_pathComponent];
+        if ( streamPath != nil )
+        {
+            _stream = [VStream streamForPath:streamPath inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+            [self setupWithStream:_stream];
+        }
         _dependencyManager = dependencyManager;
     }
     return self;
@@ -64,6 +65,23 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
          }
      }
                             failure:failureBlock];
+}
+
+#pragma mark - stream updating
+
+- (void)setStream:(VStream *)stream
+{
+    _stream = stream;
+    [self setupWithStream:stream];
+}
+
+- (void)setupWithStream:(VStream *)stream
+{
+    _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
+    _streamDataSource.delegate = self;
+    _streamDataSource.collectionView = _collectionView;
+    _collectionView.dataSource = _streamDataSource;
+    _currentPage = 0;
 }
 
 #pragma mark - UIScrollViewDelegate
