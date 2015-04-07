@@ -40,6 +40,13 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
 
+// Download
+#import "VDownloadManager.h"
+#import "VDownloadTaskInformation.h"
+#import "VNode+Fetcher.h"
+#import "VAsset.h"
+#import "NSURL+VAssetCache.h"
+
 @interface VNewContentViewController ()
 
 @property VSequenceActionController *sequenceActionController;
@@ -87,6 +94,32 @@
     [actionItems addObject:descriptionItem];
     
     [self addRemixToActionItems:actionItems contentViewController:contentViewController actionSheetViewController:actionSheetViewController];
+    
+#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+    if (self.viewModel.videoViewModel.itemURL != nil)
+    {
+        VActionItem *downloadItem = [VActionItem defaultActionItemWithTitle:@"Download" actionIcon:nil detailText:nil];
+        downloadItem.selectionHandler = ^(VActionItem *item)
+        {
+            VDownloadManager *downloadManager = [[VDownloadManager alloc] init];
+            VAsset *mp4Asset = [self.viewModel.sequence.firstNode mp4Asset];
+            NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:mp4Asset.data]];
+            urlRequest.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodGET);
+            VDownloadTaskInformation *downloadTask = [[VDownloadTaskInformation alloc] initWithRequest:urlRequest downloadLocation:[NSURL cacheURLForAsset:mp4Asset]];
+            [downloadManager enqueueDownloadTask:downloadTask
+                                      onComplete:^(NSURL *downloadFileLocation, NSURLResponse *response, NSError *error)
+             {
+                 VLog(@"Video Downloaded! at location: %@, error: %@", downloadFileLocation, error);
+             }];
+            VLog(@"download video");
+            
+            [self dismissViewControllerAnimated:YES
+                                     completion:nil];
+        };
+        [actionItems addObject:downloadItem];
+    }
+#endif
+
     
     if (self.viewModel.sequence.canRepost)
     {

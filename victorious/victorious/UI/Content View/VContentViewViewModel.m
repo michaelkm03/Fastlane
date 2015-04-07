@@ -29,6 +29,7 @@
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
 #import "VPaginationManager.h"
+#import "VAsset+VCachedData.h"
 
 // Formatters
 #import "NSDate+timeSince.h"
@@ -38,6 +39,7 @@
 
 // Media
 #import "NSURL+MediaType.h"
+#import "NSURL+VAssetCache.h"
 
 // Monetization
 #import "VAdBreak.h"
@@ -242,8 +244,21 @@
 
 - (void)createVideoModel
 {
+#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+    // Check for the cached mp4
+    BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
+    if (assetIsCached)
+    {
+        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                    withAdSystem:VMonetizationPartnerNone
+                                                                     withDetails:nil
+                                                                        withLoop:[self loop]];
+        return;
+    }
+#endif
+    
     // Sets up the monetization chain
-    if (self.sequence.adBreaks.count > 0 )
+    if (self.sequence.adBreaks.count > 0)
     {
         [self createAdChainWithCompletion];
         self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
@@ -453,6 +468,15 @@
 
 - (NSURL *)videoURL
 {
+    // Check for the cached mp4
+    VAsset *mp4Asset = [self.currentNode mp4Asset];
+    NSURL *cacheURL = [NSURL cacheURLForAsset:mp4Asset];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:cacheURL.path])
+    {
+        VLog(@"cache hit!");
+        return cacheURL;
+    }
+    
     return [NSURL URLWithString:self.currentAsset.data];
 }
 
