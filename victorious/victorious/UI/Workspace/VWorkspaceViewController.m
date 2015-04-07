@@ -295,7 +295,7 @@ static CGFloat const kWorkspaceToolButtonSize = 44.0f;
          {
              UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Render failure", @"")
                                                                   message:error.localizedDescription
-                                                        cancelButtonTitle:NSLocalizedString(@"ok", @"")
+                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                            onCancelButton:nil
                                                otherButtonTitlesAndBlocks:nil, nil];
              [errorAlert show];

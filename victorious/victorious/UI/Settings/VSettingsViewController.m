@@ -411,7 +411,7 @@ static NSString * const kSupportEmailKey = @"email.support";
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                      otherButtonTitles:nil];
         [alert show];
     }

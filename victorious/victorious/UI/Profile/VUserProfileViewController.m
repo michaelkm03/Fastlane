@@ -605,7 +605,7 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
         [[[UIAlertView alloc] initWithTitle:nil
                                     message:NSLocalizedString(@"UnfollowError", @"")
                                    delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                           otherButtonTitles:nil] show];
     };
     

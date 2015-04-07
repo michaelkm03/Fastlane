@@ -1,14 +1,14 @@
 /* No comment provided by engineer. */
-" Day" = " Día";
+"Day" = " Día";
 
 /* No comment provided by engineer. */
-" Days" = " Días";
+"Days" = " Días";
 
 /* No comment provided by engineer. */
-" Hour" = " Hora";
+"Hour" = " Hora";
 
 /* No comment provided by engineer. */
-" Hours" = " Horas";
+"Hours" = " Horas";
 
 /* No Filter filter name. */
 "#nofilter" = "#nohayfiltro";
@@ -248,7 +248,7 @@
 "Forgot Password?" = "Olvidaste tu contraseña";
 
 /* Created a GIF from this video */
-"GIF" = "REGALO";
+"GIF" = "GIF";
 
 /* No comment provided by engineer. */
 "HashtagSubscribeError" = "Lo sentimos, se ha producido un error al intentar seguir este hashtag. Por favor, trata más tarde.";
@@ -330,9 +330,6 @@
 
 /* No comment provided by engineer. */
 "Logout" = "Salir";
-
-/* Password character requirement. */
-"Minimum 8 Characters" = "Mínimo 8 caracteres";
 
 /* No comment provided by engineer. */
 "Minimum 8 characters" = "Mínimo 8 caracteres";
@@ -481,9 +478,6 @@
 /* No comment provided by engineer. */
 "OK" = "Bien";
 
-/* OK */
-"OKButton" = "OK";
-
 /* No comment provided by engineer. */
 "OS Version:" = "Versión OS";
 
@@ -518,7 +512,7 @@
 "PasswordValidation" = "La contraseña tiene menos de 8 caracteres";
 
 /* No comment provided by engineer. */
-"Please try again later." = "Por favor, intenta en un momento";
+"TryAgain" = "Por favor, intenta en un momento";
 
 /* No comment provided by engineer. */
 "PostFromCreator" = "Publicado por %@";
@@ -906,9 +900,6 @@
 
 /* No comment provided by engineer. */
 "no results" = "no hay resultados";
-
-/* No comment provided by engineer. */
-"ok" = "ok";
 
 /* No comment provided by engineer. */
 "remixedFromFormat" = "Remix de %@";

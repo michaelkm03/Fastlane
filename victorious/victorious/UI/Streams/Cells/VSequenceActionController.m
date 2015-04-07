@@ -325,7 +325,7 @@
          UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                                                 message:NSLocalizedString(@"ReportContentMessage", @"")
                                                                delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                       otherButtonTitles:nil];
          [alert show];
          
@@ -337,7 +337,7 @@
          UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                 message:NSLocalizedString(@"ErrorOccured", @"")
                                                                delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                       otherButtonTitles:nil];
          [alert show];
      }];

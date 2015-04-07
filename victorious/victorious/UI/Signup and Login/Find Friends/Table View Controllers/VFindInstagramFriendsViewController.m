@@ -27,7 +27,7 @@
     
     if (userInteraction)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Instagram not implemented yet." delegate:nil cancelButtonTitle:NSLocalizedString(@"OKButton", @"") otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Instagram not implemented yet." delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [alert show];
     }
 }

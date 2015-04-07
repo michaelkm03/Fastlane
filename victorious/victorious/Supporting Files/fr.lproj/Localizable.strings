@@ -1,14 +1,14 @@
 /* No comment provided by engineer. */
-" Day" = "Jour";
+"Day" = "Jour";
 
 /* No comment provided by engineer. */
-" Days" = "Jours";
+"Days" = "Jours";
 
 /* No comment provided by engineer. */
-" Hour" = "Heure";
+"Hour" = "Heure";
 
 /* No comment provided by engineer. */
-" Hours" = "Heures";
+"Hours" = "Heures";
 
 /* No Filter filter name. */
 "#nofilter" = "#nofilter";
@@ -331,9 +331,6 @@
 /* No comment provided by engineer. */
 "Logout" = "Déconnexion";
 
-/* Password character requirement. */
-"Minimum 8 Characters" = "Minimum 8 caractères";
-
 /* No comment provided by engineer. */
 "Minimum 8 characters" = "Minimum 8 caractères";
 
@@ -478,11 +475,8 @@
 /* No comment provided by engineer. */
 "NumStreams" = "%@ FLUX";
 
-/* No comment provided by engineer. */
-"OK" = "OK";
-
 /* OK */
-"OKButton" = "OK";
+"OK" = "OK";
 
 /* No comment provided by engineer. */
 "OS Version:" = "Version du système d'exploitation :";
@@ -518,7 +512,7 @@
 "PasswordValidation" = "Le mot de passe comporte moins de 8 caractères";
 
 /* No comment provided by engineer. */
-"Please try again later." = "Veuillez réessayer ultérieurement.";
+"TryAgain" = "Veuillez réessayer ultérieurement.";
 
 /* No comment provided by engineer. */
 "PostFromCreator" = "Publication de %@";
@@ -906,9 +900,6 @@
 
 /* No comment provided by engineer. */
 "no results" = "aucun résultat";
-
-/* No comment provided by engineer. */
-"ok" = "OK";
 
 /* No comment provided by engineer. */
 "remixedFromFormat" = "Remixé depuis %@";
