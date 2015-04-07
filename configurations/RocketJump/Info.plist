@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}RocketJump</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}rocketjump</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string></string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string></string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string></string>
+	<key>VictoriousAppID</key>
+	<integer>35</integer>
+	<key>StagingAppID</key>
+	<integer>49</integer>
+	<key>QAAppID</key>
+	<integer>33</integer>
+	<key>CreatorSalutation</key>
+	<string>RocketJump</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
+</dict>
+</plist>
