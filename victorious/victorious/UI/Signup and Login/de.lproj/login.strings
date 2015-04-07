@@ -22,9 +22,6 @@
 /* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "A3z-ra-4Af"; */
 "A3z-ra-4Af.placeholder" = "E-Mail";
 
-/* Class = "UILabel"; text = "Create Profile"; ObjectID = "A8K-lD-yg5"; */
-"A8K-lD-yg5.text" = "Profil erstellen";
-
 /* Class = "UILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
 "CGW-Kx-wFZ.text" = "CODE EINGEBEN";
 
@@ -70,9 +67,6 @@
 /* Class = "UIButton"; normalTitle = "Update"; ObjectID = "pg3-qh-eDX"; */
 "pg3-qh-eDX.normalTitle" = "Aktualisieren";
 
-/* Class = "UITextField"; placeholder = "Name"; ObjectID = "qGa-ti-Owy"; */
-"qGa-ti-Owy.placeholder" = "Name";
-
 /* Class = "UIViewController"; title = "Find Friends"; ObjectID = "qXP-WV-BMp"; */
 "qXP-WV-BMp.title" = "Freunde finden";
 
@@ -87,4 +81,7 @@
 
 /* Class = "UITextView"; text = "Resend Email"; ObjectID = "ucd-V3-oVY"; */
 "ucd-V3-oVY.text" = "E-Mail erneut senden";
+
+/* Class = "UILabel"; text = "Create Profile"; ObjectID = "xl3-0J-ghm"; */
+"xl3-0J-ghm.text" = "Profil erstellen";
 

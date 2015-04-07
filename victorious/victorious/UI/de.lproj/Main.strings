@@ -22,9 +22,6 @@
 /* Class = "UITextField"; placeholder = "Search for an image"; ObjectID = "GSS-PO-98I"; */
 "GSS-PO-98I.placeholder" = "Nach einem Bild suchen";
 
-/* Class = "UILabel"; text = "Lorem Ipsum"; ObjectID = "LPw-0B-19t"; */
-"LPw-0B-19t.text" = "Lorem Ipsum";
-
 /* Class = "UILabel"; text = "Pull up for more..."; ObjectID = "O7q-AE-sOJ"; */
 "O7q-AE-sOJ.text" = "Für mehr hochziehen...";
 

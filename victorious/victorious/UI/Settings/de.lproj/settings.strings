@@ -22,14 +22,8 @@
 /* Class = "UILabel"; text = "In-App Purchases"; ObjectID = "16U-jQ-75p"; */
 "16U-jQ-75p.text" = "In-App-Käufe";
 
-/* Class = "UITableViewSection"; headerTitle = "Video"; ObjectID = "32G-4D-L9h"; */
-"32G-4D-L9h.headerTitle" = "Video";
-
-/* Class = "UITextField"; placeholder = "At least 8 characters"; ObjectID = "AVA-KF-9I3"; */
+/* Class = "UITextField"; placeholder = "New Password"; ObjectID = "AVA-KF-9I3"; */
 "AVA-KF-9I3.placeholder" = "Mindestens 8 Zeichen";
-
-/* Class = "UILabel"; text = "New"; ObjectID = "Fjl-zb-Wox"; */
-"Fjl-zb-Wox.text" = "Neu";
 
 /* Class = "UILabel"; text = "Product"; ObjectID = "IJf-ZD-6J8"; */
 "IJf-ZD-6J8.text" = "Produkt";
@@ -39,12 +33,6 @@
 
 /* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
 "LM5-sK-eej.normalTitle" = "Abmelden";
-
-/* Class = "UINavigationItem"; title = "Autoplay"; ObjectID = "MMO-h3-iOL"; */
-"MMO-h3-iOL.title" = "Autoplay";
-
-/* Class = "UIButton"; normalTitle = "Action"; ObjectID = "N5S-6f-jb6"; */
-"N5S-6f-jb6.normalTitle" = "Action";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "OZa-mN-lgJ"; */
 "OZa-mN-lgJ.text" = "Beschriftung";
@@ -61,14 +49,11 @@
 /* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
 "WVz-KR-Hhr.title" = "Push-Benachrichtigungen";
 
-/* Class = "UITextField"; placeholder = "Confirm new password"; ObjectID = "YiX-cN-FLE"; */
+/* Class = "UITextField"; placeholder = "Confirm New Password"; ObjectID = "YiX-cN-FLE"; */
 "YiX-cN-FLE.placeholder" = "Neues Passwort bestätigen";
 
 /* Class = "UILabel"; text = "Feedback/Help"; ObjectID = "Ywp-Nm-FQ2"; */
 "Ywp-Nm-FQ2.text" = "Feedback/Hilfe";
-
-/* Class = "UILabel"; text = "Confirm"; ObjectID = "b6b-sA-Tu6"; */
-"b6b-sA-Tu6.text" = "Bestätigen";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "bDt-FM-3G4"; */
 "bDt-FM-3G4.title" = "Server-Umgebung";
@@ -97,17 +82,14 @@
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "Nutzungsbedingungen";
 
-/* Class = "UILabel"; text = "#"; ObjectID = "mv4-9Z-Mit"; */
-"mv4-9Z-Mit.text" = "#";
-
-/* Class = "UITextField"; placeholder = "Your current password"; ObjectID = "oCZ-Jb-QHR"; */
+/* Class = "UITextField"; placeholder = "Your Current Password"; ObjectID = "oCZ-Jb-QHR"; */
 "oCZ-Jb-QHR.placeholder" = "Dein aktuelles Passwort";
+
+/* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "p5c-fI-FBT"; */
+"p5c-fI-FBT.title" = "Server-Umgebung";
 
 /* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
 "pML-Pk-7g5.headerTitle" = "Über";
-
-/* Class = "UILabel"; text = "Current"; ObjectID = "trt-hC-hUf"; */
-"trt-hC-hUf.text" = "Aktuell";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "udt-VU-0Rh"; */
 "udt-VU-0Rh.title" = "Einstellung";
