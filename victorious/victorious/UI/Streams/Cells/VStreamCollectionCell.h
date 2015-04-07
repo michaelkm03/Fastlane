@@ -45,6 +45,11 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 @property (nonatomic, weak) UIViewController *parentViewController;
 
 /**
+ *  An actionview for this stream collection cell. Returns nil for this class. Override in subclasses so that repost updates can be sent to the action view.
+ */
+@property (nonatomic, readonly) VStreamCellActionView *actionView;
+
+/**
  A rectangle that corresponds to any media asset within this view,
  useful for indicating its visibility when scrolling the collection view.
  */
@@ -79,10 +84,5 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 - (void)setDescriptionText:(NSString *)text;
 
 - (NSUInteger)maxCaptionLines;
-
-/**
- *  An actionview for this stream collection cell. Returns nil for this class. Override in subclasses so that repost updates can be sent to the action view.
- */
-- (VStreamCellActionView *)actionView;
 
 @end

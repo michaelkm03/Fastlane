@@ -126,7 +126,6 @@
             </constraints>
             <size key="customSize" width="325" height="175"/>
             <connections>
-                <outlet property="actionView" destination="R7e-A2-yzh" id="HKB-aj-SPK"/>
                 <outlet property="actionViewBottomConstraint" destination="Nzv-Le-NQI" id="KqF-2R-PsE"/>
                 <outlet property="actionViewTopConstraint" destination="RgP-R9-e0l" id="j5J-PR-HMX"/>
                 <outlet property="captionContainerHeightConstraint" destination="bUx-aK-SY4" id="8Ff-6S-eMx"/>
@@ -137,6 +136,7 @@
                 <outlet property="previewImageTwo" destination="DYL-sd-dM5" id="Rz0-Dy-cOS"/>
                 <outlet property="previewImageView" destination="4hb-9q-so0" id="iJ9-Ef-J30"/>
                 <outlet property="shadeView" destination="8QT-3n-Tuc" id="whN-fE-uL0"/>
+                <outlet property="sleekCellActionView" destination="R7e-A2-yzh" id="8t6-3N-BoV"/>
                 <outlet property="streamCellHeaderView" destination="EGy-dZ-mCE" id="ZbT-d5-nLb"/>
             </connections>
             <point key="canvasLocation" x="415" y="223.5"/>

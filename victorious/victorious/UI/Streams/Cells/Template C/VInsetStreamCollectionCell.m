@@ -28,6 +28,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 @interface VInsetStreamCollectionCell ()
 
 @property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak, readwrite) IBOutlet VStreamCellActionView *cellActionView;
 
 @end
 
@@ -79,6 +80,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         NSForegroundColorAttributeName: [dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
         NSFontAttributeName: [dependencyManager fontForKey:VDependencyManagerParagraphFontKey]
     };
+}
+
+- (VStreamCellActionView *)actionView
+{
+    return self.cellActionView;
 }
 
 - (NSString *)headerViewNibName
