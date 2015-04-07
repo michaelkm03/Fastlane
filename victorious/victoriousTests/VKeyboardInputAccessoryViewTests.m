@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "VKeyboardInputAccessoryView.h"
-#import "VThemeManager.h"
 #import "VDependencyManager.h"
 
 @interface VKeyboardInputAccessoryViewTests : XCTestCase
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -20,21 +21,20 @@
 
 - (void)setUp
 {
-    //Setup the shared theme manager with a dependency manager so that the VUserTaggingTextView created in awakeFromNib of the defaultInputAccessoryView below can use it
-    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                                configuration:@{
-                                                                                                VDependencyManagerLabel1FontKey : @{
-                                                                                                        @"fontSize" : @10,
-                                                                                                        @"fontName" : @"STHeitiSC-Light"
-                                                                                                        }
-                                                                                                }
-                                                            dictionaryOfClassesByTemplateName:nil];
-    [[VThemeManager sharedThemeManager] setDependencyManager:dependencyManager];
+    //Setup a dependency manager so that the VUserTaggingTextView created in awakeFromNib of the defaultInputAccessoryView below can use it
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                 configuration:@{
+                                                                                 VDependencyManagerLabel1FontKey : @{
+                                                                                         @"fontSize" : @10,
+                                                                                         @"fontName" : @"STHeitiSC-Light"
+                                                                                         }
+                                                                                 }
+                                             dictionaryOfClassesByTemplateName:nil];
 }
 
 - (void)testInit
 {
-    XCTAssertNotNil([VKeyboardInputAccessoryView defaultInputAccessoryView], @"should return a valid keyboardInputAccessoryView for nil dependency manager");
+    XCTAssertNotNil([VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager], @"should return a valid keyboardInputAccessoryView for nil dependency manager");
 }
 
 @end
