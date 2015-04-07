@@ -14,8 +14,6 @@
 #import "UIView+Autolayout.h"
 #import "VDependencyManager.h"
 
-static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
-
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
@@ -99,10 +97,11 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     {
         self.isPlayingAd = NO;
         [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
-        return;
     }
-    
-    [self showPreRollWithPartner:viewModel.monetizationPartner withDetails:viewModel.monetizationDetails];
+    else
+    {
+        [self showPreRollWithPartner:viewModel.monetizationPartner withDetails:viewModel.monetizationDetails];
+    }
 }
 
 - (void)setAlpha:(CGFloat)alpha
@@ -129,11 +128,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [self.contentView addSubview:self.adPlayerViewController.view];
     [self.contentView sendSubviewToBack:self.adPlayerViewController.view];
     [self.adPlayerViewController start];
-    [NSTimer scheduledTimerWithTimeInterval:kAdTimeoutTimeInterval
-                                     target:self
-                                   selector:@selector(adTimerFired:)
-                                   userInfo:nil
-                                    repeats:NO];
 }
 
 - (void)resumeContentPlayback
@@ -228,17 +222,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 }
 
 #pragma mark - Private Methods
-
-- (void)adTimerFired:(NSTimer *)timer
-{
-    [timer invalidate];
-    if (!self.adDidStart)
-    {
-        [self.adPlayerViewController.view removeFromSuperview];
-        self.adPlayerViewController = nil;
-        [self resumeContentPlayback];
-    }
-}
 
 - (void)setupVideoPlayer
 {
