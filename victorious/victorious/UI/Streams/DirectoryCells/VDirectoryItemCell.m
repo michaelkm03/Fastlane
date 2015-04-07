@@ -24,9 +24,9 @@ static const CGFloat kBorderWidth = 0.5f;
 @interface VDirectoryItemCell()
 
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewImageTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewImageLeadingConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewImageTrailingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewImageTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewImageLeadingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewImageTrailingConstraint;
 
 @property (nonatomic, weak) IBOutlet UIView *streamItemContainerOrTopStackItem;
 @property (nonatomic, weak) IBOutlet VExtendedView *topStack;
