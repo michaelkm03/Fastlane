@@ -50,8 +50,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 - (void)selectNextTab
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
-    currentPage ++;
+    NSInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
     CGFloat overshootAmount = kOffsetOvershoot;
     if (currentPage == (NSInteger)self.streamDataSource.count)
     {
@@ -79,54 +78,59 @@ static const CGFloat kOffsetOvershoot = 20.0f;
              return;
          }
          
-         [strongSelf.collectionView.collectionViewLayout invalidateLayout];
-         
-         NSMutableArray *previewImages = [[NSMutableArray alloc] init];
-         NSMutableArray *contentNames = [[NSMutableArray alloc] init];
-         NSMutableOrderedSet *validStreamItems = [[NSMutableOrderedSet alloc] initWithArray:[strongSelf.stream.streamItems array]];
-         
-         for ( VStreamItem *streamItem in strongSelf.stream.streamItems )
-         {
-             NSArray *previewImagePaths = streamItem.previewImagePaths;
-             if ( previewImagePaths.count > 0 )
-             {
-                 NSURL *previewImageURL = [NSURL URLWithString:[previewImagePaths firstObject]];
-                 if ( ![previewImageURL.absoluteString isEqualToString:@""] )
-                 {
-                     [previewImages addObject:previewImageURL];
-                     [contentNames addObject:streamItem.name];
-                     continue; //Continue to avoid removing the streamItem from the validStreamItems
-                 }
-             }
-             
-             //If we reach this part of the loop, we don't have a valid previewImageURL, so this streamItem is invalid for display; remove it from the validStreamItems array
-             [validStreamItems removeObject:streamItem];
-         }
-         strongSelf.stream.streamItems = [validStreamItems copy];
-         
-         UIColor *linkColor = [strongSelf.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-
-         [strongSelf.crossfadingBlurredImageView setupWithImageURLs:[NSArray arrayWithArray:previewImages] tintColor:[linkColor colorWithAlphaComponent:0.4f] andPlaceholderImage:[UIImage resizeableImageWithColor:linkColor]];
-         
-         [strongSelf.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[strongSelf labelTextAttributes]];
-         
-         if ( !strongSelf.showedInitialDisplayAnimation )
-         {
-             strongSelf.crossfadingLabel.alpha = 0.0f;
-             
-             [strongSelf.collectionView layoutIfNeeded];
-             
-             strongSelf.showedInitialDisplayAnimation = YES;
-             CGPoint startOffset = CGPointMake( - CGRectGetWidth(strongSelf.collectionView.bounds), 0.0f );
-             [strongSelf.collectionView setContentOffset:startOffset animated:NO];
-             
-             strongSelf.collectionView.hidden = NO;
-             [strongSelf selectNextTab];
-         }
+         [strongSelf refreshCellSubviews];
          
          successBlock();
      }
                       failure:failureBlock];
+}
+
+- (void)refreshCellSubviews
+{
+    [self.collectionView.collectionViewLayout invalidateLayout];
+    
+    NSMutableArray *previewImages = [[NSMutableArray alloc] init];
+    NSMutableArray *contentNames = [[NSMutableArray alloc] init];
+    NSMutableOrderedSet *validStreamItems = [[NSMutableOrderedSet alloc] initWithArray:[self.stream.streamItems array]];
+    
+    for ( VStreamItem *streamItem in self.stream.streamItems )
+    {
+        NSArray *previewImagePaths = streamItem.previewImagePaths;
+        if ( previewImagePaths.count > 0 )
+        {
+            NSURL *previewImageURL = [NSURL URLWithString:[previewImagePaths firstObject]];
+            if ( ![previewImageURL.absoluteString isEqualToString:@""] )
+            {
+                [previewImages addObject:previewImageURL];
+                [contentNames addObject:streamItem.name];
+                continue; //Continue to avoid removing the streamItem from the validStreamItems
+            }
+        }
+        
+        //If we reach this part of the loop, we don't have a valid previewImageURL, so this streamItem is invalid for display; remove it from the validStreamItems array
+        [validStreamItems removeObject:streamItem];
+    }
+    self.stream.streamItems = [validStreamItems copy];
+    
+    UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    
+    [self.crossfadingBlurredImageView setupWithImageURLs:[NSArray arrayWithArray:previewImages] tintColor:[linkColor colorWithAlphaComponent:0.4f] andPlaceholderImage:[UIImage resizeableImageWithColor:linkColor]];
+    
+    [self.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[self labelTextAttributes]];
+    
+    if ( !self.showedInitialDisplayAnimation )
+    {
+        self.crossfadingLabel.alpha = 0.0f;
+        
+        [self.collectionView layoutIfNeeded];
+        
+        self.showedInitialDisplayAnimation = YES;
+        CGPoint startOffset = CGPointMake( - CGRectGetWidth(self.collectionView.bounds), 0.0f );
+        [self.collectionView setContentOffset:startOffset animated:NO];
+        
+        self.collectionView.hidden = NO;
+        [self selectNextTab];
+    }
 }
 
 - (BOOL)stringIsValidForURL:(NSString *)stringForURL
@@ -184,11 +188,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 {
     VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
     VBlurredMarqueeStreamItemCell *cell = (VBlurredMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *previewImage = nil;
-    if ( [cell isKindOfClass:[VBlurredMarqueeStreamItemCell class]] )
-    {
-        previewImage = cell.previewImageView.image;
-    }
+    UIImage *previewImage = cell.previewImageView.image;
     
     [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
     [self.autoScrollTimerManager invalidate];

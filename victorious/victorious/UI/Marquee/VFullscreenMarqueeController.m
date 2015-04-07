@@ -95,11 +95,7 @@
 {
     VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
     VFullscreenMarqueeStreamItemCell *cell = (VFullscreenMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *previewImage = nil;
-    if ( [cell isKindOfClass:[VFullscreenMarqueeStreamItemCell class]] )
-    {
-        previewImage = cell.previewImageView.image;
-    }
+    UIImage *previewImage = cell.previewImageView.image;
     
     [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
     [self.autoScrollTimerManager invalidate];
