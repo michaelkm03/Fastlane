@@ -23,12 +23,14 @@
 {
     //Setup a dependency manager so that the VUserTaggingTextView created in awakeFromNib of the defaultInputAccessoryView below can use it
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                 configuration:@{
-                                                                                 VDependencyManagerLabel1FontKey : @{
-                                                                                         @"fontSize" : @10,
-                                                                                         @"fontName" : @"STHeitiSC-Light"
-                                                                                         }
-                                                                                 }
+                                                                 configuration:
+                              @{
+                                VDependencyManagerLabel1FontKey :
+                                    @{
+                                        @"fontSize" : @10,
+                                        @"fontName" : @"STHeitiSC-Light"
+                                        }
+                                }
                                              dictionaryOfClassesByTemplateName:nil];
 }
 

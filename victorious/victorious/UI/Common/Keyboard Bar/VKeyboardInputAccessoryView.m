@@ -69,7 +69,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
             self.addedTextView = YES;
             [self addTextViewToContainer];
         }
-        [self.sendButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+        [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                               forState:UIControlStateNormal];
     }
 }

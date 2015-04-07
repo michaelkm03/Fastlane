@@ -24,18 +24,21 @@
 {
     //Setup a dependency manager to pass into the VRTCUserPostedAtFormatter calls below
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                 configuration:@{
-                                                                                 VDependencyManagerLinkColorKey : @{
-                                                                                         @"red" : @255,
-                                                                                         @"green" : @0,
-                                                                                         @"blue" : @255,
-                                                                                         @"alpha" : @255
-                                                                                         },
-                                                                                 VDependencyManagerLabel2FontKey : @{
-                                                                                         @"fontSize" : @10,
-                                                                                         @"fontName" : @"STHeitiSC-Light"
-                                                                                         }
-                                                                                 }
+                                                                 configuration:
+                              @{
+                                VDependencyManagerLinkColorKey :
+                                    @{
+                                        @"red" : @255,
+                                        @"green" : @0,
+                                        @"blue" : @255,
+                                        @"alpha" : @255
+                                        },
+                                VDependencyManagerLabel2FontKey :
+                                    @{
+                                        @"fontSize" : @10,
+                                        @"fontName" : @"STHeitiSC-Light"
+                                        }
+                                }
                                              dictionaryOfClassesByTemplateName:nil];
 }
 
