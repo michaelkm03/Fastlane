@@ -32,7 +32,6 @@
 #import "UIColor+VBrightness.h"
 #import "NSString+VParseHelp.h"
 
-static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kItemColor = @"itemColor";
 static NSString * const kBackgroundColor = @"backgroundColor";
 
@@ -46,62 +45,14 @@ static CGFloat const kDirectoryInset = 5.0f;
 
 @implementation VGroupedStreamCollectionViewController
 
-#pragma mark - Initializers
-
-+ (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager
+- (NSString *)cellIdentifier
 {
-    VGroupedStreamCollectionViewController *streamDirectory = [[VGroupedStreamCollectionViewController alloc] initWithNibName:nil
-                                                                                                         bundle:nil];
-    streamDirectory.currentStream = stream;
-    streamDirectory.title = stream.name;
-    streamDirectory.dependencyManager = dependencyManager;
-    
-    return streamDirectory;
+    return [VDirectoryGroupCell suggestedReuseIdentifier];
 }
 
-#pragma mark VHasManagedDependencies conforming initializer
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+- (UINib *)cellNib
 {
-    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    VStream *stream = [VStream streamForPath:[[dependencyManager stringForKey:kStreamURLKey] v_pathComponent] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
-}
-
-#pragma mark - UIView overrides
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    
-    NSString *identifier = [VDirectoryGroupCell suggestedReuseIdentifier];
-    UINib *nib = [UINib nibWithNibName:identifier bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
-    
-    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
-    self.streamDataSource.delegate = self;
-    self.streamDataSource.collectionView = self.collectionView;
-    self.collectionView.dataSource = self.streamDataSource;
-    self.collectionView.delegate = self;
-     
-    [self refresh:self.refreshControl];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    // Layout may have changed between awaking from nib and being added to the container of the SoS
-    [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
-- (BOOL)shouldAutorotate
-{
-    return NO;
+    return [VDirectoryGroupCell nibForCell];
 }
 
 #pragma mark - CollectionViewDelegate

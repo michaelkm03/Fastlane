@@ -112,6 +112,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 @property (nonatomic) VTemplateType enabledTemplate;
 @property (nonatomic, strong) NSString *firstMenuItemID;
 @property (nonatomic, strong) NSString *homeRecentID;
+@property (nonatomic, strong) NSString *inboxRecentID;
 @property (nonatomic, strong) NSString *communityRecentID;
 @property (nonatomic, strong) NSDictionary *accentColor;
 
@@ -127,6 +128,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         _dataFromInitCall = initData;
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
         _homeRecentID = [[NSUUID UUID] UUIDString];
+        _inboxRecentID = [[NSUUID UUID] UUIDString];
         _communityRecentID = [[NSUUID UUID] UUIDString];
         
         //Adjust templateType (between C and D on dev) here
@@ -683,19 +685,28 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 
 - (NSDictionary *)inboxMenuItem
 {
-    return @{
-             kIdentifierKey: @"Menu Inbox",
-             kTitleKey: NSLocalizedString(@"Inbox", @""),
-             kIconKey: @{
-                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox", TEMPLATE_ICON_PREFIX],
-                     },
-             kSelectedIconKey: @{
-                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
-                     },
-             kDestinationKey: @{
-                     kClassNameKey: @"inbox.screen"
-                     }
-             };
+    
+    return @{ kIdentifierKey: @"Menu Inbox",
+              kTitleKey: NSLocalizedString(@"Inbox", @""),
+              kIconKey: @{
+                      VDependencyManagerImageURLKey: @"D_inbox",
+                      },
+              kCellComponentDirectoryItem: [self directoryCellComponentLight],
+              kDestinationKey: @{
+                      kClassNameKey: @"basic.multiScreen",
+                      kTitleKey: NSLocalizedString(@"Inbox", @""),
+                      kScreensKey: @[
+                              @{
+                                  kClassNameKey: @"inbox.screen",
+                                  kTitleKey: NSLocalizedString(@"Messages", @""),
+                                  },
+                              @{
+                                  kClassNameKey: @"notifications.screen",
+                                  kTitleKey: NSLocalizedString(@"Notifications", @""),
+                                  }
+                              ]
+                      },
+              };
 }
 
 - (NSDictionary *)settingsMenuItem

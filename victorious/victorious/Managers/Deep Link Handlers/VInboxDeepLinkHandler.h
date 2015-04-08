@@ -11,7 +11,7 @@
 #import "VNavigationDestination.h"
 #import "VDeeplinkHandler.h"
 
-@class VInboxContainerViewController, VDependencyManager;
+@class VInboxViewController, VDependencyManager;
 
 /**
  Handles deep links related to inbox and messaging.
@@ -23,6 +23,6 @@
  be presented if validation and loading of data succeeds.
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-             inboxContainerViewController:(VInboxContainerViewController *)inboxContainerViewController NS_DESIGNATED_INITIALIZER;
+             inboxViewController:(VInboxViewController *)inboxViewController NS_DESIGNATED_INITIALIZER;
 
 @end

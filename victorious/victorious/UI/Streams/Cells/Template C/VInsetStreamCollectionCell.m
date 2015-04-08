@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <FBKVOController.h>
+
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager.h"
 #import "VInsetStreamCollectionCell.h"
@@ -26,6 +28,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 @interface VInsetStreamCollectionCell ()
 
 @property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak) IBOutlet VStreamCellActionView *cellActionView;
 
 @end
 
@@ -79,6 +82,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     };
 }
 
+- (VStreamCellActionView *)actionView
+{
+    return self.cellActionView;
+}
+
 - (NSString *)headerViewNibName
 {
     return @"VInsetStreamCellHeaderView";
@@ -114,6 +122,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
     [super setSequence:sequence];
     self.actionView.sequence = sequence;
     [self reloadCommentsCount];
@@ -127,13 +136,20 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     [self.actionView addShareButton];
     if ( [self.sequence canRemix] )
     {
-        [self.actionView addRemixButton];
+        BOOL isVideo = [self.sequence isVideo];
+        if ( [self.sequence isImage] || isVideo )
+        {
+            [self.actionView addMemeButton];
+        }
+        if ( isVideo )
+        {
+            [self.actionView addGifButton];
+        }
     }
     if ( [self.sequence canRepost] || [self.sequence.hasReposted boolValue] )
     {
         [self.actionView addRepostButton];
     }
-    [self.actionView addMoreButton];
     
     [self.actionView updateLayoutOfButtons];
 }

@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSArray+VMap.h"
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
 #import "VMultipartFormDataWriter.h"
@@ -74,10 +75,11 @@
     // Configure a managed object cache to ensure we do not create duplicate objects
     managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext];
     
-    [manager victoriousSetup];
-    
     //This will allow us to call this manager with [RKObjectManager sharedManager]
     [self setSharedManager:manager];
+    
+    //This must be called AFTER we call setSharedManager as several of the entityDescriptions we add to our response descriptors call on the sharedManager
+    [manager victoriousSetup];
 }
 
 + (NSDateFormatter *)dateFormatter
@@ -192,8 +194,13 @@
         }
         else if (error.errorCode)
         {
+            NSArray *localizedErrorMessages = [error.errorMessages v_map:^id(NSString *message)
+            {
+                return NSLocalizedString(message, @"");
+            }];
+            
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
-                                             userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
+                                             userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
             
             if (failBlock)

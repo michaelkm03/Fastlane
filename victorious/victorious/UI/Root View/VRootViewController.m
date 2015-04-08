@@ -11,7 +11,7 @@
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VScaffoldViewController.h"
-#import "VInboxContainerViewController.h"
+#import "VInboxViewController.h"
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
@@ -327,9 +327,9 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
             [self.deeplinkReceiver receiveDeeplink:deeplink];
         }
     }
-    else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+    else if ( [deeplink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VInboxContainerViewControllerInboxPushReceivedNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
     }
 }
 

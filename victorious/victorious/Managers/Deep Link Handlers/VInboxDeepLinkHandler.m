@@ -13,13 +13,13 @@
 #import "VConversation.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+DirectMessaging.h"
-#import "VInboxContainerViewController.h"
+#import "VInboxViewController.h"
 #import "VInboxViewController.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 
 @interface VInboxDeepLinkHandler()
 
-@property (nonatomic, weak) VInboxContainerViewController *inboxContainerViewController;
+@property (nonatomic, weak) VInboxViewController *inboxViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
@@ -27,7 +27,7 @@
 @implementation VInboxDeepLinkHandler
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-             inboxContainerViewController:(VInboxContainerViewController *)inboxContainerViewController
+             inboxViewController:(VInboxViewController *)inboxViewController
 {
     self = [super init];
     if (self)
@@ -35,8 +35,8 @@
         _dependencyManager = dependencyManager;
         NSParameterAssert( dependencyManager != nil );
         
-        _inboxContainerViewController = inboxContainerViewController;
-        NSParameterAssert( _inboxContainerViewController != nil );
+        _inboxViewController = inboxViewController;
+        NSParameterAssert( _inboxViewController != nil );
     }
     return self;
 }
@@ -53,7 +53,7 @@
 
 - (VAuthorizationContext)authorizationContext
 {
-    return VAuthorizationContextInbox;
+    return self.inboxViewController.authorizationContext;
 }
 
 - (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
@@ -80,10 +80,10 @@
          }
          else
          {
-             completion( YES, self.inboxContainerViewController );
+             completion( YES, self.inboxViewController );
              dispatch_async(dispatch_get_main_queue(), ^(void)
                             {
-                                [self.inboxContainerViewController.inboxViewController displayConversationForUser:conversation.user animated:YES];
+                                [self.inboxViewController displayConversationForUser:conversation.user animated:YES];
                             });
          }
      }

@@ -23,7 +23,7 @@
 #import "VAuthorizedAction.h"
 #import "VPushNotificationManager.h"
 #import "VContentDeepLinkHandler.h"
-#import "VMultipleContainerChild.h"
+#import "VMultipleContainer.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";

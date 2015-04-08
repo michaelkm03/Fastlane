@@ -10,7 +10,7 @@
 
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamTrackingHelper.h"
-#import "VMultipleContainerChild.h"
+#import "VMultipleContainer.h"
 
 @class VStream, VNavigationHeaderView, VCollectionRefreshControl;
 
