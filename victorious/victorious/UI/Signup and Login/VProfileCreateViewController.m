@@ -283,9 +283,12 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
     {
         [locationDictionary setObject:placemark.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
     }
-    
-    [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
-                           forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+
+    NSString *countryCode = [(NSLocale *)[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
+    if (countryCode != nil)
+    {
+        [locationDictionary setObject:countryCode forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+    }
     
     return [locationDictionary copy];
 }
