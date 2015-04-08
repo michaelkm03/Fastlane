@@ -6,16 +6,16 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMarqueeTabIndicatorView.h"
+#import "VFullscreenMarqueeTabIndicatorView.h"
 
-@interface VMarqueeTabIndicatorView ()
+@interface VFullscreenMarqueeTabIndicatorView ()
 
 @property (nonatomic, strong) NSArray *tabImageViews;
 @property (nonatomic, strong) UIScrollView *scrollView;
 
 @end
 
-@implementation VMarqueeTabIndicatorView
+@implementation VFullscreenMarqueeTabIndicatorView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
