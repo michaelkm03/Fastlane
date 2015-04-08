@@ -8,13 +8,14 @@
 
 #import "VRTCUserPostedAtFormatter.h"
 
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 
 #import "VElapsedTimeFormatter.h"
 
 @implementation VRTCUserPostedAtFormatter
 
 + (NSAttributedString *)formatRTCUserName:(NSString *)username
+                    withDependencyManager:(VDependencyManager *)dependencyManager
 {
     if (username == nil)
     {
@@ -24,10 +25,10 @@
     NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:username
                                                                                    attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
     [nameString addAttribute:NSForegroundColorAttributeName
-                       value: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                       value:[dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                        range:NSMakeRange(0, username.length)];
     [nameString addAttribute:NSFontAttributeName
-                       value:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font]
+                       value:[dependencyManager fontForKey:VDependencyManagerLabel2FontKey]
                        range:NSMakeRange(0, username.length)];
     
     return nameString;
@@ -36,6 +37,7 @@
 
 + (NSAttributedString *)formattedRTCUserPostedAtStringWithUserName:(NSString *)username
                                                      andPostedTime:(NSNumber *)postedTime
+                                             withDependencyManager:(VDependencyManager *)dependencyManager
 {
     if (username == nil)
     {
@@ -50,10 +52,10 @@
     NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc] initWithString:fullString
                                                                                    attributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
     [nameString addAttribute:NSForegroundColorAttributeName
-                       value: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+                       value:[dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                        range:NSMakeRange(0, username.length)];
     [nameString addAttribute:NSFontAttributeName
-                       value:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font]
+                       value:[dependencyManager fontForKey:VDependencyManagerLabel2FontKey]
                        range:NSMakeRange(0, fullString.length)];
     
     return [[NSAttributedString alloc] initWithAttributedString:nameString];

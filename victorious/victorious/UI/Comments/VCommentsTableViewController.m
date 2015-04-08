@@ -254,12 +254,14 @@
     if (comment.realtime.integerValue < 0)
     {
         
-        cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formatRTCUserName:comment.user.name];
+        cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formatRTCUserName:comment.user.name
+                                                                   withDependencyManager:self.dependencyManager];
     }
     else
     {
         cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:comment.user.name
-                                                                                      andPostedTime:comment.realtime];
+                                                                                                    andPostedTime:comment.realtime
+                                                                                            withDependencyManager:self.dependencyManager];
     }
     
     //Ugly, but only way I can think of to reliably update to proper string formatting per each cell
