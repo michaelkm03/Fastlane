@@ -103,6 +103,7 @@ static       char    kKVOContext;
         {
             completion([NSError errorWithDomain:kGenericErrorDomain code:kGenericErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Already loading, can't begin again" }]);
         }
+        return;
     }
     
     if (self.conversation != nil)
@@ -168,6 +169,7 @@ static       char    kKVOContext;
         {
             completion([NSError errorWithDomain:kGenericErrorDomain code:kGenericErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Already loading, can't begin again" }]);
         }
+        return;
     }
     
     if (self.conversation != nil || self.newConversation)
@@ -222,6 +224,7 @@ static       char    kKVOContext;
         {
             completion([NSError errorWithDomain:kGenericErrorDomain code:kGenericErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Already loading, can't begin again" }]);
         }
+        return;
     }
     
     self.isLoading = YES;
