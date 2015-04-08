@@ -13,7 +13,7 @@
 
 @interface VNotificationsViewController : VFetchedResultsTableViewController <VMultipleContainerChild>
 
-@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;
+@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

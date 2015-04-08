@@ -11,6 +11,11 @@
 
 @class VDependencyManager;
 
+/**
+ This class should be used to receive deep links from the app delegate.  It handles
+ propagating the deeplink handling behavior to navigation destinations and their children that
+ are provided by the scaffold (which itself is provided in the VDependencyManager property).
+ */
 @interface VDeeplinkReceiver : NSObject
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

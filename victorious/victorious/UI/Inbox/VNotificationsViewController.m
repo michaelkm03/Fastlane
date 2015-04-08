@@ -37,6 +37,8 @@ static int const kNotificationFetchBatchSize = 50;
 
 @implementation VNotificationsViewController
 
+@synthesize multipleContainerChildDelegate;
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VNotificationsViewController *viewController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"VNotificationsViewController"];
@@ -65,7 +67,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 #pragma mark -  Container Child
 
-- (void)viewControllerSelected:(BOOL)isDefault
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
     
 }

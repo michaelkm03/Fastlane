@@ -20,7 +20,7 @@ extern NSString * const VInboxViewControllerInboxPushReceivedNotification; ///< 
 @interface VInboxViewController : VFetchedResultsTableViewController <VDeeplinkSupporter, VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VNavigationDestination>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;
+@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

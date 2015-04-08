@@ -428,11 +428,6 @@
 		A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B071A4A36C9008EA973 /* VTransitionModel.m */; };
 		A7738B101A4B4A0D008EA973 /* VCommentCellUtilitesController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitesController.m */; };
 		A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */; };
-		A776EF611AD34BE70093992F /* VContentDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF5B1AD34BE70093992F /* VContentDeepLinkHandler.m */; };
-		A776EF621AD34BE70093992F /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF5E1AD34BE70093992F /* VInboxDeepLinkHandler.m */; };
-		A776EF631AD34BE70093992F /* VProfileDeeplinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF601AD34BE70093992F /* VProfileDeeplinkHandler.m */; };
-		A776EF691AD4CF150093992F /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF681AD4CF150093992F /* VDiscoverDeepLinkHandler.m */; };
-		A776EF6C1AD5BB940093992F /* VDeeplinkReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF6B1AD5BB940093992F /* VDeeplinkReceiver.m */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -526,6 +521,11 @@
 		A7E398731A362578000E4CAC /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E398721A362578000E4CAC /* NSData+AES.m */; };
 		A7E4D1FD1AAA621000433006 /* VProfileCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E4D1FC1AAA621000433006 /* VProfileCreateViewController.m */; };
 		A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */; };
+		A7ECC1B31AD5E82C0003E00A /* VContentDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1A91AD5E82C0003E00A /* VContentDeepLinkHandler.m */; };
+		A7ECC1B41AD5E82C0003E00A /* VDeeplinkReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1AC1AD5E82C0003E00A /* VDeeplinkReceiver.m */; };
+		A7ECC1B51AD5E82C0003E00A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1AE1AD5E82C0003E00A /* VDiscoverDeepLinkHandler.m */; };
+		A7ECC1B61AD5E82C0003E00A /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1B01AD5E82C0003E00A /* VInboxDeepLinkHandler.m */; };
+		A7ECC1B71AD5E82C0003E00A /* VProfileDeeplinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1B21AD5E82C0003E00A /* VProfileDeeplinkHandler.m */; };
 		A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */; };
 		A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */; };
 		A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */; };
@@ -1567,17 +1567,6 @@
 		A7738B0D1A4B4A0D008EA973 /* VCommentCellUtilitiesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCellUtilitiesDelegate.h; sourceTree = "<group>"; };
 		A7738B0E1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsUtilityButtonConfiguration.h; sourceTree = "<group>"; };
 		A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsUtilityButtonConfiguration.m; sourceTree = "<group>"; };
-		A776EF5A1AD34BE70093992F /* VContentDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentDeepLinkHandler.h; path = "Deep Link Handlers/VContentDeepLinkHandler.h"; sourceTree = "<group>"; };
-		A776EF5B1AD34BE70093992F /* VContentDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentDeepLinkHandler.m; path = "Deep Link Handlers/VContentDeepLinkHandler.m"; sourceTree = "<group>"; };
-		A776EF5C1AD34BE70093992F /* VDeeplinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDeeplinkHandler.h; path = "Deep Link Handlers/VDeeplinkHandler.h"; sourceTree = "<group>"; };
-		A776EF5D1AD34BE70093992F /* VInboxDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInboxDeepLinkHandler.h; path = "Deep Link Handlers/VInboxDeepLinkHandler.h"; sourceTree = "<group>"; };
-		A776EF5E1AD34BE70093992F /* VInboxDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxDeepLinkHandler.m; path = "Deep Link Handlers/VInboxDeepLinkHandler.m"; sourceTree = "<group>"; };
-		A776EF5F1AD34BE70093992F /* VProfileDeeplinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileDeeplinkHandler.h; path = "Deep Link Handlers/VProfileDeeplinkHandler.h"; sourceTree = "<group>"; };
-		A776EF601AD34BE70093992F /* VProfileDeeplinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileDeeplinkHandler.m; path = "Deep Link Handlers/VProfileDeeplinkHandler.m"; sourceTree = "<group>"; };
-		A776EF671AD4CF150093992F /* VDiscoverDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverDeepLinkHandler.h; sourceTree = "<group>"; };
-		A776EF681AD4CF150093992F /* VDiscoverDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverDeepLinkHandler.m; sourceTree = "<group>"; };
-		A776EF6A1AD5BB940093992F /* VDeeplinkReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeeplinkReceiver.h; sourceTree = "<group>"; };
-		A776EF6B1AD5BB940093992F /* VDeeplinkReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDeeplinkReceiver.m; sourceTree = "<group>"; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -1745,6 +1734,17 @@
 		A7E4D1FC1AAA621000433006 /* VProfileCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileCreateViewController.m; path = "victorious/UI/Signup and Login/VProfileCreateViewController.m"; sourceTree = SOURCE_ROOT; };
 		A7E4EDED1A81A4B30035D6B1 /* VEndCardActionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardActionModel.h; path = EndCard/VEndCardActionModel.h; sourceTree = "<group>"; };
 		A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardActionModel.m; path = EndCard/VEndCardActionModel.m; sourceTree = "<group>"; };
+		A7ECC1A81AD5E82C0003E00A /* VContentDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentDeepLinkHandler.h; sourceTree = "<group>"; };
+		A7ECC1A91AD5E82C0003E00A /* VContentDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentDeepLinkHandler.m; sourceTree = "<group>"; };
+		A7ECC1AA1AD5E82C0003E00A /* VDeeplinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeeplinkHandler.h; sourceTree = "<group>"; };
+		A7ECC1AB1AD5E82C0003E00A /* VDeeplinkReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeeplinkReceiver.h; sourceTree = "<group>"; };
+		A7ECC1AC1AD5E82C0003E00A /* VDeeplinkReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDeeplinkReceiver.m; sourceTree = "<group>"; };
+		A7ECC1AD1AD5E82C0003E00A /* VDiscoverDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverDeepLinkHandler.h; sourceTree = "<group>"; };
+		A7ECC1AE1AD5E82C0003E00A /* VDiscoverDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverDeepLinkHandler.m; sourceTree = "<group>"; };
+		A7ECC1AF1AD5E82C0003E00A /* VInboxDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInboxDeepLinkHandler.h; sourceTree = "<group>"; };
+		A7ECC1B01AD5E82C0003E00A /* VInboxDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxDeepLinkHandler.m; sourceTree = "<group>"; };
+		A7ECC1B11AD5E82C0003E00A /* VProfileDeeplinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileDeeplinkHandler.h; sourceTree = "<group>"; };
+		A7ECC1B21AD5E82C0003E00A /* VProfileDeeplinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileDeeplinkHandler.m; sourceTree = "<group>"; };
 		A7EECAD31A377FA000A8BAE1 /* VPurchaseSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseSettingsViewController.h; sourceTree = "<group>"; };
 		A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseSettingsViewController.m; sourceTree = "<group>"; };
 		A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseCell.h; sourceTree = "<group>"; };
@@ -2829,8 +2829,6 @@
 				0314D3EC19B46B5E00FA363C /* VRootViewController.m */,
 				0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */,
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
-				A776EF6A1AD5BB940093992F /* VDeeplinkReceiver.h */,
-				A776EF6B1AD5BB940093992F /* VDeeplinkReceiver.m */,
 				0314D3ED19B46B5E00FA363C /* VSideMenuViewController.h */,
 				0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */,
 				D8CC90291ABA6C3F00A4B38C /* VTabMenuShim.h */,
@@ -3929,22 +3927,6 @@
 			path = CommentCellUtilities;
 			sourceTree = "<group>";
 		};
-		A776EF591AD34B910093992F /* Deep Link Handlers */ = {
-			isa = PBXGroup;
-			children = (
-				A776EF5A1AD34BE70093992F /* VContentDeepLinkHandler.h */,
-				A776EF5B1AD34BE70093992F /* VContentDeepLinkHandler.m */,
-				A776EF5C1AD34BE70093992F /* VDeeplinkHandler.h */,
-				A776EF5D1AD34BE70093992F /* VInboxDeepLinkHandler.h */,
-				A776EF5E1AD34BE70093992F /* VInboxDeepLinkHandler.m */,
-				A776EF5F1AD34BE70093992F /* VProfileDeeplinkHandler.h */,
-				A776EF601AD34BE70093992F /* VProfileDeeplinkHandler.m */,
-				A776EF671AD4CF150093992F /* VDiscoverDeepLinkHandler.h */,
-				A776EF681AD4CF150093992F /* VDiscoverDeepLinkHandler.m */,
-			);
-			name = "Deep Link Handlers";
-			sourceTree = "<group>";
-		};
 		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
 			isa = PBXGroup;
 			children = (
@@ -4177,6 +4159,24 @@
 				A7D707971A7C144C00D9993F /* VEndCardViewController.m */,
 			);
 			name = EndCard;
+			sourceTree = "<group>";
+		};
+		A7ECC1A71AD5E82C0003E00A /* Deeplinks */ = {
+			isa = PBXGroup;
+			children = (
+				A7ECC1A81AD5E82C0003E00A /* VContentDeepLinkHandler.h */,
+				A7ECC1A91AD5E82C0003E00A /* VContentDeepLinkHandler.m */,
+				A7ECC1AA1AD5E82C0003E00A /* VDeeplinkHandler.h */,
+				A7ECC1AB1AD5E82C0003E00A /* VDeeplinkReceiver.h */,
+				A7ECC1AC1AD5E82C0003E00A /* VDeeplinkReceiver.m */,
+				A7ECC1AD1AD5E82C0003E00A /* VDiscoverDeepLinkHandler.h */,
+				A7ECC1AE1AD5E82C0003E00A /* VDiscoverDeepLinkHandler.m */,
+				A7ECC1AF1AD5E82C0003E00A /* VInboxDeepLinkHandler.h */,
+				A7ECC1B01AD5E82C0003E00A /* VInboxDeepLinkHandler.m */,
+				A7ECC1B11AD5E82C0003E00A /* VProfileDeeplinkHandler.h */,
+				A7ECC1B21AD5E82C0003E00A /* VProfileDeeplinkHandler.m */,
+			);
+			path = Deeplinks;
 			sourceTree = "<group>";
 		};
 		A7EECAD21A377FA000A8BAE1 /* Purchase Settings */ = {
@@ -4528,9 +4528,9 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				A776EF591AD34B910093992F /* Deep Link Handlers */,
 				A7299E9C1AA699EE00B6BC1F /* Authorization */,
 				039D02A71A1043D300DB9236 /* Dependencies */,
+				A7ECC1A71AD5E82C0003E00A /* Deeplinks */,
 				03CE66FD19B640CD0011BB9E /* Device Info */,
 				03CE66F019B47B590011BB9E /* Facebook */,
 				A743E7DA1A08160300339CB3 /* FileCache */,
@@ -5608,6 +5608,7 @@
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
 				0314D4A219B46B5E00FA363C /* VImageSearchViewController.m in Sources */,
+				A7ECC1B71AD5E82C0003E00A /* VProfileDeeplinkHandler.m in Sources */,
 				D81404121AB372760099EC4B /* VNotAuthorizedProfileCollectionViewCell.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
@@ -5637,11 +5638,13 @@
 				037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */,
 				A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */,
 				A780ED5E1A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m in Sources */,
+				A7ECC1B41AD5E82C0003E00A /* VDeeplinkReceiver.m in Sources */,
 				D8B88F971ABA85F700DBAEA0 /* VWorkspaceShimDestination.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				F06F10C61AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m in Sources */,
 				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
+				A7ECC1B51AD5E82C0003E00A /* VDiscoverDeepLinkHandler.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				0314D07019B4670A00FA363C /* UIImage+ImageCreation.m in Sources */,
 				A7299EAB1AA7854600B6BC1F /* VDirectoryCellDecorator.m in Sources */,
@@ -5650,6 +5653,7 @@
 				F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */,
 				F04DC6C01AC7791300FBCD50 /* VCrossFadingLabel.m in Sources */,
 				A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */,
+				A7ECC1B61AD5E82C0003E00A /* VInboxDeepLinkHandler.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
@@ -5748,8 +5752,8 @@
 				A7D707821A7AFDA900D9993F /* VEndCard+RestKit.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */,
+				A7ECC1B31AD5E82C0003E00A /* VContentDeepLinkHandler.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
-				A776EF631AD34BE70093992F /* VProfileDeeplinkHandler.m in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */,
 				A716FC451AAE2E4D0032AA40 /* VLoginButton.m in Sources */,
@@ -5911,7 +5915,6 @@
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				A743E7E01A08160300339CB3 /* VFileCache.m in Sources */,
 				BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */,
-				A776EF621AD34BE70093992F /* VInboxDeepLinkHandler.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				D8E5A4ED1AAA72C30019F231 /* VBlurOverPresentationController.m in Sources */,
@@ -6045,7 +6048,6 @@
 				D8C5CFE81A68835100EC819F /* VAsset+Fetcher.m in Sources */,
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */,
-				A776EF611AD34BE70093992F /* VContentDeepLinkHandler.m in Sources */,
 				D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */,
 				D8E178A81A2F8BCE00C3572B /* VCropTool.m in Sources */,
 				A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */,
@@ -6067,13 +6069,11 @@
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
-				A776EF691AD4CF150093992F /* VDiscoverDeepLinkHandler.m in Sources */,
 				0314D4E419B46B5E00FA363C /* VSuggestedFriendsTableViewController.m in Sources */,
 				A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */,
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
-				A776EF6C1AD5BB940093992F /* VDeeplinkReceiver.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
