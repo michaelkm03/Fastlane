@@ -10,6 +10,12 @@
 
 @interface VAsset (VCachedData)
 
+/**
+ *  ATTENTION: FOR DEMO PURPOSES ONLY
+ *
+ *  This has not been fully engineered for general use. Only supports one download task at a time.
+ *
+ */
 - (BOOL)assetDataIsCached;
 
 @end
