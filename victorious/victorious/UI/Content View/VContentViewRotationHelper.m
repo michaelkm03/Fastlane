@@ -20,7 +20,7 @@
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
                          targetContentOffset:(CGPoint)targetContentOffset
                               collectionView:(UICollectionView *)collectionView
-                        affectedViews:(NSArray *)affectedViews
+                               affectedViews:(NSArray *)affectedViews
 {
     self.isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
     collectionView.scrollEnabled = !self.isLandscape;
