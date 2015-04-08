@@ -100,6 +100,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 {
     // Format repost / remix string
     NSString *parentUserString;
+    NSString *displaySafeText = text == nil ? @"" : text;
     if ( self.colorForParentSequenceText != nil )
     {
         self.parentLabel.textColor = self.colorForParentSequenceText;
@@ -110,15 +111,15 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
         if ( repostCount == 0 )
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), text];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), displaySafeText];
         }
         else if ( repostCount == 1 )
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), text];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), displaySafeText];
         }
         else
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), text, [self.sequence.repostCount unsignedLongValue]];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), displaySafeText, [self.sequence.repostCount unsignedLongValue]];
         }
     }
     
@@ -129,7 +130,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         {
             formatString = NSLocalizedString(@"giffedFromFormat", nil);
         }
-        parentUserString = [NSString stringWithFormat:formatString, text];
+        parentUserString = [NSString stringWithFormat:formatString, displaySafeText];
     }
     
     NSDictionary *attributes = @{
@@ -138,7 +139,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
                                  };
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:parentUserString ?: @""
                                                                                          attributes:attributes];
-    if ( parentUserString != nil && self.colorForParentSequenceAuthorName != nil )
+    if ( text != nil && parentUserString != nil && self.colorForParentSequenceAuthorName != nil )
     {
         NSRange range = [parentUserString rangeOfString:text];
         
