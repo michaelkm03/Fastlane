@@ -7,8 +7,10 @@
 //
 
 #import "NSURL+VAssetCache.h"
+#import "VNode.h"
+#import "VSequence.h"
 
-static NSString * const kAssetPathFormat = @"assets/%@/%@";
+static NSString * const kAssetPathFormat = @"/sequences/%@/assets/%@/%@";
 
 @class VAsset;
 
@@ -17,7 +19,7 @@ static NSString * const kAssetPathFormat = @"assets/%@/%@";
 + (NSURL *)cacheURLForAsset:(VAsset *)asset
 {
     NSURL *baseURL = [self cacheDirectoryURL];
-    NSURL *combinedURL = [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:kAssetPathFormat, asset.remoteId, asset.data.lastPathComponent]];
+    NSURL *combinedURL = [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:kAssetPathFormat, asset.node.sequence.remoteId, asset.remoteId, asset.data.lastPathComponent]];
     
     return combinedURL;
 }
