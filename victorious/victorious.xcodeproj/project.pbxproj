@@ -526,6 +526,7 @@
 		A7ECC1B51AD5E82C0003E00A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1AE1AD5E82C0003E00A /* VDiscoverDeepLinkHandler.m */; };
 		A7ECC1B61AD5E82C0003E00A /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1B01AD5E82C0003E00A /* VInboxDeepLinkHandler.m */; };
 		A7ECC1B71AD5E82C0003E00A /* VProfileDeeplinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1B21AD5E82C0003E00A /* VProfileDeeplinkHandler.m */; };
+		A7ECC1BA1AD5EAA60003E00A /* NSURL+VCustomScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1B91AD5EAA60003E00A /* NSURL+VCustomScheme.m */; };
 		A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */; };
 		A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */; };
 		A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */; };
@@ -1745,6 +1746,8 @@
 		A7ECC1B01AD5E82C0003E00A /* VInboxDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxDeepLinkHandler.m; sourceTree = "<group>"; };
 		A7ECC1B11AD5E82C0003E00A /* VProfileDeeplinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileDeeplinkHandler.h; sourceTree = "<group>"; };
 		A7ECC1B21AD5E82C0003E00A /* VProfileDeeplinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileDeeplinkHandler.m; sourceTree = "<group>"; };
+		A7ECC1B81AD5EAA60003E00A /* NSURL+VCustomScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VCustomScheme.h"; sourceTree = "<group>"; };
+		A7ECC1B91AD5EAA60003E00A /* NSURL+VCustomScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VCustomScheme.m"; sourceTree = "<group>"; };
 		A7EECAD31A377FA000A8BAE1 /* VPurchaseSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseSettingsViewController.h; sourceTree = "<group>"; };
 		A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseSettingsViewController.m; sourceTree = "<group>"; };
 		A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseCell.h; sourceTree = "<group>"; };
@@ -4398,6 +4401,8 @@
 				F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */,
 				03484C051930294D00403FB1 /* NSURL+MediaType.h */,
 				03484C061930294D00403FB1 /* NSURL+MediaType.m */,
+				A7ECC1B81AD5EAA60003E00A /* NSURL+VCustomScheme.h */,
+				A7ECC1B91AD5EAA60003E00A /* NSURL+VCustomScheme.m */,
 				0330D4291A6F5BAE007EEEE4 /* NSURL+VPathHelper.h */,
 				0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */,
 				BE799BAF19C8DF4B0023CE88 /* OrderedSets */,
@@ -6021,6 +6026,7 @@
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				0314D4D419B46B5E00FA363C /* VUserSearchViewController.m in Sources */,
 				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
+				A7ECC1BA1AD5EAA60003E00A /* NSURL+VCustomScheme.m in Sources */,
 				0314D48819B46B5E00FA363C /* VCommentTextAndMediaView.m in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				0314D4BD19B46B5E00FA363C /* VFollowerTableViewCell.m in Sources */,
