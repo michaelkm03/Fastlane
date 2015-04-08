@@ -97,7 +97,7 @@
         action = [[VEndCardActionModel alloc] init];
         action.identifier = VEndCardActionIdentifierRepost;
         action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
-        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
+        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the video has already been reposted." );
         action.iconImageNameDefault = @"action_repost";
         action.iconImageNameSuccess = @"action_success";
         [actions addObject:action];
@@ -128,29 +128,27 @@
     endCardModel.dependencyManager = self.dependencyManager;
     NSMutableArray *actions = [[NSMutableArray alloc] init];
     VEndCardActionModel *action = nil;
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierGIF;
-        action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
-        action.iconImageNameDefault = @"action_gif";
-        [actions addObject:action];
-    }
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierRepost;
-        action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
-        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
-        action.iconImageNameDefault = @"action_repost";
-        action.iconImageNameSuccess = @"action_success";
-        [actions addObject:action];
-    }
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierShare;
-        action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
-        action.iconImageNameDefault = @"action_share";
-        [actions addObject:action];
-    }
+    
+    action = nil = [[VEndCardActionModel alloc] init];
+    action.identifier = VEndCardActionIdentifierGIF;
+    action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+    action.iconImageNameDefault = @"action_gif";
+    [actions addObject:action];
+    
+    action = [[VEndCardActionModel alloc] init];
+    action.identifier = VEndCardActionIdentifierRepost;
+    action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
+    action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the video has already been reposted." );
+    action.iconImageNameDefault = @"action_repost";
+    action.iconImageNameSuccess = @"action_success";
+    [actions addObject:action];
+    
+    action = [[VEndCardActionModel alloc] init];
+    action.identifier = VEndCardActionIdentifierShare;
+    action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
+    action.iconImageNameDefault = @"action_share";
+    [actions addObject:action];
+    
     endCardModel.actions = [NSArray arrayWithArray:actions];
     return endCardModel;
 }
