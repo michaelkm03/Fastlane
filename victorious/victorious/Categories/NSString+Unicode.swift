@@ -17,7 +17,7 @@ public extension NSString
      */
     @objc public var lengthWithUnicode: Int
     {
-        return countElements( self as String )
+        return count( self as String )
     }
     
 }
