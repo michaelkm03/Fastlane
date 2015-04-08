@@ -46,6 +46,8 @@
 #import "VDownloadTaskInformation.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
+#import "VAsset+Fetcher.h"
+#import "VAsset+VCachedData.h"
 #import "NSURL+VAssetCache.h"
 
 @interface VNewContentViewController ()
@@ -99,7 +101,12 @@
 #ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
     if (self.viewModel.type == VContentViewTypeVideo)
     {
-        VActionItem *downloadItem = [VActionItem defaultActionItemWithTitle:@"Download" actionIcon:nil detailText:nil];
+        BOOL assetIsCached = [[self.viewModel.currentNode mp4Asset] assetDataIsCached];
+        
+        VActionItem *downloadItem = [VActionItem defaultActionItemWithTitle:assetIsCached ? @"Downloaded" : @"Download"
+                                                                 actionIcon:nil
+                                                                 detailText:nil
+                                                                    enabled:!assetIsCached];
         downloadItem.selectionHandler = ^(VActionItem *item)
         {
             VDownloadManager *downloadManager = [[VDownloadManager alloc] init];
@@ -115,6 +122,7 @@
                                     withProgress:^(CGFloat progress)
              {
                  hud.progress = progress;
+                 hud.labelText = [NSString stringWithFormat:@"Downloading... %.2f%%", progress*100];
                  VLog(@"progress: %@", @(progress));
              }
                                       onComplete:^(NSURL *downloadFileLocation, NSError *error)
