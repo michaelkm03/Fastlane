@@ -13,6 +13,7 @@
 #import "VEndCard.h"
 #import "UIView+Autolayout.h"
 #import "VDependencyManager.h"
+#import "VTimerManager.h"
 
 static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
@@ -230,10 +231,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (VAdVideoPlayerViewController *)setupAdVideoPlayerViewController:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
 {
-    //    self.videoPlayerViewController.view.hidden = YES; // why? already set in prepareForUI
     VAdVideoPlayerViewController *adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner details:details];
     adVideoPlayerViewController.delegate = self;
-//    self.adVideoPlayerViewController.view.hidden = NO; // why? view has just been created?
     adVideoPlayerViewController.view.frame = self.contentView.bounds;
     return adVideoPlayerViewController;
 }
@@ -241,15 +240,10 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (void)addAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     [self.contentView addSubview:adVideoPlayerViewController.view];
-//    [self.contentView sendSubviewToBack:adVideoPlayerViewController.view]; // why? should be shown...
     [adVideoPlayerViewController start];
 
     // This timer is added as a workaround to kill the ad video if it has not started playing after kAdTimeoutTimeInterval seconds.
-    [NSTimer scheduledTimerWithTimeInterval:kAdTimeoutTimeInterval
-                                     target:self
-                                   selector:@selector(adTimerFired:)
-                                   userInfo:nil
-                                    repeats:NO];
+    [VTimerManager scheduledTimerManagerWithTimeInterval:kAdTimeoutTimeInterval target:self selector:@selector(adTimerFired) userInfo:nil repeats:NO];
 }
 
 - (void)removeAdVideoPlayerViewController
@@ -316,10 +310,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 #pragma mark - Private Methods
 
-- (void)adTimerFired:(NSTimer *)timer
+- (void)adTimerFired
 {
-    [timer invalidate];
-    
     if (!self.adDidStart)
     {
         [self removeAdVideoPlayerViewController];
