@@ -100,7 +100,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 {
     // Format repost / remix string
     NSString *parentUserString;
-    NSString *displayText = text == nil ? @"" : text;
+    NSString *displaySafeText = text == nil ? @"" : text;
     if ( self.colorForParentSequenceText != nil )
     {
         self.parentLabel.textColor = self.colorForParentSequenceText;
@@ -111,15 +111,15 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
         if ( repostCount == 0 )
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), displayText];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), displaySafeText];
         }
         else if ( repostCount == 1 )
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), displayText];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), displaySafeText];
         }
         else
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), displayText, [self.sequence.repostCount unsignedLongValue]];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), displaySafeText, [self.sequence.repostCount unsignedLongValue]];
         }
     }
     
@@ -130,7 +130,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         {
             formatString = NSLocalizedString(@"giffedFromFormat", nil);
         }
-        parentUserString = [NSString stringWithFormat:formatString, displayText];
+        parentUserString = [NSString stringWithFormat:formatString, displaySafeText];
     }
     
     NSDictionary *attributes = @{
