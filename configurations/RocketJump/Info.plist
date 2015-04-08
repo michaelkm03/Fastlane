@@ -22,11 +22,11 @@
 	<key>TWITTER_CONSUMER_SECRET</key>
 	<string>iHWdZ4FPTREuS9OfK3l2FaGKBiaz1PVAkxU3oMo1l4syoSAHMO</string>
 	<key>VictoriousAppID</key>
-	<integer>35</integer>
+	<integer>44</integer>
 	<key>StagingAppID</key>
-	<integer>49</integer>
+	<integer>59</integer>
 	<key>QAAppID</key>
-	<integer>33</integer>
+	<integer>42</integer>
 	<key>CreatorSalutation</key>
 	<string>RocketJump</string>
 	<key>FlurryAPIKey</key>
