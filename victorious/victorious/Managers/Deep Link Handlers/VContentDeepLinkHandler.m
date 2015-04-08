@@ -6,11 +6,12 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <MBProgressHUD.h>
+
 #import "VObjectManager+Sequence.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "VScaffoldViewController.h"
-#import <MBProgressHUD.h>
 #import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 

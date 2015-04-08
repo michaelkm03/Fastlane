@@ -32,6 +32,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
+@property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 
 @end
 
@@ -53,20 +54,23 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 {
     [super viewDidAppear:animated];
     
+    if ( !self.hasBeenShown )
+    {
+        self.hasBeenShown = YES;
+        [self viewDidAppearFirstTime];
+    }
+}
+
+#pragma mark - First appearance (i.e. when app loads and first presents views from template)
+
+- (void)viewDidAppearFirstTime
+{
     BOOL didShow = [self showFirstTimeUserExperience];
     if ( !self.pushNotificationsRegistered && !didShow )
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
         self.pushNotificationsRegistered = YES;
     }
-    
-#warning Use these to test deep links in dev environment, app ID=1 (will remove before merge to dev branch)
-    NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/1677"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
-    [self performSelector:@selector(navigateToDeeplinkURL:) withObject:testDeepLinkURL afterDelay:1.0];
 }
 
 #pragma mark - First Time User Experience
@@ -157,98 +161,6 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
                                                            dependencyManager:self.dependencyManager];
     }
     return _authorizedAction;
-}
-
-#pragma mark - Deeplinks
-
-- (void)navigateToDeeplinkURL:(NSURL *)url
-{
-    if ( self.presentedViewController != nil )
-    {
-        [self dismissViewControllerAnimated:YES completion:^(void)
-        {
-            [self navigateToDeeplinkURL:url];
-        }];
-        return;
-    }
-    
-    VDeeplinkHandlerCompletionBlock completion = ^(BOOL didSucceed, UIViewController *viewController)
-    {
-        if ( !didSucceed )
-        {
-            [self showBadDeeplinkError];
-        }
-        else if ( viewController != nil )
-        {
-            [self navigateToDestination:viewController];
-        }
-    };
-
-    NSArray *possibleDeeplinkSupporters = [[self navigationDestinations] arrayByAddingObject:self];
-    id<VMultipleContainer> parentContainer;
-    id<VDeeplinkSupporter> supporter = [self deeplinkSupporterWithHandlerForURL:url
-                                                              parentContainer:&parentContainer
-                                                   fromRecursiveSearchInObjects:possibleDeeplinkSupporters];
-    if ( supporter != nil )
-    {
-        if ( parentContainer != nil )
-        {
-            [parentContainer selectChild:(id<VMultipleContainerChild>)supporter];
-        }
-        
-        [supporter.deeplinkHandler displayContentForDeeplinkURL:url completion:completion];
-    }
-    else
-    {
-        [self showBadDeeplinkError];
-    }
-}
-
-- (id<VDeeplinkSupporter>)deeplinkSupporterWithHandlerForURL:(NSURL *)url
-                                           parentContainer:(id<VMultipleContainer> *)parentContainer
-                                fromRecursiveSearchInObjects:(NSArray *)objects
-{
-    for ( id object in objects )
-    {
-        // First check for straight-up conformated to VDeeplinkSupporter (may even be a VMultipleContainer that implements directly)
-        if ( [object conformsToProtocol:@protocol(VDeeplinkSupporter)] )
-        {
-            id<VDeeplinkSupporter> supporter = (id<VDeeplinkSupporter>)object;
-            if ( [supporter conformsToProtocol:@protocol(VDeeplinkSupporter)] )
-            {
-                id<VDeeplinkHandler> handler = [supporter deeplinkHandler];
-                if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
-                {
-                    return supporter;
-                }
-            }
-        }
-        // Otherwise check for conformance among and children of a VMultipleContainer
-        else if ( [object conformsToProtocol:@protocol(VMultipleContainer)] )
-        {
-            id<VMultipleContainer> multipleContainer = (id<VMultipleContainer>)object;
-            id<VDeeplinkSupporter> supporter = [self deeplinkSupporterWithHandlerForURL:url
-                                                                      parentContainer:parentContainer
-                                                           fromRecursiveSearchInObjects:multipleContainer.children];
-            id<VDeeplinkHandler> handler = [supporter deeplinkHandler];
-            if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
-            {
-                *parentContainer = multipleContainer;
-                return supporter;
-            }
-        }
-    }
-    return nil;
-}
-
-- (void)showBadDeeplinkError
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                    message:NSLocalizedString(@"Missing Content Message", nil)
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 #pragma mark - VDeeplinkSupporter

@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <MBProgressHUD.h>
+
 #import "VInboxDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 #import "VConversation.h"
@@ -13,6 +15,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 @interface VInboxDeepLinkHandler()
 
@@ -48,6 +51,11 @@
     return YES;
 }
 
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextInbox;
+}
+
 - (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
 {
     if ( ![self canDisplayContentForDeeplinkURL:url] )
@@ -56,10 +64,15 @@
         return;
     }
     
+    UIViewController *scaffoldViewController = (UIViewController *)[self.dependencyManager scaffoldViewController];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:scaffoldViewController.view animated:YES];
+    
     NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
     [[VObjectManager sharedManager] conversationByID:@(conversationID)
                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
+         [hud hide:YES];
+         
          VConversation *conversation = (VConversation *)[resultObjects firstObject];
          if ( conversation == nil )
          {
@@ -70,12 +83,13 @@
              completion( YES, self.inboxContainerViewController );
              dispatch_async(dispatch_get_main_queue(), ^(void)
                             {
-                                [self.inboxContainerViewController.inboxViewController displayConversationForUser:conversation.user];
+                                [self.inboxContainerViewController.inboxViewController displayConversationForUser:conversation.user animated:YES];
                             });
          }
      }
                                            failBlock:^(NSOperation *operation, NSError *error)
      {
+         [hud hide:YES];
          VLog( @"Failed to load conversation with error: %@", [error localizedDescription] );
          completion( NO, nil) ;
      }];

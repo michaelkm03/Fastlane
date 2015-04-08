@@ -50,10 +50,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
-@property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
+@property (nonatomic, readwrite) VDeeplinkReceiver *deeplinkReceiver;
 
 @end
 
@@ -81,6 +81,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)commonInit
 {
+    self.deeplinkReceiver = [[VDeeplinkReceiver alloc] init];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -234,11 +236,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         self.launchState = VAppLaunchStateLaunched;
     }];
     
-    if ( self.queuedURL != nil )
-    {
-        [scaffold navigateToDeeplinkURL:self.queuedURL];
-        self.queuedURL = nil;
-    }
+    self.deeplinkReceiver.dependencyManager = dependencyManager;
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion
@@ -306,20 +304,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - Deeplink
 
-- (void)handleDeeplinkURL:(NSURL *)url
-{
-    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
-    
-    if ( scaffold == nil )
-    {
-        self.queuedURL = url;
-    }
-    else
-    {
-        [scaffold navigateToDeeplinkURL:url];
-    }
-}
-
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     [self handlePushNotification:userInfo];
@@ -335,12 +319,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
-            self.queuedURL = deeplink;
+            self.deeplinkReceiver.queuedURL = deeplink;
             self.queuedNotificationID = notificationID;
         }
         else
         {
-            [self handleDeeplinkURL:deeplink];
+            [self.deeplinkReceiver receiveDeeplink:deeplink];
         }
     }
     else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
@@ -412,7 +396,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSURL *url = notification.userInfo[UIApplicationLaunchOptionsURLKey];
     if ( url != nil )
     {
-        [self handleDeeplinkURL:url];
+        [self.deeplinkReceiver receiveDeeplink:url];
         return;
     }
     

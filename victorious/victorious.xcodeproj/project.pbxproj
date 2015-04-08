@@ -434,6 +434,7 @@
 		A776EF621AD34BE70093992F /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF5E1AD34BE70093992F /* VInboxDeepLinkHandler.m */; };
 		A776EF631AD34BE70093992F /* VProfileDeeplinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF601AD34BE70093992F /* VProfileDeeplinkHandler.m */; };
 		A776EF691AD4CF150093992F /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF681AD4CF150093992F /* VDiscoverDeepLinkHandler.m */; };
+		A776EF6C1AD5BB940093992F /* VDeeplinkReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF6B1AD5BB940093992F /* VDeeplinkReceiver.m */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -1570,6 +1571,8 @@
 		A776EF601AD34BE70093992F /* VProfileDeeplinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileDeeplinkHandler.m; path = "Deep Link Handlers/VProfileDeeplinkHandler.m"; sourceTree = "<group>"; };
 		A776EF671AD4CF150093992F /* VDiscoverDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverDeepLinkHandler.h; sourceTree = "<group>"; };
 		A776EF681AD4CF150093992F /* VDiscoverDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverDeepLinkHandler.m; sourceTree = "<group>"; };
+		A776EF6A1AD5BB940093992F /* VDeeplinkReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeeplinkReceiver.h; sourceTree = "<group>"; };
+		A776EF6B1AD5BB940093992F /* VDeeplinkReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDeeplinkReceiver.m; sourceTree = "<group>"; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -2791,6 +2794,8 @@
 				0314D3EC19B46B5E00FA363C /* VRootViewController.m */,
 				0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */,
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
+				A776EF6A1AD5BB940093992F /* VDeeplinkReceiver.h */,
+				A776EF6B1AD5BB940093992F /* VDeeplinkReceiver.m */,
 				0314D3ED19B46B5E00FA363C /* VSideMenuViewController.h */,
 				0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */,
 				D8CC90291ABA6C3F00A4B38C /* VTabMenuShim.h */,
@@ -5965,6 +5970,7 @@
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
+				A776EF6C1AD5BB940093992F /* VDeeplinkReceiver.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,

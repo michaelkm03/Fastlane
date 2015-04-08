@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-- (void)displayConversationForUser:(VUser *)user; ///< Pushes the conversation view for the given user onto the navigation controller
+- (void)displayConversationForUser:(VUser *)user animated:(BOOL)animated; ///< Pushes the conversation view for the given user onto the navigation controller
 - (IBAction)userSearchAction:(id)sender;
 
 @end

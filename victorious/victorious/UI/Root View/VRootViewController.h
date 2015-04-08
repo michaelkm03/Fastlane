@@ -7,6 +7,7 @@
 //
 
 #import "VSideMenuViewController.h"
+#import "VDeeplinkReceiver.h"
 
 @interface VRootViewController : UIViewController
 
@@ -27,16 +28,14 @@
  */
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo;
 
-/**
- Asks the app's scaffold component to handle a deeplink URL. If the scaffold
- has not been initialized yet, the URL is queued and given to the scaffold
- as soon as it is available.
- */
-- (void)handleDeeplinkURL:(NSURL *)url;
-
 - (void)presentForceUpgradeScreen;
 
 #warning Temporary
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+
+/**
+ An object that receives deep links and forwads to appropriate handlers
+ */
+@property (nonatomic, readonly) VDeeplinkReceiver *deeplinkReceiver;
 
 @end

@@ -262,13 +262,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMessage];
         
-        [self displayConversationForUser:conversation.user];
+        [self displayConversationForUser:conversation.user animated:YES];
     }
 }
 
 #pragma mark - Actions
 
-- (void)displayConversationForUser:(VUser *)user
+- (void)displayConversationForUser:(VUser *)user animated:(BOOL)animated
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
     
@@ -276,7 +276,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     {
         if ( self.navigationController.topViewController != detailVC )
         {
-            [self.navigationController popToViewController:detailVC animated:YES];
+            [self.navigationController popToViewController:detailVC animated:animated];
         }
         return;
     }
