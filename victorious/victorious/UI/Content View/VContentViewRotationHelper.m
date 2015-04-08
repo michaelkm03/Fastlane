@@ -23,6 +23,7 @@
                         affectedViews:(NSArray *)affectedViews
 {
     self.isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    collectionView.scrollEnabled = !self.isLandscape;
     
     [affectedViews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop)
      {
@@ -33,12 +34,10 @@
     {
         self.preRotationContentOffset = collectionView.contentOffset;
         [collectionView setContentOffset:targetContentOffset animated:NO];
-        collectionView.scrollEnabled = NO;
     }
     else if ( !CGPointEqualToPoint( self.preRotationContentOffset, CGPointZero ) )
     {
         [collectionView setContentOffset:self.preRotationContentOffset animated:NO];
-        collectionView.scrollEnabled = YES;
     }
 }
 
