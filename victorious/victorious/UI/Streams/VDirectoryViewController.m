@@ -70,7 +70,8 @@ static CGFloat const kDirectoryInset = 10.0f;
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
     
     CGFloat width = CGRectGetWidth(collectionView.bounds);
-    width = width - flowLayout.sectionInset.left - flowLayout.sectionInset.right - flowLayout.minimumInteritemSpacing;
+    UIEdgeInsets sectionEdgeInsets = [self collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:indexPath.section];
+    width -= sectionEdgeInsets.left + sectionEdgeInsets.right + flowLayout.minimumInteritemSpacing;
     width = floorf(width * 0.5f);
     
     BOOL isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:indexPath] isKindOfClass:[VStream class]];

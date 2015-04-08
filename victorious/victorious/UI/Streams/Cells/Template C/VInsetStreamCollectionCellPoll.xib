@@ -121,11 +121,11 @@
             </constraints>
             <size key="customSize" width="307" height="73"/>
             <connections>
-                <outlet property="actionView" destination="5hj-dg-nbn" id="0dp-IR-bke"/>
                 <outlet property="backgroundContainer" destination="yYl-by-YLg" id="d1M-il-O8K"/>
                 <outlet property="captionTextView" destination="2qV-rt-BGZ" id="df9-Wt-hPG"/>
                 <outlet property="captionTextViewBottomConstraint" destination="JAG-QQ-ijc" id="8ia-qC-GMX"/>
                 <outlet property="captionTextViewTopConstraint" destination="KgH-Vm-tWb" id="EqT-3D-nVM"/>
+                <outlet property="cellActionView" destination="5hj-dg-nbn" id="Y2b-Yv-Ru3"/>
                 <outlet property="commentHeightConstraint" destination="6vN-fS-UbQ" id="iZf-Zv-gCD"/>
                 <outlet property="commentLabelBottomConstraint" destination="94C-gP-RsR" id="auf-38-7UF"/>
                 <outlet property="commentsLabel" destination="2I4-YY-QY7" id="5lr-hl-IfK"/>
