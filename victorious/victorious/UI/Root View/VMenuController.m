@@ -25,7 +25,6 @@
 #import "VLoginViewController.h"
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
-#import "VInboxContainerViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VDirectoryViewController.h"
 #import "VGroupedStreamCollectionViewController.h"

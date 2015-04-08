@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Huevo Cartoon</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}huevocartoon</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1805566716335355</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1805566716335355</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>7XYNCbpYwFSohgzLvkojx4GRZ</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>1IrqANeceGfiTeL7JcYqgneHTJKXvPpakJORIuEU8AMk9sTIno</string>
+	<key>VictoriousAppID</key>
+	<integer>41</integer>
+	<key>StagingAppID</key>
+	<integer>55</integer>
+	<key>QAAppID</key>
+	<integer>39</integer>
+	<key>GAID</key>
+	<string></string>
+	<key>CreatorSalutation</key>
+	<string>Huevo Cartoon</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
+</dict>
+</plist>

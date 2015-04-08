@@ -22,6 +22,4 @@ extern const CGFloat kSleekCellActionViewTopConstraintHeight;
 
 @interface VSleekStreamCollectionCell : VStreamCollectionCell
 
-@property (nonatomic, weak) IBOutlet VSleekStreamCellActionView *actionView;
-
 @end

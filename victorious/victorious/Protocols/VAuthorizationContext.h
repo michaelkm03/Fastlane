@@ -24,5 +24,6 @@ typedef NS_ENUM( NSInteger, VAuthorizationContext )
     VAuthorizationContextRemix,
     VAuthorizationContextUserProfile,
     VAuthorizationContextAddComment,
-    VAuthorizationContextInbox
+    VAuthorizationContextInbox,
+    VAuthorizationContextNotification
 };

@@ -66,6 +66,8 @@
 	<string>VGroupedStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
+	<key>collections.screen</key>
+	<string>VCollectionsCollectionViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>
@@ -75,7 +77,9 @@
 	<key>rounded.multiScreenSelector</key>
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
-	<string>VInboxContainerViewController</string>
+	<string>VInboxViewController</string>
+	<key>notifications.screen</key>
+	<string>VNotificationsViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
 	<key>userProfile.screen</key>
@@ -90,6 +94,10 @@
 	<string>VInsetStreamCellFactory</string>
 	<key>sleek.streamCell</key>
 	<string>VSleekStreamCellFactory</string>
+	<key>fullscreen.marqueeCell</key>
+	<string>VFullscreenMarqueeController</string>
+	<key>blurred.marqueeCell</key>
+	<string>VBlurredMarqueeController</string>
 	<key>titleOverlay.streamCell</key>
 	<string>VTitleOverlayStreamCellFactory</string>
 </dict>

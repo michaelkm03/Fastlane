@@ -107,12 +107,6 @@
     return [self.currentComment.postedAt timeSince];
 }
 
-- (NSString *)atRealtimeTextForCurrentRealTimeComment
-{
-    return [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:@""
-                                                                   andPostedTime:self.currentComment.realtime].string;
-}
-
 - (NSString *)realTimeCommentBodyForCurrentRealTimeComent
 {
     return self.currentComment.text;
