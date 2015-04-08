@@ -1,5 +1,5 @@
 //
-//  VMultipleContainerViewController.h
+//  VMultipleContainer.h
 //  victorious
 //
 //  Created by Josh Hinman on 12/15/14.
@@ -14,7 +14,7 @@
  Similar to a UITabBarController, except the tab bar
  is at the top and isn't necessarily a tab bar.
  */
-@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies>
+@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer>
 
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The view controllers to be displayed
 

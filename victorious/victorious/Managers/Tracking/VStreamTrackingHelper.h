@@ -63,7 +63,7 @@
 /**
  Call this when a stream view is selected from the navigation selector in a multiple view controller container.
  */
-- (void)viewControllerSelected:(VStream *)stream;
+- (void)multipleContainerDidSetSelected:(VStream *)stream;
 
 /**
  Call this when a stream view is shown as the initial, default view in a multiple view controller container.

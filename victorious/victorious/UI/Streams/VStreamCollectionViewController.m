@@ -362,9 +362,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self addUploadProgressView];
     
     UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleViewControllerChildDelegate != nil )
+    if ( self.multipleContainerChildDelegate != nil )
     {
-        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
     
     BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];

@@ -433,6 +433,7 @@
 		A776EF611AD34BE70093992F /* VContentDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF5B1AD34BE70093992F /* VContentDeepLinkHandler.m */; };
 		A776EF621AD34BE70093992F /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF5E1AD34BE70093992F /* VInboxDeepLinkHandler.m */; };
 		A776EF631AD34BE70093992F /* VProfileDeeplinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF601AD34BE70093992F /* VProfileDeeplinkHandler.m */; };
+		A776EF691AD4CF150093992F /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF681AD4CF150093992F /* VDiscoverDeepLinkHandler.m */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -1567,6 +1568,8 @@
 		A776EF5E1AD34BE70093992F /* VInboxDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxDeepLinkHandler.m; path = "Deep Link Handlers/VInboxDeepLinkHandler.m"; sourceTree = "<group>"; };
 		A776EF5F1AD34BE70093992F /* VProfileDeeplinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileDeeplinkHandler.h; path = "Deep Link Handlers/VProfileDeeplinkHandler.h"; sourceTree = "<group>"; };
 		A776EF601AD34BE70093992F /* VProfileDeeplinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileDeeplinkHandler.m; path = "Deep Link Handlers/VProfileDeeplinkHandler.m"; sourceTree = "<group>"; };
+		A776EF671AD4CF150093992F /* VDiscoverDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverDeepLinkHandler.h; sourceTree = "<group>"; };
+		A776EF681AD4CF150093992F /* VDiscoverDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverDeepLinkHandler.m; sourceTree = "<group>"; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -3901,6 +3904,8 @@
 				A776EF5E1AD34BE70093992F /* VInboxDeepLinkHandler.m */,
 				A776EF5F1AD34BE70093992F /* VProfileDeeplinkHandler.h */,
 				A776EF601AD34BE70093992F /* VProfileDeeplinkHandler.m */,
+				A776EF671AD4CF150093992F /* VDiscoverDeepLinkHandler.h */,
+				A776EF681AD4CF150093992F /* VDiscoverDeepLinkHandler.m */,
 			);
 			name = "Deep Link Handlers";
 			sourceTree = "<group>";
@@ -5954,6 +5959,7 @@
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
+				A776EF691AD4CF150093992F /* VDiscoverDeepLinkHandler.m in Sources */,
 				0314D4E419B46B5E00FA363C /* VSuggestedFriendsTableViewController.m in Sources */,
 				A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */,
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
