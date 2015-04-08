@@ -79,39 +79,57 @@
     return endCardModel;
 }
 
+#pragma mark - Action creation
+
 - (NSArray *)createActionsWithSequence:(VSequence *)sequence
 {
     // Set up actions
     NSMutableArray *actions = [[NSMutableArray alloc] init];
-    VEndCardActionModel *action = nil;
     if ( sequence.endCard.canRemix.boolValue )
     {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierGIF;
-        action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
-        action.iconImageNameDefault = @"action_gif";
-        [actions addObject:action];
+        [actions addObject:[self actionForGIF]];
     }
     if ( sequence.endCard.canRepost.boolValue )
     {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierRepost;
-        action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
-        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the video has already been reposted." );
-        action.iconImageNameDefault = @"action_repost";
-        action.iconImageNameSuccess = @"action_success";
-        [actions addObject:action];
+        [actions addObject:[self actionForRespost]];
     }
     if ( sequence.endCard.canShare.boolValue )
     {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierShare;
-        action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
-        action.iconImageNameDefault = @"action_share";
-        [actions addObject:action];
+        [actions addObject:[self actionForShare]];
     }
     return [NSArray arrayWithArray:actions];
 }
+
+- (VEndCardActionModel *)actionForGIF
+{
+    VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
+    action.identifier = VEndCardActionIdentifierGIF;
+    action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+    action.iconImageNameDefault = @"action_gif";
+    return action;
+}
+
+- (VEndCardActionModel *)actionForRespost
+{
+    VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
+    action.identifier = VEndCardActionIdentifierRepost;
+    action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
+    action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the video has already been reposted." );
+    action.iconImageNameDefault = @"action_repost";
+    action.iconImageNameSuccess = @"action_success";
+    return action;
+}
+
+- (VEndCardActionModel *)actionForShare
+{
+    VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
+    action.identifier = VEndCardActionIdentifierShare;
+    action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
+    action.iconImageNameDefault = @"action_share";
+    return action;
+}
+
+#pragma mark - Debugging/testing
 
 #if FORCE_SHOW_DEBUG_END_CARD
 - (VEndCardModel *)DEBUG_createWithSequence:(VSequence *)sequence
@@ -124,7 +142,7 @@
     endCardModel.streamName = sequence.endCard.streamName ?: @"";
     endCardModel.videoAuthorName = nil;
     endCardModel.videoAuthorProfileImageURL = nil;
-    endCardModel.countdownDuration = 1000000000;
+    endCardModel.countdownDuration = 10;
     endCardModel.dependencyManager = self.dependencyManager;
     NSMutableArray *actions = [[NSMutableArray alloc] init];
     endCardModel.actions = [self createActionsWithSequence:sequence];
