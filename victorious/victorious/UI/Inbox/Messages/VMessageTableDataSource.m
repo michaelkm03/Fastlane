@@ -350,9 +350,9 @@ static       char    kKVOContext;
         }
                                                    failBlock:^(NSOperation *operation, NSError *error)
         {
+            self.isLoading = NO;
             if ([error.domain isEqualToString:kVictoriousErrorDomain] && error.code == kTooManyNewMessagesErrorCode)
             {
-                self.isLoading = NO;
                 [self refreshWithCompletion:^(NSError *error)
                 {
                     if (self.liveUpdating)
