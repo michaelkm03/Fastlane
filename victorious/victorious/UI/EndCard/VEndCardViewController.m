@@ -79,7 +79,7 @@ static NSString * const kStoryboardName = @"EndCard";
     [self updateContainerSize:nil];
     
     [self.replayButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
-    [self.replayButton setTitle:self.model.videoTitle forState:UIControlStateNormal];
+    [self.' setTitle:self.model.videoTitle forState:UIControlStateNormal];
     
     NSString *identifier = [VEndCardActionCell cellIdentifier];
     [self.actionsCollectionView registerNib:[UINib nibWithNibName:identifier bundle:nil] forCellWithReuseIdentifier:identifier];
