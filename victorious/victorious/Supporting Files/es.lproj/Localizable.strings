@@ -36,7 +36,7 @@
 "Profile" = "Perfil";
 "Settings" = "Configuración";
 "Save" = "Guardar";
-"Loading..." = "Cargando";
+"Loading..." = "Cargando...";
 
 "Featured" = "Destacado";
 "Recent" = "Reciente";
@@ -81,7 +81,7 @@
 "ProfileRequiredToS" = "Acuerda nuestros términos";
 "ProfileRequiredTagLine" = "Tu eslogan";
 "ProfileUpdateFailed" = "Error al actualizar el perfil";
-"Profile load failed!" = "Error al actualizar el perfil";
+"Profile load failed!" = "Error al cargar el perfil";
 
 "User already exists" = "El usuario ya existe";
 "Sorry, I can't display that right now" = "Lo sentimos, no podemos mostrar eso ahora";
@@ -202,7 +202,7 @@
 "DuplicateVideoTitle" = "Video duplicado";
 "DuplicateVideoBody" = "Parece que estás tratando de subir un video que ya ha sido cargado.";
 
-"Uploading" = "Tu contenido se está cargando";
+"Uploading" = "Tu contenido se está cargando...";
 "UploadFinalizing" = "Estamos por terminar tu publicación, pronto la verás.";
 "UploadFailed" = "Lo sentimos, tu carga tuvo un error. Por favor, comprueba la conexión y vuelve a intentarlo.";
 "UploadSuccess" = "¡Lo logramos! tu publicación ya se cargó.";
@@ -397,7 +397,7 @@
 
 "RTCUserPostedAtSyntax" = "%@ a %@";//e.g. "Username at 0:04"
 
-"Report/Flag" = "Reportar/señalar";
+"Report/Flag" = "Reporar/señalar";
 "CreatedBy" = "CREADO POR";
 "remixes" = "remixes";
 "Remix" = "Remix";
@@ -415,7 +415,7 @@
 "doubleRepostedByFormat" = "Vuelto a publicar por %@ + un otro";
 "multipleRepostedByFormat" = "Vuelto a publicar por %@ más %lu otros";
 "remixedFromFormat" = "Remix de %@";
-"giffedFromFormat" = "REGALO de  %@";
+"giffedFromFormat" = "GIF de %@";
 
 "leaveACommentFormat" = "Deja un comentario en %@";
 
@@ -446,7 +446,7 @@
 "NoHashtagsTitle" = "¡No hay hashtags aquí!";
 "NoHashtagsMessage" = "No hubo publicaciones en el hashtag #%@.";
 
-"Type your feedback here..." = "Comenta aquí";
+"Type your feedback here..." = "Comenta aquí...";
 "Device:" = "Dispositivo";
 "OS Version:" = "Versión OS";
 "App Version:" = "Versión de la app";
@@ -525,7 +525,7 @@
 "quote" = "cita";
 "GIF MODE" = "MODO GIF";
 "VIDEO MODE" = "MODO VIDEO";
-"Write a caption (optional)" = "Escribir un subtítulo";
+"Write a caption (optional)" = "Escribir un subtítulo (opcional)";
 "Rendering..." = "Reproduciendo";
 "Render failure" = "Error de reproducción";
 "Publishing..." = "Publicando...";
