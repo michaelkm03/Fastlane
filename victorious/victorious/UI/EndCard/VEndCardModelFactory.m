@@ -129,7 +129,7 @@
     NSMutableArray *actions = [[NSMutableArray alloc] init];
     VEndCardActionModel *action = nil;
     
-    action = nil = [[VEndCardActionModel alloc] init];
+    action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierGIF;
     action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
     action.iconImageNameDefault = @"action_gif";
