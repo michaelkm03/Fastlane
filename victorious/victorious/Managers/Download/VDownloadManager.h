@@ -10,11 +10,25 @@
 
 @class VDownloadTaskInformation;
 
-typedef void (^VDownloadManagerTaskCompleteBlock)(NSURL *downloadFileLocation, NSURLResponse *response, NSError *error);
+/**
+ *  ATTENTION: FOR DEMO PURPOSES ONLY
+ */
+typedef void (^VDownloadManagerTaskCompleteBlock)(NSURL *downloadFileLocation, NSError *error);
+typedef void (^VDownloadManagerTaskProgressBlock)(CGFloat progress);
 
+/**
+ *  ATTENTION: FOR DEMO PURPOSES ONLY
+ *
+ *  This has not been fully engineered for general use. Only supports one download task at a time.
+ *
+ */
 @interface VDownloadManager : NSObject
 
+/**
+ *  ATTENTION: FOR DEMO PURPOSES ONLY
+ */
 - (void)enqueueDownloadTask:(VDownloadTaskInformation *)downloadTask
-                 onComplete:(VDownloadManagerTaskCompleteBlock)completion;
+               withProgress:(VDownloadManagerTaskProgressBlock)taskProgress
+                 onComplete:(VDownloadManagerTaskCompleteBlock)taskCompletion;
 
 @end

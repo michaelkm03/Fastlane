@@ -189,6 +189,16 @@
 
 - (void)fetchSequenceData
 {
+#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+    // Check for the cached mp4
+    BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
+    if (assetIsCached)
+    {
+        [self createVideoModel];
+        [self.delegate didUpdateContent];
+    }
+#endif
+    
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
@@ -249,6 +259,7 @@
     BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
     if (assetIsCached)
     {
+        VLog(@"asset cached!");
         self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                     withAdSystem:VMonetizationPartnerNone
                                                                      withDetails:nil

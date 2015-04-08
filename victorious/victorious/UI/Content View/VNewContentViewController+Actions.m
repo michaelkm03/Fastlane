@@ -41,6 +41,7 @@
 #import "VAuthorizedAction.h"
 
 // Download
+#import <MBProgressHUD/MBProgressHUD.h>
 #import "VDownloadManager.h"
 #import "VDownloadTaskInformation.h"
 #import "VNode+Fetcher.h"
@@ -96,7 +97,7 @@
     [self addRemixToActionItems:actionItems contentViewController:contentViewController actionSheetViewController:actionSheetViewController];
     
 #ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
-    if (self.viewModel.videoViewModel.itemURL != nil)
+    if (self.viewModel.type == VContentViewTypeVideo)
     {
         VActionItem *downloadItem = [VActionItem defaultActionItemWithTitle:@"Download" actionIcon:nil detailText:nil];
         downloadItem.selectionHandler = ^(VActionItem *item)
@@ -106,10 +107,21 @@
             NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:mp4Asset.data]];
             urlRequest.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodGET);
             VDownloadTaskInformation *downloadTask = [[VDownloadTaskInformation alloc] initWithRequest:urlRequest downloadLocation:[NSURL cacheURLForAsset:mp4Asset]];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
+                                                      animated:YES];
+            hud.mode = MBProgressHUDModeAnnularDeterminate;
+            hud.labelText = @"Downloading...";
             [downloadManager enqueueDownloadTask:downloadTask
-                                      onComplete:^(NSURL *downloadFileLocation, NSURLResponse *response, NSError *error)
+                                    withProgress:^(CGFloat progress)
              {
+                 hud.progress = progress;
+                 VLog(@"progress: %@", @(progress));
+             }
+                                      onComplete:^(NSURL *downloadFileLocation, NSError *error)
+             {
+                 [hud hide:YES];
                  VLog(@"Video Downloaded! at location: %@, error: %@", downloadFileLocation, error);
+                 [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
              }];
             VLog(@"download video");
             
