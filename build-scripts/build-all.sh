@@ -15,17 +15,6 @@ DEFAULT_DEV_ACCOUNT="build.server@getvictorious.com"
 
 shift 2
 
-# Default App ID key: the plist key that contains the app ID that corresponds to the configuration we're building.
-if [ "$CONFIGURATION" == "Release" -o "$CONFIGURATION" == "Stable" ]; then
-    DEFAULT_APP_ID_KEY="VictoriousAppID"
-elif [ "$CONFIGURATION" == "Staging" ]; then
-    DEFAULT_APP_ID_KEY="StagingAppID"
-elif [ "$CONFIGURATION" == "QA" ]; then
-    DEFAULT_APP_ID_KEY="QAAppID"
-else
-    DEFAULT_APP_ID_KEY=""
-fi
-
 if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
     echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [app name(s) (optional)]"
     exit 1
@@ -40,9 +29,9 @@ else
 fi
 
 
-### Find and update provisioning profile
-# If this step fails or hangs, you may need to store or update the dev center credentials
-# in the keychain. Use the "ios login" command.
+## Find and update provisioning profile
+If this step fails or hangs, you may need to store or update the dev center credentials
+in the keychain. Use the "ios login" command.
 
 ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type distribution -u "$DEFAULT_DEV_ACCOUNT"
 
@@ -73,12 +62,12 @@ if [ -a "victorious.app.dSYM.zip" ]; then
 fi
 
 
-### Change to project folder
+## Change to project folder
 
 pushd victorious > /dev/null
 
 
-### Clean
+## Clean
 
 xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
 
@@ -186,12 +175,10 @@ fi
 
 for CONFIG in $CONFIGS
 do
-    if [ "$DEFAULT_APP_ID_KEY" != "" ]; then
-        DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist")
-        if [ "$DEFAULT_APP_ID" != "0" ]; then # don't build apps with app ID of 0
-            applyConfiguration $CONFIG
-            ANY_APP_BUILT=1
-        fi
+    DEFAULT_APP_ID=$(./build-scripts/get-app-id.sh $CONFIG $CONFIGURATION)
+    if [ "$DEFAULT_APP_ID" != "0" ] && ["$DEFAULT_APP_ID" != ""]; then # don't build apps with empty app ID or 0
+        applyConfiguration $CONFIG
+        ANY_APP_BUILT=1
     fi
 done
 

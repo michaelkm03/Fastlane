@@ -158,7 +158,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>VictoriousAppID</key>
-	<integer>1</integer>
+	<string>1</string>
 	<key>VictoriousGenericURLScheme</key>
 	<string>vthisapp</string>
 	<key>VictoriousServerEnvironment</key>
