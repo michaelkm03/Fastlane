@@ -18,16 +18,15 @@ static NSString * const kDeeplinkHost = @"discover";
     return NO;
 }
 
-- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
 {
     if ( ![self canDisplayContentForDeeplinkURL:url] )
     {
-        return NO;
+        completion( NO, nil );
+        return;
     }
     
-    completion( nil );
-    
-    return YES;
+    completion( YES, nil );
 }
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url

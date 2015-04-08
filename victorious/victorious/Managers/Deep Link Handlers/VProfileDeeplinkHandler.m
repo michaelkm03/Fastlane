@@ -45,15 +45,20 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     return NO;
 }
 
-- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
 {
+    if ( ![self canDisplayContentForDeeplinkURL:url] )
+    {
+        completion( NO, nil );
+        return;
+    }
+    
     NSInteger userID = [[url v_firstNonSlashPathComponent] integerValue];
     VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithRemoteId:@(userID)];
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
-                       completion( profileVC );
+                       completion( YES, profileVC );
                    });
-    return YES;
 }
 
 @end

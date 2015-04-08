@@ -32,7 +32,7 @@
  @param viewController The view controller to display. Usually you should pass "self", but not always.
  If nil, navigation is cancelled and an error is displayed to the user.
  */
-typedef void (^VDeeplinkHandlerCompletionBlock)(UIViewController *viewController);
+typedef void (^VDeeplinkHandlerCompletionBlock)(BOOL didSucceed, UIViewController *viewController);
 
 /**
  Objects conforming to this protocol are able to provide a view controller for
@@ -52,7 +52,7 @@ typedef void (^VDeeplinkHandlerCompletionBlock)(UIViewController *viewController
  @return YES if the receiver (or an alternate) can handle the given URL. NO if you should ask someone else. If NO is
          returned, the completion block MUST NOT be called.
  */
-- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion;
+- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion;
 
 /**
  Indicates that the deep link destination cannot be shown to users who are not authorized (logged in).

@@ -61,11 +61,11 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     }
     
 #warning Use these to test deep links in dev environment, app ID=1 (will remove before merge to dev branch)
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
+    NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
     //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
     //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
     //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/1677"];
-    NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
+    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
     [self performSelector:@selector(navigateToDeeplinkURL:) withObject:testDeepLinkURL afterDelay:1.0];
 }
 
@@ -172,11 +172,13 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         return;
     }
     
-    __block MBProgressHUD *hud;
-    VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
+    VDeeplinkHandlerCompletionBlock completion = ^(BOOL didSucceed, UIViewController *viewController)
     {
-        [hud hide:YES];
-        if ( viewController != nil )
+        if ( !didSucceed )
+        {
+            [self showBadDeeplinkError];
+        }
+        else if ( viewController != nil )
         {
             [self navigateToDestination:viewController];
         }
@@ -194,7 +196,6 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
             [parentContainer selectChild:(id<VMultipleContainerChild>)supporter];
         }
         
-        hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [supporter.deeplinkHandler displayContentForDeeplinkURL:url completion:completion];
     }
     else

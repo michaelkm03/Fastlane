@@ -48,11 +48,12 @@
     return YES;
 }
 
-- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
 {
     if ( ![self canDisplayContentForDeeplinkURL:url] )
     {
-        return NO;
+        completion( NO, nil );
+        return;
     }
     
     NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
@@ -62,11 +63,11 @@
          VConversation *conversation = (VConversation *)[resultObjects firstObject];
          if ( conversation == nil )
          {
-             completion( nil );
+             completion( NO, nil );
          }
          else
          {
-             completion( self.inboxContainerViewController );
+             completion( YES, self.inboxContainerViewController );
              dispatch_async(dispatch_get_main_queue(), ^(void)
                             {
                                 [self.inboxContainerViewController.inboxViewController displayConversationForUser:conversation.user];
@@ -76,10 +77,8 @@
                                            failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog( @"Failed to load conversation with error: %@", [error localizedDescription] );
-         completion( nil) ;
+         completion( NO, nil) ;
      }];
-    
-    return YES;
 }
 
 @end

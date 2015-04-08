@@ -53,11 +53,12 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     return isHostValid && isSequenceValid;
 }
 
-- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
 {
     if ( ![self canDisplayContentForDeeplinkURL:url] )
     {
-        return NO;
+        completion( NO, nil );
+        return;
     }
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.scaffoldViewController.view animated:YES];
@@ -77,6 +78,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
          [hud hide:YES];
          VSequence *sequence = (VSequence *)[resultObjects firstObject];
          [self.scaffoldViewController showContentViewWithSequence:sequence commentId:commentId placeHolderImage:nil];
+         completion( YES, nil );
      }
                                                     failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -88,9 +90,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                                                cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                                otherButtonTitles:nil];
          [alert show];
+         completion( NO, nil );
      }];
-    
-    return YES;
 }
 
 @end
