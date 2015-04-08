@@ -720,8 +720,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
     self.contentCollectionView.delegate = nil;
     self.contentCollectionView.dataSource = nil;
-    self.videoCell.delegate = nil;
-    self.videoCell.adPlayerViewController = nil;
+
+    [self.videoCell prepareForRemoval];
+    
     [self.contentCollectionView removeFromSuperview];
 }
 
@@ -1289,7 +1290,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
 {
-    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo )
+    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
     }
@@ -1301,7 +1302,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     [UIViewController attemptRotationToDeviceOrientation];
-    if ( !self.hasAutoPlayed )
+    if (!self.hasAutoPlayed)
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
