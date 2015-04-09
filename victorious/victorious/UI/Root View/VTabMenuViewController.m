@@ -136,20 +136,6 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     return NO;
 }
 
-- (void)navigateToDestination:(id)navigationDestination completion:(void (^)())completion
-{
-    /*
-    NSInteger index = [self.tabBarController.viewControllers indexOfObject:navigationDestination];
-    if ( index != NSNotFound )
-    {
-        [self.tabShim willNavigateToIndex:index];
-    }
-    
-    self.willSelectContainerViewController = navigationDestination;
-    */
-    [super navigateToDestination:navigationDestination completion:completion];
-}
-
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
     if ( self.presentedViewController != nil )
