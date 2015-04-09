@@ -301,16 +301,28 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     if ([navigationDestination respondsToSelector:@selector(authorizationContext)] )
     {
         VAuthorizationContext context = [navigationDestination authorizationContext];
-        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                        dependencyManager:self.dependencyManager];
-        [authorizedAction performFromViewController:self context:context completion:^(BOOL authorized)
-         {
-             if (!authorized)
+        if (context != VAuthorizationContextNone)
+        {
+            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager];
+            [authorizedAction performFromViewController:self context:context completion:^(BOOL authorized)
              {
-                 return;
-             }
+                 if (!authorized)
+                 {
+                     if (completion != nil)
+                     {
+                         completion();
+                     }
+                     
+                     return;
+                 }
+                 performNavigation(navigationDestination);
+             }];
+        }
+        else
+        {
             performNavigation(navigationDestination);
-        }];
+        }
     }
     else
     {
