@@ -29,9 +29,9 @@ else
 fi
 
 
-## Find and update provisioning profile
-If this step fails or hangs, you may need to store or update the dev center credentials
-in the keychain. Use the "ios login" command.
+### Find and update provisioning profile
+# If this step fails or hangs, you may need to store or update the dev center credentials
+# in the keychain. Use the "ios login" command.
 
 ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type distribution -u "$DEFAULT_DEV_ACCOUNT"
 
@@ -62,12 +62,12 @@ if [ -a "victorious.app.dSYM.zip" ]; then
 fi
 
 
-## Change to project folder
+### Change to project folder
 
 pushd victorious > /dev/null
 
 
-## Clean
+### Clean
 
 xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
 
@@ -96,7 +96,7 @@ popd > /dev/null
 ### Package the individual apps
 
 applyConfiguration(){
-    ./build-scripts/apply-config.sh "$1" $CONFIGURATION -a victorious.xcarchive
+    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive $CONFIGURATION
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
         exit 1
