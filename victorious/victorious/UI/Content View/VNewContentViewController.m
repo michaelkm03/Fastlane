@@ -501,6 +501,11 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     
     self.contentCollectionView.delegate = self;
     self.videoCell.delegate = self;
+
+#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+    // We could probably move this here anyway, but not going to for now to avoid bugs.
+    self.videoCell.viewModel = self.viewModel.videoViewModel;
+#endif
     
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
