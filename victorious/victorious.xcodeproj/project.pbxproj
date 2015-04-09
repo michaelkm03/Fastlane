@@ -637,7 +637,7 @@
 		D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */; };
 		D87AD2A81AD46DB300C481D0 /* VDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D87AD2A71AD46DB300C481D0 /* VDownloadManager.m */; };
 		D87AD2AB1AD4781300C481D0 /* VDownloadTaskInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = D87AD2AA1AD4781300C481D0 /* VDownloadTaskInformation.m */; };
-		D87AD2AE1AD4866B00C481D0 /* NSURL+VAssetCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D87AD2AD1AD4866B00C481D0 /* NSURL+VAssetCache.m */; };
+		D87AD2AE1AD4866B00C481D0 /* VAsset+VAssetCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D87AD2AD1AD4866B00C481D0 /* VAsset+VAssetCache.m */; };
 		D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */ = {isa = PBXBuildFile; fileRef = D87AD2B01AD48AC500C481D0 /* VAsset+VCachedData.m */; };
 		D87D70931A97C9EC002D4FED /* VTabMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */; };
 		D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */; };
@@ -1979,8 +1979,8 @@
 		D87AD2A71AD46DB300C481D0 /* VDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDownloadManager.m; sourceTree = "<group>"; };
 		D87AD2A91AD4781300C481D0 /* VDownloadTaskInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDownloadTaskInformation.h; sourceTree = "<group>"; };
 		D87AD2AA1AD4781300C481D0 /* VDownloadTaskInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDownloadTaskInformation.m; sourceTree = "<group>"; };
-		D87AD2AC1AD4866B00C481D0 /* NSURL+VAssetCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VAssetCache.h"; sourceTree = "<group>"; };
-		D87AD2AD1AD4866B00C481D0 /* NSURL+VAssetCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VAssetCache.m"; sourceTree = "<group>"; };
+		D87AD2AC1AD4866B00C481D0 /* VAsset+VAssetCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAsset+VAssetCache.h"; sourceTree = "<group>"; };
+		D87AD2AD1AD4866B00C481D0 /* VAsset+VAssetCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAsset+VAssetCache.m"; sourceTree = "<group>"; };
 		D87AD2AF1AD48AC500C481D0 /* VAsset+VCachedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAsset+VCachedData.h"; sourceTree = "<group>"; };
 		D87AD2B01AD48AC500C481D0 /* VAsset+VCachedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAsset+VCachedData.m"; sourceTree = "<group>"; };
 		D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuViewController.h; sourceTree = "<group>"; };
@@ -4789,8 +4789,8 @@
 				D87AD2A71AD46DB300C481D0 /* VDownloadManager.m */,
 				D87AD2A91AD4781300C481D0 /* VDownloadTaskInformation.h */,
 				D87AD2AA1AD4781300C481D0 /* VDownloadTaskInformation.m */,
-				D87AD2AC1AD4866B00C481D0 /* NSURL+VAssetCache.h */,
-				D87AD2AD1AD4866B00C481D0 /* NSURL+VAssetCache.m */,
+				D87AD2AC1AD4866B00C481D0 /* VAsset+VAssetCache.h */,
+				D87AD2AD1AD4866B00C481D0 /* VAsset+VAssetCache.m */,
 				D87AD2AF1AD48AC500C481D0 /* VAsset+VCachedData.h */,
 				D87AD2B01AD48AC500C481D0 /* VAsset+VCachedData.m */,
 			);
@@ -5919,7 +5919,7 @@
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
-				D87AD2AE1AD4866B00C481D0 /* NSURL+VAssetCache.m in Sources */,
+				D87AD2AE1AD4866B00C481D0 /* VAsset+VAssetCache.m in Sources */,
 				03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,

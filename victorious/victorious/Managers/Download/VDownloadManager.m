@@ -97,11 +97,19 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
       downloadTask:(NSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location
 {
-    [[NSFileManager defaultManager] createDirectoryAtURL:[self.currentDownloadTask.downloadLocation URLByDeletingLastPathComponent]
-                             withIntermediateDirectories:YES
-                                              attributes:nil
-                                                   error:nil];
-    
+    BOOL *isDirectory = NULL;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[[self.currentDownloadTask.downloadLocation URLByDeletingLastPathComponent] absoluteString] isDirectory:isDirectory])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtURL:[self.currentDownloadTask.downloadLocation URLByDeletingLastPathComponent]
+                                 withIntermediateDirectories:YES
+                                                  attributes:nil
+                                                       error:nil];
+        
+        [[self.currentDownloadTask.downloadLocation URLByDeletingLastPathComponent] setResourceValue:@(YES)
+                                                                                              forKey:NSURLIsExcludedFromBackupKey
+                                                                                               error:nil];
+    }
+
     [[NSFileManager defaultManager] moveItemAtURL:location
                                             toURL:self.currentDownloadTask.downloadLocation
                                             error:nil];

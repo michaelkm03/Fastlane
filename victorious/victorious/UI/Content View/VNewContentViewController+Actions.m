@@ -48,7 +48,7 @@
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
 #import "VAsset+VCachedData.h"
-#import "NSURL+VAssetCache.h"
+#import "VAsset+VAssetCache.h"
 
 @interface VNewContentViewController ()
 
@@ -113,7 +113,7 @@
             VAsset *mp4Asset = [self.viewModel.sequence.firstNode mp4Asset];
             NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:mp4Asset.data]];
             urlRequest.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodGET);
-            VDownloadTaskInformation *downloadTask = [[VDownloadTaskInformation alloc] initWithRequest:urlRequest downloadLocation:[NSURL cacheURLForAsset:mp4Asset]];
+            VDownloadTaskInformation *downloadTask = [[VDownloadTaskInformation alloc] initWithRequest:urlRequest downloadLocation:[mp4Asset cacheURLForAsset]];
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
                                                       animated:YES];
             hud.mode = MBProgressHUDModeAnnularDeterminate;

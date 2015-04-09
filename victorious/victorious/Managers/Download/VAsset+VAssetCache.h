@@ -1,5 +1,5 @@
 //
-//  NSURL+VAssetCache.h
+//  VAsset+VAssetCache.h
 //  victorious
 //
 //  Created by Michael Sena on 4/7/15.
@@ -15,7 +15,7 @@
  *  This has not been fully engineered for general use. Only supports one download task at a time.
  *
  */
-@interface NSURL (VAssetCache)
+@interface VAsset (VAssetCache)
 
 /**
  *  ATTENTION: FOR DEMO PURPOSES ONLY
@@ -23,6 +23,6 @@
  *  This has not been fully engineered for general use. Only supports one download task at a time.
  *
  */
-+ (NSURL *)cacheURLForAsset:(VAsset *)asset;
+- (NSURL *)cacheURLForAsset;
 
 @end

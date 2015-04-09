@@ -39,7 +39,7 @@
 
 // Media
 #import "NSURL+MediaType.h"
-#import "NSURL+VAssetCache.h"
+#import "VAsset+VAssetCache.h"
 
 // Monetization
 #import "VAdBreak.h"
@@ -417,7 +417,7 @@
 {
     // Check for the cached mp4
     VAsset *mp4Asset = [self.currentNode mp4Asset];
-    NSURL *cacheURL = [NSURL cacheURLForAsset:mp4Asset];
+    NSURL *cacheURL = [mp4Asset cacheURLForAsset];
     if ([[NSFileManager defaultManager] fileExistsAtPath:cacheURL.path])
     {
         VLog(@"cache hit!");

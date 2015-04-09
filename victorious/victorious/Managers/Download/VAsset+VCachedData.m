@@ -7,16 +7,14 @@
 //
 
 #import "VAsset+VCachedData.h"
-#import "NSURL+VAssetCache.h"
+#import "VAsset+VAssetCache.h"
 
 @implementation VAsset (VCachedData)
 
 - (BOOL)assetDataIsCached
 {
-    NSURL *cacheLocation = [NSURL cacheURLForAsset:self];
-    
+    NSURL *cacheLocation = [self cacheURLForAsset];
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:cacheLocation.path];
-    
     return fileExists;
 }
 
