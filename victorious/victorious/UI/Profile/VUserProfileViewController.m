@@ -24,7 +24,7 @@
 
 #import "VObjectManager+ContentCreation.h"
 
-#import "VInboxContainerViewController.h"
+#import "VInboxViewController.h"
 
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
@@ -266,7 +266,7 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     BOOL fromInbox = NO;
     for (UIViewController *vc in self.navigationController.viewControllers)
     {
-        if ([vc isKindOfClass:[VInboxContainerViewController class]])
+        if ([vc isKindOfClass:[VInboxViewController class]])
         {
             fromInbox = YES;
         }

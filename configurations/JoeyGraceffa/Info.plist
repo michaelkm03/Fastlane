@@ -3,36 +3,33 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}DeStorm</string>
+	<string>${ProductPrefix}Joey Graceffa</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}DeStorm</string>
-	<key>CFBundleName</key>
-	<string>${ProductPrefix}DeStorm</string>
+	<string>com.getvictorious.${ProductPrefix}joeygraceffa</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1592899894322421</string>
+				<string>fb874772042566374</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1592899894322421</string>
+	<string>874772042566374</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>lKzw8orHjF7nou9cbdl94Xzy5</string>
+	<string>uZMLx7KsVXPkWGqJCAtxCcjjN</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>gVFrLxgCQK9DhXiyprhoBmocDfzijejiJ7irthxhpZVEQnAfyd</string>
+	<string>CaWfELGdgUvntdF4HuOLWf3ftLbbX25ufdIXzutFRH7eqaRN3z</string>
 	<key>VictoriousAppID</key>
-	<integer>43</integer>
+	<integer>42</integer>
 	<key>StagingAppID</key>
-	<integer>11</integer>
+	<integer>56</integer>
 	<key>QAAppID</key>
-	<integer>41</integer>
+	<integer>40</integer>
 	<key>CreatorSalutation</key>
-	<string>DeStorm</string>
+	<string>Joey Graceffa</string>
 	<key>FlurryAPIKey</key>
-	<string>QG2GF9F3TSXCBH4QQ8J3</string>
-
+	<string>KWCCJYSRKSW5DM5TM4HG</string>
 </dict>
 </plist>
