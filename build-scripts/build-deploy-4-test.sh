@@ -1,7 +1,7 @@
 #!/bin/bash
 ###########
 #
-# build simulator or device (iPod Touch) verion of our app to facilitate 
+# build simulator or device (iPod Touch) version of our app to facilitate 
 # test automation
 # modified from build-all.sh
 #
@@ -44,7 +44,8 @@ if [ "device" == $Deploy ]; then
     fi
     dest="platform=iOS,id=$UDID"
 else
-    dest='platform=iOS Simulator,name=iPhone 6,OS=8.1'
+    osvsn=`xcodebuild -showsdks | grep Simulator | tail -1 |  awk -F " " '{print $4}'` 
+    dest='platform=iOS Simulator,name=iPhone 6,OS='$osvsn
 fi
 
 

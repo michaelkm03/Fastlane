@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <FBKVOController.h>
+
 #import "VSleekStreamCollectionCell.h"
 
 // Stream Support
@@ -32,6 +34,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @interface VSleekStreamCollectionCell ()
 
 @property (nonatomic, weak) IBOutlet UIView *backgroundHost;
+@property (nonatomic, weak) IBOutlet VSleekStreamCellActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 
@@ -92,6 +95,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
+    
     [super setSequence:sequence];
     self.actionView.sequence = sequence;
     [self setupActionBar];
@@ -116,11 +121,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         BOOL isVideo = [self.sequence isVideo];
         if ( [self.sequence isImage] || isVideo )
         {
-            [self.actionView addMemeButton];
+            [self.sleekActionView addMemeButton];
         }
         if ( isVideo )
         {
-            [self.actionView addGifButton];
+            [self.sleekActionView addGifButton];
         }
     }
     
@@ -130,6 +135,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 - (NSUInteger)maxCaptionLines
 {
     return 0;
+}
+
+- (VStreamCellActionView *)actionView
+{
+    return self.sleekActionView;
 }
 
 #pragma mark - VBackgroundContainer

@@ -87,6 +87,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 #endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
+#warning JSON FOR TESTING BLURRED MARQUEE CELL, REMOVE BEFORE MERGING
+        template = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"blurredMarquee" ofType:@"json"]] options:0 error:nil];
         template = [self concatenateTemplateWithDefaultTemplate:template];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager

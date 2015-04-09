@@ -11,7 +11,15 @@
 #import "VThemeManager.h"
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
+#import "VDefaultProfileImageView.h"
 
+@interface VNotificationCell ()
+
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *notificationWho;
+
+@end
 
 @implementation VNotificationCell
 
@@ -21,33 +29,37 @@
     
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.dateLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    
-    self.notificationType.clipsToBounds = YES;
-    self.notificationType.layer.cornerRadius = CGRectGetHeight(self.notificationType.bounds)/2;
-    self.notificationType.layer.borderColor = self.backgroundColor.CGColor;
-    self.notificationType.layer.borderWidth = 1.0f;
+    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];    
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
-- (void)setNotifcation:(VNotification *)notifcation
+- (void)layoutSubviews
 {
-    _notifcation = notifcation;
+    [super layoutSubviews];
+    self.backgroundColor = [self.notification.isRead boolValue] ? [UIColor whiteColor] : [UIColor colorWithWhite:0.75 alpha:1.0];
+}
+
+- (void)setNotification:(VNotification *)notification
+{
+    _notification = notification;
     
-    self.usernameLabel.text  = notifcation.user.name;
+    [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
+    self.accessoryType = [self.notification.deeplink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
-    [self.notificationType setImage:[UIImage imageNamed:@"user-icon"]];
+    self.messageLabel.text = notification.body;
+    self.dateLabel.text = [notification.createdAt timeSince];
     
-    self.messageLabel.text = @"notification message goes here";
-    self.dateLabel.text = [notifcation.postedAt timeSince];
+    if ([notification.deeplink length] > 0)
+    {
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else
+    {
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 @end

@@ -22,8 +22,8 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
 @property (nonatomic, strong) NSArray *buttonConfigs;
 @property (nonatomic, strong) VComment *comment;
-@property (nonatomic, strong) UIView *cellView;
-@property (nonatomic, strong) id<VCommentCellUtilitiesDelegate> delegate;
+@property (nonatomic, weak) UIView *cellView;
+@property (nonatomic, weak) id<VCommentCellUtilitiesDelegate> delegate;
 
 @end
 

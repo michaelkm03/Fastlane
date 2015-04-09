@@ -104,7 +104,12 @@
 
 - (IBAction)cancel:(id)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    UIAlertController *confirmCancel = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ResetPasswordConfirmCancelTitle", @"" ) message:NSLocalizedString(@"ResetPasswordConfirmCancelMessage", @"" ) preferredStyle:UIAlertControllerStyleActionSheet];
+    [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"ResetPasswordYesCancelButton", @"" ) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }]];
+    [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"ResetPasswordNoContinueButton", @"" ) style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:confirmCancel animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate

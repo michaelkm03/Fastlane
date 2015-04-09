@@ -10,23 +10,74 @@
 
 #import "UIImage+ImageCreation.h"
 
-// Theme
 #import "VThemeManager.h"
+
+static CGFloat const kMinimumHeight = 60.0f;
+static UIEdgeInsets const kAnswerInsets = { 10, 0, 10, 0};
+static CGFloat const kOrSizeInset = 40.0f;
 
 @interface VContentPollBallotCell ()
 
 @property (weak, nonatomic) IBOutlet UIButton *answerAButton;
 @property (weak, nonatomic) IBOutlet UIButton *answerBButton;
+@property (weak, nonatomic) IBOutlet UILabel *aLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bLabel;
 
 @end
 
 @implementation VContentPollBallotCell
 
+static NSMutableDictionary *sizingCache;
+
++ (NSCache *)sharedSizingCache
+{
+    static NSCache *_sharedSizingCache = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedSizingCache = [[NSCache alloc] init];
+    });
+    return _sharedSizingCache;
+}
+
++ (CGSize)actualSizeWithAnswerA:(NSAttributedString *)answerA
+                        answerB:(NSAttributedString *)answerB
+                    maximumSize:(CGSize)maximumSize
+{
+    NSString *keyForParameters = [NSString stringWithFormat:@"%@,%@,%@", answerA.string, answerB.string, NSStringFromCGSize(maximumSize)];
+    
+    NSValue *cachedValue = [[self sharedSizingCache] objectForKey:keyForParameters];
+    if (cachedValue != nil)
+    {
+        return [cachedValue CGSizeValue];
+    }
+
+    CGSize maxSizeA = CGSizeMake(maximumSize.width/2 - kOrSizeInset, maximumSize.height);
+    CGSize maxSizeB = CGSizeMake(maximumSize.width/2 - kOrSizeInset, maximumSize.height);
+
+    CGRect boundingRectA = [answerA boundingRectWithSize:maxSizeA
+                                                 options:NSStringDrawingUsesLineFragmentOrigin
+                                                 context:[[NSStringDrawingContext alloc] init]];
+    CGRect boundingRectB = [answerB boundingRectWithSize:maxSizeB
+                                                 options:NSStringDrawingUsesLineFragmentOrigin
+                                                 context:[[NSStringDrawingContext alloc] init]];
+    
+    CGFloat maxBoundingHeight = MAX(CGRectGetHeight(boundingRectA), CGRectGetHeight(boundingRectB));
+    maxBoundingHeight = maxBoundingHeight + kAnswerInsets.top + kAnswerInsets.bottom;
+    
+    CGSize totalSize = CGSizeMake(maximumSize.width,
+                                  MAX(kMinimumHeight, maxBoundingHeight));
+    
+    [[self sharedSizingCache] setObject:[NSValue valueWithCGSize:totalSize]
+                                 forKey:keyForParameters];
+    
+    return totalSize;
+}
+
 #pragma mark - VSharedCollectionReusableViewMethods
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 60);
+    return CGSizeMake(CGRectGetWidth(bounds), 60.0f);
 }
 
 #pragma mark - NSObject
@@ -42,24 +93,20 @@
     
     self.answerAButton.titleLabel.numberOfLines = 0;
     self.answerBButton.titleLabel.numberOfLines = 0;
-    self.answerAButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.answerBButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
 }
 
 #pragma mark - Property Accessors
 
-- (void)setAnswerA:(NSString *)answerA
+- (void)setAnswerA:(NSAttributedString *)answerA
 {
     _answerA = [answerA copy];
-    [self.answerAButton setTitle:_answerA
-                        forState:UIControlStateNormal];
+    self.aLabel.attributedText = _answerA;
 }
 
 - (void)setAnswerB:(NSString *)answerB
 {
     _answerB = [answerB copy];
-    [self.answerBButton setTitle:_answerB
-                       forState:UIControlStateNormal];
+    self.bLabel.attributedText = _answerB;
 }
 
 #pragma mark - Public Methods
@@ -108,12 +155,45 @@
     }
 }
 
+- (IBAction)touchDownA:(id)sender
+{
+    [self setHighlighted:YES onLabel:self.aLabel];
+}
+
+- (IBAction)touchUpA:(id)sender
+{
+    [self setHighlighted:NO onLabel:self.aLabel];
+}
+
 - (IBAction)selectedAnswerB:(id)sender
 {
     if (self.answerBSelectionHandler)
     {
         self.answerBSelectionHandler();
     }
+}
+
+- (IBAction)touchDownB:(id)sender
+{
+    [self setHighlighted:YES onLabel:self.bLabel];
+}
+
+- (IBAction)touchUpB:(id)sender
+{
+    [self setHighlighted:NO onLabel:self.bLabel];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+               onLabel:(UILabel *)label
+{
+    [UIView animateWithDuration:0.1f
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^
+     {
+         label.alpha = highlighted ? 0.5f : 1.0f;
+     }
+                     completion:nil];
 }
 
 @end

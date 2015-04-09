@@ -884,7 +884,7 @@
 "doubleRepostedByFormat" = "Republié par %@ +1 autre";
 
 /* No comment provided by engineer. */
-"editProfileButton" = "Modifier le profil";
+"editProfileButton" = "Modifier";
 
 /* No comment provided by engineer. */
 "follow" = "Suivre";
@@ -922,3 +922,4 @@
 /* No comment provided by engineer. */
 "searching" = "recherche en cours";
 
+"User already exists" = "L’utilisatuer déjà existe";

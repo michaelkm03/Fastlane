@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}BeautyLiciousInsider</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}beautyliciousinsider</string>
+	<string>com.iADAPPT.${ProductPrefix}bli</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
