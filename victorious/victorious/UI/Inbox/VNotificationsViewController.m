@@ -186,11 +186,11 @@ static int const kNotificationFetchBatchSize = 50;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VNotification *notification = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if ([notification.deeplink length] > 0)
+    if ([notification.deepLink length] > 0)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectNotification];
         
-        [[VRootViewController rootViewController].deeplinkReceiver receiveDeeplink:[NSURL URLWithString:notification.deeplink]];
+        [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:[NSURL URLWithString:notification.deepLink]];
         
     }
 }

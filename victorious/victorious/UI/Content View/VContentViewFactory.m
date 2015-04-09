@@ -64,7 +64,7 @@ static NSString * const kContentViewComponentKey = @"contentView";
         NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
         if ( [sequenceContentURL v_isThisAppGenericScheme] )
         {
-            [[VRootViewController rootViewController].deeplinkReceiver receiveDeeplink:sequenceContentURL];
+            [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:sequenceContentURL];
             return YES;
         }
         else if ( [sequenceContentURL v_hasCustomScheme] )
@@ -98,7 +98,7 @@ static NSString * const kContentViewComponentKey = @"contentView";
     NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
     if ( [sequenceContentURL v_isThisAppGenericScheme] )
     {
-        [[VRootViewController rootViewController].deeplinkReceiver receiveDeeplink:sequenceContentURL];
+        [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:sequenceContentURL];
         return nil;
     }
     else if ( [sequenceContentURL v_hasCustomScheme] )

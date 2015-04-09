@@ -13,14 +13,35 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDeeplinkHandler.h"
 
+#define FORCE_DEEPLINK 1
+
 @interface VDeeplinkReceiver()
 
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, readonly) VScaffoldViewController *scaffold;
+@property (nonatomic, strong) NSURL *queuedURL; ///< A deep link URL that came in before we were ready for it
 
 @end
 
 @implementation VDeeplinkReceiver
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+#if FORCE_DEEPLINK
+#warning FORCE_DEEPLINK is activated.  A hardcoded deep link will automatically open with each app launch
+        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
+        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
+        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
+        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/1677"];
+        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
+        [self performSelector:@selector(receiveDeeplink:) withObject:testDeepLinkURL afterDelay:0.0];
+#endif
+    }
+    return self;
+}
 
 - (VScaffoldViewController *)scaffold
 {
@@ -32,7 +53,33 @@
     return self.scaffold != nil;
 }
 
-- (void)receiveDeeplink:(NSURL *)url
+- (void)queueDeeplink:(NSURL *)url
+{
+    self.queuedURL = url;
+}
+
+- (void)receiveDeeplink:(NSURL *)deepLink
+{
+    if ( self.canReceiveDeeplinks )
+    {
+        [self navigateToDeeplinkURL:deepLink];
+    }
+    else
+    {
+        self.queuedURL = deepLink;
+    }
+}
+
+- (void)receiveQueuedDeeplink
+{
+    if ( self.queuedURL != nil )
+    {
+        [self receiveDeeplink:self.queuedURL];
+        self.queuedURL = nil;
+    }
+}
+
+- (void)navigateToDeeplinkURL:(NSURL *)url
 {
     if ( self.scaffold.presentedViewController != nil )
     {
@@ -46,17 +93,17 @@
     NSArray *possibleDeeplinkSupporters = [[self.scaffold navigationDestinations] arrayByAddingObject:self.scaffold];
     
     id<VMultipleContainer> parentContainer;
-    id<VDeeplinkSupporter> supporter = [self deeplinkSupporterWithHandlerForURL:url
+    id<VDeeplinkSupporter> supporter = [self deepLinkSupporterWithHandlerForURL:url
                                                                 parentContainer:&parentContainer
                                                    fromRecursiveSearchInObjects:possibleDeeplinkSupporters];
-    if ( supporter != nil && supporter.deeplinkHandler != nil )
+    if ( supporter != nil && supporter.deepLinkHandler != nil )
     {
-        if ( supporter.deeplinkHandler.requiresAuthorization )
+        if ( supporter.deepLinkHandler.requiresAuthorization )
         {
             VAuthorizationContext context = VAuthorizationContextDefault;
-            if ( [supporter.deeplinkHandler respondsToSelector:@selector(authorizationContext)] )
+            if ( [supporter.deepLinkHandler respondsToSelector:@selector(authorizationContext)] )
             {
-                context = supporter.deeplinkHandler.authorizationContext;
+                context = supporter.deepLinkHandler.authorizationContext;
             }
             typeof(self) __weak welf = self;
             [self.authorizedAction performFromViewController:self.scaffold context:context completion:^(BOOL authorized)
@@ -98,10 +145,10 @@
             [self.scaffold navigateToDestination:destinationViewController];
         }
     };
-    [supporter.deeplinkHandler displayContentForDeeplinkURL:url completion:completion];
+    [supporter.deepLinkHandler displayContentForDeeplinkURL:url completion:completion];
 }
 
-- (id<VDeeplinkSupporter>)deeplinkSupporterWithHandlerForURL:(NSURL *)url
+- (id<VDeeplinkSupporter>)deepLinkSupporterWithHandlerForURL:(NSURL *)url
                                              parentContainer:(id<VMultipleContainer> *)parentContainer
                                 fromRecursiveSearchInObjects:(NSArray *)objects
 {
@@ -111,10 +158,10 @@
         if ( [object conformsToProtocol:@protocol(VMultipleContainer)] )
         {
             id<VMultipleContainer> multipleContainer = (id<VMultipleContainer>)object;
-            id<VDeeplinkSupporter> supporter = [self deeplinkSupporterWithHandlerForURL:url
+            id<VDeeplinkSupporter> supporter = [self deepLinkSupporterWithHandlerForURL:url
                                                                         parentContainer:parentContainer
                                                            fromRecursiveSearchInObjects:multipleContainer.children];
-            id<VDeeplinkHandler> handler = supporter.deeplinkHandler;
+            id<VDeeplinkHandler> handler = supporter.deepLinkHandler;
             if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
             {
                 *parentContainer = multipleContainer;
@@ -122,13 +169,13 @@
             }
         }
         // Then check for conformation to VDeeplinkSupporter at top level, which may be nay object
-        // including a VMultipleContainerViewController who supports deeplinks but whose children do not
+        // including a VMultipleContainerViewController who supports deepLinks but whose children do not
         if ( [object conformsToProtocol:@protocol(VDeeplinkSupporter)] )
         {
             id<VDeeplinkSupporter> supporter = (id<VDeeplinkSupporter>)object;
             if ( [supporter conformsToProtocol:@protocol(VDeeplinkSupporter)] )
             {
-                id<VDeeplinkHandler> handler = supporter.deeplinkHandler;
+                id<VDeeplinkHandler> handler = supporter.deepLinkHandler;
                 if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
                 {
                     return supporter;

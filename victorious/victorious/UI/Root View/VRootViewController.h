@@ -36,6 +36,6 @@
 /**
  An object that receives deep links and forwads to appropriate handlers
  */
-@property (nonatomic, readonly) VDeeplinkReceiver *deeplinkReceiver;
+@property (nonatomic, readonly) VDeeplinkReceiver *deepLinkReceiver;
 
 @end

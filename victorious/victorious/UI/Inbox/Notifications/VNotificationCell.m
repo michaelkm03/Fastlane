@@ -47,12 +47,12 @@
     _notification = notification;
     
     [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
-    self.accessoryType = [self.notification.deeplink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    self.accessoryType = [self.notification.deepLink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
     self.messageLabel.text = notification.body;
     self.dateLabel.text = [notification.createdAt timeSince];
     
-    if ([notification.deeplink length] > 0)
+    if ([notification.deepLink length] > 0)
     {
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }

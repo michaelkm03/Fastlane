@@ -17,7 +17,7 @@
 
 /**
  @return YES if the scheme matches the Victorious generic scheme that indicates
- a deeplink should be opened in the current app.
+ a deep link should be opened in the current app.
  
  @see https://wiki.victorious.com/display/ENG/Deep+Linking+Specification
  */

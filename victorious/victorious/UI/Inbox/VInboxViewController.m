@@ -169,7 +169,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 #pragma mark -
 
-- (id<VDeeplinkHandler>)deeplinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandler
 {
     return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }

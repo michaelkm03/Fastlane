@@ -63,7 +63,7 @@
 
 #pragma mark - VDeepLinkSupporter methods
 
-- (id<VDeeplinkHandler>)deeplinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandler
 {
     return  [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }

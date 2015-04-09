@@ -123,7 +123,7 @@
 
 #pragma mark - mark
 
-- (id<VDeeplinkHandler>)deeplinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandler
 {
     VDiscoverDeepLinkHandler *handler = [[VDiscoverDeepLinkHandler alloc] init];
     handler.navigationDestination = self;

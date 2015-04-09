@@ -165,7 +165,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - VDeeplinkSupporter
 
-- (id<VDeeplinkHandler>)deeplinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandler
 {
     return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }

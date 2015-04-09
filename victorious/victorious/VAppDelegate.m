@@ -103,7 +103,7 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    [[VRootViewController rootViewController].deeplinkReceiver receiveDeeplink:url];
+    [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:url];
     return YES;
 }
 

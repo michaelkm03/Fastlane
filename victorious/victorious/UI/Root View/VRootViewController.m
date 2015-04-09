@@ -28,11 +28,9 @@
 #import "VVoteType.h"
 #import "VAppInfo.h"
 
-#define FORCE_DEEPLINK 1
-
 static const NSTimeInterval kAnimationDuration = 0.2;
 
-static NSString * const kDeeplinkURLKey = @"deeplink";
+static NSString * const kDeeplinkURLKey = @"deepLink";
 static NSString * const kNotificationIDKey = @"notification_id";
 static NSString * const kAdSystemsKey = @"ad_systems";
 
@@ -55,8 +53,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
-@property (nonatomic, readwrite) VDeeplinkReceiver *deeplinkReceiver;
-@property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
+@property (nonatomic, readwrite) VDeeplinkReceiver *deepLinkReceiver;
 
 @end
 
@@ -84,17 +81,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)commonInit
 {
-    self.deeplinkReceiver = [[VDeeplinkReceiver alloc] init];
-    
-#if FORCE_DEEPLINK
-#warning FORCE_DEEPLINK is activated.  A hardcoded deeplink will automatically open with each app launch
-    NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/1677"];
-    //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
-    [self performSelector:@selector(receiveDeeplink:) withObject:testDeepLinkURL afterDelay:0.0];
-#endif
+    self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
@@ -225,7 +212,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self.dependencyManager = dependencyManager;
-    self.deeplinkReceiver.dependencyManager = dependencyManager;
+    self.deepLinkReceiver.dependencyManager = dependencyManager;
     
     [self seedMonetizationNetworks:[dependencyManager templateValueOfType:[NSArray class] forKey:kAdSystemsKey]];
     
@@ -250,12 +237,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         self.launchState = VAppLaunchStateLaunched;
         
-        if ( self.queuedURL != nil )
-        {
-            // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
-            [self.deeplinkReceiver receiveDeeplink:self.queuedURL];
-            self.queuedURL = nil;
-        }
+        // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
+        [self.deepLinkReceiver receiveQueuedDeeplink];
     }];
 }
 
@@ -331,7 +314,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)handlePushNotification:(NSDictionary *)pushNotification
 {
-    NSURL *deeplink = [NSURL URLWithString:pushNotification[kDeeplinkURLKey]];
+    NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeeplinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
 
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && self.properlyBackgrounded )
@@ -339,30 +322,22 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
-            self.queuedURL = deeplink;
+            [self.deepLinkReceiver queueDeeplink:deepLink];
             self.queuedNotificationID = notificationID;
         }
         else
         {
-            [self receiveDeeplink:deeplink];
+            [self receiveDeeplink:deepLink];
         }
     }
-    else if ( [deeplink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
+    else if ( [deepLink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
     }
 }
-
-- (void)receiveDeeplink:(NSURL *)deeplink
+- (void)receiveDeeplink:(NSURL *)deepLink
 {
-    if ( self.deeplinkReceiver.canReceiveDeeplinks )
-    {
-        [self.deeplinkReceiver receiveDeeplink:deeplink];
-    }
-    else
-    {
-        self.queuedURL = deeplink;
-    }
+    [self.deepLinkReceiver receiveDeeplink:deepLink];
 }
 
 #pragma mark - Ad Networks

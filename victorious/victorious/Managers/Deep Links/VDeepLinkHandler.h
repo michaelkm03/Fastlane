@@ -13,7 +13,7 @@
 
 /**
  Conformers of this protocol are indicating they provide deep link support by implementing
- the `deeplinkHandler` property, returning a `VDeeplinkHanlder` object that is dedicated to
+ the `deepLinkHandler` property, returning a `VDeeplinkHanlder` object that is dedicated to
  validating and responding to deep link URLs.
  */
 @protocol VDeeplinkSupporter <NSObject>
@@ -23,12 +23,12 @@
  that will handle deep links on behalf of the current object (usually a UIViewController conforming
  to VNavigationDestination).
  */
-@property (nonatomic, readonly) id<VDeeplinkHandler> deeplinkHandler;
+@property (nonatomic, readonly) id<VDeeplinkHandler> deepLinkHandler;
 
 @end
 
 /**
- Completion block for deeplink handlers.
+ Completion block for deepLink handlers.
  
  @param viewController The view controller to display. Usually you should pass "self", but not always.
  If nil, navigation is cancelled and an error is displayed to the user.
@@ -47,7 +47,7 @@ typedef void (^VDeeplinkHandlerCompletionBlock)( BOOL didSucceedid, UIViewContro
  Asks the receiver to display the content
  pointed to by the given URL.
  
- @param url A deeplink URL
+ @param url A deepLink URL
  @param completion This should be called when the view controller is ready to be displayed.
  
  @return YES if the receiver (or an alternate) can handle the given URL. NO if you should ask someone else. If NO is
