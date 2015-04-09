@@ -10,7 +10,7 @@
 #import "VNode.h"
 #import "VSequence.h"
 
-static NSString * const kAssetPathFormat = @"/sequences/%@/assets/%@/%@";
+static NSString * const kAssetPathFormat = @"/com.getvictorious.sequencecace/sequences/%@/assets/%@/%@";
 
 @class VAsset;
 
