@@ -87,6 +87,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 #endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
+#warning FOR REAL THIS TIME!!! DON'T FORGET TO REMOVE THE TESTING JSON!
+        template = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"directoryMarquee" ofType:@"json"]] options:0 error:nil];
         template = [self concatenateTemplateWithDefaultTemplate:template];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
