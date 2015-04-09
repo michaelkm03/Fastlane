@@ -88,7 +88,7 @@
     
     cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
     cell.delegate = self;
-    [self.dependencyManager addBackgroundToBackgroundHost:cell];
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     
     return cell;
 }

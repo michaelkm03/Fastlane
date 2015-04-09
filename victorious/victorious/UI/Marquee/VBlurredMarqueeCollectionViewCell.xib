@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -37,7 +37,7 @@
                             <constraint firstAttribute="height" constant="70" id="TGu-NW-nbQ"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -62,9 +62,9 @@
             </constraints>
             <size key="customSize" width="300" height="238"/>
             <connections>
-                <outlet property="backgroundContainer" destination="NDp-7E-oBL" id="fZa-TG-VoS"/>
                 <outlet property="crossfadingBlurredImageView" destination="KbE-9l-IFh" id="nW1-J2-OAV"/>
                 <outlet property="crossfadingLabel" destination="iPU-Vl-eS4" id="ZD1-Qe-LtQ"/>
+                <outlet property="loadingBackgroundContainer" destination="NDp-7E-oBL" id="alI-Gj-mxM"/>
                 <outlet property="marqueeCollectionView" destination="Pas-Uw-m0a" id="s7R-3G-LFG"/>
             </connections>
             <point key="canvasLocation" x="522" y="295"/>

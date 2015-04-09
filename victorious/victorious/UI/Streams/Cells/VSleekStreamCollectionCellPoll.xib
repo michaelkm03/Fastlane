@@ -128,12 +128,12 @@
             <connections>
                 <outlet property="actionViewBottomConstraint" destination="Nzv-Le-NQI" id="KqF-2R-PsE"/>
                 <outlet property="actionViewTopConstraint" destination="RgP-R9-e0l" id="j5J-PR-HMX"/>
-                <outlet property="backgroundHost" destination="TlZ-3e-RyI" id="F2q-gs-myO"/>
                 <outlet property="captionContainerHeightConstraint" destination="bUx-aK-SY4" id="8Ff-6S-eMx"/>
                 <outlet property="captionContainerView" destination="HKO-eN-WWK" id="DkZ-qa-FIa"/>
                 <outlet property="captionTextView" destination="MFw-gp-F7D" id="BGd-ub-9tt"/>
                 <outlet property="captionTextViewBottomConstraint" destination="wy1-KA-n4v" id="xzU-EW-obD"/>
                 <outlet property="captionTextViewTopConstraint" destination="zyL-20-j66" id="d0I-H0-UeH"/>
+                <outlet property="loadingBackgroundContainer" destination="TlZ-3e-RyI" id="mvX-Ch-kz7"/>
                 <outlet property="previewImageTwo" destination="DYL-sd-dM5" id="Rz0-Dy-cOS"/>
                 <outlet property="previewImageView" destination="4hb-9q-so0" id="iJ9-Ef-J30"/>
                 <outlet property="shadeView" destination="8QT-3n-Tuc" id="whN-fE-uL0"/>

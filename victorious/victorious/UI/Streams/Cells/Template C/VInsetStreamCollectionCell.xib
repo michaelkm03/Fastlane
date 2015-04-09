@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -110,7 +110,6 @@
             </constraints>
             <size key="customSize" width="543" height="290"/>
             <connections>
-                <outlet property="backgroundContainer" destination="cYN-Ie-nea" id="1KV-bH-CHV"/>
                 <outlet property="captionTextView" destination="QyC-HK-x2o" id="cMd-VE-Gge"/>
                 <outlet property="captionTextViewBottomConstraint" destination="u0E-OZ-gY2" id="zUj-rx-H7e"/>
                 <outlet property="captionTextViewTopConstraint" destination="A3e-xE-iUM" id="OUm-Pz-YPf"/>
@@ -120,6 +119,7 @@
                 <outlet property="commentsLabel" destination="cW4-bM-sNC" id="luq-a5-YM5"/>
                 <outlet property="commentsLeftConstraint" destination="9KD-hj-9El" id="GtG-Hl-072"/>
                 <outlet property="contentContainer" destination="Yqk-3U-Cvu" id="WaC-5x-TYc"/>
+                <outlet property="loadingBackgroundContainer" destination="cYN-Ie-nea" id="LZw-te-TBa"/>
                 <outlet property="playBackgroundImageView" destination="IRG-lN-Zwl" id="xkg-6p-V7g"/>
                 <outlet property="playImageView" destination="EYB-Sg-RQg" id="eFi-Uc-FSE"/>
                 <outlet property="previewImageView" destination="De6-Pn-uJH" id="Ypz-2a-uiA"/>

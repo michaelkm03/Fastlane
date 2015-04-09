@@ -213,7 +213,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     CGSize desiredSize = [VBlurredMarqueeCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
     
-    [self.dependencyManager addBackgroundToBackgroundHost:cell];
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     
     [self enableTimer];
     return cell;

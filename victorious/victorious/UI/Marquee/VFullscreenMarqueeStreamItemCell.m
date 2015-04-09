@@ -38,7 +38,7 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 
-@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
@@ -191,9 +191,9 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)backgroundContainerView
+- (UIView *)loadingBackgroundContainerView
 {
-    return self.backgroundContainer;
+    return self.loadingBackgroundContainer;
 }
 
 @end
