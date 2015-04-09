@@ -80,15 +80,13 @@
 
 - (IBAction)update:(id)sender
 {
+    BOOL shouldReset = [self shouldResetPassword];
+    
     [[self view] endEditing:YES];
     
     NSString *newPassword = self.passwordTextField.text;
     
-    NSError *outError = nil;
-    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
-                                      withKeyPath:NSStringFromSelector(@selector(text))];
-    if ([self.passwordValidator validateString:newPassword
-                                      andError:&outError])
+    if (shouldReset)
     {
         [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                        deviceToken:self.deviceToken
@@ -107,10 +105,6 @@
              [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString( @"OK", nil) style:UIAlertActionStyleCancel handler:nil]];
              [self presentViewController:alertController animated:YES completion:nil];
          }];
-    }
-    else
-    {
-        [self.passwordValidator showAlertInViewController:self withError:outError];
     }
 }
 
