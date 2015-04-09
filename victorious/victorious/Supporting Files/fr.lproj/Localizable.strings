@@ -105,6 +105,9 @@
 "NoMessagesTitle" = "AUCUN MESSAGE";
 "NoMessagesMessage" = "Vous pouvez envoyer des messages à tout le monde depuis l'application ! Il vous suffit de cliquer sur le profil qui vous intéresse, puis sur l'icône « Composer » dans le coin supérieur gauche.";
 
+"NoNotificationsTitle" = "AUCUNE NOTIFICATION POUR LE MOMENT";
+"NoNotificationsMessage" = "Plus vous vous impliquerez dans la communauté en commentant, en remixant ou en publiant du nouveau contenu, plus elle interagira avec vous. Découvrez ses réactions.";
+
 "NoCommentsTitle" = "SOYEZ LE PREMIER À COMMENTER !";
 "NoCommentsMessage" = "Publiez du texte, des photos ou des commentaires vidéo et découvrez ce qu'en pensent les autres !";
 "LeaveACommentAt" = "Laisser un commentaire sur";
@@ -401,7 +404,7 @@
 "CreatedBy" = "CRÉÉ PAR";
 "remixes" = "remixes";
 "Remix" = "Remix";
-"RemixVerb" = "Remix";
+"RemixVerb" = "Remixer";
 "reposts" = "republications";
 "REPOSTS" = "Republications";
 "REMIXES" = "Remixes";
@@ -509,6 +512,7 @@
 "AuthorizationContextViewProfile" = "Il n'y a rien à voir ici ! Nous sommes heureux que vous ayez rejoint notre communauté. Créez un compte pour montrer à tout le monde combien vous êtes unique. ";
 "AuthorizationContextAddComment" = "Rejoignez la conversation ! Nous aimerions entendre ce que vous avez à dire. Créez un compte et vous serez sur la voie !";
 "AuthorizationContextInbox" = "Nous sommes heureux que vous ayez rejoint notre communauté et que vous envoyiez des messages aux fans. Créez un compte pour pouvoir envoyer et recevoir des messages !";
+"AuthorizationContextNotification" = "Nous sommes ravis que vous ayez rejoint notre communauté et que vous communiquiez avec des fans. Créez simplement un compte pour recevoir des notifications relatives aux informations importantes !";
 
 "Video loading failed." = "Échec de chargement de la vidéo.";
 "Error Loading Next Video" = "Erreur de chargement de la vidéo suivante";
