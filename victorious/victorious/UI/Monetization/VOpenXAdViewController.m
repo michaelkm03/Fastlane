@@ -27,6 +27,18 @@
 
 @implementation VOpenXAdViewController
 
+@dynamic playerView;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self)
+    {
+        
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -41,7 +53,18 @@
 {
     [super viewWillAppear:animated];
     
+    // Start the OpenX Ad Manager
     [self.adManager startAdManager];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 - (void)setVastTag:(NSString *)vastTag
