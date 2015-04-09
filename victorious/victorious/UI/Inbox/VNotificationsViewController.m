@@ -31,6 +31,8 @@ static int const kNotificationFetchBatchSize = 50;
 @interface VNotificationsViewController () <VNavigationDestination>
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
+@property (nonatomic) NSInteger badgeNumber;
+@property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -47,6 +49,9 @@ static int const kNotificationFetchBatchSize = 50;
         viewController.navigationItem.rightBarButtonItem = nil;
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [viewController refresh:nil];
+        [viewController loggedInChanged:nil];
     }
     return viewController;
 }
@@ -76,6 +81,7 @@ static int const kNotificationFetchBatchSize = 50;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.contentInset = self.v_layoutInsets;
     self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -95,6 +101,7 @@ static int const kNotificationFetchBatchSize = 50;
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Notifications"];
+    self.badgeNumber = 0;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -238,9 +245,57 @@ static int const kNotificationFetchBatchSize = 50;
 
 #pragma mark - NSNotification handlers
 
+- (void)setBadgeNumber:(NSInteger)badgeNumber
+{
+    if ( badgeNumber == _badgeNumber )
+    {
+        return;
+    }
+    _badgeNumber = badgeNumber;
+    
+    if ( self.badgeNumberUpdateBlock != nil )
+    {
+        self.badgeNumberUpdateBlock(self.badgeNumber);
+    }
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    [self refresh:nil];
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self fetchNotificationCount];
+    }
+}
+
+
+- (void)fetchNotificationCount
+{
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+    };
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if ([fullResponse isKindOfClass:[NSDictionary class]])
+        {
+            NSNumber *unread = [(NSDictionary *)fullResponse[@"payload"] objectForKey: @"unread_count"];
+            self.badgeNumber = [unread integerValue];
+        }
+    };
+    [[VObjectManager sharedManager] getNotificationsCount:success failBlock:fail];
+}
+
 - (void)loggedInChanged:(NSNotification *)notification
 {
     // Placeholder for dealing with badges.
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self fetchNotificationCount];
+    }
+    else
+    {
+        self.badgeNumber = 0;
+    }
 }
 
 @end

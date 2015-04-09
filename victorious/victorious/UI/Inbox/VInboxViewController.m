@@ -28,7 +28,6 @@
 #import "VObjectManager+Login.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "VProvidesNavigationMenuItemBadge.h"
 #import "NSURL+VPathHelper.h"
 
 
@@ -73,6 +72,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     }
     return viewController;
+}
+
+- (void)awakeFromNib
+{
+    
 }
 
 - (void)dealloc
