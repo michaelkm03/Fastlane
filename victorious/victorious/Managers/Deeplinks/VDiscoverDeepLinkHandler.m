@@ -26,7 +26,7 @@ static NSString * const kDeeplinkHost = @"discover";
         return;
     }
     
-    completion( YES, nil );
+    completion( YES, self.navigationDestination );
 }
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url

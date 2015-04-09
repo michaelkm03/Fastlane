@@ -11,4 +11,6 @@
 
 @interface VDiscoverDeepLinkHandler : NSObject <VDeeplinkHandler>
 
+@property (nonatomic, strong) UIViewController<VNavigationDestination> *navigationDestination;
+
 @end

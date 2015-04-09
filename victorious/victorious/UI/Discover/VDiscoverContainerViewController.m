@@ -125,7 +125,9 @@
 
 - (id<VDeeplinkHandler>)deeplinkHandler
 {
-    return [[VDiscoverDeepLinkHandler alloc] init];
+    VDiscoverDeepLinkHandler *handler = [[VDiscoverDeepLinkHandler alloc] init];
+    handler.navigationDestination = self;
+    return handler;
 }
 
 #pragma mark - Show Profile

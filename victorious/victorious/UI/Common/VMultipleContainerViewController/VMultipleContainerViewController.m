@@ -217,10 +217,11 @@ static NSString * const kInitialKey = @"initial";
 
 - (VAuthorizationContext)authorizationContext
 {
-    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VNavigationDestination)])
+    UIViewController<VNavigationDestination> *currentSelection = self.viewControllers[self.selectedIndex];
+    if ( [currentSelection conformsToProtocol:@protocol(VNavigationDestination)] &&
+         [currentSelection respondsToSelector:@selector(authorizationContext)] )
     {
-        UIViewController<VNavigationDestination> *viewController = self.viewControllers[self.selectedIndex];
-        return [viewController authorizationContext];
+        return currentSelection.authorizationContext;
     }
     return VAuthorizationContextNone;
 }
