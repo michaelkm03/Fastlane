@@ -1,5 +1,5 @@
 //
-//  VMarqueeController.m
+//  VFullscreenMarqueeController.m
 //  victorious
 //
 //  Created by Will Long on 9/27/14.
@@ -14,8 +14,9 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VFullscreenMarqueeStreamItemCell.h"
 #import "VFullscreenMarqueeCollectionCell.h"
+#import "VFullscreenMarqueeSelectionDelegate.h"
 
-#import "VGroupedStreamCollectionViewController.h"
+#import "VShowcaseCollectionViewController.h"
 #import "VFullscreenMarqueeTabIndicatorView.h"
 
 #import "VThemeManager.h"
@@ -105,7 +106,7 @@
 {
     if ( [self.selectionDelegate conformsToProtocol:@protocol(VFullscreenMarqueeSelectionDelegate)] )
     {
-        [self.selectionDelegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
+        [(id <VFullscreenMarqueeSelectionDelegate>)self.selectionDelegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
         [self.autoScrollTimerManager invalidate];
     }
 }

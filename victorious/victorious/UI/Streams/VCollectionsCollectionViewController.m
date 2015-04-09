@@ -15,7 +15,7 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VScaffoldViewController.h"
 
-#import "VGroupedStreamCollectionViewController.h"
+#import "VShowcaseCollectionViewController.h"
 #import "VStreamCollectionViewController.h"
 
 #import "VAbstractMarqueeController.h"
@@ -81,7 +81,7 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     }
     else if ([streamItem isKindOfClass:[VStream class]])
     {
-        VGroupedStreamCollectionViewController *groupedStreamCollectionViewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)streamItem dependencyManager:self.dependencyManager];
+        VShowcaseCollectionViewController *groupedStreamCollectionViewController = [VShowcaseCollectionViewController streamDirectoryForStream:(VStream *)streamItem dependencyManager:self.dependencyManager];
         groupedStreamCollectionViewController.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:groupedStreamCollectionViewController animated:YES];
     }

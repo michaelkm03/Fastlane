@@ -1,12 +1,12 @@
 //
-//  VStreamDirectoryCollectionView.m
+//  VDirectoryCollectionViewController.m
 //  victorious
 //
 //  Created by Will Long on 9/8/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VDirectoryViewController.h"
+#import "VDirectoryCollectionViewController.h"
 
 // Data Source
 #import "VStreamCollectionViewDataSource.h"
@@ -39,13 +39,13 @@
 
 static CGFloat const kDirectoryInset = 10.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
+@interface VDirectoryCollectionViewController () <UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
 
 @property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
 
 @end
 
-@implementation VDirectoryViewController
+@implementation VDirectoryCollectionViewController
 
 #pragma mark - UIView overrides
 
@@ -128,7 +128,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     }
     else if ( streamItem.isStreamOfStreams )
     {
-        VDirectoryViewController *viewController = [VDirectoryViewController streamDirectoryForStream:(VStream *)streamItem
+        VDirectoryCollectionViewController *viewController = [VDirectoryCollectionViewController streamDirectoryForStream:(VStream *)streamItem
                                                                                     dependencyManager:self.dependencyManager];
         viewController.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:viewController animated:YES];

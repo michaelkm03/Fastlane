@@ -49,6 +49,12 @@
  */
 - (BOOL)isMarqueeSection:(NSUInteger)section;
 
+/**
+ *  Determines whether or not the hasHeaderCell property of the streamDataSource will be updated if marquee content is available.
+ *      The default implementation returns YES
+ *
+ *  @return YES to allow this class to manipulate the hasHeaderCell property of the streamDataSource or NO to turn off this behavior
+ */
 - (BOOL)canShowMarquee;
 
 /**

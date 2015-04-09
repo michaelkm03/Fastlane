@@ -12,9 +12,11 @@
 
 @protocol VMarqueeSelectionDelegate <NSObject>
 
+/**
+    This protocol allows delegates to respond to selections of marquee content
+ */
 @required
 
 - (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image;
-- (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path;
 
 @end

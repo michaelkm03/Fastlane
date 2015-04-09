@@ -1,12 +1,12 @@
 //
-//  VGroupedStreamCollectionViewController.m
+//  VShowcaseCollectionViewController.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VGroupedStreamCollectionViewController.h"
+#import "VShowcaseCollectionViewController.h"
 
 // Data Source
 #import "VStreamCollectionViewDataSource.h"
@@ -39,11 +39,11 @@ static NSString * const kBackgroundColor = @"backgroundColor";
 
 static CGFloat const kDirectoryInset = 5.0f;
 
-@interface VGroupedStreamCollectionViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VDirectoryGroupCellDelegate>
+@interface VShowcaseCollectionViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VDirectoryGroupCellDelegate>
 
 @end
 
-@implementation VGroupedStreamCollectionViewController
+@implementation VShowcaseCollectionViewController
 
 - (NSString *)cellIdentifier
 {
@@ -86,7 +86,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     }
     else if ([streamItem isKindOfClass:[VStream class]])
     {
-        VGroupedStreamCollectionViewController *sos = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)streamItem dependencyManager:self.dependencyManager];
+        VShowcaseCollectionViewController *sos = [VShowcaseCollectionViewController streamDirectoryForStream:(VStream *)streamItem dependencyManager:self.dependencyManager];
         sos.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:sos animated:YES];
     }
@@ -169,7 +169,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     }
     else if ( streamItem.isStreamOfStreams )
     {
-        VGroupedStreamCollectionViewController *viewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)streamItem
+        VShowcaseCollectionViewController *viewController = [VShowcaseCollectionViewController streamDirectoryForStream:(VStream *)streamItem
                                                                                                                 dependencyManager:self.dependencyManager];
         [self.navigationController pushViewController:viewController animated:YES];
     }
