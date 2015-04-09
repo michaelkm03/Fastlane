@@ -1,5 +1,5 @@
 //
-//  VMarqueeController.h
+//  VFullscreenMarqueeController.h
 //  victorious
 //
 //  Created by Will Long on 9/27/14.

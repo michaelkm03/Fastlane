@@ -1,5 +1,5 @@
 //
-//  VBaseMarqueeController.h
+//  VAbstractMarqueeController.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/25/15.
@@ -14,6 +14,11 @@ extern NSString * const kMarqueeURLKey;
 
 @class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell;
 
+/**
+    A controller responsible for managing the content offset of the collection view, updating the collection view when marquee content changes,
+        populating the stream item cells in the collection view, and relaying messages to delegates when marquee content changes or the user
+        interacts with the marquee
+ */
 @interface VAbstractMarqueeController : NSObject <UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, weak) id <VMarqueeSelectionDelegate> selectionDelegate; ///< The object that should be notified of selections of marquee content
@@ -32,19 +37,18 @@ extern NSString * const kMarqueeURLKey;
 @property (nonatomic, readonly) NSUInteger currentPage; ///< The current page of marquee content being displayed
 
 /**
- Initializes the marquee cell factory with an instance of VDependencyManager
+    Initializes the marquee cell factory with an instance of VDependencyManager
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 /**
- Sends -registerClass:forCellWithReuseIdentifier: and -registerNib:forCellWithReuseIdentifier:
- messages to the collection view. Should be called as soon as the collection view is
- initialized.
+    Sends -registerClass:forCellWithReuseIdentifier: and -registerNib:forCellWithReuseIdentifier:
+        messages to the collection view. Should be called as soon as the collection view is initialized.
  */
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
 
 /**
- Returns a configured marquee cell. This MUST be overridden by subclasses
+    Returns a configured marquee cell. This MUST be overridden by subclasses
  */
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
 
@@ -97,6 +101,9 @@ extern NSString * const kMarqueeURLKey;
  */
 - (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
 
+/**
+    Spot for subclasses to override to respond to changes in marquee content, will be called after changes to the "marqueeItems" array associated with our stream
+ */
 - (void)marqueeItemsUpdated;
 
 @end

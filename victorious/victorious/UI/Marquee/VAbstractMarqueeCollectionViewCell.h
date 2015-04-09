@@ -1,5 +1,5 @@
 //
-//  VBaseMarqueeCollectionViewCell.h
+//  VAbstractMarqueeCollectionViewCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/25/15.
@@ -12,6 +12,10 @@
 
 @class VDependencyManager, VStreamItem, VAbstractMarqueeController;
 
+/**
+    A collection view cell that contains the collectionView that displays marquee content and any views
+        that are displayed across all marquee stream item cells
+ */
 @interface VAbstractMarqueeCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
 /**

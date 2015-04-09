@@ -10,6 +10,9 @@
 
 @class VAbstractMarqueeController;
 
+/**
+    This protocol allows delegates to respond to changes in marquee content
+ */
 @protocol VMarqueeDataDelegate <NSObject>
 
 @required
