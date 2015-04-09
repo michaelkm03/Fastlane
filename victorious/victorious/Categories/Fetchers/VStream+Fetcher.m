@@ -16,9 +16,6 @@
 #import "VPaginationManager.h"
 #import "NSCharacterSet+VURLParts.h"
 
-NSString * const VStreamFilterTypeRecent = @"recent";
-NSString * const VStreamFilterTypePopular = @"popular";
-
 @implementation VStream (Fetcher)
 
 - (BOOL)isHashtagStream

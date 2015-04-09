@@ -48,7 +48,7 @@
 - (void)didMoveToSuperview
 {
     [super didMoveToSuperview];
-    [(VBlurredMarqueeController*)self.marquee animateToVisible];
+    [(VBlurredMarqueeController *)self.marquee animateToVisible];
 }
 
 #pragma mark - VBackgroundContainer
