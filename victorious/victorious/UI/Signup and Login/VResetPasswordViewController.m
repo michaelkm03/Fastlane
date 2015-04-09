@@ -30,6 +30,15 @@
 
 @synthesize registrationStepDelegate; //< VRegistrationStep
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.confirmPasswordTextField];
+    
+    self.passwordTextField.delegate = nil;
+    self.confirmPasswordTextField.delegate = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -55,6 +64,9 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     self.passwordValidator = [[VPasswordValidator alloc] init];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.confirmPasswordTextField];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -114,6 +126,15 @@
 
 #pragma mark - UITextFieldDelegate
 
+- (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
+{
+    if ( textField.text.length > 0 )
+    {
+        [self validateWithTextField:textField];
+    }
+    return YES;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == self.passwordTextField)
@@ -132,5 +153,105 @@
 {
     [[self view] endEditing:YES];
 }
+
+#pragma mark - Notifications
+
+- (void)textFieldDidChange:(NSNotification *)notification
+{
+    VInlineValidationTextField *textField = notification.object;
+    [self validateWithTextField:textField];
+}
+
+#pragma mark - Private
+
+- (BOOL)shouldResetPassword
+{
+    BOOL shouldReset = YES;
+    NSError *validationError;
+    UIResponder *newResponder = nil;
+    
+    [self.passwordValidator setConfirmationObject:nil
+                                      withKeyPath:nil];
+    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
+    {
+        [self.passwordTextField showInvalidText:validationError.localizedDescription
+                                       animated:YES
+                                          shake:YES
+                                         forced:YES];
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
+        
+        shouldReset = NO;
+        if (newResponder == nil)
+        {
+            [self.passwordTextField becomeFirstResponder];
+            newResponder = self.passwordTextField;
+        }
+    }
+    
+    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
+                                      withKeyPath:NSStringFromSelector(@selector(text))];
+    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
+    {
+        [self.confirmPasswordTextField showInvalidText:validationError.localizedDescription
+                                              animated:YES
+                                                 shake:YES
+                                                forced:YES];
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
+        
+        shouldReset = NO;
+        if (newResponder == nil)
+        {
+            [self.confirmPasswordTextField becomeFirstResponder];
+        }
+    }
+    
+    return shouldReset;
+}
+
+- (void)validateWithTextField:(VInlineValidationTextField *)textField
+{
+    NSError *validationError;
+    
+    if (textField == self.passwordTextField)
+    {
+        [self.passwordValidator setConfirmationObject:nil
+                                          withKeyPath:nil];
+        BOOL validPassword = [self.passwordValidator validateString:textField.text
+                                                           andError:&validationError];
+        if (!validPassword)
+        {
+            [textField showInvalidText:validationError.localizedDescription
+                              animated:NO
+                                 shake:NO
+                                forced:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+        }
+    }
+    if (textField == self.confirmPasswordTextField)
+    {
+        [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
+                                          withKeyPath:NSStringFromSelector(@selector(text))];
+        BOOL validConfimration = [self.passwordValidator validateString:self.passwordTextField.text
+                                                               andError:&validationError];
+        if (!validConfimration)
+        {
+            [textField showInvalidText:validationError.localizedDescription
+                              animated:NO
+                                 shake:NO
+                                forced:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+            [self.passwordTextField hideInvalidText];
+        }
+    }}
 
 @end
