@@ -91,6 +91,9 @@
 "NoMessagesTitle"       =   "NO MESSAGES YET";
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
 
+"NoNotificationsTitle"       =   "NO NOTIFICATIONS RIGHT NOW";
+"NoNotificationsMessage"     =   "As you engage with the community through commenting, remixing or posting new content, they'll engage more with you.  Find their reactions here.";
+
 "NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
 "NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
 "LeaveACommentAt"       =   "Leave a comment at ";
@@ -304,6 +307,11 @@
 "ResetPasswordNewEqualsCurrentTitle" = "Invalid New Password";
 "ResetPasswordNewEqualsCurrentMessage" = "Please enter a password that is different than your current password.";
 
+"ResetPasswordConfirmCancelTitle" = "Confirm";
+"ResetPasswordConfirmCancelMessage" = "Do you want to cancel your password reset?";
+"ResetPasswordYesCancelButton" = "Yes, cancel";
+"ResetPasswordNoContinueButton" = "No, continue";
+
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
 "Resend Email"           =   "Resend Email";
@@ -482,3 +490,4 @@
 "AuthorizationContextViewProfile"               = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are. ";
 "AuthorizationContextAddComment"                = "Join in on the conversation! We want to hear what you have to say. Create an account and you'll be on your way!";
 "AuthorizationContextInbox"                     = "We are so excited to have you join our community and message fans. Just create an account so you can send and receive messages!";
+"AuthorizationContextNotification"              = "We are so excited to have you join our community and communicate with fans. Just create an account and you will be notified about important information!";

@@ -128,9 +128,10 @@ static NSCache *_sharedImageCache = nil;
     self.commentAndMediaView.mediaThumbnailView.image = nil;
     self.commentAndMediaView.mediaThumbnailView.hidden = YES;
     
+    __weak typeof(self) welf = self;
     self.commentAndMediaView.onMediaTapped = ^(void)
     {
-        [self tappedOnMedia];
+        [welf tappedOnMedia];
     };
 }
 
@@ -194,7 +195,8 @@ static NSCache *_sharedImageCache = nil;
     if ((comment.realtime != nil) && (comment.realtime.floatValue >= 0))
     {
         self.realTimeCommentText = [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:@""
-                                                                                            andPostedTime:comment.realtime] string];
+                                                                                            andPostedTime:comment.realtime
+                                                                                    withDependencyManager:self.dependencyManager] string];
     }
     else
     {

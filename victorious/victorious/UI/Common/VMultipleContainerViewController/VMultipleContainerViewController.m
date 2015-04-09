@@ -14,6 +14,8 @@
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
 #import "VStreamCollectionViewController.h"
+#import "VAuthorizationContext.h"
+#import "VNavigationDestination.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate>
 
@@ -22,6 +24,7 @@
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
+@property (nonatomic) NSUInteger selectedIndex;
 
 @end
 
@@ -38,6 +41,7 @@ static NSString * const kInitialKey = @"initial";
     if (self)
     {
         _didShowInitial = NO;
+        _selectedIndex = 0;
         CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
         self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
@@ -192,6 +196,18 @@ static NSString * const kInitialKey = @"initial";
     return self.navigationItem;
 }
 
+#pragma mark - VNavigationDestination
+
+- (VAuthorizationContext)authorizationContext
+{
+    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VNavigationDestination)])
+    {
+        UIViewController<VNavigationDestination> *viewController = self.viewControllers[self.selectedIndex];
+        return [viewController authorizationContext];
+    }
+    return VAuthorizationContextNone;
+}
+
 #pragma mark -
 
 - (UIViewController *)viewControllerAtIndexPath:(NSIndexPath *)indexPath
@@ -201,13 +217,24 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
-    [self resetNavigationItem];
+    self.selectedIndex = index;
+    [self resetNavigationItemForIndex:index];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
     id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
     [viewController viewControllerSelected:isDefaultSelection];
+}
+
+- (void)resetNavigationItemForIndex:(NSUInteger)index
+{
+    [self resetNavigationItem];
+    UIViewController<VMultipleContainerChild> *viewController = self.viewControllers[ index ];
+    if ([viewController.navigationItem.rightBarButtonItems count] > 0)
+    {
+        self.navigationItem.rightBarButtonItems = viewController.navigationItem.rightBarButtonItems;
+    }
 }
 
 - (void)resetNavigationItem

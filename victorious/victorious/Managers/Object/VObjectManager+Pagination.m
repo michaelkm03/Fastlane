@@ -12,6 +12,7 @@
 
 #import "VPaginationManager.h"
 #import "VUser.h"
+#import "VURLMacroReplacement.h"
 #import "VSequence.h"
 #import "VComment.h"
 #import "VMessage.h"
@@ -169,7 +170,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        NSString *apiPath = [NSString stringWithFormat:@"/api/message/notification_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+        NSString *apiPath = [NSString stringWithFormat:@"/api/notification/notifications_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
         VAbstractFilter *listFilter = [self.paginationManager filterForPath:apiPath
                                                                  entityName:[VAbstractFilter entityName]
                                                        managedObjectContext:context];
@@ -177,6 +178,16 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         requestOperation = [self.paginationManager loadFilter:listFilter withPageType:pageType successBlock:success failBlock:fail];
     }];
     return requestOperation;
+}
+
+- (RKManagedObjectRequestOperation *)markAllNotificationsRead:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/notification/mark_all_notifications_read"
+               object:nil
+           parameters:@{}
+         successBlock:success
+            failBlock:fail];
 }
 
 #pragma mark - Conversations
@@ -292,7 +303,12 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
     };
     
-    return [self GET:[conversation.filterAPIPath stringByAppendingFormat:@"/1/%ld", (long)conversation.perPageNumber.integerValue]
+    NSDictionary *macroReplacements = @{ VPaginationManagerItemsPerPageMacro: [conversation.perPageNumber stringValue],
+                                         VPaginationManagerPageNumberMacro: @"1",
+                                      };
+    VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
+    
+    return [self GET:[macroReplacement urlByReplacingMacrosFromDictionary:macroReplacements inURLString:conversation.filterAPIPath]
               object:nil
           parameters:nil
         successBlock:fullSuccessBlock

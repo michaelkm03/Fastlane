@@ -54,6 +54,7 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
 
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
+    NSParameterAssert(!CGRectEqualToRect(self.bounds, CGRectZero));
     __weak UIImageView *weakSelf = self;
 
     self.alpha = 0;

@@ -43,7 +43,10 @@
             
         case VAuthorizationContextInbox:
             return NSLocalizedString( @"AuthorizationContextInbox", nil );
-            
+
+        case VAuthorizationContextNotification:
+            return NSLocalizedString( @"AuthorizationContextNotification", nil );
+
         default:
             return NSLocalizedString( @"AuthorizationContextDefault", nil );
     }
