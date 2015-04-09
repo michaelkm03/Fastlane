@@ -48,7 +48,7 @@ static NSString * const kTitleKey = @"title";
         UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
         if ( accentColor )
         {
-            VColorType *defaultColorOption = [[VColorType alloc] initWithColor:accentColor title:@"Standard"];
+            VColorType *defaultColorOption = [[VColorType alloc] initWithColor:accentColor title:NSLocalizedString(@"Standard", nil)];
             suppliedColors = [@[ defaultColorOption ] arrayByAddingObjectsFromArray:suppliedColors];
         }
         self.tools = suppliedColors;
