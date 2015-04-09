@@ -21,6 +21,8 @@
 #import "VThemeManager.h"
 #import "VTimerManager.h"
 
+#import "VDependencyManager+VBackgroundContainer.h"
+
 @interface VFullscreenMarqueeController () <VFullscreenMarqueeCellDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
@@ -86,6 +88,7 @@
     
     cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
     cell.delegate = self;
+    [self.dependencyManager addBackgroundToBackgroundHost:cell];
     
     return cell;
 }
@@ -133,6 +136,7 @@
     CGSize desiredSize = [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
     cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
+    
     
     [self enableTimer];
     return cell;
