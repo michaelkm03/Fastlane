@@ -40,6 +40,8 @@ static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 
 @implementation VFullscreenMarqueeCollectionCell
 
+@dynamic marquee;
+
 - (void)awakeFromNib
 {
     [self.marqueeCollectionView registerNib:[VFullscreenMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VFullscreenMarqueeStreamItemCell suggestedReuseIdentifier]];

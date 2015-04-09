@@ -7,7 +7,6 @@
 //
 
 #import "VBlurredMarqueeStreamItemCell.h"
-#import "VDependencyManager.h"
 #import "VStreamItem+Fetcher.h"
 #import "UIImageView+Blurring.h"
 #import "UIImageView+VLoadingAnimations.h"

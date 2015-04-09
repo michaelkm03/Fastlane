@@ -86,7 +86,7 @@
     
     for ( VImageViewContainer *imageViewContainer in self.imageViewContainers )
     {
-        CGFloat targetAlpha = fabs(offset - (CGFloat)[self.imageViewContainers indexOfObject:imageViewContainer]);
+        CGFloat targetAlpha = ABS(offset - (CGFloat)[self.imageViewContainers indexOfObject:imageViewContainer]);
         //Check to see if the imageView we're inspecting is completely hidden given the current offset amount
         if ( targetAlpha > 1.0 )
         {
