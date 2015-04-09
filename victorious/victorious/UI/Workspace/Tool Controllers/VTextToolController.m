@@ -24,11 +24,15 @@
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
 @property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
 
+@property (nonatomic, strong) UIImage *previewImage;
+
 @end
 
 @implementation VTextToolController
 
 #pragma mark - VToolController overrides
+
+@synthesize mediaURL;  ///< VToolController
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -75,7 +79,7 @@
     
     [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
                                            backgroundColor:[self currentColorSelection]
-                                                  mediaURL:self.capturedMediaURL
+                                                  mediaURL:self.mediaURL
                                               previewImage:[self textPostPreviewImage]
                                                 completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
@@ -186,6 +190,16 @@
 - (void)textDidUpdate:(NSString *)text
 {
     [self.textListener textDidUpdate:text];
+}
+
+- (void)setMediaURL:(NSURL *)newMediaURL previewImage:(UIImage *)previewImage
+{
+    self.previewImage = previewImage;
+    self.mediaURL = newMediaURL;
+    
+    self.textPostViewController.backgroundImage = previewImage;
+    
+    [self.textColorTool addNoColorOption];
 }
 
 @end

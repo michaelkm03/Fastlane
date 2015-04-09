@@ -14,6 +14,8 @@
 #import "VHashTags.h"
 #import "UIImage+VTint.h"
 
+static const CGFloat kTntedBackgroundImageAlpha = 0.5f;
+
 @interface VTextPostViewController ()
 
 @property (nonatomic, assign) BOOL hasBeenDisplayed;
@@ -101,9 +103,16 @@
     _backgroundColor = backgroundColor;
     self.view.backgroundColor = backgroundColor;
     
-    if ( self.backgroundImage != nil )
+    const BOOL shouldTint = backgroundColor != nil && self.backgroundImage != nil;
+    if ( shouldTint )
     {
+        self.backgroundImageView.alpha = kTntedBackgroundImageAlpha;
         self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.backgroundColor];
+    }
+    else
+    {
+        self.backgroundImageView.image = self.backgroundImage;
+        self.backgroundImageView.alpha = 1.0f;
     }
 }
 

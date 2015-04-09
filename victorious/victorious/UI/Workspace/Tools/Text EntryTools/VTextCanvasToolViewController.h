@@ -39,6 +39,4 @@
  */
 @property (nonatomic, weak) id<VTextCanvasToolDelegate> delegate;
 
-- (void)imageSelected:(UIImage *)image;
-
 @end

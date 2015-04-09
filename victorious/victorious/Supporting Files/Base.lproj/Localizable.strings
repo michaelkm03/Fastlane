@@ -498,6 +498,7 @@
 "AuthorizationContextNotification"              = "We are so excited to have you join our community and communicate with fans. Just create an account and you will be notified about important information!";
 
 "Standard"  = "Standard";   // The default color before a selection is made
+"No Color"  = "No Color" ;  // The absence of a color selection
 "Red"       = "Red";        // The color red
 "Magenta"   = "Magenta";    // The color, a pink/red
 "Orange"    = "Orange";     // The color orange

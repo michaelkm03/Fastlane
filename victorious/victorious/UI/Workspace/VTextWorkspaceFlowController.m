@@ -27,7 +27,6 @@
 @property (nonatomic, strong) VTextToolController *textToolController;
 
 @property (nonatomic, strong) UIViewController *mediaCaptureViewController;
-@property (nonatomic, strong, readwrite) UIImage *previewImage;
 
 @end
 
@@ -137,7 +136,7 @@
     __weak typeof(self) welf = self;
     cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
-        [welf didCaptureMediaWithUR:capturedMediaURL previewImage:previewImage];
+        [welf didCaptureMediaWithURL:capturedMediaURL previewImage:previewImage];
     };
     return cameraViewController;
 }
@@ -148,17 +147,16 @@
     __weak typeof(self) welf = self;
     imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
-        [welf didCaptureMediaWithUR:capturedMediaURL previewImage:previewImage];
+        [welf didCaptureMediaWithURL:capturedMediaURL previewImage:previewImage];
     };
     return imageSearchViewController;
 }
 
-- (void)didCaptureMediaWithUR:(NSURL *)capturedMediaURL previewImage:(UIImage *)previewImage
+- (void)didCaptureMediaWithURL:(NSURL *)capturedMediaURL previewImage:(UIImage *)previewImage
 {
     if ( capturedMediaURL != nil && previewImage != nil )
     {
-        self.textToolController.capturedMediaURL = capturedMediaURL;
-        [self.textCanvasToolViewController imageSelected:previewImage];
+        [self.textToolController setMediaURL:capturedMediaURL previewImage:previewImage];
     }
     
     [self.mediaCaptureViewController dismissViewControllerAnimated:YES completion:nil];

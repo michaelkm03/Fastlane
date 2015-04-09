@@ -20,4 +20,6 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
+@property (nonatomic, assign) BOOL showNoColor;
+
 @end

@@ -50,11 +50,6 @@
     [self.textPostViewController didMoveToParentViewController:self];
 }
 
-- (void)imageSelected:(UIImage *)image
-{
-    self.textPostViewController.backgroundImage = image;
-}
-
 - (IBAction)backgroundImageCameraSelected:(id)sender
 {
     [self.delegate textCanvasToolDidSelectCamera:self];
