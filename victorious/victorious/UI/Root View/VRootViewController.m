@@ -30,7 +30,7 @@
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
-static NSString * const kDeeplinkURLKey = @"deepLink";
+static NSString * const kDeepLinkURLKey = @"deeplink";
 static NSString * const kNotificationIDKey = @"notification_id";
 static NSString * const kAdSystemsKey = @"ad_systems";
 
@@ -314,7 +314,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)handlePushNotification:(NSDictionary *)pushNotification
 {
-    NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeeplinkURLKey]];
+    NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeepLinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
 
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && self.properlyBackgrounded )

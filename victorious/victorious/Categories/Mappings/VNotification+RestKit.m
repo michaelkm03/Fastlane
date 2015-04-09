@@ -21,7 +21,7 @@
 {
     NSDictionary *propertyMap = @{
                                   @"body" : VSelectorName(body),
-                                  @"deepLink" : VSelectorName(deepLink),
+                                  @"deeplink" : VSelectorName(deepLink),
                                   @"is_read" : VSelectorName(isRead),
                                   @"notify_type" : VSelectorName(notifyType),
                                   @"posted_at" : VSelectorName(postedAt),

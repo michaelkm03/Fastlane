@@ -9,7 +9,7 @@
 #import "VDiscoverDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 
-static NSString * const kDeeplinkHost = @"discover";
+static NSString * const kDeepLinkHost = @"discover";
 
 @implementation VDiscoverDeepLinkHandler
 
@@ -31,7 +31,7 @@ static NSString * const kDeeplinkHost = @"discover";
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
 {
-    return [url.host isEqualToString:kDeeplinkHost];
+    return [url.host isEqualToString:kDeepLinkHost];
 }
 
 @end

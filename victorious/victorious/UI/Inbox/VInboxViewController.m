@@ -336,11 +336,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         {
             [self.navigationController popToViewController:detailVC animated:animated];
         }
-        return;
     }
-    
-    detailVC.messageCountCoordinator = self.messageCountCoordinator;
-    [self.navigationController pushViewController:detailVC animated:YES];
+    else
+    {
+        detailVC.messageCountCoordinator = self.messageCountCoordinator;
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender
