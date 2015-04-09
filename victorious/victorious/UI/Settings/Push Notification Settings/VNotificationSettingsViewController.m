@@ -283,8 +283,7 @@
             cell.message = self.settingsError.domain;
             cell.isCentered = YES;
             
-            BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
-            if ( canOpenSettings && self.settingsError.code == kErrorCodeUserNotRegistered )
+            if ( self.settingsError.code == kErrorCodeUserNotRegistered )
             {
                 [cell showActionButtonWithLabel:NSLocalizedString( @"Open Settings", nil) callback:^void
                  {

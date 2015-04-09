@@ -23,7 +23,6 @@
 
 @interface VSideMenuViewController ()
 
-@property (strong, readwrite, nonatomic) VDependencyManager *dependencyManager;
 @property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;

@@ -29,6 +29,8 @@
 
 @implementation VFullscreenMarqueeController
 
+@dynamic delegate;
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithDependencyManager:dependencyManager];

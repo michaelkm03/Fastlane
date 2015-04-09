@@ -39,8 +39,6 @@ static CGFloat const kDirectoryInset = 5.0f;
 
 @interface VGroupedStreamCollectionViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VDirectoryGroupCellDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @end
 
 @implementation VGroupedStreamCollectionViewController

@@ -174,7 +174,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         return NO;
     }
     
-    if ( [url.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+    if ( [url.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
     {
         NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
         if ( conversationID != 0 )
@@ -292,13 +292,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell    *theCell;
-
-    theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-    VConversation  *info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [(VConversationCell *)theCell setConversation:info];
-    ((VConversationCell *)theCell).parentTableViewController = self;
-
+    VConversation *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VConversationCell *theCell = (VConversationCell *)[tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
+    [theCell setConversation:info];
+    theCell.parentTableViewController = self;
+    theCell.dependencyManager = self.dependencyManager;
+    
     return theCell;
 }
 

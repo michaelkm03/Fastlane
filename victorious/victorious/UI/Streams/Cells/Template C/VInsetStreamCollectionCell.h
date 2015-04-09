@@ -18,8 +18,6 @@ extern const CGFloat kInsetCellTextNeighboringViewSeparatorHeight; // This repre
 
 @interface VInsetStreamCollectionCell : VStreamCollectionCell
 
-@property (nonatomic, weak) IBOutlet UILabel *commentsLabel;
-
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentsLeftConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentLabelBottomConstraint;
