@@ -21,16 +21,9 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
- A deeplink URL that came in before we were ready for it.  Calling code can set
- a URL here if the reason to queue exists it the context of the calling code,
- then call `receiveQueuedDeeplink` later on when appropriate.
+ Let's callign code know if any deep links can be received at this time.
  */
-@property (nonatomic, strong) NSURL *queuedURL;
-
-/**
- Executes any queued deep links by forwarding it to `receiveDeeplink:` method.
- */
-- (void)receiveQueuedDeeplink;
+@property (nonatomic, assign, readonly) BOOL canReceiveDeeplinks;
 
 /**
  Executes the deep link URL by forwarding it onto the appropriate handler or queues if necessary.

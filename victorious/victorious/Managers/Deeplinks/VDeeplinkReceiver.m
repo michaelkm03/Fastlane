@@ -13,102 +13,32 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDeeplinkHandler.h"
 
-#import <KVOController/FBKVOController.h>
-
-#define FORCE_DEEPLINK 1
-
 @interface VDeeplinkReceiver()
 
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, readonly) VScaffoldViewController *scaffold;
-@property (nonatomic, assign, readonly) BOOL canNavigateToDeepLink;
 
 @end
 
 @implementation VDeeplinkReceiver
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-#if FORCE_DEEPLINK
-#warning FORCE_DEEPLINK is activated.  A hardcoded deeplink will automatically open with each app launch
-        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
-        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
-        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
-        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/1677"];
-        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
-        [self performSelector:@selector(receiveDeeplink:) withObject:testDeepLinkURL afterDelay:0.0];
-#endif
-    }
-    return self;
-}
-
-- (void)dealloc
-{
-    [self.KVOController unobserve:self];
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    
-    if ( self.scaffold.hasBeenShown )
-    {
-        [self receiveQueuedDeeplink];
-        return;
-    }
-    
-    [self.KVOController unobserve:self];
-    [self.KVOController observe:self
-                        keyPath:@"scaffold.hasBeenShown"
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         [self receiveQueuedDeeplink];
-     }];
-}
-
-- (void)receiveDeeplink:(NSURL *)url
-{
-    if ( self.canNavigateToDeepLink )
-    {
-        [self navigateToDeeplinkURL:url];
-    }
-    else
-    {
-        self.queuedURL = url;
-    }
-}
 
 - (VScaffoldViewController *)scaffold
 {
     return [self.dependencyManager scaffoldViewController];
 }
 
-- (BOOL)canNavigateToDeepLink
+- (BOOL)canReceiveDeeplinks
 {
-    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
-    return scaffold != nil && scaffold.hasBeenShown;
+    return self.scaffold != nil;
 }
 
-- (void)receiveQueuedDeeplink
-{
-    if ( self.queuedURL != nil )
-    {
-        [self navigateToDeeplinkURL:self.queuedURL];
-        self.queuedURL = nil;
-    }
-}
-
-- (void)navigateToDeeplinkURL:(NSURL *)url
+- (void)receiveDeeplink:(NSURL *)url
 {
     if ( self.scaffold.presentedViewController != nil )
     {
         [self.scaffold dismissViewControllerAnimated:YES completion:^(void)
          {
-             [self navigateToDeeplinkURL:url];
+             [self receiveDeeplink:url];
          }];
         return;
     }
