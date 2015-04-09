@@ -137,7 +137,6 @@
     cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
     cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
     
-    
     [self enableTimer];
     return cell;
 }
