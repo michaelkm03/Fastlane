@@ -75,10 +75,11 @@
     // Configure a managed object cache to ensure we do not create duplicate objects
     managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext];
     
-    [manager victoriousSetup];
-    
     //This will allow us to call this manager with [RKObjectManager sharedManager]
     [self setSharedManager:manager];
+    
+    //This must be called AFTER we call setSharedManager as several of the entityDescriptions we add to our response descriptors call on the sharedManager
+    [manager victoriousSetup];
 }
 
 + (NSDateFormatter *)dateFormatter

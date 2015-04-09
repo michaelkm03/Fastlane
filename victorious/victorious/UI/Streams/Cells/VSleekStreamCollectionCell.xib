@@ -97,7 +97,6 @@
             </constraints>
             <size key="customSize" width="543" height="266"/>
             <connections>
-                <outlet property="actionView" destination="gyd-x0-d0C" id="oSU-c4-1E5"/>
                 <outlet property="actionViewBottomConstraint" destination="wVb-eX-0SM" id="jxt-Zp-Ub6"/>
                 <outlet property="actionViewTopConstraint" destination="LCa-Vw-jCf" id="my1-eP-1ne"/>
                 <outlet property="backgroundHost" destination="chp-4I-fi1" id="xVp-nm-cpl"/>
@@ -108,6 +107,7 @@
                 <outlet property="playBackgroundImageView" destination="TCA-zq-hwv" id="Ij1-vW-RpW"/>
                 <outlet property="playImageView" destination="GwF-J3-KYa" id="30R-Rd-Un2"/>
                 <outlet property="previewImageView" destination="1KY-vY-sth" id="uzl-ea-Ted"/>
+                <outlet property="sleekActionView" destination="gyd-x0-d0C" id="0PO-aq-YSN"/>
                 <outlet property="streamCellHeaderView" destination="21k-Mb-C9q" id="iOU-IC-WRv"/>
                 <outlet property="videoPlayerView" destination="6ry-iE-omC" id="BjN-y1-I83"/>
             </connections>

@@ -83,11 +83,6 @@
 @property (nonatomic, readonly) NSString *timeAgoTextForCurrentRealtimeComment;
 
 /**
- *  The at realtime text for the current comment.
- */
-@property (nonatomic, readonly) NSString *atRealtimeTextForCurrentRealTimeComment;
-
-/**
  *  The comment body for the current comment.
  */
 @property (nonatomic, readonly) NSString *realTimeCommentBodyForCurrentRealTimeComent;

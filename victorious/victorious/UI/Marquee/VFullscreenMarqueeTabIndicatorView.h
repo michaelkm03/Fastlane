@@ -11,7 +11,7 @@
 /**
  *  A view that can be used to display tabs.
  */
-@interface VMarqueeTabIndicatorView : UIView
+@interface VFullscreenMarqueeTabIndicatorView : UIView
 
 @property (nonatomic) NSUInteger numberOfTabs;///<Number of tabs to display.  Calls updateUI when changed.
 @property (nonatomic) NSUInteger currentlySelectedTab;///<Currently selectedTab. Animates selection when changed.

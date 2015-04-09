@@ -22,6 +22,7 @@ static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
 @interface VInsetStreamCollectionCellPoll ()
 
 @property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak) IBOutlet VStreamCellActionView *cellActionView;
 
 @property (nonatomic, weak) VAnswer *firstAnswer;
 @property (nonatomic, weak) VAnswer *secondAnswer;
@@ -50,6 +51,11 @@ static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
     }
     
     [self setupMedia];
+}
+
+- (VStreamCellActionView *)actionView
+{
+    return self.cellActionView;
 }
 
 - (void)setupMedia
