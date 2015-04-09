@@ -1,5 +1,5 @@
 //
-//  VBaseMarqueeStreamItemCell.m
+//  VAbstractMarqueeStreamItemCell.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/25/15.

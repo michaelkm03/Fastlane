@@ -169,6 +169,12 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     self.canShowContent = NO;
 }
 
+- (BOOL)canShowMarquee
+{
+    //This will stop our superclass from adjusting the "hasHeaderCell" property, which in turn affects whether or not the profileHeader is shown, based on whether or not this stream contains a marquee
+    return NO;
+}
+
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad

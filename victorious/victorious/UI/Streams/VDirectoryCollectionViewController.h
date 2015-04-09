@@ -1,5 +1,5 @@
 //
-//  VStreamDirectoryCollectionView.h
+//  VDirectoryCollectionViewController.h
 //  victorious
 //
 //  Created by Will Long on 9/8/14.
@@ -13,6 +13,6 @@
 /**
  *  A view controller that uses a UICollectionView to display the streamItems in a VStream.
  */
-@interface VDirectoryViewController : VAbstractDirectoryCollectionViewController
+@interface VDirectoryCollectionViewController : VAbstractDirectoryCollectionViewController
 
 @end
