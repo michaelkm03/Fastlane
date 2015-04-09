@@ -50,7 +50,6 @@ static int const kNotificationFetchBatchSize = 50;
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-        [viewController refresh:nil];
         [viewController loggedInChanged:nil];
     }
     return viewController;

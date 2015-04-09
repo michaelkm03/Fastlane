@@ -195,7 +195,8 @@ static NSCache *_sharedImageCache = nil;
     if ((comment.realtime != nil) && (comment.realtime.floatValue >= 0))
     {
         self.realTimeCommentText = [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:@""
-                                                                                            andPostedTime:comment.realtime] string];
+                                                                                            andPostedTime:comment.realtime
+                                                                                    withDependencyManager:self.dependencyManager] string];
     }
     else
     {

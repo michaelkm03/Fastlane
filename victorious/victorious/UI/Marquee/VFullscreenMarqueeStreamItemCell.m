@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMarqueeStreamItemCell.h"
+#import "VFullscreenMarqueeStreamItemCell.h"
 
 // Stream Support
 #import "VStreamItem+Fetcher.h"
@@ -31,21 +31,19 @@ static CGFloat const kVDetailHideTime = 0.3f;
 static CGFloat const kVDetailBounceHeight = 8.0f;
 static CGFloat const kVDetailBounceTime = 0.15f;
 static CGFloat const kTitleOffsetForTemplateC = 6.5f;
+static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
+static NSString * const kVOrIconKey = @"orIcon";
 
-@interface VMarqueeStreamItemCell ()
+@interface VFullscreenMarqueeStreamItemCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 
 @property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
-@property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
-@property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
-@property (nonatomic, strong) VStreamWebViewController *webViewController;
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 
@@ -53,22 +51,18 @@ static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 
 @end
 
-static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 360 width
-
-@implementation VMarqueeStreamItemCell
+@implementation VFullscreenMarqueeStreamItemCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.profileImageButton.layer.borderWidth = 4;
-    
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.profileImageButton.layer.borderWidth = CGRectGetHeight(self.profileImageButton.bounds) / 2;
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
-    _streamItem = streamItem;
+    [super setStreamItem:streamItem];
     
     self.nameLabel.text = streamItem.name;
 
@@ -86,15 +80,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
         
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
-        
-        if ( [sequence isWebContent] )
-        {
-            [self setupWebViewWithSequence:sequence];
-        }
-        else
-        {
-            [self cleanupWebView];
-        }
     }
     else
     {
@@ -125,13 +110,16 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    _dependencyManager = dependencyManager;
+    [super setDependencyManager:dependencyManager];
     
     if ( dependencyManager != nil )
     {
         self.detailsBackgroundView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.profileImageButton.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
+        self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+        UIImage *orIcon = [dependencyManager imageForKey:kVOrIconKey];
+        self.pollOrImageView.image = orIcon;
     }
 }
 
@@ -179,38 +167,17 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     }
 }
 
-#pragma mark - Cell setup
-
-- (void)cleanupWebView
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    if ( self.webViewController != nil )
-    {
-        [self.webViewController.view removeFromSuperview];
-        self.webViewController = nil;
-        self.previewImageView.hidden = NO;
-    }
-}
-
-- (void)setupWebViewWithSequence:(VSequence *)sequence
-{
-    if ( self.webViewController == nil )
-    {
-        self.webViewController = [[VStreamWebViewController alloc] init];
-        self.webViewController.view.backgroundColor = [UIColor clearColor];
-        [self.webViewContainer addSubview:self.webViewController.view];
-        [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
-        self.previewImageView.hidden = YES;
-    }
-    
-    NSString *contentUrl = (NSString *)sequence.previewData;
-    [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
+    CGFloat width = CGRectGetWidth(bounds);
+    CGFloat height = floorf(width * kVCellHeightRatio);
+    return CGSizeMake(width, height);
 }
 
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     
-    self.streamItem = nil;
     [self setDetailsContainerVisible:YES animated:NO];
 }
 
@@ -220,26 +187,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     {
         [self.delegate cell:self selectedUser:((VSequence *)self.streamItem).user];
     }
-}
-
-#pragma mark - VSharedCollectionReusableViewMethods
-
-+ (NSString *)suggestedReuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
-+ (UINib *)nibForCell
-{
-    return [UINib nibWithNibName:NSStringFromClass([self class])
-                          bundle:nil];
-}
-
-+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
-{
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = width * kVCellHeightRatio;
-    return CGSizeMake(width, height);
 }
 
 #pragma mark - VBackgroundContainer
