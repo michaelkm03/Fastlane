@@ -83,10 +83,11 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 #if LOG_API_RESPONSES
 #warning API LOGGING IS ENABLED!
         [(NSDictionary *)fullResponse[@"payload"] logJSONStringWithTitle:@"FROM DB"];
-        [VTemplateGenerator logExampleTemplate];
+        //[VTemplateGenerator logExampleTemplate];
 #endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
+        template = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"directoryFromMarquee" ofType:@"json"]] options:0 error:nil];
         template = [self concatenateTemplateWithDefaultTemplate:template];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager

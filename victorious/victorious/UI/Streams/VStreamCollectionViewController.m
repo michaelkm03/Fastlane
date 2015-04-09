@@ -401,6 +401,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         VAbstractDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VAbstractDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
         
+        //Set the selected stream as the current stream in the directory
+        directory.currentStream = (VStream *)streamItem;
+        
+        //Update the directory title to match the streamItem
+        directory.title = streamItem.name;
+        
         [self.navigationController pushViewController:directory animated:YES];
     }
 }
