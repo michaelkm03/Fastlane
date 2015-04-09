@@ -13,11 +13,13 @@
 #import "VEndCard.h"
 #import "UIView+Autolayout.h"
 #import "VDependencyManager.h"
+#import "VTimerManager.h"
 
 static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
+@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adVideoPlayerViewController;
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 @property (nonatomic, assign, readwrite) BOOL videoDidEnd;
@@ -28,7 +30,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, assign) BOOL videoDidStart;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
-@property (nonatomic, weak) IBOutlet UIButton *failureRetryButton;
+@property (nonatomic, weak) IBOutlet UILabel *videoFailedLabel;
 
 @end
 
@@ -36,8 +38,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    const CGFloat minSide = MIN( CGRectGetWidth(bounds), CGRectGetHeight(bounds) );
-    return CGSizeMake( CGRectGetWidth(bounds), minSide );
+    const CGFloat minSide = MIN(CGRectGetWidth(bounds), CGRectGetHeight(bounds));
+    return CGSizeMake(CGRectGetWidth(bounds), minSide);
 }
 
 #pragma mark - NSObject
@@ -47,22 +49,20 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [super prepareForReuse];
     
     self.videoPlayerViewController.view.hidden = YES;
-    self.failureRetryButton.hidden = YES;
+    self.videoFailedLabel.hidden = YES;
 }
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.failureRetryButton.hidden = YES;
-    self.failureRetryButton.enabled = NO;// If you remove this need to fix the retry logic
-    self.failureRetryButton.titleLabel.numberOfLines = 0;
+    self.videoFailedLabel.hidden = YES;
 }
 
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    if ( !self.updatedVideoBounds )
+    if (!self.updatedVideoBounds)
     {
         /*
          Updating video player bounds after first time bounds is set
@@ -71,7 +71,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
          */
         self.updatedVideoBounds = YES;
         self.videoPlayerViewController.view.frame = self.contentView.bounds;
-        self.adPlayerViewController.view.frame = self.contentView.bounds;
+        self.adVideoPlayerViewController.view.frame = self.contentView.bounds;
     }
 }
 
@@ -79,7 +79,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 {
     [self.videoPlayerViewController disableTracking];
     self.videoPlayerViewController = nil;
-    self.adPlayerViewController = nil;
+    self.adVideoPlayerViewController = nil;
 }
 
 #pragma mark - Property Accessors
@@ -95,81 +95,12 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     
     _viewModel = viewModel;
     
-    [self.loadingIndicator startAnimating];
-    [self setupVideoPlayer];
-    self.videoPlayerViewController.view.hidden = YES;
+    [self prepareUIForPlayback];
     
     self.contentURL = viewModel.itemURL;
     self.loop = viewModel.loop;
-   
-    if ( viewModel.monetizationPartner == VMonetizationPartnerNone )
-    {
-        self.isPlayingAd = NO;
-        [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
-        return;
-    }
     
-    [self showPreRollWithPartner:viewModel.monetizationPartner withDetails:viewModel.monetizationDetails];
-}
-
-- (void)setAlpha:(CGFloat)alpha
-{
-    [super setAlpha:1.0f];
-}
-
-#pragma mark - Playback Methods
-
-- (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details
-{
-    // Set visibility
-    self.isPlayingAd = YES;
-    
-    self.videoPlayerViewController.view.hidden = YES;
-    
-    // Ad Video Player
-    self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
-    [self.adPlayerViewController assignMonetizationPartner:monetizationPartner withDetails:details];
-    self.adPlayerViewController.delegate = self;
-    self.adPlayerViewController.view.hidden = NO;
-    self.adPlayerViewController.view.frame = self.contentView.bounds;
-
-    [self.contentView addSubview:self.adPlayerViewController.view];
-    [self.contentView sendSubviewToBack:self.adPlayerViewController.view];
-    [self.adPlayerViewController start];
-    [NSTimer scheduledTimerWithTimeInterval:kAdTimeoutTimeInterval
-                                     target:self
-                                   selector:@selector(adTimerFired:)
-                                   userInfo:nil
-                                    repeats:NO];
-}
-
-- (void)resumeContentPlayback
-{
-    // Set visibility
-    self.isPlayingAd = NO;
-    self.adPlayerViewController.view.hidden = YES;
-    self.adPlayerViewController.view.alpha = 0.0f;
-    self.videoPlayerViewController.view.hidden = NO;
-    self.videoPlayerViewController.view.alpha = 1.0f;
-    [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
-    
-    // Play content Video
-    [self play];
-}
-
-- (AVPlayerStatus)status
-{
-    return self.videoPlayerViewController.player.status;
-}
-
-- (UIView *)videoPlayerContainer
-{
-    return self.videoPlayerViewController.view;
-}
-
-- (CMTime)currentTime
-{
-    return self.videoPlayerViewController.currentTime;
+    [self startPlaybackForModel:viewModel];
 }
 
 - (void)setPlayerControlsDisabled:(BOOL)playerControlsDisabled
@@ -188,12 +119,146 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.isAudioEnabled = !_audioMuted;
 }
 
-- (IBAction)retryVideo:(id)sender
+
+#pragma mark - Playback Methods
+
+- (void)prepareUIForPlayback
 {
-    [self replay];
-    [self setupVideoPlayer];
-    self.failureRetryButton.hidden = YES;
     [self.loadingIndicator startAnimating];
+    [self setupVideoPlayer];
+    self.videoPlayerViewController.view.hidden = YES;
+}
+
+- (void)startPlaybackForModel:(VVideoCellViewModel *)viewModel
+{
+    if (viewModel.monetizationPartner == VMonetizationPartnerNone)
+    {
+        self.isPlayingAd = NO;
+        [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
+    }
+    else
+    {
+        self.isPlayingAd = YES;
+        self.adVideoPlayerViewController = [self setupAdVideoPlayerViewController:viewModel.monetizationPartner details:viewModel.monetizationDetails];
+        [self addAdVideoPlayerViewController:self.adVideoPlayerViewController];
+    }
+}
+
+- (void)resumeContentPlayback
+{
+    self.isPlayingAd = NO;
+    [self hideAdVideoPlayer];    
+    [self showVideoPlayer];
+    [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
+    
+    [self play];
+}
+
+- (AVPlayerStatus)status
+{
+    return self.videoPlayerViewController.player.status;
+}
+
+- (CMTime)currentTime
+{
+    return self.videoPlayerViewController.currentTime;
+}
+
+#pragma mark - Video Player
+
+- (void)setupVideoPlayer
+{
+    if (self.videoPlayerViewController != nil)
+    {
+        [self removeVideoPlayerViewController];
+    }
+    
+    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+    self.videoPlayerViewController.delegate = self;
+    self.videoPlayerViewController.view.frame = self.contentView.bounds;
+    self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
+    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
+    if (self.tracking != nil)
+    {
+        [self.videoPlayerViewController enableTrackingWithTrackingItem:self.tracking];
+    }
+    
+    [self addVideoPlayerViewController:self.videoPlayerViewController];
+    
+    self.videoPlayerViewController.view.hidden = YES;
+    self.shrinkingContentView = self.videoPlayerViewController.view;
+    
+    if (self.contentURL != nil)
+    {
+        [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
+    }
+    
+    if (self.playerControlsDisabled)
+    {
+        self.videoPlayerViewController.shouldShowToolbar = NO;
+        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+    }
+}
+
+- (void)addVideoPlayerViewController:(VCVideoPlayerViewController *)videoPlayerViewController
+{
+    [self.contentView addSubview:videoPlayerViewController.view];
+    [self.contentView sendSubviewToBack:videoPlayerViewController.view];
+}
+
+- (void)removeVideoPlayerViewController
+{
+    [self.videoPlayerViewController.view removeFromSuperview];
+    self.videoPlayerViewController = nil;
+}
+
+- (void)hideVideoPlayer
+{
+    self.videoPlayerViewController.view.hidden = YES;
+    self.videoPlayerViewController.view.alpha = 0.0f;
+}
+
+- (void)showVideoPlayer
+{
+    self.videoPlayerViewController.view.hidden = NO;
+    self.videoPlayerViewController.view.alpha = 1.0f;
+}
+
+#pragma mark - Ad Video Player
+
+- (VAdVideoPlayerViewController *)setupAdVideoPlayerViewController:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
+{
+    VAdVideoPlayerViewController *adVideoPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithMonetizationPartner:monetizationPartner details:details];
+    adVideoPlayerViewController.delegate = self;
+    adVideoPlayerViewController.view.frame = self.contentView.bounds;
+    return adVideoPlayerViewController;
+}
+
+- (void)addAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
+{
+    [self.contentView addSubview:adVideoPlayerViewController.view];
+    [adVideoPlayerViewController start];
+
+    // This timer is added as a workaround to kill the ad video if it has not started playing after kAdTimeoutTimeInterval seconds.
+    [VTimerManager scheduledTimerManagerWithTimeInterval:kAdTimeoutTimeInterval target:self selector:@selector(adTimerFired) userInfo:nil repeats:NO];
+}
+
+- (void)removeAdVideoPlayerViewController
+{
+    [self.adVideoPlayerViewController.view removeFromSuperview];
+    self.adVideoPlayerViewController = nil;
+}
+
+- (void)hideAdVideoPlayer
+{
+    self.adVideoPlayerViewController.view.hidden = YES;
+    self.adVideoPlayerViewController.view.alpha = 0.0f;
+}
+
+- (void)showAdVideoPlayer
+{
+    self.adVideoPlayerViewController.view.hidden = NO;
+    self.adVideoPlayerViewController.view.alpha = 1.0f;
 }
 
 #pragma mark - Public Methods
@@ -212,7 +277,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)play
 {
-    if ( !self.videoDidEnd )
+    if (!self.videoDidEnd)
     {
         self.videoPlayerViewController.player.rate = self.speed;
     }
@@ -234,65 +299,35 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.animateWithPlayControls = animateWithPlayControls;
 }
 
-#pragma mark - Private Methods
-
-- (void)adTimerFired:(NSTimer *)timer
+- (void)prepareForRemoval
 {
-    [timer invalidate];
-    if (!self.adDidStart)
-    {
-        [self.adPlayerViewController.view removeFromSuperview];
-        self.adPlayerViewController = nil;
-        [self resumeContentPlayback];
-    }
+    self.delegate = nil;
+    self.adVideoPlayerViewController = nil;
 }
 
-- (void)setupVideoPlayer
+#pragma mark - Private Methods
+
+- (void)adTimerFired
 {
-    if (self.videoPlayerViewController != nil)
+    if (!self.adDidStart)
     {
-        [self.videoPlayerViewController.view removeFromSuperview];
-        self.videoPlayerViewController = nil;
-    }
-    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
-    self.videoPlayerViewController.delegate = self;
-    self.videoPlayerViewController.view.frame = self.contentView.bounds;
-    self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
-    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
-    if ( self.tracking != nil )
-    {
-        [self.videoPlayerViewController enableTrackingWithTrackingItem:self.tracking];
-    }
-    [self.contentView addSubview:self.videoPlayerViewController.view];
-    [self.contentView sendSubviewToBack:self.videoPlayerViewController.view];
-    self.videoPlayerViewController.view.hidden = YES;
-    self.shrinkingContentView = self.videoPlayerViewController.view;
-    
-    if (self.contentURL)
-    {
-        [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
-    }
-    if ( self.playerControlsDisabled )
-    {
-        self.videoPlayerViewController.shouldShowToolbar = NO;
-        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+        [self removeAdVideoPlayerViewController];
+        [self resumeContentPlayback];
     }
 }
 
 #pragma mark - VCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
-      didPlayToTime:(CMTime)time
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
-    if (CMTIME_COMPARE_INLINE(time, ==, kCMTimeZero))
+    if (CMTIME_COMPARE_INLINE(time, !=, kCMTimeZero))
     {
-        return;
+        self.videoDidStart = YES;
+        [self.loadingIndicator stopAnimating];
+        [self.delegate videoCell:self
+                   didPlayToTime:time
+                       totalTime:[videoPlayer playerItemDuration]];
     }
-    self.videoDidStart = YES;
-    [self.loadingIndicator stopAnimating];
-    [self.delegate videoCell:self
-               didPlayToTime:time
-                   totalTime:[videoPlayer playerItemDuration]];
 }
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
@@ -304,11 +339,10 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
     // This should only be forwarded from the content video player
-    [self.delegate videoCellPlayedToEnd:self
-                          withTotalTime:[videoPlayer playerItemDuration]];
+    [self.delegate videoCellPlayedToEnd:self withTotalTime:[videoPlayer playerItemDuration]];
     self.videoDidEnd = YES;
     
-    if ( self.viewModel.endCardViewModel != nil )
+    if (self.viewModel.endCardViewModel != nil)
     {
         [super showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
@@ -321,13 +355,11 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
 {
-    self.failureRetryButton.hidden = NO;
-    [self.videoPlayerViewController.view removeFromSuperview];
-    self.videoPlayerViewController = nil;
-    [self.adPlayerViewController.view removeFromSuperview];
-    self.adPlayerViewController = nil;
+    self.videoFailedLabel.hidden = NO;
+    [self.videoFailedLabel setText:NSLocalizedString(@"VideoPlayFailed", @"")];
+    [self removeVideoPlayerViewController];
+    [self removeAdVideoPlayerViewController];
     [self.loadingIndicator stopAnimating];
-    [self.failureRetryButton setTitle:NSLocalizedString(@"Video loading failed.", @"") forState:UIControlStateNormal];
 }
 
 #pragma mark - VAdVideoPlayerViewControllerDelegate

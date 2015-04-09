@@ -845,7 +845,7 @@
 "Version" = "Version %@";
 
 /* No comment provided by engineer. */
-"Video loading failed." = "Laden des Videos fehlgeschlagen.";
+"VideoPlayFailed" = "Laden des Videos fehlgeschlagen.";
 
 /* No comment provided by engineer. */
 "VideoCaptureFailed" = "Video kann nicht aufgenommen werden";

@@ -236,7 +236,7 @@
 
 "ReplaceVideo"          =   "Replace Video";
 
-"VideoPlayFailed"       =   "Failed to play video";
+"VideoPlayFailed"       =   "Video loading failed.";
 "See More"              =   "See More";
 "..."                   =   "...";
 
