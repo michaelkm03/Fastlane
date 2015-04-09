@@ -30,7 +30,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, assign) BOOL videoDidStart;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
-@property (nonatomic, weak) IBOutlet UIButton *failureRetryButton;
+@property (nonatomic, weak) IBOutlet UILabel *videoFailedLabel;
 
 @end
 
@@ -49,16 +49,14 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [super prepareForReuse];
     
     self.videoPlayerViewController.view.hidden = YES;
-    self.failureRetryButton.hidden = YES;
+    self.videoFailedLabel.hidden = YES;
 }
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.failureRetryButton.hidden = YES;
-    self.failureRetryButton.enabled = NO;// If you remove this need to fix the retry logic
-    self.failureRetryButton.titleLabel.numberOfLines = 0;
+    self.videoFailedLabel.hidden = YES;
 }
 
 - (void)setBounds:(CGRect)bounds
@@ -114,13 +112,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.isAudioEnabled = !_audioMuted;
 }
 
-- (IBAction)retryVideo:(id)sender
-{
-    [self replay];
-    [self setupVideoPlayer];
-    self.failureRetryButton.hidden = YES;
-    [self.loadingIndicator startAnimating];
-}
 
 #pragma mark - Playback Methods
 
@@ -149,9 +140,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (void)resumeContentPlayback
 {
     self.isPlayingAd = NO;
-    [self hideAdVideoPlayer];
-    self.videoPlayerViewController.view.hidden = NO;
-    self.videoPlayerViewController.view.alpha = 1.0f;
+    [self hideAdVideoPlayer];    
+    [self showVideoPlayer];
     [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
     
     [self play];
@@ -358,11 +348,11 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
 {
-    self.failureRetryButton.hidden = NO;
+    self.videoFailedLabel.hidden = NO;
+    [self.videoFailedLabel setText:NSLocalizedString(@"VideoPlayFailed", @"")];
     [self removeVideoPlayerViewController];
     [self removeAdVideoPlayerViewController];
     [self.loadingIndicator stopAnimating];
-    [self.failureRetryButton setTitle:NSLocalizedString(@"Video loading failed.", @"") forState:UIControlStateNormal];
 }
 
 #pragma mark - VAdVideoPlayerViewControllerDelegate
