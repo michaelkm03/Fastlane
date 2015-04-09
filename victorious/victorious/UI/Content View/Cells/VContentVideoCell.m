@@ -191,7 +191,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.view.hidden = YES;
     self.shrinkingContentView = self.videoPlayerViewController.view;
     
-    if (self.contentURL)
+    if (self.contentURL != nil)
     {
         [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
     }
