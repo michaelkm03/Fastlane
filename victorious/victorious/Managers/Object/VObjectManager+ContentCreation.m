@@ -29,6 +29,7 @@
 #import "VMessage+RestKit.h"
 #import "VUser+Fetcher.h"
 #import "AVAsset+Orientation.h"
+#import "UIColor+VHex.h"
 
 @import AVFoundation;
 
@@ -73,21 +74,50 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 #pragma mark - Sequence Methods
 
-- (RKManagedObjectRequestOperation *)createTextPostWithText:(NSString *)textContent
-                                            backgroundColor:(UIColor *)backgroundColor
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail
+- (void)createTextPostWithText:(NSString *)textContent
+               backgroundColor:(UIColor *)backgroundColor
+                      mediaURL:(NSURL *)mediaToUploadURL
+                  previewImage:(UIImage *)previewImage
+                    completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
-    NSParameterAssert( textContent.length > 0 );
+    NSParameterAssert( backgroundColor != nil || mediaToUploadURL != nil ); // One or the other must be non-nil
     
     NSDictionary *parameters = @{ @"content" : textContent,
-                                  @"background_color" : backgroundColor ?: [NSNull null] };
+                                  @"media_data": mediaToUploadURL ?: @"",
+                                  @"background_color" : [backgroundColor v_hexString] ?: @"" };
     
-    return [self POST:@"/api/text/create"
-               object:nil
-           parameters:parameters
-         successBlock:success
-            failBlock:fail];
+    VLog( @"Uploading text post with parameters: %@", parameters );
+    
+    NSURL *endpoint = [NSURL URLWithString:@"/api/text/create" relativeToURL:self.baseURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
+    request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
+    
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
+    uploadTaskCreator.request = request;
+    uploadTaskCreator.formFields = parameters;
+    uploadTaskCreator.previewImage = previewImage;
+    
+    NSError *uploadCreationError = nil;
+    VUploadTaskInformation *uploadTask = [uploadTaskCreator createUploadTaskWithError:&uploadCreationError];
+    if ( uploadTask == nil )
+    {
+        if ( completionBlock )
+        {
+            if ( uploadCreationError != nil )
+            {
+                uploadCreationError = [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil];
+            }
+            completionBlock( nil, nil, nil, uploadCreationError );
+        }
+        return;
+    }
+    
+    if ( completionBlock != nil )
+    {
+        completionBlock( nil, nil, nil, nil );
+    }
+    
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:nil];
 }
 
 - (void)createPollWithName:(NSString *)name

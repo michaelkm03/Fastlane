@@ -34,4 +34,6 @@
  */
 @property (nonatomic, strong) id<VTextListener> textListener;
 
+@property (nonatomic, strong) NSURL *capturedMediaURL;
+
 @end

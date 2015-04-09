@@ -12,15 +12,16 @@
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
 #import "VHashTags.h"
+#import "UIImage+VTint.h"
 
 @interface VTextPostViewController ()
 
 @property (nonatomic, assign) BOOL hasBeenDisplayed;
 
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textPostTextView;
-
 @property (nonatomic, strong, readwrite) IBOutlet VTextPostViewModel *viewModel;
 @property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
 @end
 
@@ -80,6 +81,30 @@
 - (VTextPostTextView *)textView
 {
     return self.textPostTextView;
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage
+{
+    _backgroundImage = backgroundImage;
+    self.backgroundImageView.image = [_backgroundImage v_tintedImageWithColor:self.backgroundColor];
+    //self.backgroundImageView.image = _backgroundImage;
+}
+
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    if ( _backgroundColor != nil && _backgroundColor == backgroundColor )
+    {
+        return;
+    }
+    
+    _backgroundColor = backgroundColor;
+    self.view.backgroundColor = backgroundColor;
+    
+    if ( self.backgroundImage != nil )
+    {
+        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.backgroundColor];
+    }
 }
 
 - (void)setIsTextSelectable:(BOOL)isTextSelectable

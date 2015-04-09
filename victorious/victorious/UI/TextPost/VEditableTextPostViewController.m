@@ -51,7 +51,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     self.hashtagHelper = [[VEditableTextPostHashtagHelper alloc] init];
     
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
-    [self.view insertSubview:self.overlayButton atIndex:0];
+    [self.view insertSubview:self.overlayButton atIndex:1];
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];
     [self.overlayButton addTarget:self action:@selector(overlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     

@@ -48,9 +48,21 @@
     [self.view insertSubview:self.textPostViewController.view atIndex:0];
     [self.view v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
     [self.textPostViewController didMoveToParentViewController:self];
-    
-    self.buttonImageSearch.alpha = 0.0f;
-    self.buttonCamera.alpha = 0.0f;
+}
+
+- (void)imageSelected:(UIImage *)image
+{
+    self.textPostViewController.backgroundImage = image;
+}
+
+- (IBAction)backgroundImageCameraSelected:(id)sender
+{
+    [self.delegate textCanvasToolDidSelectCamera:self];
+}
+
+- (IBAction)backgroundImageSearchSelected:(id)sender
+{
+    [self.delegate textCanvasToolDidSelectImageSearch:self];
 }
 
 @end

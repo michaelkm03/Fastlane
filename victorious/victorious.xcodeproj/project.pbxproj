@@ -556,6 +556,8 @@
 		A7E398731A362578000E4CAC /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E398721A362578000E4CAC /* NSData+AES.m */; };
 		A7E4D1FD1AAA621000433006 /* VProfileCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E4D1FC1AAA621000433006 /* VProfileCreateViewController.m */; };
 		A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */; };
+		A7ECC1BE1AD601040003E00A /* UIImage+VTint.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1BD1AD601040003E00A /* UIImage+VTint.m */; };
+		A7ECC1C11AD60ECE0003E00A /* UIColor+VHex.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECC1C01AD60ECE0003E00A /* UIColor+VHex.m */; };
 		A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */; };
 		A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */; };
 		A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */; };
@@ -1826,6 +1828,10 @@
 		A7E4D1FC1AAA621000433006 /* VProfileCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileCreateViewController.m; path = "victorious/UI/Signup and Login/VProfileCreateViewController.m"; sourceTree = SOURCE_ROOT; };
 		A7E4EDED1A81A4B30035D6B1 /* VEndCardActionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardActionModel.h; path = EndCard/VEndCardActionModel.h; sourceTree = "<group>"; };
 		A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardActionModel.m; path = EndCard/VEndCardActionModel.m; sourceTree = "<group>"; };
+		A7ECC1BC1AD601040003E00A /* UIImage+VTint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+VTint.h"; sourceTree = "<group>"; };
+		A7ECC1BD1AD601040003E00A /* UIImage+VTint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+VTint.m"; sourceTree = "<group>"; };
+		A7ECC1BF1AD60ECE0003E00A /* UIColor+VHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VHex.h"; sourceTree = "<group>"; };
+		A7ECC1C01AD60ECE0003E00A /* UIColor+VHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VHex.m"; sourceTree = "<group>"; };
 		A7EECAD31A377FA000A8BAE1 /* VPurchaseSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseSettingsViewController.h; sourceTree = "<group>"; };
 		A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseSettingsViewController.m; sourceTree = "<group>"; };
 		A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseCell.h; sourceTree = "<group>"; };
@@ -4564,6 +4570,8 @@
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
 				A77FB9211A897200003E9AA2 /* UIColor+VBrightness.h */,
 				A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */,
+				A7ECC1BF1AD60ECE0003E00A /* UIColor+VHex.h */,
+				A7ECC1C01AD60ECE0003E00A /* UIColor+VHex.m */,
 				0314D06519B4670A00FA363C /* UIImage+Cropping.h */,
 				0314D06619B4670A00FA363C /* UIImage+Cropping.m */,
 				0314D06719B4670A00FA363C /* UIImage+ImageCreation.h */,
@@ -4574,6 +4582,8 @@
 				0314D06C19B4670A00FA363C /* UIImage+Resize.m */,
 				03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */,
 				03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */,
+				A7ECC1BC1AD601040003E00A /* UIImage+VTint.h */,
+				A7ECC1BD1AD601040003E00A /* UIImage+VTint.m */,
 				0314D06D19B4670A00FA363C /* UIImageView+Blurring.h */,
 				0314D06E19B4670A00FA363C /* UIImageView+Blurring.m */,
 				BE11447C19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.h */,
@@ -5485,7 +5495,6 @@
 				036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */,
-				F028CF591A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib in Resources */,
 				A75ED08D1AB77C1800C35063 /* VBasicToolPickerCell.xib in Resources */,
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
@@ -5975,6 +5984,7 @@
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
+				A7ECC1C11AD60ECE0003E00A /* UIColor+VHex.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				D814040B1AB372320099EC4B /* VWorkspacePresenter.m in Sources */,
 				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
@@ -6210,6 +6220,7 @@
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */,
 				A776EF1C1ACC99C20093992F /* VMultiplePickerViewController.m in Sources */,
+				A7ECC1BE1AD601040003E00A /* UIImage+VTint.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,

@@ -16,12 +16,18 @@
 #import "NSDictionary+VJSONLogging.h"
 #import "VEditableTextPostViewController.h"
 #import "VTextListener.h"
+#import "VCameraViewController.h"
+#import "VImageSearchViewController.h"
 
-@interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener>
+@interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener, VTextCanvasToolDelegate>
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 @property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
 @property (nonatomic, strong) VTextCanvasToolViewController *textCanvasToolViewController;
+@property (nonatomic, strong) VTextToolController *textToolController;
+
+@property (nonatomic, strong) UIViewController *mediaCaptureViewController;
+@property (nonatomic, strong, readwrite) UIImage *previewImage;
 
 @end
 
@@ -43,12 +49,13 @@
         
         // Create the worksapce canvas
         _textCanvasToolViewController = [VTextCanvasToolViewController newWithDependencyManager:dependencyManager];
+        _textCanvasToolViewController.delegate = self;
         
         // Create the tool controller and set up delegates
-        VTextToolController *toolController = [self createToolControllerWithDependencyManager:dependencyManager];
-        toolController.textListener = self;
-        toolController.delegate = _textWorkspaceViewController;
-        _textWorkspaceViewController.toolController = toolController;
+        _textToolController = [self createToolControllerWithDependencyManager:dependencyManager];
+        _textToolController.textListener = self;
+        _textToolController.delegate = _textWorkspaceViewController;
+        _textWorkspaceViewController.toolController = _textToolController;
         _textWorkspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
         
         // Add tools to the tool controller
@@ -105,6 +112,56 @@
 {
     BOOL enabled = self.textCanvasToolViewController.textPostViewController.textOutput.length > 0;
     [self.textWorkspaceViewController.continueButton setEnabled:enabled];
+}
+
+#pragma mark - VTextCanvasToolDelegate
+
+- (void)textCanvasToolDidSelectCamera:(VTextCanvasToolViewController *)textCanvasToolViewController
+{
+    self.mediaCaptureViewController = [self createCameraViewController];
+    [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+}
+
+- (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController
+{
+    self.mediaCaptureViewController = [self createImageSearchViewController];
+    [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+}
+
+#pragma mark - Choosing background image
+
+- (UIViewController *)createCameraViewController
+{
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
+    cameraViewController.shouldSkipPreview = YES;
+    __weak typeof(self) welf = self;
+    cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        [welf didCaptureMediaWithUR:capturedMediaURL previewImage:previewImage];
+    };
+    return cameraViewController;
+}
+
+- (UIViewController *)createImageSearchViewController
+{
+    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
+    __weak typeof(self) welf = self;
+    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        [welf didCaptureMediaWithUR:capturedMediaURL previewImage:previewImage];
+    };
+    return imageSearchViewController;
+}
+
+- (void)didCaptureMediaWithUR:(NSURL *)capturedMediaURL previewImage:(UIImage *)previewImage
+{
+    if ( capturedMediaURL != nil && previewImage != nil )
+    {
+        self.textToolController.capturedMediaURL = capturedMediaURL;
+        [self.textCanvasToolViewController imageSelected:previewImage];
+    }
+    
+    [self.mediaCaptureViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

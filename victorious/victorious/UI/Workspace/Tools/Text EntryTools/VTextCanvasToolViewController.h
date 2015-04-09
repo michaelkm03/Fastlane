@@ -9,7 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
-@class VEditableTextPostViewController;
+@class VEditableTextPostViewController, VTextCanvasToolViewController;
+
+@protocol VTextCanvasToolDelegate <NSObject>
+
+@required
+
+- (void)textCanvasToolDidSelectCamera:(VTextCanvasToolViewController *)textCanvasToolViewController;
+
+- (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController;
+
+@end
 
 /**
  The canvas area of the workspace for creating text posts.  The working text will be display
@@ -23,5 +33,12 @@
  A view controller that handles the primary text editing functions.
  */
 @property (nonatomic, strong, readonly) VEditableTextPostViewController *textPostViewController;
+
+/**
+ Delegate that handles UI-driven events.
+ */
+@property (nonatomic, weak) id<VTextCanvasToolDelegate> delegate;
+
+- (void)imageSelected:(UIImage *)image;
 
 @end

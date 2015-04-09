@@ -75,14 +75,10 @@
     
     [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
                                            backgroundColor:[self currentColorSelection]
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                  mediaURL:self.capturedMediaURL
+                                              previewImage:[self textPostPreviewImage]
+                                                completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
-         
-         completion( YES, nil, nil, nil );
-     }
-                                                 failBlock:^(NSOperation *operation, NSError *error)
-     {
-         NSLog( @"error posting text: %@", [error localizedDescription] );
          completion( YES, nil, nil, nil );
      }];
 }
@@ -97,6 +93,16 @@
 - (NSString *)currentText
 {
     return self.textPostViewController.text;
+}
+
+- (UIImage *)textPostPreviewImage
+{
+    UIView *viewToDraw = self.textPostViewController.view;
+    UIGraphicsBeginImageContextWithOptions( viewToDraw.bounds.size, YES, 0.0);
+    [viewToDraw drawViewHierarchyInRect:viewToDraw.bounds afterScreenUpdates:NO];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 - (VTextPostViewController *)textPostViewController
@@ -117,7 +123,7 @@
     if ( [tool isKindOfClass:[VColorType class]] )
     {
         VColorType *colorType = (VColorType *)tool;
-        self.textPostViewController.view.backgroundColor = colorType.color;
+        self.textPostViewController.backgroundColor = colorType.color;
     }
 }
 

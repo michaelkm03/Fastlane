@@ -27,6 +27,16 @@
 @property (nonatomic, strong) NSString *text;
 
 /**
+ Sets the background image, which will display and size accodingly.
+ */
+@property (nonatomic, strong) UIImage *backgroundImage;
+
+/**
+ Sets the background color.
+ */
+@property (nonatomic, strong) UIColor *backgroundColor;
+
+/**
  An object that encapsulates various configuration properties of how the text post
  is rendered, including text attributes and background frame properties.
  */
