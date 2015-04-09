@@ -105,6 +105,9 @@
 "NoMessagesTitle" = "TODAVÍA NO HAY MENSAJES";
 "NoMessagesMessage" = "¡Puedes enviar mensajes a cualquier persona en la app! Sólo tienes que ir a su perfil y hacer clic en el icono de composición en la esquina superior derecha.";
 
+"NoNotificationsTitle" = "NO HAY NOTIFICACIONES POR EL MOMENTO";
+"NoNotificationsMessage" = "A medida que te involucres en la comunidad a través de los comentarios, remezclas o publicaciones de nuevos contenidos, la gente se involucrará más contigo. Descubre sus reacciones aquí.";
+
 "NoCommentsTitle" = "¡SÉ EL PRIMERO EN COMENTAR!";
 "NoCommentsMessage" = "Publica textos, fotos o comentarios a videos, ¡y ve lo que los demás dicen!";
 "LeaveACommentAt" = "Deja un comentario en ";
@@ -509,6 +512,7 @@
 "AuthorizationContextViewProfile" = "¡Nada que ver aquí todavía! Estamos muy contentos de que te unas a nuestra comunidad. Crear una cuenta para mostrar a todos lo único que eres. ";
 "AuthorizationContextAddComment" = "¡Únete a la conversación! Queremos escuchar lo que tienes que decir. ¡Crea una cuenta y estarás en el camino!";
 "AuthorizationContextInbox" = "Estamos muy contentos de que te unas a nuestra comunidad de fans y mensajes. ¡Solo con crea una cuenta para que puedas enviar y recibir mensajes!";
+"AuthorizationContextNotification" = "Estamos tan emocionados de que te unas a nuestra comunidad y te comuniques con los fans. ¡Solo crea una cuenta y te notificaremos acerca de toda la información relevante!";
 
 "Video loading failed." = "Error al cargar el video";
 "Error Loading Next Video" = "Error Cargando el próximo video";
