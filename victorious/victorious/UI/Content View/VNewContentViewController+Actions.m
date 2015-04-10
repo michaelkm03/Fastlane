@@ -98,7 +98,7 @@
     
     [self addRemixToActionItems:actionItems contentViewController:contentViewController actionSheetViewController:actionSheetViewController];
     
-#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
     if (self.viewModel.type == VContentViewTypeVideo)
     {
         BOOL assetIsCached = [[self.viewModel.currentNode mp4Asset] assetDataIsCached];

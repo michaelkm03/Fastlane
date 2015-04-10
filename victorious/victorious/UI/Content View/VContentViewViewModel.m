@@ -189,7 +189,7 @@
 
 - (void)fetchSequenceData
 {
-#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
     // Check for the cached mp4
     BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
     if (assetIsCached)
@@ -254,7 +254,7 @@
 
 - (void)createVideoModel
 {
-#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
     // Check for the cached mp4
     BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
     if (assetIsCached)

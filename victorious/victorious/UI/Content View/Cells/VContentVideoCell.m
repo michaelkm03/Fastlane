@@ -88,7 +88,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)setViewModel:(VVideoCellViewModel *)viewModel
 {
-#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
     if ([_viewModel.itemURL isEqual:viewModel.itemURL])
     {
         return;
