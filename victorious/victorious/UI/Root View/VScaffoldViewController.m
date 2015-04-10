@@ -274,6 +274,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 - (void)checkAuthorizationOnNavigationDestination:(id)navigationDestination
                                        completion:(void(^)(BOOL shouldNavigate))completion
 {
+    NSAssert(completion != nil, @"We need a completion to inform about the authorization check success!");
+    
     if ([navigationDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)])
     {
         id <VAuthorizationContextProvider> authorizationContextProvider = (id <VAuthorizationContextProvider>)navigationDestination;
@@ -285,16 +287,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                                                                                  dependencyManager:self.dependencyManager];
             [authorizedAction performFromViewController:self context:context completion:^(BOOL authorized)
              {
-                 if (!authorized)
-                 {
-                     if (completion != nil)
-                     {
-                         completion(NO);
-                     }
-                     
-                     return;
-                 }
-                 completion(YES);
+                 completion(authorized);
              }];
         }
         else
