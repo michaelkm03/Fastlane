@@ -291,7 +291,6 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
-    // Placeholder for dealing with badges.
     if ( self.dependencyManager.objectManager.mainUserLoggedIn )
     {
         [self fetchNotificationCount];
