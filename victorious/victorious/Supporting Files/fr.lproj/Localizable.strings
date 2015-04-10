@@ -1,925 +1,536 @@
-/* No comment provided by engineer. */
-" Day" = "Jour";
+/* 
+  Localizable.strings
+  victorious
 
-/* No comment provided by engineer. */
-" Days" = "Jours";
+  Created by Gary Philipp on 12/23/13.
+  Copyright (c) 2013 Victorious Inc. All rights reserved.
+*/
 
-/* No comment provided by engineer. */
-" Hour" = "Heure";
 
-/* No comment provided by engineer. */
-" Hours" = "Heures";
 
-/* No Filter filter name. */
-"#nofilter" = "#nofilter";
-
-/* Number and symbol meaning \"more than\", e.g. \"99+ items\". (%ld is a placeholder for a number) */
-"%ld+" = "%ld+";
-
-/* No comment provided by engineer. */
-"Access Your Contacts" = "Accéder à vos contacts";
-
-/* No comment provided by engineer. */
-"AccessCameraDenied" = "Pour enregistrer une vidéo depuis votre appareil, veuillez autoriser l'accès depuis Paramètres → Confidentialité";
-
-/* No comment provided by engineer. */
-"AccessCameraRestricted" = "Impossible d'accéder à votre appareil photo en raison des restrictions de votre dispositif.";
-
-/* No comment provided by engineer. */
-"AccessContactsDenied" = "Pour rechercher des amis à l'aide de votre répertoire, veuillez autoriser l'accès depuis Paramètres → Confidentialité → Contacts";
-
-/* No comment provided by engineer. */
-"AccessContactsRestricted" = "Impossible d'accéder à vos contacts en raison des restrictions de votre dispositif.";
-
-/* No comment provided by engineer. */
-"AccessMicrophoneDenied" = "Pour enregistrer une vidéo depuis votre appareil, veuillez autoriser l'accès depuis Paramètres → Confidentialité → Microphone";
-
-/* No comment provided by engineer. */
-"AccessMicrophoneRestricted" = "Impossible d'accéder à votre microphone en raison des restrictions de votre dispositif.";
-
-/* No comment provided by engineer. */
-"ActivityPurchasing" = "Achat en cours...";
-
-/* No comment provided by engineer. */
-"ActivityRestoring" = "Restauration...";
-
-/* No comment provided by engineer. */
-"AddressBookFollowingSectionHeader" = "Suivre vos contacts";
-
-/* No comment provided by engineer. */
-"Already Registered?" = "Déjà inscrit(e) ?";
-
-/* Setting indicating auto play every time. */
-"Always" = "Toujours";
-
-/* No comment provided by engineer. */
-"AnswerTextToShort" = "Vos réponses doivent contenir au moins 2 caractères.";
-
-/* No comment provided by engineer. */
-"App Version:" = "Version de l'application :";
-
-/* No comment provided by engineer. */
-"AreYouSureYouWantToDelete" = "Souhaitez-vous vraiment procéder à la suppression ?";
-
-/* No comment provided by engineer. */
-"Ask a question..." = "Poser une question...";
-
-/* No comment provided by engineer. */
-"CameraFailed" = "Échec du lancement de l'appareil photo";
-
-/* (No Commment) */
-"Cancel" = "Annuler";
-
-/* (No Commment) */
-"CancelButton" = "Annuler";
-
-/* No comment provided by engineer. */
-"Cancelling..." = "Annulation en cours...";
-
-/* No comment provided by engineer. */
-"CannotVerify" = "Échec de vérification du compte";
-
-/* No comment provided by engineer. */
-"Channel" = "Canal";
-
-/* No comment provided by engineer. */
-"Channels" = "Canaux";
-
-/* No comment provided by engineer. */
-"Comment" = "Commentaire";
-
-/* No comment provided by engineer. */
-"CommentAlreadyReported" = "Commentaire déjà signalé";
-
-/* No comment provided by engineer. */
-"Comments" = "Commentaires";
-
-/* No comment provided by engineer. */
-"Community" = "Communauté";
-
-/* No comment provided by engineer. */
-"Connect to Facebook" = "Se connecter à Facebook";
-
-/* No comment provided by engineer. */
-"Connect to Instagram" = "Se connecter à Instagram";
-
-/* No comment provided by engineer. */
-"Connect to Twitter" = "Se connecter à Twitter";
-
-/* No comment provided by engineer. */
-"ContactsSafety" = "Vos contacts sont en sécurité avec nous ! Pour trouver vos amis, nous devons envoyer à nos serveurs les informations liées à vos contacts via une connexion sécurisée.";
-
-/* No comment provided by engineer. */
-"ConversationDelError" = "Échec de suppression de la conversation";
-
-/* No comment provided by engineer. */
-"ConversationLoadError" = "Échec de chargement de la conversation";
-
-/* No comment provided by engineer. */
-"ConversationSendError" = "Votre message n'a pas pu être envoyé";
-
-/* No comment provided by engineer. */
-"Create" = "Créer";
-
-/* Create Poll */
-"Create Poll" = "Créer un sondage";
-
-/* Create a gif action button. */
-"Create a GIF" = "Créer un GIF";
-
-/* No comment provided by engineer. */
-"Create a Poll" = "Créer un sondage";
-
-/* No comment provided by engineer. */
-"Create a Video Post" = "Créer une publication vidéo";
-
-/* No comment provided by engineer. */
-"Create an Image Post" = "Créer une publication image";
-
-/* No comment provided by engineer. */
-"DaysAgo" = "%dd";
-
-/* Delete the previously selected item. This is a destructive operation. */
-"Delete" = "Supprimer";
-
-/* User has already selected media (pictire/video) as an attachment for commenting. */
-"Delete this content and select something else?" = "Supprimer ce contenu et sélectionner autre chose ?";
-
-/* No comment provided by engineer. */
-"DeleteButton" = "Supprimer";
-
-/* No comment provided by engineer. */
-"Device:" = "Appareil :";
-
-/* No comment provided by engineer. */
-"Discard" = "Ignorer";
-
-/* No comment provided by engineer. */
-"Discover" = "Découvrir";
-
-/* No comment provided by engineer. */
-"DiscoverSuggestedPeopleError" = "Désolés, les personnes suggérées n'ont pas pu être chargées.";
-
-/* No comment provided by engineer. */
-"DiscoverTrendingTagsError" = "Désolés, les étiquettes tendance n'ont pas pu être chargées.";
-
-/* Unable to Email */
-"EmailFail" = "Échec de l'envoi de l'e-mail";
-
-/* No comment provided by engineer. */
-"EmailNotFound" = "L'e-mail fourni n'a pas pu être trouvé. Veuillez saisir l'e-mail utilisé lors de la création de ce compte.";
-
-/* No comment provided by engineer. */
-"EmailNotValid" = "Veuillez saisir l'e-mail utilisé lors de la création de ce compte.";
-
-/* No comment provided by engineer. */
-"EmailShareSubjectFormat" = "Découvrez cette publication de l'application %@ !";
-
-/* No comment provided by engineer. */
-"EmailValidation" = "Adresse e-mail non valide";
-
-/* No comment provided by engineer. */
-"EnterCodeTitle" = "SAISIR LE CODE";
-
-/* No comment provided by engineer. */
-"EnterResetCodeMessage" = "Un e-mail contenant les instructions de réinitialisation du mot de passe a été envoyé à cette adresse.";
-
-/* No comment provided by engineer. */
-"Error Loading Next Video" = "Erreur de chargement de la vidéo suivante";
-
-/* No comment provided by engineer. */
-"ErrorOccured" = "Pour une raison inconnue, la connexion au serveur a échoué. Veuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"ErrorPushNotificationsNotEnabled" = "Les notifications push ne sont pas activées sur votre appareil.\nVeuillez autoriser les notifications dans les paramètres de votre appareil pour les activer.";
-
-/* No comment provided by engineer. */
-"ErrorPushNotificationsNotSaved" = "Erreur de sauvegarde des préférences";
-
-/* No comment provided by engineer. */
-"ErrorPushNotificationsNotSavedMessage" = "Veuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"ErrorPushNotificationsUnknown" = "Erreur de chargement des paramètres de notification.\nVeuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"FBSafety" = "Nous ne conservons pas vos mots de passe et ne publierons jamais rien sans votre permission.";
-
-/* No comment provided by engineer. */
-"FOLLOWERS" = "ABONNÉS";
-
-/* No comment provided by engineer. */
-"FOLLOWING" = "ABONNEMENTS";
-
-/* No comment provided by engineer. */
-"Facebook" = "Facebook";
-
-/* No comment provided by engineer. */
-"FacebookFollowingSectionHeader" = "Suivez vos amis Facebook";
-
-/* No comment provided by engineer. */
-"Failed to fetch products" = "Échec de récupération des produits";
-
-/* No comment provided by engineer. */
-"Featured" = "À la une";
-
-/* No comment provided by engineer. */
-"FindContacts" = "Trouvez des amis depuis vos contacts";
-
-/* No comment provided by engineer. */
-"FindFBFriends" = "Trouver des amis depuis Facebook";
-
-/* No comment provided by engineer. */
-"FindInstagramFriends" = "Trouvez des amis depuis Instagram";
-
-/* No comment provided by engineer. */
-"FindTwitterFriends" = "Trouvez des amis depuis Twitter";
-
-/* No comment provided by engineer. */
-"FollowError" = "Une erreur s'est produite lors de l'abonnement à cet utilisateur.";
-
-/* No comment provided by engineer. */
-"Following" = "Abonnements";
-
-/* No comment provided by engineer. */
-"FollowingSectionHeader" = "Abonnement existant";
-
-/* No comment provided by engineer. */
-"Forgot Password?" = "Mot de passe oublié ?";
-
-/* Created a GIF from this video */
-"GIF" = "GIF";
-
-/* No comment provided by engineer. */
-"HashtagSubscribeError" = "Désolés, une erreur s'est produite suite à la tentative d'abonnement à ce mot dièse. Veuillez réessayer.";
-
-/* No comment provided by engineer. */
-"HashtagUnsubscribeError" = "Désolés, une erreur s'est produite suite à la tentative de désabonnement à ce mot dièse. Veuillez réessayer.";
-
-/* No comment provided by engineer. */
 "Home" = "Accueil";
-
-/* No comment provided by engineer. */
-"HourAgo" = "1h";
-
-/* No comment provided by engineer. */
-"HoursAgo" = "%dh";
-
-/* No comment provided by engineer. */
-"ImageDownloadFailed" = "Échec de téléchargement de l'image.";
-
-/* No comment provided by engineer. */
+"Create" = "Créer";
+"Channel" = "Canal";
+"Channels" = "Canaux";
+"Community" = "Communauté";
+"Owner" = "Propriétaire";
 "Inbox" = "Boîte de réception";
-
-/* No comment provided by engineer. */
-"IncorrectCode" = "Le code utilisé pour la vérification du compte est incorrect.";
-
-/* No comment provided by engineer. */
-"InvalidTimePlaceholder" = "-:--";
-
-/* No comment provided by engineer. */
-"Invite" = "Inviter";
-
-/* No comment provided by engineer. */
-"InviteFriendsBody" = "Salut !\n\nJ'ai téléchargé une nouvelle application depuis %@. C'est une communauté d'interaction entre gens qui nous ressemblent. Télécharge-la maintenant depuis :";
-
-/* No comment provided by engineer. */
-"InviteFriendsSubject" = "Découvre la nouvelle application de %@";
-
-/* No comment provided by engineer. */
-"InviteUsingEmail" = "Inviter par e-mail";
-
-/* No comment provided by engineer. */
-"InviteUsingSMS" = "Inviter par SMS";
-
-/* No comment provided by engineer. */
-"InviteYourFriends" = "Invitez vos amis !";
-
-/* No comment provided by engineer. */
-"JustAMoment" = "Un instant";
-
-/* No comment provided by engineer. */
-"LastMonth" = "1mois";
-
-/* No comment provided by engineer. */
-"LastWeek" = "1sem.";
-
-/* No comment provided by engineer. */
-"LastYear" = "1an";
-
-/* No comment provided by engineer. */
-"LeaveAComment" = "Laisser un commentaire";
-
-/* No comment provided by engineer. */
-"LeaveACommentAt" = "Laisser un commentaire sur";
-
-/* No comment provided by engineer. */
+"Comments" = "Commentaires";
+"Remixes" = "Remixes";
+"OK" = "OK";
+"CancelButton" = "Annuler";
+"DeleteButton" = "Supprimer";
+"ConfirmButton" = "Confirmer";
+"Reply" = "Répondre";
+"ResetButton" = "Réinitialiser";
+"YesButton" = "Oui";
+"NoButton" = "Non";
+"BackButton" = "Retour";
+"Exit" = "Quitter";
+"Publish" = "Publier";
+"Next" = "Suivant";
+"Quote" = "Citer";
+"Meme" = "Mème";
+"Share" = "Partager";
+"Discover" = "Découvrir";
+"Profile" = "Profil";
+"Settings" = "Paramètres";
+"Save" = "Sauvegarder";
 "Loading..." = "Chargement...";
 
-/* No comment provided by engineer. */
-"Log in here" = "Se connecter ici";
-
-/* No comment provided by engineer. */
-"Login" = "Se connecter";
-
-/* No comment provided by engineer. */
-"LoginFail" = "Échec de la connexion";
-
-/* No comment provided by engineer. */
-"LoginFailMessage" = "Oups ! Une erreur s'est produite.";
-
-/* No comment provided by engineer. */
-"Logout" = "Déconnexion";
-
-/* Password character requirement. */
-"Minimum 8 Characters" = "Minimum 8 caractères";
-
-/* No comment provided by engineer. */
-"Minimum 8 characters" = "Minimum 8 caractères";
-
-/* No comment provided by engineer. */
-"MinuteAgo" = "1min";
-
-/* No comment provided by engineer. */
-"MinutesAgo" = "%dm";
-
-/* No comment provided by engineer. */
-"Missing Content" = "Oh oh !";
-
-/* No comment provided by engineer. */
-"Missing Content Message" = "Nous ne trouvons pas l'élément recherché.";
-
-/* No comment provided by engineer. */
-"MissingMedia" = "Vous devez avoir 2 photos.";
-
-/* No comment provided by engineer. */
-"MonthsAgo" = "%dmo";
-
-/* No comment provided by engineer. */
-"NEW POLL" = "Nouveau sondage";
-
-/* Setting indicating auto play never happens. */
-"Never" = "Jamais";
-
-/* No comment provided by engineer. */
-"NewComment" = "Nouveaux commentaires sur la publication";
-
-/* No comment provided by engineer. */
-"NewFollower" = "Quelqu'un me suit";
-
-/* No comment provided by engineer. */
-"NewPrivateMessage" = "Nouveau message privé";
-
-/* No comment provided by engineer. */
-"Next" = "Suivant";
-
-/* No comment provided by engineer. */
-"No Hashtags Found In Search Title" = "AUCUNE ÉTIQUETTE TROUVÉE !";
-
-/* No comment provided by engineer. */
-"No People Found In Search Title" = "AUCUN UTILISATEUR TROUVÉ";
-
-/* No comment provided by engineer. */
-"No hashtags found in search" = "Affinez votre recherche et réessayez.";
-
-/* No comment provided by engineer. */
-"No people found in search" = "Affinez votre recherche et réessayez.";
-
-/* No comment provided by engineer. */
-"No results" = "Aucun résultat";
-
-/* No comment provided by engineer. */
-"NoCommentsMessage" = "Publiez du texte, des photos ou des commentaires vidéo et découvrez ce qu'en pensent les autres !";
-
-/* No comment provided by engineer. */
-"NoCommentsTitle" = "SOYEZ LE PREMIER À COMMENTER !";
-
-/* Email not setup title */
-"NoEmail" = "Aucun compte e-mail";
-
-/* Email not setup */
-"NoEmailDetail" = "Aucun compte e-mail configuré. Souhaitez-vous en configurer un maintenant ?";
-
-/* No comment provided by engineer. */
-"NoFollowersMessage" = "Créez votre propre réseau d'abonnés en étant actif/ve au sein de la communauté par des commentaires, remixes ou publications de nouveau contenu.";
-
-/* No comment provided by engineer. */
-"NoFollowersTitle" = "PAS DE CHANCE ! PERSONNE NE VOUS SUIT";
-
-/* No comment provided by engineer. */
-"NoFollowingHashtagsMessage" = "Établissez une liste de votre contenu préféré en cliquant sur les articles identifiés par une étiquette.";
-
-/* No comment provided by engineer. */
-"NoFollowingHashtagsTitle" = "OH OH ! VOUS NE SUIVEZ ENCORE AUCUNE ÉTIQUETTE.";
-
-/* No comment provided by engineer. */
-"NoFriends" = "Aucune correspondance";
-
-/* No comment provided by engineer. */
-"NoFriendsDetail" = "Nous n'avons trouvé aucun de vos amis utilisant cette application. Lancez-vous et invitez-les !";
-
-/* No comment provided by engineer. */
-"NoHashtagsMessage" = "Aucune publication trouvée contenant le mot dièse #%@";
-
-/* No comment provided by engineer. */
-"NoHashtagsTitle" = "Aucun mot dièse ici !";
-
-/* No comment provided by engineer. */
-"NoKeepUploading" = "Non, continuer le téléchargement";
-
-/* No comment provided by engineer. */
-"NoMessagesMessage" = "Vous pouvez envoyer des messages à tout le monde depuis l'application ! Il vous suffit de cliquer sur le profil qui vous intéresse, puis sur l'icône « Composer » dans le coin supérieur gauche.";
-
-/* No comment provided by engineer. */
-"NoMessagesTitle" = "AUCUN MESSAGE";
-
-/* No comment provided by engineer. */
-"NoRemixersMessage" = "Appropriez-vous ce contenu en ajoutant des commentaires, des clips vidéos supplémentaires et plus encore !";
-
-/* No comment provided by engineer. */
-"NoRemixersTitle" = "SOYEZ LE PREMIER À REMIXER !";
-
-/* No comment provided by engineer. */
-"NoRepostersMessage" = "Partagez ce contenu avec tous vos abonnés !";
-
-/* No comment provided by engineer. */
-"NoRepostersTitle" = "SOYEZ LE PREMIER À REPUBLIER !";
-
-/* No comment provided by engineer. */
-"NoTwitterMessage" = "Veuillez ouvrir les paramètres de votre appareil et ajouter un nouveau compte Twitter";
-
-/* No comment provided by engineer. */
-"NoTwitterTitle" = "Aucun compte Twitter trouvé !";
-
-/* No comment provided by engineer. */
-"Normal" = "Normal";
-
-/* No comment provided by engineer. */
-"NotFollowingMessage" = "Suivez d'autres utilisateurs pour visualiser leur contenu dans votre flux. C'est une manière sympa de découvrir un nouveau contenu ou de se faire de nouveaux amis.";
-
-/* No comment provided by engineer. */
-"NotFollowingTitle" = "OH OH ! VOUS NE SUIVEZ ENCORE PERSONNE";
-
-/* No comment provided by engineer. */
-"NotLoggedInMessage" = "Oups ! Il semblerait que vous ne soyez pas connecté(e).";
-
-/* No comment provided by engineer. */
-"NotificationSettingSectionFeeds" = "Flux";
-
-/* No comment provided by engineer. */
-"NotificationSettingSectionPeople" = "Personnes";
-
-/* No comment provided by engineer. */
-"Now" = "Maintenant";
-
-/* No comment provided by engineer. */
+"Featured" = "À la une";
+"Recent" = "Récents";
+"Following" = "Abonnements";
+"FOLLOWERS" = "ABONNÉS";
+"FOLLOWING" = "ABONNEMENTS";
+"NumStreams" = "%@ FLUX";
 "NumItems" = "%@ ARTICLES";
 
-/* No comment provided by engineer. */
-"NumStreams" = "%@ FLUX";
+"TimeSeparator" = ":";
+"InvalidTimePlaceholder" = "-:--";
+"%ld+" = "%ld+";
 
-/* No comment provided by engineer. */
-"OK" = "OK";
-
-/* OK */
-"OKButton" = "OK";
-
-/* No comment provided by engineer. */
-"OS Version:" = "Version du système d'exploitation :";
-
-/* Setting indicating auto play only with a Wifi connection. */
-"Only on Wifi" = "Seulement lors d'une connexion par Wi-Fi";
-
-/* No comment provided by engineer. */
-"Open Settings" = "Ouvrir les paramètres";
-
-/* No comment provided by engineer. */
-"OpenSafari" = "Ouvrir dans Safari";
-
-/* No comment provided by engineer. */
-"Owner" = "Propriétaire";
-
-/* No comment provided by engineer. */
-"OwnerShareImageFormat" = "Découvrez cette photo de %@ !";
-
-/* No comment provided by engineer. */
-"OwnerSharePollFormat" = "Découvrez ce sondage par %@ !";
-
-/* No comment provided by engineer. */
-"OwnerShareVideoFormat" = "Découvrez « %@ » par%@ !";
-
-/* No comment provided by engineer. */
-"PasswordError" = "Erreur de mot de passe";
-
-/* No comment provided by engineer. */
-"PasswordNotMatching" = "Les mots de passe ne correspondent pas";
-
-/* No comment provided by engineer. */
+"Log in here" = "Se connecter ici";
+"Already Registered?" = "Déjà inscrit(e) ?";
+"Get Started" = "Commencez !";
+"Forgot Password?" = "Mot de passe oublié ?";
+"Reset here" = "Réinitialiser ici";
+"SetupButton" = "Installer";
+"EmailValidation" = "Adresse e-mail non valide";
+"Minimum 8 characters" = "Minimum 8 caractères";
 "PasswordValidation" = "Le mot de passe comporte moins de 8 caractères";
-
-/* No comment provided by engineer. */
-"Please try again later." = "Veuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"PostFromCreator" = "Publication de %@";
-
-/* No comment provided by engineer. */
-"PostFromFollowed" = "Publication de quelqu'un que je suis";
-
-/* No comment provided by engineer. */
-"PostOnFollowedHashTag" = "Publication du mot dièse suivi";
-
-/* No comment provided by engineer. */
-"ProductsRequestError" = "Échec de chargement des informations de produit depuis l'App Store. Veuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"Profile" = "Profil";
-
-/* No comment provided by engineer. */
-"ProfileAborted" = "Certaines fonctionnalités seront hors d'usage tant que votre profil n'aura pas été complété.";
-
-/* No comment provided by engineer. */
+"UsernameValidation" = "Le nom d'utilisateur comporte moins de 8 caractères";
+"AgreeTOS" = "Vous devez cliquer et confirmer que vous êtes âgé(e) de plus de 13 ans et accepter les conditions d'utilisation";
+"InvalidCredentials" = "Identifiants non valides";
+"PasswordNotMatching" = "Les mots de passe ne correspondent pas";
+"PollAlreadyAnswered" = "Vous avez déjà répondu à ce sondage";
+"LoginFail" = "Échec de la connexion";
+"LoginFailMessage" = "Oups ! Une erreur s'est produite.";
+"NotLoggedInMessage" = "Oups ! Il semblerait que vous ne soyez pas connecté(e).";
+"SignupFail" = "Échec de création du compte";
+"AccountUpdateFail" = "Échec de la mise à jour du compte";
+"You're not logged in!" = "Vous n'êtes pas connecté(e) !";
+"ProfileNotLoggedInMessage" = "Il n'y a rien à voir ici ! Nous sommes heureux que vous ayez rejoint notre communauté. Créez un compte pour montrer à tout le monde combien vous êtes unique. ";
+"ProfileSaveFail" = "Vos informations de profil n'ont pas pu être sauvegardées en raison d'une erreur de serveur";
+"ProfileSave" = "Téléchargement de votre profil";
 "ProfileIncomplete" = "Profil incomplet";
+"ProfileAborted" = "Certaines fonctionnalités seront hors d'usage tant que votre profil n'aura pas été complété.";
+"ProfileRequired" = "Veuillez fournir les éléments suivants :";
+"ProfileRequiredPhoto" = "Image de profil";
+"ProfileRequiredName" = "Nom";
+"ProfileRequiredToS" = "Accepter nos conditions d'utilisation";
+"ProfileRequiredTagLine" = "Votre slogan";
+"ProfileUpdateFailed" = "Échec de la mise à jour du profil";
+"Profile load failed!" = "Échec de chargement du profil !";
 
-/* No comment provided by engineer. */
+"User already exists" = "L'utilisateur existe déjà";
+"Sorry, I can't display that right now" = "Désolé, je ne peux pas afficher cela pour le moment";
+
+"WereSorry" = "Nous sommes désolés";
+"ErrorOccured" = "Pour une raison inconnue, la connexion au serveur a échoué. Veuillez réessayer ultérieurement.";
+
+"NoEmail" = "Aucun compte e-mail";
+"NoEmailDetail" = "Aucun compte e-mail configuré. Souhaitez-vous en configurer un maintenant ?";
+"EmailFail" = "Échec de l'envoi de l'e-mail";
+"SMSFail" = "Échec de l'envoi du SMS";
+"CouldNotSend" = "Le message n'a pas été envoyé";
+
+"Missing Content" = "Oh oh !";
+"Missing Content Message" = "Nous ne trouvons pas l'élément recherché.";
+
+"MissingMedia" = "Vous devez avoir 2 photos.";
+"QuestionTextToShort" = "Votre question doit comporter au moins 2 caractères.";
+"AnswerTextToShort" = "Vos réponses doivent contenir au moins 2 caractères.";
+
+"NoMessagesTitle" = "AUCUN MESSAGE";
+"NoMessagesMessage" = "Vous pouvez envoyer des messages à tout le monde depuis l'application ! Il vous suffit de cliquer sur le profil qui vous intéresse, puis sur l'icône « Composer » dans le coin supérieur gauche.";
+
+"NoNotificationsTitle" = "AUCUNE NOTIFICATION POUR LE MOMENT";
+"NoNotificationsMessage" = "Plus vous vous impliquerez dans la communauté en commentant, en remixant ou en publiant du nouveau contenu, plus elle interagira avec vous. Découvrez ses réactions.";
+
+"NoCommentsTitle" = "SOYEZ LE PREMIER À COMMENTER !";
+"NoCommentsMessage" = "Publiez du texte, des photos ou des commentaires vidéo et découvrez ce qu'en pensent les autres !";
+"LeaveACommentAt" = "Laisser un commentaire sur";
+"LeaveAComment" = "Laisser un commentaire";
+
+"NoFollowersTitle" = "PAS DE CHANCE ! PERSONNE NE VOUS SUIT";
+"NoFollowersMessage" = "Créez votre propre réseau d'abonnés en étant actif/ve au sein de la communauté par des commentaires, remixes ou publications de nouveau contenu.";
+
+"NotFollowingTitle" = "OH OH ! VOUS NE SUIVEZ ENCORE PERSONNE";
+"NotFollowingMessage" = "Suivez d'autres utilisateurs pour visualiser leur contenu dans votre flux. C'est une manière sympa de découvrir un nouveau contenu ou de se faire de nouveaux amis.";
+
+"ProfileNoFollowersTitle" = "SOYEZ LE PREMIER À SUIVRE CET UTILISATEUR";
 "ProfileNoFollowersMessage" = "Établissez votre communauté en suivant d'autres utilisateurs. Vous serez alerté(e) lors de la publication de nouveau contenu.";
 
-/* No comment provided by engineer. */
-"ProfileNoFollowersTitle" = "SOYEZ LE PREMIER À SUIVRE CET UTILISATEUR";
-
-/* No comment provided by engineer. */
+"ProfileNotFollowingTitle" = "OH OH ! CET UTILISATEUR NE SUIT ENCORE PERSONNE";
 "ProfileNotFollowingMessage" = "Créez une communauté en suivant d'autres utilisateurs et en les encourageant à vous suivre.";
 
-/* No comment provided by engineer. */
-"ProfileNotFollowingTitle" = "OH OH ! CET UTILISATEUR NE SUIT ENCORE PERSONNE";
-
-/* No comment provided by engineer. */
-"ProfileRequired" = "Veuillez fournir les éléments suivants :";
-
-/* No comment provided by engineer. */
-"ProfileRequiredName" = "Nom";
-
-/* No comment provided by engineer. */
-"ProfileRequiredPhoto" = "Image de profil";
-
-/* No comment provided by engineer. */
-"ProfileRequiredToS" = "Accepter nos conditions d'utilisation";
-
-/* No comment provided by engineer. */
-"ProfileSave" = "Téléchargement de votre profil";
-
-/* No comment provided by engineer. */
-"ProfileSaveFail" = "Vos informations de profil n'ont pas pu être sauvegardées en raison d'une erreur de serveur";
-
-/* No comment provided by engineer. */
-"Publish" = "Publier";
-
-/* No comment provided by engineer. */
-"PublishUpload" = "Votre contenu est en cours de téléchargement.";
-
-/* Publishing progress text. */
-"Publishing..." = "Publication en cours...";
-
-/* No comment provided by engineer. */
-"Pull up for more..." = "Tirer pour plus...";
-
-/* No comment provided by engineer. */
-"PurchaseErrorProductNotAvailable" = "Désolés, ce produit n'est actuellement pas disponible. Veuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"PurchaseErrorTitle" = "Erreur lors de la finalisation de l'achat";
-
-/* No comment provided by engineer. */
-"PurchaseErrorTransaction" = "Échec de finalisation de la transaction. Veuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"PurchaseUnlockWithPrice" = "Débloquer pour %@";
-
-/* No comment provided by engineer. */
-"QuestionTextToShort" = "Votre question doit comporter au moins 2 caractères.";
-
-/* No comment provided by engineer. */
-"REPOSTS" = "Republications";
-
-/* No comment provided by engineer. */
-"RTCUserPostedAtSyntax" = "%@ à %@";
-
-/* No comment provided by engineer. */
-"Recent" = "Récents";
-
-/* No comment provided by engineer. */
-"RefreshError" = "Échec de l'actualisation.";
-
-/* No comment provided by engineer. */
-"Remix" = "Remix";
-
-/* No comment provided by engineer. */
-"Remixes" = "Remixes";
-
-/* No comment provided by engineer. */
-"Render failure" = "Échec du rendu";
-
-/* No comment provided by engineer. */
-"Rendering..." = "Rendu en cours...";
-
-/* No comment provided by engineer. */
-"Report/Flag" = "Signaler/Marquer comme inapproprié";
-
-/* No comment provided by engineer. */
-"ReportCommentMessage" = "Nous examinerons ce contenu dans les 24 heures.";
-
-/* No comment provided by engineer. */
-"ReportContentMessage" = "Nous examinerons ce contenu dans les 24 heures.";
-
-/* Comment report inappropriate button */
-"ReportInappropriate" = "Rapport inapproprié";
-
-/* No comment provided by engineer. */
-"ReportUserMessage" = "Cet utilisateur sera examiné dans les 24 heures";
-
-/* No comment provided by engineer. */
-"ReportedTitle" = "J'ai compris !";
-
-/* Post a copy of this video */
-"Repost" = "Republier";
-
-/* Indicating the vidoe has already been reposted. */
-"Reposted" = "Republié";
-
-/* No comment provided by engineer. */
-"Resend Email" = "Renvoyer l'e-mail";
-
-/* No comment provided by engineer. */
-"Reset here" = "Réinitialiser ici";
-
-/* No comment provided by engineer. */
-"ResetButton" = "Réinitialiser";
-
-/* No comment provided by engineer. */
-"ResetPassword" = "Réinitialiser le mot de passe";
-
-/* No comment provided by engineer. */
-"ResetPasswordErrorFailMessage" = "Nous ne sommes actuellement pas en mesure de réinitialiser votre mot de passe. Veuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"ResetPasswordErrorFailTitle" = "Erreur de réinitialisation du mot de passe";
-
-/* No comment provided by engineer. */
-"ResetPasswordErrorIncorrectTitle" = "Mot de passe incorrect";
-
-/* No comment provided by engineer. */
-"ResetPasswordErrorInvalidTitle" = "Mot de passe actuel incorrect";
-
-/* No comment provided by engineer. */
-"ResetPasswordErrorMessage" = "Veuillez saisir à nouveau votre mot de passe actuel.";
-
-/* No comment provided by engineer. */
-"ResetPasswordNewEqualsCurrentMessage" = "Veuillez saisir un mot de passe différent de votre mot de passe actuel.";
-
-/* No comment provided by engineer. */
-"ResetPasswordNewEqualsCurrentTitle" = "Nouveau mot de passe non valide.";
-
-/* No comment provided by engineer. */
-"ResetPasswordPlaceholder" = "Adresse e-mail";
-
-/* No comment provided by engineer. */
-"ResetPasswordPrompt" = "Veuillez saisir votre adresse e-mail.";
-
-/* No comment provided by engineer. */
-"RestorePurchasesError" = "Échec de la restauration des achats. Veuillez réessayer ultérieurement.";
-
-/* No comment provided by engineer. */
-"RestorePurchasesErrorTitle" = "Erreur de restauration des achats";
-
-/* No comment provided by engineer. */
-"RestorePurchasesNoPurchases" = "Aucun achat intégré n'a été trouvé pour votre compte iTunes.";
-
-/* No comment provided by engineer. */
-"RestorePurchasesNoPurchasesTitle" = "Aucun achat restauré";
-
-/* No comment provided by engineer. */
-"RestorePurchasesSuccess" = "Vous pouvez parcourir vos achats depuis la section Paramètres.";
-
-/* No comment provided by engineer. */
-"RestorePurchasesSuccessTitlePlural" = "%lu achats restaurés !";
-
-/* No comment provided by engineer. */
-"RestorePurchasesSuccessTitleSingular" = "%lu achat restauré !";
-
-/* No comment provided by engineer. */
-"Search for an image" = "Rechercher une image";
-
-/* No comment provided by engineer. */
-"Search people and hashtags" = "Rechercher des personnes ou mots dièse";
-
-/* No comment provided by engineer. */
-"SearchFailed" = "Échec de la recherche.";
-
-/* No comment provided by engineer. */
-"SelectTwitter" = "Sélectionnez un compte Twitter";
-
-/* No comment provided by engineer. */
-"Settings" = "Paramètres";
-
-/* No comment provided by engineer. */
-"SettingsRestorePurchases" = "Restaurer les achats";
-
-/* No comment provided by engineer. */
-"SettingsRestorePurchasesPrompt" = "Vous n'avez effectué aucun achat sur cet appareil.\nSi vous avez effectué des achats sur un autre appareil, cliquez sur « Restaurer les achats » pour les restaurer.";
-
-/* Setup */
-"SetupButton" = "Installer";
-
-/* Share this video */
-"Share" = "Partager";
-
-/* No comment provided by engineer. */
-"ShareFacebook" = "Partager sur Facebook";
-
-/* No comment provided by engineer. */
-"ShareSMS" = "Envoyer en tant que texte";
-
-/* No comment provided by engineer. */
-"ShareTwitter" = "Partager sur Twitter";
-
-/* No comment provided by engineer. */
-"SignupFail" = "Échec de création du compte";
-
-/* No comment provided by engineer. */
-"StillCaptureFailed" = "Échec de la prise de photo";
-
-/* No comment provided by engineer. */
-"Suggested People" = "Personnes suggérées";
-
-/* No comment provided by engineer. */
+"SuggestedFollowersNone" = "Aucun abonné";
+"SuggestedFollowersSing" = "%@ abonné";
+"SuggestedFollowersPlur" = "%@ abonnés";
 "SuggestedFollowersK" = "%@ abonnés";
 
-/* No comment provided by engineer. */
-"SuggestedFollowersNone" = "Aucun abonné";
+"NoRepostersTitle" = "SOYEZ LE PREMIER À REPUBLIER !";
+"NoRepostersMessage" = "Partagez ce contenu avec tous vos abonnés !";
 
-/* No comment provided by engineer. */
-"SuggestedFollowersPlur" = "%@ abonnés";
+"NoRemixersTitle" = "SOYEZ LE PREMIER À REMIXER !";
+"NoRemixersMessage" = "Appropriez-vous ce contenu en ajoutant des commentaires, des clips vidéos supplémentaires et plus encore !";
 
-/* No comment provided by engineer. */
-"SuggestedFollowersSing" = "%@ abonné";
+"OwnerSharePollFormat" = "Découvrez ce sondage par %@ !"; //Check out this poll by <creator>! <URL>
+"OwnerShareVideoFormat" = "Découvrez « %@ » par%@ !";    //Check out "<video name>" by <creator>! <URL>
+"OwnerShareImageFormat" = "Découvrez cette photo de %@ !";//Check out this photo by <creator>! <URL>
+"UGCSharePollFormat" = "Ce sondage pourrait vous intéresser !";       //Check out this poll! <URL>
+"UGCShareVideoFormat" = "Cette vidéo pourrait vous intéresser !";      //Check out this video! <URL>
+"UGCShareGIFFormat" = "Découvrez ce cadeau !";        //Check out this gif! <URL>
+"UGCShareImageFormat" = "Cette photo pourrait vous intéresser !";      //Check out this photo! <URL>
+"EmailShareSubjectFormat" = "Découvrez cette publication de l'application %@ !"; //Check out this post from the <creator name> app!
 
-/* Feedback / Help */
-"SupportEmailSubject" = "Commentaires sur";
 
-/* No comment provided by engineer. */
-"TagInComment" = "Quelqu'un me mentionne";
+"Facebook" = "Facebook";
+"FacebookFailed" = "Échec de connexion à Facebook";
 
-/* No comment provided by engineer. */
-"Thanks" = "Merci !";
+"Search people and hashtags" = "Rechercher des personnes ou mots dièse";
+"No People Found In Search Title" = "AUCUN UTILISATEUR TROUVÉ";
+"No people found in search" = "Affinez votre recherche et réessayez.";
+"No Hashtags Found In Search Title" = "AUCUNE ÉTIQUETTE TROUVÉE !";
+"No hashtags found in search" = "Affinez votre recherche et réessayez.";
 
-/* No comment provided by engineer. */
-"This will discard any content from the camera" = "Cette action ignorera tout contenu de l'appareil photo";
+"SearchFailed" = "Échec de la recherche.";
+"ImageDownloadFailed" = "Échec de téléchargement de l'image.";
 
-/* No comment provided by engineer. */
-"TimeSeparator" = ":";
-
-/* No comment provided by engineer. */
-"ToSAgreement" = "J'ai au moins 13 ans et j'accepte les conditions d'utilisation";
-
-/* No comment provided by engineer. */
-"ToSText" = "Conditions d'utilisation";
-
-/* No comment provided by engineer. */
-"Trending Tags" = "Étiquettes tendance";
-
-/* No comment provided by engineer. */
+"TwitterDeniedTitle" = "Échec de l'accès à votre compte Twitter";
 "TwitterDenied" = "Veuillez accorder l'accès à votre compte Twitter depuis Paramètres → Confidentialité → Twitter";
 
-/* No comment provided by engineer. */
-"TwitterDeniedTitle" = "Échec de l'accès à votre compte Twitter";
-
-/* No comment provided by engineer. */
-"TwitterFollowingSectionHeader" = "Suivez vos amis de Twitter";
-
-/* No comment provided by engineer. */
-"TwitterSafety" = "Nous ne conservons pas vos mots de passe et ne publierons jamais rien sans votre permission.";
-
-/* No comment provided by engineer. */
-"Type your feedback here..." = "Tapez votre commentaire ici...";
-
-/* No comment provided by engineer. */
-"UGCShareImageFormat" = "Cette photo pourrait vous intéresser !";
-
-/* No comment provided by engineer. */
-"UGCSharePollFormat" = "Ce sondage pourrait vous intéresser !";
-
-/* No comment provided by engineer. */
-"UGCShareVideoFormat" = "Cette vidéo pourrait vous intéresser !";
-
-/* No comment provided by engineer. */
-"UnableSelectVideo" = "Impossible de sélectionner la vidéo.";
-
-/* No comment provided by engineer. */
-"UnfollowError" = "Une erreur s'est produite lors de l'abonnement à cet utilisateur.";
-
-/* No comment provided by engineer. */
-"Upload failure" = "Échec de téléchargement";
-
-/* No comment provided by engineer. */
-"UploadCancelAreYouSure" = "Souhaitez-vous vraiment annuler ce téléchargement ?";
-
-/* No comment provided by engineer. */
-"UploadFailed" = "Désolés, votre téléchargement a échoué. Veuillez vérifier votre connexion et réessayer.";
-
-/* No comment provided by engineer. */
-"UploadFinalizing" = "Votre publication est en cours de finalisation. Elle sera bientôt disponible.";
-
-/* No comment provided by engineer. */
-"UploadSuccess" = "Réussite ! Votre publication a été téléchargée.";
-
-/* No comment provided by engineer. */
-"Uploading" = "Votre contenu est en cours de téléchargement.";
-
-/* No comment provided by engineer. */
-"UserBannedMessage" = "Malheureusement, vous êtes un membre banni de la communauté. Vous pourrez toujours visualiser le contenu, mais ne pourrez ni publier, ni interagir avec d'autres utilisateurs.";
-
-/* No comment provided by engineer. */
-"UserBannedTitle" = "Oh oh !";
-
-/* No comment provided by engineer. */
-"Version" = "Version %@";
-
-/* No comment provided by engineer. */
-"Video loading failed." = "Échec de chargement de la vidéo.";
-
-/* No comment provided by engineer. */
+"CameraRollDeniedTitle" = "Impossible d'accéder à vos photos";
+"CameraRollDenied" = "Veuillez accorder l'accès à vos photos depuis Paramètres → Confidentialité.";
+"CameraFailed" = "Échec du lancement de l'appareil photo";
+"CameraSwitchFailed" = "Échec de basculement vers l'appareil-photo";
+"StillCaptureFailed" = "Échec de la prise de photo";
 "VideoCaptureFailed" = "Échec de l'enregistrement de la vidéo";
-
-/* No comment provided by engineer. */
 "VideoSaveFailed" = "Échec de la sauvegarde de la vidéo";
 
-/* No comment provided by engineer. */
-"Vote that" = "Voter pour cela";
+"NoTwitterTitle" = "Aucun compte Twitter trouvé !";
+"NoTwitterMessage" = "Veuillez ouvrir les paramètres de votre appareil et ajouter un nouveau compte Twitter";
 
-/* No comment provided by engineer. */
+"SelectTwitter" = "Sélectionnez un compte Twitter";
+
+"HelpNeeded" = "J'ai besoin d'aide avec...";
+
+"ReportInappropriate" = "Rapport inapproprié";
+"ReportedTitle" = "J'ai compris !";
+"ReportContentMessage" = "Nous examinerons ce contenu dans les 24 heures.";
+"ReportCommentMessage" = "Nous examinerons ce contenu dans les 24 heures.";
+"ReportUserMessage" = "Cet utilisateur sera examiné dans les 24 heures";
+"CommentAlreadyReported" = "Commentaire déjà signalé";
+
+"BlockUser" = "Bloquer l'utilisateur";
+"CopyProfileURL" = "Copier l'URL du profil";
+
+"Create a Video Post" = "Créer une publication vidéo";
+"Create an Image Post" = "Créer une publication image";
+"Create a Poll" = "Créer un sondage";
+
+"NEW POLL" = "Nouveau sondage";
+"Ask a question..." = "Poser une question...";
 "Vote this" = "Voter pour ceci";
+"Vote that" = "Voter pour cela";
+"Create Poll" = "Créer un sondage";
 
-/* No comment provided by engineer. */
-"Voters" = "Votants";
+"TranscodingMediaTitle" = "Transcodage du téléchargement";
+"TranscodingMediaBody" = "Le transcodage de votre téléchargement prend plus de temps que d'habitude. Il apparaîtra une fois terminé.";
+"PollUploadTitle" = "Échec du chargement du sondage";
+"PollUploadBody" = "Échec de chargement du sondage sur le serveur";
 
-/* No comment provided by engineer. */
+"UploadFailedTitle" = "Échec du chargement du média";
+"DuplicateVideoTitle" = "Dupliquer la vidéo";
+"DuplicateVideoBody" = "Il semblerait que vous essayiez de télécharger une vidéo qui a déjà été téléchargée.";
+
+"Uploading" = "Votre contenu est en cours de téléchargement.";
+"UploadFinalizing" = "Votre publication est en cours de finalisation. Elle sera bientôt disponible.";
+"UploadFailed" = "Désolés, votre téléchargement a échoué. Veuillez vérifier votre connexion et réessayer.";
+"UploadSuccess" = "Réussite ! Votre publication a été téléchargée.";
+"UploadError" = "Erreur de chargement";
+"UploadErrorBody" = "Une erreur s'est produite et nous ne sommes pas en mesure de finaliser le téléchargement pour l'instant.";
+"UploadCancelAreYouSure" = "Souhaitez-vous vraiment annuler ce téléchargement ?";
+"YesCancelUpload" = "Oui, annuler ce téléchargement";
+"NoKeepUploading" = "Non, continuer le téléchargement";
+"Cancelling..." = "Annulation en cours...";
+
+"RefreshError" = "Échec de l'actualisation.";
+
+"MediaAlreadyCreated" = "Le média a déjà été créé.";
+
+"FollowError" = "Une erreur s'est produite lors de l'abonnement à cet utilisateur.";
+"UnfollowError" = "Une erreur s'est produite lors de l'abonnement à cet utilisateur.";
+
+"FollowingSectionHeader" = "Abonnement existant";
+"FacebookFollowingSectionHeader" = "Suivez vos amis Facebook";
+"TwitterFollowingSectionHeader" = "Suivez vos amis de Twitter";
+"AddressBookFollowingSectionHeader" = "Suivre vos contacts";
+
+"ConversationLoadError" = "Échec de chargement de la conversation";
+"ConversationDelError" = "Échec de suppression de la conversation";
+"ConversationSendError" = "Votre message n'a pas pu être envoyé";
+
+"Normal" = "Normal";
+
+"ClosePreviewConfirm" = "Souhaitez-vous vraiment fermer la fenêtre ? Votre création sera perdue.";
+"Stay" = "Rester";
+"Close" = "Fermer";
+
+"PublishUpload" = "Votre contenu est en cours de téléchargement.";
+
+"PublishSucceeded" = "Réussite de la publication";
+"PublishSucceededDetail" = "Votre média a été transmis au serveur. Quelques minutes pourraient s'avérer nécessaires pour que votre contenu apparaisse.";
+
+"PublishDescriptionRequired" = "Texte requis";
+"PublishDescription" = "Veuillez saisir une légende pour votre contenu.";
+
+"PublishDescriptionMinCharacters" = "Veuillez saisir une description plus longue.";
+
+"ReplaceVideo" = "Remplacer la vidéo";
+
+"VideoPlayFailed" = "Échec de lecture de la vidéo";
+"See More" = "Voir plus";
+"..." = "…";
+
+"PostWillExpire" = "La publication va expirer";
+"CancelExpiration" = "Annuler l'expiration ?";
+"CancelExirationConfirm" = "Souhaitez-vous vraiment quitter le paramétrage d'une date d'expiration ?";
+
+"Now" = "Maintenant";
+"SecondsAgo" = "%ds";
+"MinuteAgo" = "1min";
+"MinutesAgo" = "%dm";
+"HourAgo" = "1h";
+"HoursAgo" = "%dh";
+"Yesterday" = "1j";
+"DaysAgo" = "%dd";
+"LastWeek" = "1sem.";
 "WeeksAgo" = "%dw";
-
-/* No comment provided by engineer. */
-"WereSorry" = "Nous sommes désolés";
-
-/* Caption entry placeholder text */
-"Write a caption (optional)" = "Rédiger une légende (facultatif)";
-
-/* No comment provided by engineer. */
+"LastMonth" = "1mois";
+"MonthsAgo" = "%dmo";
+"LastYear" = "1an";
 "YearsAgo" = "%dy";
 
-/* No comment provided by engineer. */
-"YesCancelUpload" = "Oui, annuler ce téléchargement";
+"Minute" = "Minute";
+"Hour" = "Heure";
+"Day" = "Jour";
+"Week" = "Semaine";
+"Month" = "Mois";
 
-/* No comment provided by engineer. */
-"Yesterday" = "1j";
+"Minutes" = "Minutes";
+"Hours" = "Heures";
+"Days" = "Jours";
+"Weeks" = "Semaines";
+"Months" = "Mois";
 
-/* No comment provided by engineer. */
-"doubleRepostedByFormat" = "Republié par %@ +1 autre";
+"JustAMoment" = "Un instant";
+"LocatingVideo" = "Localisation de la vidéo...";
+"DownloadingVideo" = "Téléchargement de la vidéo...";
+"Stitching" = "Montage...";
 
-/* No comment provided by engineer. */
-"editProfileButton" = "Modifier";
+"SegmentDownloadFail" = "Échec de récupération de la vidéo";
 
-/* No comment provided by engineer. */
-"follow" = "Suivre";
+"TryAgain" = "Veuillez réessayer ultérieurement.";
 
-/* No comment provided by engineer. */
-"followers" = "Abonnés";
+"ExpiresOn" = "Expire le %@";
 
-/* No comment provided by engineer. */
-"following" = "Abonnements";
-
-/* No comment provided by engineer. */
-"giffedFromFormat" = "GIF de%@";
-
-/* No comment provided by engineer. */
 "me" = "Moi";
 
-/* No comment provided by engineer. */
-"multipleRepostedByFormat" = "Republié par %@ + %lu autres";
+"editProfileButton" = "Modifier";
+"followers" = "Abonnés";
+"following" = "Abonnements";
+"follow" = "Suivre";
 
-/* No comment provided by engineer. */
-"no results" = "aucun résultat";
+"ResetPassword" = "Réinitialiser le mot de passe";
+"ResetPasswordPrompt" = "Veuillez saisir votre adresse e-mail.";
+"ResetPasswordPlaceholder" = "Adresse e-mail";
 
-/* No comment provided by engineer. */
-"ok" = "OK";
+"PasswordError" = "Erreur de mot de passe";
+"ResetPasswordErrorExpiredTitle" = "Le code de réinitialisation a expiré";
+"ResetPasswordErrorExpiredMessage" = "Veuillez demander un nouveau code de réinitialisation et réessayer.";
 
-/* No comment provided by engineer. */
-"remixedFromFormat" = "Remixé depuis %@";
+"ResetPasswordErrorInvalidTitle" = "Mot de passe actuel incorrect";
+"ResetPasswordErrorIncorrectTitle" = "Mot de passe incorrect";
+"ResetPasswordErrorMessage" = "Veuillez saisir à nouveau votre mot de passe actuel.";
 
-/* No comment provided by engineer. */
-"repostedByFormat" = "Republié par %@";
+"ResetPasswordErrorFailTitle" = "Erreur de réinitialisation du mot de passe";
+"ResetPasswordErrorFailMessage" = "Nous ne sommes actuellement pas en mesure de réinitialiser votre mot de passe. Veuillez réessayer ultérieurement.";
 
-/* No comment provided by engineer. */
+"ResetPasswordNewEqualsCurrentTitle" = "Nouveau mot de passe non valide.";
+"ResetPasswordNewEqualsCurrentMessage" = "Veuillez saisir un mot de passe différent de votre mot de passe actuel.";
+
+"ResetPasswordConfirmCancelTitle" = "Confirmer";
+"ResetPasswordConfirmCancelMessage" = "Souhaitez-vous annuler la réinitialisation de votre mot de passe ?";
+"ResetPasswordYesCancelButton" = "Oui, annuler";
+"ResetPasswordNoContinueButton" = "Non, poursuivre";
+
+"Error Resetting Password" = "Erreur lors de la réinitialisation du mot de passe";
+"Please check your network connection or try again later." = "Veuillez vérifier votre connexion internet ou réessayer ultérieurement.";
+
+"EnterResetCodeMessage" = "Un e-mail contenant les instructions de réinitialisation du mot de passe a été envoyé à cette adresse.";
+"EnterCodeTitle" = "SAISIR LE CODE";
+"Resend Email" = "Renvoyer l'e-mail";
+
+"EmailNotFound" = "L'e-mail fourni n'a pas pu être trouvé. Veuillez saisir l'e-mail utilisé lors de la création de ce compte.";
+"EmailNotValid" = "Veuillez saisir l'e-mail utilisé lors de la création de ce compte.";
+"Thanks" = "Merci !";
+"CannotVerify" = "Échec de vérification du compte";
+"IncorrectCode" = "Le code utilisé pour la vérification du compte est incorrect.";
+
+"Search for an image" = "Rechercher une image";
+"Pull up for more..." = "Tirer pour plus...";
 "search for users" = "rechercher des utilisateurs";
-
-/* No comment provided by engineer. */
 "searching" = "recherche en cours";
+"no results" = "aucun résultat";
+"No results" = "Aucun résultat";
 
-"User already exists" = "L’utilisatuer déjà existe";
+"Invite" = "Inviter";
+"InviteYourFriends" = "Invitez vos amis !";
+"InviteUsingEmail" = "Inviter par e-mail";
+"InviteUsingSMS" = "Inviter par SMS";
+"InviteFriendsSubject" = "Découvre la nouvelle application de %@";
+"InviteFriendsBody" = "Salut !\n\nJ'ai téléchargé une nouvelle application depuis %@. C'est une communauté d'interaction entre gens qui nous ressemblent. Télécharge-la maintenant depuis :";
+
+"FindContacts" = "Trouvez des amis depuis vos contacts";
+"Access Your Contacts" = "Accéder à vos contacts";
+"ContactsSafety" = "Vos contacts sont en sécurité avec nous ! Pour trouver vos amis, nous devons envoyer à nos serveurs les informations liées à vos contacts via une connexion sécurisée.";
+
+"AccessMicrophoneDenied" = "Pour enregistrer une vidéo depuis votre appareil, veuillez autoriser l'accès depuis Paramètres → Confidentialité → Microphone";
+"AccessMicrophoneRestricted" = "Impossible d'accéder à votre microphone en raison des restrictions de votre dispositif.";
+"AccessCameraDenied" = "Pour enregistrer une vidéo depuis votre appareil, veuillez autoriser l'accès depuis Paramètres → Confidentialité";
+"AccessCameraRestricted" = "Impossible d'accéder à votre appareil photo en raison des restrictions de votre dispositif.";
+"UnableSelectVideo" = "Impossible de sélectionner la vidéo.";
+
+"AccessContactsDenied" = "Pour rechercher des amis à l'aide de votre répertoire, veuillez autoriser l'accès depuis Paramètres → Confidentialité → Contacts";
+"AccessContactsRestricted" = "Impossible d'accéder à vos contacts en raison des restrictions de votre dispositif.";
+
+"FindFBFriends" = "Trouver des amis depuis Facebook";
+"Connect to Facebook" = "Se connecter à Facebook";
+"FBSafety" = "Nous ne conservons pas vos mots de passe et ne publierons jamais rien sans votre permission.";
+
+"FindTwitterFriends" = "Trouvez des amis depuis Twitter";
+"Connect to Twitter" = "Se connecter à Twitter";
+"TwitterSafety" = "Nous ne conservons pas vos mots de passe et ne publierons jamais rien sans votre permission.";
+
+"FindInstagramFriends" = "Trouvez des amis depuis Instagram";
+"Connect to Instagram" = "Se connecter à Instagram";
+
+"Logout" = "Déconnexion";
+"Login" = "Se connecter";
+
+"UserBannedTitle" = "Oh oh !";
+"UserBannedMessage" = "Malheureusement, vous êtes un membre banni de la communauté. Vous pourrez toujours visualiser le contenu, mais ne pourrez ni publier, ni interagir avec d'autres utilisateurs.";
+
+"AddDescription" = "Ajouter une description... et n'oubliez pas les #motsdièse";
+"AddDescriptionAnchor" = "#motsdièse";
+"InsertTextHere" = "Insérer le texte ici";
+
+"NotConnected" = "Non connecté(e)";
+"ConnectedTo" = "Connecté(e) à %@";
+
+"Version" = "Version %@";
+
+"ToSText" = "Conditions d'utilisation";
+"ToSAgreement" = "J'ai au moins 13 ans et j'accepte les conditions d'utilisation";
+
+"NoFriends" = "Aucune correspondance";
+"NoFriendsDetail" = "Nous n'avons trouvé aucun de vos amis utilisant cette application. Lancez-vous et invitez-les !";
+
+"RTCUserPostedAtSyntax" = "%@ à %@";//e.g. "Username at 0:04"
+
+"Report/Flag" = "Signaler/Marquer comme inapproprié";
+"CreatedBy" = "CRÉÉ PAR";
+"remixes" = "remixes";
+"Remix" = "Remix";
+"RemixVerb" = "Remixer";
+"reposts" = "republications";
+"REPOSTS" = "Republications";
+"REMIXES" = "Remixes";
+"Repost" = "Republier";
+"Reposted" = "Republié";
+"RepostContentView" = "REPUBLIER";
+"RepostedContentView" = "REPUBLIÉ";
+"Comment" = "Commentaire";
+
+"repostedByFormat" = "Republié par %@";
+"doubleRepostedByFormat" = "Republié par %@ +1 autre";
+"multipleRepostedByFormat" = "Republié par %@ + %lu autres";
+"remixedFromFormat" = "Remixé depuis %@";
+"giffedFromFormat" = "GIF de%@";
+
+"leaveACommentFormat" = "Laisser un commentaire à %@";
+
+"facebook" = "facebook";
+"twitter" = "twitter";
+"tumblr" = "tumblr";
+"saveToLibrary" = "enregistrer dans la bibliothèque";
+
+"areYouSure" = "Vous êtes sûr(e) ?";
+"contentIsntPublished" = "Votre contenu n'a pas encore été publié ! Si vous quittez maintenant, tous les changements seront perdus.";
+"captionIsntPublished" = "Votre contenu n'a pas encore été publié ! Si vous cliquez sur retour, votre légende sera perdue.";
+
+"SupportEmailSubject" = "Commentaires sur";
+"SupportEmailSubjectWithName" = "Commentaires sur %@";
+
+"DiscoverSuggestedPeopleError" = "Désolés, les personnes suggérées n'ont pas pu être chargées.";
+"DiscoverTrendingTagsError" = "Désolés, les étiquettes tendance n'ont pas pu être chargées.";
+"Suggested People" = "Personnes suggérées";
+"Trending Tags" = "Étiquettes tendance";
+"Voters" = "Votants";
+
+"HashtagSubscribeError" = "Désolés, une erreur s'est produite suite à la tentative d'abonnement à ce mot dièse. Veuillez réessayer.";
+"HashtagUnsubscribeError" = "Désolés, une erreur s'est produite suite à la tentative de désabonnement à ce mot dièse. Veuillez réessayer.";
+
+"NoFollowingHashtagsTitle" = "OH OH ! VOUS NE SUIVEZ ENCORE AUCUNE ÉTIQUETTE.";
+"NoFollowingHashtagsMessage" = "Établissez une liste de votre contenu préféré en cliquant sur les articles identifiés par une étiquette.";
+
+"NoHashtagsTitle" = "Aucun mot dièse ici !";
+"NoHashtagsMessage" = "Aucune publication trouvée contenant le mot dièse #%@";
+
+"Type your feedback here..." = "Tapez votre commentaire ici...";
+"Device:" = "Appareil :";
+"OS Version:" = "Version du système d'exploitation :";
+"App Version:" = "Version de l'application :";
+"AreYouSureYouWantToDelete" = "Souhaitez-vous vraiment procéder à la suppression ?";
+
+"ShareFacebook" = "Partager sur Facebook";
+"ShareTwitter" = "Partager sur Twitter";
+"OpenSafari" = "Ouvrir dans Safari";
+"ShareSMS" = "Envoyer en tant que texte";
+
+"Delete this content and select something else?" = "Supprimer ce contenu et sélectionner autre chose ?";
+"Delete" = "Supprimer";
+"Cancel" = "Annuler";
+
+"PostFromCreator" = "Publication de %@";
+"PostFromFollowed" = "Publication de quelqu'un que je suis";
+"NewComment" = "Nouveaux commentaires sur la publication";
+"PostOnFollowedHashTag" = "Publication du mot dièse suivi";
+"NewPrivateMessage" = "Nouveau message privé";
+"NewFollower" = "Quelqu'un me suit";
+"TagInComment" = "Quelqu'un me mentionne";
+
+"Always" = "Toujours";
+"Never" = "Jamais";
+"Only on Wifi" = "Seulement lors d'une connexion par Wi-Fi";
+"NotificationSettingSectionFeeds" = "Flux";
+"NotificationSettingSectionPeople" = "Personnes";
+"Open Settings" = "Ouvrir les paramètres";
+
+"ErrorPushNotificationsNotEnabled" = "Les notifications push ne sont pas activées sur votre appareil.\nVeuillez autoriser les notifications dans les paramètres de votre appareil pour les activer.";
+"ErrorPushNotificationsUnknown" = "Erreur de chargement des paramètres de notification.\nVeuillez réessayer ultérieurement.";
+"ErrorPushNotificationsNotSaved" = "Erreur de sauvegarde des préférences";
+"ErrorPushNotificationsNotSavedMessage" = "Veuillez réessayer ultérieurement.";
+
+"PurchaseErrorTitle" = "Erreur lors de la finalisation de l'achat";
+"PurchaseErrorProductNotAvailable" = "Désolés, ce produit n'est actuellement pas disponible. Veuillez réessayer ultérieurement.";
+"PurchaseErrorTransaction" = "Échec de finalisation de la transaction. Veuillez réessayer ultérieurement.";
+"RestorePurchasesNoPurchasesTitle" = "Aucun achat restauré";
+"RestorePurchasesNoPurchases" = "Aucun achat intégré n'a été trouvé pour votre compte iTunes.";
+"ProductsRequestError" = "Échec de chargement des informations de produit depuis l'App Store. Veuillez réessayer ultérieurement.";
+"RestorePurchasesErrorTitle" = "Erreur de restauration des achats";
+"RestorePurchasesError" = "Échec de la restauration des achats. Veuillez réessayer ultérieurement.";
+"RestorePurchasesSuccessTitleSingular" = "%lu achat restauré !"; //e.g. "1 Purchase Restored!""
+"RestorePurchasesSuccessTitlePlural" = "%lu achats restaurés !"; //e.g. "5 PurchaseS Restored!""
+"RestorePurchasesSuccess" = "Vous pouvez parcourir vos achats depuis la section Paramètres.";
+"ActivityRestoring" = "Restauration...";
+"ActivityPurchasing" = "Achat en cours...";
+"PurchaseUnlockWithPrice" = "Débloquer pour %@"; //e.g. "Unlock for $0.99"
+"SettingsRestorePurchases" = "Restaurer les achats";
+"SettingsRestorePurchasesPrompt" = "Vous n'avez effectué aucun achat sur cet appareil.\nSi vous avez effectué des achats sur un autre appareil, cliquez sur « Restaurer les achats » pour les restaurer.";
+
+"AuthorizationContextDefault" = "Nous sommes heureux que vous ayez rejoint notre communauté ! Créez un compte et vous pourrez créer, publier et partager !";
+"AuthorizationContextCreatePost" = "Youpie ! Nous avons hâte de découvrir votre première publication. Créez simplement un compte et commencez à partager votre magnifique création avec la communauté !";
+"AuthorizationContextFollowHashtag" = "Les mots-dièse ont la cote. Créez votre compte et suivez quelques-unes des incroyables conversations qui se déroulent ici !";
+"AuthorizationContextFollowUser" = "Nous sommes heureux que vous ayez rejoint notre communauté et que vous suiviez le contenu d'autres fans. Créez votre profil pour que les autres utilisateurs puissent vous suivre à leur tour !";
+"AuthorizationContextVoteBallistic" = "Ces émoticônes sont extraordinaires, pas vrai ? Créez d'abord votre compte et envoyez un peu d'amour.";
+"AuthorizationContextVotePoll" = "Nous voulons voir votre vote ! Créez d'abord un compte et commencez à voter !";
+"AuthorizationContextRepost" = "Cette publication est vraiment incroyable. Créez d'abord votre compte et republiez-la !";
+"AuthorizationContextRemix" = "Nous sommes heureux que vous commenciez à créer. Créez un compte pour que nous puissions sauvegarder vos créations sur votre profil. ";
+"AuthorizationContextViewProfile" = "Il n'y a rien à voir ici ! Nous sommes heureux que vous ayez rejoint notre communauté. Créez un compte pour montrer à tout le monde combien vous êtes unique. ";
+"AuthorizationContextAddComment" = "Rejoignez la conversation ! Nous aimerions entendre ce que vous avez à dire. Créez un compte et vous serez sur la voie !";
+"AuthorizationContextInbox" = "Nous sommes heureux que vous ayez rejoint notre communauté et que vous envoyiez des messages aux fans. Créez un compte pour pouvoir envoyer et recevoir des messages !";
+"AuthorizationContextNotification" = "Nous sommes ravis que vous ayez rejoint notre communauté et que vous communiquiez avec des fans. Créez simplement un compte pour recevoir des notifications relatives aux informations importantes !";
+
+"Video loading failed." = "Échec de chargement de la vidéo.";
+"Error Loading Next Video" = "Erreur de chargement de la vidéo suivante";
+"Failed to fetch products" = "Échec de récupération des produits";
+
+"This will discard any content from the camera" = "Cette action ignorera tout contenu de l'appareil photo";
+"Discard" = "Ignorer";
+
+"#nofilter" = "#nofilter";
+"create a meme" = "Créer un MEME";
+"create a quote" = "créer une citation";
+"Create a GIF" = "Créer un GIF";
+"GIF" = "GIF";
+"quote" = "citation";
+"GIF MODE" = "MODE GIF";
+"VIDEO MODE" = "MODE VIDÉO";
+"Write a caption (optional)" = "Rédiger une légende (facultatif)";
+"Rendering..." = "Rendu en cours...";
+"Render failure" = "Échec du rendu";
+"Publishing..." = "Publication en cours...";
+"Upload failure" = "Échec de téléchargement";

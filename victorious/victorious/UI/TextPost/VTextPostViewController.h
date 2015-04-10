@@ -34,7 +34,7 @@
 /**
  Sets the background color.
  */
-@property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, strong) UIColor *color;
 
 /**
  An object that encapsulates various configuration properties of how the text post

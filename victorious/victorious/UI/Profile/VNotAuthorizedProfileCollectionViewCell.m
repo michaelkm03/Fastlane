@@ -40,7 +40,7 @@
     [self.noContentViewContainer v_addFitToParentConstraintsToSubview:noContentView];
     noContentView.iconImageView.image = [[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     noContentView.titleLabel.text = NSLocalizedString(@"You're not logged in!", @"");
-    noContentView.messageLabel.text = NSLocalizedString(@"Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are.", @"User is not logged in message.");
+    noContentView.messageLabel.text = NSLocalizedString(@"ProfileNotLoggedInMessage", @"User is not logged in message.");
     self.noContentView = noContentView;
     
     [self.loginButton setStyle:VButtonStylePrimary];

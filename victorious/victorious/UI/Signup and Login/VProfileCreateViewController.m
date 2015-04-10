@@ -522,7 +522,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileSaveFail", @"")
                                                            message:error.localizedDescription
                                                           delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                  otherButtonTitles:nil];
     [alert show];
     
@@ -590,12 +590,10 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
                                 onCancelButton:nil
                     otherButtonTitlesAndBlocks:nil];
     
-    [alert addButtonWithTitle:NSLocalizedString(@"OKButton", @"") block:^{
-        
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^(void)
+    {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
-        
         [self exitWithSuccess:NO];
-        
     }];
     
     [alert show];
@@ -640,7 +638,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
                                                        message:errorMsg
                                                       delegate:nil
                                              cancelButtonTitle:nil
-                                             otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                                             otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
     [alert show];
 
     [MBProgressHUD hideHUDForView:self.view

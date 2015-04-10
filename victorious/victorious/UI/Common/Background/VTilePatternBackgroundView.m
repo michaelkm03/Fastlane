@@ -24,6 +24,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 
 @property (nonatomic, strong) UIView *interpolationView;
 @property (nonatomic, strong) CALayer *replicatedLayer;
+@property (nonatomic, strong) CALayer *tilePatternLayer;
 @property (nonatomic, strong) CAReplicatorLayer *xReplicatorLayer;
 @property (nonatomic, strong) CAReplicatorLayer *yReplicatorLayer;
 @property (nonatomic, strong) NSCache *renderedImageCache;
@@ -71,7 +72,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     
     _color = color;
     
-    self.replicatedLayer.contents = (id)[self patternImage].CGImage;
+    self.tilePatternLayer.contents = (id)[self patternImage].CGImage;
 }
 
 - (void)setImage:(UIImage *)image
@@ -85,7 +86,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     
     [self.renderedImageCache removeAllObjects];
     [self layoutSubviews];
-    self.replicatedLayer.contents = (id)[self patternImage].CGImage;
+    self.tilePatternLayer.contents = (id)[self patternImage].CGImage;
 }
 
 - (void)setTiltParallaxEnabled:(BOOL)tiltParallaxEnabled
@@ -118,13 +119,13 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     
     if (shimmerAnimationActive)
     {
-        [self.replicatedLayer addAnimation:[self breathingAnimation]
+        [self.tilePatternLayer addAnimation:[self breathingAnimation]
                                     forKey:kShimmerAnimationKey];
     }
     else
     {
-        [self.replicatedLayer removeAnimationForKey:kShimmerAnimationKey];
-        self.replicatedLayer.opacity = 1.0f;
+        [self.tilePatternLayer removeAnimationForKey:kShimmerAnimationKey];
+        self.tilePatternLayer.opacity = 1.0f;
     }
 }
 
@@ -143,7 +144,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     if (self.hasLayedOutPatternBackground)
     {
         [self.interpolationView v_addMotionEffectsWithMagnitude:-self.image.size.width*0.5f];
-        [self.replicatedLayer addAnimation:[self breathingAnimation] forKey:kShimmerAnimationKey];
+        [self.tilePatternLayer addAnimation:[self breathingAnimation] forKey:kShimmerAnimationKey];
         [self updateReplicantCount];
         return;
     }
@@ -180,11 +181,17 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     [interpolationContainer.layer addSublayer:self.yReplicatorLayer];
     
     self.replicatedLayer = [CALayer layer];
-    self.replicatedLayer.contents = (id)[self patternImage].CGImage;
+    self.replicatedLayer.backgroundColor = [UIColor whiteColor].CGColor;
     self.replicatedLayer.frame = CGRectMake( -self.image.size.width,
                                             -self.image.size.height,
                                             self.image.size.width,
                                             self.image.size.height);
+
+    self.tilePatternLayer = [CALayer layer];
+    self.tilePatternLayer.contents = (id)[self patternImage].CGImage;
+    self.tilePatternLayer.backgroundColor = [UIColor clearColor].CGColor;
+    self.tilePatternLayer.frame = self.replicatedLayer.bounds;
+    [self.replicatedLayer addSublayer:self.tilePatternLayer];
     
     [self.xReplicatorLayer addSublayer:self.replicatedLayer];
     [self.yReplicatorLayer addSublayer:self.xReplicatorLayer];
@@ -196,7 +203,7 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     self.xReplicatorLayer.instanceDelay = 0.1f;
     self.yReplicatorLayer.instanceDelay = 0.1f;
     
-    [self.replicatedLayer addAnimation:[self breathingAnimation] forKey:@"breathingAnimation"];
+    [self.tilePatternLayer addAnimation:[self breathingAnimation] forKey:@"breathingAnimation"];
 }
 
 #pragma mark - Private

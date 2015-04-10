@@ -10,6 +10,8 @@
 
 @interface UIColor (VHex)
 
++ (UIColor *)v_colorFromHexString:(NSString *)hexString;
+
 - (NSString *)v_hexString;
 
 @end

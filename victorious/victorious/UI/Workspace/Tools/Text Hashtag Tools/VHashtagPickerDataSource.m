@@ -14,6 +14,7 @@
 #import "VObjectManager+Discover.h"
 #import "NSArray+VMap.h"
 #import "VHashtag.h"
+#import "VHashtags.h"
 
 @interface VHashtagPickerDataSource ()
 
@@ -84,7 +85,7 @@
                                   {
                                       if ( [hashtag isKindOfClass:[VHashtag class]] )
                                       {
-                                          return [[VHashtagType alloc] initWithHashtagText:hashtag.tag];
+                                          return [[VHashtagType alloc] initWithHashtagText:[VHashTags stringWithPrependedHashmarkFromString:hashtag.tag]];
                                       }
                                       else
                                       {

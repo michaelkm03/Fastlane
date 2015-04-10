@@ -48,7 +48,7 @@
 - (UIAlertController *)alertForNextSequenceErrorWithDismiss:(void(^)())onDismiss
 {
     NSString *title = NSLocalizedString( @"Error Loading Next Video", @"" );
-    NSString *message = NSLocalizedString( @"Please try again later.", @"" );
+    NSString *message = NSLocalizedString( @"TryAgain", @"" );
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];

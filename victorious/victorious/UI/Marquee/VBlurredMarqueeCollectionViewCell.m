@@ -21,7 +21,7 @@
 
 @property (nonatomic, weak) IBOutlet VCrossFadingImageView *crossfadingBlurredImageView;
 @property (nonatomic, weak) IBOutlet VCrossFadingLabel *crossfadingLabel;
-@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 
 @end
 
@@ -45,11 +45,17 @@
     return [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
 }
 
+- (void)didMoveToSuperview
+{
+    [super didMoveToSuperview];
+    [(VBlurredMarqueeController *)self.marquee animateToVisible];
+}
+
 #pragma mark - VBackgroundContainer
 
-- (UIView *)backgroundContainerView
+- (UIView *)loadingBackgroundContainerView
 {
-    return self.backgroundContainer;
+    return self.loadingBackgroundContainer;
 }
 
 @end

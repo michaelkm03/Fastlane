@@ -68,15 +68,4 @@
     XCTAssert(![self.marquee.autoScrollTimerManager isValid], @"The timer should be invalid after it is disabled.");
 }
 
-- (void)testSetCollectionView
-{
-    id collectionView = [OCMockObject niceMockForClass:[UICollectionView class]];
-    [(UICollectionView *)[collectionView expect] setDelegate:self.marquee];
-    [(UICollectionView *)[collectionView expect] setDataSource:self.marquee.streamDataSource];
-    self.marquee.collectionView = collectionView;
-    XCTAssert([self.marquee.collectionView isEqual:collectionView], @"The collection view was not set on VMarqueeController.");
-    XCTAssert([self.marquee.streamDataSource.collectionView isEqual:collectionView], @"The collection view was not set on VStreamCollectionViewDataSource.");
-    [collectionView verify];
-}
-
 @end

@@ -32,6 +32,17 @@
 
 @interface VAdVideoPlayerViewController : UIViewController
 
+
+/**
+ *  The designated constructor for VAdVideoPlayerViewController taking a partner and a details specification.
+ *
+ *  @param monetizationPartner Enum value for which of the ad networks to use.
+ *  @param details             Array of options and parameters for the ad.
+ *
+ *  @return Returns an instance of the VAdVideoPlayerViewController class.
+ */
+- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner details:(NSArray *)details NS_DESIGNATED_INITIALIZER;
+
 /**
  Boolean that reports if an ad is currently playing
  */
@@ -46,14 +57,6 @@
  Enum value to check which ad manager to load
  */
 @property (nonatomic, assign) VMonetizationPartner monetizationPartner;
-
-/**
- Sets the monetization type and options for the Ad Video Player
- 
- @param monetizationPartner enum value for which ad network to use
- @param options             Array of keys/values for setting ad display options and parameters
- */
-- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details;
 
 /**
  Method that starts the ad manager

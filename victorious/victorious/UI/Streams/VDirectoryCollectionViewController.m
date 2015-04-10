@@ -1,12 +1,12 @@
 //
-//  VStreamDirectoryCollectionView.m
+//  VDirectoryCollectionViewController.m
 //  victorious
 //
 //  Created by Will Long on 9/8/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VDirectoryViewController.h"
+#import "VDirectoryCollectionViewController.h"
 
 // Data Source
 #import "VStreamCollectionViewDataSource.h"
@@ -31,16 +31,21 @@
 #import "VSettingManager.h"
 #import "VDirectoryCellDecorator.h"
 #import "NSString+VParseHelp.h"
+#import <FBKVOController.h>
+
+#import "VAbstractMarqueeCollectionViewCell.h"
+#import "VAbstractMarqueeController.h"
+#import "VUserProfileViewController.h"
 
 static CGFloat const kDirectoryInset = 10.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
+@interface VDirectoryCollectionViewController () <UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
 
 @property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
 
 @end
 
-@implementation VDirectoryViewController
+@implementation VDirectoryCollectionViewController
 
 #pragma mark - UIView overrides
 
@@ -49,6 +54,19 @@ static CGFloat const kDirectoryInset = 10.0f;
     [super viewDidLoad];
 
     self.cellDecorator = [[VDirectoryCellDecorator alloc] init];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Layout may have changed between awaking from nib and being added to the container of the SoS
+    [self.collectionView.collectionViewLayout invalidateLayout];
+    
+    if ( self.streamDataSource.hasHeaderCell )
+    {
+        [self.marqueeController enableTimer];
+    }
 }
 
 - (NSString *)cellIdentifier
@@ -67,6 +85,12 @@ static CGFloat const kDirectoryInset = 10.0f;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( [self isMarqueeSection:indexPath.section] )
+    {
+        //Return size for the marqueeCell that is provided by our superclass
+        return [self.marqueeController desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
+    
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
     
     CGFloat width = CGRectGetWidth(collectionView.bounds);
@@ -87,9 +111,8 @@ static CGFloat const kDirectoryInset = 10.0f;
     return CGSizeMake(width, height);
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem
 {
-    VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
     if ( streamItem.isContent )
     {
         VSequence *sequence = (VSequence *)streamItem;
@@ -105,7 +128,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     }
     else if ( streamItem.isStreamOfStreams )
     {
-        VDirectoryViewController *viewController = [VDirectoryViewController streamDirectoryForStream:(VStream *)streamItem
+        VDirectoryCollectionViewController *viewController = [VDirectoryCollectionViewController streamDirectoryForStream:(VStream *)streamItem
                                                                                     dependencyManager:self.dependencyManager];
         viewController.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:viewController animated:YES];
@@ -116,10 +139,19 @@ static CGFloat const kDirectoryInset = 10.0f;
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(self.topInset + kDirectoryInset,
-                            kDirectoryInset,
-                            0,
-                            kDirectoryInset);
+    UIEdgeInsets edgeInsets = [super collectionView:collectionView
+                                             layout:collectionViewLayout
+                             insetForSectionAtIndex:section];
+    
+    if ( ![self isMarqueeSection:section] )
+    {
+        edgeInsets.top += kDirectoryInset;
+        edgeInsets.bottom += kDirectoryInset;
+        edgeInsets.right += kDirectoryInset;
+        edgeInsets.left = kDirectoryInset;
+    }
+    
+    return edgeInsets;
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -127,10 +159,16 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
+    
+    if ( [self isMarqueeSection:indexPath.section] )
+    {
+        return [self.marqueeController marqueeCellForCollectionView:self.collectionView atIndexPath:indexPath];
+    }
+    
     NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
     VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                          forIndexPath:indexPath];
-
+                                                                                       forIndexPath:indexPath];
+    
     [self.cellDecorator populateCell:directoryCell withStreamItem:item];
     [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
     return directoryCell;

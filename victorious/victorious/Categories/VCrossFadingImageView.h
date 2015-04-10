@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+    A view that loads, blurs, and crossfades between images from the provided imageURLs. The alpha of these images
+        can be manipulated by the "offset" property
+ */
 @interface VCrossFadingImageView : UIView
 
 /**

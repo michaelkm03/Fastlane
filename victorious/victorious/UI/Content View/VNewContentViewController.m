@@ -500,6 +500,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     self.contentCollectionView.delegate = self;
     self.videoCell.delegate = self;
+
+#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+    // We could probably move this here anyway, but not going to for now to avoid bugs.
+    self.videoCell.viewModel = self.viewModel.videoViewModel;
+#endif
     
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
@@ -725,8 +730,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
     self.contentCollectionView.delegate = nil;
     self.contentCollectionView.dataSource = nil;
-    self.videoCell.delegate = nil;
-    self.videoCell.adPlayerViewController = nil;
+
+    [self.videoCell prepareForRemoval];
+    
     [self.contentCollectionView removeFromSuperview];
 }
 
@@ -953,7 +959,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
                 textCell.dependencyManager = self.dependencyManager;
-                [textCell setTextContent:self.viewModel.textContent withBackgroundColor:self.viewModel.textBackgroundColor];
+                UIColor *backgroundColor = self.viewModel.textBackgroundColor ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+                [textCell setTextContent:self.viewModel.textContent withBackgroundColor:backgroundColor];
                 self.contentCell = textCell;
                 return textCell;
             }
@@ -1305,7 +1312,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
 {
-    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo )
+    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
     }
@@ -1317,7 +1324,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     [UIViewController attemptRotationToDeviceOrientation];
-    if ( !self.hasAutoPlayed )
+    if (!self.hasAutoPlayed)
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;

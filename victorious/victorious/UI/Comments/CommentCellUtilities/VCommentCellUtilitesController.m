@@ -77,7 +77,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
          [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                      message:NSLocalizedString(@"ReportCommentMessage", @"")
                                     delegate:nil
-                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                            otherButtonTitles:nil] show];
          
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagComment];
@@ -104,7 +104,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
          [[[UIAlertView alloc] initWithTitle:errorTitle
                                     message:errorMessage
                                    delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                           otherButtonTitles:nil] show];
      }];
 }
@@ -127,7 +127,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
          [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"WereSorry", @"")
                                      message:NSLocalizedString(@"ErrorOccured", @"")
                                     delegate:nil
-                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                            otherButtonTitles:nil] show];
      }];
 }

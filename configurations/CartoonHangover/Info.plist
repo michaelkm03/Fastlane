@@ -14,14 +14,6 @@
 				<string>fb1374328719478033</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}cartoonhangover</string>
-			</array>
-		</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>1374328719478033</string>

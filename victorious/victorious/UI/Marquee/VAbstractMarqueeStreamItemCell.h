@@ -1,5 +1,5 @@
 //
-//  VBaseMarqueeStreamItemCell.h
+//  VAbstractMarqueeStreamItemCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/25/15.
@@ -11,6 +11,9 @@
 
 @class VStreamItem, VUser, VAbstractMarqueeStreamItemCell, VDependencyManager;
 
+/**
+    A collection view cell that displays stream item content in a marquee
+ */
 @interface VAbstractMarqueeStreamItemCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
 @property (nonatomic, strong) VStreamItem *streamItem; ///< Stream item to display

@@ -30,8 +30,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 @property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
 
-@property (nonatomic, strong) VNoContentView *noContentView;
-
 @end
 
 @implementation VHashtagStreamCollectionViewController
@@ -123,10 +121,11 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         if ( self.noContentView == nil )
         {
-            self.noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
-            self.noContentView.titleLabel.text = NSLocalizedString( @"NoHashtagsTitle", @"" );
-            self.noContentView.messageLabel.text = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
-            self.noContentView.iconImageView.image = [UIImage imageNamed:@"tabIconHashtag"];
+            VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
+            noContentView.titleLabel.text = NSLocalizedString( @"NoHashtagsTitle", @"" );
+            noContentView.messageLabel.text = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
+            noContentView.iconImageView.image = [UIImage imageNamed:@"tabIconHashtag"];
+            self.noContentView = noContentView;
         }
         
         self.collectionView.backgroundView = self.noContentView;

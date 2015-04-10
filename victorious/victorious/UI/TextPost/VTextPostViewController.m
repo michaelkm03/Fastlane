@@ -56,13 +56,22 @@ static const CGFloat kTntedBackgroundImageAlpha = 0.5f;
 {
     [super viewDidLayoutSubviews];
     
-    [self updateTextView];
+    if ( !self.hasBeenDisplayed )
+    {
+        [self updateTextView];
+        self.hasBeenDisplayed = YES;
+    }
 }
 
 #pragma mark - View controller lifecycle
 
 - (void)setText:(NSString *)text
 {
+    if ( [_text isEqualToString:text] )
+    {
+        return;
+    }
+    
     _text = text;
     
     NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
@@ -73,6 +82,11 @@ static const CGFloat kTntedBackgroundImageAlpha = 0.5f;
 
 - (void)updateTextView
 {
+    if ( self.text == nil )
+    {
+        return;
+    }
+    
     NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
     NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
     [self updateTextView:self.textPostTextView withText:_text textAttributes:attributes calloutAttributes:calloutAttributes];
@@ -88,26 +102,26 @@ static const CGFloat kTntedBackgroundImageAlpha = 0.5f;
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
     _backgroundImage = backgroundImage;
-    self.backgroundImageView.image = [_backgroundImage v_tintedImageWithColor:self.backgroundColor];
+    self.backgroundImageView.image = [_backgroundImage v_tintedImageWithColor:self.color];
     //self.backgroundImageView.image = _backgroundImage;
 }
 
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
+- (void)setColor:(UIColor *)color
 {
-    if ( _backgroundColor != nil && _backgroundColor == backgroundColor )
+    if ( _color != nil && _color == color )
     {
         return;
     }
     
-    _backgroundColor = backgroundColor;
-    self.view.backgroundColor = backgroundColor;
+    _color = color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];;
+    self.view.backgroundColor = color;
     
-    const BOOL shouldTint = backgroundColor != nil && self.backgroundImage != nil;
+    const BOOL shouldTint = color != nil && self.backgroundImage != nil;
     if ( shouldTint )
     {
         self.backgroundImageView.alpha = kTntedBackgroundImageAlpha;
-        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.backgroundColor];
+        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.color];
     }
     else
     {
