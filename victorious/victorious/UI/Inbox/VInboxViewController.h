@@ -11,13 +11,14 @@
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMultipleContainerChild.h"
+#import "VAuthorizationContextProvider.h"
 
 @class VUnreadMessageCountCoordinator, VUser, VDependencyManager;
 
 extern NSString * const VInboxViewControllerDeeplinkHostComponent; ///< The host component for deeplink URLs that point to inbox messages
 extern NSString * const VInboxViewControllerInboxPushReceivedNotification; ///< Posted when an inbox push notification is received while the app is active
 
-@interface VInboxViewController : VFetchedResultsTableViewController <VDeeplinkHandler, VMultipleContainerChild, VProvidesNavigationMenuItemBadge>
+@interface VInboxViewController : VFetchedResultsTableViewController <VDeeplinkHandler, VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;

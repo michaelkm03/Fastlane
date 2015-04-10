@@ -2008,6 +2008,7 @@
 		D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D89F1CD81ABE747000AF14A5 /* VRoundedBackgroundButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRoundedBackgroundButton.h; sourceTree = "<group>"; };
 		D89F1CD91ABE747000AF14A5 /* VRoundedBackgroundButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRoundedBackgroundButton.m; sourceTree = "<group>"; };
+		D8A2615C1AD7693A00780F00 /* VAuthorizationContextProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContextProvider.h; sourceTree = "<group>"; };
 		D8AF00ED1A128A7200B147C4 /* VHashTagTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagTextView.h; sourceTree = "<group>"; };
 		D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagTextView.m; sourceTree = "<group>"; };
 		D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagTextViewTests.m; sourceTree = "<group>"; };
@@ -3546,6 +3547,7 @@
 				03C185CE19B4308400E27D05 /* VAnimation.h */,
 				A74293991AAFE4A400532948 /* VAuthorizationContext.h */,
 				D8F8B1F01AC4C89E00AA2DB7 /* VBackgroundContainer.h */,
+				D8A2615C1AD7693A00780F00 /* VAuthorizationContextProvider.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
