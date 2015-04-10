@@ -1,5 +1,5 @@
 //
-//  VMarqueeCollectionCell.h
+//  VFullscreenMarqueeCollectionCell.h
 //  victorious
 //
 //  Created by Will Long on 10/7/14.

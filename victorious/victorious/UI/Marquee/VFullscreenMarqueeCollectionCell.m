@@ -1,5 +1,5 @@
 //
-//  VMarqueeCollectionCell.m
+//  VFullscreenMarqueeCollectionCell.m
 //  victorious
 //
 //  Created by Will Long on 10/7/14.
@@ -24,6 +24,10 @@
 
 #import "VTimerManager.h"
 
+#import "VStream.h"
+
+#import "VAbstractMarqueeController.h"
+
 static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
 static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 
@@ -31,11 +35,12 @@ static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
 @property (nonatomic, strong) VFullscreenMarqueeTabIndicatorView *tabView;
-@property (nonatomic, strong) VFullscreenMarqueeController *marquee;
 
 @end
 
 @implementation VFullscreenMarqueeCollectionCell
+
+@dynamic marquee;
 
 - (void)awakeFromNib
 {
@@ -79,22 +84,25 @@ static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
         
         self.backgroundColor = [UIColor clearColor];
     }
-    self.marquee.hideMarqueePosterImage = hideMarqueePosterImage;
+    if ( [self.marquee isKindOfClass:[VFullscreenMarqueeController class]] )
+    {
+        ((VFullscreenMarqueeController *)self.marquee).hideMarqueePosterImage = hideMarqueePosterImage;
+    }
 }
 
 - (void)setMarquee:(VFullscreenMarqueeController *)marquee
 {
     marquee.tabView = self.tabView;
-    self.tabView.numberOfTabs = marquee.streamDataSource.count;
+    self.tabView.numberOfTabs = marquee.stream.marqueeItems.count;
     
     [super setMarquee:marquee];
     
     self.hideMarqueePosterImage = marquee.hideMarqueePosterImage;
 }
 
-- (void)updatedFromRefresh
+- (void)marquee:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
 {
-    self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
+    self.tabView.numberOfTabs = streamItems.count;
     self.tabView.currentlySelectedTab = self.marquee.currentPage;
 }
 

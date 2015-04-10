@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+    A label that crossfades between strings, adjusting the displayed string and alpha of the label based
+        on the value of the "offset" property
+ */
 @interface VCrossFadingLabel : UILabel
 
 /**

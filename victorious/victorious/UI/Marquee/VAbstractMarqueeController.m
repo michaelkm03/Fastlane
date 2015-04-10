@@ -1,5 +1,5 @@
 //
-//  VBaseMarqueeController.m
+//  VAbstractMarqueeController.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/25/15.
@@ -16,8 +16,12 @@
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
 #import "VDependencyManager+VObjectManager.h"
+#import <FBKVOController.h>
+#import "VURLMacroReplacement.h"
 
-NSString * const kMarqueeURLKey = @"marqueeURL";
+static NSString * const kStreamURLKey = @"streamURL";
+static NSString * const kSequenceIDKey = @"sequenceID";
+static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 @interface VAbstractMarqueeController ()
@@ -35,10 +39,20 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     self = [super init];
     if ( self != nil )
     {
-        NSString *streamPath = [[dependencyManager stringForKey:kMarqueeURLKey] v_pathComponent];
-        if ( streamPath != nil )
+        NSString *url = [dependencyManager stringForKey:kStreamURLKey];
+        
+        NSString *sequenceID = [dependencyManager stringForKey:kSequenceIDKey];
+        if ( sequenceID != nil )
         {
-            _stream = [VStream streamForPath:streamPath inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+            VURLMacroReplacement *urlMacroReplacement = [[VURLMacroReplacement alloc] init];
+            url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
+                                                                       inURLString:url];
+        }
+        NSString *path = [url v_pathComponent];
+        
+        if ( path != nil )
+        {
+            _stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
             [self setupWithStream:_stream];
         }
         _dependencyManager = dependencyManager;
@@ -46,25 +60,18 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     return self;
 }
 
+- (void)dealloc
+{
+    if (_collectionView.delegate == self)
+    {
+        _collectionView.delegate = nil;
+    }
+    [_autoScrollTimerManager invalidate];
+}
+
 - (NSString *)cellSuggestedReuseIdentifier
 {
     return [VAbstractMarqueeStreamItemCell suggestedReuseIdentifier];
-}
-
-- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
-{
-    [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
-     ^{
-         [self scrolledToPage:0];
-         
-         [self.delegate marqueeRefreshedContent:self];
-         
-         if (successBlock)
-         {
-             successBlock();
-         }
-     }
-                            failure:failureBlock];
 }
 
 #pragma mark - stream updating
@@ -77,11 +84,29 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)setupWithStream:(VStream *)stream
 {
-    _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
-    _streamDataSource.delegate = self;
-    _streamDataSource.collectionView = _collectionView;
-    _collectionView.dataSource = _streamDataSource;
-    _currentPage = 0;
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    self.currentPage = 0;
+    [self addKVOToMarqueeItemsOfStream:stream];
+}
+
+- (void)addKVOToMarqueeItemsOfStream:(VStream *)stream
+{
+    [self.KVOController observe:stream
+                        keyPath:[self marqueeItemsKeyPath]
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(marqueeItemsUpdated)];
+}
+
+- (NSString *)marqueeItemsKeyPath
+{
+    return NSStringFromSelector(@selector(marqueeItems));
+}
+
+- (void)marqueeItemsUpdated
+{
+    [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
+    //[self.collectionView reloadData];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -89,11 +114,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSUInteger currentPage = MAX( 0, self.collectionView.contentOffset.x / pageWidth );
+    NSUInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
     if ( currentPage != self.currentPage )
     {
         self.currentPage = currentPage;
-        if ( self.currentPage < self.streamDataSource.count )
+        if ( self.currentPage < self.stream.marqueeItems.count )
         {
             [self scrolledToPage:self.currentPage];
         }
@@ -102,9 +127,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)selectNextTab
 {
-    CGFloat pageWidth = self.collectionView.frame.size.width;
+    CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
     NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
-    if (currentPage == self.streamDataSource.count)
+    if (currentPage == self.stream.marqueeItems.count)
     {
         currentPage = 0;
     }
@@ -114,7 +139,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)scrolledToPage:(NSInteger)currentPage
 {
-    self.currentStreamItem = [self.streamDataSource itemAtIndexPath:[NSIndexPath indexPathForRow:currentPage inSection:0]];
+    self.currentStreamItem = [self.stream.marqueeItems objectAtIndex:currentPage];
     [self enableTimer];
 }
 
@@ -139,7 +164,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     return kDefaultMarqueeTimerFireDuration;
 }
 
-#pragma mark - VStreamCollectionDataDelegate
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.stream.marqueeItems.count;
+}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
@@ -148,9 +178,25 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     return [self desiredSizeWithCollectionViewBounds:collectionView.bounds];
 }
 
-- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    VStreamItem *item = [self.stream.streamItems objectAtIndex:indexPath.row];
+    return UIEdgeInsetsZero;
+}
+
+//Let the container handle the selection.
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VStreamItem *item = self.stream.marqueeItems[indexPath.row];
+    VAbstractMarqueeStreamItemCell *cell = (VAbstractMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    UIImage *previewImage = cell.previewImageView.image;
+    
+    [self.selectionDelegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
+    [self.autoScrollTimerManager invalidate];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VStreamItem *item = [self.stream.marqueeItems objectAtIndex:indexPath.row];
     VAbstractMarqueeStreamItemCell *cell;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[self cellSuggestedReuseIdentifier] forIndexPath:indexPath];
@@ -163,9 +209,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)setCollectionView:(UICollectionView *)collectionView
 {
     _collectionView = collectionView;
-    self.streamDataSource.collectionView = _collectionView;
     collectionView.delegate = self;
-    collectionView.dataSource = self.streamDataSource;
+    collectionView.dataSource = self;
+    ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset = UIEdgeInsetsZero;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -175,15 +221,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     {
         marqueeItemCell.dependencyManager = dependencyManager;
     }
-}
-
-- (void)dealloc
-{
-    if (_collectionView.delegate == self)
-    {
-        _collectionView.delegate = nil;
-    }
-    [_autoScrollTimerManager invalidate];
 }
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView

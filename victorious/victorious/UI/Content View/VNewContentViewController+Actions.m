@@ -40,6 +40,16 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
 
+// Download
+#import <MBProgressHUD/MBProgressHUD.h>
+#import "VDownloadManager.h"
+#import "VDownloadTaskInformation.h"
+#import "VNode+Fetcher.h"
+#import "VAsset.h"
+#import "VAsset+Fetcher.h"
+#import "VAsset+VCachedData.h"
+#import "VAsset+VAssetCache.h"
+
 @interface VNewContentViewController ()
 
 @property VSequenceActionController *sequenceActionController;
@@ -87,6 +97,49 @@
     [actionItems addObject:descriptionItem];
     
     [self addRemixToActionItems:actionItems contentViewController:contentViewController actionSheetViewController:actionSheetViewController];
+    
+#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        BOOL assetIsCached = [[self.viewModel.currentNode mp4Asset] assetDataIsCached];
+        
+        VActionItem *downloadItem = [VActionItem defaultActionItemWithTitle:assetIsCached ? @"Downloaded" : @"Download"
+                                                                 actionIcon:nil
+                                                                 detailText:nil
+                                                                    enabled:!assetIsCached];
+        downloadItem.selectionHandler = ^(VActionItem *item)
+        {
+            VDownloadManager *downloadManager = [[VDownloadManager alloc] init];
+            VAsset *mp4Asset = [self.viewModel.sequence.firstNode mp4Asset];
+            NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:mp4Asset.data]];
+            urlRequest.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodGET);
+            VDownloadTaskInformation *downloadTask = [[VDownloadTaskInformation alloc] initWithRequest:urlRequest downloadLocation:[mp4Asset cacheURLForAsset]];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
+                                                      animated:YES];
+            hud.mode = MBProgressHUDModeAnnularDeterminate;
+            hud.labelText = @"Downloading...";
+            [downloadManager enqueueDownloadTask:downloadTask
+                                    withProgress:^(CGFloat progress)
+             {
+                 hud.progress = progress;
+                 hud.labelText = [NSString stringWithFormat:@"Downloading... %.2f%%", progress*100];
+                 VLog(@"progress: %@", @(progress));
+             }
+                                      onComplete:^(NSURL *downloadFileLocation, NSError *error)
+             {
+                 [hud hide:YES];
+                 VLog(@"Video Downloaded! at location: %@, error: %@", downloadFileLocation, error);
+                 [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+             }];
+            VLog(@"download video");
+            
+            [self dismissViewControllerAnimated:YES
+                                     completion:nil];
+        };
+        [actionItems addObject:downloadItem];
+    }
+#endif
+
     
     if (self.viewModel.sequence.canRepost)
     {

@@ -1,5 +1,5 @@
 //
-//  VMarqueeStreamItemCell.h
+//  VFullscreenMarqueeStreamItemCell.h
 //  victorious
 //
 //  Created by Will Long on 9/25/14.

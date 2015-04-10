@@ -7,22 +7,22 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="A61-e1-LGi" customClass="VBlurredMarqueeCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="238"/>
+            <rect key="frame" x="0.0" y="0.0" width="360" height="313"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="238"/>
+                <rect key="frame" x="0.0" y="0.0" width="360" height="313"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NDp-7E-oBL">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="238"/>
+                        <rect key="frame" x="0.0" y="0.0" width="360" height="313"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KbE-9l-IFh" customClass="VCrossFadingImageView">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="238"/>
+                        <rect key="frame" x="0.0" y="0.0" width="360" height="313"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Pas-Uw-m0a">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="238"/>
+                        <rect key="frame" x="0.0" y="0.0" width="360" height="313"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="ByJ-1i-FU4" customClass="VBlurredMarqueeCollectionViewFlowLayout">
                             <size key="itemSize" width="50" height="50"/>
@@ -32,7 +32,7 @@
                         </collectionViewFlowLayout>
                     </collectionView>
                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iPU-Vl-eS4" customClass="VCrossFadingLabel">
-                        <rect key="frame" x="31" y="158" width="238" height="70"/>
+                        <rect key="frame" x="31" y="233" width="298" height="70"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="70" id="TGu-NW-nbQ"/>
                         </constraints>
@@ -48,8 +48,12 @@
                 <constraint firstAttribute="trailing" secondItem="iPU-Vl-eS4" secondAttribute="trailing" constant="31" id="4XZ-6s-cjl"/>
                 <constraint firstAttribute="bottom" secondItem="iPU-Vl-eS4" secondAttribute="bottom" constant="10" id="4ou-an-pbD"/>
                 <constraint firstAttribute="bottom" secondItem="NDp-7E-oBL" secondAttribute="bottom" id="EJu-dG-ppf"/>
+                <constraint firstAttribute="bottom" secondItem="Pas-Uw-m0a" secondAttribute="bottom" id="HrG-Hg-Gtf"/>
+                <constraint firstItem="Pas-Uw-m0a" firstAttribute="top" secondItem="A61-e1-LGi" secondAttribute="top" id="Mmn-Dc-4Ea"/>
                 <constraint firstItem="NDp-7E-oBL" firstAttribute="top" secondItem="A61-e1-LGi" secondAttribute="top" id="NFr-Lt-7iL"/>
                 <constraint firstItem="KbE-9l-IFh" firstAttribute="top" secondItem="A61-e1-LGi" secondAttribute="top" id="UrJ-OZ-2Un"/>
+                <constraint firstItem="Pas-Uw-m0a" firstAttribute="leading" secondItem="A61-e1-LGi" secondAttribute="leading" id="XEt-Kc-Hru"/>
+                <constraint firstAttribute="trailing" secondItem="Pas-Uw-m0a" secondAttribute="trailing" id="eaG-gA-2k7"/>
                 <constraint firstAttribute="trailing" secondItem="Pas-Uw-m0a" secondAttribute="trailing" id="fO4-X6-d63"/>
                 <constraint firstItem="iPU-Vl-eS4" firstAttribute="leading" secondItem="A61-e1-LGi" secondAttribute="leading" constant="31" id="iDd-1O-JBG"/>
                 <constraint firstItem="Pas-Uw-m0a" firstAttribute="top" secondItem="A61-e1-LGi" secondAttribute="top" id="nul-xu-cLX"/>
@@ -60,14 +64,14 @@
                 <constraint firstItem="Pas-Uw-m0a" firstAttribute="leading" secondItem="A61-e1-LGi" secondAttribute="leading" id="wNo-3B-WBl"/>
                 <constraint firstAttribute="trailing" secondItem="NDp-7E-oBL" secondAttribute="trailing" id="zWL-D2-OZN"/>
             </constraints>
-            <size key="customSize" width="300" height="238"/>
+            <size key="customSize" width="360" height="313"/>
             <connections>
                 <outlet property="crossfadingBlurredImageView" destination="KbE-9l-IFh" id="nW1-J2-OAV"/>
                 <outlet property="crossfadingLabel" destination="iPU-Vl-eS4" id="ZD1-Qe-LtQ"/>
                 <outlet property="loadingBackgroundContainer" destination="NDp-7E-oBL" id="alI-Gj-mxM"/>
                 <outlet property="marqueeCollectionView" destination="Pas-Uw-m0a" id="s7R-3G-LFG"/>
             </connections>
-            <point key="canvasLocation" x="522" y="295"/>
+            <point key="canvasLocation" x="658" y="332.5"/>
         </collectionViewCell>
     </objects>
 </document>

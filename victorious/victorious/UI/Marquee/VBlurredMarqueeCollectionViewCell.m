@@ -45,6 +45,12 @@
     return [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
 }
 
+- (void)didMoveToSuperview
+{
+    [super didMoveToSuperview];
+    [(VBlurredMarqueeController *)self.marquee animateToVisible];
+}
+
 #pragma mark - VBackgroundContainer
 
 - (UIView *)loadingBackgroundContainerView

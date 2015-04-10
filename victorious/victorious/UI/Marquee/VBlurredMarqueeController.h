@@ -12,6 +12,8 @@
 
 @interface VBlurredMarqueeController : VAbstractMarqueeController
 
+- (void)animateToVisible;
+
 @property (nonatomic, strong) VCrossFadingImageView *crossfadingBlurredImageView; ///< The imageView that will crossfade between preview images of marquee contents
 @property (nonatomic, strong) VCrossFadingLabel *crossfadingLabel; ///< The label that will crossfade between the titles of marquee contents
 

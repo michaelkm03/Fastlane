@@ -9,7 +9,6 @@
 #import "VBlurredMarqueeController.h"
 #import "VBlurredMarqueeCollectionViewCell.h"
 #import "VBlurredMarqueeStreamItemCell.h"
-#import "VMarqueeControllerDelegate.h"
 #import "VCrossFadingLabel.h"
 #import "VCrossFadingImageView.h"
 #import "VTimerManager.h"
@@ -49,12 +48,21 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     return [VBlurredMarqueeStreamItemCell suggestedReuseIdentifier];
 }
 
+- (void)animateToVisible
+{
+    if ( self.collectionView.hidden )
+    {
+        self.collectionView.hidden = NO;
+        [self selectNextTab];
+    }
+}
+
 - (void)selectNextTab
 {
-    CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
+    CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
+    NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
     CGFloat overshootAmount = kOffsetOvershoot;
-    if (currentPage == (NSInteger)self.streamDataSource.count)
+    if (currentPage == self.stream.marqueeItems.count)
     {
         currentPage = 0;
         overshootAmount = - overshootAmount;
@@ -68,34 +76,26 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     [self.collectionView setContentOffset:self.overshootTarget animated:YES];
 }
 
-- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
+- (void)marqueeItemsUpdated
 {
-    __weak VBlurredMarqueeController *weakSelf = self;
-    [super refreshWithSuccess:^
-     {
-         VBlurredMarqueeController *strongSelf = weakSelf;
-         
-         if ( strongSelf == nil )
-         {
-             return;
-         }
-         
-         [strongSelf refreshCellSubviews];
-         
-         successBlock();
-     }
-                      failure:failureBlock];
+    [super marqueeItemsUpdated];
+    [self refreshCellSubviews];
 }
 
 - (void)refreshCellSubviews
 {
+    if ( self.stream.marqueeItems.count == 0 || self.crossfadingBlurredImageView == nil || self.crossfadingLabel == nil )
+    {
+        return;
+    }
+    
     [self.collectionView.collectionViewLayout invalidateLayout];
     
     NSMutableArray *previewImages = [[NSMutableArray alloc] init];
     NSMutableArray *contentNames = [[NSMutableArray alloc] init];
-    NSMutableOrderedSet *validStreamItems = [[NSMutableOrderedSet alloc] initWithArray:[self.stream.streamItems array]];
+    NSMutableOrderedSet *validStreamItems = [[NSMutableOrderedSet alloc] initWithArray:[self.stream.marqueeItems array]];
     
-    for ( VStreamItem *streamItem in self.stream.streamItems )
+    for ( VStreamItem *streamItem in self.stream.marqueeItems )
     {
         NSArray *previewImagePaths = streamItem.previewImagePaths;
         if ( previewImagePaths.count > 0 )
@@ -112,7 +112,10 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         //If we reach this part of the loop, we don't have a valid previewImageURL, so this streamItem is invalid for display; remove it from the validStreamItems array
         [validStreamItems removeObject:streamItem];
     }
-    self.stream.streamItems = [validStreamItems copy];
+    if ( ![validStreamItems isEqualToOrderedSet:self.stream.marqueeItems] )
+    {
+        self.stream.marqueeItems = [validStreamItems copy];
+    }
     
     UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
@@ -122,8 +125,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     
     if ( !self.showedInitialDisplayAnimation )
     {
-        self.collectionView.hidden = NO;
-
         self.crossfadingLabel.alpha = 0.0f;
         
         [self.collectionView layoutIfNeeded];
@@ -131,9 +132,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         self.showedInitialDisplayAnimation = YES;
         CGPoint startOffset = CGPointMake( - CGRectGetWidth(self.collectionView.bounds), 0.0f );
         [self.collectionView setContentOffset:startOffset animated:NO];
-        
-        self.collectionView.hidden = NO;
-        [self selectNextTab];
     }
 }
 
@@ -187,17 +185,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     self.shouldAnimateToTarget = NO;
 }
 
-//Let the container handle the selection.
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
-    VBlurredMarqueeStreamItemCell *cell = (VBlurredMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *previewImage = cell.previewImageView.image;
-    
-    [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
-    [self.autoScrollTimerManager invalidate];
-}
-
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
     [collectionView registerNib:[VBlurredMarqueeCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]];
@@ -210,12 +197,14 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     cell.dependencyManager = self.dependencyManager;
     cell.marquee = self;
     self.collectionView.hidden = !self.showedInitialDisplayAnimation;
-    CGSize desiredSize = [VBlurredMarqueeCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    CGSize desiredSize = [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
     
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     
     [self enableTimer];
+    [cell layoutIfNeeded];
+    [self refreshCellSubviews];
     return cell;
 }
 
