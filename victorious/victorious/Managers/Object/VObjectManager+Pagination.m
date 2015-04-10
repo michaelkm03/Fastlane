@@ -192,6 +192,16 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)notificationsCount:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail
+{
+    return [self GET:@"/api/notification/unread_notification_count"
+               object:nil
+           parameters:@{}
+         successBlock:success
+            failBlock:fail];
+}
+
 #pragma mark - Conversations
 
 - (RKManagedObjectRequestOperation *)loadConversationListWithPageType:(VPageType)pageType

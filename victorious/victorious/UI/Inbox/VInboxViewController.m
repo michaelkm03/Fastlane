@@ -28,7 +28,6 @@
 #import "VObjectManager+Login.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "VProvidesNavigationMenuItemBadge.h"
 #import "NSURL+VPathHelper.h"
 #import "VInboxDeeplinkHandler.h"
 
