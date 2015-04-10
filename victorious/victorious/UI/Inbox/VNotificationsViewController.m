@@ -58,7 +58,12 @@ static int const kNotificationFetchBatchSize = 50;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - VNavigationDestination
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    return YES;
+}
 
 - (VAuthorizationContext)authorizationContext
 {

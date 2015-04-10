@@ -84,13 +84,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                                                     failBlock:^(NSOperation *operation, NSError *error)
      {
          [hud hide:YES];
-         VLog(@"Failed with error: %@", error);
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                         message:NSLocalizedString(@"Missing Content Message", nil)
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                               otherButtonTitles:nil];
-         [alert show];
          completion( NO, nil );
      }];
 }

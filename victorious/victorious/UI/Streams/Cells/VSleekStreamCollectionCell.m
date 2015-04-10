@@ -33,7 +33,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 @interface VSleekStreamCollectionCell ()
 
-@property (nonatomic, weak) IBOutlet UIView *backgroundHost;
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet VSleekStreamCellActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
@@ -144,9 +144,9 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)backgroundContainerView
+- (UIView *)loadingBackgroundContainerView
 {
-    return self.backgroundHost;
+    return self.loadingBackgroundContainer;
 }
 
 #pragma mark - Class Methods

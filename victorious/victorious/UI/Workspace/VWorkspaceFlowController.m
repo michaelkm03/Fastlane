@@ -243,12 +243,19 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     self.state = newState;
 }
 
-#pragma mark - VNavigationDestination
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    return YES;
+}
 
 - (VAuthorizationContext)authorizationContext
 {
     return VAuthorizationContextCreatePost;
 }
+
+#pragma mark - VNavigationDestination
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
