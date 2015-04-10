@@ -15,7 +15,9 @@ extern NSString * const VDependencyManagerObjectManagerKey; ///< An instance of 
 @interface VDependencyManager (VObjectManager)
 
 /**
- An instance of VObjectManager
+ An instance of VObjectManager added to the template after the init call.  To reduce the use
+ of VObjectManager as a singleton, this property should be used in favor of [`VObjectManager sharedManager]`
+ wherever possible.
  */
 - (VObjectManager *)objectManager;
 

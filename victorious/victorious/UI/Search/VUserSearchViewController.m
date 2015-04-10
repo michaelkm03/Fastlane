@@ -345,7 +345,7 @@ static const NSInteger kSearchResultLimit = 100;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
                                                         message:error.localizedDescription
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                               otherButtonTitles:nil];
         [alert show];
     };
@@ -412,7 +412,7 @@ static const NSInteger kSearchResultLimit = 100;
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                      otherButtonTitles:nil];
         [alert show];
     };

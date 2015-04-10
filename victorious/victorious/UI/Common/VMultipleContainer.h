@@ -1,5 +1,5 @@
 //
-//  VMultipleContainerChild.h
+//  VMultipleContainer.h
 //  victorious
 //
 //  Created by Patrick Lynch on 2/20/15.
@@ -7,6 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+
+@protocol VMultipleContainerChild;
+
+@protocol VMultipleContainer <NSObject>
+
+@property (nonatomic, readonly) NSArray *children;
+
+- (void)selectChild:(id<VMultipleContainerChild>)child;
+
+@end
 
 @protocol VMultipleContainerChildDelegate <NSObject>
 
@@ -20,19 +30,18 @@
 
 @end
 
-
 @protocol VMultipleContainerChild <NSObject>
 
 /**
- Called by VMultipleContainerViewController on its child view controllers when
+ Called by VMultipleContainer on its child view controllers when
  they are selected from user input or programmatically.
  
  @param isDefault Indicates whether the selection was the first selection, i.e.
  the default child view controller to show.  This will happen once per instantation
- and load of the VMultipleContainerViewController instance.
+ and load of the VMultipleContainer instance.
  */
-- (void)viewControllerSelected:(BOOL)isDefault;
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault;
 
-@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;
+@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
 
 @end

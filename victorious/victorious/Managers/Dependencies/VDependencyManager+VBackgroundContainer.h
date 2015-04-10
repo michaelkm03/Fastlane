@@ -22,4 +22,11 @@
  */
 - (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundContainer;
 
+/**
+ *  Adds a loading background to background hosts that provide a loading backgroundContainer.
+ *
+ *  @param backgroundHost An object that conforms to <VBackgroundContainer>
+ */
+- (void)addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundContainer;
+
 @end

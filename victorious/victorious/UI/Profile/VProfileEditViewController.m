@@ -113,7 +113,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:NSLocalizedString(@"ProfileSaveFail", @"")
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                               otherButtonTitles:nil];
         [alert show];
     }];
@@ -148,7 +148,7 @@
                                                     message:errorMsg
                                                    delegate:nil
                                           cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
     [alert show];
     
     return NO;

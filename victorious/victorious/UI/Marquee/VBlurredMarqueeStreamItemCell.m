@@ -7,7 +7,6 @@
 //
 
 #import "VBlurredMarqueeStreamItemCell.h"
-#import "VDependencyManager.h"
 #import "VStreamItem+Fetcher.h"
 #import "UIImageView+Blurring.h"
 #import "UIImageView+VLoadingAnimations.h"
@@ -31,8 +30,6 @@ static const CGFloat kShadowOpacity = 0.4f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageRightConstraint;
 
 @property (nonatomic, weak) IBOutlet UIView *imageViewContainer;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 

@@ -298,7 +298,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
 - (CGPoint)lockPoint
 {
     CGPoint lockPoint = [self catchPoint];
-    lockPoint.y = lockPoint.y + fabsf(VShrinkingContentLayoutMinimumContentHeight - self.mediaContentSize.height);
+    lockPoint.y = lockPoint.y + ABS(VShrinkingContentLayoutMinimumContentHeight - self.mediaContentSize.height);
     
     return lockPoint;
 }

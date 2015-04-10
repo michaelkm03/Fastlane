@@ -186,7 +186,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
          {
              UIAlertView *publishFailure = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload failure", @"")
                                                                       message:error.localizedDescription
-                                                            cancelButtonTitle:NSLocalizedString(@"ok", @"")
+                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                                onCancelButton:^
                                             {
                                                 [welf closeOnComplete:NO];

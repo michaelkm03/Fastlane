@@ -14,7 +14,7 @@
 @interface VNotification : NSManagedObject
 
 @property (nonatomic, retain) NSString * body;
-@property (nonatomic, retain) NSString * deeplink;
+@property (nonatomic, retain) NSString * deepLink;
 @property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSString * notifyType;
 @property (nonatomic, retain) NSDate * postedAt;

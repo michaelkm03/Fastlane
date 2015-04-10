@@ -16,14 +16,6 @@
 				<string>fb365587963613882</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}theyoungturks</string>
-			</array>
-		</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>365587963613882</string>

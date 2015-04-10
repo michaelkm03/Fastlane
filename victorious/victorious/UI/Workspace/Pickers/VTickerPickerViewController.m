@@ -109,7 +109,7 @@
     }
     else
     {
-        pickerCell.label.text = toolForIndexPath.title;
+        pickerCell.label.text = NSLocalizedString(toolForIndexPath.title, @"");
         pickerCell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     }
     

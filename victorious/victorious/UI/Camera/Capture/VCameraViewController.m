@@ -501,7 +501,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:errorMessage
                                                    delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
 }
@@ -520,7 +520,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:errorMessage
                                                    delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
 }
