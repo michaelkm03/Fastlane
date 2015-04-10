@@ -35,17 +35,26 @@
 {
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    [self setImage:defaultImage forState:UIControlStateNormal];
+    if ( self.imageView.image == nil )
+    {
+        [self setImage:defaultImage forState:UIControlStateNormal];
+    }
+    
     //Was previously accent color for A and D
     NSString *colorKey = kVLinkColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
-    CGFloat radius = CGRectGetHeight(self.bounds)/2;
-    self.layer.cornerRadius = radius;
+    [self updateCornerRadius];
     self.clipsToBounds = YES;
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 
+}
+
+- (void)updateCornerRadius
+{
+    CGFloat radius = ( CGRectGetHeight(self.bounds) - self.imageEdgeInsets.top - self.imageEdgeInsets.bottom )/2 ;
+    self.layer.cornerRadius = radius;
 }
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
@@ -58,6 +67,12 @@
             placeholderImage:defaultImage];
     
     self.imageView.tintColor = self.tintColor;
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    [self updateCornerRadius];
 }
 
 @end

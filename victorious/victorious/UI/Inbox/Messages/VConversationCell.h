@@ -10,14 +10,14 @@
 
 extern CGFloat const kVConversationCellHeight;
 
-@class VConversation, VDefaultProfileImageView, VDependencyManager;
+@class VConversation, VDefaultProfileButton, VDependencyManager;
 
 @interface VConversationCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileButton *profileButton;
 @property (strong, nonatomic) VConversation *conversation;
 @property (weak, nonatomic) UITableViewController *parentTableViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

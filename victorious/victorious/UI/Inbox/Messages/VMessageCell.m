@@ -46,7 +46,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
 {
-    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) text:text withMedia:hasMedia] +
+    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width) text:text withMedia:hasMedia] +
                 kTextInsets.top +
                 kTextInsets.bottom,
                kMinimumCellHeight);
