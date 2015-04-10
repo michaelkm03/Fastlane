@@ -80,6 +80,7 @@ static int const kNotificationFetchBatchSize = 50;
     self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = kVNotificationCellHeight;
+    self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
