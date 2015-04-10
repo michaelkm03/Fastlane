@@ -113,7 +113,7 @@
                                                                    message:NSLocalizedString(@"EmailNotFound", @"")
                                                                   delegate:nil
                                                          cancelButtonTitle:nil
-                                                         otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                                                         otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
              [alert show];
          }];
     }
@@ -146,7 +146,7 @@
                                                             message:NSLocalizedString(@"IncorrectCode", @"")
                                                            delegate:nil
                                                   cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                                                  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
          [alert show];
      }];
     

@@ -31,7 +31,7 @@ static const char kAssociatedObjectKey;
     NSString *title = [self stringForKey:VDependencyManagerTitleKey];
     if ( title != nil )
     {
-        navigationItem.title = title;
+        navigationItem.title = NSLocalizedString(title, @"");
     }
     
     UIImage *titleImage = [self imageForKey:VDependencyManagerTitleImageKey];
