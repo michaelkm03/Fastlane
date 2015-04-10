@@ -193,7 +193,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)dealloc
 {
-    [self.contentCell cleanup];
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
