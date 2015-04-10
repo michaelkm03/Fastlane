@@ -8,7 +8,7 @@
 
 #import "VTableViewCell.h"
 
-extern CGFloat const kVConversationCellHeight;
+extern const CGFloat VConversationCellHeight;
 
 @class VConversation, VDefaultProfileButton, VDependencyManager;
 
