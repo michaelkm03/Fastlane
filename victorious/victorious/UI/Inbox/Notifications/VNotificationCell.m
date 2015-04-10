@@ -12,6 +12,7 @@
 #import "VUser+RestKit.h"
 #import "VDefaultProfileImageView.h"
 #import "VDependencyManager.h"
+#import "VTagStringFormatter.h"
 
 @interface VNotificationCell ()
 
@@ -50,8 +51,15 @@
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     paragraphStyle.minimumLineHeight = 17.0f;
     paragraphStyle.maximumLineHeight = 17.0f;
-    NSAttributedString *attributedBodyText = [[NSAttributedString alloc] initWithString:notification.body attributes:@{ NSParagraphStyleAttributeName : paragraphStyle }];
-    self.messageLabel.attributedText = attributedBodyText;
+
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:notification.body];
+    NSDictionary *stringAttributes = @{ NSParagraphStyleAttributeName : paragraphStyle };
+    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:mutableAttributedString
+                                             withTagStringAttributes:stringAttributes
+                                          andDefaultStringAttributes:stringAttributes];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:mutableAttributedString.string attributes:stringAttributes];
+    self.messageLabel.attributedText = attributedString;
+
     self.dateLabel.text = [notification.createdAt timeSince];
     
     if ([notification.deeplink length] > 0)
