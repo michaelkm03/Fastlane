@@ -1,5 +1,5 @@
 //
-//  VGroupedStreamCollectionViewController.h
+//  VShowcaseCollectionViewController.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
@@ -8,6 +8,6 @@
 
 #import "VAbstractDirectoryCollectionViewController.h"
 
-@interface VGroupedStreamCollectionViewController : VAbstractDirectoryCollectionViewController
+@interface VShowcaseCollectionViewController : VAbstractDirectoryCollectionViewController
 
 @end

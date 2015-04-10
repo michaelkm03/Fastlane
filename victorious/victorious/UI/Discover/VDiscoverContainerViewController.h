@@ -8,10 +8,11 @@
 
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
+#import "VDeeplinkHandler.h"
 
 #import <UIKit/UIKit.h>
 
-@interface VDiscoverContainerViewController : UIViewController <VHasManagedDependencies, VNavigationDestination, UINavigationControllerDelegate>
+@interface VDiscoverContainerViewController : UIViewController <VHasManagedDependencies, VNavigationDestination, UINavigationControllerDelegate, VDeeplinkSupporter>
 
 @property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;

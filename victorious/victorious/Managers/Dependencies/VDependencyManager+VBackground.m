@@ -10,6 +10,7 @@
 #import "VBackground.h"
 
 static NSString * const kBackgroundKey = @"background";
+static NSString * const kLoadingBackgroundKey = @"loadingBackground";
 
 @implementation VDependencyManager (VBackground)
 
@@ -17,6 +18,12 @@ static NSString * const kBackgroundKey = @"background";
 {
     return [self templateValueOfType:[VBackground class]
                               forKey:kBackgroundKey];
+}
+
+- (VBackground *)loadingBackground
+{
+    return [self templateValueOfType:[VBackground class]
+                              forKey:kLoadingBackgroundKey];
 }
 
 @end

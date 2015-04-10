@@ -14,7 +14,7 @@
 #import "VSequence+Fetcher.h"
 
 static const NSTimeInterval kWebViewFirstLoadAnimationDelay      = 0.0f;
-static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
+static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.5f;
 
 @interface VStreamWebViewController() <WKNavigationDelegate>
 
@@ -55,11 +55,20 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
         return;
     }
     
+    BOOL hadPreviousContent = _url != nil;
+    
     _url = url;
     
     if ( _url != nil )
     {
         [self.webView loadRequest:[NSURLRequest requestWithURL:_url]];
+        if ( hadPreviousContent )
+        {
+            // Loaded a url previously, need to call reload to cause the new "loadRequest" to load
+            // Also reset the alpha of the webview back to 0.0 to show the proper loading animation
+            self.webView.alpha = 0.0f;
+            [self.webView reload];
+        }
     }
 }
 

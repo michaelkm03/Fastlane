@@ -61,14 +61,14 @@
         self.checkBox.layer.borderWidth = 0.0f;
         self.checkBox.layer.borderColor = [UIColor clearColor].CGColor;
         self.checkBox.backgroundColor = self.selectedColor;
-        self.checkBox.imageView.hidden = YES;
+        self.checkBox.imageView.hidden = NO;
     }
     else
     {
         self.checkBox.layer.borderWidth = 1.0f;
         self.checkBox.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor;
         self.checkBox.backgroundColor = [UIColor clearColor];
-        self.checkBox.imageView.hidden = NO;
+        self.checkBox.imageView.hidden = YES;
     }
     
     [self setNeedsDisplay];

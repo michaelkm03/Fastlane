@@ -212,7 +212,7 @@
     UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
                                                            message:error.localizedDescription
                                                           delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                  otherButtonTitles:nil];
     [alert show];
     

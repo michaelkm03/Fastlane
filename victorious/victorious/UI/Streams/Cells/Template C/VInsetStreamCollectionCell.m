@@ -27,7 +27,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 @interface VInsetStreamCollectionCell ()
 
-@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *cellActionView;
 
 @end
@@ -174,9 +174,9 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)backgroundContainerView
+- (UIView *)loadingBackgroundContainerView
 {
-    return self.backgroundContainer;
+    return self.loadingBackgroundContainer;
 }
 
 @end

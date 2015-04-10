@@ -1,5 +1,5 @@
 //
-//  VMarqueeTabIndicatorView.m
+//  VFullscreenMarqueeTabIndicatorView.m
 //  victorious
 //
 //  Created by Will Long on 9/26/14.
@@ -7,6 +7,7 @@
 //
 
 #import "VFullscreenMarqueeTabIndicatorView.h"
+#import "UIView+AutoLayout.h"
 
 @interface VFullscreenMarqueeTabIndicatorView ()
 
@@ -25,6 +26,7 @@
         self.clipsToBounds = YES;
         self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
         [self addSubview:self.scrollView];
+        [self v_addFitToParentConstraintsToSubview:self.scrollView];
     }
     return self;
 }
@@ -144,6 +146,25 @@
     else
     {
         self.scrollView.contentInset = UIEdgeInsetsZero;
+    }
+}
+
+/**
+ Updating with each new bounds keeps the tab indicators properly centered in the view.
+    It would be ideal to refactor this class to use autolayout instead of the frame-calculating
+    function above, but for now this allows the marquee to display properly.
+ */
+- (void)setBounds:(CGRect)bounds
+{
+    if ( CGRectEqualToRect(bounds, self.bounds) )
+    {
+        return;
+    }
+    
+    [super setBounds:bounds];
+    if ( !CGRectEqualToRect(bounds, CGRectZero) )
+    {
+        [self updateUI];
     }
 }
 

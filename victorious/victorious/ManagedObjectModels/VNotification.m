@@ -14,7 +14,7 @@
 @implementation VNotification
 
 @dynamic body;
-@dynamic deeplink;
+@dynamic deepLink;
 @dynamic isRead;
 @dynamic notifyType;
 @dynamic postedAt;

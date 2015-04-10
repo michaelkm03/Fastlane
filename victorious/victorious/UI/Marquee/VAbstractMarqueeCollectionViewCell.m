@@ -1,5 +1,5 @@
 //
-//  VBaseMarqueeCollectionViewCell.m
+//  VAbstractMarqueeCollectionViewCell.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/25/15.
@@ -43,18 +43,6 @@
 {
     _marquee = marquee;
     marquee.collectionView = self.marqueeCollectionView;
-    
-    [_marquee refreshWithSuccess:^(void)
-     {
-         [_marquee enableTimer];
-         [self updatedFromRefresh];
-         
-     } failure:nil];
-}
-
-- (void)updatedFromRefresh
-{
-    //Point for subclasses to override if they want to do anything after refresh
 }
 
 - (void)prepareForReuse

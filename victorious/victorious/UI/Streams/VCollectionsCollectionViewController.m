@@ -15,8 +15,10 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VScaffoldViewController.h"
 
-#import "VGroupedStreamCollectionViewController.h"
+#import "VShowcaseCollectionViewController.h"
 #import "VStreamCollectionViewController.h"
+
+#import "VAbstractMarqueeController.h"
 
 static const CGFloat kPlaylistCellHeight = 140.0f;
 
@@ -60,38 +62,33 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( [self isMarqueeSection:indexPath.section] )
+    {
+        //Return size for the marqueeCell that is provided by our superclass
+        return [self.marqueeController desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
+    
     return [VDirectoryCollectionsCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem
 {
-    VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
-    if ( item.isSingleStream )
+    if ( streamItem.isSingleStream )
     {
-        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
+        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
         streamCollection.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:streamCollection animated:YES];
     }
-    else if ([item isKindOfClass:[VStream class]])
+    else if ([streamItem isKindOfClass:[VStream class]])
     {
-        VGroupedStreamCollectionViewController *groupedStreamCollectionViewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+        VShowcaseCollectionViewController *groupedStreamCollectionViewController = [VShowcaseCollectionViewController streamDirectoryForStream:(VStream *)streamItem dependencyManager:self.dependencyManager];
         groupedStreamCollectionViewController.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:groupedStreamCollectionViewController animated:YES];
     }
-    else if ([item isKindOfClass:[VSequence class]])
+    else if ([streamItem isKindOfClass:[VSequence class]])
     {
-        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)item commentId:nil placeHolderImage:nil];
+        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem commentId:nil placeHolderImage:nil];
     }
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
-                        layout:(UICollectionViewLayout *)collectionViewLayout
-        insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(self.topInset,
-                            0.0f,
-                            0.0f,
-                            0.0f);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
@@ -113,6 +110,11 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
+    if ( [self isMarqueeSection:indexPath.section] )
+    {
+        return (UICollectionViewCell *)[self.marqueeController marqueeCellForCollectionView:self.collectionView atIndexPath:indexPath];
+    }
+    
     NSString *identifier = [VDirectoryCollectionsCell suggestedReuseIdentifier];
     VDirectoryCollectionsCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.stream = [self.currentStream.streamItems objectAtIndex:indexPath.row];
@@ -127,6 +129,12 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( [self isMarqueeSection:indexPath.section] )
+    {
+        //Don't try to animate the marquee cell
+        return;
+    }
+    
     if ( self.shouldAnimateCells )
     {
         CGFloat collectionViewHeight = CGRectGetHeight(collectionView.bounds);
@@ -149,9 +157,12 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
 
 - (void)updateParallaxOffsetOfVisibleCells
 {
-    for ( VDirectoryCollectionsCell *playlistCell in self.collectionView.visibleCells )
+    for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
     {
-        [self updateParallaxYOffsetOfCell:playlistCell withYOrigin:CGRectGetMinY(playlistCell.frame)];
+        if ( [cell isKindOfClass:[VDirectoryCollectionsCell class]] )
+        {
+            [self updateParallaxYOffsetOfCell:(VDirectoryCollectionsCell *)cell withYOrigin:CGRectGetMinY(cell.frame)];
+        }
     }
 }
 

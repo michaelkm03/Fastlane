@@ -63,9 +63,9 @@
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
 	<key>showcase.screen</key>
-	<string>VGroupedStreamCollectionViewController</string>
+	<string>VShowcaseCollectionViewController</string>
 	<key>streamDirectory.screen</key>
-	<string>VDirectoryViewController</string>
+	<string>VDirectoryCollectionViewController</string>
 	<key>collections.screen</key>
 	<string>VCollectionsCollectionViewController</string>
 	<key>basic.multiScreen</key>

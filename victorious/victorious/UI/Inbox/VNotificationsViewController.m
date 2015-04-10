@@ -37,6 +37,8 @@ static int const kNotificationFetchBatchSize = 50;
 
 @implementation VNotificationsViewController
 
+@synthesize multipleContainerChildDelegate;
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VNotificationsViewController *viewController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"VNotificationsViewController"];
@@ -56,7 +58,12 @@ static int const kNotificationFetchBatchSize = 50;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - VNavigationDestination
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    return YES;
+}
 
 - (VAuthorizationContext)authorizationContext
 {
@@ -65,7 +72,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 #pragma mark -  Container Child
 
-- (void)viewControllerSelected:(BOOL)isDefault
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
     
 }
@@ -113,7 +120,7 @@ static int const kNotificationFetchBatchSize = 50;
     NSFetchRequest *fetchRequest = nil;
     
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(createdAt)) ascending:NO];
     
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:kNotificationFetchBatchSize];
@@ -184,11 +191,11 @@ static int const kNotificationFetchBatchSize = 50;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VNotification *notification = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if ([notification.deeplink length] > 0)
+    if ([notification.deepLink length] > 0)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectNotification];
         
-        [[VRootViewController rootViewController] handleDeeplinkURL:[NSURL URLWithString:notification.deeplink]];
+        [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:[NSURL URLWithString:notification.deepLink]];
         
     }
 }

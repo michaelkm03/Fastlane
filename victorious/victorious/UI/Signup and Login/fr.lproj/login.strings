@@ -22,9 +22,6 @@
 /* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "A3z-ra-4Af"; */
 "A3z-ra-4Af.placeholder" = "E-mail";
 
-/* Class = "UILabel"; text = "Create Profile"; ObjectID = "A8K-lD-yg5"; */
-"A8K-lD-yg5.text" = "Créer un profil";
-
 /* Class = "UILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
 "CGW-Kx-wFZ.text" = "SAISIR LE CODE";
 
@@ -39,6 +36,9 @@
 
 /* Class = "UILabel"; text = "Thanks!"; ObjectID = "Lji-XP-yck"; */
 "Lji-XP-yck.text" = "Merci !";
+
+/* Class = "UINavigationItem"; title = "Find Friends"; ObjectID = "NwV-bN-un0"; */
+"NwV-bN-un0.title" = "Trouver des amis";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "UDE-m8-fBQ"; */
 "UDE-m8-fBQ.placeholder" = "Mot de passe";
@@ -87,4 +87,7 @@
 
 /* Class = "UITextView"; text = "Resend Email"; ObjectID = "ucd-V3-oVY"; */
 "ucd-V3-oVY.text" = "Renvoyer l'e-mail";
+
+/* Class = "UILabel"; text = "Create Profile"; ObjectID = "xl3-0J-ghm"; */
+"xl3-0J-ghm.text" = "Créer un profil";
 

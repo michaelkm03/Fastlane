@@ -1,5 +1,5 @@
 //
-//  VBaseMarqueeCollectionViewCell.h
+//  VAbstractMarqueeCollectionViewCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/25/15.
@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "VSharedCollectionReusableViewMethods.h"
+#import "VMarqueeDataDelegate.h"
 
 @class VDependencyManager, VStreamItem, VAbstractMarqueeController;
 
-@interface VAbstractMarqueeCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
-
 /**
-    Overridden by subclasses to respond to changes in marquee content. Will be deprecated after I merge with my other branch.
+    A collection view cell that contains the collectionView that displays marquee content and any views
+        that are displayed across all marquee stream item cells
  */
-- (void)updatedFromRefresh;
+@interface VAbstractMarqueeCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
 /**
  The dependency manager used to style this cell, the marquee controller associated with this cell and
