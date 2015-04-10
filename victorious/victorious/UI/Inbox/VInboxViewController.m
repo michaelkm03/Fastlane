@@ -95,6 +95,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidLoad];
 
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.contentInset = self.v_layoutInsets;
     self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
