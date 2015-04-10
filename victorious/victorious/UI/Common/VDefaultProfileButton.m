@@ -34,8 +34,8 @@
 - (void)setup
 {
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self setImage:defaultImage forState:UIControlStateNormal];
     
+    [self setImage:defaultImage forState:UIControlStateNormal];
     //Was previously accent color for A and D
     NSString *colorKey = kVLinkColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
