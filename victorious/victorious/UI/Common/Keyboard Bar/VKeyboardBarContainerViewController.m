@@ -197,7 +197,8 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
                      completion:nil];
 }
 
-- (CGFloat)initialHeightForKeyboardBar:(VKeyboardBarViewController *)keyboardBar  {
+- (CGFloat)initialHeightForKeyboardBar:(VKeyboardBarViewController *)keyboardBar
+{
     return kKeyboardBarInitialHeight;
 }
 
