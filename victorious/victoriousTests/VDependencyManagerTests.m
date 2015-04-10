@@ -115,7 +115,19 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
-    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
+                                                                      configuration:@{ @"invalidColor": @{ @"red": @"spot",
+                                                                                                           @"green": @"monkey",
+                                                                                                           @"blue": @255,
+                                                                                                           @"alpha": @255,
+                                                                                                           },
+                                                                                       @"color.text": @{ @"red": @"green",
+                                                                                                         @"green": @"red",
+                                                                                                         @"blue": @"blue",
+                                                                                                         @"alpha": @"refridgerator",
+                                                                                                         }
+                                                                                       }
+                                                  dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
 }
 
 #pragma mark - Colors, fonts
@@ -138,6 +150,19 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     UIColor *expected = [UIColor colorWithRed:0.6 green:0.2 blue:0.4 alpha:1];
     UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testInvalidColorReturnsNil
+{
+    UIColor *invalid = [self.childDependencyManager colorForKey:@"invalidColor"];
+    XCTAssertNil(invalid);
+}
+
+- (void)testInvalidColorDefaultsToParent
+{
+    UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
+    UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
 

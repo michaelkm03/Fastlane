@@ -152,7 +152,16 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
-    return [self colorFromDictionary:colorDictionary];
+    UIColor *color = [self colorFromDictionary:colorDictionary];
+    
+    if ( color == nil )
+    {
+        return [self.parentManager colorForKey:key];
+    }
+    else
+    {
+        return color;
+    }
 }
 
 - (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary
