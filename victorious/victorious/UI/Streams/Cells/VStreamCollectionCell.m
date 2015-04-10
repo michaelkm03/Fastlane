@@ -206,11 +206,9 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         VAsset *asset = [self.sequence.firstNode textAsset];
         if ( asset.data != nil )
         {
-            self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-            [self.contentContainer addSubview:self.textPostViewController.view];
-            [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-            self.textPostViewController.text = asset.data;
-            self.textPostViewController.color = [UIColor v_colorFromHexString:asset.backgroundColor];
+            NSString *text = asset.data;
+            UIColor *color = [UIColor v_colorFromHexString:asset.backgroundColor];
+            [self setupTextPostViewControllerText:text color:color];
         }
     }
     
@@ -228,6 +226,37 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
          }
          [welf.actionView updateRepostButtonAnimated:YES];
      }];
+}
+
+- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color
+{
+    static NSCache *textViewCache;
+    if ( textViewCache == nil )
+    {
+        textViewCache = [[NSCache alloc] init];
+    }
+    
+    VTextPostViewController *existing = [textViewCache objectForKey:text];
+    if ( existing == nil && self.textPostViewController == nil )
+    {
+        self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+        [self.contentContainer addSubview:self.textPostViewController.view];
+        [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+        self.textPostViewController.text = text;
+        self.textPostViewController.color = color;
+        [textViewCache setObject:self.textPostViewController forKey:text];
+    }
+    else if ( existing != nil )
+    {
+        if ( self.textPostViewController != nil )
+        {
+            [self.textPostViewController.view removeFromSuperview];
+            [self.textPostViewController.view removeConstraints:self.textPostViewController.view.constraints];
+        }
+        self.textPostViewController = existing;
+        [self.contentContainer addSubview:self.textPostViewController.view];
+        [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
