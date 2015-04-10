@@ -49,8 +49,10 @@
     self.accessoryType = [self.notification.deepLink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    paragraphStyle.minimumLineHeight = 17.0f;
-    paragraphStyle.maximumLineHeight = 17.0f;
+    CGFloat lineHeight = self.messageLabel.font.lineHeight;
+    paragraphStyle.minimumLineHeight = lineHeight;
+    paragraphStyle.maximumLineHeight = lineHeight;
+    paragraphStyle.lineSpacing = 3.0f;
 
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:notification.body];
     NSDictionary *stringAttributes = @{ NSParagraphStyleAttributeName : paragraphStyle };
