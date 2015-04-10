@@ -40,7 +40,6 @@
     NSString *colorKey = kVLinkColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
-    [self updateCornerRadius];
     self.clipsToBounds = YES;
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
