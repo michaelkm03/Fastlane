@@ -8,10 +8,10 @@
 
 #import "VNotificationCell.h"
 #import "NSDate+timeSince.h"
-#import "VThemeManager.h"
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
 #import "VDefaultProfileImageView.h"
+#import "VDependencyManager.h"
 #import "VTagStringFormatter.h"
 
 @interface VNotificationCell ()
@@ -32,8 +32,6 @@
     
     self.dateLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];    
-    
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
@@ -50,12 +48,18 @@
     [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
     self.accessoryType = [self.notification.deepLink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    paragraphStyle.minimumLineHeight = 14.0f;
+    paragraphStyle.lineSpacing = 3.0f;
+
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:notification.body];
-    NSDictionary *stringAttributes = @{ NSFontAttributeName : self.messageLabel.font };
+    NSDictionary *stringAttributes = @{ NSParagraphStyleAttributeName : paragraphStyle };
     [VTagStringFormatter tagDictionaryFromFormattingAttributedString:mutableAttributedString
                                              withTagStringAttributes:stringAttributes
                                           andDefaultStringAttributes:stringAttributes];
-    self.messageLabel.text = mutableAttributedString.string;
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:mutableAttributedString.string attributes:stringAttributes];
+    self.messageLabel.attributedText = attributedString;
+
     self.dateLabel.text = [notification.createdAt timeSince];
     
     if ([notification.deepLink length] > 0)
@@ -65,6 +69,15 @@
     else
     {
         self.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( _dependencyManager != nil )
+    {
+        self.messageLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     }
 }
 

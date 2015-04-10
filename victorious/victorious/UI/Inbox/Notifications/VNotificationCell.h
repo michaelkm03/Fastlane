@@ -8,10 +8,11 @@
 
 #import "VTableViewCell.h"
 
-@class VNotification, VDefaultProfileImageView;
+@class VNotification, VDefaultProfileImageView, VDependencyManager;
 
 @interface VNotificationCell : VTableViewCell
 
-@property (strong, nonatomic) VNotification *notification;
+@property (nonatomic, strong) VNotification *notification;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

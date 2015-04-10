@@ -177,6 +177,7 @@ static int const kNotificationFetchBatchSize = 50;
     VNotification *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [theCell setNotification:info];
     theCell.parentTableViewController = self;
+    theCell.dependencyManager = self.dependencyManager;
     
     return theCell;
 }
