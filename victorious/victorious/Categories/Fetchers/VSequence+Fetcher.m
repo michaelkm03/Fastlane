@@ -10,7 +10,6 @@
 #import "VNode+Fetcher.h"
 #import "VVoteResult.h"
 #import "VConstants.h"
-
 #import "NSString+VParseHelp.h"
 #import "VAnswer.h"
 #import "VUser.h"

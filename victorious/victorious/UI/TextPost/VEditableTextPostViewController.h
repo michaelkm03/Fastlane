@@ -65,5 +65,4 @@
  */
 - (BOOL)removeHashtag:(NSString *)hashtagText;
 
-
 @end

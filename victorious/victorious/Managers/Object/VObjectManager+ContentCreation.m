@@ -29,6 +29,7 @@
 #import "VMessage+RestKit.h"
 #import "VUser+Fetcher.h"
 #import "AVAsset+Orientation.h"
+#import "UIColor+VHex.h"
 
 @import AVFoundation;
 
@@ -81,7 +82,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSParameterAssert( textContent.length > 0 );
     
     NSDictionary *parameters = @{ @"content" : textContent,
-                                  @"background_color" : backgroundColor ?: [NSNull null] };
+                                  @"background_color" : [backgroundColor v_hexString] ?: @"" };
     
     return [self POST:@"/api/text/create"
                object:nil

@@ -27,6 +27,12 @@
 @property (nonatomic, strong) NSString *text;
 
 /**
+ Sets the background color of the text post.
+ design.
+ */
+@property (nonatomic, strong) UIColor *color;
+
+/**
  An object that encapsulates various configuration properties of how the text post
  is rendered, including text attributes and background frame properties.
  */

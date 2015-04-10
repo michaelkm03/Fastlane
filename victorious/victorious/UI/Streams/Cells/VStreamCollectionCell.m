@@ -43,6 +43,7 @@
 #import "UIView+Autolayout.h"
 #import "VVideoView.h"
 
+#import "UIColor+VHex.h"
 #import "VTextPostViewController.h"
 
 @interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
@@ -209,10 +210,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
             [self.contentContainer addSubview:self.textPostViewController.view];
             [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
             self.textPostViewController.text = asset.data;
-            
-#warning Background color is required
-            // http://jira.victorious.com/browse/API-1224
-            self.textPostViewController.view.backgroundColor = @[ [UIColor redColor], [UIColor darkGrayColor], [UIColor purpleColor] ][ arc4random() % 3 ];
+            self.textPostViewController.color = [UIColor v_colorFromHexString:asset.backgroundColor];
         }
     }
     

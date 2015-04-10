@@ -396,6 +396,7 @@
 		A74C87FA1ABA5859004D2E16 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C10331A65DE6F00439809 /* VCommentHighlighter.m */; };
+		A75C64841AD77E4F00245125 /* UIColor+VHex.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64831AD77E4F00245125 /* UIColor+VHex.m */; };
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
@@ -1530,6 +1531,8 @@
 		A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFirstInstallManager.m; path = "First Install/VFirstInstallManager.m"; sourceTree = "<group>"; };
 		A75C10321A65DE6F00439809 /* VCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentHighlighter.h; sourceTree = "<group>"; };
 		A75C10331A65DE6F00439809 /* VCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentHighlighter.m; sourceTree = "<group>"; };
+		A75C64821AD77E4F00245125 /* UIColor+VHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VHex.h"; sourceTree = "<group>"; };
+		A75C64831AD77E4F00245125 /* UIColor+VHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VHex.m"; sourceTree = "<group>"; };
 		A75ECFE91AB0B6B400C35063 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		A75ECFEB1AB0B6B400C35063 /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
@@ -4564,6 +4567,8 @@
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
 				A77FB9211A897200003E9AA2 /* UIColor+VBrightness.h */,
 				A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */,
+				A75C64821AD77E4F00245125 /* UIColor+VHex.h */,
+				A75C64831AD77E4F00245125 /* UIColor+VHex.m */,
 				0314D06519B4670A00FA363C /* UIImage+Cropping.h */,
 				0314D06619B4670A00FA363C /* UIImage+Cropping.m */,
 				0314D06719B4670A00FA363C /* UIImage+ImageCreation.h */,
@@ -5485,7 +5490,6 @@
 				036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */,
-				F028CF591A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib in Resources */,
 				A75ED08D1AB77C1800C35063 /* VBasicToolPickerCell.xib in Resources */,
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
@@ -5834,6 +5838,7 @@
 				039ED28C19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m in Sources */,
 				A7AEF9A51A83F1C300A3D3A0 /* VStreamCellHeaderView.m in Sources */,
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
+				A75C64841AD77E4F00245125 /* UIColor+VHex.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */,
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,

@@ -25,5 +25,6 @@
 @dynamic type;
 @dynamic comments;
 @dynamic node;
+@dynamic backgroundColor;
 
 @end

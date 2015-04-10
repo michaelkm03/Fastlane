@@ -68,6 +68,12 @@
     [self updateTextView];
 }
 
+- (void)setColor:(UIColor *)color
+{
+    _color = color;
+    self.view.backgroundColor = color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+}
+
 - (void)updateTextView
 {
     NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
