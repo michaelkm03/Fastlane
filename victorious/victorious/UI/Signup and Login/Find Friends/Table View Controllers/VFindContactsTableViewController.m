@@ -90,7 +90,7 @@
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                                 message:NSLocalizedString(@"AccessContactsDenied", @"")
                                                                delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                       otherButtonTitles:nil];
                 [alert show];
             }
@@ -107,7 +107,7 @@
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                                 message:NSLocalizedString(@"AccessContactsRestricted", @"")
                                                                delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                       otherButtonTitles:nil];
                 [alert show];
             }

@@ -12,7 +12,7 @@
 @interface VInlineValidationView ()
 
 @property (nonatomic, strong) UIImageView *alertImageView;
-@property (nonatomic, strong) UILabel *inlineValidaitonLabel;
+@property (nonatomic, strong) UILabel *inlineValidationLabel;
 
 @end
 
@@ -61,19 +61,19 @@
                                                     multiplier:1.0f
                                                       constant:0.0f]];
     
-    self.inlineValidaitonLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    self.inlineValidaitonLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.inlineValidaitonLabel.textAlignment = NSTextAlignmentLeft;
-    self.inlineValidaitonLabel.text = NSLocalizedString(@"Invalid email address", @"");
-    self.inlineValidaitonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
-    self.inlineValidaitonLabel.textColor = [UIColor redColor];
-    [self addSubview:self.inlineValidaitonLabel];
+    self.inlineValidationLabel = [[UILabel alloc] initWithFrame:self.bounds];
+    self.inlineValidationLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.inlineValidationLabel.textAlignment = NSTextAlignmentLeft;
+    self.inlineValidationLabel.text = NSLocalizedString(@"EmailValidation", @"");
+    self.inlineValidationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    self.inlineValidationLabel.textColor = [UIColor redColor];
+    [self addSubview:self.inlineValidationLabel];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[imageView]-5-[label]|"
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:@{@"imageView":self.alertImageView,
-                                                                           @"label":self.inlineValidaitonLabel}]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.inlineValidaitonLabel
+                                                                           @"label":self.inlineValidationLabel}]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.inlineValidationLabel
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self.alertImageView
@@ -84,12 +84,12 @@
 
 - (void)setInlineValidationText:(NSString *)inlineValidationText
 {
-    self.inlineValidaitonLabel.text = inlineValidationText;
+    self.inlineValidationLabel.text = inlineValidationText;
 }
 
 - (NSString *)inlineValidationText
 {
-    return self.inlineValidaitonLabel.text;
+    return self.inlineValidationLabel.text;
 }
 
 @end

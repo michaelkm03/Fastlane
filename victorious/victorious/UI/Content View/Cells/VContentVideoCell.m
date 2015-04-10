@@ -119,7 +119,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.isAudioEnabled = !_audioMuted;
 }
 
-
 #pragma mark - Playback Methods
 
 - (void)prepareUIForPlayback

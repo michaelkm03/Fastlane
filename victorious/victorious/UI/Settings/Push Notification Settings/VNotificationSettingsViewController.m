@@ -186,7 +186,7 @@
             NSString *title = NSLocalizedString( @"ErrorPushNotificationsNotSaved", nil );
             NSString *message = NSLocalizedString( @"ErrorPushNotificationsNotSavedMessage", nil );
             VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-            [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
+            [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:nil]];
             [alertConroller presentInViewController:navigationController animated:YES completion:nil];
         }
     }];

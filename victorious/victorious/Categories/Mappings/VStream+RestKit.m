@@ -76,6 +76,26 @@
     return mapping;
 }
 
++ (RKEntityMapping *)basePayloadContentMapping
+{
+    NSDictionary *propertyMap = [[self class] propertyMap];
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:[self entityName]
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"payload"
+                                                                                        toKeyPath:VSelectorName(streamItems)
+                                                                                      withMapping:[[self class] listByStreamMapping]];
+    [mapping addPropertyMapping:contentMapping];
+    
+    return mapping;
+}
+
 + (RKDynamicMapping *)streamItemMapping
 {
     RKDynamicMapping *contentMapping = [RKDynamicMapping new];
@@ -167,7 +187,13 @@
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/remixes_by_sequence_with_marquee/:sequenceID/:page/:perpage"
                                                          keyPath:@"payload"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self basePayloadContentMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_user/:userid/:page/:perpage"
+                                                         keyPath:@""
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               ];
 }
 
