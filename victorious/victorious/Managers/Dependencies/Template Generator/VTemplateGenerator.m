@@ -74,6 +74,10 @@ static NSString * const kUserProfileView = @"userProfileView";
 static NSString * const kToolsKey = @"tools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
+static NSString * const kColorKey = @"color";
+static NSString * const kColorOptionsKey = @"colorOptions";
+static NSString * const kDefaultTextKey = @"defaultText";
+static NSString * const kCharacterLimit = @"characterLimit";
 
 // Text properties
 static NSString * const kFontNameKey = @"fontName";
@@ -226,6 +230,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     }
 
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
+    template[VDependencyManagerTextWorkspaceFlowKey] = [self textWorkspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
     template[@"vote_types"] = [self voteTypes];
@@ -289,6 +294,22 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              kClassNameKey: @"workspace",
              VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
              VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
+             };
+}
+
+- (NSDictionary *)textWorkspaceFlowComponent
+{
+    return @{
+             kClassNameKey: @"workspaceText",
+             kCharacterLimit: @140,
+             kDefaultTextKey: @"Type your text here!",
+             VDependencyManagerEditTextWorkspaceKey: @{
+                     kClassNameKey: @"workspace.screen",
+                     kToolsKey: @[
+                             [self hashtagTool],
+                             [self colorTool]
+                             ]
+                     },
              };
 }
 
@@ -397,6 +418,116 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                      [self textTool],
                      [self filterTool],
                      [self cropTool],
+                     ]
+             };
+}
+
+- (NSDictionary *)hashtagTool
+{
+    return @{
+             kClassNameKey: @"hashtag.tool",
+             kTitleKey: @"hashtag",
+             kFilterIndexKey: @0,
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"hashtagIcon",
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: @"hashtagIcon_selected",
+                     },
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.multiplePicker"
+                     }
+             };
+}
+
+- (NSDictionary *)colorTool
+{
+    return @{
+             kClassNameKey: @"textColor.tool",
+             kTitleKey: @"color",
+             kFilterIndexKey: @1,
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"textColorIcon",
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: @"textColorIcon_selected",
+                     },
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.picker"
+                     },
+             kColorOptionsKey : @[
+                     @{ kTitleKey : @"Red",
+                        kColorKey: @{
+                                kRedKey: @181,
+                                kGreenKey: @35,
+                                kBlueKey: @48,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Magenta",
+                        kColorKey: @{
+                                kRedKey: @233,
+                                kGreenKey: @89,
+                                kBlueKey: @106,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Orange",
+                        kColorKey: @{
+                                kRedKey: @233,
+                                kGreenKey: @112,
+                                kBlueKey: @71,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Peach",
+                        kColorKey: @{
+                                kRedKey: @247,
+                                kGreenKey: @200,
+                                kBlueKey: @99,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Yellow",
+                        kColorKey: @{
+                                kRedKey: @233,
+                                kGreenKey: @167,
+                                kBlueKey: @33,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Green",
+                        kColorKey: @{
+                                kRedKey: @134,
+                                kGreenKey: @199,
+                                kBlueKey: @121,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Teal",
+                        kColorKey: @{
+                                kRedKey: @22,
+                                kGreenKey: @160,
+                                kBlueKey: @160,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Blue",
+                        kColorKey: @{
+                                kRedKey: @60,
+                                kGreenKey: @129,
+                                kBlueKey: @195,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Purple",
+                        kColorKey: @{
+                                kRedKey: @102,
+                                kGreenKey: @71,
+                                kBlueKey: @156,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Black",
+                        kColorKey: @{
+                                kRedKey: @44,
+                                kGreenKey: @39,
+                                kBlueKey: @35,
+                                kAlphaKey: @1.0f }
+                        }
                      ]
              };
 }

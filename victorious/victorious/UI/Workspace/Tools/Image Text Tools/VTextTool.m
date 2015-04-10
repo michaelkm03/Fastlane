@@ -21,6 +21,8 @@
 // Rendering
 #import "CIImage+VImage.h"
 
+#import "VTextTypePickerDataSource.h"
+
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kSelectedIconKey = @"selectedIcon";
@@ -28,11 +30,10 @@ static NSString * const kSubtoolsKey = @"subtools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
-@interface VTextTool ()
+@interface VTextTool () <VToolPickerDelegate>
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) NSInteger renderIndex;
-@property (nonatomic, strong) NSArray *subTools;
 @property (nonatomic, strong) id <VWorkspaceTool> activeTextTool;
 @property (nonatomic, strong) VTickerPickerViewController *toolPicker;
 @property (nonatomic, strong) VTextToolViewController *canvasToolViewController;
@@ -53,28 +54,13 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        _subTools = [[dependencyManager workspaceTools] sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
-        {
-            return [tool1.title caseInsensitiveCompare:tool2.title];
-        }];
-        
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        if ([_toolPicker respondsToSelector:@selector(setConfigureItemLabel:)])
-        {
-            _toolPicker.configureItemLabel = ^void(UILabel *label, VTextTypeTool *textToolType)
-            {
-                UIFont *adjustedFont = [(UIFont *)textToolType.attributes[NSFontAttributeName] fontWithSize:label.font.pointSize];
-                NSMutableDictionary *mutableAttributes = [[NSMutableDictionary alloc] initWithDictionary:textToolType.attributes];
-                mutableAttributes[NSFontAttributeName] = adjustedFont;
-                label.attributedText = [[NSAttributedString alloc] initWithString:[NSLocalizedString(textToolType.title, @"") uppercaseStringWithLocale:[NSLocale currentLocale]]
-                                                                       attributes:mutableAttributes];
-            };
-        }
+        _toolPicker.dataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        _toolPicker.pickerDelegate = self;
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [dependencyManager imageForKey:kIconKey];
         _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
-        [_toolPicker setTools:_subTools];
     }
     return self;
 }
@@ -170,22 +156,22 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     return self.canvasToolViewController.userEnteredText;
 }
 
+- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectTool:(id<VWorkspaceTool>)tool
+{
+    BOOL activeToolWasUndefined = self.activeTextTool == nil;
+    
+    self.activeTextTool = tool;
+    
+    // The first time the tool is selected, it is the default selection, not a user action
+    if ( !activeToolWasUndefined )
+    {
+        NSDictionary *params = @{ VTrackingKeyName : self.activeTextTool.title ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTextType parameters:params];
+    }
+}
+
 - (UIViewController *)inspectorToolViewController
 {
-    __weak typeof(self) welf = self;
-    self.toolPicker.onToolSelection = ^(id <VWorkspaceTool> selectedTool)
-    {
-        BOOL activeToolWasUndefined = welf.activeTextTool == nil;
-        
-        welf.activeTextTool = selectedTool;
-        
-        // The first time the tool is selected, it is the default selection, not a user action
-        if ( !activeToolWasUndefined )
-        {
-            NSDictionary *params = @{ VTrackingKeyName : selectedTool.title ?: @"" };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTextType parameters:params];
-        }
-    };
     return (UIViewController *)self.toolPicker;
 }
 

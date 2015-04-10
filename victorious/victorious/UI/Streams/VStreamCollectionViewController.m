@@ -28,6 +28,7 @@
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
+#import "VTextWorkspaceFlowController.h"
 
 //Views
 #import "VNoContentView.h"

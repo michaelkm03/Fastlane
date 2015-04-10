@@ -71,6 +71,7 @@ static const CGFloat kTextRenderingSize = 512.0f;
     self.textView.delegate = self;
     [self.view addSubview:self.textView];
 
+    self.textType = VTextTypeVerticalAlignmentCenter;
     self.textViews = @[self.placeholderTextView, self.textView];
     [self updateTextAttributesForTextType:self.textType];
     
@@ -201,7 +202,7 @@ shouldChangeTextInRange:(NSRange)range
     });
     
     NSDictionary *params = @{ VTrackingKeyTextLength : @(self.embeddedText.length),
-                              VTrackingKeyTextType : self.textType.title };
+                              VTrackingKeyTextType : self.textType.title ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidEnterWorkspaceText
                                        parameters:params];
 }

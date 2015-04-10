@@ -43,6 +43,9 @@
 #import "UIView+Autolayout.h"
 #import "VVideoView.h"
 
+#import "UIColor+VHex.h"
+#import "VTextPostViewController.h"
+
 @interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
@@ -59,6 +62,7 @@
 @property (nonatomic, assign) BOOL isPlayButtonVisible;
 
 @property (nonatomic, readonly) BOOL canPlayVideo;
+@property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -141,6 +145,9 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [self pauseVideo];
     self.videoPlayerView.alpha = 0.0f;
     self.videoAsset = nil;
+    
+    [self.textPostViewController.view removeFromSuperview];
+    self.textPostViewController = nil;
 }
 
 - (CGRect)mediaContentFrame
@@ -192,6 +199,19 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     else
     {
         self.isPlayButtonVisible = NO;
+    }
+    
+    if ( [sequence isText] )
+    {
+        VAsset *asset = [self.sequence.firstNode textAsset];
+        if ( asset.data != nil )
+        {
+            self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+            [self.contentContainer addSubview:self.textPostViewController.view];
+            [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+            self.textPostViewController.text = asset.data;
+            self.textPostViewController.color = [UIColor v_colorFromHexString:asset.backgroundColor];
+        }
     }
     
     __weak typeof(self) welf = self;

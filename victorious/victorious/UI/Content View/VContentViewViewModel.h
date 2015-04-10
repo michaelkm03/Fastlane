@@ -68,7 +68,11 @@ typedef NS_ENUM(NSInteger, VContentViewType)
     /**
      *  Poll content type.
      */
-    VContentViewTypePoll
+    VContentViewTypePoll,
+    /**
+     *  Text content type.
+     */
+    VContentViewTypeText
 };
 
 typedef NS_ENUM(NSInteger, VPollAnswer)
@@ -175,6 +179,10 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSString *analyticsContentTypeText;
 
 @property (nonatomic, readonly) NSURL *shareURL;
+
+@property (nonatomic, readonly) UIColor *textBackgroundColor;
+
+@property (nonatomic, readonly) NSString *textContent;
 
 #pragma mark - Videos
 

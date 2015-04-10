@@ -34,6 +34,7 @@
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
 #import "VExperienceEnhancerBarCell.h"
+#import "VContentTextCell.h"
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
@@ -99,6 +100,7 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
+#import "VNode+Fetcher.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -126,6 +128,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VHistogramCell *histogramCell;
 @property (nonatomic, weak) VContentPollCell *pollCell;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
+@property (nonatomic, weak) VContentTextCell *textCell;
 
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
@@ -442,6 +445,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     // Register nibs
     [self.contentCollectionView registerNib:[VContentCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentTextCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentVideoCell nibForCell]
                  forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
@@ -949,6 +954,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
                 return videoCell;
             }
+            case VContentViewTypeText:
+            {
+                VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
+                                                                                       forIndexPath:indexPath];
+                textCell.dependencyManager = self.dependencyManager;
+                UIColor *backgroundColor = self.viewModel.textBackgroundColor ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+                [textCell setTextContent:self.viewModel.textContent withBackgroundColor:backgroundColor];
+                self.contentCell = textCell;
+                return textCell;
+            }
             case VContentViewTypePoll:
             {
                 VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
@@ -1203,6 +1218,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                     return [VContentVideoCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypePoll:
                     return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                case VContentViewTypeText:
+                    return [VContentTextCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
         }
         case VContentViewSectionHistogramOrQuestion:

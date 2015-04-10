@@ -52,6 +52,7 @@
 #import "VEndCardModel.h"
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
+#import "UIColor+VHex.h"
 #import "VEndCardModelFactory.h"
 
 @interface VContentViewViewModel ()
@@ -91,6 +92,10 @@
         
         _dependencyManager = dependencyManager;
         
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
+        
+        _currentNode = [sequence firstNode];
+        
         if ([sequence isPoll])
         {
             _type = VContentViewTypePoll;
@@ -99,27 +104,34 @@
         {
             _type = VContentViewTypeVideo;
             _realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] init];
+            _currentAsset = [_currentNode httpLiveStreamingAsset];
         }
         else if ([sequence isGIFVideo])
         {
             _type = VContentViewTypeGIFVideo;
+            _currentAsset = [_currentNode mp4Asset];
         }
         else if ([sequence isImage])
         {
             _type = VContentViewTypeImage;
+            _currentAsset = [self mediaAssetFromSequence:sequence];
+        }
+        else if ( [sequence isText] )
+        {
+            _type = VContentViewTypeText;
+            _currentAsset = [_currentNode textAsset];
         }
         else
         {
             // Fall back to image.
             _type = VContentViewTypeImage;
+            _currentAsset = [self mediaAssetFromSequence:sequence];
         }
         
         _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
-
-        _currentNode = [sequence firstNode];
         
         _hasReposted = [sequence.hasReposted boolValue];
-        _currentAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
+        
         if ( _currentAsset == nil )
         {
             _currentAsset = [_currentNode imageAsset];
@@ -129,6 +141,21 @@
         self.currentAdChainIndex = 0;
     }
     return self;
+}
+
+- (VAsset *)mediaAssetFromSequence:(VSequence *)sequence
+{
+    VAsset *videoAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
+    if ( videoAsset != nil )
+    {
+        return videoAsset;
+    }
+    else
+    {
+        return [_currentNode imageAsset];
+    }
+    
+    return nil;
 }
 
 - (id)init
@@ -447,6 +474,16 @@
     return [self.currentAsset.audioMuted boolValue];
 }
 
+- (NSString *)textContent
+{
+    return self.currentAsset.data;
+}
+
+- (UIColor *)textBackgroundColor
+{
+    return [UIColor v_colorFromHexString:self.currentAsset.backgroundColor];
+}
+
 - (void)setComments:(NSArray *)comments
 {
     NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
@@ -599,6 +636,9 @@
             case VContentViewTypeVideo:
                 shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
                 break;
+            case VContentViewTypeText:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareTextFormat", nil), self.sequence.name, self.sequence.user.name];
+                break;
             case VContentViewTypeInvalid:
                 break;
         }
@@ -618,6 +658,9 @@
                 break;
             case VContentViewTypeVideo:
                 shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
+                break;
+            case VContentViewTypeText:
+                shareText = NSLocalizedString(@"UGCShareTextFormat", nil);
                 break;
             case VContentViewTypeInvalid:
                 break;

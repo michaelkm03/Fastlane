@@ -74,7 +74,9 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 // Keys for Workspace
 NSString * const VDependencyManagerWorkspaceFlowKey = @"defaultWorkspaceDestination";
+NSString * const VDependencyManagerTextWorkspaceFlowKey = @"workspaceText";
 NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
+NSString * const VDependencyManagerEditTextWorkspaceKey = @"editTextWorkspace";
 NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 // Keys for image URLs
@@ -150,11 +152,16 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
-    
+    return [self colorFromDictionary:colorDictionary];
+}
+
+- (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary
+{
     if (![colorDictionary isKindOfClass:[NSDictionary class]])
     {
         return nil;
     }
+    
     NSNumber *red = colorDictionary[kRedKey];
     NSNumber *green = colorDictionary[kGreenKey];
     NSNumber *blue = colorDictionary[kBlueKey];

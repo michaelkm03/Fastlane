@@ -1,10 +1,10 @@
 // 
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
-// victorious 
-// 
-// Generated from CSV using script "tracking_generate_constants.sh" on 03/23/15. 
+// victorious
+//
+// Generated from CSV using script "tracking_generate_constants.sh" on 03/23/15.
 // Copyright (c) 2015 Victorious. All rights reserved. 
-// 
+//
 
 #import <Foundation/Foundation.h>
 

@@ -20,6 +20,8 @@
 	<string>VCropToolViewController</string>
 	<key>vertical.picker</key>
 	<string>VTickerPickerViewController</string>
+	<key>vertical.multiplePicker</key>
+	<string>VMultiplePickerViewController</string>
 	<key>filter.tool</key>
 	<string>VFilterTool</string>
 	<key>quote.tool</key>
@@ -32,10 +34,16 @@
 	<string>VTextTool</string>
 	<key>textType.tool</key>
 	<string>VTextTypeTool</string>
+	<key>hashtag.tool</key>
+	<string>VHashtagTool</string>
+	<key>textColor.tool</key>
+	<string>VTextColorTool</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>workspace</key>
 	<string>VWorkspaceShimDestination</string>
+	<key>workspaceText</key>
+	<string>VTextWorkspaceFlowController</string>
 	<key>sideMenu.scaffold</key>
 	<string>VSideMenuViewController</string>
 	<key>tabMenu.scaffold</key>
