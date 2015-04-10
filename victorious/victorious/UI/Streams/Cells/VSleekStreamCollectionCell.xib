@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -99,11 +99,11 @@
             <connections>
                 <outlet property="actionViewBottomConstraint" destination="wVb-eX-0SM" id="jxt-Zp-Ub6"/>
                 <outlet property="actionViewTopConstraint" destination="LCa-Vw-jCf" id="my1-eP-1ne"/>
-                <outlet property="backgroundHost" destination="chp-4I-fi1" id="xVp-nm-cpl"/>
                 <outlet property="captionTextView" destination="6Ls-Bo-1cB" id="Zde-ol-mjp"/>
                 <outlet property="captionTextViewBottomConstraint" destination="KUq-xP-egX" id="YEA-rn-45b"/>
                 <outlet property="captionTextViewTopConstraint" destination="stU-iI-F8H" id="Adn-Ga-Hsh"/>
                 <outlet property="contentContainer" destination="0yG-Rl-S8H" id="DIA-EY-N1V"/>
+                <outlet property="loadingBackgroundContainer" destination="chp-4I-fi1" id="f4Q-I5-BeO"/>
                 <outlet property="playBackgroundImageView" destination="TCA-zq-hwv" id="Ij1-vW-RpW"/>
                 <outlet property="playImageView" destination="GwF-J3-KYa" id="30R-Rd-Un2"/>
                 <outlet property="previewImageView" destination="1KY-vY-sth" id="uzl-ea-Ted"/>
