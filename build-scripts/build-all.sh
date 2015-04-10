@@ -176,7 +176,7 @@ fi
 for CONFIG in $CONFIGS
 do
     DEFAULT_APP_ID=$(./build-scripts/get-app-id.sh $CONFIG $CONFIGURATION)
-    if [ "$DEFAULT_APP_ID" != "0" ] && ["$DEFAULT_APP_ID" != ""]; then # don't build apps with empty app ID or 0
+    if [ "$DEFAULT_APP_ID" != "0" -a "$DEFAULT_APP_ID" != "" ]; then # don't build apps with empty app ID or 0
         applyConfiguration $CONFIG
         ANY_APP_BUILT=1
     fi
