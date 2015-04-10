@@ -70,6 +70,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <FBKVOController.h>
 
+#import "VAbstractDirectoryCollectionViewController.h"
+
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
 static NSString * const kCanAddContentKey = @"canAddContent";
@@ -84,6 +86,7 @@ NSString * const VStreamCollectionViewControllerMarqueeComponentKey = @"marqueeC
 static NSString * const kRemixStreamKey = @"remixStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
+static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -393,6 +396,24 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         [self showContentViewForSequence:(VSequence *)streamItem withPreviewImage:image];
+    }
+    else if ( [streamItem isSingleStream] )
+    {
+        VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
+        viewController.dependencyManager = self.dependencyManager;
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    else if ( [streamItem isStreamOfStreams] )
+    {
+        VAbstractDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VAbstractDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
+        
+        //Set the selected stream as the current stream in the directory
+        directory.currentStream = (VStream *)streamItem;
+        
+        //Update the directory title to match the streamItem
+        directory.title = streamItem.name;
+        
+        [self.navigationController pushViewController:directory animated:YES];
     }
 }
 
