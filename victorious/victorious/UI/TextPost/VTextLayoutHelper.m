@@ -165,11 +165,16 @@
             lineRect.size.width = ((NSValue *)lineFragmentRects[i]).CGRectValue.size.width;
             if ( lineRect.size.width == 0 )
             {
+                //NSRange lineRange = ((NSValue *)lineFragmentGlyphRanges[i]).rangeValue;
+                //CGRect rect = [textView.layoutManager boundingRectForGlyphRange:lineRange inTextContainer:textView.textContainer];
+                //lineRect.size.width = rect.size.width;
+                
                 // Sometimes the line fragment rect will give is 0 width for a singel word overhanging on the next line
                 // So, we'll take that last word and calcualte its width to get a proper value for the line's background rect
-                NSRange lineRange = ((NSValue *)lineFragmentGlyphRanges[i]).rangeValue;
-                CGRect rect = [textView.layoutManager boundingRectForGlyphRange:lineRange inTextContainer:textView.textContainer];
-                lineRect.size.width = rect.size.width;
+                NSString *lastWord = [textView.attributedText.string componentsSeparatedByString:@" "].lastObject;
+                NSRange lastWordRange = [textView.attributedText.string rangeOfString:lastWord];
+                CGRect lastWordBoundingRect = [textView boundingRectForCharacterRange:lastWordRange];
+                lineRect.size.width = lastWordBoundingRect.size.width + lastWordBoundingRect.size.height * 0.3;
             }
         }
         if ( textView.textAlignment == NSTextAlignmentCenter )
