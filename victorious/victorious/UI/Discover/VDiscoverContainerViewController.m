@@ -212,8 +212,6 @@
     // This event is not actually stream related, its name remains for legacy purposes
     NSDictionary *params = @{ VTrackingKeyStreamName : [self.dependencyManager stringForKey:VDependencyManagerTitleKey] ?: @"Discover" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
-    
-    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - UINavigationControllerDelegate methods
