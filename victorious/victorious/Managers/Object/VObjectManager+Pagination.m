@@ -202,7 +202,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             failBlock:fail];
 }
 
-
 #pragma mark - Conversations
 
 - (RKManagedObjectRequestOperation *)loadConversationListWithPageType:(VPageType)pageType

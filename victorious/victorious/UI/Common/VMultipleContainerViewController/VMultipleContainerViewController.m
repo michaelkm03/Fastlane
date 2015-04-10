@@ -65,7 +65,8 @@ static NSString * const kInitialKey = @"initial";
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
         [_dependencyManager addPropertiesToNavigationItem:self.navigationItem];
-        self.title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
+        
         __weak typeof(self) weakSelf = self;
         VNavigationMenuItemBadgeNumberUpdateBlock block = ^(NSInteger badgeNumber)
         {
