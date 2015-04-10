@@ -260,13 +260,20 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination
 {
+    [self navigateToDestination:navigationDestination
+                     completion:nil];
+}
+
+- (void)navigateToDestination:(id)navigationDestination
+                   completion:(void(^)())completion
+{
     [self checkAuthorizationOnNavigationDestination:navigationDestination
                                          completion:^(BOOL shouldNavigate)
      {
          if (shouldNavigate)
          {
-             [self navigateToDestination:navigationDestination
-                              completion:nil];
+             [self _navigateToDestination:navigationDestination
+                               completion:nil];
          }
      }];
 }
@@ -301,7 +308,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
 }
 
-- (void)navigateToDestination:(id)navigationDestination
+- (void)_navigateToDestination:(id)navigationDestination
                    completion:(void(^)())completion
 {
     UIViewController *alternateDestination = nil;
