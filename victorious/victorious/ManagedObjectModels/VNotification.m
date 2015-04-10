@@ -16,16 +16,14 @@
 @dynamic body;
 @dynamic deepLink;
 @dynamic isRead;
-@dynamic notifyType;
-@dynamic postedAt;
+@dynamic type;
+@dynamic updatedAt;
 @dynamic remoteId;
 @dynamic subject;
-@dynamic userId;
 @dynamic imageURL;
 @dynamic createdAt;
+@dynamic displayOrder;
 
 @dynamic user;
-@dynamic message;
-@dynamic comment;
 
 @end

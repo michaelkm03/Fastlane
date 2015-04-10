@@ -14,13 +14,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="71"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D3F-Lh-YGd" customClass="VDefaultProfileImageView">
-                        <rect key="frame" x="8" y="12" width="48" height="48"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="48" id="UlQ-mS-cUS"/>
-                            <constraint firstAttribute="width" constant="48" id="emi-md-8pl"/>
-                        </constraints>
-                    </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="jK4-XI-tEW">
                         <rect key="frame" x="64" y="168" width="9" height="9"/>
                         <constraints>
@@ -39,26 +32,35 @@
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kNG-zA-U4r" customClass="VDefaultProfileButton">
+                        <rect key="frame" x="8" y="12" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="48" id="MRH-E3-t7z"/>
+                            <constraint firstAttribute="height" constant="48" id="b3u-kA-tSs"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Il9-me-FYI" firstAttribute="top" secondItem="D3F-Lh-YGd" secondAttribute="top" id="0TZ-hN-Tvv"/>
                     <constraint firstItem="dke-Yg-Kw5" firstAttribute="centerY" secondItem="jK4-XI-tEW" secondAttribute="centerY" id="4gZ-vn-Fg3"/>
                     <constraint firstItem="jK4-XI-tEW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Il9-me-FYI" secondAttribute="bottom" constant="8" id="AJJ-ba-mzK"/>
+                    <constraint firstItem="Il9-me-FYI" firstAttribute="top" secondItem="kNG-zA-U4r" secondAttribute="top" id="AaR-tN-ttp"/>
                     <constraint firstItem="Il9-me-FYI" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" constant="8" id="B76-YT-JwZ"/>
                     <constraint firstItem="jK4-XI-tEW" firstAttribute="leading" secondItem="Il9-me-FYI" secondAttribute="leading" id="CSq-p6-9PU"/>
                     <constraint firstAttribute="bottomMargin" secondItem="jK4-XI-tEW" secondAttribute="bottom" constant="4" id="Qk7-VX-OsE"/>
+                    <constraint firstItem="kNG-zA-U4r" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="RtB-hb-m33"/>
                     <constraint firstAttribute="trailingMargin" secondItem="dke-Yg-Kw5" secondAttribute="trailing" constant="8" id="SnA-iX-Ytk"/>
                     <constraint firstItem="dke-Yg-Kw5" firstAttribute="leading" secondItem="jK4-XI-tEW" secondAttribute="trailing" constant="2" id="Tij-mv-V2e"/>
-                    <constraint firstItem="D3F-Lh-YGd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="ddr-uP-QVx"/>
-                    <constraint firstItem="D3F-Lh-YGd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="iTK-Vr-OFz"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="D3F-Lh-YGd" secondAttribute="bottom" constant="8" id="slp-2T-Rcv"/>
-                    <constraint firstItem="Il9-me-FYI" firstAttribute="leading" secondItem="D3F-Lh-YGd" secondAttribute="trailing" constant="8" id="uul-vp-lQs"/>
+                    <constraint firstItem="kNG-zA-U4r" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="eVW-Q6-Dt9"/>
+                    <constraint firstItem="Il9-me-FYI" firstAttribute="leading" secondItem="kNG-zA-U4r" secondAttribute="trailing" constant="8" id="iIQ-cC-N3k"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kNG-zA-U4r" secondAttribute="bottom" constant="8" id="jLd-YC-8cx"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="dateLabel" destination="dke-Yg-Kw5" id="3Lx-cc-6Bl"/>
                 <outlet property="messageLabel" destination="Il9-me-FYI" id="Oa1-oP-TrV"/>
-                <outlet property="notificationWho" destination="D3F-Lh-YGd" id="fgw-ks-nWV"/>
             </connections>
             <point key="canvasLocation" x="256" y="373"/>
         </tableViewCell>
