@@ -26,7 +26,7 @@ NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:error.localizedDescription
                                                     message:error.localizedDescription
                                                    delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
 }

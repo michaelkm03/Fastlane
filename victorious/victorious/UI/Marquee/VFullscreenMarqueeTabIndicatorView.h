@@ -1,5 +1,5 @@
 //
-//  VMarqueeTabIndicatorView.h
+//  VFullscreenMarqueeTabIndicatorView.h
 //  victorious
 //
 //  Created by Will Long on 9/26/14.

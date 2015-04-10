@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+    A UICollectionViewFlowLayout subclass that adjusts the rotation and scale of cells as they come on screen
+ */
 @interface VBlurredMarqueeCollectionViewFlowLayout : UICollectionViewFlowLayout
 
 @end

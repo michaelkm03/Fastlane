@@ -123,7 +123,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     if ( ![contentViewFactory canDisplaySequence:sequence localizedReason:&reason] )
     {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:reason preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OKButton", @"") style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }

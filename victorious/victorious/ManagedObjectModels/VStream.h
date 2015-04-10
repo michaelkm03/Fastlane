@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSNumber * count;
 @property (nonatomic, retain) NSString * filterName;
 @property (nonatomic, retain) NSOrderedSet *streamItems;
+@property (nonatomic, retain) NSOrderedSet *marqueeItems;
 @property (nonatomic, retain) NSString * hashtag;
 @property (nonatomic, retain) NSString * trackingIdentifier;
 @property (nonatomic, retain) NSNumber * isUserPostAllowed;

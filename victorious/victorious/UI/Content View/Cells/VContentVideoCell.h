@@ -76,11 +76,6 @@
 - (void)togglePlayControls;
 
 /**
- Public instance of ad video player -- TEMPORARY PATCH
- */
-@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
-
-/**
  Should the video player hide the toolbar, disable tap to toggle toolbar,
  and disable double tap to change aspect fit.
  */
@@ -109,6 +104,11 @@
 
 /// Use this to animate with the same curve that animates the play controls.
 - (void)setAnimateAlongsizePlayControlsBlock:(void (^)(BOOL playControlsHidden))animateWithPlayControls;
+
+/**
+ *  Will prepare the cell for being removed from the view hierarchy so it can do it's own cleanup.
+ */
+- (void)prepareForRemoval;
 
 @property (nonatomic, strong) VTracking *tracking;
 

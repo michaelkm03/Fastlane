@@ -1,5 +1,5 @@
 //
-//  VBaseMarqueeController.h
+//  VAbstractMarqueeController.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/25/15.
@@ -7,24 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VStreamCollectionViewDataSource.h"
-#import "VMarqueeControllerDelegate.h"
+#import "VMarqueeDataDelegate.h"
+#import "VMarqueeSelectionDelegate.h"
 
 extern NSString * const kMarqueeURLKey;
 
-@class VDependencyManager, VStream, VStreamItem, VStreamCollectionViewDataSource, VTimerManager, VUser, VAbstractMarqueeController, VAbstractMarqueeCollectionViewCell;
-
-@interface VAbstractMarqueeController : NSObject <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegate>
+@class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell;
 
 /**
- The delegate that will respond to changes in marquee content and selections of marquee content.
-    Will be deprecated after I merge with my other branch.
+    A controller responsible for managing the content offset of the collection view, updating the collection view when marquee content changes,
+        populating the stream item cells in the collection view, and relaying messages to delegates when marquee content changes or the user
+        interacts with the marquee
  */
-@property (nonatomic, weak) id <VMarqueeControllerDelegate> delegate;
+@interface VAbstractMarqueeController : NSObject <UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+
+@property (nonatomic, weak) id <VMarqueeSelectionDelegate> selectionDelegate; ///< The object that should be notified of selections of marquee content
+@property (nonatomic, weak) id <VMarqueeDataDelegate> dataDelegate; ///< The object that should be notified of changes in marquee content
+
 @property (nonatomic, strong) UICollectionView *collectionView; ///< The colletion view used to display the streamItems
 @property (nonatomic, readonly) VStreamItem *currentStreamItem; ///< The stream item currently being displayed
 @property (nonatomic, readonly) VStream *stream; ///< The Marquee Stream
-@property (nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource; ///<The VStreamCollectionViewDataSource for the object.
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
 
 /**
@@ -35,19 +37,18 @@ extern NSString * const kMarqueeURLKey;
 @property (nonatomic, readonly) NSUInteger currentPage; ///< The current page of marquee content being displayed
 
 /**
- Initializes the marquee cell factory with an instance of VDependencyManager
+    Initializes the marquee cell factory with an instance of VDependencyManager
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 /**
- Sends -registerClass:forCellWithReuseIdentifier: and -registerNib:forCellWithReuseIdentifier:
- messages to the collection view. Should be called as soon as the collection view is
- initialized.
+    Sends -registerClass:forCellWithReuseIdentifier: and -registerNib:forCellWithReuseIdentifier:
+        messages to the collection view. Should be called as soon as the collection view is initialized.
  */
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
 
 /**
- Returns a configured marquee cell. This MUST be overridden by subclasses
+    Returns a configured marquee cell. This MUST be overridden by subclasses
  */
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
 
@@ -66,16 +67,6 @@ extern NSString * const kMarqueeURLKey;
         animates to show the first item in the marquee
  */
 - (void)selectNextTab;
-
-/**
-    Refreshes the content that is being managed by this marqueeController and calls the success and failure blocks as appropriate
- 
-    @param successBlock A block that will be called on the successful refresh of content in the stream that's managed
-        by this marquee controller
-    @param failureBlock A block that will be called when the marquee controller fails to refresh the content of
-        the stream it is managing
- */
-- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock;
 
 /**
     Overridden by subclasses to change the fire interval of the auto-scrolling timer
@@ -109,5 +100,10 @@ extern NSString * const kMarqueeURLKey;
     @return A CGSize corresponding to the desired size of the collection view that this marquee controller manages
  */
 - (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
+
+/**
+    Spot for subclasses to override to respond to changes in marquee content, will be called after changes to the "marqueeItems" array associated with our stream
+ */
+- (void)marqueeItemsUpdated;
 
 @end
