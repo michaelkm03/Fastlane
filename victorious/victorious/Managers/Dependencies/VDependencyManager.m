@@ -207,7 +207,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     if (![fontName isKindOfClass:[NSString class]] ||
         ![fontSize isKindOfClass:[NSNumber class]])
     {
-        return nil;
+        return [self.parentManager fontForKey:key];
     }
     
     UIFont *font = [UIFont fontWithName:fontName size:[fontSize CGFLOAT_VALUE]];

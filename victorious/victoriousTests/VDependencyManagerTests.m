@@ -125,7 +125,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                                                                          @"green": @"red",
                                                                                                          @"blue": @"blue",
                                                                                                          @"alpha": @"refridgerator",
-                                                                                                         }
+                                                                                                         },
+                                                                                       @"invalidFont": @{ @"fontName": @"Comic Sans",
+                                                                                                          @"fontSize": @24,
+                                                                                                          },
+                                                                                       @"font.heading1": @{
+                                                                                               
+                                                                                               }
                                                                                        }
                                                   dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
 }
@@ -186,6 +192,19 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:configuration dictionaryOfClassesByTemplateName:nil];
     
     UIFont *expected = [UIFont fontWithName:@"Helvetica" size:12];
+    UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testInvalidFontReturnsNil
+{
+    UIFont *invalid = [self.childDependencyManager fontForKey:@"invalidFont"];
+    XCTAssertNil(invalid);
+}
+
+- (void)testInvalidFontDefaultsToParent
+{
+    UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:24];
     UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     XCTAssertEqualObjects(expected, actual);
 }
