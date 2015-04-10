@@ -14,7 +14,7 @@
 #import "VSequence+Fetcher.h"
 
 static const NSTimeInterval kWebViewFirstLoadAnimationDelay      = 0.0f;
-static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
+static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.5f;
 
 @interface VStreamWebViewController() <WKNavigationDelegate>
 
