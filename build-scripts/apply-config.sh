@@ -27,7 +27,7 @@ if [ ! -d "configurations/$FOLDER" ]; then
     exit 1
 fi
 
-if [ "$A_FLAG" == "-a" ]; then
+if [ "$A_FLAG" == "-a" -a "$CONFIGURATION" == "" ]; then
     echo "If \"-a\" option is specified, <archive path> and <configuration> must be provided."
     echo ""
     exit 1
@@ -81,7 +81,7 @@ if [ "$A_FLAG" == "-a" ]; then
         echo "ProductPrefix key not found in info.plist."
         exit 1
     fi
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID -p "$PRODUCT_PREFIX" 
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID -p "$PRODUCT_PREFIX"
 else
     ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID
 fi
