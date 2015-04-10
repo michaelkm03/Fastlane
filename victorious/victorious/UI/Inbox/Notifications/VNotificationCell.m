@@ -48,7 +48,7 @@
     _notification = notification;
     
     [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
-    self.accessoryType = [self.notification.deeplink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    self.accessoryType = [self.notification.deepLink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:notification.body];
     NSDictionary *stringAttributes = @{ NSFontAttributeName : self.messageLabel.font };
@@ -58,7 +58,7 @@
     self.messageLabel.text = mutableAttributedString.string;
     self.dateLabel.text = [notification.createdAt timeSince];
     
-    if ([notification.deeplink length] > 0)
+    if ([notification.deepLink length] > 0)
     {
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }

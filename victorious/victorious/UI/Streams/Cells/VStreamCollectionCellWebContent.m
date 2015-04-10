@@ -22,7 +22,7 @@
 
 @interface VStreamCollectionCellWebContent ()
 
-@property (weak, nonatomic) IBOutlet UIView *backgroundContainer;
+@property (weak, nonatomic) IBOutlet UIView *loadingContainer;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 
@@ -54,9 +54,9 @@
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)backgroundContainerView
+- (UIView *)loadingBackgroundContainerView
 {
-    return self.backgroundContainer;
+    return self.loadingContainer;
 }
 
 @end

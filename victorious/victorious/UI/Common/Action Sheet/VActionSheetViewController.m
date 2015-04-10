@@ -124,6 +124,11 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     [self.tableView flashScrollIndicators];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Property Accessors
 
 - (UIView *)avatarView

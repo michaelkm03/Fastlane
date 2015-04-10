@@ -22,6 +22,8 @@
 #import "VThemeManager.h"
 #import "VTimerManager.h"
 
+#import "VDependencyManager+VBackgroundContainer.h"
+
 @interface VFullscreenMarqueeController () <VFullscreenMarqueeCellDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
@@ -87,6 +89,8 @@
     
     streamItemCell.hideMarqueePosterImage = self.hideMarqueePosterImage;
     streamItemCell.delegate = self;
+    
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:streamItemCell];
     
     return streamItemCell;
 }

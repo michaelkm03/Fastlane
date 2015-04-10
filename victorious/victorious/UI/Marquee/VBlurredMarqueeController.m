@@ -17,6 +17,8 @@
 #import "UIImage+ImageCreation.h"
 #import "VDependencyManager.h"
 
+#import "VDependencyManager+VBackgroundContainer.h"
+
 static const CGFloat kVisibilityDuration = 5.0f;
 static const CGFloat kOffsetOvershoot = 20.0f;
 
@@ -197,6 +199,8 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     self.collectionView.hidden = !self.showedInitialDisplayAnimation;
     CGSize desiredSize = [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+    
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     
     [self enableTimer];
     [cell layoutIfNeeded];

@@ -5,13 +5,14 @@
 
 SOURCE=$1
 DESTINATION=$2
-P_FLAG=$3
-PRODUCT_PREFIX=$4
+APP_ID=$3
+P_FLAG=$4
+PRODUCT_PREFIX=$5
 
-if [ "$SOURCE" == "" -o "$DESTINATION" == "" ]; then
-    echo "Usage: $0 <source> <destination> [-p <PRODUCT_PREFIX>]"
+if [ "$SOURCE" == "" -o "$DESTINATION" == "" -o "$APP_ID" == "" ]; then
+    echo "Usage: $0 <source> <destination> <app id> [-p <PRODUCT_PREFIX>]"
     echo ""
-    echo "PRODUCT_PREFIX, if supplied, will be used to replaces instances of ${ProductPrefix}"
+    echo "PRODUCT_PREFIX, if supplied, will be used to replace instances of \${ProductPrefix}."
     exit 1
 fi
 
@@ -75,9 +76,20 @@ do
     if [ $N == 0 ]; then
         /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes Array" "$DESTINATION"
     fi
-    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes: dict" "$DESTINATION"
     /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes Array" "$DESTINATION"
     /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes: string $SCHEME" "$DESTINATION"
 
     let N=$N+1
 done
+
+########### Generate Custom URL Scheme for app
+
+if [ "$P_FLAG" != "-p" ]; then
+    PRODUCT_PREFIX=""
+fi
+
+CUSTOM_SCHEME="${PRODUCT_PREFIX}vapp${APP_ID}"
+
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLName string com.getvictorious.deeplinking.scheme" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes Array" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes: string $CUSTOM_SCHEME" "$DESTINATION"

@@ -10,20 +10,23 @@
 #import "VFetchedResultsTableViewController.h"
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
-#import "VMultipleContainerChild.h"
+#import "VMultipleContainer.h"
+#import "VAuthorizationContextProvider.h"
 
 @class VUnreadMessageCountCoordinator, VUser, VDependencyManager;
 
-extern NSString * const VInboxViewControllerDeeplinkHostComponent; ///< The host component for deeplink URLs that point to inbox messages
+extern NSString * const VInboxViewControllerDeeplinkHostComponent; ///< The host component for deepLink URLs that point to inbox messages
 extern NSString * const VInboxViewControllerInboxPushReceivedNotification; ///< Posted when an inbox push notification is received while the app is active
 
-@interface VInboxViewController : VFetchedResultsTableViewController <VDeeplinkHandler, VMultipleContainerChild, VProvidesNavigationMenuItemBadge>
+@interface VInboxViewController : VFetchedResultsTableViewController <VDeeplinkSupporter, VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;
+@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
-- (void)displayConversationForUser:(VUser *)user; ///< Pushes the conversation view for the given user onto the navigation controller
+
+- (void)displayConversationForUser:(VUser *)user animated:(BOOL)animated; ///< Pushes the conversation view for the given user onto the navigation controller
+
 - (IBAction)userSearchAction:(id)sender;
 
 @end

@@ -13,7 +13,7 @@
  */
 @protocol VBackgroundContainer <NSObject>
 
-@required
+@optional
 
 /**
  *  Protocol conformers implement this method to provide a background container view. Callers will be able to add 
@@ -23,5 +23,10 @@
  *  required.
  */
 - (UIView *)backgroundContainerView;
+
+/**
+ *  Protocol conformers implement this method to allow a loading view to be added to be added to a particular view hierarchy.
+ */
+- (UIView *)loadingBackgroundContainerView;
 
 @end

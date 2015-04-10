@@ -35,9 +35,11 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>${ProductPrefix}victorious</string>
+				<string>vapp1</string>
 			</array>
 		</dict>
 	</array>
@@ -157,6 +159,8 @@
 	</array>
 	<key>VictoriousAppID</key>
 	<integer>1</integer>
+	<key>VictoriousGenericURLScheme</key>
+	<string>vthisapp</string>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 </dict>

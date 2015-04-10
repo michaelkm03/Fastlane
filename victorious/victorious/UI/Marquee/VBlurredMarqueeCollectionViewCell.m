@@ -21,7 +21,7 @@
 
 @property (nonatomic, weak) IBOutlet VCrossFadingImageView *crossfadingBlurredImageView;
 @property (nonatomic, weak) IBOutlet VCrossFadingLabel *crossfadingLabel;
-@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 
 @end
 
@@ -53,9 +53,9 @@
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)backgroundContainerView
+- (UIView *)loadingBackgroundContainerView
 {
-    return self.backgroundContainer;
+    return self.loadingBackgroundContainer;
 }
 
 @end
