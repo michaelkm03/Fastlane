@@ -25,7 +25,7 @@
 #import "VRootViewController.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
-static CGFloat const kVNotificationCellHeight = 56;
+static CGFloat const kVNotificationCellHeight = 64.0f;
 static int const kNotificationFetchBatchSize = 50;
 
 @interface VNotificationsViewController () <VNavigationDestination>
