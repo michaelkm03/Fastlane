@@ -34,7 +34,6 @@
 - (void)setup
 {
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
     [self setImage:defaultImage forState:UIControlStateNormal];
     
     //Was previously accent color for A and D
