@@ -23,7 +23,7 @@
     
     self.checkBox.layer.cornerRadius = CGRectGetMidX( self.checkBox.bounds );
     
-    [self updateSelectedState];
+    self.selected = NO;
 }
 
 - (void)setSelectedColor:(UIColor *)selectedColor
@@ -37,6 +37,8 @@
 {
     _title = title;
     self.labelTitle.text = title;
+    
+    [self updateSelectedState];
 }
 
 - (void)setFont:(UIFont *)font
@@ -59,15 +61,17 @@
         self.checkBox.layer.borderWidth = 0.0f;
         self.checkBox.layer.borderColor = [UIColor clearColor].CGColor;
         self.checkBox.backgroundColor = self.selectedColor;
-        self.checkBox.imageView.alpha = 1.0f;
+        self.checkBox.imageView.hidden = YES;
     }
     else
     {
         self.checkBox.layer.borderWidth = 1.0f;
         self.checkBox.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor;
         self.checkBox.backgroundColor = [UIColor clearColor];
-        self.checkBox.imageView.alpha = 0.0f;
+        self.checkBox.imageView.hidden = NO;
     }
+    
+    [self setNeedsDisplay];
 }
 
 @end

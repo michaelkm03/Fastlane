@@ -953,7 +953,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                 VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
                 textCell.dependencyManager = self.dependencyManager;
-                [textCell setTextContent:self.viewModel.textContent withBackgroundColor:self.viewModel.textBackgroundColor];
+                UIColor *backgroundColor = self.viewModel.textBackgroundColor ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+                [textCell setTextContent:self.viewModel.textContent withBackgroundColor:backgroundColor];
                 self.contentCell = textCell;
                 return textCell;
             }

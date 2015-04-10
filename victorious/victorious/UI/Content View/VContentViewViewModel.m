@@ -51,6 +51,7 @@
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
 #import "VEndCardActionModel.h"
+#import "UIColor+VHex.h"
 
 #define FORCE_SHOW_DEBUG_END_CARD 0
 
@@ -509,9 +510,7 @@
 
 - (UIColor *)textBackgroundColor
 {
-#warning Background color is required
-    // http://jira.victorious.com/browse/API-1224
-    return @[ [UIColor redColor], [UIColor darkGrayColor], [UIColor purpleColor] ][ arc4random() % 3 ];
+    return [UIColor v_colorFromHexString:self.currentAsset.backgroundColor];
 }
 
 - (void)setComments:(NSArray *)comments
