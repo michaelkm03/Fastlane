@@ -196,16 +196,26 @@ static NSString * const kInitialKey = @"initial";
     return self.navigationItem;
 }
 
-#pragma mark - VNavigationDestination
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VAuthorizationContextProvider)])
+    {
+        UIViewController<VAuthorizationContextProvider> *viewController = self.viewControllers[self.selectedIndex];
+        return [viewController requiresAuthorization];
+    }
+    return NO;
+}
 
 - (VAuthorizationContext)authorizationContext
 {
-    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VNavigationDestination)])
+    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VAuthorizationContextProvider)])
     {
-        UIViewController<VNavigationDestination> *viewController = self.viewControllers[self.selectedIndex];
+        UIViewController<VAuthorizationContextProvider> *viewController = self.viewControllers[self.selectedIndex];
         return [viewController authorizationContext];
     }
-    return VAuthorizationContextNone;
+    return VAuthorizationContextDefault;
 }
 
 #pragma mark -

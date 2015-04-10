@@ -158,7 +158,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     }
 }
 
-#pragma mark - VNavigationDestination
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    return YES;
+}
 
 - (VAuthorizationContext)authorizationContext
 {
