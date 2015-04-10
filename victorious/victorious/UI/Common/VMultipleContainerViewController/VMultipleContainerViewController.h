@@ -1,5 +1,5 @@
 //
-//  VMultipleContainerViewController.h
+//  VMultipleContainer.h
 //  victorious
 //
 //  Created by Josh Hinman on 12/15/14.
@@ -19,7 +19,7 @@
  *  Forwards VAuthorizationContextProvider methods to the
  *  currently selected viewController.
  */
-@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VAuthorizationContextProvider>
+@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider>
 
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The view controllers to be displayed
 

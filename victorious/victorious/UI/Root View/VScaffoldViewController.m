@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "NSURL+VPathHelper.h"
+#import <MBProgressHUD/MBProgressHUD.h>
+
 #import "VContentViewFactory.h"
 #import "VDeeplinkHandler.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
 #import "VObjectManager+Sequence.h"
@@ -23,18 +23,17 @@
 #import "VAuthorizedAction.h"
 #import "VAuthorizationContextProvider.h"
 #import "VPushNotificationManager.h"
-
-#import <MBProgressHUD.h>
+#import "VContentDeepLinkHandler.h"
+#import "VMultipleContainer.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
-static NSString * const kContentDeeplinkURLHostComponent = @"content";
-static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
-
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
+@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
+@property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 
 @end
 
@@ -56,6 +55,17 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 {
     [super viewDidAppear:animated];
     
+    if ( !self.hasBeenShown )
+    {
+        self.hasBeenShown = YES;
+        [self viewDidAppearFirstTime];
+    }
+}
+
+#pragma mark - First appearance (i.e. when app loads and first presents views from template)
+
+- (void)viewDidAppearFirstTime
+{
     BOOL didShow = [self showFirstTimeUserExperience];
     if ( !self.pushNotificationsRegistered && !didShow )
     {
@@ -142,113 +152,23 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Deeplinks
+#pragma mark - Authorized actions
 
-- (void)navigateToDeeplinkURL:(NSURL *)url
+- (VAuthorizedAction *)authorizedAction
 {
-    if ( self.presentedViewController != nil )
+    if ( _authorizedAction == nil )
     {
-        [self dismissViewControllerAnimated:YES completion:^(void)
-        {
-            [self navigateToDeeplinkURL:url];
-        }];
-        return;
+        _authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                           dependencyManager:self.dependencyManager];
     }
-
-    if ( [self displayContentViewForDeeplinkURL:url] )
-    {
-        return;
-    }
-    else
-    {
-        __block MBProgressHUD *hud;
-        VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
-        {
-            [hud hide:YES];
-            if ( viewController == nil )
-            {
-                [self showBadDeeplinkError];
-            }
-            else
-            {
-                [self navigateToDestination:viewController];
-            }
-        };
-
-        NSArray *possibleHandlers = [self navigationDestinations];
-        for (id<VDeeplinkHandler> handler in possibleHandlers)
-        {
-            if ( [handler conformsToProtocol:@protocol(VDeeplinkHandler)] )
-            {
-                if ( [handler displayContentForDeeplinkURL:url completion:completion] )
-                {
-                    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    return;
-                }
-            }
-        }
-    }
-    [self showBadDeeplinkError];
+    return _authorizedAction;
 }
 
-/**
- Displays a content view for deeplink URLs that point to content views.
+#pragma mark - VDeeplinkSupporter
 
- @return YES if the given URL was a content URL, or NO if it was
-         some other kind of deep link.
- */
-- (BOOL)displayContentViewForDeeplinkURL:(NSURL *)url
+- (id<VDeeplinkHandler>)deepLinkHandler
 {
-    if ( ![url.host isEqualToString:kContentDeeplinkURLHostComponent] && ![url.host isEqualToString:kCommentDeeplinkURLHostComponent] )
-    {
-        return NO;
-    }
-
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-
-    NSString *sequenceID = [url v_firstNonSlashPathComponent];
-    if ( sequenceID == nil )
-    {
-        return NO;
-    }
-    
-    NSNumber *commentId = nil;
-    NSString *commentIDString = [url v_pathComponentAtIndex:2];
-    if ( commentIDString != nil )
-    {
-        commentId = @([commentIDString integerValue]);
-    }
-
-    [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
-                                                 successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [hud hide:YES];
-        VSequence *sequence = (VSequence *)[resultObjects firstObject];
-        [self showContentViewWithSequence:sequence commentId:commentId placeHolderImage:nil];
-    }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-    {
-        [hud hide:YES];
-        VLog(@"Failed with error: %@", error);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                        message:NSLocalizedString(@"Missing Content Message", nil)
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                              otherButtonTitles:nil];
-        [alert show];
-    }];
-
-    return YES;
-}
-
-- (void)showBadDeeplinkError
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                    message:NSLocalizedString(@"Missing Content Message", nil)
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                          otherButtonTitles:nil];
-    [alert show];
+    return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - Navigation

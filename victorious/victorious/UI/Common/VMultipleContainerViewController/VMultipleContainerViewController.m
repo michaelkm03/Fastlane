@@ -9,7 +9,7 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDependencyManager+VNavigationItem.h"
-#import "VMultipleContainerChild.h"
+#import "VMultipleContainer.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
@@ -109,7 +109,6 @@ static NSString * const kInitialKey = @"initial";
         if ( initialViewController != nil )
         {
             NSUInteger index = [self.viewControllers indexOfObject:initialViewController];
-        
             if ( index == NSNotFound )
             {
                 index = 0;
@@ -142,8 +141,8 @@ static NSString * const kInitialKey = @"initial";
 {
     [super viewDidAppear:animated];
     
-    id<VMultipleContainerChild> viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
-    [viewController viewControllerSelected:YES];
+    id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
+    [child multipleContainerDidSetSelected:YES];
 }
 
 #pragma mark - Rotation
@@ -168,7 +167,7 @@ static NSString * const kInitialKey = @"initial";
          NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] );
          
          id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
-         child.multipleViewControllerChildDelegate = self;
+         child.multipleContainerChildDelegate = self;
     }];
     
     _viewControllers = [viewControllers copy];
@@ -187,6 +186,24 @@ static NSString * const kInitialKey = @"initial";
             obj.v_layoutInsets = layoutInsets;
         }
     }];
+}
+
+#pragma mark - VMultipleContainer
+
+- (NSArray *)children
+{
+    return self.viewControllers;
+}
+
+- (void)selectChild:(id<VMultipleContainerChild>)child
+{
+    NSUInteger index = [self.viewControllers indexOfObject:child];
+    if ( index == NSNotFound )
+    {
+        index = 0;
+    }
+    [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
+    [self.selector setActiveViewControllerIndex:index];
 }
 
 #pragma mark - VMultipleContainerChildDelegate
@@ -234,7 +251,7 @@ static NSString * const kInitialKey = @"initial";
                                         animated:animated];
     
     id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
-    [viewController viewControllerSelected:isDefaultSelection];
+    [viewController multipleContainerDidSetSelected:isDefaultSelection];
 }
 
 - (void)resetNavigationItemForIndex:(NSUInteger)index

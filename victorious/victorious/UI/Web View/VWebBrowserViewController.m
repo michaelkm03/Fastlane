@@ -16,6 +16,7 @@
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
 #import "VTracking.h"
+#import "NSURL+VCustomScheme.h"
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -216,7 +217,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if ( [navigationAction.request.URL.scheme.lowercaseString rangeOfString:@"http"].location != 0 )
+    if ( [navigationAction.request.URL v_hasCustomScheme] )
     {
         [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
         decisionHandler( WKNavigationActionPolicyCancel );

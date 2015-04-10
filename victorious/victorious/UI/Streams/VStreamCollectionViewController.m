@@ -333,9 +333,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self addUploadProgressView];
     
     UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleViewControllerChildDelegate != nil )
+    if ( self.multipleContainerChildDelegate != nil )
     {
-        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
     
     BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];
@@ -414,13 +414,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    UIImageView *previewImageView = nil;
+    UIImage *previewImage = nil;
     UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
-        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
-        [self showContentViewForSequence:sequence withPreviewImage:previewImageView.image];
+        previewImage = ((VStreamCollectionCell *)cell).previewImageView.image;
     }
+    [self showContentViewForSequence:sequence withPreviewImage:previewImage];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView

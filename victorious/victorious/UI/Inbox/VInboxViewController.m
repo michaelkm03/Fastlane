@@ -30,11 +30,11 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "NSURL+VPathHelper.h"
-
+#import "VInboxDeeplinkHandler.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
-@interface VInboxViewController () <VNavigationDestination>
+@interface VInboxViewController ()
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
@@ -49,6 +49,8 @@ NSString * const VInboxViewControllerDeeplinkHostComponent = @"inbox";
 NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
 
 @implementation VInboxViewController
+
+@synthesize multipleContainerChildDelegate;
 
 + (instancetype)inboxViewController
 {
@@ -83,7 +85,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 #pragma mark -  Container Child
 
-- (void)viewControllerSelected:(BOOL)isDefault
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
     
 }
@@ -170,46 +172,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return VAuthorizationContextInbox;
 }
 
-#pragma mark - VDeeplinkHandler methods
+#pragma mark -
 
-- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+- (id<VDeeplinkHandler>)deepLinkHandler
 {
-    if ( ![self.dependencyManager.objectManager authorized] )
-    {
-        return NO;
-    }
-    
-    if ( [url.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
-    {
-        NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
-        if ( conversationID != 0 )
-        {
-            [[VObjectManager sharedManager] conversationByID:@(conversationID)
-                                                successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-             {
-                 VConversation *conversation = (VConversation *)[resultObjects firstObject];
-                 if ( conversation == nil )
-                 {
-                     completion(nil);
-                 }
-                 else
-                 {
-                     completion(self);
-                     dispatch_async(dispatch_get_main_queue(), ^(void)
-                                    {
-                                        [self displayConversationForUser:conversation.user];
-                                    });
-                 }
-             }
-                                                   failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 VLog(@"Failed to load conversation with error: %@", [error localizedDescription]);
-                 completion(nil);
-             }];
-            return YES;
-        }
-    }
-    return NO;
+    return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }
 
 #pragma mark - Overrides
@@ -358,13 +325,13 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMessage];
         
-        [self displayConversationForUser:conversation.user];
+        [self displayConversationForUser:conversation.user animated:YES];
     }
 }
 
 #pragma mark - Actions
 
-- (void)displayConversationForUser:(VUser *)user
+- (void)displayConversationForUser:(VUser *)user animated:(BOOL)animated
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
     
@@ -372,13 +339,14 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         if ( self.navigationController.topViewController != detailVC )
         {
-            [self.navigationController popToViewController:detailVC animated:YES];
+            [self.navigationController popToViewController:detailVC animated:animated];
         }
-        return;
     }
-    
-    detailVC.messageCountCoordinator = self.messageCountCoordinator;
-    [self.navigationController pushViewController:detailVC animated:YES];
+    else
+    {
+        detailVC.messageCountCoordinator = self.messageCountCoordinator;
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender

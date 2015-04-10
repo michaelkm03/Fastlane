@@ -7,14 +7,14 @@
 //
 
 #import "VFetchedResultsTableViewController.h"
-#import "VMultipleContainerChild.h"
+#import "VMultipleContainer.h"
 #import "VAuthorizationContextProvider.h"
 
 @class VUnreadMessageCountCoordinator, VUser, VDependencyManager;
 
 @interface VNotificationsViewController : VFetchedResultsTableViewController <VMultipleContainerChild, VAuthorizationContextProvider>
 
-@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;
+@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
