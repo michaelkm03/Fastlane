@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
@@ -138,7 +138,7 @@
     <entity name="Notification" representedClassName="VNotification" syncable="YES">
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="deeplink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="deepLink" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isRead" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="notifyType" optional="YES" attributeType="String" syncable="YES"/>
@@ -274,30 +274,30 @@
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="voteResults" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
-        <element name="AdBreak" positionX="504" positionY="-322" width="128" height="90"/>
-        <element name="AdBreakFallback" positionX="891" positionY="-324" width="128" height="135"/>
-        <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
-        <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
-        <element name="Asset" positionX="646" positionY="-441" width="128" height="225"/>
-        <element name="Comment" positionX="1078" positionY="38" width="128" height="330"/>
-        <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="EndCard" positionX="675" positionY="-648" width="128" height="148"/>
-        <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="88"/>
-        <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
-        <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1582" positionY="-271" width="128" height="195"/>
-        <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
-        <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
-        <element name="Notification" positionX="1582" positionY="135" width="128" height="240"/>
-        <element name="NotificationSettings" positionX="693" positionY="-648" width="128" height="150"/>
-        <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
-        <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="510"/>
-        <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
-        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
-        <element name="Tracking" positionX="828" positionY="-630" width="128" height="300"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="435"/>
-        <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
+        <element name="AbstractFilter" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AdBreak" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AdBreakFallback" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Answer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AnswerAction" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Asset" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Conversation" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="EndCard" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Hashtag" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Interaction" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="InteractionAction" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Message" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Node" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="NodeAction" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Notification" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="NotificationSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PollResult" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Rule" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Sequence" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Stream" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="StreamItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Tracking" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="VoteResult" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

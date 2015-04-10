@@ -58,7 +58,7 @@
         VStreamCollectionCellWebContent *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         cell.sequence = sequence;
-        [self.dependencyManager addBackgroundToBackgroundHost:cell];
+        [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
         return cell;
     }
     else
@@ -68,7 +68,7 @@
     }
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
-    [self.dependencyManager addBackgroundToBackgroundHost:cell];
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     
     return cell;
 }
