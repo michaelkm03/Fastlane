@@ -297,8 +297,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)setCurrentStream:(VStream *)currentStream
 {
-    self.title = currentStream.name;
-    self.navigationItem.title = currentStream.name;
+    self.title = NSLocalizedString(currentStream.name, @"");
+    self.navigationItem.title = NSLocalizedString(currentStream.name, @"");
     [super setCurrentStream:currentStream];
 }
 

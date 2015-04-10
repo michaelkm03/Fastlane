@@ -90,7 +90,7 @@
                                                          failBlock:^(NSOperation *operation, NSError *error)
          {
              NSString *title = NSLocalizedString( @"Error Resetting Password", @"" );
-             NSString *message = NSLocalizedString( @"Please check your network connection or try agian later.", @"" );
+             NSString *message = NSLocalizedString( @"Please check your network connection or try again later.", @"" );
              UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
              [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString( @"OK", nil) style:UIAlertActionStyleCancel handler:nil]];
              [self presentViewController:alertController animated:YES completion:nil];
