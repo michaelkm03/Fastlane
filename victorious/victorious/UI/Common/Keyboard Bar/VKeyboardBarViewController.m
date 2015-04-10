@@ -21,7 +21,7 @@
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
 
-static const NSInteger kCharacterLimit = 255;
+static const NSInteger kCharacterLimit = 1024;
 static const NSInteger VDefaultKeyboardHeight = 51;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
@@ -97,7 +97,6 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 {
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), VDefaultKeyboardHeight)];
     inputAccessoryView.textInputView = self.textView;
-    inputAccessoryView.maxCharacterLength = kCharacterLimit;
     inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
 
     self.textView.inputAccessoryView = inputAccessoryView;
@@ -280,6 +279,8 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    BOOL shouldChangeText = YES;
+    
     if ([text isEqualToString:@"\n"])
     {
         switch (textView.returnKeyType)
@@ -292,7 +293,7 @@ static const NSInteger VDefaultKeyboardHeight = 51;
                 {
                     [self.delegate didCancelKeyboardBar:self];
                 }
-                return NO;
+                shouldChangeText = NO;
                 break;
             case UIReturnKeyDefault:
             case UIReturnKeyGoogle:
@@ -306,7 +307,13 @@ static const NSInteger VDefaultKeyboardHeight = 51;
                 break;
         }
     }
-    return YES;
+    else if ([textView.text length] + [text length] > kCharacterLimit)
+    {
+        // Entered text is to long and will not get appended.
+        shouldChangeText = NO;
+    }
+    
+    return shouldChangeText;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
