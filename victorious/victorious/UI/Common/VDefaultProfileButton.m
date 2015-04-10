@@ -65,9 +65,9 @@
     self.imageView.tintColor = self.tintColor;
 }
 
-- (void)setBounds:(CGRect)bounds
+- (void)layoutSubviews
 {
-    [super setBounds:bounds];
+    [super layoutSubviews];
     [self updateCornerRadius];
 }
 
