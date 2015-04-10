@@ -138,6 +138,7 @@
 
 "OwnerSharePollFormat" = "Découvrez ce sondage par %@ !"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" = "Découvrez « %@ » par%@ !";    //Check out "<video name>" by <creator>! <URL>
+"OwnerShareVideoFormatNoVideoName" = "Check out this video by %@!"; // Check out this videy by <creator>! <URL>
 "OwnerShareImageFormat" = "Découvrez cette photo de %@ !";//Check out this photo by <creator>! <URL>
 "UGCSharePollFormat" = "Ce sondage pourrait vous intéresser !";       //Check out this poll! <URL>
 "UGCShareVideoFormat" = "Cette vidéo pourrait vous intéresser !";      //Check out this video! <URL>
