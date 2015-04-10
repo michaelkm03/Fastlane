@@ -119,7 +119,7 @@
 {
     NSString *message = error.localizedDescription;
     VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
+    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:nil]];
     [alertConroller presentInViewController:self animated:YES completion:nil];
 }
 
@@ -177,7 +177,7 @@
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message handler:(void(^)(VAlertAction *))handler
 {
     VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:handler]];
+    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:handler]];
     [alertConroller presentInViewController:self animated:YES completion:nil];
 }
 

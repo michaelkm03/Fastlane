@@ -1,5 +1,5 @@
 //
-//  VMarqueeController.m
+//  VFullscreenMarqueeController.m
 //  victorious
 //
 //  Created by Will Long on 9/27/14.
@@ -14,8 +14,9 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VFullscreenMarqueeStreamItemCell.h"
 #import "VFullscreenMarqueeCollectionCell.h"
+#import "VFullscreenMarqueeSelectionDelegate.h"
 
-#import "VGroupedStreamCollectionViewController.h"
+#import "VShowcaseCollectionViewController.h"
 #import "VFullscreenMarqueeTabIndicatorView.h"
 
 #import "VThemeManager.h"
@@ -66,7 +67,7 @@
 {
     [super enableTimer];
     NSInteger currentPage = self.currentPage;
-    if ( currentPage < [[self streamDataSource] collectionView:self.collectionView numberOfItemsInSection:0] )
+    if ( currentPage < [self collectionView:self.collectionView numberOfItemsInSection:0] )
     {
         for ( VFullscreenMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
         {
@@ -80,25 +81,14 @@
     }
 }
 
-- (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VFullscreenMarqueeStreamItemCell *cell = (VFullscreenMarqueeStreamItemCell *)[super dataSource:dataSource cellForIndexPath:indexPath];
+    VFullscreenMarqueeStreamItemCell *streamItemCell = (VFullscreenMarqueeStreamItemCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
-    cell.delegate = self;
+    streamItemCell.hideMarqueePosterImage = self.hideMarqueePosterImage;
+    streamItemCell.delegate = self;
     
-    return cell;
-}
-
-//Let the container handle the selection.
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
-    VFullscreenMarqueeStreamItemCell *cell = (VFullscreenMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *previewImage = cell.previewImageView.image;
-    
-    [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
-    [self.autoScrollTimerManager invalidate];
+    return streamItemCell;
 }
 
 - (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
@@ -114,8 +104,11 @@
 
 - (void)cell:(VFullscreenMarqueeStreamItemCell *)cell selectedUser:(VUser *)user
 {
-    [self.delegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
-    [self.autoScrollTimerManager invalidate];
+    if ( [self.selectionDelegate conformsToProtocol:@protocol(VFullscreenMarqueeSelectionDelegate)] )
+    {
+        [(id <VFullscreenMarqueeSelectionDelegate>)self.selectionDelegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
+        [self.autoScrollTimerManager invalidate];
+    }
 }
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView

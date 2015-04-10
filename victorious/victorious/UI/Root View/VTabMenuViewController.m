@@ -29,12 +29,8 @@ NSString * const kMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
 
-@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
-
 @property (nonatomic, strong) UITabBarController *internalTabBarViewController;
-
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
-
 @property (nonatomic, strong) VTabMenuShim *tabShim;
 
 @end

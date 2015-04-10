@@ -210,6 +210,7 @@
         <attribute name="hashtag" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="marqueeItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="marquees" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="streams" inverseEntity="StreamItem" syncable="YES"/>
     </entity>
     <entity name="StreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
@@ -217,6 +218,7 @@
         <attribute name="previewImagesObject" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="String" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="streamContentType" optional="YES" attributeType="String" regularExpressionString="(content|stream)?" syncable="YES"/>
+        <relationship name="marquees" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="marqueeItems" inverseEntity="Stream" syncable="YES"/>
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItems" inverseEntity="Stream" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
@@ -280,7 +282,7 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="225"/>
         <element name="Comment" positionX="1078" positionY="38" width="128" height="330"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="EndCard" positionX="693" positionY="-648" width="128" height="148"/>
+        <element name="EndCard" positionX="675" positionY="-648" width="128" height="148"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="88"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>

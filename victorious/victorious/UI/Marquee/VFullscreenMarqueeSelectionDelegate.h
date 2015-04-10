@@ -6,11 +6,17 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VMarqueeControllerDelegate.h"
+#import "VMarqueeSelectionDelegate.h"
 
 @class VUser, VAbstractMarqueeController;
 
-@protocol VFullscreenMarqueeControllerDelegate <VMarqueeControllerDelegate>
+/**
+    An extension, of sorts, of the VMarqueeSelectionDelegate protocol to allow delegates to respond to
+        selections of users from the marquee cells.
+ */
+@protocol VFullscreenMarqueeSelectionDelegate <VMarqueeSelectionDelegate>
+
+@required
 
 - (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path;
 

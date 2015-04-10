@@ -82,7 +82,7 @@
     
     [self.passwordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-    self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 Characters", @"Password character requirement.")
+    self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"Password character requirement.")
                                                                                attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     self.passwordTextField.delegate = self;
     
@@ -109,7 +109,7 @@
     NSString *normalText = NSLocalizedString( @"Forgot Password?", @"" );
     NSString *text = [NSString stringWithFormat:@"%@ %@", normalText, linkText];
     NSRange range = [text rangeOfString:linkText];
-    self.forgotPasswordTextView.textColor = [self.dependencyManager colorForKey:@"color.text.content"];
+    self.forgotPasswordTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     [self.linkTextHelper setupLinkTextView:self.forgotPasswordTextView withText:text range:range];
     self.forgotPasswordTextView.linkDelegate = self;
     self.forgotPasswordTextView.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;
@@ -230,7 +230,7 @@
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                message:message
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                      otherButtonTitles:nil];
         [alert show];
     }
@@ -352,7 +352,7 @@
                                                     message:message
                                                    delegate:nil
                                           cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
     [alert show];
 }
 

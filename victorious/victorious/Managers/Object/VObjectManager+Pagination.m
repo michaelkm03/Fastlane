@@ -25,6 +25,8 @@
 
 #import "NSCharacterSet+VURLParts.h"
 #import "NSString+VParseHelp.h"
+#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
@@ -443,12 +445,24 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
-        for (VStreamItem *streamItem in resultObjects)
+        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
+        
+        VStream *fullStream = [resultObjects lastObject];
+
+        //Strip the marqueeItems and streamItems from the newly returned stream
+        for (VStreamItem *marqueeItem in fullStream.marqueeItems )
+        {
+            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
+            [marqueeItems addObject:streamItemInContext];
+        }
+        
+        for (VStreamItem *streamItem in fullStream.streamItems)
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
+        stream.marqueeItems = marqueeItems;
         
         // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
         stream.trackingIdentifier = fullResponse[ @"stream_id" ];
@@ -519,7 +533,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     {
         NSString *streamIDPathPart = [(stream.remoteId ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
         NSString *streamFilterPathPart = [(stream.filterName ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-        apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_stream/%@/%@/%@/%@", streamIDPathPart, streamFilterPathPart, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+        apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_stream_with_marquee/%@/%@/%@/%@", streamIDPathPart, streamFilterPathPart, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     }
     else
     {

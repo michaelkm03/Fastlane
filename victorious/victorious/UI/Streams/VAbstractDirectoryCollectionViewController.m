@@ -11,10 +11,13 @@
 #import "VStream+Fetcher.h"
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
+#import "VAbstractMarqueeController.h"
+#import "VUserProfileViewController.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
+static NSString * const kMarqueeKey = @"marqueeCell";
 
-@interface VAbstractDirectoryCollectionViewController ()
+@interface VAbstractDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate>
 
 @property (nonatomic, readwrite) UICollectionView *collectionView;
 
@@ -34,6 +37,10 @@ static NSString * const kStreamURLKey = @"streamURL";
     streamDirectory.title = stream.name;
     streamDirectory.dependencyManager = dependencyManager;
     streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    streamDirectory.marqueeController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:kMarqueeKey];
+    [streamDirectory.marqueeController registerCellsWithCollectionView:streamDirectory.collectionView];
+    streamDirectory.marqueeController.selectionDelegate = streamDirectory;
+    streamDirectory.marqueeController.dataDelegate = streamDirectory;
     
     return streamDirectory;
 }
@@ -54,6 +61,8 @@ static NSString * const kStreamURLKey = @"streamURL";
 {
     [super viewDidLoad];
     
+    [self updateHeaderCellVisibility];
+    
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.collectionView];
     NSDictionary *views = @{ @"collectionView" : self.collectionView };
@@ -65,7 +74,6 @@ static NSString * const kStreamURLKey = @"streamURL";
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-    
     
     self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = [UIColor clearColor];
@@ -96,6 +104,73 @@ static NSString * const kStreamURLKey = @"streamURL";
     return NO;
 }
 
+- (BOOL)canShowMarquee
+{
+    return YES;
+}
+
+- (void)updateHeaderCellVisibility
+{
+    if ( [self canShowMarquee] )
+    {
+        self.streamDataSource.hasHeaderCell = self.marqueeController.stream.marqueeItems.count > 0;
+    }
+}
+
+#pragma mark - VMarqueeControllerDataDelegate
+
+- (void)marquee:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems
+{
+    [self updateHeaderCellVisibility];
+}
+
+#pragma mark - VMarqueeControllerSelectionDelegate
+
+- (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
+{
+    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
+                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
+    
+    [self navigateToDisplayStreamItem:streamItem];
+}
+
+- (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
+{
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    if ( section == 0 )
+    {
+        return UIEdgeInsetsMake(self.topInset,
+                                0,
+                                0,
+                                0);
+    }
+    return UIEdgeInsetsZero;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
+    [self navigateToDisplayStreamItem:streamItem];
+}
+
+- (BOOL)isMarqueeSection:(NSUInteger)section
+{
+    return ( self.streamDataSource.hasHeaderCell && section == 0 );
+}
+
+- (CGSize)marqueeSizeWithCollectionViewBounds:(CGRect)collectionViewBounds
+{
+    return [self.marqueeController desiredSizeWithCollectionViewBounds:collectionViewBounds];
+}
+
 #pragma mark - Functions that must be overridden
 
 - (NSString *)cellIdentifier
@@ -108,6 +183,11 @@ static NSString * const kStreamURLKey = @"streamURL";
 {
     NSAssert(false, @"cellNib must be overridden by subclasses");
     return nil;
+}
+
+- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem
+{
+    NSAssert(false, @"NavigateToDisplayStreamItem must be overridden by subclasses");
 }
 
 @end
