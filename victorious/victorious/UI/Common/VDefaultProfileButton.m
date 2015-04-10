@@ -35,10 +35,7 @@
 {
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    if ( self.imageView.image == nil )
-    {
-        [self setImage:defaultImage forState:UIControlStateNormal];
-    }
+    [self setImage:defaultImage forState:UIControlStateNormal];
     
     //Was previously accent color for A and D
     NSString *colorKey = kVLinkColor;
