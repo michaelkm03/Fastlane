@@ -193,7 +193,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)dealloc
 {
-    [self.contentCell cleanup];
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -335,11 +334,18 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    void (^rotationUpdate)() = ^
+    {
+        [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+    };
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+         rotationUpdate();
      }
-                                 completion:nil];
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         rotationUpdate();
+     }];
 }
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation

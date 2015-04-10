@@ -25,13 +25,6 @@
     return CGSizeMake( CGRectGetWidth(bounds), minSide );
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.shrinkingContentView = self.contentContainer;
-}
-
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
@@ -41,8 +34,9 @@
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
         self.textPostViewController.isTextSelectable = YES;
         [self.contentContainer addSubview:self.textPostViewController.view];
+        self.textPostViewController.view.frame = self.contentContainer.bounds;
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-        self.shrinkingContentView = self.textPostViewController.view;
+        self.shrinkingContentView = self.contentContainer;
     }
 }
 
