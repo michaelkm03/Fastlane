@@ -117,7 +117,7 @@
     if ( [tool isKindOfClass:[VColorType class]] )
     {
         VColorType *colorType = (VColorType *)tool;
-        self.textPostViewController.view.backgroundColor = colorType.color;
+        self.textPostViewController.color = colorType.color;
     }
 }
 

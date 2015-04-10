@@ -109,7 +109,6 @@
 {
     self.selectionIndicatorView.frame = [self selectionFrame];
     
-    NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
     NSIndexPath *indexPathForPoint = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds),
                                                                                               self.collectionView.contentOffset.y + ([VBasicToolPickerCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds].height / 2))];
     
@@ -122,7 +121,7 @@
         self.blockScrollingSelectionUntilReached = nil;
     }
     
-    if ([indexPathForPoint compare:selectedIndexPath] == NSOrderedSame)
+    if ([indexPathForPoint compare:self.selectedToolIndexPath] == NSOrderedSame)
     {
         return;
     }
