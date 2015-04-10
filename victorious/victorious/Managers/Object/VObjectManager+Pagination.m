@@ -190,8 +190,8 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)getNotificationsCount:(VSuccessBlock)success
-                                                 failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)notificationsCount:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail
 {
     return [self GET:@"/api/notification/unread_notification_count"
                object:nil

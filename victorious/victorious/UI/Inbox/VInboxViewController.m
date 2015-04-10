@@ -74,11 +74,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return viewController;
 }
 
-- (void)awakeFromNib
-{
-    
-}
-
 - (void)dealloc
 {
     self.messageCountCoordinator = nil; // calling property setter to remove KVO

@@ -281,7 +281,7 @@ static int const kNotificationFetchBatchSize = 50;
             self.badgeNumber = [unread integerValue];
         }
     };
-    [[VObjectManager sharedManager] getNotificationsCount:success failBlock:fail];
+    [[VObjectManager sharedManager] notificationsCount:success failBlock:fail];
 }
 
 - (void)loggedInChanged:(NSNotification *)notification

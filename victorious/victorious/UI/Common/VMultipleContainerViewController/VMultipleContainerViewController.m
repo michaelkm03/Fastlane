@@ -27,7 +27,7 @@
 @property (nonatomic) BOOL didShowInitial;
 @property (nonatomic) NSUInteger selectedIndex;
 @property (nonatomic) NSInteger badgeNumber;
-@property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -67,7 +67,8 @@ static NSString * const kInitialKey = @"initial";
         [_dependencyManager addPropertiesToNavigationItem:self.navigationItem];
         self.title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
         __weak typeof(self) weakSelf = self;
-        VNavigationMenuItemBadgeNumberUpdateBlock block = ^(NSInteger badgeNumber) {
+        VNavigationMenuItemBadgeNumberUpdateBlock block = ^(NSInteger badgeNumber)
+        {
             [weakSelf updateBadge];
         };
         for (UIViewController *vc in _viewControllers)
