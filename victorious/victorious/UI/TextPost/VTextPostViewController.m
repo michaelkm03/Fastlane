@@ -53,13 +53,22 @@
 {
     [super viewDidLayoutSubviews];
     
-    [self updateTextView];
+    if ( !self.hasBeenDisplayed )
+    {
+        [self updateTextView];
+        self.hasBeenDisplayed = YES;
+    }
 }
 
 #pragma mark - View controller lifecycle
 
 - (void)setText:(NSString *)text
 {
+    if ( [_text isEqualToString:text] )
+    {
+        return;
+    }
+    
     _text = text;
     
     NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
@@ -76,6 +85,11 @@
 
 - (void)updateTextView
 {
+    if ( self.text == nil )
+    {
+        return;
+    }
+    
     NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
     NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
     [self updateTextView:self.textPostTextView withText:_text textAttributes:attributes calloutAttributes:calloutAttributes];

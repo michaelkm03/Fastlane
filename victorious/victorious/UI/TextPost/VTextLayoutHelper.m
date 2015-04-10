@@ -129,6 +129,7 @@
     // Use this function of text storange to get the usedRect of each line fragment
     NSRange fullRange = NSMakeRange( 0, textView.attributedText.string.length );
     __block NSMutableArray *lineFragmentRects = [[NSMutableArray alloc] init];
+    __block NSMutableArray *lineFragmentGlyphRanges = [[NSMutableArray alloc] init];
     [textView.layoutManager enumerateLineFragmentsForGlyphRange:fullRange usingBlock:^( CGRect rect,
                                                                                        CGRect usedRect,
                                                                                        NSTextContainer *textContainer,
@@ -136,6 +137,7 @@
      {
          CGRect lineRect = [self lineRectFromLineRect:usedRect adjustedForSpacesAtEndofTextView:textView withGlyphRange:glyphRange];
          [lineFragmentRects addObject:[NSValue valueWithCGRect:lineRect]];
+         [lineFragmentGlyphRanges addObject:[NSValue valueWithRange:glyphRange]];
      }];
     
     // If started with empty text and had to add a space character, we should now revert back to
@@ -149,6 +151,7 @@
     // We're going to create an array of rectangles, each of which is sized to encompass a
     // line of text.  We'll store that in `backgroundLinesFrames`.
     __block NSMutableArray *backgroundLineFrames = [[NSMutableArray alloc] init];
+    textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX );
     NSUInteger numLines = totalRect.size.height / singleCharRect.size.height;
     for ( NSUInteger i = 0; i < numLines; i++ )
     {
@@ -164,10 +167,9 @@
             {
                 // Sometimes the line fragment rect will give is 0 width for a singel word overhanging on the next line
                 // So, we'll take that last word and calcualte its width to get a proper value for the line's background rect
-                NSString *lastWord = [textView.attributedText.string componentsSeparatedByString:@" "].lastObject;
-                NSRange lastWordRange = [textView.attributedText.string rangeOfString:lastWord];
-                CGRect lastWordBoundingRect = [textView boundingRectForCharacterRange:lastWordRange];
-                lineRect.size.width = lastWordBoundingRect.size.width + lastWordBoundingRect.size.height * 0.3;
+                NSRange lineRange = ((NSValue *)lineFragmentGlyphRanges[i]).rangeValue;
+                CGRect rect = [textView.layoutManager boundingRectForGlyphRange:lineRange inTextContainer:textView.textContainer];
+                lineRect.size.width = rect.size.width;
             }
         }
         if ( textView.textAlignment == NSTextAlignmentCenter )
@@ -188,7 +190,6 @@
     // Now we'll process each callout, apply some special calculations for formatting and
     // mixing into with the background line frames.  See comments within the following loop
     // for more information on how this is being done
-    textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFLOAT_MAX );
     const CGFloat spaceOffset = (self.viewModel.calloutWordKerning + self.viewModel.horizontalSpacing) * 0.5f;
     for ( NSUInteger i = 0; i < calloutRanges.count; i++ )
     {
