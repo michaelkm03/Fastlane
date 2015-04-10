@@ -86,11 +86,7 @@
 {
     [super applyLayoutAttributes:layoutAttributes];
     
-    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    if ( UIInterfaceOrientationIsPortrait( currentOrientation ) )
-    {
-        [self updateContentToShrinkingLayout];
-    }
+    [self updateContentToShrinkingLayout];
 }
 
 - (void)setShrinkingContentView:(UIView *)shrinkingContentView
@@ -107,22 +103,30 @@
         return;
     }
     
-    self.shrinkingContentView.transform = CGAffineTransformIdentity;
-    const CGRect shrinkingFrame = self.shrinkingContentView.frame;
-    const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
-    
-    if ( CGRectEqualToRect( currentFrame, CGRectZero ) )
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    if ( UIInterfaceOrientationIsPortrait( currentOrientation ) )
     {
-        return;
+        self.shrinkingContentView.transform = CGAffineTransformIdentity;
+        const CGRect shrinkingFrame = self.shrinkingContentView.frame;
+        const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
+        
+        if ( CGRectEqualToRect( currentFrame, CGRectZero ) )
+        {
+            return;
+        }
+        
+        const CGFloat translateY = (CGRectGetHeight(shrinkingFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
+        const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(shrinkingFrame), 1.0f );
+        
+        CGAffineTransform transform = CGAffineTransformIdentity;
+        transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
+        transform = CGAffineTransformScale( transform, scale, scale );
+        self.shrinkingContentView.transform = transform;
     }
-    
-    const CGFloat translateY = (CGRectGetHeight(shrinkingFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
-    const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(shrinkingFrame), 1.0f );
-    
-    CGAffineTransform transform = CGAffineTransformIdentity;
-    transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
-    transform = CGAffineTransformScale( transform, scale, scale );
-    self.shrinkingContentView.transform = transform;
+    else
+    {
+        self.shrinkingContentView.transform = CGAffineTransformIdentity;
+    }
 }
 
 #pragma mark - Rotation
@@ -141,13 +145,14 @@
         self.shrinkingContentView.transform = CGAffineTransformIdentity;
         self.shrinkingContentView.frame = self.shrinkingContentView.superview.bounds;
         self.shrinkingContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.shrinkingContentView layoutIfNeeded];
     }
     else
     {
         self.shrinkingContentView.autoresizingMask = 0;
+        [self updateContentToShrinkingLayout];
+        [self.shrinkingContentView layoutIfNeeded];
     }
-    
-    [self.shrinkingContentView layoutIfNeeded];
 }
 
 #pragma mark - UIView
