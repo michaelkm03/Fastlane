@@ -8,10 +8,10 @@
 
 #import "VNotificationCell.h"
 #import "NSDate+timeSince.h"
-#import "VThemeManager.h"
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
 #import "VDefaultProfileImageView.h"
+#import "VDependencyManager.h"
 
 @interface VNotificationCell ()
 
@@ -31,8 +31,6 @@
     
     self.dateLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];    
-    
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
@@ -49,7 +47,11 @@
     [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
     self.accessoryType = [self.notification.deeplink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
-    self.messageLabel.text = notification.body;
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    paragraphStyle.minimumLineHeight = 17.0f;
+    paragraphStyle.maximumLineHeight = 17.0f;
+    NSAttributedString *attributedBodyText = [[NSAttributedString alloc] initWithString:notification.body attributes:@{ NSParagraphStyleAttributeName : paragraphStyle }];
+    self.messageLabel.attributedText = attributedBodyText;
     self.dateLabel.text = [notification.createdAt timeSince];
     
     if ([notification.deeplink length] > 0)
@@ -59,6 +61,15 @@
     else
     {
         self.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( _dependencyManager != nil )
+    {
+        self.messageLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     }
 }
 
