@@ -40,12 +40,16 @@
     NSString *colorKey = kVLinkColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
-    CGFloat radius = CGRectGetHeight(self.bounds)/2;
-    self.layer.cornerRadius = radius;
     self.clipsToBounds = YES;
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 
+}
+
+- (void)updateCornerRadius
+{
+    CGFloat radius = ( CGRectGetHeight(self.bounds) - self.imageEdgeInsets.top - self.imageEdgeInsets.bottom )/2 ;
+    self.layer.cornerRadius = radius;
 }
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
@@ -58,6 +62,12 @@
             placeholderImage:defaultImage];
     
     self.imageView.tintColor = self.tintColor;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self updateCornerRadius];
 }
 
 @end

@@ -14,6 +14,10 @@
 #import "VDependencyManager.h"
 #import "VTagStringFormatter.h"
 
+static const CGFloat kLineSpacing = 3.0f;
+static const CGFloat kMinimumLineHeight = 15.0f;
+static const CGFloat kBaselineOffset = 0.5f;
+
 @interface VNotificationCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
@@ -48,12 +52,13 @@
     [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
     self.accessoryType = [self.notification.deepLink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
+    //This paragraph style causes emojis to display correctly
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    paragraphStyle.minimumLineHeight = 14.0f;
-    paragraphStyle.lineSpacing = 3.0f;
+    paragraphStyle.minimumLineHeight = kMinimumLineHeight;
+    paragraphStyle.lineSpacing = kLineSpacing;
 
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:notification.body];
-    NSDictionary *stringAttributes = @{ NSParagraphStyleAttributeName : paragraphStyle };
+    NSDictionary *stringAttributes = @{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) };
     [VTagStringFormatter tagDictionaryFromFormattingAttributedString:mutableAttributedString
                                              withTagStringAttributes:stringAttributes
                                           andDefaultStringAttributes:stringAttributes];
@@ -78,6 +83,7 @@
     if ( _dependencyManager != nil )
     {
         self.messageLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+        [self.messageLabel sizeToFit];
     }
 }
 
