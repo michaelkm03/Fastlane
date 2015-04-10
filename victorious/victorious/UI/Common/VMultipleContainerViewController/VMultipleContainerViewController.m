@@ -16,8 +16,9 @@
 #import "VStreamCollectionViewController.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
@@ -25,6 +26,8 @@
 @property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
 @property (nonatomic) NSUInteger selectedIndex;
+@property (nonatomic) NSInteger badgeNumber;
+@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -63,6 +66,20 @@ static NSString * const kInitialKey = @"initial";
         self.navigationItem.v_supplementaryHeaderView = _selector;
         [_dependencyManager addPropertiesToNavigationItem:self.navigationItem];
         self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
+        
+        __weak typeof(self) weakSelf = self;
+        VNavigationMenuItemBadgeNumberUpdateBlock block = ^(NSInteger badgeNumber)
+        {
+            [weakSelf updateBadge];
+        };
+        for (UIViewController *vc in _viewControllers)
+        {
+            if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+            {
+                UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
+                viewController.badgeNumberUpdateBlock = block;
+            }
+        }
     }
     return self;
 }
@@ -186,6 +203,36 @@ static NSString * const kInitialKey = @"initial";
             obj.v_layoutInsets = layoutInsets;
         }
     }];
+}
+
+#pragma mark - Badges
+
+- (void)setBadgeNumber:(NSInteger)badgeNumber
+{
+    if ( badgeNumber == _badgeNumber )
+    {
+        return;
+    }
+    _badgeNumber = badgeNumber;
+    
+    if ( self.badgeNumberUpdateBlock != nil )
+    {
+        self.badgeNumberUpdateBlock(self.badgeNumber);
+    }
+}
+
+- (void)updateBadge
+{
+    NSInteger count = 0;
+    for (UIViewController *vc in _viewControllers)
+    {
+        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
+            count += viewController.badgeNumber;
+        }
+    }
+    self.badgeNumber = count;
 }
 
 #pragma mark - VMultipleContainer
