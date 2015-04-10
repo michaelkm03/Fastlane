@@ -6,11 +6,19 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <FBKVOController.h>
+
 #import "VSleekStreamCollectionCell.h"
-#import "VSleekStreamCellActionView.h"
+
+// Stream Support
 #import "VSequence+Fetcher.h"
-#import "NSString+VParseHelp.h"
+
+// Dependencies
 #import "VDependencyManager.h"
+
+// Views + Helpers
+#import "VSleekStreamCellActionView.h"
+#import "NSString+VParseHelp.h"
 #import "VStreamCellHeaderView.h"
 
 const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -25,6 +33,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 @interface VSleekStreamCollectionCell ()
 
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
+@property (nonatomic, weak) IBOutlet VSleekStreamCellActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 
@@ -85,6 +95,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
+    
     [super setSequence:sequence];
     self.actionView.sequence = sequence;
     [self setupActionBar];
@@ -99,7 +111,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [(VSleekStreamCellActionView *)self.actionView addCommentsButton];
     
     [self.actionView addShareButton];
-    if ( [self.sequence canRepost] )
+    if ( [self.sequence canRepost] || [self.sequence.hasReposted boolValue] )
     {
         [self.actionView addRepostButton];
     }
@@ -109,11 +121,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         BOOL isVideo = [self.sequence isVideo];
         if ( [self.sequence isImage] || isVideo )
         {
-            [self.actionView addMemeButton];
+            [self.sleekActionView addMemeButton];
         }
         if ( isVideo )
         {
-            [self.actionView addGifButton];
+            [self.sleekActionView addGifButton];
         }
     }
     
@@ -124,6 +136,20 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     return 0;
 }
+
+- (VStreamCellActionView *)actionView
+{
+    return self.sleekActionView;
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)loadingBackgroundContainerView
+{
+    return self.loadingBackgroundContainer;
+}
+
+#pragma mark - Class Methods
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {

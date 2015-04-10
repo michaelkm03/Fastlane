@@ -90,7 +90,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
     }
     self.hasSetupDefaultTool = YES;
     
-    if (self.tools == nil)
+    if ( self.tools == nil || self.tools.count == 0 )
     {
         NSAssert(false, @"Tools not set yet!");
     }

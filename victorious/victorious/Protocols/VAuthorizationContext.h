@@ -13,7 +13,6 @@
  */
 typedef NS_ENUM( NSInteger, VAuthorizationContext )
 {
-    VAuthorizationContextNone = -1,
     VAuthorizationContextDefault,
     VAuthorizationContextCreatePost,
     VAuthorizationContextFollowHashtag,
@@ -24,5 +23,6 @@ typedef NS_ENUM( NSInteger, VAuthorizationContext )
     VAuthorizationContextRemix,
     VAuthorizationContextUserProfile,
     VAuthorizationContextAddComment,
-    VAuthorizationContextInbox
+    VAuthorizationContextInbox,
+    VAuthorizationContextNotification
 };

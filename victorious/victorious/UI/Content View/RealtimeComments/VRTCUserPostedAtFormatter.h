@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDependencyManager;
+
 @interface VRTCUserPostedAtFormatter : NSObject
 
-+ (NSAttributedString *)formatRTCUserName:(NSString *)username;
++ (NSAttributedString *)formatRTCUserName:(NSString *)username
+                    withDependencyManager:(VDependencyManager *)dependencyManager;
 + (NSAttributedString *)formattedRTCUserPostedAtStringWithUserName:(NSString *)username
-                                                     andPostedTime:(NSNumber *)postedTime;
+                                                     andPostedTime:(NSNumber *)postedTime
+                                             withDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

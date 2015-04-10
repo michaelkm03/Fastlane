@@ -27,4 +27,6 @@
 
 + (void)logExampleTemplate;
 
+- (NSDictionary *)textWorkspaceFlowComponent;
+
 @end

@@ -17,11 +17,15 @@
 {
     __weak UIImageView *weakSelf = self;
     
-    [self sd_setImageWithURL:url placeholderImage:image completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    [self sd_setImageWithURL:url
+            placeholderImage:image
+                     options:SDWebImageRetryFailed
+                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
         
         __strong UIImageView *strongSelf = weakSelf;
         //Check if image was loaded from cache
-        if (cacheType != SDImageCacheTypeNone || imageURL == nil)
+        if ( cacheType != SDImageCacheTypeNone || ![self isValidURL:imageURL] )
         {
             //Set image without fade animation
             strongSelf.image = image;
@@ -38,6 +42,11 @@
         
     }];
     
+}
+
+- (BOOL)isValidURL:(NSURL *)url
+{
+    return url != nil && ![url.absoluteString isEqualToString:@""];
 }
 
 @end

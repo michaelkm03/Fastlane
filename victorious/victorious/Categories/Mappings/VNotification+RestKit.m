@@ -20,10 +20,19 @@
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"id" : VSelectorName(remoteId),
-                                  @"user_id" : VSelectorName(userId),
+                                  @"body" : VSelectorName(body),
+                                  @"deeplink" : VSelectorName(deepLink),
+                                  @"is_read" : VSelectorName(isRead),
                                   @"notify_type" : VSelectorName(notifyType),
-                                  @"posted_at" : VSelectorName(postedAt)
+                                  @"posted_at" : VSelectorName(postedAt),
+                                  @"id" : VSelectorName(remoteId),
+                                  @"subject" : VSelectorName(subject),
+                                  @"user_id" : VSelectorName(userId),
+                                  @"creator_profile_image_url" : VSelectorName(imageURL),
+                                  @"created_at" : VSelectorName(createdAt),
+                                  @"user" : VSelectorName(user),
+                                  @"message" : VSelectorName(message),
+                                  @"comment" : VSelectorName(comment)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -41,19 +50,20 @@
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodGET
-                                                      pathPattern:@"/api/message/notifications_list"
+                                                      pathPattern:@"/api/notification/notifications_list"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodGET
-                                                      pathPattern:@"/api/message/notifications_list/:currentpage/:perpage"
+                                                      pathPattern:@"/api/notification/notifications_list/:currentpage/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
+              /*
               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodGET
-                                                      pathPattern:@"/api/message/notifications_for_user/:userid/:currentpage/:perpage"
+                                                      pathPattern:@"/api/notification/notifications_for_user/:userid/:currentpage/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
@@ -62,6 +72,7 @@
                                                       pathPattern:@"/api/message/notifications_for_user/:userid"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+               */
               ];
 }
 

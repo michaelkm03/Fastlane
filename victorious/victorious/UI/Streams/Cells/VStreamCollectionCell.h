@@ -11,7 +11,9 @@
 #import "VHasManagedDependencies.h"
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VSequenceActionsSender.h"
+#import "VBackgroundContainer.h"
 #import "VBaseCollectionViewCell.h"
+#import "VStreamCellActionView.h"
 
 @class VSequence, VStreamCellHeaderView, VStreamCollectionCell, CCHLinkTextView;
 /**
@@ -22,7 +24,7 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 
 @class CCHLinkTextView, VDependencyManager, VSequence, VStreamCellHeaderView, VStreamCollectionCell;
 
-@interface VStreamCollectionCell : VBaseCollectionViewCell <VSequenceActionsSender, VSharedCollectionReusableViewMethods, VHasManagedDependencies>
+@interface VStreamCollectionCell : VBaseCollectionViewCell <VBackgroundContainer, VSequenceActionsSender, VSharedCollectionReusableViewMethods, VHasManagedDependencies>
 
 @property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;
@@ -39,8 +41,13 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 @property (nonatomic, weak) VSequence                       *sequence;
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate> sequenceActionsDelegate;
-
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UIViewController *parentViewController;
+
+/**
+ *  An actionview for this stream collection cell. Returns nil for this class. Override in subclasses so that repost updates can be sent to the action view.
+ */
+@property (nonatomic, readonly) VStreamCellActionView *actionView;
 
 /**
  A rectangle that corresponds to any media asset within this view,

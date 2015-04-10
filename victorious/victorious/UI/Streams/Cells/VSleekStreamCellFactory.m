@@ -11,6 +11,7 @@
 #import "VSleekStreamCollectionCellPoll.h"
 #import "VSequence+Fetcher.h"
 #import "VStreamCollectionCellWebContent.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 @interface VSleekStreamCellFactory ()
 
@@ -55,6 +56,7 @@
         VStreamCollectionCellWebContent *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         cell.sequence = sequence;
+        [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
         return cell;
     }
     else
@@ -64,6 +66,8 @@
     }
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
+    
     return cell;
 }
 

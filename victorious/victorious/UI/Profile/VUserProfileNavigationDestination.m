@@ -6,16 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
-#import "VRootViewController.h"
 #import "VScaffoldViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
 #import "VUser.h"
-
-static NSString * const kProfileDeeplinkHostComponent = @"profile";
+#import "VProfileDeeplinkHandler.h"
 
 @interface VUserProfileNavigationDestination ()
 
@@ -64,29 +61,11 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     return YES;
 }
 
-#pragma mark - VDeeplinkHandler methods
+#pragma mark - VDeepLinkSupporter methods
 
-- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+- (id<VDeeplinkHandler>)deepLinkHandler
 {
-    if ( completion == nil )
-    {
-        return NO;
-    }
-    
-    if ( [url.host isEqualToString:kProfileDeeplinkHostComponent] )
-    {
-        NSInteger userID = [[url v_firstNonSlashPathComponent] integerValue];
-        if ( userID != 0 )
-        {
-            VUserProfileViewController *profileVC = [VUserProfileViewController rootDependencyProfileWithRemoteId:@(userID)];
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                completion(profileVC);
-            });
-            return YES;
-        }
-    }
-    return NO;
+    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 @end

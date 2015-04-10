@@ -15,17 +15,6 @@ DEFAULT_DEV_ACCOUNT="build.server@getvictorious.com"
 
 shift 2
 
-# Default App ID key: the plist key that contains the app ID that corresponds to the configuration we're building.
-if [ "$CONFIGURATION" == "Release" -o "$CONFIGURATION" == "Stable" ]; then
-    DEFAULT_APP_ID_KEY="VictoriousAppID"
-elif [ "$CONFIGURATION" == "Staging" ]; then
-    DEFAULT_APP_ID_KEY="StagingAppID"
-elif [ "$CONFIGURATION" == "QA" ]; then
-    DEFAULT_APP_ID_KEY="QAAppID"
-else
-    DEFAULT_APP_ID_KEY=""
-fi
-
 if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
     echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [--macros <macros>] [app name(s) (optional)]"
     exit 1
@@ -120,7 +109,7 @@ popd > /dev/null
 ### Package the individual apps
 
 applyConfiguration(){
-    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive
+    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive $CONFIGURATION
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
         exit 1
@@ -199,12 +188,10 @@ fi
 
 for CONFIG in $CONFIGS
 do
-    if [ "$DEFAULT_APP_ID_KEY" != "" ]; then
-        DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist")
-        if [ "$DEFAULT_APP_ID" != "0" ]; then # don't build apps with app ID of 0
-            applyConfiguration $CONFIG
-            ANY_APP_BUILT=1
-        fi
+    DEFAULT_APP_ID=$(./build-scripts/get-app-id.sh $CONFIG $CONFIGURATION)
+    if [ "$DEFAULT_APP_ID" != "0" -a "$DEFAULT_APP_ID" != "" ]; then # don't build apps with empty app ID or 0
+        applyConfiguration $CONFIG
+        ANY_APP_BUILT=1
     fi
 done
 

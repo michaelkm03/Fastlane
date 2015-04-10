@@ -16,10 +16,10 @@ extern CGFloat const VStreamCellActionViewActionButtonBuffer;
 
 //Use or override the string values that are keyed by these keys in the button images dictionary to affect images displayed in actionView
 extern NSString * const VStreamCellActionViewShareIconKey; ///< Key for "share" icon
-extern NSString * const VStreamCellActionViewRemixIconKey; ///< Key for "remix" icon
+extern NSString * const VStreamCellActionViewGifIconKey; ///< Key for "remix" icon
+extern NSString * const VStreamCellActionViewMemeIconKey; ///< Key for "more" icon
 extern NSString * const VStreamCellActionViewRepostIconKey; ///< Key for "repost" icon
 extern NSString * const VStreamCellActionViewRepostSuccessIconKey; ///< Key for "repost success" icon
-extern NSString * const VStreamCellActionViewMoreIconKey; ///< Key for "more" icon
 
 @interface VStreamCellActionView : UIView <VSequenceActionsSender>
 
@@ -34,9 +34,16 @@ extern NSString * const VStreamCellActionViewMoreIconKey; ///< Key for "more" ic
 - (void)clearButtons;
 - (void)updateLayoutOfButtons;
 - (void)addShareButton;
-- (void)addRemixButton;
+- (void)addGifButton;
+- (void)addMemeButton;
 - (void)addRepostButton;
-- (void)addMoreButton;
+
+/**
+ *  Use this method to force the repost button to update based on what the sequence action delegate returns.
+ *
+ *  @param animated Whether or not ot animate the update.
+ */
+- (void)updateRepostButtonAnimated:(BOOL)animated;
 
 + (NSDictionary *)buttonImages;
 

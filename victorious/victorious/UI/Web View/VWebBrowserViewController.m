@@ -8,12 +8,15 @@
 
 @import WebKit;
 
+#import "VDependencyManager+VScaffoldViewController.h"
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderViewController.h"
 #import "VSettingManager.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
+#import "VTracking.h"
+#import "NSURL+VCustomScheme.h"
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -29,10 +32,9 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
 @property (nonatomic, strong) VWebBrowserActions *actions;
 @property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIView *containerView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *containerViewX1Constraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *containerViewX2Constraint;
 
 @property (nonatomic, strong) NSTimer *progressBarAnimationTimer;
 
@@ -40,10 +42,12 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 @implementation VWebBrowserViewController
 
-+ (VWebBrowserViewController *)instantiateFromStoryboard
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:[NSBundle mainBundle]];
-    return [storyboard instantiateInitialViewController];
+    VWebBrowserViewController *webBrowserViewController = (VWebBrowserViewController *)[storyboard instantiateInitialViewController];
+    webBrowserViewController.dependencyManager = dependencyManager;
+    return webBrowserViewController;
 }
 
 #pragma mark - UIViewController
@@ -77,6 +81,17 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                              VTrackingKeySequenceId : self.sequence.remoteId,
+                              VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -94,6 +109,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     if ( [segue.identifier isEqualToString:@"embedHeader"] && [segue.destinationViewController isKindOfClass:[VWebBrowserHeaderViewController class]] )
     {
         self.headerViewController = (VWebBrowserHeaderViewController *)segue.destinationViewController;
+        self.headerViewController.dependencyManager = [self.dependencyManager dependencyManagerForNavigationBar];
     }
 }
 
@@ -201,7 +217,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if ( [navigationAction.request.URL.scheme.lowercaseString rangeOfString:@"http"].location != 0 )
+    if ( [navigationAction.request.URL v_hasCustomScheme] )
     {
         [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
         decisionHandler( WKNavigationActionPolicyCancel );

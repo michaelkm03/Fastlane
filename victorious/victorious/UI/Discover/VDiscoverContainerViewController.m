@@ -26,6 +26,7 @@
 // Transition
 #import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
+#import "VDiscoverDeepLinkHandler.h"
 
 @interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild>
 
@@ -43,7 +44,7 @@
 
 @implementation VDiscoverContainerViewController
 
-@synthesize multipleViewControllerChildDelegate; ///< VMultipleContainerChild
+@synthesize multipleContainerChildDelegate; ///< VMultipleContainerChild
 
 #pragma mark - Initializers
 
@@ -120,6 +121,15 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - mark
+
+- (id<VDeeplinkHandler>)deepLinkHandler
+{
+    VDiscoverDeepLinkHandler *handler = [[VDiscoverDeepLinkHandler alloc] init];
+    handler.navigationDestination = self;
+    return handler;
+}
+
 #pragma mark - Show Profile
 
 - (void)showSuggestedPersonProfile:(NSNotification *)note
@@ -135,7 +145,7 @@
         return;
     }
 
-    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     if ( self.navigationController != nil )
     {
         [self.navigationController pushViewController:profileViewController animated:YES];
@@ -197,7 +207,7 @@
 
 #pragma mark - VMultipleContainerChild
 
-- (void)viewControllerSelected:(BOOL)isDefault
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
     // This event is not actually stream related, its name remains for legacy purposes
     NSDictionary *params = @{ VTrackingKeyStreamName : [self.dependencyManager stringForKey:VDependencyManagerTitleKey] ?: @"Discover" };

@@ -7,15 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VSwipeViewController.h"
+#import "VBaseCollectionViewCell.h"
 #import "VCommentCellUtilitiesDelegate.h"
 #import "VCommentCellUtilitesController.h"
+
+@class VSwipeViewController;
 
 /**
  A collection view cell subclass that provides integration with a VSwipeViewController
  instance to provide swipe-to-reveal utility button on the cell
  */
-@interface VSwipeCollectionViewCell : UICollectionViewCell <VCommentCellUtilitiesDelegate>
+@interface VSwipeCollectionViewCell : VBaseCollectionViewCell <VCommentCellUtilitiesDelegate>
 
 /**
  Creates the VSwipeViewController and integrates its view into the hierarchy.

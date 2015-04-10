@@ -16,13 +16,19 @@ typedef NS_ENUM(NSInteger, VBallot)
 
 @interface VContentPollBallotCell : VBaseCollectionViewCell
 
++ (CGSize)actualSizeWithAnswerA:(NSAttributedString *)answerA
+                        answerB:(NSAttributedString *)answerB
+                    maximumSize:(CGSize)maximumSize;
+
 - (void)setVotingDisabledWithFavoredBallot:(VBallot)ballot
                                   animated:(BOOL)animated;
 
-@property (nonatomic, copy) NSString *answerA;
-@property (nonatomic, copy) NSString *answerB;
+@property (nonatomic, copy) NSAttributedString *answerA;
+@property (nonatomic, copy) NSAttributedString *answerB;
 
 @property (nonatomic, copy) void (^answerASelectionHandler)(void);
 @property (nonatomic, copy) void (^answerBSelectionHandler)(void);
+
+@property (nonatomic, weak) IBOutlet UIImageView *orImageView;
 
 @end

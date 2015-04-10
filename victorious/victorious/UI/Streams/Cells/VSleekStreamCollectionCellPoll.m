@@ -30,6 +30,7 @@
 
 @property (nonatomic, weak) IBOutlet UIView *captionContainerView; ///< A view that will enclose the caption text view and expand to accomodate the cell text
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionContainerHeightConstraint;
+@property (nonatomic, weak) IBOutlet VSleekStreamCellActionView *sleekCellActionView;
 
 @end
 
@@ -66,14 +67,12 @@
 {
     self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];
     self.secondAssetUrl = [NSURL URLWithString:self.secondAnswer.thumbnailUrl];
-    
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    
+
     [self.previewImageView fadeInImageAtURL:self.firstAssetUrl
-                           placeholderImage:placeholderImage];
+                           placeholderImage:nil];
     
     [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
-                          placeholderImage:placeholderImage];
+                          placeholderImage:nil];
 }
 
 - (void)setDescriptionText:(NSString *)text
@@ -91,6 +90,11 @@
     self.captionContainerHeightConstraint.constant = constraintValue * 2 + textSize.height;
     self.captionTextViewTopConstraint.constant = constraintValue;
     self.captionTextViewBottomConstraint.constant = constraintValue;
+}
+
+- (VStreamCellActionView *)actionView
+{
+    return self.sleekCellActionView;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

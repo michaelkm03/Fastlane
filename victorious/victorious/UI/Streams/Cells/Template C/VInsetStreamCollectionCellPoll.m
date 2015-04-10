@@ -21,6 +21,9 @@ static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
 
 @interface VInsetStreamCollectionCellPoll ()
 
+@property (nonatomic, weak) IBOutlet UIView *loadingContainer;
+@property (nonatomic, weak) IBOutlet VStreamCellActionView *cellActionView;
+
 @property (nonatomic, weak) VAnswer *firstAnswer;
 @property (nonatomic, weak) VAnswer *secondAnswer;
 
@@ -50,6 +53,11 @@ static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
     [self setupMedia];
 }
 
+- (VStreamCellActionView *)actionView
+{
+    return self.cellActionView;
+}
+
 - (void)setupMedia
 {
     self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];
@@ -69,6 +77,13 @@ static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
     CGFloat width = floorf(CGRectGetWidth(bounds) * kPollCellWidthRatio);
     CGFloat height = floorf(width * kPollContentRatio + kInsetCellHeaderHeight + kInsetCellTextNeighboringViewSeparatorHeight * 2.0f + kInsetCellActionViewHeight); // width * kInsetCellPollContentRatio represents the desired media height
     return CGSizeMake(width, height);
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)loadingBackgroundContainerView
+{
+    return self.loadingContainer;
 }
 
 @end

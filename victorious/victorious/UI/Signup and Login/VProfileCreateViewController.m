@@ -283,9 +283,12 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
     {
         [locationDictionary setObject:placemark.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
     }
-    
-    [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
-                           forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+
+    NSString *countryCode = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
+    if (countryCode != nil)
+    {
+        [locationDictionary setObject:countryCode forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+    }
     
     return [locationDictionary copy];
 }
@@ -503,7 +506,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
          {  
             if ( self.authorizedAction != nil && success )
             {
-                self.authorizedAction();
+                self.authorizedAction(YES);
             }
         }];
     }
@@ -519,7 +522,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileSaveFail", @"")
                                                            message:error.localizedDescription
                                                           delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                  otherButtonTitles:nil];
     [alert show];
     
@@ -587,12 +590,10 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
                                 onCancelButton:nil
                     otherButtonTitlesAndBlocks:nil];
     
-    [alert addButtonWithTitle:NSLocalizedString(@"OKButton", @"") block:^{
-        
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"") block:^(void)
+    {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
-        
         [self exitWithSuccess:NO];
-        
     }];
     
     [alert show];
@@ -637,7 +638,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
                                                        message:errorMsg
                                                       delegate:nil
                                              cancelButtonTitle:nil
-                                             otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                                             otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
     [alert show];
 
     [MBProgressHUD hideHUDForView:self.view

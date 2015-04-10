@@ -10,7 +10,6 @@
 #import "VNode+Fetcher.h"
 #import "VVoteResult.h"
 #import "VConstants.h"
-
 #import "NSString+VParseHelp.h"
 #import "VAnswer.h"
 #import "VUser.h"
@@ -81,6 +80,12 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
             asset.loop.boolValue == YES &&
             asset.audioMuted.boolValue == YES &&
             asset.streamAutoplay.boolValue == YES;
+}
+
+- (BOOL)isText
+{
+    return [self.category isEqualToString:kVUGCTextCategory] ||
+           [self.category isEqualToString:kVOwnerTextCategory];
 }
 
 - (BOOL)isOwnerContent

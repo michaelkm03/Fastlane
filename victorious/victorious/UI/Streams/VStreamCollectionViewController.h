@@ -25,11 +25,11 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies>
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate>actionDelegate;///<Optional param.  If this is not set, the collection view will act as the action delegate for the cells.  Use this if you are embedding this view controller somewhere (i.e. the page view controller)
-@property (nonatomic) BOOL shouldDisplayMarquee;
 @property (nonatomic, strong) UIView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, assign) BOOL canShowContent; // Defaults to YES
+@property (nonatomic, assign) BOOL canShowContent; ///< Defaults to YES
+@property (nonatomic, assign) BOOL canShowMarquee; ///< Defaults to YES; if NO, we won't adjust the "hasHeaderCell" variable even when a marquee is available in the stream
 
 /**
  *  Creates a new stream collection view controller

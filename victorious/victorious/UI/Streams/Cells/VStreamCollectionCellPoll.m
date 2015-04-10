@@ -24,6 +24,7 @@
 #import "VSettingManager.h"
 
 static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
+static const NSUInteger kPollCellCaptionLineLimit = 2;
 
 @interface VStreamCollectionCellPoll ()
 
@@ -61,13 +62,11 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
     self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];
     self.secondAssetUrl = [NSURL URLWithString:self.secondAnswer.thumbnailUrl];
     
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
-    
     [self.previewImageView fadeInImageAtURL:self.firstAssetUrl
-                           placeholderImage:placeholderImage];
+                           placeholderImage:nil];
     
     [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
-                          placeholderImage:placeholderImage];
+                          placeholderImage:nil];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -79,6 +78,11 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
 {
     return [self desiredSizeWithCollectionViewBounds:bounds];
+}
+
+- (NSUInteger)maxCaptionLines
+{
+    return kPollCellCaptionLineLimit;
 }
 
 @end

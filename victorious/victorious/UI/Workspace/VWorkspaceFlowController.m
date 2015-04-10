@@ -243,12 +243,19 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     self.state = newState;
 }
 
-#pragma mark - VNavigationDestination
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    return YES;
+}
 
 - (VAuthorizationContext)authorizationContext
 {
     return VAuthorizationContextCreatePost;
 }
+
+#pragma mark - VNavigationDestination
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
@@ -347,9 +354,15 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     
     __weak typeof(self) welf = self;
     VWorkspaceViewController *workspaceViewController;
+    workspaceViewController.activityText = NSLocalizedString( @"Rendering...", @"" );
+    workspaceViewController.continueText = NSLocalizedString( @"Continue", @"" );
+    workspaceViewController.confirmCancelMessage = NSLocalizedString( @"This will discard any content from the camera", @"" );
     if ([self.capturedMediaURL v_hasImageExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        workspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
+        workspaceViewController.disablesNavigationItemsOnKeyboardAppearance = YES;
+        workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
         workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
     }
@@ -401,10 +414,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
     }
     workspaceViewController.continueText = shouldShowPublish ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
-
+    
     [self.flowNavigationController pushViewController:workspaceViewController
                                              animated:!selectedFromAssetsLibraryOrSearch];
-
+    
 }
 
 #pragma mark - Notify Delegate Methods
@@ -419,9 +432,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         [self.flowRootViewController dismissViewControllerAnimated:YES
                                                         completion:^
-        {
-            [self.flowNavigationController popToRootViewControllerAnimated:NO];
-        }];
+         {
+             [self.flowNavigationController popToRootViewControllerAnimated:NO];
+         }];
     }
     objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }

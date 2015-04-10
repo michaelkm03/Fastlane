@@ -48,8 +48,10 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 
 // Keys for Workspace
 extern NSString * const VDependencyManagerWorkspaceFlowKey;
+extern NSString * const VDependencyManagerTextWorkspaceFlowKey;
 extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
+extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 
 /**
  Provides loose coupling between components.
@@ -75,6 +77,12 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Returns the color with the specified key
  */
 - (UIColor *)colorForKey:(NSString *)key;
+
+/**
+ Marshalls a dictionary in the expected format into a UIColor object.
+ Returns nil if failed.
+*/
+ - (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary;
 
 /**
  Returns the font with the specified key

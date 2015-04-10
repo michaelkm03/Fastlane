@@ -278,7 +278,7 @@
             NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
         }
         
-        __block NSTimeInterval duration = abs( [event.dateCreated timeIntervalSinceNow] );
+        __block NSTimeInterval duration = ABS( [event.dateCreated timeIntervalSinceNow] );
         [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
          {
              if ( [delegate respondsToSelector:@selector(eventEnded:parameters:duration:)] )

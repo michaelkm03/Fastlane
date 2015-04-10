@@ -26,29 +26,67 @@
 #import "VNoContentView.h"
 #import "VUser.h"
 #import "VObjectManager+Login.h"
-
-NS_ENUM(NSUInteger, VModeSelect)
-{
-    kMessageModeSelect      = 0,
-    kNotificationModeSelect = 1
-};
+#import "UIViewController+VLayoutInsets.h"
+#import "VDependencyManager+VObjectManager.h"
+#import "NSURL+VPathHelper.h"
+#import "VInboxDeeplinkHandler.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
-static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 @interface VInboxViewController ()
 
-@property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelectControl;
-@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
+@property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
+@property (nonatomic) NSInteger badgeNumber;
+@property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
+static char kKVOContext;
+
+NSString * const VInboxViewControllerDeeplinkHostComponent = @"inbox";
+NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
+
 @implementation VInboxViewController
+
+@synthesize multipleContainerChildDelegate;
+
++ (instancetype)inboxViewController
+{
+    return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
+}
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VInboxViewController *viewController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
+    if (viewController)
+    {
+        viewController.dependencyManager = dependencyManager;
+        viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
+        viewController.title = NSLocalizedString(@"Messages", @"");
+        viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:viewController
+                                                                                 action:@selector(userSearchAction:)];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    }
+    return viewController;
+}
 
 - (void)dealloc
 {
+    self.messageCountCoordinator = nil; // calling property setter to remove KVO
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark -  Container Child
+
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
+{
+    
 }
 
 #pragma mark - View Lifecycle
@@ -58,12 +96,12 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [super viewDidLoad];
 
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+    self.tableView.contentInset = self.v_layoutInsets;
+    self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
     
-    self.modeSelectControl.selectedSegmentIndex = kMessageModeSelect;
-    [self modeSelected:self.modeSelectControl];
+    self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,6 +109,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [super viewWillAppear:animated];
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -87,26 +126,68 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
+#pragma mark - Properties
+
+- (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
+{
+    if (_messageCountCoordinator)
+    {
+        [_messageCountCoordinator removeObserver:self forKeyPath:NSStringFromSelector(@selector(unreadMessageCount))];
+    }
+    _messageCountCoordinator = messageCountCoordinator;
+    
+    if (messageCountCoordinator)
+    {
+        [messageCountCoordinator addObserver:self forKeyPath:NSStringFromSelector(@selector(unreadMessageCount)) options:NSKeyValueObservingOptionNew context:&kKVOContext];
+        
+        if ( [self.dependencyManager.objectManager mainUserLoggedIn] )
+        {
+            [messageCountCoordinator updateUnreadMessageCount];
+        }
+    }
+}
+
+- (void)setBadgeNumber:(NSInteger)badgeNumber
+{
+    if ( badgeNumber == _badgeNumber )
+    {
+        return;
+    }
+    _badgeNumber = badgeNumber;
+    
+    if ( self.badgeNumberUpdateBlock != nil )
+    {
+        self.badgeNumberUpdateBlock(self.badgeNumber);
+    }
+}
+
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    return YES;
+}
+
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextInbox;
+}
+
+#pragma mark -
+
+- (id<VDeeplinkHandler>)deepLinkHandler
+{
+    return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
+}
+
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
 {
     RKObjectManager *manager = [RKObjectManager sharedManager];
     
-    NSFetchRequest *fetchRequest = nil;
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] init];
-    
-    if (VModeSelect == kMessageModeSelect)
-    {
-        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-        sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
-    }
-    else if (VModeSelect == kNotificationModeSelect)
-    {
-        
-        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
-        sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
-    }
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
 
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
@@ -136,7 +217,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     
     if ( messageViewController == nil )
     {
-        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser];
+        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:self.dependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }
     [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
@@ -169,7 +250,9 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
         noMessageView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
+        noMessageView.titleLabel.textColor = [UIColor whiteColor];
         noMessageView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
+        noMessageView.messageLabel.textColor = [UIColor whiteColor];
         noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
         self.tableView.backgroundView = noMessageView;
     }
@@ -182,23 +265,12 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell    *theCell;
-
-    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
-    {
-        theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-        VConversation  *info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [(VConversationCell *)theCell setConversation:info];
-        ((VConversationCell *)theCell).parentTableViewController = self;
-    }
-    else
-    {
-        theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-        VNotification *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [(VNotificationCell *)theCell setNotifcation:info];
-        ((VNotificationCell *)theCell).parentTableViewController = self;
-    }
-
+    VConversation *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VConversationCell *theCell = (VConversationCell *)[tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
+    [theCell setConversation:info];
+    theCell.parentTableViewController = self;
+    theCell.dependencyManager = self.dependencyManager;
+    
     return theCell;
 }
 
@@ -206,14 +278,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
+    return YES;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -261,13 +326,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMessage];
         
-        [self displayConversationForUser:conversation.user];
+        [self displayConversationForUser:conversation.user animated:YES];
     }
 }
 
 #pragma mark - Actions
 
-- (void)displayConversationForUser:(VUser *)user
+- (void)displayConversationForUser:(VUser *)user animated:(BOOL)animated
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
     
@@ -275,19 +340,14 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     {
         if ( self.navigationController.topViewController != detailVC )
         {
-            [self.navigationController popToViewController:detailVC animated:YES];
+            [self.navigationController popToViewController:detailVC animated:animated];
         }
-        return;
     }
-    
-    detailVC.messageCountCoordinator = self.messageCountCoordinator;
-    [self.navigationController pushViewController:detailVC animated:YES];
-}
-
-- (IBAction)modeSelected:(id)sender
-{
-    self.fetchedResultsController = nil;
-    [self performFetch];
+    else
+    {
+        detailVC.messageCountCoordinator = self.messageCountCoordinator;
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender
@@ -316,16 +376,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
         [self.messageCountCoordinator updateUnreadMessageCount];
     };
 
-    if (VModeSelect == kMessageModeSelect)
-    {
-        [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
+    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
                                                             successBlock:success failBlock:fail];
-    }
-    else if (VModeSelect == kNotificationModeSelect)
-    {
-        [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-                                                             successBlock:success failBlock:fail];
-    }
 }
 
 - (void)loadNextPageAction
@@ -373,6 +425,54 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
     [self refresh:nil];
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.messageCountCoordinator updateUnreadMessageCount];
+    }
+}
+
+- (void)loggedInChanged:(NSNotification *)notification
+{
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.messageCountCoordinator updateUnreadMessageCount];
+    }
+    else
+    {
+        self.badgeNumber = 0;
+    }
+}
+
+- (void)inboxMessageNotification:(NSNotification *)notification
+{
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.dependencyManager.objectManager loadConversationListWithPageType:VPageTypeFirst
+                                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             [self.messageCountCoordinator updateUnreadMessageCount];
+         } failBlock:nil];
+    }
+}
+
+#pragma mark - Key-Value Observation
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ( context != &kKVOContext )
+    {
+        return;
+    }
+    
+    if ( object == self.messageCountCoordinator && [keyPath isEqualToString:NSStringFromSelector(@selector(unreadMessageCount))] )
+    {
+        NSNumber *newUnreadCount = change[NSKeyValueChangeNewKey];
+        
+        if ( [newUnreadCount isKindOfClass:[NSNumber class]] )
+        {
+            self.badgeNumber = [newUnreadCount integerValue];
+        }
+    }
 }
 
 @end

@@ -12,7 +12,6 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
-#import "VRootViewController.h"
 #import "VFollowerTableViewController.h"
 #import "VFollowingTableViewController.h"
 #import "VMessageContainerViewController.h"
@@ -25,7 +24,7 @@
 
 #import "VObjectManager+ContentCreation.h"
 
-#import "VInboxContainerViewController.h"
+#import "VInboxViewController.h"
 
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
@@ -54,9 +53,12 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
  According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
  */
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
+
+// dependency manager keys
+static NSString * const kUserProfileViewComponentKey = @"userProfileView";
 static NSString * const kUserKey = @"user";
 static NSString * const kUserRemoteIdKey = @"remoteId";
-NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
+static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
 
@@ -82,17 +84,6 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 @end
 
 @implementation VUserProfileViewController
-
-#warning Incredibly hacky
-+ (instancetype)rootDependencyProfileWithRemoteId:(NSNumber *)remoteId
-{
-    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithRemoteId:remoteId];
-}
-
-+ (instancetype)rootDependencyProfileWithUser:(VUser *)user
-{
-    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithUser:user];
-}
 
 + (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -176,6 +167,12 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 - (void)userProfileSharedInit
 {
     self.canShowContent = NO;
+}
+
+- (BOOL)canShowMarquee
+{
+    //This will stop our superclass from adjusting the "hasHeaderCell" property, which in turn affects whether or not the profileHeader is shown, based on whether or not this stream contains a marquee
+    return NO;
 }
 
 #pragma mark - LifeCycle
@@ -269,7 +266,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     BOOL fromInbox = NO;
     for (UIViewController *vc in self.navigationController.viewControllers)
     {
-        if ([vc isKindOfClass:[VInboxContainerViewController class]])
+        if ([vc isKindOfClass:[VInboxViewController class]])
         {
             fromInbox = YES;
         }
@@ -405,7 +402,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 - (void)addFriendsButton
 {
     //Previously was C_findFriendsIcon in template C
-    UIImage *findFriendsIcon = [self.dependencyManager imageForKey:VUserProfileFindFriendsIconKey];
+    UIImage *findFriendsIcon = [self.dependencyManager imageForKey:kFindFriendsIconKey];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
@@ -418,8 +415,12 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          VFindFriendsViewController *ffvc = [VFindFriendsViewController newWithDependencyManager:self.dependencyManager];
          [ffvc setShouldAutoselectNewFriends:NO];
          [self.navigationController pushViewController:ffvc animated:YES];
@@ -549,9 +550,14 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
      {
-         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
+         if (!authorized)
+         {
+             return;
+         }
+         
+         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile dependencyManager:self.dependencyManager];
          composeController.presentingFromProfile = YES;
          
          if ([self.navigationController.viewControllers containsObject:composeController])
@@ -572,8 +578,13 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     VAuthorizationContext context = self.isMe ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:context completion:^
+    [authorization performFromViewController:self context:context completion:^(BOOL authorized)
      {
+         if (!authorization)
+         {
+             return;
+         }
+         
          if ( self.isMe )
          {
              [self performSegueWithIdentifier:@"toEditProfile" sender:self];
@@ -600,7 +611,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
         [[[UIAlertView alloc] initWithTitle:nil
                                     message:NSLocalizedString(@"UnfollowError", @"")
                                    delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                           otherButtonTitles:nil] show];
     };
     
@@ -730,7 +741,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 {
     if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
     {
-        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
+        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
         self.notLoggedInDataSource.delegate = self;
         self.collectionView.dataSource = self.notLoggedInDataSource;
         [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
@@ -819,13 +830,13 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 - (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
 {
     NSAssert(user != nil, @"user cannot be nil");
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserKey: user }];
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:kUserProfileViewComponentKey withAddedDependencies:@{ kUserKey: user }];
 }
 
 - (VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId
 {
     NSAssert(remoteId != nil, @"remoteId cannot be nil");
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserRemoteIdKey: remoteId }];
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:kUserProfileViewComponentKey withAddedDependencies:@{ kUserRemoteIdKey: remoteId }];
 }
 
 @end

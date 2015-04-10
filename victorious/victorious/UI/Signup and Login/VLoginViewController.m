@@ -81,9 +81,9 @@
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^void
      {
-         if ( success && self.authorizedAction != nil )
+         if ( self.authorizedAction != nil )
          {
-             self.authorizedAction();
+             self.authorizedAction(success);
          }
      }];
 }
@@ -247,7 +247,7 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
                                                     message:NSLocalizedString(@"TwitterDenied", @"")
                                                    delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
 }
@@ -259,7 +259,7 @@
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                      otherButtonTitles:nil];
         [alert show];
     }
@@ -332,7 +332,7 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
                                                                    delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                           otherButtonTitles:nil];
                     [alert show];
                 });

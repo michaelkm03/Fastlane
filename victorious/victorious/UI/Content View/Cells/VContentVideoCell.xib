@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -16,31 +16,25 @@
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Rhs-CS-W7B">
                         <rect key="frame" x="142" y="141" width="37" height="37"/>
                     </activityIndicatorView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rko-52-7C5">
-                        <rect key="frame" x="66" y="145" width="188" height="30"/>
-                        <state key="normal" title="Video loading failed. Retry?">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="retryVideo:" destination="atE-VE-I8O" eventType="touchUpInside" id="MVZ-Ai-mRI"/>
-                        </connections>
-                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Video loading failed." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iPV-2G-10Y">
+                        <rect key="frame" x="91" y="151" width="139" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="rko-52-7C5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="atE-VE-I8O" secondAttribute="leading" constant="10" id="Gzj-OR-6fy"/>
+                <constraint firstAttribute="centerX" secondItem="iPV-2G-10Y" secondAttribute="centerX" id="9LV-xx-wwC"/>
+                <constraint firstAttribute="centerY" secondItem="iPV-2G-10Y" secondAttribute="centerY" id="HIa-sJ-xpm"/>
                 <constraint firstAttribute="centerY" secondItem="Rhs-CS-W7B" secondAttribute="centerY" constant="0.5" id="i9g-rA-BHn"/>
                 <constraint firstAttribute="centerX" secondItem="Rhs-CS-W7B" secondAttribute="centerX" constant="-0.5" id="jjd-IF-eum"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rko-52-7C5" secondAttribute="trailing" constant="10" id="klG-7c-ftW"/>
-                <constraint firstAttribute="centerY" secondItem="rko-52-7C5" secondAttribute="centerY" id="oQg-5u-DDM"/>
-                <constraint firstAttribute="centerX" secondItem="rko-52-7C5" secondAttribute="centerX" id="rMn-wm-leZ"/>
             </constraints>
             <connections>
-                <outlet property="failureRetryButton" destination="rko-52-7C5" id="7ib-rD-cdT"/>
                 <outlet property="loadingIndicator" destination="Rhs-CS-W7B" id="axc-P6-FpH"/>
+                <outlet property="videoFailedLabel" destination="iPV-2G-10Y" id="AFH-IR-UCg"/>
             </connections>
             <point key="canvasLocation" x="249" y="175"/>
         </collectionViewCell>

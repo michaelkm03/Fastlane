@@ -16,14 +16,6 @@
 @optional
 
 /**
- Returns YES if the current user has reposted this sequence before.
- As long as this sentence remains in the comment, this should only be working locally
- and will reset when the app launches until we have backend support in the next version.
- @param sequence The sequence to repost.
- */
-- (BOOL)hasRepostedSequence:(VSequence *)sequence;
-
-/**
  Reposts the sequence.
  @param fromView A view in which to show action sheets or other views,
  such as a login prompt if the user is not signed in.

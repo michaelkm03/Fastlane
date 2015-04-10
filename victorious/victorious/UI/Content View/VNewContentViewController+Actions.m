@@ -143,17 +143,22 @@
     
     if (self.viewModel.sequence.canRepost)
     {
-        NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
+        NSString *localizedRepostRepostedText = [self.viewModel.sequence.hasReposted boolValue] ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
                                                                actionIcon:[UIImage imageNamed:@"icon_repost"]
                                                                detailText:self.viewModel.repostCountText
-                                                                  enabled:!self.viewModel.hasReposted];
+                                                                  enabled:![self.viewModel.sequence.hasReposted boolValue]];
         repostItem.selectionHandler = ^(VActionItem *item)
         {
             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                                  dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
              {
+                 if (!authorized)
+                 {
+                     return;
+                 }
+                 
                  if ( !contentViewController.viewModel.hasReposted)
                  {
                      [actionSheetViewController setLoading:YES forItem:item];
@@ -224,11 +229,11 @@
                                                                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                                                                  {
                                                                      [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
-                                                                     [self.delegate newContentViewControllerDidDeleteContent:self];
+                                                                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                                  }
                                                                                                      failBlock:^(NSOperation *operation, NSError *error)
                                                                  {
-                                                                     [self.delegate newContentViewControllerDidDeleteContent:self];
+                                                                     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                                                  }];
                                                             }
                                                                      otherButtonTitlesAndBlocks:nil, nil];
@@ -266,7 +271,7 @@
 {
     if ([self.viewModel.sequence canRemix])
     {
-        NSString *remixActionTitle = NSLocalizedString(@"Remix", @"");
+        NSString *remixActionTitle = NSLocalizedString(@"RemixVerb", @"");
         if ([self.viewModel.sequence isVideo])
         {
             remixActionTitle = NSLocalizedString(@"GIF", @"");
@@ -280,8 +285,12 @@
             
             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                                  dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
              {
+                 if (!authorized)
+                 {
+                     return;
+                 }
                  [contentViewController dismissViewControllerAnimated:YES
                                                            completion:^
                   {

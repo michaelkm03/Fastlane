@@ -23,6 +23,8 @@
                  withTagRanges:(NSArray *)tagRanges
                     attributes:(NSDictionary *)attributes;
 
++ (NSArray *)detectHashTags:(NSString *)fieldText includeHashSymbol:(BOOL)includeHashSymbol;
+
 /**
  *  Find all hash tags within a given string.
  *

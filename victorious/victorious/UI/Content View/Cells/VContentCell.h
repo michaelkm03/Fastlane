@@ -8,6 +8,7 @@
 
 #import "VBaseCollectionViewCell.h"
 #import "VEndCardViewController.h"
+#import "VBackgroundContainer.h"
 
 @interface VContentCell : VBaseCollectionViewCell
 
@@ -73,5 +74,13 @@
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
 @property (nonatomic, strong) UIView *shrinkingContentView;
+
+/**
+ *  ATTENTION: This must be called on content cells to cleanup some internal state.
+ *
+ *  TODO: clean this up!
+ *
+ */
+- (void)cleanup;
 
 @end

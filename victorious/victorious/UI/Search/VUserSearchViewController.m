@@ -218,9 +218,13 @@ static const NSInteger kSearchResultLimit = 100;
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
     {
-        VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
+        if (!authorized)
+        {
+            return;
+        }
+        VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile dependencyManager:self.dependencyManager];
         [self.navigationController pushViewController:composeController animated:YES];
     }];
 }
@@ -341,7 +345,7 @@ static const NSInteger kSearchResultLimit = 100;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
                                                         message:error.localizedDescription
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                               otherButtonTitles:nil];
         [alert show];
     };
@@ -408,7 +412,7 @@ static const NSInteger kSearchResultLimit = 100;
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                      otherButtonTitles:nil];
         [alert show];
     };
@@ -439,8 +443,13 @@ static const NSInteger kSearchResultLimit = 100;
     {
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
          {
+             if (!authorized)
+             {
+                 return;
+             }
+             
              if ([mainUser.following containsObject:profile])
              {
                  [self unfollowFriendAction:profile];

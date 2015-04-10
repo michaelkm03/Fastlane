@@ -1,0 +1,59 @@
+//
+//  VDependencyManager+VBackgroundContainer.m
+//  victorious
+//
+//  Created by Michael Sena on 3/27/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
+//
+
+#import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VBackground.h"
+#import "VBackground.h"
+#import "UIView+AutoLayout.h"
+
+@implementation VDependencyManager (VBackgroundContainer)
+
+- (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundHost
+{
+    if (![backgroundHost respondsToSelector:@selector(backgroundContainerView)])
+    {
+        return;
+    }
+
+    [self addBackground:[self background]
+        asSubviewOfView:[backgroundHost backgroundContainerView]];
+}
+
+- (void)addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundContainer
+{
+    if (![backgroundContainer respondsToSelector:@selector(loadingBackgroundContainerView)])
+    {
+        return;
+    }
+    
+    [self addBackground:[self loadingBackground]
+        asSubviewOfView:[backgroundContainer loadingBackgroundContainerView]];
+}
+
+- (void)addBackground:(VBackground *)background
+      asSubviewOfView:(UIView *)containerView
+{
+    if (background == nil)
+    {
+        return;
+    }
+    
+    // We've already added a background do nothing
+    if (containerView.subviews.count > 0)
+    {
+        return;
+    }
+    
+    UIView *backgroundView = [background viewForBackground];
+    
+    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:backgroundView];
+    [containerView v_addFitToParentConstraintsToSubview:backgroundView];
+}
+
+@end

@@ -113,6 +113,7 @@ static NSString * const VConstantAppStoreURL = @"com.getvictorious.appstoreurl";
 
 //NOTE: If you add categories, add them all to the necessary C functions in this section
 static NSString * const   kVOwnerPollCategory          = @"owner_poll";
+static NSString * const   kVOwnerTextCategory          = @"owner_text";
 static NSString * const   kVOwnerImageCategory         = @"owner_image";
 static NSString * const   kVOwnerImageRepostCategory   = @"owner_image_repost";
 static NSString * const   kVOwnerImageQuoteCategory    = @"owner_image_secret";
@@ -125,6 +126,7 @@ static NSString * const   kVOwnerQuoteRepostCategory   = @"owner_secret_repost";
 static NSString * const   kVOwnerAnnouncementCategory  = @"owner_announcement";
 
 static NSString * const   kVUGCPollCategory            = @"ugc_poll";
+static NSString * const   kVUGCTextCategory            = @"ugc_text";
 static NSString * const   kVUGCImageCategory           = @"ugc_image";
 static NSString * const   kVUGCImageRepostCategory     = @"ugc_image_repost";
 static NSString * const   kVUGCImageQuoteCategory      = @"ugc_image_secret";

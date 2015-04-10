@@ -37,6 +37,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    title = NSLocalizedString(title, "");
     NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
     UIImage *icon = [dependencyManager imageForKey:kIconKey];
     UIImage *selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];

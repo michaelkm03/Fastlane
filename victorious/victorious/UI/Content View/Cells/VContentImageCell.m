@@ -16,12 +16,23 @@
 
 @implementation VContentImageCell
 
+#pragma mark - NSObject
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.shrinkingContentView = self.contentImageView;
+}
+
 #pragma mark - VSharedCollectionReusableViewMethods
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
 }
+
+#pragma mark - UIView
 
 - (void)setBounds:(CGRect)bounds
 {
@@ -36,13 +47,6 @@
         self.updatedImageBounds = YES;
         self.contentImageView.frame = bounds;
     }
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.shrinkingContentView = self.contentImageView;
 }
 
 @end

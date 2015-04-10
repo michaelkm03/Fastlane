@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -34,7 +34,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="KbT-8J-Bx0" firstAttribute="bottom" secondItem="Od3-Kk-qNW" secondAttribute="bottom" id="1K1-O7-v5V"/>
                             <constraint firstItem="KbT-8J-Bx0" firstAttribute="leading" secondItem="pdl-Z7-86h" secondAttribute="leading" id="OA5-FO-xep"/>
@@ -71,7 +71,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="36J-hZ-MxW" firstAttribute="bottom" secondItem="bJW-Xk-MbI" secondAttribute="bottom" id="Fd2-ia-MRt"/>
                             <constraint firstItem="36J-hZ-MxW" firstAttribute="bottom" secondItem="AKp-ON-QNR" secondAttribute="bottom" id="LEd-Ox-lD2"/>
@@ -122,6 +122,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="j2c-vu-8qs" secondAttribute="trailing" id="7eD-Qf-RDc"/>
                 <constraint firstItem="pdl-Z7-86h" firstAttribute="leading" secondItem="vZY-Jm-za8" secondAttribute="leading" id="7s8-Vf-KN9"/>
@@ -153,9 +154,10 @@
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
                 <outlet property="answerBVideoPlayerContainer" destination="AKp-ON-QNR" id="bGj-Sc-RLN"/>
                 <outlet property="numberOfVotersLabel" destination="cBg-45-xOC" id="N4P-Ky-CLK"/>
+                <outlet property="parallaxPatternView" destination="hiO-tg-gJb" id="O7W-ji-X58"/>
                 <outlet property="pollCountContainer" destination="MH8-gE-tUo" id="T54-j0-fKF"/>
             </connections>
-            <point key="canvasLocation" x="80" y="170"/>
+            <point key="canvasLocation" x="350" y="174"/>
         </collectionViewCell>
     </objects>
 </document>

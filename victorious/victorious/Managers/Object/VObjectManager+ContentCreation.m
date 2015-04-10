@@ -29,6 +29,7 @@
 #import "VMessage+RestKit.h"
 #import "VUser+Fetcher.h"
 #import "AVAsset+Orientation.h"
+#import "UIColor+VHex.h"
 
 @import AVFoundation;
 
@@ -72,6 +73,23 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 #pragma mark - Sequence Methods
+
+- (RKManagedObjectRequestOperation *)createTextPostWithText:(NSString *)textContent
+                                            backgroundColor:(UIColor *)backgroundColor
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
+{
+    NSParameterAssert( textContent.length > 0 );
+    
+    NSDictionary *parameters = @{ @"content" : textContent,
+                                  @"background_color" : [backgroundColor v_hexString] ?: @"" };
+    
+    return [self POST:@"/api/text/create"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail];
+}
 
 - (void)createPollWithName:(NSString *)name
                description:(NSString *)description

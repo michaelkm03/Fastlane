@@ -8,7 +8,7 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@class VNotAuthorizedProfileCollectionViewCell;
+@class VDependencyManager, VNotAuthorizedProfileCollectionViewCell;
 
 /**
  *  A delegate to inform about login requests.
@@ -33,5 +33,10 @@
  *  A delegate conforming to VNotAuthorizedProfileCollectionViewCellDelegate.
  */
 @property (nonatomic, weak) id <VNotAuthorizedProfileCollectionViewCellDelegate> delegate;
+
+/**
+ A source of style information for this cell
+ */
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

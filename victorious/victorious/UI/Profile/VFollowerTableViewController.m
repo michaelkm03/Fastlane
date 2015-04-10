@@ -134,7 +134,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
                                                         message:error.localizedDescription
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                               otherButtonTitles:nil];
         [alert show];
     };
@@ -201,7 +201,7 @@
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                      otherButtonTitles:nil];
         [alert show];
     };
@@ -235,8 +235,13 @@
         // Check for authorization first
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
          {
+             if (!authorized)
+             {
+                 return;
+             }
+             
              if ([mainUser.following containsObject:profile])
              {
                  [self unfollowFriendAction:profile];
@@ -252,8 +257,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser  *user = self.followers[indexPath.row];
-    VUserProfileViewController *profileVC   =   [VUserProfileViewController rootDependencyProfileWithUser:user];
+    VUser *user = self.followers[indexPath.row];
+    VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileVC animated:YES];
 }
 

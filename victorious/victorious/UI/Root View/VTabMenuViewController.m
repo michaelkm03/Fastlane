@@ -29,12 +29,8 @@ NSString * const kMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
 
-@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
-
 @property (nonatomic, strong) UITabBarController *internalTabBarViewController;
-
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
-
 @property (nonatomic, strong) VTabMenuShim *tabShim;
 
 @end
@@ -68,7 +64,7 @@ NSString * const kMenuKey = @"menu";
     self.internalTabBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // Configure Tab Bar
-    [self.internalTabBarViewController.tabBar setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
+    [self.internalTabBarViewController.tabBar setTintColor:self.tabShim.selectedIconColor];
     VBackground *backgroundForTabBar = self.tabShim.background;
     if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
     {

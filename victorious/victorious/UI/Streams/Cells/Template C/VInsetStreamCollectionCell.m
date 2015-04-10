@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <FBKVOController.h>
+
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager.h"
 #import "VInsetStreamCollectionCell.h"
@@ -22,6 +24,13 @@ static const CGFloat kTextViewInset = 22.0f; // Needs to be sum of textview inse
 // Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
 const CGFloat kInsetCellTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
+
+@interface VInsetStreamCollectionCell ()
+
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
+@property (nonatomic, weak) IBOutlet VStreamCellActionView *cellActionView;
+
+@end
 
 @implementation VInsetStreamCollectionCell
 
@@ -73,6 +82,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     };
 }
 
+- (VStreamCellActionView *)actionView
+{
+    return self.cellActionView;
+}
+
 - (NSString *)headerViewNibName
 {
     return @"VInsetStreamCellHeaderView";
@@ -108,6 +122,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
     [super setSequence:sequence];
     self.actionView.sequence = sequence;
     [self reloadCommentsCount];
@@ -121,13 +136,20 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     [self.actionView addShareButton];
     if ( [self.sequence canRemix] )
     {
-        [self.actionView addRemixButton];
+        BOOL isVideo = [self.sequence isVideo];
+        if ( [self.sequence isImage] || isVideo )
+        {
+            [self.actionView addMemeButton];
+        }
+        if ( isVideo )
+        {
+            [self.actionView addGifButton];
+        }
     }
-    if ( [self.sequence canRepost] )
+    if ( [self.sequence canRepost] || [self.sequence.hasReposted boolValue] )
     {
         [self.actionView addRepostButton];
     }
-    [self.actionView addMoreButton];
     
     [self.actionView updateLayoutOfButtons];
 }
@@ -148,6 +170,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
     [self.commentsLabel setText:commentsString];
     self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)loadingBackgroundContainerView
+{
+    return self.loadingBackgroundContainer;
 }
 
 @end

@@ -34,6 +34,7 @@
 #import "VContentCommentsCell.h"
 #import "VHistogramCell.h"
 #import "VExperienceEnhancerBarCell.h"
+#import "VContentTextCell.h"
 
 // Supplementary Views
 #import "VSectionHandleReusableView.h"
@@ -99,10 +100,12 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
+#import "VNode+Fetcher.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
-static NSString * const kViewModelKey = @"contentViewViewModel";
+
+static NSString * const kPollBallotIconKey = @"orIcon";
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate>
 
@@ -125,6 +128,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 @property (nonatomic, weak) VHistogramCell *histogramCell;
 @property (nonatomic, weak) VContentPollCell *pollCell;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
+@property (nonatomic, weak) VContentTextCell *textCell;
 
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
@@ -185,18 +189,11 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     return contentViewController;
 }
 
-#pragma mark - VHasManagedDependencies Factory Method
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VContentViewViewModel *viewModel = [dependencyManager templateValueOfType:[VContentViewViewModel class] forKey:kViewModelKey];
-    return [self contentViewControllerWithViewModel:viewModel dependencyManager:dependencyManager];
-}
-
 #pragma mark - Dealloc
 
 - (void)dealloc
 {
+    [self.contentCell cleanup];
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -404,7 +401,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     
     if (self.viewModel.sequence.canComment)
     {
-        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
+        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         inputAccessoryView.returnKeyType = UIReturnKeyDone;
         inputAccessoryView.delegate = self;
@@ -448,6 +445,8 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     // Register nibs
     [self.contentCollectionView registerNib:[VContentCell nibForCell]
                  forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
+    [self.contentCollectionView registerNib:[VContentTextCell nibForCell]
+                 forCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentVideoCell nibForCell]
                  forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
@@ -681,8 +680,12 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 - (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
 {
     __weak typeof(self) welf = self;
-    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^
+    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          // Use the provided index path of the selected emotive ballistic that trigger the notificiation
          // to perform the authorized action once authorization is successful
          NSIndexPath *experienceEnhancerIndexPath = notification.userInfo[ @"experienceEnhancerIndexPath" ];
@@ -715,7 +718,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 - (IBAction)pressedClose:(id)sender
 {
     [self removeCollectionViewFromContainer];
-    [self.delegate newContentViewControllerDidClose:self];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private Mehods
@@ -727,8 +730,9 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
     self.contentCollectionView.delegate = nil;
     self.contentCollectionView.dataSource = nil;
-    self.videoCell.delegate = nil;
-    self.videoCell.adPlayerViewController = nil;
+
+    [self.videoCell prepareForRemoval];
+    
     [self.contentCollectionView removeFromSuperview];
 }
 
@@ -777,6 +781,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
 - (void)configureCommentCell:(VContentCommentsCell *)commentCell
                    withIndex:(NSInteger)index
 {
+    commentCell.dependencyManager = self.dependencyManager;
     commentCell.comment = self.viewModel.comments[index];
     commentCell.commentAndMediaView.textView.tagTapDelegate = self;
     commentCell.swipeViewController.controllerDelegate = self;
@@ -793,7 +798,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:wCommentCell.comment.user];
+        VUserProfileViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -803,7 +808,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else
@@ -949,6 +954,16 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
                 return videoCell;
             }
+            case VContentViewTypeText:
+            {
+                VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
+                                                                                       forIndexPath:indexPath];
+                textCell.dependencyManager = self.dependencyManager;
+                UIColor *backgroundColor = self.viewModel.textBackgroundColor ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+                [textCell setTextContent:self.viewModel.textContent withBackgroundColor:backgroundColor];
+                self.contentCell = textCell;
+                return textCell;
+            }
             case VContentViewTypePoll:
             {
                 VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
@@ -965,7 +980,6 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 }
                 __weak typeof(pollCell) weakPollCell = pollCell;
                 __weak typeof(self) welf = self;
-                
                 pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
                     NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
@@ -997,7 +1011,8 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
             {
                 VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
                                                                  forIndexPath:indexPath];
-                questionCell.question = self.viewModel.sequence.name;
+                questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
+                                                                        attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
                 return questionCell;
             }
             
@@ -1022,14 +1037,20 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                     self.ballotCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]
                                                                                 forIndexPath:indexPath];
                 }
-                self.ballotCell.answerA = self.viewModel.answerALabelText;
-                self.ballotCell.answerB = self.viewModel.answerBLabelText;
+
+                self.ballotCell.answerA = [[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.answerB = [[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
                 
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)
                 {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^
+                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
                     {
+                        if (!authorized)
+                        {
+                            return;
+                        }
+                        
                         [welf.viewModel answerPollWithAnswer:VPollAnswerA
                                                   completion:^(BOOL succeeded, NSError *error)
                          {
@@ -1040,8 +1061,13 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                 };
                 self.ballotCell.answerBSelectionHandler = ^(void)
                 {
-                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^
+                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^(BOOL authorized)
                      {
+                         if (!authorized)
+                         {
+                             return;
+                         }
+                         
                          [welf.viewModel answerPollWithAnswer:VPollAnswerB
                                                    completion:^(BOOL succeeded, NSError *error)
                           {
@@ -1192,12 +1218,16 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                     return [VContentVideoCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypePoll:
                     return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                case VContentViewTypeText:
+                    return [VContentTextCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
         }
         case VContentViewSectionHistogramOrQuestion:
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                CGSize ret = [VContentPollQuestionCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                CGSize ret = [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
+                                                                   attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
+                                                                  maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];
                 return  ret;
             }
             return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
@@ -1205,7 +1235,12 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                return [VContentPollBallotCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+                CGSize sizedBallot = [VContentPollBallotCell actualSizeWithAnswerA:[[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText
+                                                                                                                   attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
+                                                                           answerB:[[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText
+                                                                                                                   attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
+                                                                       maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
+                return sizedBallot;
             }
             return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
         }
@@ -1215,7 +1250,8 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
             VComment *comment = self.viewModel.comments[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                       commentBody:comment.text
-                                                      andHasMedia:comment.hasMedia];
+                                                         hasMedia:comment.hasMedia
+                                                dependencyManager:self.dependencyManager];
             return CGSizeMake( minBound, size.height );
         }
         case VContentViewSectionCount:
@@ -1276,7 +1312,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
 {
-    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo )
+    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
     }
@@ -1288,7 +1324,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     [UIViewController attemptRotationToDeviceOrientation];
-    if ( !self.hasAutoPlayed )
+    if (!self.hasAutoPlayed)
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
@@ -1337,8 +1373,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
+         
          [welf submitCommentWithText:inputAccessoryView.composedText];
          
          [inputAccessoryView clearTextAndResign];
@@ -1362,8 +1403,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          [welf addMediaToComment];
      }];
 }
@@ -1390,8 +1435,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
     
     __weak typeof(self) welf = self;
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         if (!authorized)
+         {
+             return;
+         }
          welf.enteringRealTimeComment = YES;
          welf.realtimeCommentBeganTime = welf.videoCell.currentTime;
      }];
@@ -1688,7 +1737,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                                              depenencyManager:self.dependencyManager];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
-    contentViewController.delegate = self.delegate;
     
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
@@ -1753,17 +1801,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
 {
     return NO;
-}
-
-@end
-
-#pragma mark - 
-
-@implementation VDependencyManager (VNewContentViewController)
-
-- (VNewContentViewController *)contentViewControllerForKey:(NSString *)key withViewModel:(VContentViewViewModel *)viewModel
-{
-    return [self templateValueOfType:[VNewContentViewController class] forKey:key withAddedDependencies:@{ kViewModelKey: viewModel }];
 }
 
 @end

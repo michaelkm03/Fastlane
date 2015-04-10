@@ -11,6 +11,9 @@
 #import "VStreamCollectionCellPoll.h"
 #import "VStreamCollectionCellWebContent.h"
 #import "VTitleOverlayStreamCellFactory.h"
+#import "VDependencyManager+VBackgroundContainer.h"
+#import "VBackground.h"
+#import "UIView+AutoLayout.h"
 
 @interface VTitleOverlayStreamCellFactory ()
 
@@ -55,6 +58,7 @@
         VStreamCollectionCellWebContent *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         cell.sequence = sequence;
+        [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
         return cell;
     }
     else
@@ -64,6 +68,8 @@
     }
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
+    
     return cell;
 }
 

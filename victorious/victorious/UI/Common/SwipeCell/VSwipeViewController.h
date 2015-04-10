@@ -93,7 +93,7 @@
 /**
  This view controller's view property typed to its custom class.
  */
-@property (nonatomic, readonly) VSwipeView *swipeView;
+@property (nonatomic, weak, readonly) VSwipeView *swipeView;
 
 /**
  Delegate that provides support and handles events for things that are common to all cells.
@@ -110,6 +110,6 @@
  to allow tableview or collection view cell implementors to hit test it for touches
  that are beyond the bounds of the cell.
  */
-@property (nonatomic, readonly) UIView *utilityButtonsContainer;
+@property (nonatomic, weak, readonly) UIView *utilityButtonsContainer;
 
 @end

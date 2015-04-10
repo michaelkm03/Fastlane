@@ -9,19 +9,25 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDependencyManager+VNavigationItem.h"
-#import "VMultipleContainerChild.h"
+#import "VMultipleContainer.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
 #import "VStreamCollectionViewController.h"
+#import "VAuthorizationContext.h"
+#import "VNavigationDestination.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
+@property (nonatomic) NSUInteger selectedIndex;
+@property (nonatomic) NSInteger badgeNumber;
+@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -38,6 +44,7 @@ static NSString * const kInitialKey = @"initial";
     if (self)
     {
         _didShowInitial = NO;
+        _selectedIndex = 0;
         CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
         self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
@@ -58,7 +65,21 @@ static NSString * const kInitialKey = @"initial";
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
         [_dependencyManager addPropertiesToNavigationItem:self.navigationItem];
-        self.title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
+        
+        __weak typeof(self) weakSelf = self;
+        VNavigationMenuItemBadgeNumberUpdateBlock block = ^(NSInteger badgeNumber)
+        {
+            [weakSelf updateBadge];
+        };
+        for (UIViewController *vc in _viewControllers)
+        {
+            if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+            {
+                UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
+                viewController.badgeNumberUpdateBlock = block;
+            }
+        }
     }
     return self;
 }
@@ -105,7 +126,6 @@ static NSString * const kInitialKey = @"initial";
         if ( initialViewController != nil )
         {
             NSUInteger index = [self.viewControllers indexOfObject:initialViewController];
-        
             if ( index == NSNotFound )
             {
                 index = 0;
@@ -138,8 +158,8 @@ static NSString * const kInitialKey = @"initial";
 {
     [super viewDidAppear:animated];
     
-    id<VMultipleContainerChild> viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
-    [viewController viewControllerSelected:YES];
+    id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
+    [child multipleContainerDidSetSelected:YES];
 }
 
 #pragma mark - Rotation
@@ -164,7 +184,7 @@ static NSString * const kInitialKey = @"initial";
          NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] );
          
          id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
-         child.multipleViewControllerChildDelegate = self;
+         child.multipleContainerChildDelegate = self;
     }];
     
     _viewControllers = [viewControllers copy];
@@ -185,11 +205,81 @@ static NSString * const kInitialKey = @"initial";
     }];
 }
 
+#pragma mark - Badges
+
+- (void)setBadgeNumber:(NSInteger)badgeNumber
+{
+    if ( badgeNumber == _badgeNumber )
+    {
+        return;
+    }
+    _badgeNumber = badgeNumber;
+    
+    if ( self.badgeNumberUpdateBlock != nil )
+    {
+        self.badgeNumberUpdateBlock(self.badgeNumber);
+    }
+}
+
+- (void)updateBadge
+{
+    NSInteger count = 0;
+    for (UIViewController *vc in _viewControllers)
+    {
+        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
+            count += viewController.badgeNumber;
+        }
+    }
+    self.badgeNumber = count;
+}
+
+#pragma mark - VMultipleContainer
+
+- (NSArray *)children
+{
+    return self.viewControllers;
+}
+
+- (void)selectChild:(id<VMultipleContainerChild>)child
+{
+    NSUInteger index = [self.viewControllers indexOfObject:child];
+    if ( index == NSNotFound )
+    {
+        index = 0;
+    }
+    [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
+    [self.selector setActiveViewControllerIndex:index];
+}
+
 #pragma mark - VMultipleContainerChildDelegate
 
 - (UINavigationItem *)parentNavigationItem
 {
     return self.navigationItem;
+}
+
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VAuthorizationContextProvider)])
+    {
+        UIViewController<VAuthorizationContextProvider> *viewController = self.viewControllers[self.selectedIndex];
+        return [viewController requiresAuthorization];
+    }
+    return NO;
+}
+
+- (VAuthorizationContext)authorizationContext
+{
+    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VAuthorizationContextProvider)])
+    {
+        UIViewController<VAuthorizationContextProvider> *viewController = self.viewControllers[self.selectedIndex];
+        return [viewController authorizationContext];
+    }
+    return VAuthorizationContextDefault;
 }
 
 #pragma mark -
@@ -201,13 +291,24 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
-    [self resetNavigationItem];
+    self.selectedIndex = index;
+    [self resetNavigationItemForIndex:index];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
     id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
-    [viewController viewControllerSelected:isDefaultSelection];
+    [viewController multipleContainerDidSetSelected:isDefaultSelection];
+}
+
+- (void)resetNavigationItemForIndex:(NSUInteger)index
+{
+    [self resetNavigationItem];
+    UIViewController<VMultipleContainerChild> *viewController = self.viewControllers[ index ];
+    if ([viewController.navigationItem.rightBarButtonItems count] > 0)
+    {
+        self.navigationItem.rightBarButtonItems = viewController.navigationItem.rightBarButtonItems;
+    }
 }
 
 - (void)resetNavigationItem

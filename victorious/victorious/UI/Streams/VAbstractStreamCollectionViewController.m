@@ -55,7 +55,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 @implementation VAbstractStreamCollectionViewController
 
-@synthesize multipleViewControllerChildDelegate;
+@synthesize multipleContainerChildDelegate;
 
 #pragma mark - Init & Dealloc
 
@@ -113,6 +113,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
+    self.collectionView.alwaysBounceVertical = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -181,7 +182,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 #pragma mark - VMultipleContainerChild protocol
 
-- (void)viewControllerSelected:(BOOL)isDefault
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
     if ( isDefault )
     {
@@ -194,7 +195,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
         NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
         
-        [self.streamTrackingHelper viewControllerSelected:self.currentStream];
+        [self.streamTrackingHelper multipleContainerDidSetSelected:self.currentStream];
     }
     
     [self updateUserPostAllowed];

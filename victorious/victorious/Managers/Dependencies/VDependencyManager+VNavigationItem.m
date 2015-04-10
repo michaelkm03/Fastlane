@@ -10,7 +10,7 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VNavigationMenuItem.h"
 #import "VNavigationDestination.h"
-#import "VRootViewController.h"
+
 #import <Objc/runtime.h>
 
 NSString * const VDependencyManagerTitleImageKey = @"titleImage";
@@ -31,7 +31,7 @@ static const char kAssociatedObjectKey;
     NSString *title = [self stringForKey:VDependencyManagerTitleKey];
     if ( title != nil )
     {
-        navigationItem.title = title;
+        navigationItem.title = NSLocalizedString(title, @"");
     }
     
     UIImage *titleImage = [self imageForKey:VDependencyManagerTitleImageKey];

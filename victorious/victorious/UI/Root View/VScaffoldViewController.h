@@ -20,16 +20,6 @@
 extern NSString * const VScaffoldViewControllerMenuComponentKey;
 
 /**
- The key that identifies the content view component in VDependencyManager
- */
-extern NSString * const VScaffoldViewControllerContentViewComponentKey;
-
-/**
- The key that identifies the profile view component in VDependencyManager
- */
-extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
-
-/**
  The key that identifies the welcome view component in the VDependencyManager
  */
 extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
@@ -46,6 +36,8 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
 @interface VScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
+@property (nonatomic, assign, readonly) BOOL hasBeenShown;
 
 /**
  Initializes the receiver with an instance of VDependencyManager
@@ -67,11 +59,6 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
                 is no comment, simply pass `nil`.
  */
 - (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage;
-
-/**
- Navigates to the view controller pointed to by the given URL
- */
-- (void)navigateToDeeplinkURL:(NSURL *)url;
 
 /**
  Subclasses should override this and return a list of navigation destinations

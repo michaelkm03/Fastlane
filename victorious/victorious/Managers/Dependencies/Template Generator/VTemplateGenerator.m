@@ -67,11 +67,17 @@ static NSString * const kAlphaKey = @"alpha";
 static NSString * const kScreensKey = @"screens";
 static NSString * const kSelectorKey =  @"selector";
 static NSString * const kTitleImageKey = @"titleImage";
+static NSString * const kContentView = @"contentView";
+static NSString * const kUserProfileView = @"userProfileView";
 
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
+static NSString * const kColorKey = @"color";
+static NSString * const kColorOptionsKey = @"colorOptions";
+static NSString * const kDefaultTextKey = @"defaultText";
+static NSString * const kCharacterLimit = @"characterLimit";
 
 // Text properties
 static NSString * const kFontNameKey = @"fontName";
@@ -110,6 +116,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 @property (nonatomic) VTemplateType enabledTemplate;
 @property (nonatomic, strong) NSString *firstMenuItemID;
 @property (nonatomic, strong) NSString *homeRecentID;
+@property (nonatomic, strong) NSString *inboxRecentID;
 @property (nonatomic, strong) NSString *communityRecentID;
 @property (nonatomic, strong) NSDictionary *accentColor;
 
@@ -125,6 +132,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         _dataFromInitCall = initData;
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
         _homeRecentID = [[NSUUID UUID] UUIDString];
+        _inboxRecentID = [[NSUUID UUID] UUIDString];
         _communityRecentID = [[NSUUID UUID] UUIDString];
         
         //Adjust templateType (between C and D on dev) here
@@ -190,7 +198,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
-                                                                  VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                  kUserProfileView: [self profileScreen],
                                                                   VScaffoldViewControllerFirstTimeContentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   @"appearance": @{
@@ -202,7 +210,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                           kBlueKey: @66,
                                                                           kAlphaKey: @1
                                                                           },
-                                                                  VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
+                                                                  kContentView: [self contentViewComponent],
                                                                   };
     }
     else
@@ -214,14 +222,15 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                    VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.enabledTemplate == VTemplateTypeC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
-                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                   kUserProfileView: [self profileScreen],
                                                                    VScaffoldViewControllerFirstTimeContentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
-                                                                   VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
+                                                                   kContentView: [self contentViewComponent],
                                                                    };
     }
 
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
+    template[VDependencyManagerTextWorkspaceFlowKey] = [self textWorkspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
     template[@"vote_types"] = [self voteTypes];
@@ -285,6 +294,22 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              kClassNameKey: @"workspace",
              VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
              VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
+             };
+}
+
+- (NSDictionary *)textWorkspaceFlowComponent
+{
+    return @{
+             kClassNameKey: @"workspaceText",
+             kCharacterLimit: @140,
+             kDefaultTextKey: @"Type your text here!",
+             VDependencyManagerEditTextWorkspaceKey: @{
+                     kClassNameKey: @"workspace.screen",
+                     kToolsKey: @[
+                             [self hashtagTool],
+                             [self colorTool]
+                             ]
+                     },
              };
 }
 
@@ -393,6 +418,116 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                      [self textTool],
                      [self filterTool],
                      [self cropTool],
+                     ]
+             };
+}
+
+- (NSDictionary *)hashtagTool
+{
+    return @{
+             kClassNameKey: @"hashtag.tool",
+             kTitleKey: @"hashtag",
+             kFilterIndexKey: @0,
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"hashtagIcon",
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: @"hashtagIcon_selected",
+                     },
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.multiplePicker"
+                     }
+             };
+}
+
+- (NSDictionary *)colorTool
+{
+    return @{
+             kClassNameKey: @"textColor.tool",
+             kTitleKey: @"color",
+             kFilterIndexKey: @1,
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"textColorIcon",
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: @"textColorIcon_selected",
+                     },
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.picker"
+                     },
+             kColorOptionsKey : @[
+                     @{ kTitleKey : @"Red",
+                        kColorKey: @{
+                                kRedKey: @181,
+                                kGreenKey: @35,
+                                kBlueKey: @48,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Magenta",
+                        kColorKey: @{
+                                kRedKey: @233,
+                                kGreenKey: @89,
+                                kBlueKey: @106,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Orange",
+                        kColorKey: @{
+                                kRedKey: @233,
+                                kGreenKey: @112,
+                                kBlueKey: @71,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Peach",
+                        kColorKey: @{
+                                kRedKey: @247,
+                                kGreenKey: @200,
+                                kBlueKey: @99,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Yellow",
+                        kColorKey: @{
+                                kRedKey: @233,
+                                kGreenKey: @167,
+                                kBlueKey: @33,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Green",
+                        kColorKey: @{
+                                kRedKey: @134,
+                                kGreenKey: @199,
+                                kBlueKey: @121,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Teal",
+                        kColorKey: @{
+                                kRedKey: @22,
+                                kGreenKey: @160,
+                                kBlueKey: @160,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Blue",
+                        kColorKey: @{
+                                kRedKey: @60,
+                                kGreenKey: @129,
+                                kBlueKey: @195,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Purple",
+                        kColorKey: @{
+                                kRedKey: @102,
+                                kGreenKey: @71,
+                                kBlueKey: @156,
+                                kAlphaKey: @1.0f }
+                        },
+                     @{ kTitleKey : @"Black",
+                        kColorKey: @{
+                                kRedKey: @44,
+                                kGreenKey: @39,
+                                kBlueKey: @35,
+                                kAlphaKey: @1.0f }
+                        }
                      ]
              };
 }
@@ -681,19 +816,28 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 
 - (NSDictionary *)inboxMenuItem
 {
-    return @{
-             kIdentifierKey: @"Menu Inbox",
-             kTitleKey: NSLocalizedString(@"Inbox", @""),
-             kIconKey: @{
-                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox", TEMPLATE_ICON_PREFIX],
-                     },
-             kSelectedIconKey: @{
-                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
-                     },
-             kDestinationKey: @{
-                     kClassNameKey: @"inbox.screen"
-                     }
-             };
+    
+    return @{ kIdentifierKey: @"Menu Inbox",
+              kTitleKey: NSLocalizedString(@"Inbox", @""),
+              kIconKey: @{
+                      VDependencyManagerImageURLKey: @"D_inbox",
+                      },
+              kCellComponentDirectoryItem: [self directoryCellComponentLight],
+              kDestinationKey: @{
+                      kClassNameKey: @"basic.multiScreen",
+                      kTitleKey: NSLocalizedString(@"Inbox", @""),
+                      kScreensKey: @[
+                              @{
+                                  kClassNameKey: @"inbox.screen",
+                                  kTitleKey: NSLocalizedString(@"Messages", @""),
+                                  },
+                              @{
+                                  kClassNameKey: @"notifications.screen",
+                                  kTitleKey: NSLocalizedString(@"Notifications", @""),
+                                  }
+                              ]
+                      },
+              };
 }
 
 - (NSDictionary *)settingsMenuItem

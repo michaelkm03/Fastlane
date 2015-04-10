@@ -6,39 +6,34 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "NSURL+VPathHelper.h"
-#import "VContentViewViewModel.h"
+#import <MBProgressHUD/MBProgressHUD.h>
+
+#import "VContentViewFactory.h"
 #import "VDeeplinkHandler.h"
-#import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
-#import "VNewContentViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
 #import "VScaffoldViewController.h"
 #import "VSequence+Fetcher.h"
 #import "VComment.h"
 #import "VTracking.h"
-#import "VWebBrowserViewController.h"
 #import "VLightweightContentViewController.h"
-#import "VNavigationController.h"
 #import "VFirstTimeInstallHelper.h"
 #import "VAuthorizedAction.h"
+#import "VAuthorizationContextProvider.h"
 #import "VPushNotificationManager.h"
-
-#import <MBProgressHUD.h>
+#import "VContentDeepLinkHandler.h"
+#import "VMultipleContainer.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
-NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
-NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
-static NSString * const kContentDeeplinkURLHostComponent = @"content";
-static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
-
-@interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLightweightContentViewControllerDelegate>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
+@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
+@property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 
 @end
 
@@ -60,6 +55,17 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 {
     [super viewDidAppear:animated];
     
+    if ( !self.hasBeenShown )
+    {
+        self.hasBeenShown = YES;
+        [self viewDidAppearFirstTime];
+    }
+}
+
+#pragma mark - First appearance (i.e. when app loads and first presents views from template)
+
+- (void)viewDidAppearFirstTime
+{
     BOOL didShow = [self showFirstTimeUserExperience];
     if ( !self.pushNotificationsRegistered && !didShow )
     {
@@ -110,57 +116,27 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 #pragma mark - Content View
 
-- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage
+- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    if ( [sequence isWebContent] )
-    {
-        [self showWebContentWithSequence:sequence];
-        return;
-    }
-
-    if ( self.presentedViewController )
-    {
-        [self dismissViewControllerAnimated:NO completion:nil];
-    }
-
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence depenencyManager:self.dependencyManager];
-    contentViewModel.deepLinkCommentId = commentId;
-    VNewContentViewController *contentViewController = [self.dependencyManager contentViewControllerForKey:VScaffoldViewControllerContentViewComponentKey withViewModel:contentViewModel];
-    contentViewController.placeholderImage = placeHolderImage;
-    contentViewController.delegate = self;
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
     
-    if ( contentViewController == nil )
+    NSString *reason = nil;
+    if ( ![contentViewFactory canDisplaySequence:sequence localizedReason:&reason] )
     {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:reason preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
-    VNavigationController *contentNav = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-    contentNav.innerNavigationController.viewControllers = @[contentViewController];
-    contentNav.innerNavigationController.navigationBarHidden = YES;
-    [self presentViewController:contentNav animated:YES completion:nil];
-}
-
-- (void)showWebContentWithSequence:(VSequence *)sequence
-{
-    NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
-    const BOOL isCustomScheme = [sequenceContentURL.scheme rangeOfString:@"http"].location != 0;
-    if ( isCustomScheme && [[UIApplication sharedApplication] canOpenURL:sequenceContentURL] )
+    
+    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence commentID:commentID placeholderImage:placeholderImage];
+    if ( contentView != nil )
     {
-        [[UIApplication sharedApplication] openURL:sequenceContentURL];
-    }
-    else
-    {
-        VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromStoryboard];
-        viewController.sequence = sequence;
-        [self presentViewController:viewController
-                           animated:YES
-                         completion:^(void)
-         {
-             // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-             NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                                       VTrackingKeySequenceId : sequence.remoteId,
-                                       VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
-             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-         }];
+        if ( self.presentedViewController )
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
+        [self presentViewController:contentView animated:YES completion:nil];
     }
 }
 
@@ -176,113 +152,23 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Deeplinks
+#pragma mark - Authorized actions
 
-- (void)navigateToDeeplinkURL:(NSURL *)url
+- (VAuthorizedAction *)authorizedAction
 {
-    if ( self.presentedViewController != nil )
+    if ( _authorizedAction == nil )
     {
-        [self dismissViewControllerAnimated:YES completion:^(void)
-        {
-            [self navigateToDeeplinkURL:url];
-        }];
-        return;
+        _authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                           dependencyManager:self.dependencyManager];
     }
-
-    if ( [self displayContentViewForDeeplinkURL:url] )
-    {
-        return;
-    }
-    else
-    {
-        __block MBProgressHUD *hud;
-        VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
-        {
-            [hud hide:YES];
-            if ( viewController == nil )
-            {
-                [self showBadDeeplinkError];
-            }
-            else
-            {
-                [self navigateToDestination:viewController];
-            }
-        };
-
-        NSArray *possibleHandlers = [self navigationDestinations];
-        for (id<VDeeplinkHandler> handler in possibleHandlers)
-        {
-            if ( [handler conformsToProtocol:@protocol(VDeeplinkHandler)] )
-            {
-                if ( [handler displayContentForDeeplinkURL:url completion:completion] )
-                {
-                    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    return;
-                }
-            }
-        }
-    }
-    [self showBadDeeplinkError];
+    return _authorizedAction;
 }
 
-/**
- Displays a content view for deeplink URLs that point to content views.
+#pragma mark - VDeeplinkSupporter
 
- @return YES if the given URL was a content URL, or NO if it was
-         some other kind of deep link.
- */
-- (BOOL)displayContentViewForDeeplinkURL:(NSURL *)url
+- (id<VDeeplinkHandler>)deepLinkHandler
 {
-    if ( ![url.host isEqualToString:kContentDeeplinkURLHostComponent] && ![url.host isEqualToString:kCommentDeeplinkURLHostComponent] )
-    {
-        return NO;
-    }
-
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-
-    NSString *sequenceID = [url v_firstNonSlashPathComponent];
-    if ( sequenceID == nil )
-    {
-        return NO;
-    }
-    
-    NSNumber *commentId = nil;
-    NSString *commentIDString = [url v_pathComponentAtIndex:2];
-    if ( commentIDString != nil )
-    {
-        commentId = @([commentIDString integerValue]);
-    }
-
-    [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
-                                                 successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [hud hide:YES];
-        VSequence *sequence = (VSequence *)[resultObjects firstObject];
-        [self showContentViewWithSequence:sequence commentId:commentId placeHolderImage:nil];
-    }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-    {
-        [hud hide:YES];
-        VLog(@"Failed with error: %@", error);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                        message:NSLocalizedString(@"Missing Content Message", nil)
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                              otherButtonTitles:nil];
-        [alert show];
-    }];
-
-    return YES;
-}
-
-- (void)showBadDeeplinkError
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                    message:NSLocalizedString(@"Missing Content Message", nil)
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                          otherButtonTitles:nil];
-    [alert show];
+    return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - Navigation
@@ -294,76 +180,92 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination
 {
-    [self navigateToDestination:navigationDestination completion:nil];
+    [self navigateToDestination:navigationDestination
+                     completion:nil];
 }
 
-- (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion
+- (void)navigateToDestination:(id)navigationDestination
+                   completion:(void(^)())completion
 {
-    void (^performNavigation)(UIViewController *) = ^(UIViewController *viewController)
+    [self checkAuthorizationOnNavigationDestination:navigationDestination
+                                         completion:^(BOOL shouldNavigate)
+     {
+         if (shouldNavigate)
+         {
+             [self _navigateToDestination:navigationDestination
+                               completion:completion];
+         }
+     }];
+}
+
+- (void)checkAuthorizationOnNavigationDestination:(id)navigationDestination
+                                       completion:(void(^)(BOOL shouldNavigate))completion
+{
+    NSAssert(completion != nil, @"We need a completion to inform about the authorization check success!");
+    
+    if ([navigationDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)])
     {
-        UIViewController *alternateDestination = nil;
-        BOOL shouldNavigateToAlternateDestination = NO;
-
-        if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+        id <VAuthorizationContextProvider> authorizationContextProvider = (id <VAuthorizationContextProvider>)navigationDestination;
+        BOOL requiresAuthoriztion = [authorizationContextProvider requiresAuthorization];
+        if (requiresAuthoriztion)
         {
-            shouldNavigateToAlternateDestination = [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination];
-            if (!shouldNavigateToAlternateDestination)
-            {
-                if (completion != nil)
-                {
-                    completion();
-                }
-                return;
-            }
-        }
-
-        if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
-        {
-            [self navigateToDestination:alternateDestination completion:completion];
+            VAuthorizationContext context = [authorizationContextProvider authorizationContext];
+            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager];
+            [authorizedAction performFromViewController:self context:context completion:^(BOOL authorized)
+             {
+                 completion(authorized);
+             }];
         }
         else
         {
-            NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-            [self displayResultOfNavigation:viewController];
-
-            if ( completion != nil )
-            {
-                completion();
-            }
+            completion(YES);
         }
-    };
-
-    if ([navigationDestination respondsToSelector:@selector(authorizationContext)] )
-    {
-        VAuthorizationContext context = [navigationDestination authorizationContext];
-        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                        dependencyManager:self.dependencyManager];
-        [authorizedAction performFromViewController:self context:context completion:^
-         {
-            performNavigation(navigationDestination);
-        }];
     }
     else
     {
-        performNavigation(navigationDestination);
+        completion(YES);
+    }
+}
+
+- (void)_navigateToDestination:(id)navigationDestination
+                   completion:(void(^)())completion
+{
+    UIViewController *alternateDestination = nil;
+    BOOL shouldNavigateToAlternateDestination = NO;
+    
+    if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    {
+        shouldNavigateToAlternateDestination = [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination];
+        if (!shouldNavigateToAlternateDestination)
+        {
+            if (completion != nil)
+            {
+                completion();
+            }
+            return;
+        }
+    }
+    
+    if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
+    {
+        [self navigateToDestination:alternateDestination completion:completion];
+    }
+    else
+    {
+        NSAssert([navigationDestination isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+        [self displayResultOfNavigation:navigationDestination];
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
     }
 }
 
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
-}
-
-#pragma mark - VNewContentViewControllerDelegate methods
-
-- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

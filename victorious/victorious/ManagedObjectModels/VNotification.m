@@ -11,13 +11,19 @@
 #import "VMessage.h"
 #import "VUser.h"
 
-
 @implementation VNotification
 
+@dynamic body;
+@dynamic deepLink;
+@dynamic isRead;
 @dynamic notifyType;
 @dynamic postedAt;
-@dynamic userId;
 @dynamic remoteId;
+@dynamic subject;
+@dynamic userId;
+@dynamic imageURL;
+@dynamic createdAt;
+
 @dynamic user;
 @dynamic message;
 @dynamic comment;

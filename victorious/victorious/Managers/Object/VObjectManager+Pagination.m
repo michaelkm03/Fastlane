@@ -12,6 +12,7 @@
 
 #import "VPaginationManager.h"
 #import "VUser.h"
+#import "VURLMacroReplacement.h"
 #import "VSequence.h"
 #import "VComment.h"
 #import "VMessage.h"
@@ -24,6 +25,8 @@
 
 #import "NSCharacterSet+VURLParts.h"
 #import "NSString+VParseHelp.h"
+#import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
@@ -169,7 +172,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        NSString *apiPath = [NSString stringWithFormat:@"/api/message/notification_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+        NSString *apiPath = [NSString stringWithFormat:@"/api/notification/notifications_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
         VAbstractFilter *listFilter = [self.paginationManager filterForPath:apiPath
                                                                  entityName:[VAbstractFilter entityName]
                                                        managedObjectContext:context];
@@ -177,6 +180,26 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         requestOperation = [self.paginationManager loadFilter:listFilter withPageType:pageType successBlock:success failBlock:fail];
     }];
     return requestOperation;
+}
+
+- (RKManagedObjectRequestOperation *)markAllNotificationsRead:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/notification/mark_all_notifications_read"
+               object:nil
+           parameters:@{}
+         successBlock:success
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)notificationsCount:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail
+{
+    return [self GET:@"/api/notification/unread_notification_count"
+               object:nil
+           parameters:@{}
+         successBlock:success
+            failBlock:fail];
 }
 
 #pragma mark - Conversations
@@ -292,7 +315,12 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
     };
     
-    return [self GET:[conversation.filterAPIPath stringByAppendingFormat:@"/1/%ld", (long)conversation.perPageNumber.integerValue]
+    NSDictionary *macroReplacements = @{ VPaginationManagerItemsPerPageMacro: [conversation.perPageNumber stringValue],
+                                         VPaginationManagerPageNumberMacro: @"1",
+                                      };
+    VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
+    
+    return [self GET:[macroReplacement urlByReplacingMacrosFromDictionary:macroReplacements inURLString:conversation.filterAPIPath]
               object:nil
           parameters:nil
         successBlock:fullSuccessBlock
@@ -416,12 +444,24 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
-        for (VStreamItem *streamItem in resultObjects)
+        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
+        
+        VStream *fullStream = [resultObjects lastObject];
+
+        //Strip the marqueeItems and streamItems from the newly returned stream
+        for (VStreamItem *marqueeItem in fullStream.marqueeItems )
+        {
+            VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
+            [marqueeItems addObject:streamItemInContext];
+        }
+        
+        for (VStreamItem *streamItem in fullStream.streamItems)
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
+        stream.marqueeItems = marqueeItems;
         
         // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
         stream.trackingIdentifier = fullResponse[ @"stream_id" ];
@@ -492,7 +532,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     {
         NSString *streamIDPathPart = [(stream.remoteId ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
         NSString *streamFilterPathPart = [(stream.filterName ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-        apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_stream/%@/%@/%@/%@", streamIDPathPart, streamFilterPathPart, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+        apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_stream_with_marquee/%@/%@/%@/%@", streamIDPathPart, streamFilterPathPart, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     }
     else
     {

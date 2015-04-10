@@ -13,6 +13,11 @@
 #import "VStreamCollectionCellWebContent.h"
 #import "VDependencyManager.h"
 
+// Background
+#import "VDependencyManager+VBackgroundContainer.h"
+#import "VBackground.h"
+#import "UIView+AutoLayout.h"
+
 @interface VInsetStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
@@ -56,6 +61,7 @@
         VStreamCollectionCellWebContent *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         cell.sequence = sequence;
+        [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
         return cell;
     }
     else
@@ -65,6 +71,9 @@
     }
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
+    
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
+    
     return cell;
 }
 

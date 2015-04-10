@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import <KVOController/FBKVOController.h>
+
 #import "VStreamCollectionCell.h"
 
 #import "VStreamCellHeaderView.h"
@@ -31,12 +33,22 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
 
+// Dependencies
+#import "VDependencyManager+VBackground.h"
+
+// Views + Helpers
+#import "VBackground.h"
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
 #import "UIView+Autolayout.h"
 #import "VVideoView.h"
 
+#import "UIColor+VHex.h"
+#import "VTextPostViewController.h"
+
 @interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
+
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
@@ -50,6 +62,7 @@
 @property (nonatomic, assign) BOOL isPlayButtonVisible;
 
 @property (nonatomic, readonly) BOOL canPlayVideo;
+@property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -132,6 +145,9 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [self pauseVideo];
     self.videoPlayerView.alpha = 0.0f;
     self.videoAsset = nil;
+    
+    [self.textPostViewController.view removeFromSuperview];
+    self.textPostViewController = nil;
 }
 
 - (CGRect)mediaContentFrame
@@ -145,9 +161,18 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
-    
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
-                           placeholderImage:[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]]];
+
+    NSURL *imageUrl;
+    if ([sequence isImage])
+    {
+        imageUrl = [NSURL URLWithString:[self.sequence.firstNode imageAsset].data];
+    }
+    else
+    {
+        imageUrl = [NSURL URLWithString:self.sequence.previewImagesObject];
+    }
+    [self.previewImageView fadeInImageAtURL:imageUrl
+                           placeholderImage:nil];
     
     [self setDescriptionText:self.sequence.name];
     
@@ -164,7 +189,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
             self.isPlayButtonVisible = NO;
             [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
                                         loop:self.videoAsset.loop.boolValue
-                               audioMuted:self.videoAsset.audioMuted.boolValue];
+                                  audioMuted:self.videoAsset.audioMuted.boolValue];
         }
         else
         {
@@ -175,20 +200,49 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     {
         self.isPlayButtonVisible = NO;
     }
+    
+    if ( [sequence isText] )
+    {
+        VAsset *asset = [self.sequence.firstNode textAsset];
+        if ( asset.data != nil )
+        {
+            self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+            [self.contentContainer addSubview:self.textPostViewController.view];
+            [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+            self.textPostViewController.text = asset.data;
+            self.textPostViewController.color = [UIColor v_colorFromHexString:asset.backgroundColor];
+        }
+    }
+    
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:sequence
+                        keyPath:NSStringFromSelector(@selector(hasReposted))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         NSNumber *oldValue = change[NSKeyValueChangeOldKey];
+         NSNumber *newValue = change[NSKeyValueChangeNewKey];
+         if ([newValue boolValue] == [oldValue boolValue])
+         {
+             return;
+         }
+         [welf.actionView updateRepostButtonAnimated:YES];
+     }];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super setDependencyManager:dependencyManager];
+    _dependencyManager = dependencyManager;
     
-    if ( dependencyManager != nil )
+    if ( dependencyManager == nil )
     {
-        self.streamCellHeaderView.dependencyManager = dependencyManager;
-        
-        self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
-        self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
-        [self refreshDescriptionAttributes];
+        return;
     }
+    
+    self.streamCellHeaderView.dependencyManager = dependencyManager;
+    self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+    self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
+    [self refreshDescriptionAttributes];
 }
 
 - (BOOL)canPlayVideo
@@ -262,6 +316,12 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
+}
+
+- (VStreamCellActionView *)actionView
+{
+    // Override in subclasses
+    return nil;
 }
 
 #pragma mark - VSequenceActionsDelegate
@@ -350,6 +410,13 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
     [self playVideo];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)loadingBackgroundContainerView
+{
+    return self.loadingBackgroundContainer;
 }
 
 @end

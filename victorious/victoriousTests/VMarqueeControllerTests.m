@@ -10,13 +10,16 @@
 
 #import <OCMock/OCMock.h>
 
-#import "VMarqueeController.h"
+#import "VFullscreenMarqueeController.h"
 #import "VTimerManager.h"
 #import "VStreamCollectionViewDataSource.h"
+#import "VDependencyManager.h"
+#import "VObjectManager.h"
+#import "VDependencyManager+VObjectManager.h"
 
 @interface VMarqueeControllerTests : XCTestCase
 
-@property (nonatomic, strong) VMarqueeController *marquee;
+@property (nonatomic, strong) VAbstractMarqueeController *marquee;
 
 @end
 
@@ -25,14 +28,30 @@
 - (void)setUp
 {
     [super setUp];
-    self.marquee = [[VMarqueeController alloc] initWithStream:nil];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    //Setup a dependencyManager with a valid objectManager to allow the marquee to fetch a stream during init
+    [VObjectManager setupObjectManager];
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:
+                                             @{
+                                               @"marqueeURL" : @"http://dev.getvictorious.com/api/sequence/detail_list_by_stream/marquee/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                               @"objectManager" : [VObjectManager sharedManager]
+                                               }
+                                                            dictionaryOfClassesByTemplateName:nil];
+    self.marquee = [[VAbstractMarqueeController alloc] initWithDependencyManager:dependencyManager];
 }
 
 - (void)tearDown
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+    self.marquee = nil;
     [super tearDown];
+}
+
+- (void)testInit
+{
+    XCTAssertNoThrow([[VAbstractMarqueeController alloc] initWithDependencyManager:nil], @"abstractMarqueeController should not throw an exception when inited with a nil dependencyManager");
+    VDependencyManager *noStreamDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:nil dictionaryOfClassesByTemplateName:nil];
+    XCTAssertNoThrow([[VAbstractMarqueeController alloc] initWithDependencyManager:noStreamDependencyManager], @"abstractMarqueeController should not throw an exception when inited with a dependencyManager with no marquee URL");
 }
 
 - (void)testEnableTimer
@@ -47,17 +66,6 @@
     [self.marquee enableTimer];
     [self.marquee disableTimer];
     XCTAssert(![self.marquee.autoScrollTimerManager isValid], @"The timer should be invalid after it is disabled.");
-}
-
-- (void)testSetCollectionView
-{
-    id collectionView = [OCMockObject niceMockForClass:[UICollectionView class]];
-    [(UICollectionView *)[collectionView expect] setDelegate:self.marquee];
-    [(UICollectionView *)[collectionView expect] setDataSource:self.marquee.streamDataSource];
-    self.marquee.collectionView = collectionView;
-    XCTAssert([self.marquee.collectionView isEqual:collectionView], @"The collection view was not set on VMarqueeController.");
-    XCTAssert([self.marquee.streamDataSource.collectionView isEqual:collectionView], @"The collection view was not set on VStreamCollectionViewDataSource.");
-    [collectionView verify];
 }
 
 @end

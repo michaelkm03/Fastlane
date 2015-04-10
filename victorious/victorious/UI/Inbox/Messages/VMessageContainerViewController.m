@@ -28,6 +28,7 @@
 
 @interface VMessageContainerViewController ()
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
 @end
@@ -36,9 +37,10 @@
 
 @synthesize conversationTableViewController = _conversationTableViewController;
 
-+ (instancetype)messageViewControllerForUser:(VUser *)otherUser
++ (instancetype)messageViewControllerForUser:(VUser *)otherUser dependencyManager:(VDependencyManager *)dependencyManager
 {
     VMessageContainerViewController *messageViewController = (VMessageContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kMessageContainerID];
+    messageViewController.dependencyManager = dependencyManager;
     messageViewController.otherUser = otherUser;
     return messageViewController;
 }
@@ -103,7 +105,7 @@
                                            UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                                                                                   message:NSLocalizedString(@"ReportUserMessage", @"")
                                                                                                  delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                                                         otherButtonTitles:nil];
                                            [alert show];
                                            
@@ -115,7 +117,7 @@
                                            UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                                                   message:NSLocalizedString(@"ErrorOccured", @"")
                                                                                                  delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                                                         otherButtonTitles:nil];
                                            [alert show];
                                        }];
@@ -178,7 +180,7 @@
 {
     if (_conversationTableViewController == nil)
     {
-        VMessageViewController *messageViewController = (VMessageViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
+        VMessageViewController *messageViewController = [VMessageViewController newWithDependencyManager:self.dependencyManager];
         messageViewController.messageCountCoordinator = self.messageCountCoordinator;
         _conversationTableViewController = messageViewController;
     }

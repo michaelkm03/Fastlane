@@ -96,7 +96,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     
     NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
-#if defined(DEBUG) || defined(QA) || defined(STAGING)
+#ifdef V_SHOW_BUILD_NUMBER_IN_SETTINGS
     appVersionString = [appVersionString stringByAppendingFormat:@" (%@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
 #endif
     
@@ -339,7 +339,7 @@ static NSString * const kSupportEmailKey = @"email.support";
         if ( creatorName != nil )
         {
             NSString *subjectWithCreatorNameFormat = NSLocalizedString(@"SupportEmailSubjectWithName", @"Feedback / Help");
-            messageSubject = [NSString stringWithFormat:@"%@ %@", subjectWithCreatorNameFormat, creatorName];
+            messageSubject = [NSString stringWithFormat:subjectWithCreatorNameFormat, creatorName];
             
             messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
                                      NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo], creatorName];
@@ -411,7 +411,7 @@ static NSString * const kSupportEmailKey = @"email.support";
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                      otherButtonTitles:nil];
         [alert show];
     }

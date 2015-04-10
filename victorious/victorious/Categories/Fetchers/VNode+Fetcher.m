@@ -46,6 +46,22 @@ static NSString * const kmp4MimeType = @"video/mp4";
     return [self assetForMimeType:kmp4MimeType];
 }
 
+- (VAsset *)textAsset
+{
+    __block VAsset *textAsset = nil;
+    
+    [self.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
+     {
+         if ( asset.data != nil && [asset.type isEqualToString:@"text"] && [asset.data isKindOfClass:[NSString class]] )
+         {
+             textAsset = asset;
+             *stop = YES;
+         }
+     }];
+    
+    return textAsset;
+}
+
 - (VAsset *)imageAsset
 {
     __block VAsset *imageAsset = nil;
