@@ -10,14 +10,14 @@
 
 @implementation UIImage (VTint)
 
-- (UIImage *)v_tintedImageWithColor:(UIColor *)tintColor
+- (UIImage *)v_tintedImageWithColor:(UIColor *)tintColor alpha:(CGFloat)alpha blendMode:(CGBlendMode)blendMode
 {
     UIGraphicsBeginImageContextWithOptions( self.size, NO, 0.0f );
     [tintColor setFill];
     CGRect bounds = CGRectMake(0, 0, self.size.width, self.size.height);
     UIRectFill( bounds );
     
-    [self drawInRect:bounds blendMode:kCGBlendModeColorDodge alpha:1.0];
+    [self drawInRect:bounds blendMode:blendMode alpha:alpha];
     
     UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

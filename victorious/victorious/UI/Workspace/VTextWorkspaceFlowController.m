@@ -127,6 +127,12 @@
     [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
 }
 
+- (void)textCanvasToolDidSelectClearImage:(VTextCanvasToolViewController *)textCanvasToolViewController
+{
+    textCanvasToolViewController.shouldProvideClearOption = NO;
+    [self.textToolController setMediaURL:nil previewImage:nil];
+}
+
 #pragma mark - Choosing background image
 
 - (UIViewController *)createCameraViewController
@@ -157,6 +163,7 @@
     if ( capturedMediaURL != nil && previewImage != nil )
     {
         [self.textToolController setMediaURL:capturedMediaURL previewImage:previewImage];
+        self.textCanvasToolViewController.shouldProvideClearOption = YES;
     }
     
     [self.mediaCaptureViewController dismissViewControllerAnimated:YES completion:nil];

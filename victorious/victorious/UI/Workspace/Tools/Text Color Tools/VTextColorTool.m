@@ -49,9 +49,12 @@ static NSString * const kPickerKey = @"picker";
     return self;
 }
 
-- (void)addNoColorOption
+- (void)setShouldShowNoColorOption:(BOOL)shouldShowNoColorOption
 {
-    _colorPickerDataSource.showNoColor = YES;
+    _shouldShowNoColorOption = shouldShowNoColorOption;
+    
+    _colorPickerDataSource.showNoColor = shouldShowNoColorOption;
+    
     [_colorPickerDataSource reloadWithCompletion:^(NSArray *tools)
     {
         [_toolPicker reloadData];

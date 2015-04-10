@@ -196,10 +196,8 @@
 {
     self.previewImage = previewImage;
     self.mediaURL = newMediaURL;
-    
     self.textPostViewController.backgroundImage = previewImage;
-    
-    [self.textColorTool addNoColorOption];
+    self.textColorTool.shouldShowNoColorOption = previewImage != nil;
 }
 
 @end

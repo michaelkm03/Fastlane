@@ -10,6 +10,6 @@
 
 @interface UIImage (VTint)
 
-- (UIImage *)v_tintedImageWithColor:(UIColor *)tintColor;
+- (UIImage *)v_tintedImageWithColor:(UIColor *)tintColor alpha:(CGFloat)alpha blendMode:(CGBlendMode)blendMode;
 
 @end

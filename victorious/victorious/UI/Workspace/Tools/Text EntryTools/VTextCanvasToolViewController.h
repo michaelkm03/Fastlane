@@ -19,6 +19,8 @@
 
 - (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController;
 
+- (void)textCanvasToolDidSelectClearImage:(VTextCanvasToolViewController *)textCanvasToolViewController;
+
 @end
 
 /**
@@ -38,5 +40,9 @@
  Delegate that handles UI-driven events.
  */
 @property (nonatomic, weak) id<VTextCanvasToolDelegate> delegate;
+
+@property (nonatomic, assign) BOOL shouldProvideClearOption;
+
+- (void)setShouldProvideClearOption:(BOOL)shouldProvideClearOption;
 
 @end

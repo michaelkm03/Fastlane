@@ -14,7 +14,8 @@
 #import "VHashTags.h"
 #import "UIImage+VTint.h"
 
-static const CGFloat kTntedBackgroundImageAlpha = 0.5f;
+static const CGFloat kTintedBackgroundImageAlpha            = 0.375f;
+static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLuminosity;
 
 @interface VTextPostViewController ()
 
@@ -102,31 +103,31 @@ static const CGFloat kTntedBackgroundImageAlpha = 0.5f;
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
     _backgroundImage = backgroundImage;
-    self.backgroundImageView.image = [_backgroundImage v_tintedImageWithColor:self.color];
-    //self.backgroundImageView.image = _backgroundImage;
+    
+    [self updateBackground];
 }
-
 
 - (void)setColor:(UIColor *)color
 {
-    if ( _color != nil && _color == color )
-    {
-        return;
-    }
+    _color = color;
     
-    _color = color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];;
-    self.view.backgroundColor = color;
-    
-    const BOOL shouldTint = color != nil && self.backgroundImage != nil;
+    [self updateBackground];
+}
+
+- (void)updateBackground
+{
+    const BOOL shouldTint = self.color != nil && self.backgroundImage != nil;
     if ( shouldTint )
     {
-        self.backgroundImageView.alpha = kTntedBackgroundImageAlpha;
-        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.color];
+        self.view.backgroundColor = self.color;
+        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.color
+                                                                                alpha:kTintedBackgroundImageAlpha
+                                                                            blendMode:kTintedBackgroundImageBlendMode];
     }
     else
     {
+        self.view.backgroundColor = self.color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
         self.backgroundImageView.image = self.backgroundImage;
-        self.backgroundImageView.alpha = 1.0f;
     }
 }
 

@@ -26,6 +26,6 @@
 /**
  Adds a "no color option", as when an image is used for the background instead.
  */
-- (void)addNoColorOption;
+@property (nonatomic, assign) BOOL shouldShowNoColorOption;
 
 @end

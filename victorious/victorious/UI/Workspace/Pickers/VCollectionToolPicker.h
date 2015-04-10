@@ -26,6 +26,8 @@
  */
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
 
+@optional
+
 /**
  Reload the data that this data source provides, after which the completion callback
  will be called with an array of VWorkspaceTool objects to which loaded data has been
