@@ -343,13 +343,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
 }
 
-- (void)performNavigationWithNavigationDestination:(id)navigationDestination
-                                    viewController:(UIViewController *)viewController
-                                        completion:(void(^)())completion
-{
-    
-}
-
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
