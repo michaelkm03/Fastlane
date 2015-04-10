@@ -12,6 +12,7 @@
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
 #import "VDefaultProfileImageView.h"
+#import "VTagStringFormatter.h"
 
 @interface VNotificationCell ()
 
@@ -49,7 +50,12 @@
     [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
     self.accessoryType = [self.notification.deeplink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
-    self.messageLabel.text = notification.body;
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:notification.body];
+    NSDictionary *stringAttributes = @{ NSFontAttributeName : self.messageLabel.font };
+    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:mutableAttributedString
+                                             withTagStringAttributes:stringAttributes
+                                          andDefaultStringAttributes:stringAttributes];
+    self.messageLabel.text = mutableAttributedString.string;
     self.dateLabel.text = [notification.createdAt timeSince];
     
     if ([notification.deeplink length] > 0)
