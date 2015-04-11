@@ -184,7 +184,7 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
     NSAssert(false, @"keyboardBar:didComposeWithText:mediaURL:mediaExtension: should be overridden in all subclasses of VKeyboardBarContainerViewController!");
 }
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar resizeToHeight:(CGFloat)height
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height
 {
     [UIView animateWithDuration:0.2
                           delay:0
