@@ -309,8 +309,18 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     }
     else if ([textView.text length] + [text length] > kCharacterLimit)
     {
-        // Entered text is to long and will not get appended.
         shouldChangeText = NO;
+
+        NSMutableString *mutableText = [textView.text mutableCopy];
+        [mutableText insertString:text atIndex:range.location];
+        
+        NSInteger overflow = ([mutableText length] - kCharacterLimit);
+        if (overflow > 0)
+        {
+            [mutableText deleteCharactersInRange:NSMakeRange(kCharacterLimit, overflow)];
+        }
+        
+        textView.text = [NSString stringWithString:mutableText];
     }
     
     return shouldChangeText;
