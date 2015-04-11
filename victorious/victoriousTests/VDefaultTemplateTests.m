@@ -35,7 +35,6 @@
 {
     XCTAssertNotNil([self.dependencyManager background]);
     XCTAssertNotNil([self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]);
-    XCTAssertNotNil([self.dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey]);
     XCTAssertNotNil([self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]);
     XCTAssertNotNil([self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]);
     XCTAssertNotNil([self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]);

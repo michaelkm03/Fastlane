@@ -8,12 +8,6 @@
             "alpha": 255
         }
     },
-    "color.background.secondary": {
-        "red": 0,
-        "green": 0,
-        "blue": 0,
-        "alpha": 255
-    },
     "color.text": {
         "red": 255,
         "green": 255,

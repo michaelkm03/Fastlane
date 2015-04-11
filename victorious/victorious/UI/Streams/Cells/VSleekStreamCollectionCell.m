@@ -46,8 +46,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super awakeFromNib];
     
-    self.backgroundColor = [UIColor whiteColor];
-    
     self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
     self.actionViewTopConstraint.constant = kSleekCellActionViewTopConstraintHeight;
 }

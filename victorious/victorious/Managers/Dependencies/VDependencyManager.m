@@ -29,7 +29,6 @@ NSString * const VDependencyManagerImageURLKey = @"imageURL";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
-NSString * const VDependencyManagerSecondaryBackgroundColorKey = @"color.background.secondary";
 NSString * const VDependencyManagerMainTextColorKey = @"color.text";
 NSString * const VDependencyManagerContentTextColorKey = @"color.text.content";
 NSString * const VDependencyManagerAccentColorKey = @"color.accent";

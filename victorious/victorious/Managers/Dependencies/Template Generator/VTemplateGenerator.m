@@ -893,12 +893,6 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                              kBlueKey: @20,
                                                              kAlphaKey: @1
                                                              },
-              VDependencyManagerSecondaryBackgroundColorKey : @{
-                                                                      kRedKey: @38,
-                                                                      kGreenKey: @39,
-                                                                      kBlueKey: @42,
-                                                                      kAlphaKey: @1
-                                                                      },
               VDependencyManagerContentTextColorKey : @{
                                                               kRedKey: @204,
                                                               kGreenKey: @204,
