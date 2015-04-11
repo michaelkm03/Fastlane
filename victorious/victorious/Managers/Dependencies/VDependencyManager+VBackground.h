@@ -21,7 +21,7 @@
 - (VBackground *)background;
 
 /**
- *  A backgroudn to use in place of content while loading.
+ *  A background to use in place of content while loading.
  */
 - (VBackground *)loadingBackground;
 

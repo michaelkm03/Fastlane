@@ -115,7 +115,25 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
-    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
+                                                                      configuration:@{ @"invalidColor": @{ @"red": @"spot",
+                                                                                                           @"green": @"monkey",
+                                                                                                           @"blue": @255,
+                                                                                                           @"alpha": @255,
+                                                                                                           },
+                                                                                       @"color.text": @{ @"red": @"green",
+                                                                                                         @"green": @"red",
+                                                                                                         @"blue": @"blue",
+                                                                                                         @"alpha": @"refridgerator",
+                                                                                                         },
+                                                                                       @"invalidFont": @{ @"fontName": @"Comic Sans",
+                                                                                                          @"fontSize": @24,
+                                                                                                          },
+                                                                                       @"font.heading1": @{
+                                                                                               
+                                                                                               }
+                                                                                       }
+                                                  dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
 }
 
 #pragma mark - Colors, fonts
@@ -141,6 +159,19 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqualObjects(expected, actual);
 }
 
+- (void)testInvalidColorReturnsNil
+{
+    UIColor *invalid = [self.childDependencyManager colorForKey:@"invalidColor"];
+    XCTAssertNil(invalid);
+}
+
+- (void)testInvalidColorDefaultsToParent
+{
+    UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
+    UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
 - (void)testFont
 {
     UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:18];
@@ -161,6 +192,19 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:configuration dictionaryOfClassesByTemplateName:nil];
     
     UIFont *expected = [UIFont fontWithName:@"Helvetica" size:12];
+    UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testInvalidFontReturnsNil
+{
+    UIFont *invalid = [self.childDependencyManager fontForKey:@"invalidFont"];
+    XCTAssertNil(invalid);
+}
+
+- (void)testInvalidFontDefaultsToParent
+{
+    UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:24];
     UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     XCTAssertEqualObjects(expected, actual);
 }

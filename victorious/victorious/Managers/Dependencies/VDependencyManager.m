@@ -29,7 +29,6 @@ NSString * const VDependencyManagerImageURLKey = @"imageURL";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
-NSString * const VDependencyManagerSecondaryBackgroundColorKey = @"color.background.secondary";
 NSString * const VDependencyManagerMainTextColorKey = @"color.text";
 NSString * const VDependencyManagerContentTextColorKey = @"color.text.content";
 NSString * const VDependencyManagerAccentColorKey = @"color.accent";
@@ -152,7 +151,16 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
-    return [self colorFromDictionary:colorDictionary];
+    UIColor *color = [self colorFromDictionary:colorDictionary];
+    
+    if ( color == nil )
+    {
+        return [self.parentManager colorForKey:key];
+    }
+    else
+    {
+        return color;
+    }
 }
 
 - (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary
@@ -198,7 +206,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     if (![fontName isKindOfClass:[NSString class]] ||
         ![fontSize isKindOfClass:[NSNumber class]])
     {
-        return nil;
+        return [self.parentManager fontForKey:key];
     }
     
     UIFont *font = [UIFont fontWithName:fontName size:[fontSize CGFLOAT_VALUE]];

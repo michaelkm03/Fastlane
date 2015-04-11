@@ -16,7 +16,6 @@ extern NSString * const VDependencyManagerImageURLKey;
 
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;
-extern NSString * const VDependencyManagerSecondaryBackgroundColorKey;
 extern NSString * const VDependencyManagerMainTextColorKey;
 extern NSString * const VDependencyManagerContentTextColorKey;
 extern NSString * const VDependencyManagerAccentColorKey;
