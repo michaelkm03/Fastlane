@@ -10,6 +10,9 @@
 #import "VConstants.h"
 #import "VInlineSearchTableViewController.h"
 
+static const CGFloat kKeyboardBarInitialHeight = 55.0f;
+static const CGFloat kConversationTableViewInitialHeight = 44.0f;
+
 @interface VKeyboardBarContainerViewController()
 
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
@@ -44,7 +47,7 @@
                                                                        toItem:nil
                                                                     attribute:NSLayoutAttributeNotAnAttribute
                                                                    multiplier:1.0f
-                                                                     constant:55.0f];
+                                                                     constant:kKeyboardBarInitialHeight];
     [self.keyboardBarViewController.view addConstraint:self.keyboardBarHeightConstraint];
 
     UIView *keyboardView = self.keyboardBarViewController.view;
@@ -68,7 +71,7 @@
                                                              toItem:nil
                                                           attribute:NSLayoutAttributeNotAnAttribute
                                                          multiplier:1.0f
-                                                           constant:44.0f]];
+                                                           constant:kConversationTableViewInitialHeight]];
 
     UITableView *conversationTableView = self.conversationTableViewController.tableView;
     conversationTableView.contentInset = UIEdgeInsetsMake(conversationTableView.contentInset.top,
@@ -192,6 +195,11 @@
         [self.view layoutIfNeeded];
     }
                      completion:nil];
+}
+
+- (CGFloat)initialHeightForKeyboardBar:(VKeyboardBarViewController *)keyboardBar
+{
+    return kKeyboardBarInitialHeight;
 }
 
 #pragma mark - VUserTaggingTextStorageDelegate
