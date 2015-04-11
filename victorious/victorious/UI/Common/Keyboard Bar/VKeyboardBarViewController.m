@@ -316,12 +316,12 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 {
     if (object == self.textView && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))])
     {
-        if ([self.delegate respondsToSelector:@selector(keyboardBar:wouldLikeToResizeToHeight:)])
+        if ([self.delegate respondsToSelector:@selector(keyboardBar:wouldLikeToBeResizedToHeight:)])
         {
             CGFloat desiredHeight = fmaxf(self.textView.contentSize.height, [self.delegate initialHeightForKeyboardBar:self]);
             if (desiredHeight < self.maxTextFieldHeight)
             {
-                [self.delegate keyboardBar:self wouldLikeToResizeToHeight:desiredHeight];
+                [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:desiredHeight];
             }
         }
     }
