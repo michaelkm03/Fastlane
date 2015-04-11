@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -18,17 +18,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" priority="1" constant="320" id="9oA-tJ-dGH"/>
-                            <constraint firstAttribute="width" secondItem="l8i-BI-qve" secondAttribute="height" multiplier="1:1" id="OXX-sm-6j9"/>
+                            <constraint firstAttribute="width" secondItem="l8i-BI-qve" secondAttribute="height" multiplier="1:1" id="HR3-I0-PCN"/>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="l8i-BI-qve" secondAttribute="trailing" id="ChU-1L-FOZ"/>
-                <constraint firstAttribute="centerY" secondItem="l8i-BI-qve" secondAttribute="centerY" id="M8R-LS-9Cc"/>
-                <constraint firstItem="l8i-BI-qve" firstAttribute="leading" secondItem="mzk-ls-UwW" secondAttribute="leading" id="m7L-5z-9uv"/>
+                <constraint firstAttribute="trailing" secondItem="l8i-BI-qve" secondAttribute="trailing" id="D0M-h3-fax"/>
+                <constraint firstItem="l8i-BI-qve" firstAttribute="top" secondItem="mzk-ls-UwW" secondAttribute="top" id="wiQ-J2-KDc"/>
+                <constraint firstItem="l8i-BI-qve" firstAttribute="leading" secondItem="mzk-ls-UwW" secondAttribute="leading" id="z6A-5F-f1h"/>
             </constraints>
             <size key="customSize" width="248" height="261"/>
             <connections>
