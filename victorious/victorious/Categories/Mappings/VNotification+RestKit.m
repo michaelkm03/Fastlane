@@ -30,7 +30,7 @@
                                   @"subject" : VSelectorName(subject),
                                   @"creator_profile_image_url" : VSelectorName(imageURL),
                                   @"created_at" : VSelectorName(createdAt),
-                                  @"display_order" : VSelectorName(displayOrder)
+                                  @"display_order" : VSelectorName(displayOrder),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
