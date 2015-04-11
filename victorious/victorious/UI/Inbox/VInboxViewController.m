@@ -267,6 +267,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     VConversation *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
     VConversationCell *theCell = (VConversationCell *)[tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
+    NSLog(@"dequing for index path %@", indexPath);
     [theCell setConversation:info];
     theCell.parentTableViewController = self;
     theCell.dependencyManager = self.dependencyManager;
@@ -283,7 +284,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return kVConversationCellHeight;
+    return VConversationCellHeight;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath

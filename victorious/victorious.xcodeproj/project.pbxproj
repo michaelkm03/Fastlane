@@ -767,7 +767,6 @@
 		DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B551A425A7200B4ADC8 /* VHashtag.m */; };
 		DB531B591A42709700B4ADC8 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B581A42709700B4ADC8 /* VUser.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
-		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
 		DB61811C1AB206D700DED29F /* VFirstTimeInstallHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */; };
 		DB7460371A93A5BE006C2245 /* VInlineUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7460351A93A5BE006C2245 /* VInlineUserTableViewCell.m */; };
 		DB7460381A93A5BE006C2245 /* VInlineUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB7460361A93A5BE006C2245 /* VInlineUserTableViewCell.xib */; };
@@ -830,6 +829,7 @@
 		F06F10C61AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10C51AC2024A0062E1D1 /* VAbstractDirectoryCollectionViewController.m */; };
 		F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */; };
 		F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */; };
+		F07228261AD8846A00085653 /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F07228251AD8846A00085653 /* VNotification.m */; };
 		F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */; };
 		F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
 		F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E3551AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m */; };
@@ -2248,8 +2248,6 @@
 		DB531B581A42709700B4ADC8 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
-		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
-		DB58EF4F1994174900D2A07F /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
 		DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstTimeInstallHelperTests.m; sourceTree = "<group>"; };
 		DB7460341A93A5BE006C2245 /* VInlineUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineUserTableViewCell.h; sourceTree = "<group>"; };
 		DB7460351A93A5BE006C2245 /* VInlineUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineUserTableViewCell.m; sourceTree = "<group>"; };
@@ -2368,6 +2366,8 @@
 		F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeCollectionViewCell.m; sourceTree = "<group>"; };
 		F06F10D21AC3B4E60062E1D1 /* VAbstractMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeController.h; sourceTree = "<group>"; };
 		F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeController.m; sourceTree = "<group>"; };
+		F07228241AD8846A00085653 /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
+		F07228251AD8846A00085653 /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
 		F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionaryTests.m; sourceTree = "<group>"; };
 		F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatterTests.m; sourceTree = "<group>"; };
 		F089E3541AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeStreamItemCell.h; sourceTree = "<group>"; };
@@ -4816,8 +4816,8 @@
 				BE799B9119C8A91C0023CE88 /* VNode.m */,
 				BE5C7377187E36E800A3340D /* VNodeAction.h */,
 				BE5C7378187E36E800A3340D /* VNodeAction.m */,
-				DB58EF4E1994174900D2A07F /* VNotification.h */,
-				DB58EF4F1994174900D2A07F /* VNotification.m */,
+				F07228241AD8846A00085653 /* VNotification.h */,
+				F07228251AD8846A00085653 /* VNotification.m */,
 				A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */,
 				A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */,
 				BEC833BC19D364A500341EA9 /* VPollResult.h */,
@@ -5995,7 +5995,6 @@
 				A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */,
-				DB58EF501994174900D2A07F /* VNotification.m in Sources */,
 				A780ED5D1A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m in Sources */,
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
@@ -6030,6 +6029,7 @@
 				A77FB9231A897201003E9AA2 /* UIColor+VBrightness.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
+				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VHamburgerButton.m in Sources */,

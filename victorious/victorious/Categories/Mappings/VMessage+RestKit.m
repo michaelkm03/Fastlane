@@ -24,7 +24,7 @@
                                   @"thumbnail_url" : VSelectorName(thumbnailPath),
                                   @"media_url" : VSelectorName(mediaPath),
                                   @"message_id" : VSelectorName(remoteId),
-                                  @"is_read" : VSelectorName(isRead),
+                                  @"is_read" : VSelectorName(isRead)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

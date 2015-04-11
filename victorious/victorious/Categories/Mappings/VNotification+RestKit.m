@@ -39,10 +39,10 @@
     
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-    
+        
     RKRelationshipMapping *userMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"created_by"
-                                                                                        toKeyPath:VSelectorName(user)
-                                                                                      withMapping:[VUser entityMapping]];
+                                                                                         toKeyPath:VSelectorName(user)
+                                                                                       withMapping:[VUser entityMapping]];
     [mapping addPropertyMapping:userMapping];
     
     return mapping;
