@@ -138,6 +138,7 @@
 
 "OwnerSharePollFormat" = "¡Mira esta encuesta hecha por %@!"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" = "Dale un ojo a %@ por %@";    //Check out "<video name>" by <creator>! <URL>
+"OwnerShareVideoFormatNoVideoName" = "Check out this video by %@!"; // Check out this videy by <creator>! <URL>
 "OwnerShareImageFormat" = "Mira esta foto de %@";//Check out this photo by <creator>! <URL>
 "UGCSharePollFormat" = "¡Mira esta encuesta!";       //Check out this poll! <URL>
 "UGCShareVideoFormat" = "¡Checa este video!";      //Check out this video! <URL>

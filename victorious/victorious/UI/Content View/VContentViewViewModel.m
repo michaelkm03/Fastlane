@@ -634,7 +634,14 @@
                 break;
             case VContentViewTypeGIFVideo:
             case VContentViewTypeVideo:
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+                if (self.sequence.name.length > 0)
+                {
+                    shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+                }
+                else
+                {
+                    shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), self.sequence.user.name];
+                }
                 break;
             case VContentViewTypeText:
                 shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareTextFormat", nil), self.sequence.name, self.sequence.user.name];
