@@ -174,7 +174,6 @@ static int const kNotificationFetchBatchSize = 50;
 {
     VNotificationCell *theCell = [tableView dequeueReusableCellWithIdentifier:kNotificationCellViewIdentifier forIndexPath:indexPath];
     
-    NSLog(@"dequing for index path %@", indexPath);
     VNotification *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [theCell setNotification:info];
     theCell.parentTableViewController = self;

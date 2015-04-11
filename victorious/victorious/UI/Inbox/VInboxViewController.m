@@ -267,7 +267,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     VConversation *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
     VConversationCell *theCell = (VConversationCell *)[tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-    NSLog(@"dequing for index path %@", indexPath);
     [theCell setConversation:info];
     theCell.parentTableViewController = self;
     theCell.dependencyManager = self.dependencyManager;
