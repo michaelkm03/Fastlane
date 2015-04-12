@@ -145,6 +145,7 @@ static NSString * const kVOrIconKey = @"orIcon";
 {
     CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
     
+    [self cancelDetailsAnimation];
     if ( animated )
     {
         [UIView animateWithDuration:kVDetailBounceTime animations:^
@@ -164,6 +165,17 @@ static NSString * const kVOrIconKey = @"orIcon";
     else
     {
         self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+    }
+}
+
+- (void)cancelDetailsAnimation
+{
+    [self.contentView.layer removeAllAnimations];
+    
+    //To remove all constraint animations from a layer, you must remove the animation from all sublayers as well
+    for (CALayer *layer in self.contentView.layer.sublayers)
+    {
+        [layer removeAllAnimations];
     }
 }
 
