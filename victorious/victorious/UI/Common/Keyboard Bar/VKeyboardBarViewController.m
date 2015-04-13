@@ -262,6 +262,11 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     return [self.textView resignFirstResponder];
 }
 
+- (NSInteger)characterLimit
+{
+    return kCharacterLimit;
+}
+
 #pragma mark - UITextViewDelegate methods
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
@@ -279,8 +284,6 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    BOOL shouldChangeText = YES;
-    
     if ([text isEqualToString:@"\n"])
     {
         switch (textView.returnKeyType)
@@ -293,37 +296,26 @@ static const NSInteger VDefaultKeyboardHeight = 51;
                 {
                     [self.delegate didCancelKeyboardBar:self];
                 }
-                shouldChangeText = NO;
-                break;
-            case UIReturnKeyDefault:
-            case UIReturnKeyGoogle:
-            case UIReturnKeyJoin:
-            case UIReturnKeyNext:
-            case UIReturnKeyRoute:
-            case UIReturnKeySearch:
-            case UIReturnKeyYahoo:
-            case UIReturnKeyEmergencyCall:
+                return NO;
             default:
                 break;
         }
     }
-    else if ([textView.text length] + [text length] > kCharacterLimit)
+    
+    NSMutableString *mutableText = [textView.text mutableCopy];
+    [mutableText insertString:text atIndex:range.location];
+    if ( mutableText.length > (NSUInteger)self.characterLimit )
     {
-        shouldChangeText = NO;
-
-        NSMutableString *mutableText = [textView.text mutableCopy];
-        [mutableText insertString:text atIndex:range.location];
-        
-        NSInteger overflow = ([mutableText length] - kCharacterLimit);
-        if (overflow > 0)
+        NSInteger overflow = mutableText.length - self.characterLimit;
+        if ( overflow > 0 )
         {
-            [mutableText deleteCharactersInRange:NSMakeRange(kCharacterLimit, overflow)];
+            [mutableText deleteCharactersInRange:NSMakeRange( self.characterLimit, overflow)];
         }
-        
         textView.text = [NSString stringWithString:mutableText];
+        return NO;
     }
     
-    return shouldChangeText;
+    return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView

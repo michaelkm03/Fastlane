@@ -29,6 +29,7 @@
 @property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;
 @property (nonatomic)         BOOL                      sendButtonEnabled;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
+@property (nonatomic, assign, readonly) NSInteger       characterLimit;
 
 /**
  If YES (default), text and media will be cleared automatically after the 
