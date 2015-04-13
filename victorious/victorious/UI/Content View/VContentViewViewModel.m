@@ -214,7 +214,7 @@
 
 - (void)fetchSequenceData
 {
-#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
     // Check for the cached mp4
     BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
     if (assetIsCached)
@@ -279,7 +279,7 @@
 
 - (void)createVideoModel
 {
-#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
     // Check for the cached mp4
     BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
     if (assetIsCached)
@@ -634,7 +634,14 @@
                 break;
             case VContentViewTypeGIFVideo:
             case VContentViewTypeVideo:
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+                if (self.sequence.name.length > 0)
+                {
+                    shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+                }
+                else
+                {
+                    shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), self.sequence.user.name];
+                }
                 break;
             case VContentViewTypeText:
                 shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareTextFormat", nil), self.sequence.name, self.sequence.user.name];

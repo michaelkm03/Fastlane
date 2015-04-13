@@ -13,7 +13,10 @@
 @protocol VKeyboardBarDelegate <NSObject, VUserTaggingTextStorageDelegate>
 @required
 
+- (CGFloat)initialHeightForKeyboardBar:(VKeyboardBarViewController *)keyboardBar;
+
 @optional
+
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL;
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height;
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar;

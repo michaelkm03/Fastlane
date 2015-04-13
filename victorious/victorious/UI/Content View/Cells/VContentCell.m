@@ -14,7 +14,6 @@
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
-@property (nonatomic, weak) CADisplayLink *displayLink;
 
 @end
 
@@ -56,14 +55,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    if ( self.displayLink != nil )
-    {
-        [self.displayLink invalidate];
-    }
-}
-
 - (void)setup
 {
     if (!self.animationImageView)
@@ -82,22 +73,6 @@
     self.repeatCount = 1;
 }
 
-- (void)setShrinkingContentView:(UIView *)shrinkingContentView
-{
-    _shrinkingContentView = shrinkingContentView;
-    
-    if ( _shrinkingContentView != nil )
-    {
-        self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update:)];
-        [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    }
-    else
-    {
-        [self.displayLink invalidate];
-        self.displayLink = nil;
-    }
-}
-
 - (void)prepareForReuse
 {
     [super prepareForReuse];
@@ -107,30 +82,51 @@
 
 #pragma mark - Shrinking Layout
 
-- (void)update:(CADisplayLink *)displayLink
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
-    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    if ( UIInterfaceOrientationIsPortrait( currentOrientation ) )
-    {
-        [self updateContentToShrinkingLayout];
-    }
+    [super applyLayoutAttributes:layoutAttributes];
+    
+    [self updateContentToShrinkingLayout];
+}
+
+- (void)setShrinkingContentView:(UIView *)shrinkingContentView
+{
+    _shrinkingContentView = shrinkingContentView;
+    
+    [self updateContentToShrinkingLayout];
 }
 
 - (void)updateContentToShrinkingLayout
 {
-    const CGAffineTransform currentTransform = self.shrinkingContentView.transform;
-    self.shrinkingContentView.transform = CGAffineTransformIdentity;
-    const CGRect videoFrame = self.shrinkingContentView.frame;
-    self.shrinkingContentView.transform = currentTransform;
-    const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
+    if ( self.shrinkingContentView == nil )
+    {
+        return;
+    }
     
-    const CGFloat translateY = (CGRectGetHeight(videoFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
-    const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(videoFrame), 1.0f );
-    
-    CGAffineTransform transform = CGAffineTransformIdentity;
-    transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
-    transform = CGAffineTransformScale( transform, scale, scale );
-    self.shrinkingContentView.transform = transform;
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    if ( UIInterfaceOrientationIsPortrait( currentOrientation ) )
+    {
+        self.shrinkingContentView.transform = CGAffineTransformIdentity;
+        const CGRect shrinkingFrame = self.shrinkingContentView.frame;
+        const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
+        
+        if ( CGRectEqualToRect( currentFrame, CGRectZero ) )
+        {
+            return;
+        }
+        
+        const CGFloat translateY = (CGRectGetHeight(shrinkingFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
+        const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(shrinkingFrame), 1.0f );
+        
+        CGAffineTransform transform = CGAffineTransformIdentity;
+        transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
+        transform = CGAffineTransformScale( transform, scale, scale );
+        self.shrinkingContentView.transform = transform;
+    }
+    else
+    {
+        self.shrinkingContentView.transform = CGAffineTransformIdentity;
+    }
 }
 
 #pragma mark - Rotation
@@ -149,13 +145,14 @@
         self.shrinkingContentView.transform = CGAffineTransformIdentity;
         self.shrinkingContentView.frame = self.shrinkingContentView.superview.bounds;
         self.shrinkingContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.shrinkingContentView layoutIfNeeded];
     }
     else
     {
         self.shrinkingContentView.autoresizingMask = 0;
+        [self updateContentToShrinkingLayout];
+        [self.shrinkingContentView layoutIfNeeded];
     }
-    
-    [self.shrinkingContentView layoutIfNeeded];
 }
 
 #pragma mark - UIView
@@ -164,6 +161,7 @@
 {
     [super layoutSubviews];
     [self.contentView bringSubviewToFront:self.animationImageView];
+    [self updateContentToShrinkingLayout];
 }
 
 #pragma mark - Public Methods
@@ -223,11 +221,6 @@
             self.endCardViewController = nil;
         }
     }
-}
-
-- (void)cleanup
-{
-    [self.displayLink invalidate];
 }
 
 #pragma mark - VEndCardViewControllerDelegate
