@@ -51,11 +51,4 @@
     [(VBlurredMarqueeController *)self.marquee animateToVisible];
 }
 
-#pragma mark - VBackgroundContainer
-
-- (UIView *)loadingBackgroundContainerView
-{
-    return self.loadingBackgroundContainer;
-}
-
 @end
