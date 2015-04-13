@@ -580,7 +580,7 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
                                                                 dependencyManager:self.dependencyManager];
     [authorization performFromViewController:self context:context completion:^(BOOL authorized)
      {
-         if (!authorization)
+         if ( !authorized )
          {
              return;
          }
