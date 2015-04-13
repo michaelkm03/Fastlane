@@ -27,7 +27,7 @@
 
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;
-static CGFloat const kVDetailHideTime = 20.3f;
+static CGFloat const kVDetailHideTime = 0.3f;
 static CGFloat const kVDetailBounceHeight = 8.0f;
 static CGFloat const kVDetailBounceTime = 0.15f;
 static CGFloat const kTitleOffsetForTemplateC = 6.5f;
