@@ -21,7 +21,6 @@
 
 @property (nonatomic, weak) IBOutlet VCrossFadingImageView *crossfadingBlurredImageView;
 @property (nonatomic, weak) IBOutlet VCrossFadingLabel *crossfadingLabel;
-@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 
 @end
 
