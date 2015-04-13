@@ -58,7 +58,8 @@ static const CGFloat kBaselineOffset = 0.5f;
     paragraphStyle.minimumLineHeight = kMinimumLineHeight;
     paragraphStyle.lineSpacing = kLineSpacing;
 
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:notification.subject];
+    NSString *safeText = notification.subject == nil ? @"" : notification.subject;
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:safeText];
     NSDictionary *stringAttributes = @{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) };
     [VTagStringFormatter tagDictionaryFromFormattingAttributedString:mutableAttributedString
                                              withTagStringAttributes:stringAttributes
