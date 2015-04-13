@@ -12,4 +12,6 @@
 
 - (UIImage *)v_tintedImageWithColor:(UIColor *)tintColor alpha:(CGFloat)alpha blendMode:(CGBlendMode)blendMode;
 
+- (UIImage *)v_tintedCIImageWithColor:(UIColor *)tintColor alpha:(CGFloat)alpha blendMode:(CGBlendMode)blendMode;
+
 @end

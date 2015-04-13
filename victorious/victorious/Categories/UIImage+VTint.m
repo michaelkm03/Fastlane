@@ -25,4 +25,20 @@
     return tintedImage;
 }
 
+- (UIImage *)v_tintedCIImageWithColor:(UIColor *)tintColor alpha:(CGFloat)alpha blendMode:(CGBlendMode)blendMode
+{
+    CIImage *inputImage = [CIImage imageWithCGImage:self.CGImage];
+    
+    CIFilter *colorFilter = [CIFilter filterWithName:@"CIConstantColorGenerator"];
+    [colorFilter setValue:tintColor forKey:kCIInputColorKey];
+    CIImage *colorImage = colorFilter.outputImage;
+    
+    CIFilter *filter = [CIFilter filterWithName:@"CIMultiplyCompositing"];
+    [filter setValue:colorImage forKey:kCIInputImageKey];
+    [filter setValue:inputImage forKey:kCIInputBackgroundImageKey];
+    CIImage *outputImage = filter.outputImage;
+    
+    return [UIImage imageWithCIImage:outputImage];
+}
+
 @end
