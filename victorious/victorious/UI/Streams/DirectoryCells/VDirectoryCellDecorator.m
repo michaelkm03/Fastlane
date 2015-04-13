@@ -79,9 +79,19 @@
 
 - (void)highlightTagsInCell:(VDirectoryItemCell *)cell withTagColor:(UIColor *)tagColor
 {
-    NSMutableAttributedString *preformattedString = [[NSMutableAttributedString alloc] initWithAttributedString:cell.nameLabel.attributedText];
-    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:preformattedString withTagStringAttributes:@{ NSForegroundColorAttributeName : tagColor } andDefaultStringAttributes:@{ NSForegroundColorAttributeName : cell.nameLabel.textColor }];
-    cell.nameLabel.attributedText = preformattedString;
+    NSAssert(tagColor != nil, @"To highlight tags, tag color must not be nil");
+    
+    UIColor *defaultColor = cell.nameLabel.textColor;
+    if ( tagColor == nil || defaultColor == nil )
+    {
+        return;
+    }
+    
+    NSMutableAttributedString *formattedNameText = [[NSMutableAttributedString alloc] initWithAttributedString:cell.nameLabel.attributedText];
+    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:formattedNameText
+                                             withTagStringAttributes:@{ NSForegroundColorAttributeName : tagColor }
+                                          andDefaultStringAttributes:@{ NSForegroundColorAttributeName : defaultColor }];
+    cell.nameLabel.attributedText = formattedNameText;
 }
 
 @end
