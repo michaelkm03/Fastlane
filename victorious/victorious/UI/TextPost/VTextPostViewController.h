@@ -55,6 +55,12 @@
 @property (nonatomic, readonly) VTextPostTextView *textView;
 
 /**
+ The image background view, exposed here for subclasses.  Don't mess with this
+ unless you know exactly what you're doing.
+ */
+@property (nonatomic, weak, readonly) IBOutlet UIImageView *backgroundImageView;
+
+/**
  Updates the text to be displayed and renders is accoding to the rules of the
  design and using the provided attribtues.
  

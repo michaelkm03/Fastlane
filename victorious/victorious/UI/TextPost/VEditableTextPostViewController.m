@@ -317,7 +317,26 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     [self hidePlaceholderText];
     
-    return YES; //textAfter.length < self.characterCountMax;
+    return textAfter.length < self.characterCountMax;
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage animated:(BOOL)animated
+{
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.15f delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
+         {
+             self.backgroundImageView.alpha = backgroundImage == nil ? 0.0f : 1.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             super.backgroundImage = backgroundImage;
+         }];
+    }
+    else
+    {
+        super.backgroundImage = backgroundImage;
+    }
 }
 
 #pragma mark - VContentInputAccessoryViewDelegate

@@ -52,13 +52,8 @@ static NSString * const kPickerKey = @"picker";
 - (void)setShouldShowNoColorOption:(BOOL)shouldShowNoColorOption
 {
     _shouldShowNoColorOption = shouldShowNoColorOption;
-    
     _colorPickerDataSource.showNoColor = shouldShowNoColorOption;
-    
-    [_colorPickerDataSource reloadWithCompletion:^(NSArray *tools)
-    {
-        [_toolPicker reloadData];
-    }];
+    [_colorPickerDataSource reloadWithCompletion:nil];
 }
 
 - (void)setSharedCanvasToolViewController:(UIViewController *)viewController

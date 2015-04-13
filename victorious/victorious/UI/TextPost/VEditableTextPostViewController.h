@@ -65,4 +65,9 @@
  */
 - (BOOL)removeHashtag:(NSString *)hashtagText;
 
+/**
+ Sets the background image, animated or not.
+ */
+- (void)setBackgroundImage:(UIImage *)backgroundImage animated:(BOOL)animated;
+
 @end

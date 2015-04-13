@@ -38,11 +38,6 @@ static NSString * const kTitleKey = @"title";
     return self;
 }
 
-- (void)setShowNoColor:(BOOL)showNoColor
-{
-    _showNoColor = showNoColor;
-}
-
 - (void)reloadWithCompletion:(void(^)(NSArray *tools))completion
 {
     NSArray *colorOptions = [_dependencyManager templateValueOfType:[NSArray class] forKey:@"colorOptions"];

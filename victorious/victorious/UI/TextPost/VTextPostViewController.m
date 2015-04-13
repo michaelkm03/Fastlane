@@ -100,13 +100,6 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     return self.textPostTextView;
 }
 
-- (void)setBackgroundImage:(UIImage *)backgroundImage
-{
-    _backgroundImage = backgroundImage;
-    
-    [self updateBackground];
-}
-
 - (void)setColor:(UIColor *)color
 {
     _color = color;
@@ -129,6 +122,13 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
         self.view.backgroundColor = self.color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
         self.backgroundImageView.image = self.backgroundImage;
     }
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage
+{
+    _backgroundImage = backgroundImage;
+    
+    [self updateBackground];
 }
 
 - (void)setIsTextSelectable:(BOOL)isTextSelectable
