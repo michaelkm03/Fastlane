@@ -13,6 +13,7 @@
 #import "VSequence+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VDirectorySeeMoreItemCell.h"
+#import "VTagStringFormatter.h"
 
 @implementation VDirectoryCellDecorator
 
@@ -73,8 +74,14 @@
     cell.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     cell.imageColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
-    cell.seeMoreLabel.textColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     cell.seeMoreLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+}
+
+- (void)highlightTagsInCell:(VDirectoryItemCell *)cell withTagColor:(UIColor *)tagColor
+{
+    NSMutableAttributedString *preformattedString = [[NSMutableAttributedString alloc] initWithAttributedString:cell.nameLabel.attributedText];
+    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:preformattedString withTagStringAttributes:@{ NSForegroundColorAttributeName : tagColor } andDefaultStringAttributes:@{ NSForegroundColorAttributeName : cell.nameLabel.textColor }];
+    cell.nameLabel.attributedText = preformattedString;
 }
 
 @end
