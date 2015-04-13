@@ -54,7 +54,6 @@
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
-    
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     [self sd_setImageWithURL:url

@@ -126,7 +126,7 @@ static int const kNotificationFetchBatchSize = 50;
     NSFetchRequest *fetchRequest = nil;
     
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(createdAt)) ascending:NO];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(displayOrder)) ascending:YES];
     
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:kNotificationFetchBatchSize];
