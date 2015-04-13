@@ -36,6 +36,7 @@
 "Profile" = "Profil";
 "Settings" = "Einstellung";
 "Save" = "Speichern";
+"Continue" = "Weiter";
 "Loading..." = "Ladevorgang läuft...";
 
 "Featured" = "Hervorgehoben";
@@ -515,6 +516,21 @@
 "AuthorizationContextInbox" = "Wir freuen uns riesig, dich in unserer Community zu haben, und dass du mit Fans Nachrichten austauschst. Erstelle einfach ein Konto, damit du Nachrichten senden und empfangen kannst!";
 "AuthorizationContextNotification" = "Wir freuen uns riesig, dich in unserer Community zu haben, und dass du mit Fans kommunizierst. Erstelle einfach ein Konto und du wirst über wichtige Informationen benachrichtigt werden!";
 
+"This will discard any content added to your post" = "Dies löscht jeden Inhalt zu Ihrem Beitrag";
+
+"No Color"  = "keine Farbe";    // No color selected
+"Standard"  = "PNormal";   // The default color before a selection is made
+"Red"       = "Rot";        // The color red
+"Magenta"   = "Magenta";    // The color, a pink/red
+"Orange"    = "Orange";     // The color orange
+"Peach"     = "Pêche";      // The color, a light yellow/orange
+"Yellow"    = "Gelb";     // The color yellow
+"Green"     = "Grün";      // The color green
+"Teal"      = "Blau grün";       // The color, a blue/green
+"Blue"      = "Blue";       // The color blue
+"Purple"    = "Lila";     // The color purp[le
+"Black"     = "Schwarz";      // The color black
+
 "Video loading failed." = "Laden des Videos fehlgeschlagen.";
 "Error Loading Next Video" = "Fehler beim Laden des nächsten Videos";
 "Failed to fetch products" = "Fehler beim Holen der Produkte";
@@ -531,7 +547,7 @@
 "GIF MODE" = "GIF-MODUS";
 "VIDEO MODE" = "VIDEO-MODUS";
 "Write a caption (optional)" = "Bildunterschrift eingeben (optional)";
-"Rendering..." = "Wiedergabe...";
+"Rendering..." = "Vorzeigen...";
 "Render failure" = "Wiedergabe fehlgeschlagen";
-"Publishing..." = "Veröffentlichung...";
+"Publishing..." = "Erscheinen...";
 "Upload failure" = "Upload fehlgeschlagen";
