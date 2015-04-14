@@ -1,5 +1,5 @@
 //
-//  VStreamCollectionCellPollD.m
+//  VSleekStreamCollectionCellPoll.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/13/15.

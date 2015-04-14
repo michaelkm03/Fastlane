@@ -1,5 +1,5 @@
 //
-//  VStreamCellActionViewD.m
+//  VSleekStreamCellActionView.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/13/15.
@@ -36,40 +36,40 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 - (void)updateLayoutOfButtons
 {
     //Remove widths of all POSSIBLY present buttons to have proper space between buttons even when not all 5 buttons are present
-    CGFloat totalButtonWidths = VCommentButtonWidth + VButtonHeight * 4;
-    
-    CGFloat separatorSpace = ( CGRectGetWidth(self.bounds) - totalButtonWidths - VStreamCellActionViewActionButtonBuffer * 2 ) / 4;
-    
-    CGFloat yOrigin = (CGRectGetHeight(self.bounds) - VButtonHeight) / 2;
-    
-    for (NSUInteger i = 0; i < self.actionButtons.count; i++)
-    {
-        UIButton *button = self.actionButtons[i];
-        CGRect frame = button.frame;
-        if (i == 0)
-        {
-            frame.origin.x = VStreamCellActionViewActionButtonBuffer;
-        }
-        else
-        {
-            UIButton *lastButton = self.actionButtons[i - 1];
-            frame.origin.x = CGRectGetMaxX(lastButton.frame) + separatorSpace;
-        }
-        
-        //Fix frame of all buttons to be the
-        frame.size.height = VButtonHeight;
-        frame.origin.y = yOrigin;
-        if ( ![button isEqual:self.commentsButton] )
-        {
-            frame.size.width = VButtonHeight;
-        }
-        button.frame = frame;
-        
-        //Setup the circles behind the images
-        [button setClipsToBounds:YES];
-        button.layer.cornerRadius = VButtonHeight / 2;
-        
-    }
+//    CGFloat totalButtonWidths = VCommentButtonWidth + VButtonHeight * 4;
+//    
+//    CGFloat separatorSpace = ( CGRectGetWidth(self.bounds) - totalButtonWidths -    * 2 ) / 4;
+//    
+//    CGFloat yOrigin = (CGRectGetHeight(self.bounds) - VButtonHeight) / 2;
+//    
+//    for (NSUInteger i = 0; i < self.actionButtons.count; i++)
+//    {
+//        UIButton *button = self.actionButtons[i];
+//        CGRect frame = button.frame;
+//        if (i == 0)
+//        {
+//            frame.origin.x = VStreamCellActionViewActionButtonBuffer;
+//        }
+//        else
+//        {
+//            UIButton *lastButton = self.actionButtons[i - 1];
+//            frame.origin.x = CGRectGetMaxX(lastButton.frame) + separatorSpace;
+//        }
+//        
+//        //Fix frame of all buttons to be the
+//        frame.size.height = VButtonHeight;
+//        frame.origin.y = yOrigin;
+//        if ( ![button isEqual:self.commentsButton] )
+//        {
+//            frame.size.width = VButtonHeight;
+//        }
+//        button.frame = frame;
+//        
+//        //Setup the circles behind the images
+//        [button setClipsToBounds:YES];
+//        button.layer.cornerRadius = VButtonHeight / 2;
+//        
+//    }
 }
 
 - (void)updateCommentsCount:(NSNumber *)commentsCount

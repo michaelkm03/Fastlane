@@ -10,9 +10,10 @@
 #import "NSDate+timeSince.h"
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
-#import "VDefaultProfileImageView.h"
+#import "VDefaultProfileButton.h"
 #import "VDependencyManager.h"
 #import "VTagStringFormatter.h"
+#import "VUserProfileViewController.h"
 
 static const CGFloat kLineSpacing = 3.0f;
 static const CGFloat kMinimumLineHeight = 15.0f;
@@ -22,7 +23,7 @@ static const CGFloat kBaselineOffset = 0.5f;
 
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *notificationWho;
+@property (weak, nonatomic) IBOutlet VDefaultProfileButton *notificationWho;
 
 @end
 
@@ -49,7 +50,7 @@ static const CGFloat kBaselineOffset = 0.5f;
 {
     _notification = notification;
     
-    [self.notificationWho setProfileImageURL:[NSURL URLWithString:notification.imageURL]];
+    [self.notificationWho setProfileImageURL:[NSURL URLWithString:_notification.imageURL] forState:UIControlStateNormal];
     self.accessoryType = [self.notification.deepLink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
     //This paragraph style causes emojis to display correctly
@@ -57,7 +58,8 @@ static const CGFloat kBaselineOffset = 0.5f;
     paragraphStyle.minimumLineHeight = kMinimumLineHeight;
     paragraphStyle.lineSpacing = kLineSpacing;
 
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:notification.body];
+    NSString *safeText = notification.subject == nil ? @"" : notification.subject;
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:safeText];
     NSDictionary *stringAttributes = @{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) };
     [VTagStringFormatter tagDictionaryFromFormattingAttributedString:mutableAttributedString
                                              withTagStringAttributes:stringAttributes
@@ -85,6 +87,18 @@ static const CGFloat kBaselineOffset = 0.5f;
         self.messageLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         [self.messageLabel sizeToFit];
     }
+}
+
+- (IBAction)profileButtonAction:(id)sender
+{
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.notification.user];
+    [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [self.notificationWho setup];
 }
 
 @end
