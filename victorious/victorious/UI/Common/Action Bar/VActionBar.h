@@ -8,9 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class VActionBarFlexibleSpaceItem;
-@class VActionBarFixedWidthItem;
-
 /**
  *  VActionBar lays out action items in a UIToolBar like API.
  *
@@ -27,16 +24,6 @@
 @interface VActionBar : UIView
 
 /**
- *  A flexible space item for use in layout of VActionBar's action items.
- */
-+ (VActionBarFlexibleSpaceItem *)flexibleSpaceItem;
-
-/**
- *  A fixed width item for use in layout of VActionBar's action items.
- */
-+ (VActionBarFixedWidthItem *)fixedWidthItemWithWidth:(CGFloat)width;
-
-/**
  *  The items to distribute over the action bar.
  *
  *  Each item should only appear once in the array. A view appearing twice in the array is undefined.
@@ -46,13 +33,3 @@
 
 @end
 
-
-@interface VActionBarFlexibleSpaceItem : UIView
-
-@end
-
-@interface VActionBarFixedWidthItem : UIView
-
-@property (nonatomic, assign) CGFloat width;
-
-@end

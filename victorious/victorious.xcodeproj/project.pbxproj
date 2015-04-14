@@ -688,6 +688,8 @@
 		D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D88CEAE61A92EEED00F5A837 /* VSnapshotViewController.m */; };
 		D88CEAE91A92EEED00F5A837 /* VSnapshotViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D88CEAE71A92EEED00F5A837 /* VSnapshotViewController.xib */; };
 		D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */; };
+		D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D89367451ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m */; };
+		D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D89367481ADDBAA1001D2426 /* VActionBarFixedWidthItem.m */; };
 		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
 		D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */; };
 		D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */; };
@@ -2115,6 +2117,10 @@
 		D88CEAE71A92EEED00F5A837 /* VSnapshotViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSnapshotViewController.xib; sourceTree = "<group>"; };
 		D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCellViewModel.h; sourceTree = "<group>"; };
 		D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCellViewModel.m; sourceTree = "<group>"; };
+		D89367441ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarFlexibleSpaceItem.h; sourceTree = "<group>"; };
+		D89367451ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionBarFlexibleSpaceItem.m; sourceTree = "<group>"; };
+		D89367471ADDBAA1001D2426 /* VActionBarFixedWidthItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarFixedWidthItem.h; sourceTree = "<group>"; };
+		D89367481ADDBAA1001D2426 /* VActionBarFixedWidthItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionBarFixedWidthItem.m; sourceTree = "<group>"; };
 		D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramDataSource.h; sourceTree = "<group>"; };
 		D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSource.m; sourceTree = "<group>"; };
 		D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramBarView.h; sourceTree = "<group>"; };
@@ -5205,6 +5211,10 @@
 			children = (
 				D8DCE58E1ADD835B0004B782 /* VActionBar.h */,
 				D8DCE58F1ADD835B0004B782 /* VActionBar.m */,
+				D89367441ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.h */,
+				D89367451ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m */,
+				D89367471ADDBAA1001D2426 /* VActionBarFixedWidthItem.h */,
+				D89367481ADDBAA1001D2426 /* VActionBarFixedWidthItem.m */,
 			);
 			path = "Action Bar";
 			sourceTree = "<group>";
@@ -6046,6 +6056,7 @@
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
+				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
 				F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */,
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
@@ -6151,6 +6162,7 @@
 				DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */,
 				D81404111AB372760099EC4B /* VNotAuthorizedDataSource.m in Sources */,
 				D86BF35C1A42683E00C9F420 /* VPublishBlurOverAnimator.m in Sources */,
+				D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */,
 				0314D06F19B4670A00FA363C /* UIImage+Cropping.m in Sources */,
 				A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */,
 				032954AB1AA0FDB800698119 /* NSCharacterSet+VURLParts.m in Sources */,

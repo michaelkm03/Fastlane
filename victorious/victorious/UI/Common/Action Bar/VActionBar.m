@@ -7,6 +7,10 @@
 //
 
 #import "VActionBar.h"
+#import "VActionBarFixedWidthItem.h"
+#import "VActionBarFlexibleSpaceItem.h"
+
+// Layout Helpers
 #import "UIView+Autolayout.h"
 
 #if CGFLOAT_IS_DOUBLE
@@ -21,31 +25,7 @@
 
 static const CGFloat kDefaultActionItemWidth = 44.0f;
 
-#pragma mark - VActionBar Implementation
-
-@interface VActionBar ()
-
-@end
-
 @implementation VActionBar
-
-#pragma mark - Flexible/Fixed Item Factories
-
-+ (VActionBarFlexibleSpaceItem *)flexibleSpaceItem
-{
-    VActionBarFlexibleSpaceItem *flexibleSpaceItem = [[VActionBarFlexibleSpaceItem alloc] initWithFrame:CGRectZero];
-    flexibleSpaceItem.translatesAutoresizingMaskIntoConstraints = NO;
-    return flexibleSpaceItem;
-}
-
-+ (VActionBarFixedWidthItem *)fixedWidthItemWithWidth:(CGFloat)width
-{
-    VActionBarFixedWidthItem *fixedWidthItem = [[VActionBarFixedWidthItem alloc] initWithFrame:CGRectZero];
-    fixedWidthItem.width = width;
-    fixedWidthItem.translatesAutoresizingMaskIntoConstraints = NO;
-    [fixedWidthItem v_addWidthConstraint:width];
-    return fixedWidthItem;
-}
 
 #pragma mark - Public Methods
 
@@ -251,17 +231,5 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
     CGFloat flexibleSpaceWidth = (CGFloat)(width / numberOfFlexibleItems);
     return floorCGFloat(flexibleSpaceWidth);
 }
-
-@end
-
-#pragma mark - VActionBarFlexibleSpaceItem
-
-@implementation VActionBarFlexibleSpaceItem
-
-@end
-
-#pragma mark - VActionBarFixedWidthItem
-
-@implementation VActionBarFixedWidthItem
 
 @end
