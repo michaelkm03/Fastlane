@@ -408,6 +408,7 @@
 		A75C64971AD78DCA00245125 /* VTextPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C648F1AD78DCA00245125 /* VTextPostViewController.m */; };
 		A75C64981AD78DCA00245125 /* VTextPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75C64901AD78DCA00245125 /* VTextPostViewController.xib */; };
 		A75C64991AD78DCA00245125 /* VTextPostViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64921AD78DCA00245125 /* VTextPostViewModel.m */; };
+		A75C64A21ADC7A3C00245125 /* VTextPostBackgroundLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A11ADC7A3C00245125 /* VTextPostBackgroundLayout.swift */; };
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
@@ -1565,6 +1566,8 @@
 		A75C64901AD78DCA00245125 /* VTextPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTextPostViewController.xib; sourceTree = "<group>"; };
 		A75C64911AD78DCA00245125 /* VTextPostViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostViewModel.h; sourceTree = "<group>"; };
 		A75C64921AD78DCA00245125 /* VTextPostViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostViewModel.m; sourceTree = "<group>"; };
+		A75C64A11ADC7A3C00245125 /* VTextPostBackgroundLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextPostBackgroundLayout.swift; sourceTree = "<group>"; };
+		A75C64A31ADC7D0A00245125 /* SwiftBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftBridging.h; sourceTree = "<group>"; };
 		A75ECFE91AB0B6B400C35063 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		A75ECFEB1AB0B6B400C35063 /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
@@ -3934,6 +3937,7 @@
 				A75C64901AD78DCA00245125 /* VTextPostViewController.xib */,
 				A75C64911AD78DCA00245125 /* VTextPostViewModel.h */,
 				A75C64921AD78DCA00245125 /* VTextPostViewModel.m */,
+				A75C64A11ADC7A3C00245125 /* VTextPostBackgroundLayout.swift */,
 			);
 			path = TextPost;
 			sourceTree = "<group>";
@@ -4490,6 +4494,7 @@
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				0314D07719B4685C00FA363C /* VConstants.h */,
 				0314D07819B4685C00FA363C /* VConstants.m */,
+				A75C64A31ADC7D0A00245125 /* SwiftBridging.h */,
 			);
 			path = victorious;
 			sourceTree = "<group>";
@@ -6323,6 +6328,7 @@
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
 				D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */,
+				A75C64A21ADC7A3C00245125 /* VTextPostBackgroundLayout.swift in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
@@ -6761,6 +6767,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -6782,6 +6789,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -6874,6 +6882,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -6895,6 +6904,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Staging;
@@ -7050,6 +7060,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -7072,6 +7083,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -7082,6 +7094,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -7103,6 +7116,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Stable;
@@ -7230,6 +7244,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -7247,6 +7262,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				WRAPPER_EXTENSION = app;
 			};
 			name = QA;

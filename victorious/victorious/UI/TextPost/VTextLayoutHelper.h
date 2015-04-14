@@ -18,20 +18,6 @@
 @interface VTextLayoutHelper : NSObject
 
 /**
- The main method that calculated the background frames required to meet the
- design of the text post test.
- 
- @param textView A VTextPostTextView instances that provides the custom drawing
- routines necessary to render the background frames that will be calculated,
- as well as a destination for the modified text.
- @param calloutRanges An array of character ranges for words that will be separated
- or "called out" into individual background frames, separate from the background frame
- rendered for each line.
- */
-- (void)updateTextViewBackground:(VTextPostTextView *)textView
-                   calloutRanges:(NSArray *)calloutRanges;
-
-/**
  Text with callout ranges will have background frames that are rendered separately
  from the background frame of the full text of the line in which it exists.  This method
  adjusts the kerning in the text attributes to provide enough space between callout and

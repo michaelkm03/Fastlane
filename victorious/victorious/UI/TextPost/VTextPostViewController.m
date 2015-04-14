@@ -12,15 +12,17 @@
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
 #import "VHashTags.h"
+#import "victorious-Swift.h" // For VTextPostBackgroundLayout
 
 @interface VTextPostViewController ()
 
 @property (nonatomic, assign) BOOL hasBeenDisplayed;
 
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textPostTextView;
-
 @property (nonatomic, strong, readwrite) IBOutlet VTextPostViewModel *viewModel;
 @property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
+
+@property (nonatomic, strong) VTextPostBackgroundLayout *textPostBackgroundLayout;
 
 @end
 
@@ -40,6 +42,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.textPostBackgroundLayout = [[VTextPostBackgroundLayout alloc] init];
     
     self.textView.text = @"";
     self.textView.selectable = NO;
@@ -147,7 +151,7 @@
     }
     
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
-    [self.textLayoutHelper updateTextViewBackground:textPostTextView calloutRanges:hashtagCalloutRanges];
+    [self.textPostBackgroundLayout updateTextViewBackground:self.textView calloutRangeObjects:hashtagRanges];
     
     textPostTextView.selectable = wasSelected;
 }
