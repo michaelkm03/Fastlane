@@ -266,7 +266,7 @@
 "CancelExpiration" = "Annuler l'expiration ?";
 "CancelExirationConfirm" = "Souhaitez-vous vraiment quitter le paramétrage d'une date d'expiration ?";
 
-"Now" = "Maintenant";
+"Now" = "0s";
 "SecondsAgo" = "%ds";
 "MinuteAgo" = "1min";
 "MinutesAgo" = "%dm";
