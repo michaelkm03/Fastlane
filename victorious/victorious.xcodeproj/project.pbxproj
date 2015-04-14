@@ -704,7 +704,6 @@
 		D8B44CD31ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B44CCC1ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib */; };
 		D8B44CD41ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B44CCE1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m */; };
 		D8B44CD51ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B44CCF1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib */; };
-		D8B44CD81ADCB3BA006340E8 /* VFixedActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B44CD71ADCB3BA006340E8 /* VFixedActionView.m */; };
 		D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */; };
 		D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE91A805CC800090C5E /* VInlineValidationView.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
@@ -2145,8 +2144,6 @@
 		D8B44CCD1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekStreamCollectionCellPoll.h; sourceTree = "<group>"; };
 		D8B44CCE1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekStreamCollectionCellPoll.m; sourceTree = "<group>"; };
 		D8B44CCF1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSleekStreamCollectionCellPoll.xib; sourceTree = "<group>"; };
-		D8B44CD61ADCB3BA006340E8 /* VFixedActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFixedActionView.h; sourceTree = "<group>"; };
-		D8B44CD71ADCB3BA006340E8 /* VFixedActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFixedActionView.m; sourceTree = "<group>"; };
 		D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineValidationTextField.h; sourceTree = "<group>"; };
 		D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineValidationTextField.m; sourceTree = "<group>"; };
 		D8B70FE81A805CC800090C5E /* VInlineValidationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineValidationView.h; sourceTree = "<group>"; };
@@ -5149,8 +5146,6 @@
 				D8B44CCD1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.h */,
 				D8B44CCE1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m */,
 				D8B44CCF1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib */,
-				D8B44CD61ADCB3BA006340E8 /* VFixedActionView.h */,
-				D8B44CD71ADCB3BA006340E8 /* VFixedActionView.m */,
 			);
 			path = "Template D";
 			sourceTree = "<group>";
@@ -6324,7 +6319,6 @@
 				A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */,
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */,
-				D8B44CD81ADCB3BA006340E8 /* VFixedActionView.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */,
 				A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */,
