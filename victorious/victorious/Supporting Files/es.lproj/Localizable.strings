@@ -31,7 +31,7 @@
 "Exit" = "Salir";
 "Publish" = "Publicar";
 "Next" = "Siguiente";
-"Quote" = "Cotizar";
+"Quote" = "Mensaje";
 "Meme" = "Meme";
 "Share" = "Compartir";
 "Discover" = "Descubrir";
@@ -541,10 +541,10 @@
 
 "#nofilter" = "#nohayfiltro";
 "create a meme" = "crear meme";
-"create a quote" = "crear una cita";
+"create a quote" = "crear un mensaje";
 "Create a GIF" = "Crea un GIF";
 "GIF" = "GIF";
-"quote" = "cita";
+"quote" = "mensaje";
 "GIF MODE" = "MODO GIF";
 "VIDEO MODE" = "MODO VIDEO";
 "Write a caption (optional)" = "Escribir un subtítulo (opcional)";
