@@ -75,8 +75,8 @@
     
     _text = text;
     
-    NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
-    _text = [self.textLayoutHelper stringByRemovingEmptySpacesInText:text betweenCalloutRanges:hashtagCalloutRanges];
+    //NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
+    //_text = [self.textLayoutHelper stringByRemovingEmptySpacesInText:text betweenCalloutRanges:hashtagCalloutRanges];
     
     [self updateTextView];
 }

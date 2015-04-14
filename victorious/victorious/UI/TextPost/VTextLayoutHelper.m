@@ -24,7 +24,6 @@
                    toAttributedString:(NSMutableAttributedString *)attributedString
                     withCalloutRanges:(NSArray *)calloutRanges
 {
-    //NSRange previousRange = NSMakeRange( 0, 0 );
     for ( NSValue *rangeValueObject in calloutRanges )
     {
         NSRange range = rangeValueObject.rangeValue;
@@ -32,20 +31,13 @@
         {
             NSRange startRange = NSMakeRange( range.location - 1, 1 );
             CGFloat padding = additionalKerning;
-            /*if ( previousRange.length > 0 ) //< If we have a value form the last loop
-            {
-                NSInteger numberOfSpacesFromLastCallout = range.location - (previousRange.location + previousRange.length);
-                if ( numberOfSpacesFromLastCallout == 0 )
-                {
-                    padding = wordPadding * 2.0;
-                }
-            }*/
             [attributedString addAttribute:NSKernAttributeName value:@(padding) range:startRange];
         }
         NSRange endRange = NSMakeRange( range.location - 1 + range.length, 1 );
-        [attributedString addAttribute:NSKernAttributeName value:@(additionalKerning) range:endRange];
-        
-        //previousRange = range;
+        if ( endRange.location + endRange.length < attributedString.length )
+        {
+            [attributedString addAttribute:NSKernAttributeName value:@(additionalKerning) range:endRange];
+        }
     }
 }
 
