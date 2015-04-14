@@ -123,8 +123,7 @@
     BOOL output = [self.keyboardBarViewController textView:self.textView shouldChangeTextInRange:range replacementText:replacementText];
     XCTAssertFalse( self.didCancelKeyboardBarWasCalled );
     XCTAssertFalse( output );
-    NSString *combinedText = [initialText stringByAppendingString:replacementText];
-    XCTAssertEqualObjects( self.textView.text, [combinedText substringWithRange:NSMakeRange(0, limit)] );
+    XCTAssertEqualObjects( self.textView.text, initialText );
 }
 
 #pragma mark - VKeyboardBarDelegate
