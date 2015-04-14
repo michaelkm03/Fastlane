@@ -33,6 +33,7 @@ static int const kNotificationFetchBatchSize = 50;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+@property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
 
@@ -114,6 +115,11 @@ static int const kNotificationFetchBatchSize = 50;
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:@"Notifications"];
+    if (self.refreshRequest.isExecuting)
+    {
+        NSLog(@"NOTIFICATIONS: ABORT ABORT ABORT");
+        self.refreshRequest = nil;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -212,6 +218,11 @@ static int const kNotificationFetchBatchSize = 50;
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [self.refreshControl endRefreshing];
+        if (self.refreshRequest == nil)
+        {
+            return;
+        }
+        self.refreshRequest = nil;
         UIView *viewForHUD = self.parentViewController.view;
         
         if (viewForHUD == nil )
@@ -227,6 +238,11 @@ static int const kNotificationFetchBatchSize = 50;
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        if (self.refreshRequest == nil)
+        {
+            [self.refreshControl endRefreshing];
+            return;
+        }
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
@@ -240,8 +256,8 @@ static int const kNotificationFetchBatchSize = 50;
         [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
     };
     
-    [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-                                                        successBlock:success failBlock:fail];
+    self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
+                                                                               successBlock:success failBlock:fail];
 }
 
 - (void)loadNextPageAction

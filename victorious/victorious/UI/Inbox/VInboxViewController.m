@@ -39,6 +39,7 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+@property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
 
@@ -124,6 +125,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
+    if (self.refreshRequest.isExecuting)
+    {
+        NSLog(@"INBOX: ABORT ABORT ABORT");
+        self.refreshRequest = nil;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -356,6 +362,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [self.refreshControl endRefreshing];
+        if (self.refreshRequest == nil)
+        {
+            return;
+        }
+        self.refreshRequest = nil;
         UIView *viewForHUD = self.parentViewController.view;
         
         if (viewForHUD == nil )
@@ -371,14 +382,20 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        if (self.refreshRequest == nil)
+        {
+            [self.refreshControl endRefreshing];
+            return;
+        }
+        self.refreshRequest = nil;
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
         [self setHasMessages:(self.fetchedResultsController.fetchedObjects.count > 0)];
         [self.messageCountCoordinator updateUnreadMessageCount];
     };
 
-    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
-                                                            successBlock:success failBlock:fail];
+    self.refreshRequest = [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
+                                                                              successBlock:success failBlock:fail];
 }
 
 - (void)loadNextPageAction
