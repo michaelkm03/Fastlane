@@ -56,13 +56,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
 }
 
-- (void)setIsFollowingUser:(BOOL)isFollowingUser
-{
-    _isFollowingUser = isFollowingUser;
-    
-    [self applyEditProfileButtonStyle];
-}
-
 - (void)applyEditProfileButtonStyle
 {
     if ( self.user == nil || self.dependencyManager == nil )
@@ -111,6 +104,14 @@ static NSString * const kEditButtonStylePill = @"rounded";
             [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
         }
     }
+}
+
+#pragma mark - Setters
+
+- (void)setIsFollowingUser:(BOOL)isFollowingUser
+{
+    _isFollowingUser = isFollowingUser;
+    [self applyEditProfileButtonStyle];
 }
 
 - (void)setUser:(VUser *)user
@@ -206,6 +207,8 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.userStatsBar.backgroundColor = backgroundColor;
     [self applyEditProfileButtonStyle];
 }
+
+#pragma mark - Actions
 
 - (IBAction)pressedEditProfile:(id)sender
 {
