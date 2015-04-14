@@ -520,7 +520,7 @@
 "This will discard any content added to your post" = "Dies löscht jeden Inhalt zu Ihrem Beitrag";
 
 "No Color"  = "keine Farbe";    // No color selected
-"Standard"  = "PNormal";   // The default color before a selection is made
+"Standard"  = "Normal";   // The default color before a selection is made
 "Red"       = "Rot";        // The color red
 "Magenta"   = "Magenta";    // The color, a pink/red
 "Orange"    = "Orange";     // The color orange
