@@ -276,7 +276,12 @@ static NSString * const kEditButtonStylePill = @"rounded";
      {
          [welf applyEditProfileButtonStyle];
          
-         welf.nameLabel.text = user.name;
+         //Set a minimum line height by setting an NSParagraphStyle to properly display emojis without cutting them off
+         NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+         paragraphStyle.minimumLineHeight = welf.nameLabel.font.lineHeight + 2.0;
+         paragraphStyle.alignment = NSTextAlignmentCenter;
+         NSString *safeName = user.name != nil ? user.name : @"";
+         welf.nameLabel.attributedText = [[NSAttributedString alloc] initWithString:safeName attributes:@{ NSParagraphStyleAttributeName : paragraphStyle }];
          welf.locationLabel.text = user.location;
          
          if ( user.tagline != nil && user.tagline.length > 0 )
