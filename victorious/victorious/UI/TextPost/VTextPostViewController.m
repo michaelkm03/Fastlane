@@ -7,7 +7,6 @@
 //
 
 #import "VTextPostViewController.h"
-#import "VTextLayoutHelper.h"
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
@@ -20,9 +19,9 @@
 
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textPostTextView;
 @property (nonatomic, strong, readwrite) IBOutlet VTextPostViewModel *viewModel;
-@property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
 
-@property (nonatomic, strong) VTextPostBackgroundLayout *textPostBackgroundLayout;
+@property (nonatomic, strong) VTextBackgroundFrameMaker *textBackgroundFrameMaker;
+@property (nonatomic, strong) VTextCalloutFormatter *textCalloutFormatter;
 
 @end
 
@@ -43,7 +42,8 @@
 {
     [super viewDidLoad];
     
-    self.textPostBackgroundLayout = [[VTextPostBackgroundLayout alloc] init];
+    self.textBackgroundFrameMaker = [[VTextBackgroundFrameMaker alloc] init];
+    self.textCalloutFormatter = [[VTextCalloutFormatter alloc] init];
     
     self.textView.text = @"";
     self.textView.selectable = NO;
@@ -133,13 +133,14 @@
     textPostTextView.selectable = YES;
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:textAttributes];
-    [VHashTags formatHashTagsInString:attributedText withTagRanges:calloutRanges attributes:calloutAttributes];
-    [self.textLayoutHelper setAdditionalKerningWithVaule:self.viewModel.calloutWordKerning
-                                      toAttributedString:attributedText
-                                       withCalloutRanges:calloutRanges];
-    
+    [self.textCalloutFormatter applyAttributes:calloutAttributes toText:attributedText inCalloutRanges:calloutRanges];
+    [self.textCalloutFormatter setKerning:self.viewModel.calloutWordKerning toText:attributedText withCalloutRanges:calloutRanges];
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
-    [self.textPostBackgroundLayout updateTextViewBackground:self.textView calloutRangeObjects:calloutRanges];
+    
+    NSArray *backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:self.textView
+                                                                             calloutRangeObjects:calloutRanges];
+    self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
+    self.textView.backgroundFrames = backgroundFrames;
     
     textPostTextView.selectable = wasSelected;
 }

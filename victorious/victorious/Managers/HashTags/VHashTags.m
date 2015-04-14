@@ -63,8 +63,7 @@
     [tagRanges enumerateObjectsUsingBlock:^(NSValue *tagRangeValue, NSUInteger idx, BOOL *stop)
      {
          NSRange tagRange = [tagRangeValue rangeValue];
-         NSRange tagRangeWithHash = { tagRange.location, tagRange.length };
-         [fieldText addAttributes:attributes range:tagRangeWithHash];
+         [fieldText addAttributes:attributes range:tagRange];
      }];
     
     return YES;

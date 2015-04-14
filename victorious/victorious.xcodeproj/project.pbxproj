@@ -403,12 +403,13 @@
 		A75C64841AD77E4F00245125 /* UIColor+VHex.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64831AD77E4F00245125 /* UIColor+VHex.m */; };
 		A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */; };
 		A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64891AD78DCA00245125 /* VEditableTextPostViewController.m */; };
-		A75C64951AD78DCA00245125 /* VTextLayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C648B1AD78DCA00245125 /* VTextLayoutHelper.m */; };
 		A75C64961AD78DCA00245125 /* VTextPostTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C648D1AD78DCA00245125 /* VTextPostTextView.m */; };
 		A75C64971AD78DCA00245125 /* VTextPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C648F1AD78DCA00245125 /* VTextPostViewController.m */; };
 		A75C64981AD78DCA00245125 /* VTextPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75C64901AD78DCA00245125 /* VTextPostViewController.xib */; };
 		A75C64991AD78DCA00245125 /* VTextPostViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64921AD78DCA00245125 /* VTextPostViewModel.m */; };
-		A75C64A21ADC7A3C00245125 /* VTextPostBackgroundLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A11ADC7A3C00245125 /* VTextPostBackgroundLayout.swift */; };
+		A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A61ADDDFC900245125 /* VTextBackgroundFrameMaker.swift */; };
+		A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */; };
+		A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */; };
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
@@ -1557,8 +1558,6 @@
 		A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditableTextPostHashtagHelper.m; sourceTree = "<group>"; };
 		A75C64881AD78DCA00245125 /* VEditableTextPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditableTextPostViewController.h; sourceTree = "<group>"; };
 		A75C64891AD78DCA00245125 /* VEditableTextPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditableTextPostViewController.m; sourceTree = "<group>"; };
-		A75C648A1AD78DCA00245125 /* VTextLayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextLayoutHelper.h; sourceTree = "<group>"; };
-		A75C648B1AD78DCA00245125 /* VTextLayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextLayoutHelper.m; sourceTree = "<group>"; };
 		A75C648C1AD78DCA00245125 /* VTextPostTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostTextView.h; sourceTree = "<group>"; };
 		A75C648D1AD78DCA00245125 /* VTextPostTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostTextView.m; sourceTree = "<group>"; };
 		A75C648E1AD78DCA00245125 /* VTextPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostViewController.h; sourceTree = "<group>"; };
@@ -1566,8 +1565,10 @@
 		A75C64901AD78DCA00245125 /* VTextPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTextPostViewController.xib; sourceTree = "<group>"; };
 		A75C64911AD78DCA00245125 /* VTextPostViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostViewModel.h; sourceTree = "<group>"; };
 		A75C64921AD78DCA00245125 /* VTextPostViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostViewModel.m; sourceTree = "<group>"; };
-		A75C64A11ADC7A3C00245125 /* VTextPostBackgroundLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextPostBackgroundLayout.swift; sourceTree = "<group>"; };
 		A75C64A31ADC7D0A00245125 /* SwiftBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftBridging.h; sourceTree = "<group>"; };
+		A75C64A61ADDDFC900245125 /* VTextBackgroundFrameMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextBackgroundFrameMaker.swift; sourceTree = "<group>"; };
+		A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextFragmentsBuilder.swift; sourceTree = "<group>"; };
+		A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextCalloutFormatter.swift; sourceTree = "<group>"; };
 		A75ECFE91AB0B6B400C35063 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		A75ECFEB1AB0B6B400C35063 /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
@@ -3924,12 +3925,11 @@
 		A75C64851AD78DCA00245125 /* TextPost */ = {
 			isa = PBXGroup;
 			children = (
+				A75C64A51ADDDFC900245125 /* Layout */,
 				A75C64861AD78DCA00245125 /* VEditableTextPostHashtagHelper.h */,
 				A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */,
 				A75C64881AD78DCA00245125 /* VEditableTextPostViewController.h */,
 				A75C64891AD78DCA00245125 /* VEditableTextPostViewController.m */,
-				A75C648A1AD78DCA00245125 /* VTextLayoutHelper.h */,
-				A75C648B1AD78DCA00245125 /* VTextLayoutHelper.m */,
 				A75C648C1AD78DCA00245125 /* VTextPostTextView.h */,
 				A75C648D1AD78DCA00245125 /* VTextPostTextView.m */,
 				A75C648E1AD78DCA00245125 /* VTextPostViewController.h */,
@@ -3937,9 +3937,18 @@
 				A75C64901AD78DCA00245125 /* VTextPostViewController.xib */,
 				A75C64911AD78DCA00245125 /* VTextPostViewModel.h */,
 				A75C64921AD78DCA00245125 /* VTextPostViewModel.m */,
-				A75C64A11ADC7A3C00245125 /* VTextPostBackgroundLayout.swift */,
 			);
 			path = TextPost;
+			sourceTree = "<group>";
+		};
+		A75C64A51ADDDFC900245125 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				A75C64A61ADDDFC900245125 /* VTextBackgroundFrameMaker.swift */,
+				A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */,
+				A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */,
+			);
+			path = Layout;
 			sourceTree = "<group>";
 		};
 		A75ECFE81AB0B6B400C35063 /* Image Crop Tool */ = {
@@ -6154,10 +6163,12 @@
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
+				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
 				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				D8E5A4FA1AAA76460019F231 /* VBlurOverTransitioner.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
+				A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */,
 				0308B1151AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
@@ -6203,6 +6214,7 @@
 				D87AD2AE1AD4866B00C481D0 /* VAsset+VAssetCache.m in Sources */,
 				03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
+				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
@@ -6328,7 +6340,6 @@
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
 				D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */,
-				A75C64A21ADC7A3C00245125 /* VTextPostBackgroundLayout.swift in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
@@ -6421,7 +6432,6 @@
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				0314D4EE19B46B5E00FA363C /* VLoginViewController.m in Sources */,
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
-				A75C64951AD78DCA00245125 /* VTextLayoutHelper.m in Sources */,
 				A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */,
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
 				BEC833BB19D3646E00341EA9 /* VComment.m in Sources */,
