@@ -32,10 +32,43 @@ import UIKit
         textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
         
         let calloutRanges: [NSRange] = self.calloutRangesFromObjectArray( calloutRangeObjects )
-        var backgroundFrames = [CGRect]()
+        
+        let rectsDividedByWord = self.rectsDividedByWord( textView )
+        let rectsWithSpacingApplied = self.rectsWithSpacingApplied( rectsDividedByWord )
+        var backgroundFrames = rectsWithSpacingApplied
+        
+        textView.backgroundFrameColor = UIColor.whiteColor()
+        textView.backgroundFrames = self.valueObjectsFromRects( backgroundFrames )
+    }
+    
+    func rectsWithSpacingApplied( rects: [CGRect] ) -> [CGRect]
+    {
+        var output = [CGRect]()
+        
+        for original in rects
+        {
+            let rect = CGRect(
+                x: original.origin.x - 6, // + 3,
+                y: original.origin.y + 14,
+                width: original.size.width + 12, //  - 6,
+                height: original.size.height - 3
+            )
+            output.append( rect )
+        }
+        
+        return output
+    }
+    
+    func rectsDividedByWord( textView: UITextView ) -> [CGRect]
+    {
+        var output = [CGRect]()
+        
+        let text: NSString = textView.attributedText.string
+        textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
         
         var currentRect = CGRectZero
         var lastWordRect = CGRectZero
+        var wasNewLine = false
         
         var selectedRangeLocation = 0
         for i in 0...text.length-1
@@ -48,16 +81,26 @@ import UIKit
                 { ( wordRect, stop ) -> Void in
                     
                     let isNewLine = wordRect.origin.y > lastWordRect.origin.y
+                    println( "\(wordRect.origin.y) < \(lastWordRect.origin.y) = \(isNewLine)" )
                     if isNewLine || CGRectEqualToRect( currentRect, CGRectZero )
                     {
                         currentRect = wordRect
+                    }
+                    
+                    if wasNewLine
+                    {
+                        let lastCharRange = NSMakeRange( glyphRange.location-1, 1 )
+                        let lastCharRect = textView.layoutManager.boundingRectForGlyphRange( lastCharRange,
+                            inTextContainer: textView.textContainer
+                        )
+                        currentRect.origin.x = wordRect.origin.x - lastCharRect.size.width
                     }
                     
                     let isSpace = text.substringWithRange( glyphRange ) == " "
                     let isEnd = i == text.length-1
                     if isSpace
                     {
-                        backgroundFrames.append( currentRect )
+                        output.append( currentRect )
                         currentRect = wordRect
                     }
                     else
@@ -65,16 +108,16 @@ import UIKit
                         currentRect.size.width = CGRectGetMaxX( wordRect ) - currentRect.origin.x
                         if isEnd
                         {
-                            backgroundFrames.append( currentRect )
+                            output.append( currentRect )
                         }
                     }
                     
                     lastWordRect = wordRect
+                    wasNewLine = isNewLine
             }
         }
         
-        textView.backgroundFrameColor = UIColor.whiteColor()
-        textView.backgroundFrames = self.valueObjectsFromRects( backgroundFrames )
+        return output
     }
     
     func valueObjectsFromRects( rects: [CGRect] ) -> [NSValue]
