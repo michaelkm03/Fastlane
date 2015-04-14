@@ -8,15 +8,13 @@
 
 import UIKit
 
-struct VWord
+struct VTextFragment
 {
-    var text: String
-    var rect: CGRect
-    
-    var isCallout: Bool
-    {
-        return count(self.text) > 0 && (self.text as NSString).substringWithRange(NSMakeRange( 0, 1 )) == "#"
-    }
+    let text: String
+    let rect: CGRect
+    let range: NSRange
+    let isCallout: Bool
+    let isNewLine: Bool
 }
 
 @objc class VTextPostBackgroundLayout: NSObject
@@ -28,7 +26,7 @@ struct VWord
     @param textView A VTextPostTextView instances that provides the custom drawing
     routines necessary to render the background frames that will be calculated,
     as well as a destination for the modified text.
-    @param calloutRanges An array of character ranges for words that will be separated
+    @param calloutRanges An array of character ranges for fragments that will be separated
     or "called out" into individual background frames, separate from the background frame
     rendered for each line.
     */
@@ -38,93 +36,13 @@ struct VWord
         
         textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
         
-        var words = self.wordsInTextView( textView )
-        let backgroundFrames = self.rectsFromWords( words )
+        var fragments = self.fragmentsInTextView( textView, calloutDelimeters: ["#"] )
+        let backgroundFrames = self.rectsFromFragments( fragments )
         
         textView.backgroundFrameColor = UIColor.whiteColor()
         textView.backgroundFrames = self.valueObjectsFromRects( backgroundFrames )
     }
     
-    func rectsFromWords( words: [VWord] ) -> [CGRect]
-    {
-        var output = [CGRect]()
-        for word in words
-        {
-            println( word.text )
-            let calloutSpace: CGFloat = word.isCallout ? 15 : 0
-            let original = word.rect
-            output.append( CGRect(
-                x: original.origin.x - 6 + calloutSpace,
-                y: original.origin.y + 14,
-                width: original.size.width + 12 - calloutSpace * 2,
-                height: original.size.height - 3
-            ) )
-        }
-        return output
-    }
-    
-    func wordsInTextView( textView: UITextView ) -> [VWord]
-    {
-        var output = [VWord]()
-        
-        let text: NSString = count(textView.attributedText.string) == 0 ? " " : textView.attributedText.string
-        textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
-        
-        var currentRect = CGRectZero
-        var lastWordRect = CGRectZero
-        var wasSpace = false
-        
-        var selectedRangeLocation = 0
-        var wordStartIndex = 0
-        for i in 0...text.length-1
-        {
-            let glyphRange = NSMakeRange( i, 1 )
-            let wordRect = textView.layoutManager.boundingRectForGlyphRange( glyphRange, inTextContainer: textView.textContainer )
-            
-            if (wasSpace && i > 0) || CGRectEqualToRect( currentRect, CGRectZero )
-            {
-                wordStartIndex = i
-                currentRect = wordRect
-            }
-            
-            let currentCharacter = text.substringWithRange( glyphRange )
-            
-            let isCallout = currentCharacter == "#" // pass in character
-            
-            let isNewLine = wordRect.origin.y > lastWordRect.origin.y
-            if isNewLine || isCallout
-            {
-                let wordText = text.substringWithRange( NSMakeRange( wordStartIndex, i - wordStartIndex ) )
-                output.append( VWord( text: wordText, rect:currentRect  ) )
-                wordStartIndex = i
-                currentRect = wordRect
-            }
-            
-            let isSpace = currentCharacter == " "
-            if isSpace && text.length > 0
-            {
-                let wordText = text.substringWithRange( NSMakeRange( wordStartIndex, i - wordStartIndex ) )
-                output.append( VWord( text: wordText, rect:currentRect  ) )
-            }
-            else
-            {
-                currentRect.size.width = CGRectGetMaxX( wordRect ) - currentRect.origin.x
-                
-                let isEnd = i == text.length-1
-                if isEnd
-                {
-                    let wordText = text.substringWithRange( NSMakeRange( wordStartIndex, i - wordStartIndex ) )
-                    output.append( VWord( text: wordText, rect:currentRect  ) )
-                }
-            }
-            
-            lastWordRect = wordRect
-            wasSpace = isSpace
-        }
-    
-        return output
-    }
-
     func valueObjectsFromRects( rects: [CGRect] ) -> [NSValue]
     {
         var valueObjects = [NSValue]()
@@ -145,24 +63,158 @@ struct VWord
         return ranges
     }
     
-    // TODO: Remove this if not used
-    func stringByAddingSurroundingSpacesToCallouts( text: NSString, calloutRangeObjects: NSArray ) -> NSString
+    func rectsFromFragments( fragments: [VTextFragment] ) -> [CGRect]
     {
-        let calloutRanges: [NSRange] = self.calloutRangesFromObjectArray( calloutRangeObjects )
-        var output = NSMutableString(string: text)
+        var output = [CGRect]()
         
-        for range in calloutRanges
+        let offsetSpace: CGFloat = 6.0
+        let rectSpace: CGFloat = 2.0
+        
+        for i in 0...fragments.count-1
         {
-            if range.location > 0
+            var fragment: VTextFragment = fragments[i]
+            var lastFragment: VTextFragment? = i > 0 ? fragments[i-1] : nil
+            var nextFragment: VTextFragment? = i < fragments.count-1 ? fragments[i+1] : nil
+            
+            var offsetX1: CGFloat = 0.0
+            var offsetX2: CGFloat = 0.0
+            
+            if fragment.isNewLine
             {
-                let startRange = NSMakeRange( range.location-1, 1 )
-                let characterBeforeCallout = output.substringWithRange( startRange )
-                if characterBeforeCallout != " "
-                {
-                    output.replaceCharactersInRange( startRange, withString: " \(characterBeforeCallout)" )
-                }
+                offsetX1 -= offsetSpace
+                offsetX2 += offsetSpace
             }
+            if nextFragment == nil
+            {
+                offsetX2 += offsetSpace
+            }
+            if let next = nextFragment where next.isNewLine && !fragment.isCallout
+            {
+                offsetX2 += offsetSpace
+            }
+            if fragment.isCallout && !fragment.isNewLine
+            {
+                offsetX1 -= offsetSpace
+                offsetX2 += offsetSpace
+            }
+            if let next = nextFragment where next.isCallout
+            {
+                offsetX2 += fragment.isCallout && next.isNewLine ? offsetSpace : -offsetSpace
+            }
+            
+            offsetX1 += rectSpace
+            offsetX2 -= rectSpace*2
+            
+            let original = fragment.rect
+            output.append( CGRect(
+                x: original.origin.x + offsetX1,
+                y: original.origin.y + 14, // + CGFloat( arc4random() % 6 ),
+                width: original.size.width + offsetX2,
+                height: original.size.height - 3
+            ) )
+            lastFragment = fragment
+            
+            println( "\"\(fragment.text)\" (\(fragment.isCallout), \(fragment.isNewLine))" )
         }
-        return NSString(string: output) as String
+        println( "===" )
+        return output
+    }
+    
+    func fragmentsInTextView( textView: UITextView, calloutDelimeters: [String] ) -> [VTextFragment]
+    {
+        var output = [VTextFragment]()
+        
+        let text: NSString = count(textView.attributedText.string) == 0 ? " " : textView.attributedText.string
+        textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
+        
+        var currentFragmentRect = CGRectZero
+        var lastFragmentRect = CGRectZero
+        var isCalloutFragment = false
+        var selectedRangeLocation = 0
+        var fragmentStartIndex = 0
+        var isNewLine = true
+        
+        for i in 0...text.length-1
+        {
+            let glyphRange = NSMakeRange( i, 1 )
+            let currentCharacter = text.substringWithRange( glyphRange )
+            let fragmentRect = textView.layoutManager.boundingRectForGlyphRange( glyphRange, inTextContainer: textView.textContainer )
+            let fragmentRange = NSMakeRange( fragmentStartIndex, i - fragmentStartIndex )
+            let fragmentText = text.substringWithRange( fragmentRange )
+            let isCalloutDelimeter = contains( calloutDelimeters, currentCharacter )
+            let isSpace = currentCharacter == " "
+            let needsNewLine = i > 0 && fragmentRect.origin.y > lastFragmentRect.origin.y
+            let isEndOfCallout = isSpace && isCalloutFragment
+            let isLastCharacter = i == text.length-1
+            let isFirstCharacter = i == 0
+            let isMinCalloutLength = i < text.length-2
+            
+            if isFirstCharacter
+            {
+                fragmentStartIndex = i
+                currentFragmentRect = fragmentRect
+            }
+            
+            if needsNewLine
+            {
+                if ( fragmentText != " " )
+                {
+                    output.append( VTextFragment(
+                        text: fragmentText,
+                        rect:currentFragmentRect, range: fragmentRange,
+                        isCallout: isCalloutFragment,
+                        isNewLine: isNewLine )
+                    )
+                }
+                isNewLine = true
+                fragmentStartIndex = i
+                currentFragmentRect = fragmentRect
+            }
+            else if isCalloutDelimeter && isMinCalloutLength
+            {
+                output.append( VTextFragment(
+                    text: fragmentText,
+                    rect:currentFragmentRect,
+                    range: fragmentRange,
+                    isCallout: isCalloutFragment,
+                    isNewLine: isNewLine )
+                )
+                isNewLine = false
+                fragmentStartIndex = i
+                currentFragmentRect = fragmentRect
+                isCalloutFragment = true
+            }
+            else if isEndOfCallout
+            {
+                output.append( VTextFragment(
+                    text: fragmentText,
+                    rect:currentFragmentRect,
+                    range: fragmentRange,
+                    isCallout: isCalloutFragment,
+                    isNewLine: isNewLine  )
+                )
+                isNewLine = false
+                fragmentStartIndex = i
+                currentFragmentRect = fragmentRect
+                isCalloutFragment = false
+            }
+            
+            currentFragmentRect.size.width = CGRectGetMaxX( fragmentRect ) - currentFragmentRect.origin.x
+            
+            if isLastCharacter
+            {
+                output.append( VTextFragment(
+                    text: fragmentText,
+                    rect:currentFragmentRect,
+                    range: fragmentRange,
+                    isCallout: isCalloutFragment,
+                    isNewLine: isNewLine )
+                )
+            }
+            
+            lastFragmentRect = fragmentRect
+        }
+    
+        return output
     }
 }

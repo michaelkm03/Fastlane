@@ -74,10 +74,6 @@
     }
     
     _text = text;
-    
-    //NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
-    //_text = [self.textLayoutHelper stringByRemovingEmptySpacesInText:text betweenCalloutRanges:hashtagCalloutRanges];
-    
     [self updateTextView];
 }
 
@@ -96,7 +92,8 @@
     
     NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
     NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
-    [self updateTextView:self.textPostTextView withText:_text textAttributes:attributes calloutAttributes:calloutAttributes];
+    NSArray *calloutRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+    [self updateTextView:self.textPostTextView withText:_text calloutRanges:calloutRanges textAttributes:attributes calloutAttributes:calloutAttributes];
 }
 
 #pragma mark - public
@@ -123,35 +120,26 @@
 
 - (void)updateTextView:(VTextPostTextView *)textPostTextView
               withText:(NSString *)text
+         calloutRanges:(NSArray *)calloutRanges
         textAttributes:(NSDictionary *)textAttributes
      calloutAttributes:(NSDictionary *)calloutAttributes
 {
     if ( text == nil )
     {
-        text = @"";
+        return;
     }
     
     const BOOL wasSelected = textPostTextView.selectable;
     textPostTextView.selectable = YES;
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:textAttributes];
-    
-    NSArray *hashtagRanges = [VHashTags detectHashTags:text];
-    
-    NSArray *hashtagCalloutRanges = nil;
-    if ( calloutAttributes != nil )
-    {
-        [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:calloutAttributes];
-        
-        hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
-        
-        [self.textLayoutHelper setAdditionalKerningWithVaule:self.viewModel.calloutWordKerning
-                                          toAttributedString:attributedText
-                                           withCalloutRanges:hashtagCalloutRanges];
-    }
+    [VHashTags formatHashTagsInString:attributedText withTagRanges:calloutRanges attributes:calloutAttributes containsHashmark:YES];
+    [self.textLayoutHelper setAdditionalKerningWithVaule:self.viewModel.calloutWordKerning
+                                      toAttributedString:attributedText
+                                       withCalloutRanges:calloutRanges];
     
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
-    [self.textPostBackgroundLayout updateTextViewBackground:self.textView calloutRangeObjects:hashtagRanges];
+    [self.textPostBackgroundLayout updateTextViewBackground:self.textView calloutRangeObjects:calloutRanges];
     
     textPostTextView.selectable = wasSelected;
 }

@@ -24,6 +24,7 @@
                    toAttributedString:(NSMutableAttributedString *)attributedString
                     withCalloutRanges:(NSArray *)calloutRanges
 {
+    NSRange previousEndRange = { 0, 0 };
     for ( NSValue *rangeValueObject in calloutRanges )
     {
         NSRange range = rangeValueObject.rangeValue;
@@ -34,10 +35,13 @@
             [attributedString addAttribute:NSKernAttributeName value:@(padding) range:startRange];
         }
         NSRange endRange = NSMakeRange( range.location - 1 + range.length, 1 );
-        if ( endRange.location + endRange.length < attributedString.length )
+        [attributedString addAttribute:NSKernAttributeName value:@(additionalKerning) range:endRange];
+        
+        NSRange nextWordStartRange = NSMakeRange( range.location + 1 + range.length, 1 );
+        if ( previousEndRange.length > 0 && nextWordStartRange.location < attributedString.string.length )
         {
-            [attributedString addAttribute:NSKernAttributeName value:@(additionalKerning) range:endRange];
         }
+        previousEndRange = endRange;
     }
 }
 
