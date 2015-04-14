@@ -89,6 +89,7 @@
 "Profile load failed!"  =   "Profile load failed!";
 
 "User already exists"   =   "User already exists";
+"No such user"          =   "No such user";
 "Sorry, I can't display that right now" = "Sorry, I can't display that right now";
 
 "WereSorry"             =   "We're Sorry";
