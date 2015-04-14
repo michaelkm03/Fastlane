@@ -151,7 +151,6 @@
 "UGCShareTextFormat"   =    "Check out this post!";      //Check out this post! <URL>
 "EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
 
-
 "Facebook"              =   "Facebook";
 "FacebookFailed"        =   "Could not connect to Facebook.";
 
@@ -195,6 +194,7 @@
 "Create a Video Post"   =   "Create a Video Post";
 "Create an Image Post"  =   "Create an Image Post";
 "Create a Poll"         =   "Create a Poll";
+"Create a Text Post"    =   "Create a Text Post";
 
 "NEW POLL"              =   "New Poll";
 "Ask a question..."     =   "Ask a question...";

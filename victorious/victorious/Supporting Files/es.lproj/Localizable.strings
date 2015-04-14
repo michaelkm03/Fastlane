@@ -147,7 +147,6 @@
 "UGCShareImageFormat" = "¡Mira esta foto!";      //Check out this photo! <URL>
 "EmailShareSubjectFormat" = "¡Mira esta publicación de la app %@!"; //Check out this post from the <creator name> app!
 
-
 "Facebook" = "Facebook";
 "FacebookFailed" = "No pudo conectarse a Facebook.";
 
