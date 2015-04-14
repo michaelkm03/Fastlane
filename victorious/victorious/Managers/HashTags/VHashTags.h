@@ -23,11 +23,6 @@
                  withTagRanges:(NSArray *)tagRanges
                     attributes:(NSDictionary *)attributes;
 
-+ (BOOL)formatHashTagsInString:(NSMutableAttributedString *)fieldText
-                 withTagRanges:(NSArray *)tagRanges
-                    attributes:(NSDictionary *)attributes
-              containsHashmark:(BOOL)containsHashmark;
-
 + (NSArray *)detectHashTags:(NSString *)fieldText includeHashSymbol:(BOOL)includeHashSymbol;
 
 /**

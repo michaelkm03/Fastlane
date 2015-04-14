@@ -133,7 +133,7 @@
     textPostTextView.selectable = YES;
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:textAttributes];
-    [VHashTags formatHashTagsInString:attributedText withTagRanges:calloutRanges attributes:calloutAttributes containsHashmark:YES];
+    [VHashTags formatHashTagsInString:attributedText withTagRanges:calloutRanges attributes:calloutAttributes];
     [self.textLayoutHelper setAdditionalKerningWithVaule:self.viewModel.calloutWordKerning
                                       toAttributedString:attributedText
                                        withCalloutRanges:calloutRanges];

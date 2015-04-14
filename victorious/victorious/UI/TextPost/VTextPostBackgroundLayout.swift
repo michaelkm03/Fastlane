@@ -68,7 +68,7 @@ struct VTextFragment
         var output = [CGRect]()
         
         let offsetSpace: CGFloat = 6.0
-        let rectSpace: CGFloat = 2.0
+        let rectSpace: CGFloat = 1.0
         
         for i in 0...fragments.count-1
         {
@@ -76,9 +76,21 @@ struct VTextFragment
             var lastFragment: VTextFragment? = i > 0 ? fragments[i-1] : nil
             var nextFragment: VTextFragment? = i < fragments.count-1 ? fragments[i+1] : nil
             
-            var offsetX1: CGFloat = 0.0
-            var offsetX2: CGFloat = 0.0
+            var offsetX1: CGFloat = rectSpace
+            var offsetX2: CGFloat = -rectSpace*2
             
+            // Callout spacing
+            if fragment.isCallout && !fragment.isNewLine && lastFragment != nil
+            {
+                offsetX1 -= offsetSpace
+                offsetX2 += offsetSpace
+            }
+            if let next = nextFragment where next.isCallout && !next.isNewLine
+            {
+                offsetX2 -= offsetSpace
+            }
+            
+            // New line spacing
             if fragment.isNewLine
             {
                 offsetX1 -= offsetSpace
@@ -88,22 +100,6 @@ struct VTextFragment
             {
                 offsetX2 += offsetSpace
             }
-            if let next = nextFragment where next.isNewLine && !fragment.isCallout
-            {
-                offsetX2 += offsetSpace
-            }
-            if fragment.isCallout && !fragment.isNewLine
-            {
-                offsetX1 -= offsetSpace
-                offsetX2 += offsetSpace
-            }
-            if let next = nextFragment where next.isCallout
-            {
-                offsetX2 += fragment.isCallout && next.isNewLine ? offsetSpace : -offsetSpace
-            }
-            
-            offsetX1 += rectSpace
-            offsetX2 -= rectSpace*2
             
             let original = fragment.rect
             output.append( CGRect(
@@ -172,13 +168,16 @@ struct VTextFragment
             }
             else if isCalloutDelimeter && isMinCalloutLength
             {
-                output.append( VTextFragment(
-                    text: fragmentText,
-                    rect:currentFragmentRect,
-                    range: fragmentRange,
-                    isCallout: isCalloutFragment,
-                    isNewLine: isNewLine )
-                )
+                if count(fragmentText) > 0
+                {
+                    output.append( VTextFragment(
+                        text: fragmentText,
+                        rect:currentFragmentRect,
+                        range: fragmentRange,
+                        isCallout: isCalloutFragment,
+                        isNewLine: isNewLine )
+                    )
+                }
                 isNewLine = false
                 fragmentStartIndex = i
                 currentFragmentRect = fragmentRect

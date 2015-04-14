@@ -87,7 +87,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
         self.hasAppeared = YES;
     }
     
-    self.text = @"asdsa das dsa dsadsa#ddasd sad saA#Dsa dsa da#d sda dsad sa#dsa dsa dsada#dsad3#dadsdsa#dsadasdsa#dsa d asd#dsa dsadsa das#d";
+    self.text = @"#dsadsa #dsadsa dsadsad";
 }
 
 - (NSString *)textOutput
@@ -319,7 +319,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     [self hidePlaceholderText];
     
-    return YES; //textAfter.length < self.characterCountMax;
+    return YES;
 }
 
 #pragma mark - VContentInputAccessoryViewDelegate

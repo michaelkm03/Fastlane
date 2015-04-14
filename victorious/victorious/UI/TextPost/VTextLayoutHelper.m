@@ -24,24 +24,20 @@
                    toAttributedString:(NSMutableAttributedString *)attributedString
                     withCalloutRanges:(NSArray *)calloutRanges
 {
-    NSRange previousEndRange = { 0, 0 };
+    CGFloat padding = additionalKerning;
     for ( NSValue *rangeValueObject in calloutRanges )
     {
         NSRange range = rangeValueObject.rangeValue;
-        if ( range.location > 0 )  //< Exclude first word
+        if ( range.location > 0 ) //< Exclude first word
         {
-            NSRange startRange = NSMakeRange( range.location - 1, 1 );
-            CGFloat padding = additionalKerning;
+            NSRange startRange = { range.location - 1, 1 };
             [attributedString addAttribute:NSKernAttributeName value:@(padding) range:startRange];
         }
-        NSRange endRange = NSMakeRange( range.location - 1 + range.length, 1 );
-        [attributedString addAttribute:NSKernAttributeName value:@(additionalKerning) range:endRange];
-        
-        NSRange nextWordStartRange = NSMakeRange( range.location + 1 + range.length, 1 );
-        if ( previousEndRange.length > 0 && nextWordStartRange.location < attributedString.string.length )
+        if ( range.location + range.length < attributedString.length )
         {
+            NSRange endRange = { range.location - 1 + range.length, 1 };
+            [attributedString addAttribute:NSKernAttributeName value:@(padding) range:endRange];
         }
-        previousEndRange = endRange;
     }
 }
 

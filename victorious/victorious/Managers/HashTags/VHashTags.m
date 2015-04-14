@@ -47,7 +47,6 @@
 + (BOOL)formatHashTagsInString:(NSMutableAttributedString *)fieldText
                  withTagRanges:(NSArray *)tagRanges
                     attributes:(NSDictionary *)attributes
-              containsHashmark:(BOOL)containsHashmark
 {
     // Error checking
     if ( fieldText == nil || tagRanges == nil || attributes == nil )
@@ -61,26 +60,14 @@
         return NO;
     }
     
-    NSInteger offset = containsHashmark ? 0 : 1;
-    
     [tagRanges enumerateObjectsUsingBlock:^(NSValue *tagRangeValue, NSUInteger idx, BOOL *stop)
      {
          NSRange tagRange = [tagRangeValue rangeValue];
-         if (tagRange.location && tagRange.length < fieldText.length)
-         {
-             NSRange tagRangeWithHash = { tagRange.location - offset, tagRange.length + offset };
-             [fieldText addAttributes:attributes range:tagRangeWithHash];
-         }
+         NSRange tagRangeWithHash = { tagRange.location, tagRange.length };
+         [fieldText addAttributes:attributes range:tagRangeWithHash];
      }];
     
     return YES;
-}
-
-+ (BOOL)formatHashTagsInString:(NSMutableAttributedString *)fieldText
-                 withTagRanges:(NSArray *)tagRanges
-                    attributes:(NSDictionary *)attributes
-{
-    return [[self class] formatHashTagsInString:fieldText withTagRanges:tagRanges attributes:attributes containsHashmark:NO];
 }
 
 + (NSString *)stringWithPrependedHashmarkFromString:(NSString *)string
