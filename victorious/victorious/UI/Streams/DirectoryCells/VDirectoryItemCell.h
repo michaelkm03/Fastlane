@@ -10,9 +10,9 @@
 
 #import "VBaseCollectionViewCell.h"
 
-extern const CGFloat kDirectoryItemBaseHeight;
-extern const CGFloat kDirectoryItemStackHeight;
-extern const CGFloat kDirectoryItemBaseWidth;
+extern const CGFloat VDirectoryItemBaseHeight;
+extern const CGFloat VDirectoryItemStackHeight;
+extern const CGFloat VDirectoryItemBaseWidth;
 
 /**
  A cell for the VDirectoryCollectionViewController.

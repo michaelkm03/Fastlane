@@ -809,6 +809,11 @@
 		F0140BC41AA9468500B95642 /* VTimerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC31AA9468500B95642 /* VTimerManagerTests.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */; };
+		F02024A51ADD68A500C61313 /* VCollectionsCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024A41ADD68A500C61313 /* VCollectionsCellFactory.m */; };
+		F02024A81ADD6C9300C61313 /* VShowcaseCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024A71ADD6C9300C61313 /* VShowcaseCellFactory.m */; };
+		F02024AA1ADD75E800C61313 /* newDirectoryTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F02024A91ADD75E800C61313 /* newDirectoryTemplate.json */; };
+		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
+		F02024B01ADD896100C61313 /* VNestedCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AF1ADD896100C61313 /* VNestedCardDirectoryCellFactory.m */; };
 		F028CF4E1A97A6B0005EE2B5 /* VShowcaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF4D1A97A6B0005EE2B5 /* VShowcaseCollectionViewController.m */; };
 		F028F3BE1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
@@ -2333,6 +2338,16 @@
 		F0140BC51AAA37EC00B95642 /* VRoundedSegmentedSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRoundedSegmentedSelectorView.h; sourceTree = "<group>"; };
 		F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRoundedSegmentedSelectorView.m; sourceTree = "<group>"; };
 		F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTaggingTextStorageTests.m; sourceTree = "<group>"; };
+		F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDirectoryCellFactory.h; path = DirectoryCells/VDirectoryCellFactory.h; sourceTree = "<group>"; };
+		F02024A31ADD68A500C61313 /* VCollectionsCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionsCellFactory.h; sourceTree = "<group>"; };
+		F02024A41ADD68A500C61313 /* VCollectionsCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionsCellFactory.m; sourceTree = "<group>"; };
+		F02024A61ADD6C9300C61313 /* VShowcaseCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShowcaseCellFactory.h; sourceTree = "<group>"; };
+		F02024A71ADD6C9300C61313 /* VShowcaseCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowcaseCellFactory.m; sourceTree = "<group>"; };
+		F02024A91ADD75E800C61313 /* newDirectoryTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newDirectoryTemplate.json; sourceTree = "<group>"; };
+		F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCellFactory.h; sourceTree = "<group>"; };
+		F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCellFactory.m; sourceTree = "<group>"; };
+		F02024AE1ADD896100C61313 /* VNestedCardDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNestedCardDirectoryCellFactory.h; sourceTree = "<group>"; };
+		F02024AF1ADD896100C61313 /* VNestedCardDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNestedCardDirectoryCellFactory.m; sourceTree = "<group>"; };
 		F028CF4C1A97A6B0005EE2B5 /* VShowcaseCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShowcaseCollectionViewController.h; sourceTree = "<group>"; };
 		F028CF4D1A97A6B0005EE2B5 /* VShowcaseCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowcaseCollectionViewController.m; sourceTree = "<group>"; };
 		F028F3BC1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VJSONLogging.h"; sourceTree = "<group>"; };
@@ -2529,6 +2544,7 @@
 				0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */,
 				0314D0A019B4698800FA363C /* VObjectManager+Login.h */,
 				0314D0A119B4698800FA363C /* VObjectManager+Login.m */,
+				F02024A91ADD75E800C61313 /* newDirectoryTemplate.json */,
 				0314D0A219B4698800FA363C /* VObjectManager+Pagination.h */,
 				0314D0A319B4698800FA363C /* VObjectManager+Pagination.m */,
 				0314D0A419B4698800FA363C /* VObjectManager+Private.h */,
@@ -5411,6 +5427,15 @@
 				A7299EA51AA7842100B6BC1F /* VDirectoryCollectionViewController.m */,
 				F028CF4C1A97A6B0005EE2B5 /* VShowcaseCollectionViewController.h */,
 				F028CF4D1A97A6B0005EE2B5 /* VShowcaseCollectionViewController.m */,
+				F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */,
+				F02024A31ADD68A500C61313 /* VCollectionsCellFactory.h */,
+				F02024A41ADD68A500C61313 /* VCollectionsCellFactory.m */,
+				F02024A61ADD6C9300C61313 /* VShowcaseCellFactory.h */,
+				F02024A71ADD6C9300C61313 /* VShowcaseCellFactory.m */,
+				F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */,
+				F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */,
+				F02024AE1ADD896100C61313 /* VNestedCardDirectoryCellFactory.h */,
+				F02024AF1ADD896100C61313 /* VNestedCardDirectoryCellFactory.m */,
 			);
 			name = Directories;
 			sourceTree = "<group>";
@@ -5709,6 +5734,7 @@
 				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				A7A922641AC61B3500F4755E /* VContentTextCell.xib in Resources */,
+				F02024AA1ADD75E800C61313 /* newDirectoryTemplate.json in Resources */,
 				034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */,
 				0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */,
 				036F388A1A0C4DEA0014DF66 /* PT_Serif-Web-Regular.ttf in Resources */,
@@ -5879,6 +5905,7 @@
 				DB531B591A42709700B4ADC8 /* VUser.m in Sources */,
 				BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */,
 				F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */,
+				F02024A81ADD6C9300C61313 /* VShowcaseCellFactory.m in Sources */,
 				A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */,
 				A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */,
 				0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */,
@@ -6055,6 +6082,7 @@
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				0314D4DE19B46B5E00FA363C /* VFindContactsTableViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
+				F02024A51ADD68A500C61313 /* VCollectionsCellFactory.m in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
@@ -6137,6 +6165,7 @@
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */,
+				F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */,
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
 				0314D06119B4666A00FA363C /* NSManagedObject+RestKit.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
@@ -6166,6 +6195,7 @@
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
 				DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
+				F02024B01ADD896100C61313 /* VNestedCardDirectoryCellFactory.m in Sources */,
 				669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */,
 				D8C1FD051A69C0F60072892B /* VToolController.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,

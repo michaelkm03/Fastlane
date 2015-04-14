@@ -8,10 +8,9 @@
 
 #import "VBaseCollectionViewCell.h"
 #import "VDependencyManager.h"
+#import "VDirectoryCellFactory.h"
 
 @class VStreamItem, VDirectoryGroupCell, VStream, VSequence;
-
-extern CGFloat const kStreamDirectoryGroupCellInset;
 
 @protocol VDirectoryGroupCellDelegate <NSObject>
 
@@ -20,16 +19,6 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
 @end
 
 @interface VDirectoryGroupCell : VBaseCollectionViewCell
-
-/**
- *  The desired height for a directory item cell that has space for a stack-style extension at the bottom.
- */
-+ (CGFloat)desiredStreamOfStreamsHeightForWidth:(CGFloat)width;
-
-/**
- *  The desired height for a directory item cell that is just a stream of content.
- */
-+ (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -44,8 +33,8 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
 @property (nonatomic, strong) VStream *stream;
 
 /**
- *  The current index path of the show more cell. Nil if no show more is being displayed.
+ *  The directoryCellFactory that will dictate what and how cells are displayed within the collectionView in this cell
  */
-- (NSIndexPath *)indexPathForShowMore;
+@property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
 
 @end

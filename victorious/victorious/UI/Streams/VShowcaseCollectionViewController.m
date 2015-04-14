@@ -33,7 +33,7 @@
 #import "NSString+VParseHelp.h"
 
 #import "VAbstractMarqueeController.h"
-
+/*
 static NSString * const kItemColor = @"itemColor";
 static NSString * const kBackgroundColor = @"backgroundColor";
 
@@ -154,25 +154,8 @@ static CGFloat const kDirectoryInset = 5.0f;
         streamItem = groupCell.stream.streamItems[ indexPath.row ];
     }
     
-    if ( streamItem.isContent )
-    {
-        VSequence *sequence = (VSequence *)streamItem;
-        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence
-                                                                           commentId:nil
-                                                                    placeHolderImage:nil];
-    }
-    else if ( streamItem.isSingleStream )
-    {
-        VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
-        viewController.dependencyManager = self.dependencyManager;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else if ( streamItem.isStreamOfStreams )
-    {
-        VShowcaseCollectionViewController *viewController = [VShowcaseCollectionViewController streamDirectoryForStream:(VStream *)streamItem
-                                                                                                                dependencyManager:self.dependencyManager];
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
+    [self navigateToDisplayStreamItem:streamItem];
 }
 
 @end
+*/

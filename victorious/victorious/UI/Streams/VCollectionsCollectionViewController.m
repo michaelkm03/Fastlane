@@ -31,7 +31,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
  above 1: cells animate from top to bottom
  */
 static const CGFloat kAnimationPropogationDivisor = 3.5f;
-
+/*
 @interface VCollectionsCollectionViewController ()
 
 @property (nonatomic, assign) BOOL shouldAnimateCells;
@@ -187,3 +187,4 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
 }
 
 @end
+ */

@@ -17,12 +17,11 @@
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
 
-CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
 static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
-
 static CGFloat const kStreamSubdirectoryItemCellBaseWidth = 140.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
+static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 
 @interface VDirectoryGroupCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -44,7 +43,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 + (CGFloat)desiredStreamOfStreamsHeightForWidth:(CGFloat)width
 {
-    return [self desiredStreamOfContentHeightForWidth:width] + kDirectoryItemStackHeight;
+    return [self desiredStreamOfContentHeightForWidth:width] + VDirectoryItemStackHeight;
 }
 
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width
@@ -89,10 +88,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     
-    [self.collectionView registerNib:[VDirectoryItemCell nibForCell]
-          forCellWithReuseIdentifier:[VDirectoryItemCell suggestedReuseIdentifier]];
-    [self.collectionView registerNib:[VDirectorySeeMoreItemCell nibForCell]
-          forCellWithReuseIdentifier:[VDirectorySeeMoreItemCell suggestedReuseIdentifier]];
+    [self.directoryCellFactory registerCellsWithCollectionView:self.collectionView];
     
     self.collectionView.backgroundColor = [UIColor clearColor];
     
@@ -135,36 +131,30 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Check if item is last in number of items in section, this is the "show more" cell
-    if ( [self shouldShowShowMore] && indexPath.item == [self indexPathForShowMore].item )
-    {
-        NSString *identifier = [VDirectorySeeMoreItemCell suggestedReuseIdentifier];
-        VDirectorySeeMoreItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                                                                forIndexPath:indexPath];
-        [self.cellDecorator applyStyleToSeeMoreCell:seeMoreCell withDependencyManager:self.dependencyManager];
-        
-        return seeMoreCell;
-    }
-    else
-    {
-        //Populate streamItem from item in stream instead of top-level stream item
-        NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
-        VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                                                           forIndexPath:indexPath];
-        VStreamItem *streamItem = [self hasSequenceStream] ? self.stream : self.stream.streamItems[ indexPath.row ];
-        [self.cellDecorator populateCell:directoryCell withStreamItem:streamItem];
-        [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
-        [self.cellDecorator highlightTagsInCell:directoryCell withTagColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
-        
-        return directoryCell;
-    }
-    
-    return nil;
+    return [self.directoryCellFactory collectionView:collectionView cellForIndexPath:indexPath withStreamItem:[self streamItemAtIndexPath:indexPath]];
 }
 
 - (BOOL)hasSequenceStream
 {
     return [self.stream isKindOfClass:[VSequence class]];
+}
+
+- (BOOL)hasStreamOfStreams
+{
+    if ( ![self.stream isKindOfClass:[VStream class]] )
+    {
+        return NO;
+    }
+    
+    for ( VStreamItem *streamItem in self.stream.streamItems )
+    {
+        if ( [streamItem isStreamOfStreams] )
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 - (BOOL)shouldShowShowMore
@@ -176,14 +166,15 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     return NO;
 }
 
-- (NSIndexPath *)indexPathForShowMore
+- (VStreamItem *)streamItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (![self shouldShowShowMore])
+    VStreamItem *streamItem = nil;
+    NSOrderedSet *streamItems = self.stream.streamItems;
+    if ( (NSUInteger)indexPath.row < streamItems.count )
     {
-        return nil;
+        streamItem = streamItems[indexPath.row];
     }
-    NSInteger lastIndexInSection = [self collectionView:self.collectionView numberOfItemsInSection:0];
-    return [NSIndexPath indexPathForItem:lastIndexInSection-1 inSection:0];
+    return streamItem;
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -204,10 +195,15 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     CGFloat height = [VDirectoryGroupCell directoryCellHeightForWidth:width];
     if ( self.stream.isStreamOfStreams )
     {
-        height += kDirectoryItemStackHeight;
+        height += VDirectoryItemStackHeight;
     }
     
     return CGSizeMake([VDirectoryGroupCell desiredCellWidthForBoundsWidth:width], height);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 0.0f;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView

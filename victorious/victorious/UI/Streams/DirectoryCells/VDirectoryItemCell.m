@@ -15,9 +15,9 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
 
-const CGFloat kDirectoryItemBaseHeight = 217.0f;
-const CGFloat kDirectoryItemStackHeight = 8.0f;
-const CGFloat kDirectoryItemBaseWidth = 145.0f;
+const CGFloat VDirectoryItemBaseHeight = 217.0f;
+const CGFloat VDirectoryItemStackHeight = 8.0f;
+const CGFloat VDirectoryItemBaseWidth = 145.0f;
 
 static const CGFloat kBorderWidth = 0.5f;
 
@@ -60,12 +60,12 @@ static const CGFloat kBorderWidth = 0.5f;
 
 + (CGFloat)desiredStreamOfStreamsHeightForWidth:(CGFloat)width
 {
-    return [self desiredStreamOfContentHeightForWidth:width] + kDirectoryItemStackHeight;
+    return [self desiredStreamOfContentHeightForWidth:width] + VDirectoryItemStackHeight;
 }
 
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width
 {
-    return  ( kDirectoryItemBaseHeight / kDirectoryItemBaseWidth ) * width;
+    return  ( VDirectoryItemBaseHeight / VDirectoryItemBaseWidth ) * width;
 }
 
 #pragma mark - Property Accessors
@@ -87,7 +87,7 @@ static const CGFloat kBorderWidth = 0.5f;
     _showStackedBackground = showStackedBackground;
     self.bottomStack.hidden = !showStackedBackground;
     self.middleStack.hidden = !showStackedBackground;
-    self.topStackBottomConstraint.constant = showStackedBackground ? kDirectoryItemStackHeight : 0.0f;
+    self.topStackBottomConstraint.constant = showStackedBackground ? VDirectoryItemStackHeight : 0.0f;
 }
 
 #pragma mark - UICollectionReusableView

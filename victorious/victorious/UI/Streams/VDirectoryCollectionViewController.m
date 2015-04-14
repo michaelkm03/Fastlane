@@ -36,7 +36,7 @@
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
 #import "VUserProfileViewController.h"
-
+/*
 static CGFloat const kDirectoryInset = 10.0f;
 
 @interface VDirectoryCollectionViewController () <UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
@@ -175,3 +175,4 @@ static CGFloat const kDirectoryInset = 10.0f;
 }
 
 @end
+*/

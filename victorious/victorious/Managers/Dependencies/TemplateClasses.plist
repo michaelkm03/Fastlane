@@ -62,12 +62,16 @@
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
-	<key>showcase.screen</key>
-	<string>VShowcaseCollectionViewController</string>
-	<key>streamDirectory.screen</key>
-	<string>VDirectoryCollectionViewController</string>
-	<key>collections.screen</key>
-	<string>VCollectionsCollectionViewController</string>
+	<key>directory.screen</key>
+	<string>VAbstractDirectoryCollectionViewController</string>
+	<key>collections.directoryCell</key>
+	<string>VCollectionsCellFactory</string>
+	<key>showcase.directoryCell</key>
+	<string>VShowcaseCellFactory</string>
+	<key>card.DirectoryCell</key>
+	<string>VCardDirectoryCellFactory</string>
+	<key>nestedCard.DirectoryCell</key>
+	<string>VNestedCardDirectoryCellFactory</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>
