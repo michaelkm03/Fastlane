@@ -21,7 +21,7 @@
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
 
-static const NSInteger kCharacterLimit = 1024;
+static const NSInteger kCharacterLimit = 10;
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
@@ -305,20 +305,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
         }
     }
     
-    NSMutableString *mutableText = [textView.text mutableCopy];
-    [mutableText insertString:text atIndex:range.location];
-    if ( mutableText.length > (NSUInteger)self.characterLimit )
-    {
-        NSInteger overflow = mutableText.length - self.characterLimit;
-        if ( overflow > 0 )
-        {
-            [mutableText deleteCharactersInRange:NSMakeRange( self.characterLimit, overflow)];
-        }
-        textView.text = [NSString stringWithString:mutableText];
-        return NO;
-    }
-    
-    return YES;
+    return [textView.text stringByReplacingCharactersInRange:range withString:text].length <= (NSUInteger)self.characterLimit;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
