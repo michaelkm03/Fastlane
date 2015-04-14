@@ -244,8 +244,8 @@
         <attribute name="isFollowing" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="numberOfFollowers" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="numberOfFollowing" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberOfFollowers" optional="YES" attributeType="Integer 64" syncable="YES"/>
+        <attribute name="numberOfFollowing" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
@@ -294,7 +294,7 @@
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="300"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="433"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="435"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
     </elements>
 </model>
