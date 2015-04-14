@@ -74,7 +74,12 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 
 - (void)updateCommentsCount:(NSNumber *)commentsCount
 {
-    [self.commentsButton setTitle:[self.largeNumberFormatter stringForInteger:[commentsCount integerValue]] forState:UIControlStateNormal];
+    NSString *numberValue = @"";
+    if ([commentsCount integerValue] > 0)
+    {
+        numberValue = [self.largeNumberFormatter stringForInteger:[commentsCount integerValue]];
+    }
+    [self.commentsButton setTitle:numberValue forState:UIControlStateNormal];
 }
 
 - (void)addCommentsButton
