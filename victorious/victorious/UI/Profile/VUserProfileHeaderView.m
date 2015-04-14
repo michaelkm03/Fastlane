@@ -280,7 +280,8 @@ static NSString * const kEditButtonStylePill = @"rounded";
          NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
          paragraphStyle.minimumLineHeight = welf.nameLabel.font.lineHeight + 2.0;
          paragraphStyle.alignment = NSTextAlignmentCenter;
-         welf.nameLabel.attributedText = [[NSAttributedString alloc] initWithString:user.name attributes:@{ NSParagraphStyleAttributeName : paragraphStyle }];
+         NSString *safeName = user.name != nil ? user.name : @"";
+         welf.nameLabel.attributedText = [[NSAttributedString alloc] initWithString:safeName attributes:@{ NSParagraphStyleAttributeName : paragraphStyle }];
          welf.locationLabel.text = user.location;
          
          if ( user.tagline != nil && user.tagline.length > 0 )
