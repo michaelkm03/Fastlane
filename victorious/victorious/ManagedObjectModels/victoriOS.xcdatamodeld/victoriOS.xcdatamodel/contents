@@ -66,7 +66,6 @@
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="asset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="comments" inverseEntity="Asset" syncable="YES"/>
-        <relationship name="notification" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notification" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -120,7 +119,6 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailPath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="messages" inverseEntity="Conversation" syncable="YES"/>
-        <relationship name="notification" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notification" syncable="YES"/>
         <relationship name="sender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="VNode" syncable="YES">
@@ -279,13 +277,13 @@
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="646" positionY="-441" width="128" height="240"/>
-        <element name="Comment" positionX="1078" positionY="38" width="128" height="328"/>
+        <element name="Comment" positionX="1078" positionY="38" width="128" height="315"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="EndCard" positionX="693" positionY="-648" width="128" height="148"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="88"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1582" positionY="-271" width="128" height="193"/>
+        <element name="Message" positionX="1582" positionY="-271" width="128" height="180"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="Notification" positionX="1593" positionY="87" width="128" height="208"/>
