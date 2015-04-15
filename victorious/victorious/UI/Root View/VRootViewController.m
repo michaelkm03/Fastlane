@@ -9,6 +9,7 @@
 #import "VAdViewController.h"
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
+#import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VInboxViewController.h"
@@ -194,7 +195,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (VDependencyManager *)parentDependencyManager
 {
-    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:nil
+    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:[VDependencyManager dependencyManagerWithDefaultValuesForColorsAndFonts]
                                                                                 configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
                                                             dictionaryOfClassesByTemplateName:nil];
     return basicDependencies;

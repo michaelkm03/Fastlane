@@ -60,18 +60,4 @@
  */
 @property (nonatomic, weak, readonly) IBOutlet UIImageView *backgroundImageView;
 
-/**
- Updates the text to be displayed and renders is accoding to the rules of the
- design and using the provided attribtues.
- 
- @param textAttributes A dictionary of attributes for normal text, i.e. text that
- not callout text.
- @param calloutAttribtues A dictionary of attribetus for callout text, which
- will represent things like hashtags and user tags.
- */
-- (void)updateTextView:(VTextPostTextView *)textPostTextView
-              withText:(NSString *)text
-        textAttributes:(NSDictionary *)textAttributes
-     calloutAttributes:(NSDictionary *)calloutAttributes;
-
 @end

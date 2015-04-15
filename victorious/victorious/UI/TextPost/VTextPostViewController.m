@@ -7,11 +7,11 @@
 //
 
 #import "VTextPostViewController.h"
-#import "VTextLayoutHelper.h"
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
 #import "VHashTags.h"
+#import "victorious-Swift.h" // For VTextPostBackgroundLayout
 #import "UIImage+VTint.h"
 
 static const CGFloat kTintedBackgroundImageAlpha            = 0.375f;
@@ -23,8 +23,9 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textPostTextView;
 @property (nonatomic, strong, readwrite) IBOutlet VTextPostViewModel *viewModel;
-@property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
-@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, strong) VTextBackgroundFrameMaker *textBackgroundFrameMaker;
+@property (nonatomic, strong) VTextCalloutFormatter *textCalloutFormatter;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView *backgroundImageView;
 
 @end
 
@@ -44,6 +45,9 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.textBackgroundFrameMaker = [[VTextBackgroundFrameMaker alloc] init];
+    self.textCalloutFormatter = [[VTextCalloutFormatter alloc] init];
     
     self.textView.text = @"";
     self.textView.selectable = NO;
@@ -74,10 +78,6 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     }
     
     _text = text;
-    
-    NSArray *hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
-    _text = [self.textLayoutHelper stringByRemovingEmptySpacesInText:text betweenCalloutRanges:hashtagCalloutRanges];
-    
     [self updateTextView];
 }
 
@@ -90,7 +90,8 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     
     NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
     NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
-    [self updateTextView:self.textPostTextView withText:_text textAttributes:attributes calloutAttributes:calloutAttributes];
+    NSArray *calloutRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+    [self updateTextView:self.textPostTextView withText:self.text calloutRanges:calloutRanges textAttributes:attributes calloutAttributes:calloutAttributes];
 }
 
 #pragma mark - public
@@ -148,35 +149,35 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 
 - (void)updateTextView:(VTextPostTextView *)textPostTextView
               withText:(NSString *)text
+         calloutRanges:(NSArray *)calloutRanges
         textAttributes:(NSDictionary *)textAttributes
      calloutAttributes:(NSDictionary *)calloutAttributes
 {
     if ( text == nil )
     {
-        text = @"";
+        return;
     }
     
     const BOOL wasSelected = textPostTextView.selectable;
     textPostTextView.selectable = YES;
     
+    textPostTextView.attributedText = [[NSAttributedString alloc] initWithString:@" " attributes:textAttributes];
+    textPostTextView.textContainer.size = CGSizeMake( textPostTextView.bounds.size.width, CGFLOAT_MAX );
+    NSRange range = { 0, 1 };
+    CGRect characterBounds = [textPostTextView.layoutManager boundingRectForGlyphRange:range inTextContainer:textPostTextView.textContainer];
+    
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:textAttributes];
+    textPostTextView.attributedText = attributedText;
     
-    NSArray *hashtagRanges = [VHashTags detectHashTags:text];
-    
-    NSArray *hashtagCalloutRanges = nil;
-    if ( calloutAttributes != nil )
-    {
-        [VHashTags formatHashTagsInString:attributedText withTagRanges:hashtagRanges attributes:calloutAttributes];
-        
-        hashtagCalloutRanges = [VHashTags detectHashTags:text includeHashSymbol:YES];
-        
-        [self.textLayoutHelper setAdditionalKerningWithVaule:self.viewModel.calloutWordKerning
-                                          toAttributedString:attributedText
-                                           withCalloutRanges:hashtagCalloutRanges];
-    }
-    
+    [self.textCalloutFormatter applyAttributes:calloutAttributes toText:attributedText inCalloutRanges:calloutRanges];
+    [self.textCalloutFormatter setKerning:self.viewModel.calloutWordKerning toText:attributedText withCalloutRanges:calloutRanges];
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
-    [self.textLayoutHelper updateTextViewBackground:textPostTextView calloutRanges:hashtagCalloutRanges];
+    
+    NSArray *backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:self.textView
+                                                                                  characterWidth:characterBounds.size.width
+                                                                             calloutRangeObjects:calloutRanges];
+    self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
+    self.textView.backgroundFrames = backgroundFrames;
     
     textPostTextView.selectable = wasSelected;
 }

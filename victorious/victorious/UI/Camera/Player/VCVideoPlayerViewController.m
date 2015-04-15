@@ -259,6 +259,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop
 {
+    if ([_itemURL isEqual:itemURL])
+    {
+        VLog(@"Setting same item URL again!");
+        return;
+    }
+    
     _itemURL = itemURL;
     _isLooping = self.loopWithoutComposition ? YES : loop;
     

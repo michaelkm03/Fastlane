@@ -349,7 +349,7 @@
 - (NSString *)shareTextForSequence:(VSequence *)sequence
 {
     NSString *shareText = @"";
-    
+
     if ([sequence.user isOwner])
     {
         if ([sequence isPoll])
@@ -358,7 +358,14 @@
         }
         else if ([sequence isVideo])
         {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), sequence.name, sequence.user.name];
+            if (sequence.name.length > 0)
+            {
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), sequence.name, sequence.user.name];
+            }
+            else
+            {
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), sequence.user.name];
+            }
         }
         else
         {

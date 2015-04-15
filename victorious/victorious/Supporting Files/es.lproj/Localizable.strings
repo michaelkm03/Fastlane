@@ -15,6 +15,8 @@
 "Community" = "Comunidad";
 "Owner" = "Propietario";
 "Inbox" = "Correos";
+"Messages" = "Mensajes";
+"Notifications" = "Notificaciones";
 "Comments" = "Comentarios";
 "Remixes" = "Remixes";
 "OK" = "Bien";
@@ -28,14 +30,17 @@
 "BackButton" = "Regresar";
 "Exit" = "Salir";
 "Publish" = "Publicar";
+"Publishing..." = "Publicando...";
+"Rendering..." = "Reproduciendo...";
 "Next" = "Siguiente";
-"Quote" = "Cotizar";
+"Quote" = "Mensaje";
 "Meme" = "Meme";
 "Share" = "Compartir";
 "Discover" = "Descubrir";
 "Profile" = "Perfil";
 "Settings" = "Configuración";
 "Save" = "Guardar";
+"Continue" = "Continuar";
 "Loading..." = "Cargando...";
 
 "Featured" = "Destacado";
@@ -138,13 +143,15 @@
 
 "OwnerSharePollFormat" = "¡Mira esta encuesta hecha por %@!"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" = "Dale un ojo a %@ por %@";    //Check out "<video name>" by <creator>! <URL>
+"OwnerShareVideoFormatNoVideoName" = "¡Mira este video de %@!"; // Check out this videy by <creator>! <URL>
 "OwnerShareImageFormat" = "Mira esta foto de %@";//Check out this photo by <creator>! <URL>
+"OwnerShareTextFormat" = "Mira esta publicación de \"%@\""; //Check out this post by <creator>! <URL>
 "UGCSharePollFormat" = "¡Mira esta encuesta!";       //Check out this poll! <URL>
 "UGCShareVideoFormat" = "¡Checa este video!";      //Check out this video! <URL>
 "UGCShareGIFFormat" = "¡Checa este gif!";        //Check out this gif! <URL>
 "UGCShareImageFormat" = "¡Mira esta foto!";      //Check out this photo! <URL>
+"UGCShareTextFormat" = "¡Mira esta publicación!";      //Check out this post! <URL>
 "EmailShareSubjectFormat" = "¡Mira esta publicación de la app %@!"; //Check out this post from the <creator name> app!
-
 
 "Facebook" = "Facebook";
 "FacebookFailed" = "No pudo conectarse a Facebook.";
@@ -189,6 +196,7 @@
 "Create a Video Post" = "Crea una publicación sobre el video";
 "Create an Image Post" = "Crea una publicación sobre la imagen";
 "Create a Poll" = "Crea una encuesta";
+"Create a Text Post" = "Crea una publicación de texto";
 
 "NEW POLL" = "Nueva encuesta";
 "Ask a question..." = "Haz una pregunta...";
@@ -368,10 +376,10 @@
 
 "FindFBFriends" = "Encontrar amigos de Facebook";
 "Connect to Facebook" = "Conectar con Facebook";
-"FBSafety" = "No guardamos tus contraseñas y nunca publicaremos algo sintsu permiso.";
+"FBSafety" = "No guardamos tus contraseñas y nunca publicaremos algo sin tu permiso.";
 
-"FindTwitterFriends" = "Aamigos de Twitter";
-"Connect to Twitter" = "Connct con Twitter";
+"FindTwitterFriends" = "Amigos de Twitter";
+"Connect to Twitter" = "Conectar con Twitter";
 "TwitterSafety" = "No guardamos tus contraseñas y nunca publicamos algo sin tu permiso.";
 
 "FindInstagramFriends" = "Encuentra amigos de Instagram";
@@ -514,6 +522,21 @@
 "AuthorizationContextInbox" = "Estamos muy contentos de que te unas a nuestra comunidad de fans y mensajes. ¡Solo con crea una cuenta para que puedas enviar y recibir mensajes!";
 "AuthorizationContextNotification" = "Estamos tan emocionados de que te unas a nuestra comunidad y te comuniques con los fans. ¡Solo crea una cuenta y te notificaremos acerca de toda la información relevante!";
 
+"This will discard any content added to your post" = "Esto elimina cualquier contenido que hayas añadido a tu publicación";
+
+"No Color" = "Sin Color";    // No color selected
+"Standard" = "Normal";   // The default color before a selection is made
+"Red" = "Rojo";        // The color red
+"Magenta" = "Magenta";    // The color, a pink/red
+"Orange" = "Anaranjado";     // The color orange
+"Peach" = "Melocotón";      // The color, a light yellow/orange
+"Yellow" = "Amarillo";     // The color yellow
+"Green" = "Verde";      // The color green
+"Teal" = "Verde azulado";       // The color, a blue/green
+"Blue" = "Azul";       // The color blue
+"Purple" = "Morado";     // The color purp[le
+"Black" = "Negro";      // The color black
+
 "Video loading failed." = "Error al cargar el video";
 "Error Loading Next Video" = "Error Cargando el próximo video";
 "Failed to fetch products" = "Error al cargar los productos";
@@ -523,14 +546,15 @@
 
 "#nofilter" = "#nohayfiltro";
 "create a meme" = "crear meme";
-"create a quote" = "crear una cita";
+"create a quote" = "crear un mensaje";
 "Create a GIF" = "Crea un GIF";
+"Type your text here!" = "¡Escribe tu texto aquí!";
 "GIF" = "GIF";
-"quote" = "cita";
+"quote" = "mensaje";
 "GIF MODE" = "MODO GIF";
 "VIDEO MODE" = "MODO VIDEO";
 "Write a caption (optional)" = "Escribir un subtítulo (opcional)";
-"Rendering..." = "Reproduciendo";
+"Rendering..." = "Reproduciendo...";
 "Render failure" = "Error de reproducción";
 "Publishing..." = "Publicando...";
 "Upload failure" = "Error al cargar";

@@ -16,7 +16,7 @@ DEFAULT_DEV_ACCOUNT="build.server@getvictorious.com"
 shift 2
 
 if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [app name(s) (optional)]"
+    echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [--macros <macros>] [app name(s) (optional)]"
     exit 1
 fi
 
@@ -28,6 +28,13 @@ else
     SPECIAL_PREFIX=""
 fi
 
+if [ "$1" == "--macros" ]; then
+    shift
+    MACROS="GCC_PREPROCESSOR_DEFINITIONS=\$GCC_PREPROCESSOR_DEFINITIONS $1"
+    shift
+else
+    MACROS=""
+fi
 
 ### Find and update provisioning profile
 # If this step fails or hangs, you may need to store or update the dev center credentials
@@ -74,9 +81,15 @@ xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generi
 
 ### Build
 
-xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-           CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX archive
+if [ "$MACROS" == "" ]; then
+    xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
+               -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
+               CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX archive
+else
+    xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
+               -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
+               CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX "$MACROS" archive
+fi
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
     pushd ../victorious.xcarchive/dSYMs > /dev/null

@@ -15,6 +15,7 @@
 // DependencyManager
 #import "VDependencyManager.h"
 
+static const NSInteger kCharacterLimit = 255;
 const CGFloat VInputAccessoryViewDesiredMinimumHeight = 51.0f;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
@@ -235,6 +236,11 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     [self.editingTextView scrollRangeToVisible:self.editingTextView.selectedRange];
 }
 
+- (NSInteger)characterLimit
+{
+    return kCharacterLimit;
+}
+
 - (BOOL)textView:(UITextView *)textView
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
@@ -255,7 +261,7 @@ shouldChangeTextInRange:(NSRange)range
         return NO;
     }
     
-    return YES;
+    return [textView.text stringByReplacingCharactersInRange:range withString:text].length <= (NSUInteger)self.characterLimit;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView

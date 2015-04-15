@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -14,16 +14,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="50" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Vo-yn-Uct" userLabel="Background">
-                        <rect key="frame" x="0.0" y="5" width="50" height="57"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="1Vo-yn-Uct" secondAttribute="height" multiplier="50:57" id="lcg-AP-GQ4"/>
-                        </constraints>
-                    </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y89-2q-oh8" userLabel="Icon">
                         <rect key="frame" x="0.0" y="12" width="50" height="50"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Y89-2q-oh8" secondAttribute="height" multiplier="1:1" id="Y12-Ti-LUR"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Vo-yn-Uct" userLabel="Overlay">
+                        <rect key="frame" x="0.0" y="5" width="50" height="57"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="1Vo-yn-Uct" secondAttribute="height" multiplier="50:57" id="lcg-AP-GQ4"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTw-YD-uun">
@@ -50,9 +50,9 @@
                 <constraint firstAttribute="trailing" secondItem="1Vo-yn-Uct" secondAttribute="trailing" id="wRZ-ca-Lki"/>
             </constraints>
             <connections>
-                <outlet property="experienceEnhancerBackgroundImageView" destination="1Vo-yn-Uct" id="jMx-gy-2P8"/>
                 <outlet property="experienceEnhancerIconImageView" destination="Y89-2q-oh8" id="0Fe-hn-km4"/>
                 <outlet property="experienceEnhancerLabel" destination="OTw-YD-uun" id="dBC-ow-2b9"/>
+                <outlet property="experienceEnhancerOverlayImageView" destination="1Vo-yn-Uct" id="b3r-RM-upA"/>
                 <outlet property="topSpaceIconImageViewToContianerConstraint" destination="udN-M3-g4G" id="mM6-ZL-6KB"/>
             </connections>
         </collectionViewCell>

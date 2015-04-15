@@ -6,8 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VTextPostViewController">
             <connections>
-                <outlet property="backgroundImageView" destination="bho-MC-wQa" id="N4H-2e-IIh"/>
-                <outlet property="textLayoutHelper" destination="jkY-iK-feB" id="aGJ-dU-4Zg"/>
+                <outlet property="backgroundImageView" destination="bho-MC-wQa" id="UV2-YQ-4Cd"/>
                 <outlet property="textPostTextView" destination="EdJ-vJ-rzg" id="m0R-s5-8DF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="HSK-lU-PKi"/>
                 <outlet property="viewModel" destination="uf6-RX-Z66" id="cbv-QS-uEE"/>
@@ -30,7 +29,7 @@
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
                     <color key="textColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="qvi-UH-K6A"/>
                     </connections>
@@ -50,11 +49,6 @@
             </constraints>
             <point key="canvasLocation" x="774" y="689"/>
         </view>
-        <customObject id="jkY-iK-feB" customClass="VTextLayoutHelper">
-            <connections>
-                <outlet property="viewModel" destination="uf6-RX-Z66" id="IhN-D9-Dca"/>
-            </connections>
-        </customObject>
         <customObject id="uf6-RX-Z66" customClass="VTextPostViewModel"/>
     </objects>
 </document>

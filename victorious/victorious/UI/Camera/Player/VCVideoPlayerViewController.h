@@ -79,7 +79,7 @@
 + (VCVideoPlayerViewController *)currentPlayer; ///< Returns a reference to a VCVideoPlayerViewController instance that is currently playing
 
 /**
- Set the asset to play and indicate it it should loop or not.
+ Set the asset to play and indicate it it should loop or not. Does nothing if setting a URL that is equal to the current one.
  */
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop;
 

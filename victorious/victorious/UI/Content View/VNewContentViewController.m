@@ -193,7 +193,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)dealloc
 {
-    [self.contentCell cleanup];
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -335,11 +334,18 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    void (^rotationUpdate)() = ^
+    {
+        [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+    };
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+         rotationUpdate();
      }
-                                 completion:nil];
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         rotationUpdate();
+     }];
 }
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -501,7 +507,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.contentCollectionView.delegate = self;
     self.videoCell.delegate = self;
 
-#ifdef V_SHOULD_SHOW_DOWNLOAD_VIDEOS
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
     // We could probably move this here anyway, but not going to for now to avoid bugs.
     self.videoCell.viewModel = self.viewModel.videoViewModel;
 #endif

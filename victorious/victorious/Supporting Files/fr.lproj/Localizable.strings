@@ -15,6 +15,8 @@
 "Community" = "Communauté";
 "Owner" = "Propriétaire";
 "Inbox" = "Boîte de réception";
+"Messages" = "Messages";
+"Notifications" = "Notifications";
 "Comments" = "Commentaires";
 "Remixes" = "Remixes";
 "OK" = "OK";
@@ -28,6 +30,8 @@
 "BackButton" = "Retour";
 "Exit" = "Quitter";
 "Publish" = "Publier";
+"Publishing..." = "En publiant...";
+"Rendering..." = "En rendant...";
 "Next" = "Suivant";
 "Quote" = "Citer";
 "Meme" = "Mème";
@@ -36,6 +40,7 @@
 "Profile" = "Profil";
 "Settings" = "Paramètres";
 "Save" = "Sauvegarder";
+"Continue" = "Continuer";
 "Loading..." = "Chargement...";
 
 "Featured" = "À la une";
@@ -138,13 +143,15 @@
 
 "OwnerSharePollFormat" = "Découvrez ce sondage par %@ !"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" = "Découvrez « %@ » par%@ !";    //Check out "<video name>" by <creator>! <URL>
+"OwnerShareVideoFormatNoVideoName" = "Découvrez cette vidéo de %@ !"; // Check out this videy by <creator>! <URL>
 "OwnerShareImageFormat" = "Découvrez cette photo de %@ !";//Check out this photo by <creator>! <URL>
+"OwnerShareTextFormat" = "Découvrez cette publication de « %@ » !"; //Check out this post by <creator>! <URL>
 "UGCSharePollFormat" = "Ce sondage pourrait vous intéresser !";       //Check out this poll! <URL>
 "UGCShareVideoFormat" = "Cette vidéo pourrait vous intéresser !";      //Check out this video! <URL>
 "UGCShareGIFFormat" = "Découvrez ce cadeau !";        //Check out this gif! <URL>
 "UGCShareImageFormat" = "Cette photo pourrait vous intéresser !";      //Check out this photo! <URL>
+"UGCShareTextFormat" = "Découvrez cette publication !";      //Check out this post! <URL>
 "EmailShareSubjectFormat" = "Découvrez cette publication de l'application %@ !"; //Check out this post from the <creator name> app!
-
 
 "Facebook" = "Facebook";
 "FacebookFailed" = "Échec de connexion à Facebook";
@@ -189,6 +196,7 @@
 "Create a Video Post" = "Créer une publication vidéo";
 "Create an Image Post" = "Créer une publication image";
 "Create a Poll" = "Créer un sondage";
+"Create a Text Post" = "Créez une publication texte";
 
 "NEW POLL" = "Nouveau sondage";
 "Ask a question..." = "Poser une question...";
@@ -258,7 +266,7 @@
 "CancelExpiration" = "Annuler l'expiration ?";
 "CancelExirationConfirm" = "Souhaitez-vous vraiment quitter le paramétrage d'une date d'expiration ?";
 
-"Now" = "Maintenant";
+"Now" = "0s";
 "SecondsAgo" = "%ds";
 "MinuteAgo" = "1min";
 "MinutesAgo" = "%dm";
@@ -514,6 +522,21 @@
 "AuthorizationContextInbox" = "Nous sommes heureux que vous ayez rejoint notre communauté et que vous envoyiez des messages aux fans. Créez un compte pour pouvoir envoyer et recevoir des messages !";
 "AuthorizationContextNotification" = "Nous sommes ravis que vous ayez rejoint notre communauté et que vous communiquiez avec des fans. Créez simplement un compte pour recevoir des notifications relatives aux informations importantes !";
 
+"This will discard any content added to your post" = "C’est va éliminer quelque contenu que vous avez ajouté à votre publication";
+
+"No Color" = "Pas de coleur";    // No color selected
+"Standard" = "Normal";   // The default color before a selection is made
+"Red" = "Rouge";        // The color red
+"Magenta" = "Magenta";    // The color, a pink/red
+"Orange" = "Orange";     // The color orange
+"Peach" = "Pêche";      // The color, a light yellow/orange
+"Yellow" = "Jaune";     // The color yellow
+"Green" = "Vert";      // The color green
+"Teal" = "Bleu vert";       // The color, a blue/green
+"Blue" = "Bleu";       // The color blue
+"Purple" = "Violet";     // The color purp[le
+"Black" = "Noir";      // The color black
+
 "Video loading failed." = "Échec de chargement de la vidéo.";
 "Error Loading Next Video" = "Erreur de chargement de la vidéo suivante";
 "Failed to fetch products" = "Échec de récupération des produits";
@@ -525,12 +548,13 @@
 "create a meme" = "Créer un MEME";
 "create a quote" = "créer une citation";
 "Create a GIF" = "Créer un GIF";
+"Type your text here!" = "Tapez votre texte ici !";
 "GIF" = "GIF";
 "quote" = "citation";
 "GIF MODE" = "MODE GIF";
 "VIDEO MODE" = "MODE VIDÉO";
 "Write a caption (optional)" = "Rédiger une légende (facultatif)";
-"Rendering..." = "Rendu en cours...";
+"Rendering..." = "En rendant...";
 "Render failure" = "Échec du rendu";
-"Publishing..." = "Publication en cours...";
+"Publishing..." = "En publiant...";
 "Upload failure" = "Échec de téléchargement";
