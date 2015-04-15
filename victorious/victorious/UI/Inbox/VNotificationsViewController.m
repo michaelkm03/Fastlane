@@ -117,7 +117,6 @@ static int const kNotificationFetchBatchSize = 50;
     [[VTrackingManager sharedInstance] endEvent:@"Notifications"];
     if (self.refreshRequest.isExecuting)
     {
-        NSLog(@"NOTIFICATIONS: ABORT ABORT ABORT");
         self.refreshRequest = nil;
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];

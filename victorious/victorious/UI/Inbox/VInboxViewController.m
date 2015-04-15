@@ -127,7 +127,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
     if (self.refreshRequest.isExecuting)
     {
-        NSLog(@"INBOX: ABORT ABORT ABORT");
         self.refreshRequest = nil;
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
