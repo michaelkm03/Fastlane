@@ -246,6 +246,7 @@ static int const kNotificationFetchBatchSize = 50;
             [self.refreshControl endRefreshing];
             return;
         }
+        self.refreshRequest = nil;
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
