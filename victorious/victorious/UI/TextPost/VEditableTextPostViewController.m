@@ -317,7 +317,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     [self hidePlaceholderText];
     
-    return YES; //textAfter.length < self.characterCountMax;
+    return YES;
 }
 
 #pragma mark - VContentInputAccessoryViewDelegate
