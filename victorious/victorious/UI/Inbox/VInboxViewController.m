@@ -105,7 +105,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.tableView.contentInset = self.v_layoutInsets;
+    self.tableView.contentInset = UIEdgeInsetsZero;
     
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
@@ -131,13 +131,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 }
 
 #pragma mark - Properties
-
-- (void)v_setLayoutInsets:(UIEdgeInsets)v_layoutInsets
-{
-    [super v_setLayoutInsets:v_layoutInsets];
-    
-    self.tableView.contentInset = v_layoutInsets;
-}
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
 {
