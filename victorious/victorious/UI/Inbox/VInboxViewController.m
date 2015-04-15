@@ -98,17 +98,15 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
-    self.tableView.contentInset = self.v_layoutInsets;
-    self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
-    
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.tableView.contentInset = self.v_layoutInsets;
+    
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
 
@@ -133,6 +131,13 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 }
 
 #pragma mark - Properties
+
+- (void)v_setLayoutInsets:(UIEdgeInsets)v_layoutInsets
+{
+    [super v_setLayoutInsets:v_layoutInsets];
+    
+    self.tableView.contentInset = v_layoutInsets;
+}
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
 {
