@@ -101,6 +101,7 @@ static NSString * const kInitialKey = @"initial";
     collectionView.delegate = self;
     collectionView.scrollEnabled = NO;
     collectionView.scrollsToTop = NO;
+    collectionView.backgroundColor = [UIColor clearColor];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kCellReuseID];
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
