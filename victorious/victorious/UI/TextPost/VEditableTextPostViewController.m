@@ -68,6 +68,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     inputAccessoryView.delegate = self;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.textView.inputAccessoryView = inputAccessoryView;
+    
+    self.text = @"dsadsasad sad sad sa\ndasdsa\badsdsa\n\n\nasdfdsa\n";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -303,12 +305,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if ( [text isEqualToString:@"\n"] )
-    {
-        self.isEditing = NO;
-        return NO;
-    }
-    
     NSString *textAfter = [textView.text stringByReplacingCharactersInRange:range withString:text];
     if ( self.delegate != nil )
     {
