@@ -25,6 +25,10 @@
 #import "VAuthorizedAction.h"
 #import "UIImage+ImageCreation.h"
 
+#import "VDependencyManager+VBackground.h"
+#import "VBackground.h"
+#import "UIView+AutoLayout.h"
+
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
@@ -64,6 +68,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIView *viewForBackground = [[self.dependencyManager background] viewForBackground];
+    viewForBackground.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:viewForBackground];
+    [self.view v_addFitToParentConstraintsToSubview:viewForBackground];
+    [self.view sendSubviewToBack:viewForBackground];
     
     //Load the image on first load
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
