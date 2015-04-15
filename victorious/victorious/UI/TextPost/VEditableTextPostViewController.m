@@ -139,32 +139,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     if ( rangeOfHashtag.location != NSNotFound )
     {
-        NSString *stringToReplace = hashtagTextWithHashMark;
-        NSRange characterAfterHashtagRange = NSMakeRange( rangeOfHashtag.location + rangeOfHashtag.length - 1, 1 );
-        NSRange characterBeforeHashtagRange = NSMakeRange( rangeOfHashtag.location - 1, 1 );
-        
-        if ( rangeOfHashtag.location + rangeOfHashtag.length < self.text.length )
-        {
-            const BOOL isThereASpaceAfterTheHashtag = [[self.text substringWithRange:characterAfterHashtagRange] isEqualToString:@" "];
-            if ( isThereASpaceAfterTheHashtag )
-            {
-                // Remove the space after the hastag as well
-                stringToReplace = [stringToReplace stringByAppendingString:@" "];
-                rangeOfHashtag.length++;
-            }
-        }
-        if ( rangeOfHashtag.location > 0 )
-        {
-            const BOOL isThereASpaceBeforeTheHashtag = [[self.text substringWithRange:characterBeforeHashtagRange] isEqualToString:@" "];
-            if ( isThereASpaceBeforeTheHashtag )
-            {
-                // Remove the space after the hastag as well
-                stringToReplace = [NSString stringWithFormat:@" %@", stringToReplace];
-                rangeOfHashtag.location--;
-                rangeOfHashtag.length++;
-            }
-        }
-        self.text = [self.text stringByReplacingOccurrencesOfString:stringToReplace withString:@""];
+        self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
     }
 
     [self showPlaceholderText];
@@ -179,22 +154,10 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
     if ( ![self.text containsString:hashtagTextWithHashMark] )
     {
-        NSRange replacementRange = self.textView.selectedRange;
-        
-        BOOL isSpaceRequired = NO;
-        if ( replacementRange.location > 0 )
-        {
-            NSRange characterBeforeSelectedRange = NSMakeRange( replacementRange.location-1, 1 );
-            isSpaceRequired = ![[self.text substringWithRange:characterBeforeSelectedRange] isEqualToString:@" "];
-        }
-        
-        NSString *stringReplacement = [NSString stringWithFormat:@"%@%@%@", (isSpaceRequired ? @" " : @""), hashtagTextWithHashMark, @" "];
-        self.text = [self.text stringByReplacingCharactersInRange:replacementRange withString:stringReplacement];
-        NSRange rangeOfAddedString = [self.text rangeOfString:hashtagTextWithHashMark];
-        self.textView.selectedRange = NSMakeRange( rangeOfAddedString.location + rangeOfAddedString.length + 1, 0 );
+        self.text = [self.text stringByAppendingString:hashtagTextWithHashMark];
     }
     
-    [self.delegate textDidUpdate:self.textOutput];  
+    [self.delegate textDidUpdate:self.textOutput];
 }
 
 - (void)setText:(NSString *)text
