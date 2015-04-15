@@ -70,7 +70,6 @@
     [super viewDidLoad];
     
     UIView *viewForBackground = [[self.dependencyManager background] viewForBackground];
-    viewForBackground.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:viewForBackground];
     [self.view v_addFitToParentConstraintsToSubview:viewForBackground];
     [self.view sendSubviewToBack:viewForBackground];
