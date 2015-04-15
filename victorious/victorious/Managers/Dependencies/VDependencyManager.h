@@ -219,6 +219,27 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
 
 /**
+ Performs necessary cleanup before deallocating the receiver. This
+ should be the last method you call on this object and any of 
+ its children and grandchildren before dropping your reference
+ to it.
+ 
+ @discussion
+ VDependencyManager creates several retain cycles as part of
+ its design. This method exists to break those cycles when
+ a new session starts, or any other case in which you are about
+ to deallocate this dependency manager and instantiate a brand
+ new one from scratch (i.e., without a parent-child relationship
+ to an existing instance of VDependencyManager).
+ 
+ NOTE: This method only has effect if the receiver has no parent 
+ dependency manager. This ensures that any random object with a
+ reference to a child manager can't mess things up for everyone
+ else.
+ */
+- (void)cleanup;
+
+/**
  Creates and returns a new dependency manager with the given configuration dictionary. The
  new dependency manager will have the receiver as its parent, and any dependencies
  it can't resolve will be passed up the heirarchy.
