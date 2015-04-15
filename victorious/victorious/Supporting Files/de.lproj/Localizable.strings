@@ -15,6 +15,8 @@
 "Community" = "Gemeinschaft";
 "Owner" = "Eigentümer";
 "Inbox" = "Posteingang";
+"Messages" = "Nachrichten";
+"Notifications" = "Benachrichtungen";
 "Comments" = "Kommentare";
 "Remixes" = "Remixes";
 "OK" = "OK";
@@ -28,6 +30,8 @@
 "BackButton" = "Zurück";
 "Exit" = "Beenden";
 "Publish" = "Veröffentlichen";
+"Publishing..." = "Erscheinen...";
+"Rendering..." = "Vorzeigen...";
 "Next" = "Weiter";
 "Quote" = "Zitat";
 "Meme" = "Mem";
@@ -36,6 +40,7 @@
 "Profile" = "Profil";
 "Settings" = "Einstellung";
 "Save" = "Speichern";
+"Continue" = "Weiter";
 "Loading..." = "Ladevorgang läuft...";
 
 "Featured" = "Hervorgehoben";
@@ -138,14 +143,15 @@
 
 "OwnerSharePollFormat" = "Sieh dir diese Umfrage von %@ an!"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" = "Sieh dir \"%@\" von %@ an!";    //Check out "<video name>" by <creator>! <URL>
-"OwnerShareVideoFormatNoVideoName" = "Check out this video by %@!"; // Check out this videy by <creator>! <URL>
+"OwnerShareVideoFormatNoVideoName" = "Sieh dir dieses Video von %@ an!"; // Check out this videy by <creator>! <URL>
 "OwnerShareImageFormat" = "Sieh dir dieses Foto von %@ an!";//Check out this photo by <creator>! <URL>
+"OwnerShareTextFormat" = "Sieh dir diesen Beitrag von \"%@\" an"; //Check out this post by <creator>! <URL>
 "UGCSharePollFormat" = "Sieh dir diese Umfrage an!";       //Check out this poll! <URL>
 "UGCShareVideoFormat" = "Sieh dir diese Video an!";      //Check out this video! <URL>
 "UGCShareGIFFormat" = "Sieh dir dieses Geschenk an!";        //Check out this gif! <URL>
 "UGCShareImageFormat" = "Sieh dir dieses Foto an!";      //Check out this photo! <URL>
+"UGCShareTextFormat" = "Sieh dir diesen Beitrag an!";      //Check out this post! <URL>
 "EmailShareSubjectFormat" = "Sieh dir diesen Beitrag von der %@-App an!"; //Check out this post from the <creator name> app!
-
 
 "Facebook" = "Facebook";
 "FacebookFailed" = "Verbindung zu Facebook konnte nicht hergestellt werden.";
@@ -190,6 +196,7 @@
 "Create a Video Post" = "Video-Beitrag erstellen";
 "Create an Image Post" = "Beitrag mit Bild erstellen";
 "Create a Poll" = "Umfrage erstellen";
+"Create a Text Post" = "Erstelle einen Textbeitrag";
 
 "NEW POLL" = "Neue Umfrage";
 "Ask a question..." = "Stelle eine Frage...";
@@ -515,6 +522,21 @@
 "AuthorizationContextInbox" = "Wir freuen uns riesig, dich in unserer Community zu haben, und dass du mit Fans Nachrichten austauschst. Erstelle einfach ein Konto, damit du Nachrichten senden und empfangen kannst!";
 "AuthorizationContextNotification" = "Wir freuen uns riesig, dich in unserer Community zu haben, und dass du mit Fans kommunizierst. Erstelle einfach ein Konto und du wirst über wichtige Informationen benachrichtigt werden!";
 
+"This will discard any content added to your post" = "Dies löscht jeden Inhalt zu Ihrem Beitrag";
+
+"No Color" = "keine Farbe";    // No color selected
+"Standard" = "Normal";   // The default color before a selection is made
+"Red" = "Rot";        // The color red
+"Magenta" = "Magenta";    // The color, a pink/red
+"Orange" = "Orange";     // The color orange
+"Peach" = "Pêche";      // The color, a light yellow/orange
+"Yellow" = "Gelb";     // The color yellow
+"Green" = "Grün";      // The color green
+"Teal" = "Blau grün";       // The color, a blue/green
+"Blue" = "Blue";       // The color blue
+"Purple" = "Lila";     // The color purp[le
+"Black" = "Schwarz";      // The color black
+
 "Video loading failed." = "Laden des Videos fehlgeschlagen.";
 "Error Loading Next Video" = "Fehler beim Laden des nächsten Videos";
 "Failed to fetch products" = "Fehler beim Holen der Produkte";
@@ -526,12 +548,13 @@
 "create a meme" = "ein mem schaffen";
 "create a quote" = "Zitat erstellen";
 "Create a GIF" = "GIF erstellen";
+"Type your text here!" = "Gib deinen Text hier ein!";
 "GIF" = "GIF";
 "quote" = "Zitat";
 "GIF MODE" = "GIF-MODUS";
 "VIDEO MODE" = "VIDEO-MODUS";
 "Write a caption (optional)" = "Bildunterschrift eingeben (optional)";
-"Rendering..." = "Wiedergabe...";
+"Rendering..." = "Vorzeigen...";
 "Render failure" = "Wiedergabe fehlgeschlagen";
-"Publishing..." = "Veröffentlichung...";
+"Publishing..." = "Erscheinen...";
 "Upload failure" = "Upload fehlgeschlagen";

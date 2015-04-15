@@ -245,7 +245,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     if ( self.text.length == 0 && self.hashtagHelper.embeddedHashtags.count == 0 )
     {
         self.isShowingPlaceholderText = YES;
-        self.text = self.placeholderText;
+        self.text = NSLocalizedString(self.placeholderText, @"");
         self.textView.alpha = 0.5f;
         self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
     }
@@ -317,7 +317,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     [self hidePlaceholderText];
     
-    return YES; //textAfter.length < self.characterCountMax;
+    return YES;
 }
 
 #pragma mark - VContentInputAccessoryViewDelegate

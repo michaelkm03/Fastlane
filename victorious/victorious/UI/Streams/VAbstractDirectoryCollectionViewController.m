@@ -98,7 +98,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
                                                                       metrics:nil
                                                                         views:views]];
     
-    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.view.backgroundColor = [[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey] colorWithAlphaComponent:1.0f];
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     [self.directoryCellFactory registerCellsWithCollectionView:self.collectionView];

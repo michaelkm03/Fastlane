@@ -29,8 +29,10 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *followersLabel;
 @property (nonatomic, weak) IBOutlet UILabel *followersHeader;
+@property (nonatomic, weak) IBOutlet UIButton *followersButton;
 @property (nonatomic, weak) IBOutlet UILabel *followingLabel;
 @property (nonatomic, weak) IBOutlet UILabel *followingHeader;
+@property (nonatomic, weak) IBOutlet UIButton *followingButton;
 
 @property (nonatomic, weak) IBOutlet VButton *editProfileButton;
 @property (nonatomic, weak) IBOutlet UIView *userStatsBar;
