@@ -60,14 +60,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
         }
         
         NSString *string = _textView.text;
-        if ( hasTextView && string.length > 0 )
-        {
-            NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
-            self.tagDictionary = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attrString withTagStringAttributes:_textView.linkTextAttributes andDefaultStringAttributes:_textView.typingAttributes];
-            [self replaceCharactersInRange:NSMakeRange(0, self.length) withAttributedString:attrString];
-            [_textView setSelectedRange:NSMakeRange(attrString.length, 0)];
-        }
-        else
+        if ( !hasTextView || string.length == 0 )
         {
             self.tagDictionary = [[VTagDictionary alloc] init];
         }
@@ -86,7 +79,16 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     //Add layout manager if needed
     if ( ![self.layoutManagers containsObject:textView.layoutManager] )
     {
-        [self addLayoutManager:_textView.layoutManager];
+        [self addLayoutManager:textView.layoutManager];
+    }
+    
+    NSString *string = textView.text;
+    if ( textView != nil && string.length > 0 )
+    {
+        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
+        self.tagDictionary = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attrString withTagStringAttributes:textView.linkTextAttributes andDefaultStringAttributes:textView.typingAttributes];
+        [self replaceCharactersInRange:NSMakeRange(0, self.length) withAttributedString:attrString];
+        [textView setSelectedRange:NSMakeRange(attrString.length, 0)];
     }
     
     //Update the typing attributes to include the fixed-height paragraphStyle

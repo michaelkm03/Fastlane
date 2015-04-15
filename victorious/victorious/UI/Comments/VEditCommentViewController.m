@@ -13,7 +13,9 @@
 #import "VAlertController.h"
 #import "VUserTaggingTextStorage.h"
 #import "VInlineSearchTableViewController.h"
+#import "UIView+AutoLayout.h"
 
+static const NSInteger kCharacterLimit = 255;
 static const CGFloat kTextViewInsetsHorizontal  = 15.0f;
 static const CGFloat kTextViewInsetsVertical    = 18.0f;
 static const CGFloat kTextViewToViewRatioMax    =  0.4f;
@@ -35,7 +37,7 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *modalContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewVerticalAlignmentConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cancelButtonBottomConstraint;
-@property (weak, nonatomic) IBOutlet UITextView *editTextView;
+@property (nonatomic, strong) UITextView *editTextView;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 @property (nonatomic, assign) CGFloat keyboardHeight;
 @property (nonatomic, assign) BOOL isDismissing;
@@ -64,6 +66,16 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
     self.modalContainer.layer.borderWidth = 1.0f;
     
     UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self];
+    
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [self.textStorage addLayoutManager:layoutManager];
+    
+    NSTextContainer *textContainer = [[NSTextContainer alloc] init];
+    [layoutManager addTextContainer:textContainer];
+    
+    self.editTextView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
     self.editTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.editTextView.font = defaultFont;
     self.editTextView.returnKeyType = UIReturnKeyDone;
@@ -73,9 +85,12 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
                                                             kTextViewInsetsHorizontal,
                                                             kTextViewInsetsVertical,
                                                             kTextViewInsetsHorizontal );
-        
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:self.editTextView defaultFont:defaultFont taggingDelegate:self];
-        
+    
+    [self.modalContainer addSubview:self.editTextView];
+    [self.modalContainer v_addFitToParentConstraintsToSubview:self.editTextView];
+    
+    self.textStorage.textView = self.editTextView;
+    
     [self updateSize];
 }
 
@@ -291,6 +306,11 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
     [self updateSize];
 }
 
+- (NSInteger)characterLimit
+{
+    return kCharacterLimit;
+}
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ( [text isEqualToString:@"\n"] )
@@ -302,7 +322,7 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
         return NO;
     }
     
-    return YES;
+    return [textView.text stringByReplacingCharactersInRange:range withString:text].length <= (NSUInteger)self.characterLimit;
 }
 
 #pragma mark - Notifications
