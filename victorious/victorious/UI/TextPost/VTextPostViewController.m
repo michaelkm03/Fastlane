@@ -138,8 +138,9 @@
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
     
     NSArray *backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:self.textView
+                                                                                  textAttributes:textAttributes
                                                                              calloutRangeObjects:calloutRanges];
-    self.textView.backgroundFrameColor = [self.viewModel.backgroundColor colorWithAlphaComponent:0.3f];
+    self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
     self.textView.backgroundFrames = backgroundFrames;
     
     textPostTextView.selectable = wasSelected;

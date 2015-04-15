@@ -13,6 +13,9 @@ Represents a line, part of a line or a single word of text
 */
 class VTextFragment
 {
+    static let topInsetMultiplier: CGFloat = 0.42
+    static let bottomInsetMultipler: CGFloat = 0.09
+    
     let text: String
     var rect: CGRect
     let range: NSRange
@@ -26,30 +29,6 @@ class VTextFragment
         self.range = range
         self.isCallout = isCallout
         self.isNewLine = isNewLine
-    }
-}
-
-/**
-A group of offset, spacing and inset values needed to properly calculate the final
-layout size and position of background frames for a text view.
-*/
-struct VTextFragmentOffsets
-{
-    let horizontalOffset: CGFloat ///< Offset applied accoring to encapsulated layout rules
-    let horizontalSpacing: CGFloat ///< Spacing between fragments
-    let topInset: CGFloat ///< Offset applied to fragments to line up with text in text view
-    let bottomInset: CGFloat ///< Offset applied to fragments to line up with text in text view
-}
-
-struct VTextFragmentPair
-{
-    let left: VTextFragment?
-    let right: VTextFragment?
-    
-    func applyOffset( amount: CGFloat )
-    {
-        //left?.rect.origin.x += amount
-        //right?.rect.size.width -= amount
     }
 }
 
@@ -98,9 +77,38 @@ class VTextFragmentsBuilder: NSObject
                 currentFragmentRect = fragmentRect
             }
             
-            if needsNewLine
+            if calloutIndex >= 0 && lastCalloutIndex != calloutIndex
             {
-                if ( fragmentText != " " && !isSpace )
+                if count(fragmentText) > 0
+                {
+                    output.append( VTextFragment(
+                        text: fragmentText,
+                        rect:currentFragmentRect,
+                        range: fragmentRange,
+                        isCallout: calloutIndex >= 0,
+                        isNewLine: isNewLine )
+                    )
+                    isNewLine = false
+                }
+                fragmentStartIndex = i
+                currentFragmentRect = fragmentRect
+            }
+            else if calloutIndex < 0 && lastCalloutIndex >= 0
+            {
+                output.append( VTextFragment(
+                    text: fragmentText,
+                    rect:currentFragmentRect,
+                    range: fragmentRange,
+                    isCallout: calloutIndex >= 0,
+                    isNewLine: isNewLine  )
+                )
+                isNewLine = false
+                fragmentStartIndex = i
+                currentFragmentRect = fragmentRect
+            }
+            else if needsNewLine
+            {
+                if fragmentText != " "
                 {
                     output.append( VTextFragment(
                         text: fragmentText,
@@ -114,39 +122,14 @@ class VTextFragmentsBuilder: NSObject
                 currentFragmentRect = fragmentRect
             }
             
-            if calloutIndex >= 0 && lastCalloutIndex != calloutIndex && !isLastCharacter
-            {
-                output.append( VTextFragment(
-                    text: fragmentText,
-                    rect:currentFragmentRect,
-                    range: fragmentRange,
-                    isCallout: calloutIndex >= 0,
-                    isNewLine: isNewLine )
-                )
-                isNewLine = false
-                fragmentStartIndex = i
-                currentFragmentRect = fragmentRect
-            }
-            else if calloutIndex < 0 && lastCalloutIndex >= 0 && !isLastCharacter
-            {
-                output.append( VTextFragment(
-                    text: fragmentText,
-                    rect:currentFragmentRect,
-                    range: fragmentRange,
-                    isCallout: calloutIndex >= 0,
-                    isNewLine: isNewLine  )
-                )
-                isNewLine = false
-                fragmentStartIndex = i
-                currentFragmentRect = fragmentRect
-            }
-            
             currentFragmentRect.size.width = CGRectGetMaxX( fragmentRect ) - currentFragmentRect.origin.x
             
             if isLastCharacter
             {
+                let lastRange = NSMakeRange( fragmentStartIndex, i - fragmentStartIndex + 1 )
+                let text = text.substringWithRange( lastRange )
                 output.append( VTextFragment(
-                    text: fragmentText,
+                    text: text,
                     rect:currentFragmentRect,
                     range: fragmentRange,
                     isCallout: calloutIndex >= 0,
@@ -158,39 +141,42 @@ class VTextFragmentsBuilder: NSObject
             lastFragmentRect = fragmentRect
         }
         
-        self.printFragments( output )
+        //self.printFragments( output )
         
         return output
     }
     
-    func applySpacingToFragments( fragments: [VTextFragment], withOffsets offsets: VTextFragmentOffsets )
+    /**
+    Applies spacing adjustments to the rects of each VTextFragment to match up within the layout
+    of the textView when rending those rects as background frames.  The spacing values all derive from
+    readable properties of attribtues of the text and are all based on how it looks when rendered.char
+    */
+    func applySpacingToFragments( fragments: [VTextFragment], spacing: CGFloat, horizontalOffset: CGFloat )
     {
-        var fragmentPairs = [VTextFragmentPair]()
-        for var i = -1; i <= fragments.count; i += 2
+        for var i = 0; i < count(fragments); i++
         {
-            fragmentPairs.append( VTextFragmentPair(
-                left: i < fragments.count-1 ? fragments[i+1] : nil,
-                right: i < fragments.count-1 ? fragments[i+1] : nil
-            ) )
-        }
-        
-        //self.printPairs( fragmentPairs )
-        
-        for fragment in fragments
-        {
+            let fragment = fragments[i]
+            
             // Apply offsets and collect rects for output
             let original = fragment.rect
             fragment.rect = CGRect(
-                x: original.origin.x + offsets.horizontalSpacing,
-                y: original.origin.y + offsets.topInset,
-                width: original.size.width - offsets.horizontalSpacing*2,
-                height: original.size.height - offsets.bottomInset
+                x: original.origin.x + spacing - horizontalOffset,
+                y: original.origin.y + original.size.height * VTextFragment.topInsetMultiplier,
+                width: original.size.width - spacing * 2,
+                height: original.size.height - original.size.height * VTextFragment.bottomInsetMultipler
             )
-        }
-        
-        for pair in fragmentPairs
-        {
-            pair.applyOffset( -20 )
+            
+            if let nextFragment = (i < fragments.count-1 ? fragments[i+1] : nil)
+            {
+                if nextFragment.isNewLine
+                {
+                    fragment.rect.size.width += horizontalOffset
+                }
+            }
+            else
+            {
+                fragment.rect.size.width += horizontalOffset * 2
+            }
         }
     }
     
@@ -231,16 +217,7 @@ class VTextFragmentsBuilder: NSObject
     {
         for fragment in fragments
         {
-            println( "\"\(fragment.text)\"" )
-        }
-        println( "------" )
-    }
-    
-    private func printPairs( fragmentPairs: [VTextFragmentPair] )
-    {
-        for pair in fragmentPairs
-        {
-            println( "\(pair.left?.text) :: \(pair.left?.text)" )
+            println( "\"\(fragment.text)\" \(fragment.isNewLine)" )
         }
         println( "------" )
     }

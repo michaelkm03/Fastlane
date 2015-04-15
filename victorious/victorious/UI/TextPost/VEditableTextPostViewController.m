@@ -86,8 +86,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
         self.isEditing = YES;
         self.hasAppeared = YES;
     }
-    
-    self.text = @"#lkj dlkjasd lkjsadlkj #lkjdsal#lkjdsalkJ#lkjdsalkj#l dsalkjd #Lkjds# dsa#kljd salk#Lkj dsa";
 }
 
 - (NSString *)textOutput
