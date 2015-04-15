@@ -17,6 +17,7 @@
 #import "VConstants.h"
 #import "VTracking.h"
 #import "NSURL+VCustomScheme.h"
+#import "UIColor+VBrightness.h"
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -102,6 +103,18 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    UIColor *navBarBackgroundColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
+    switch ( [navBarBackgroundColor v_colorLuminance] )
+    {
+        case VColorLuminanceBright:
+            return UIStatusBarStyleDefault;
+        case VColorLuminanceDark:
+            return UIStatusBarStyleLightContent;
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
