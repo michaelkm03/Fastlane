@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <FBKVOController.h>
-
 #import "VSleekStreamCollectionCell.h"
 
 // Stream Support
@@ -17,9 +15,9 @@
 #import "VDependencyManager.h"
 
 // Views + Helpers
-#import "VSleekStreamCellActionView.h"
 #import "NSString+VParseHelp.h"
 #import "VStreamCellHeaderView.h"
+#import "VSleekActionView.h"
 
 const CGFloat kSleekCellHeaderHeight = 50.0f;
 const CGFloat kSleekCellActionViewHeight = 41.0f;
@@ -33,10 +31,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 @interface VSleekStreamCollectionCell ()
 
+
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
-@property (nonatomic, weak) IBOutlet VSleekStreamCellActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet VSleekActionView *sleekActionView;
 
 @end
 
@@ -55,26 +54,33 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     return @"VInsetStreamCellHeaderView";
 }
 
-- (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
-{
-    [super setSequenceActionsDelegate:sequenceActionsDelegate];
-    self.actionView.sequenceActionsDelegate = sequenceActionsDelegate;
-}
-
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     if ( dependencyManager != nil )
     {
         [super setDependencyManager:dependencyManager];
-        self.actionView.dependencyManager = dependencyManager;
+        
         self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         [self.streamCellHeaderView refreshAppearanceAttributes];
+        
     }
-    self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
+    [self.sleekActionView setDependencyManager:dependencyManager];
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    [super setSequence:sequence];
+    self.sleekActionView.sequence = sequence;
+}
+
+- (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
+{
+    [super setSequenceActionsDelegate:sequenceActionsDelegate];
+    self.sleekActionView.sequenceActionsDelegate = sequenceActionsDelegate;
 }
 
 - (void)setDescriptionText:(NSString *)text
@@ -86,63 +92,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.captionTextViewBottomConstraint.constant = zeroConstraints ? 0.0f : kSleekCellTextNeighboringViewSeparatorHeight;
 }
 
-- (void)reloadCommentsCount
-{
-    [(VSleekStreamCellActionView *)self.actionView updateCommentsCount:[self.sequence commentCount]];
-}
-
-- (void)setSequence:(VSequence *)sequence
-{
-    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
-    
-    [super setSequence:sequence];
-    self.actionView.sequence = sequence;
-    [self setupActionBar];
-    [self reloadCommentsCount];
-}
-
-- (void)setupActionBar
-{
-    [self.actionView clearButtons];
-    
-    if ([self.sequence canComment])
-    {
-        //Add the "comments" button
-        [(VSleekStreamCellActionView *)self.actionView addCommentsButton];
-    }
-    
-    [self.actionView addShareButton];
-    if ( [self.sequence canRepost] || [self.sequence.hasReposted boolValue] )
-    {
-        [self.actionView addRepostButton];
-    }
-    
-    if ( [self.sequence canRemix] )
-    {
-        BOOL isVideo = [self.sequence isVideo];
-        if ( [self.sequence isImage] || isVideo )
-        {
-            [self.sleekActionView addMemeButton];
-        }
-        if ( isVideo )
-        {
-            [self.sleekActionView addGifButton];
-        }
-    }
-    
-    [self.actionView updateLayoutOfButtons];
-}
 
 - (NSUInteger)maxCaptionLines
 {
     return 0;
 }
-
-- (VStreamCellActionView *)actionView
-{
-    return self.sleekActionView;
-}
-
 #pragma mark - VBackgroundContainer
 
 - (UIView *)loadingBackgroundContainerView

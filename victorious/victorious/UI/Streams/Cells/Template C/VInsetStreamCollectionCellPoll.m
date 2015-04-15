@@ -13,7 +13,6 @@
 #import "VInsetStreamCollectionCellPoll.h"
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
-#import "VStreamCellActionView.h"
 
 // IMPORTANT: these constants much match up with the heights of values from the VInsetStreamCollectionCellPoll.xib
 static const CGFloat kPollCellWidthRatio = 0.94375f; // 320/302

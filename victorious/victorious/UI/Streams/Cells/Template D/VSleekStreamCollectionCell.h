@@ -9,8 +9,6 @@
 #import "VStreamCollectionCell.h"
 #import "VSequenceActionsDelegate.h"
 
-@class VSleekStreamCellActionView;
-
 //Subviews should use the following cell subview height values to determine desired and actual cell height
 extern const CGFloat kSleekCellHeaderHeight;
 extern const CGFloat kSleekCellActionViewHeight;

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <KVOController/FBKVOController.h>
-
 #import "VStreamCollectionCell.h"
 
 #import "VStreamCellHeaderView.h"
@@ -27,8 +25,6 @@
 #import "VConstants.h"
 
 #import "VCommentCell.h"
-#import "VStreamCellActionView.h"
-#import "VSleekStreamCellActionView.h"
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
@@ -211,21 +207,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
             [self setupTextPostViewControllerText:text color:color];
         }
     }
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(hasReposted))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         NSNumber *oldValue = change[NSKeyValueChangeOldKey];
-         NSNumber *newValue = change[NSKeyValueChangeNewKey];
-         if ([newValue boolValue] == [oldValue boolValue])
-         {
-             return;
-         }
-         [welf.actionView updateRepostButtonAnimated:YES];
-     }];
 }
 
 - (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color
@@ -345,12 +326,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
-}
-
-- (VStreamCellActionView *)actionView
-{
-    // Override in subclasses
-    return nil;
 }
 
 #pragma mark - VSequenceActionsDelegate

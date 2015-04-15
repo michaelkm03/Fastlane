@@ -27,13 +27,6 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyd-x0-d0C" customClass="VSleekStreamCellActionView">
-                        <rect key="frame" x="-1" y="362" width="304" height="41"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="41" id="cwl-tf-eKG"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0yG-Rl-S8H" userLabel="Content Container">
                         <rect key="frame" x="0.0" y="52" width="302" height="302"/>
                         <subviews>
@@ -73,6 +66,13 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="TCA-zq-hwv">
                         <rect key="frame" x="125" y="177" width="52" height="52"/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyd-x0-d0C" customClass="VSleekActionView">
+                        <rect key="frame" x="-1" y="362" width="304" height="41"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="41" id="cwl-tf-eKG"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -107,7 +107,7 @@
                 <outlet property="playBackgroundImageView" destination="TCA-zq-hwv" id="Ij1-vW-RpW"/>
                 <outlet property="playImageView" destination="GwF-J3-KYa" id="30R-Rd-Un2"/>
                 <outlet property="previewImageView" destination="1KY-vY-sth" id="uzl-ea-Ted"/>
-                <outlet property="sleekActionView" destination="gyd-x0-d0C" id="0PO-aq-YSN"/>
+                <outlet property="sleekActionView" destination="gyd-x0-d0C" id="rlD-Xe-d2Y"/>
                 <outlet property="streamCellHeaderView" destination="21k-Mb-C9q" id="iOU-IC-WRv"/>
                 <outlet property="videoPlayerView" destination="6ry-iE-omC" id="BjN-y1-I83"/>
             </connections>

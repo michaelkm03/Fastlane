@@ -20,6 +20,8 @@ static const CGFloat kHighlightedScale = 0.8f;
 
 @implementation VRoundedBackgroundButton
 
+#pragma mark - UIView Overrides
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -39,6 +41,8 @@ static const CGFloat kHighlightedScale = 0.8f;
     self.circleLayer.path = circlePath.CGPath;
 }
 
+#pragma mark - UIControl Overrides
+
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
@@ -52,6 +56,22 @@ static const CGFloat kHighlightedScale = 0.8f;
     
     self.alpha = highlighted ? kHighlightedAlpha : 1.0f;
     self.circleLayer.affineTransform = highlighted ? CGAffineTransformMakeScale(kHighlightedScale, kHighlightedScale) : CGAffineTransformIdentity;
+}
+
+#pragma mark - Property Accessors
+
+- (void)setSelectedColor:(UIColor *)selectedColor
+{
+    _selectedColor = [selectedColor copy];
+    
+    self.circleLayer.fillColor = self.selected ? selectedColor.CGColor : self.unselectedColor.CGColor;
+}
+
+- (void)setUnselectedColor:(UIColor *)unselectedColor
+{
+    _unselectedColor = [unselectedColor copy];
+    
+    self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : _unselectedColor.CGColor;
 }
 
 @end
