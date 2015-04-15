@@ -114,9 +114,9 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     if ( shouldTint )
     {
         self.view.backgroundColor = [UIColor blackColor];
-        self.backgroundImageView.image = [self.backgroundImage v_tintedCIImageWithColor:self.color
-                                                                                  alpha:kTintedBackgroundImageAlpha
-                                                                              blendMode:kTintedBackgroundImageBlendMode];
+        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.color
+                                                                                alpha:kTintedBackgroundImageAlpha
+                                                                            blendMode:kTintedBackgroundImageBlendMode];
     }
     else
     {
