@@ -85,6 +85,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     NSString *string = textView.text;
     if ( textView != nil && string.length > 0 )
     {
+        //Find and replace existing tags in the text view
         NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
         self.tagDictionary = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attrString withTagStringAttributes:textView.linkTextAttributes andDefaultStringAttributes:textView.typingAttributes];
         [self replaceCharactersInRange:NSMakeRange(0, self.length) withAttributedString:attrString];

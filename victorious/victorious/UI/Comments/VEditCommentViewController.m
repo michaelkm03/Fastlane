@@ -67,6 +67,11 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
     
     UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     
+    /*
+     The custom textStorage screws up the delegate unless the textView is inited
+        programmatically with the proper layoutManager and textContainer,
+        so we have to do the little dance below
+     */
     self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];

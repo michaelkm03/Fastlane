@@ -299,6 +299,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
         }
     }
     
+    //Character limit is already being enforced by VContentInputAccessoryView
     return YES;
 }
 
