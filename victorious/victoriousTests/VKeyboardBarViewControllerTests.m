@@ -112,20 +112,6 @@
     }
 }
 
-- (void)testExceedsRange
-{
-    const NSInteger limit = 20;
-    self.keyboardBarViewController.mockCharacterLimit = limit;
-    NSString *initialText = @"012345678912345";
-    self.textView.text = initialText;
-    NSString *replacementText = @"abcdefghik";
-    NSRange range = NSMakeRange( self.textView.text.length, 0 );
-    BOOL output = [self.keyboardBarViewController textView:self.textView shouldChangeTextInRange:range replacementText:replacementText];
-    XCTAssertFalse( self.didCancelKeyboardBarWasCalled );
-    XCTAssertFalse( output );
-    XCTAssertEqualObjects( self.textView.text, initialText );
-}
-
 #pragma mark - VKeyboardBarDelegate
 
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar
