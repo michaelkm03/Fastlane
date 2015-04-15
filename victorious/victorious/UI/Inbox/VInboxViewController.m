@@ -358,6 +358,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
+    if (self.refreshRequest != nil)
+    {
+        return;
+    }
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [self.refreshControl endRefreshing];
