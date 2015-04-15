@@ -27,7 +27,7 @@
 
 #pragma mark - Tests for -numberFromJSONValue:
 
-- (void)testIntegerFromJSONString
+- (void)testIntegerFromString
 {
     NSString *string = @"9";
     NSNumber *expected = @(9);
@@ -35,10 +35,18 @@
     XCTAssertEqualObjects(expected, actual);
 }
 
-- (void)testFloatFromJSONString
+- (void)testFloatFromString
 {
     NSString *string = @"2.3";
     NSNumber *expected = @(2.3);
+    NSNumber *actual = [self.jsonHelper numberFromJSONValue:string];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testSmallFloatFromString
+{
+    NSString *string = @"0.3";
+    NSNumber *expected = @(0.3);
     NSNumber *actual = [self.jsonHelper numberFromJSONValue:string];
     XCTAssertEqualObjects(expected, actual);
 }
