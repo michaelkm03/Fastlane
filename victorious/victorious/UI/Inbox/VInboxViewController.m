@@ -391,8 +391,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
             return;
         }
         self.refreshRequest = nil;
-        [self.tableView reloadData];
         [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
         [self setHasMessages:(self.fetchedResultsController.fetchedObjects.count > 0)];
         [self.messageCountCoordinator updateUnreadMessageCount];
     };

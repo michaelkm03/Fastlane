@@ -247,8 +247,8 @@ static int const kNotificationFetchBatchSize = 50;
             return;
         }
         self.refreshRequest = nil;
-        [self.tableView reloadData];
         [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
         {
