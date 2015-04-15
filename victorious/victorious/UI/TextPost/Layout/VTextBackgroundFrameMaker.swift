@@ -22,21 +22,13 @@ that are broken apart or "called out" from the main rectangle of the surrounding
     This will not automatically set the background frames to be renered.  That is the reponsibility
     of calling code.
     */
-    func createBackgroundFramesForTextView( textView: UITextView, textAttributes: NSDictionary, calloutRangeObjects: NSArray ) -> NSArray
+    func createBackgroundFramesForTextView( textView: UITextView, characterWidth: CGFloat, calloutRangeObjects: NSArray ) -> NSArray
     {
         let calloutRanges: [NSRange] = map( calloutRangeObjects, { ($0 as! NSValue).rangeValue } )
-        
-        let attributedText = textView.attributedText
-        textView.text = " "
         textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
-        let range = NSMakeRange( 0, 1 )
-        let spaceCharacterBounds = textView.layoutManager.boundingRectForGlyphRange( range, inTextContainer: textView.textContainer )
-        textView.attributedText = attributedText
-        textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
-        
         var fragments = self.fragmentsBuilder.fragmentsInTextView( textView, calloutRanges: calloutRanges )
-        self.fragmentsBuilder.applySpacingToFragments( fragments, spacing: 1.0, horizontalOffset: spaceCharacterBounds.size.width )
+        self.fragmentsBuilder.applySpacingToFragments( fragments, spacing: 1.0, horizontalOffset: characterWidth )
         
-        return map( fragments, { NSValue( CGRect: $0.rect ) } )
+        return fragments.map { NSValue( CGRect: $0.rect ) }
     }
 }

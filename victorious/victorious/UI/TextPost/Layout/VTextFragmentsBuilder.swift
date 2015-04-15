@@ -141,8 +141,6 @@ class VTextFragmentsBuilder: NSObject
             lastFragmentRect = fragmentRect
         }
         
-        self.printFragments( output )
-        
         return output
     }
     
@@ -197,14 +195,5 @@ class VTextFragmentsBuilder: NSObject
             }
         }
         return nil
-    }
-    
-    private func printFragments( fragments: [VTextFragment] )
-    {
-        for fragment in fragments
-        {
-            println( "\"\(fragment.text)\" \(fragment.isNewLine)" )
-        }
-        println( "------" )
     }
 }

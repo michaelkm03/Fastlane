@@ -132,13 +132,20 @@
     const BOOL wasSelected = textPostTextView.selectable;
     textPostTextView.selectable = YES;
     
+    textPostTextView.attributedText = [[NSAttributedString alloc] initWithString:@" " attributes:textAttributes];
+    textPostTextView.textContainer.size = CGSizeMake( textPostTextView.bounds.size.width, CGFLOAT_MAX );
+    NSRange range = { 0, 1 };
+    CGRect characterBounds = [textPostTextView.layoutManager boundingRectForGlyphRange:range inTextContainer:textPostTextView.textContainer];
+    
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:textAttributes];
+    textPostTextView.attributedText = attributedText;
+    
     [self.textCalloutFormatter applyAttributes:calloutAttributes toText:attributedText inCalloutRanges:calloutRanges];
     [self.textCalloutFormatter setKerning:self.viewModel.calloutWordKerning toText:attributedText withCalloutRanges:calloutRanges];
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
     
     NSArray *backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:self.textView
-                                                                                  textAttributes:textAttributes
+                                                                                  characterWidth:characterBounds.size.width
                                                                              calloutRangeObjects:calloutRanges];
     self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
     self.textView.backgroundFrames = backgroundFrames;
