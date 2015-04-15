@@ -41,7 +41,7 @@ that are broken apart or "called out" from the main rectangle of the surrounding
         return self.valueFromRects( backgroundFrames ) as NSArray
     }
     
-    // MARK: - NSArray to Swift array convertions
+    // MARK: - NSArray to Swift array conversions
     
     private func valueFromRects( rects: [CGRect] ) -> [NSValue]
     {

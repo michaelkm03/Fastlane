@@ -35,7 +35,7 @@ Some helper methods for formatting callout text using NSAttributedStrings
             let range: NSRange = rangeObject.rangeValue
             if range.location > 0
             {
-                let firstCharacterRange = NSMakeRange( range.location-1, 1 )
+                let firstCharacterRange = NSMakeRange( range.location - 1, 1 )
                 attributedString .addAttribute( NSKernAttributeName, value: kerning, range: firstCharacterRange )
             }
             if ( range.location + range.length < attributedString.length )

@@ -40,7 +40,7 @@ of a text view for text posts.
 class VTextFragmentsBuilder: NSObject
 {
     /**
-    Iterates through the text in the text view using properties of the text view's attribtued text,
+    Iterates through the text in the text view using properties of the text view's attributed text,
     layoutManager and textContainer in order to size and position background frame elements properly.
     */
     func fragmentsInTextView( textView: UITextView, calloutRanges: [NSRange] ) -> [VTextFragment]
@@ -141,7 +141,7 @@ class VTextFragmentsBuilder: NSObject
             lastFragmentRect = fragmentRect
         }
         
-        //self.printFragments( output )
+        self.printFragments( output )
         
         return output
     }
@@ -166,7 +166,7 @@ class VTextFragmentsBuilder: NSObject
                 height: original.size.height - original.size.height * VTextFragment.bottomInsetMultipler
             )
             
-            if let nextFragment = (i < fragments.count-1 ? fragments[i+1] : nil)
+            if let nextFragment = (i < fragments.count - 1 ? fragments[i+1] : nil)
             {
                 if nextFragment.isNewLine
                 {
@@ -202,7 +202,7 @@ class VTextFragmentsBuilder: NSObject
         {
             return nil
         }
-        for i in 0...calloutRanges.count-1
+        for i in 0...calloutRanges.count - 1
         {
             let range = calloutRanges[i]
             if index >= range.location && index < range.location + range.length
