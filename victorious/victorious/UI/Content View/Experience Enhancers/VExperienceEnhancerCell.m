@@ -15,7 +15,7 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 
 @interface VExperienceEnhancerCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerBackgroundImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerOverlayImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerIconImageView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
@@ -106,7 +106,7 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
     
     if ( image != nil )
     {
-        self.experienceEnhancerBackgroundImageView.image = image;
+        self.experienceEnhancerOverlayImageView.image = image;
     }
 }
 

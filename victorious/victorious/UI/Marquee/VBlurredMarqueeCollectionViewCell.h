@@ -8,8 +8,6 @@
 
 #import "VAbstractMarqueeCollectionViewCell.h"
 
-#import "VBackgroundContainer.h"
-
-@interface VBlurredMarqueeCollectionViewCell : VAbstractMarqueeCollectionViewCell <VBackgroundContainer>
+@interface VBlurredMarqueeCollectionViewCell : VAbstractMarqueeCollectionViewCell
 
 @end
