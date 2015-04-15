@@ -17,7 +17,6 @@
 #import "VMessageContainerViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
-#import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 #import <UIImageView+WebCache.h>
 #import "VStream+Fetcher.h"
