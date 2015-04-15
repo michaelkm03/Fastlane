@@ -36,12 +36,12 @@ Some helper methods for formatting callout text using NSAttributedStrings
             if range.location > 0
             {
                 let firstCharacterRange = NSMakeRange( range.location - 1, 1 )
-                attributedString .addAttribute( NSKernAttributeName, value: kerning, range: firstCharacterRange )
+                attributedString.addAttribute( NSKernAttributeName, value: kerning, range: firstCharacterRange )
             }
             if ( range.location + range.length < attributedString.length )
             {
                 let lastCharacterRange = NSMakeRange( range.location - 1 + range.length, 1 )
-                attributedString .addAttribute( NSKernAttributeName, value: kerning, range: lastCharacterRange )
+                attributedString.addAttribute( NSKernAttributeName, value: kerning, range: lastCharacterRange )
             }
         }
     }

@@ -93,7 +93,7 @@
     NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
     NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
     NSArray *calloutRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
-    [self updateTextView:self.textPostTextView withText:_text calloutRanges:calloutRanges textAttributes:attributes calloutAttributes:calloutAttributes];
+    [self updateTextView:self.textPostTextView withText:self.text calloutRanges:calloutRanges textAttributes:attributes calloutAttributes:calloutAttributes];
 }
 
 #pragma mark - public
