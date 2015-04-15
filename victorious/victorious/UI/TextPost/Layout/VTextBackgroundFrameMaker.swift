@@ -24,7 +24,7 @@ that are broken apart or "called out" from the main rectangle of the surrounding
     */
     func createBackgroundFramesForTextView( textView: UITextView, textAttributes: NSDictionary, calloutRangeObjects: NSArray ) -> NSArray
     {
-        let calloutRanges: [NSRange] = self.calloutRangesFromObjectArray( calloutRangeObjects )
+        let calloutRanges: [NSRange] = map( calloutRangeObjects, { ($0 as! NSValue).rangeValue } )
         
         let attributedText = textView.attributedText
         textView.text = " "
@@ -36,31 +36,7 @@ that are broken apart or "called out" from the main rectangle of the surrounding
         
         var fragments = self.fragmentsBuilder.fragmentsInTextView( textView, calloutRanges: calloutRanges )
         self.fragmentsBuilder.applySpacingToFragments( fragments, spacing: 1.0, horizontalOffset: spaceCharacterBounds.size.width )
-        let backgroundFrames = self.fragmentsBuilder.rectsFromFragments( fragments )
         
-        return self.valueFromRects( backgroundFrames ) as NSArray
+        return map( fragments, { NSValue( CGRect: $0.rect ) } )
     }
-    
-    // MARK: - NSArray to Swift array conversions
-    
-    private func valueFromRects( rects: [CGRect] ) -> [NSValue]
-    {
-        var valueObjects = [NSValue]()
-        for rect in rects
-        {
-            valueObjects.append( NSValue( CGRect: rect ) )
-        }
-        return valueObjects
-    }
-    
-    private func calloutRangesFromObjectArray( objectArray: NSArray ) -> [NSRange]
-    {
-        var ranges = [NSRange]()
-        for valueObject in objectArray
-        {
-            ranges.append( valueObject.rangeValue )
-        }
-        return ranges
-    }
-   
 }

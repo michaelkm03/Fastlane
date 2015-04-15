@@ -180,20 +180,6 @@ class VTextFragmentsBuilder: NSObject
         }
     }
     
-    /**
-    Extracts the `rect` values from each of the provided fragments, applies the offset, spacing and insets
-    according to the VTextFragmentOffsets provided and returns those frames.
-    */
-    func rectsFromFragments( fragments: [VTextFragment] ) -> [CGRect]
-    {
-        var output = [CGRect]()
-        for fragment in fragments
-        {
-            output.append( fragment.rect )
-        }
-        return output
-    }
-    
     // MARK: - Private helpers
     
     private func indexOfCalloutRangeContainingIndex( index: Int, calloutRanges: [NSRange] ) -> Int?
