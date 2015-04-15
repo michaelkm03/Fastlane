@@ -56,13 +56,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
 }
 
-- (void)setIsFollowingUser:(BOOL)isFollowingUser
-{
-    _isFollowingUser = isFollowingUser;
-    
-    [self applyEditProfileButtonStyle];
-}
-
 - (void)applyEditProfileButtonStyle
 {
     if ( self.user == nil || self.dependencyManager == nil )
@@ -113,25 +106,35 @@ static NSString * const kEditButtonStylePill = @"rounded";
     }
 }
 
+#pragma mark - Setters
+
+- (void)setIsFollowingUser:(BOOL)isFollowingUser
+{
+    _isFollowingUser = isFollowingUser;
+    [self applyEditProfileButtonStyle];
+}
+
 - (void)setUser:(VUser *)user
 {
-    if (_user == user)
+    if ( _user == user )
     {
         [self applyEditProfileButtonStyle];
         return;
     }
+    if ( _user != nil )
+    {
+        [self cleanupKVOControllerWithUser:_user];
+    }
 
     _user = user;
-        
-    if (_user == nil)
+    
+    if ( _user == nil )
     {
         [self applyEditProfileButtonStyle];
         return;
     }
     
     [self applyEditProfileButtonStyle];
-    
-    [self cleanupKVOControllerWithUser:_user];
     [self setupKVOControllerWithUser:_user];
     
     [[VObjectManager sharedManager] countOfFollowsForUser:_user
@@ -165,6 +168,40 @@ static NSString * const kEditButtonStylePill = @"rounded";
         {
             welf.isFollowingUser = NO;
         }
+    }
+}
+
+- (void)setFollowersCount:(NSNumber *)followerCount
+{
+    if ( followerCount != nil )
+    {
+        self.followersButton.hidden = NO;
+        self.followersHeader.hidden = NO;
+        self.followersLabel.hidden = NO;
+        self.followersLabel.text = [self.largeNumberFormatter stringForInteger:followerCount.integerValue];
+    }
+    else
+    {
+        self.followersButton.hidden = YES;
+        self.followersHeader.hidden = YES;
+        self.followersLabel.hidden = YES;
+    }
+}
+
+- (void)setFollowingCount:(NSNumber *)followingCount
+{
+    if ( followingCount != nil )
+    {
+        self.followingButton.hidden = NO;
+        self.followingHeader.hidden = NO;
+        self.followingLabel.hidden = NO;
+        self.followingLabel.text = [self.largeNumberFormatter stringForInteger:followingCount.integerValue];
+    }
+    else
+    {
+        self.followingButton.hidden = YES;
+        self.followingHeader.hidden = YES;
+        self.followingLabel.hidden = YES;
     }
 }
 
@@ -206,6 +243,8 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.userStatsBar.backgroundColor = backgroundColor;
     [self applyEditProfileButtonStyle];
 }
+
+#pragma mark - Actions
 
 - (IBAction)pressedEditProfile:(id)sender
 {
@@ -250,14 +289,14 @@ static NSString * const kEditButtonStylePill = @"rounded";
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         welf.followersLabel.text = [welf.largeNumberFormatter stringForInteger:user.numberOfFollowers.integerValue];
+         [welf setFollowersCount:user.numberOfFollowers];
      }];
     
     [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(numberOfFollowing))
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         welf.followingLabel.text = [welf.largeNumberFormatter stringForInteger:user.numberOfFollowing.integerValue];
+         [welf setFollowingCount:user.numberOfFollowing];
      }];
     
     [self.KVOController observe:user keyPath:NSStringFromSelector(@selector(pictureUrl))
