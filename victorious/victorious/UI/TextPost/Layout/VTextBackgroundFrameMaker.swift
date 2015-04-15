@@ -28,9 +28,10 @@ that are broken apart or "called out" from the main rectangle of the surrounding
         
         textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
         
-        var fragments = self.fragmentsBuilder.fragmentsInTextView( textView, calloutDelimeters: ["#"] )
+        var fragments = self.fragmentsBuilder.fragmentsInTextView( textView, calloutRanges: calloutRanges )
         let offsets = VTextFragmentOffsets(horizontalOffset: 6.0, horizontalSpacing: 1.0, topInset: 14.0, bottomInset: 3.0 )
-        let backgroundFrames = self.fragmentsBuilder.rectsFromFragments( fragments, withOffsets: offsets )
+        self.fragmentsBuilder.applySpacingToFragments( fragments, withOffsets: offsets )
+        let backgroundFrames = self.fragmentsBuilder.rectsFromFragments( fragments )
         
         return self.valueFromRects( backgroundFrames ) as NSArray
     }

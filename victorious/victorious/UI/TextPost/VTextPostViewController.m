@@ -139,7 +139,7 @@
     
     NSArray *backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:self.textView
                                                                              calloutRangeObjects:calloutRanges];
-    self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
+    self.textView.backgroundFrameColor = [self.viewModel.backgroundColor colorWithAlphaComponent:0.3f];
     self.textView.backgroundFrames = backgroundFrames;
     
     textPostTextView.selectable = wasSelected;
