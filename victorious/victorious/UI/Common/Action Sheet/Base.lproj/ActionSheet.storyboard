@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zy4-f0-yQu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="zy4-f0-yQu">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -42,7 +42,7 @@
                                                                 <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="aii-ch-Yj8" userLabel="Description Label">
                                                                     <rect key="frame" x="30" y="11" width="260" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="751" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="d3F-e5-MDb">
@@ -83,7 +83,7 @@
                                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1eU-SV-COV">
                                                                     <rect key="frame" x="85" y="11" width="42" height="21"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FZR-U7-hah">
@@ -145,7 +145,6 @@
                                                 </connections>
                                             </tableView>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="dX5-Jj-M61" secondAttribute="bottom" id="92I-as-Tr1"/>
                                             <constraint firstAttribute="width" constant="320" id="EAw-sY-6Iq"/>
@@ -177,7 +176,7 @@
                                         <rect key="frame" x="122" y="67" width="77" height="14"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -189,10 +188,10 @@
                                     <constraint firstAttribute="centerX" secondItem="Iq4-PT-v1o" secondAttribute="centerX" id="Pcm-UT-eHc"/>
                                     <constraint firstAttribute="trailing" secondItem="ObS-hY-o4S" secondAttribute="trailing" constant="30" id="RjV-yd-fVN"/>
                                     <constraint firstAttribute="centerX" secondItem="bwB-7w-LgK" secondAttribute="centerX" constant="-0.5" id="SCb-8A-lmy"/>
+                                    <constraint firstAttribute="height" constant="343" id="U8h-MH-Fxw"/>
                                     <constraint firstItem="wiR-Nr-0cm" firstAttribute="leading" secondItem="fKP-Uj-Ir7" secondAttribute="leading" id="Xf1-uP-TXO"/>
                                     <constraint firstAttribute="bottom" secondItem="Iq4-PT-v1o" secondAttribute="bottom" constant="35" id="gYv-mn-709"/>
                                     <constraint firstItem="Iq4-PT-v1o" firstAttribute="top" secondItem="fKP-Uj-Ir7" secondAttribute="top" constant="86" id="ipl-RH-gL8"/>
-                                    <constraint firstAttribute="height" constant="343" id="kfC-ap-Bue"/>
                                     <constraint firstItem="ObS-hY-o4S" firstAttribute="leading" secondItem="fKP-Uj-Ir7" secondAttribute="leading" constant="30" id="lmL-rf-I86"/>
                                     <constraint firstAttribute="bottom" secondItem="wiR-Nr-0cm" secondAttribute="bottom" id="oqz-UV-qcQ"/>
                                 </constraints>
@@ -266,7 +265,7 @@
                         <outlet property="actionItemsTableView" destination="dX5-Jj-M61" id="SIw-e4-qbp"/>
                         <outlet property="avatarButton" destination="nGE-Gh-2VM" id="tPl-0O-l0I"/>
                         <outlet property="blurringContainer" destination="fKP-Uj-Ir7" id="40q-wk-3ZO"/>
-                        <outlet property="blurringContainerHeightConstraint" destination="kfC-ap-Bue" id="ucZ-iK-SZh"/>
+                        <outlet property="blurringContainerHeightConstraint" destination="U8h-MH-Fxw" id="H2j-Id-X2a"/>
                         <outlet property="cancelButton" destination="wiR-Nr-0cm" id="lUo-1X-jHG"/>
                         <outlet property="gradientContainer" destination="Iq4-PT-v1o" id="EAM-o5-YDj"/>
                         <outlet property="tableView" destination="dX5-Jj-M61" id="hFV-st-RLo"/>

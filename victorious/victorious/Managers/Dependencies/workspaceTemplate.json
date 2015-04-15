@@ -160,7 +160,7 @@
                                 "blue": 255,
                                 "green": 255
                             },
-                            "placeholderText": "create a meme",
+                            "placeholderText": "Create a meme",
                             "strokeColor": {
                                 "red": 0,
                                 "alpha": 1,
@@ -176,7 +176,7 @@
                                 "fontSize": 23,
                                 "fontName": "PTSans-Narrow"
                             },
-                            "title": "quote",
+                            "title": "Quote",
                             "horizontalAlignment": "center",
                             "color.text": {
                                 "red": 255,

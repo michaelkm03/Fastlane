@@ -545,12 +545,12 @@
 "Discard" = "Ignorer";
 
 "#nofilter" = "#nofilter";
-"create a meme" = "Créer un MEME";
-"create a quote" = "créer une citation";
+"Create a meme" = "Créer un MEME";
+"Create a quote" = "Créer une citation";
 "Create a GIF" = "Créer un GIF";
 "Type your text here!" = "Tapez votre texte ici !";
 "GIF" = "GIF";
-"quote" = "citation";
+"Quote" = "Citation";
 "GIF MODE" = "MODE GIF";
 "VIDEO MODE" = "MODE VIDÉO";
 "Write a caption (optional)" = "Rédiger une légende (facultatif)";

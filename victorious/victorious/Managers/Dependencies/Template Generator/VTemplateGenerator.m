@@ -567,7 +567,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                          kTitleKey: @"meme",
                          kTextHorizontalAlignmentKey: @"center",
                          kTextVerticalAlignmentKey: @"bottom",
-                         kTextPlaceholderTextKey: @"create a meme",
+                         kTextPlaceholderTextKey: @"Create a meme",
                          kshouldForceUppercaseKey: @YES,
                          VDependencyManagerParagraphFontKey:
                              @{
@@ -592,10 +592,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                          },
                      @{
                          kClassNameKey: @"textType.tool",
-                         kTitleKey: @"quote",
+                         kTitleKey: @"Quote",
                          kTextHorizontalAlignmentKey: @"center",
                          kTextVerticalAlignmentKey: @"center",
-                         kTextPlaceholderTextKey: @"create a quote",
+                         kTextPlaceholderTextKey: @"Create a quote",
                          VDependencyManagerParagraphFontKey:
                              @{
                                  kFontNameKey: @"PTSans-Narrow",

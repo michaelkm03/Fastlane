@@ -140,7 +140,6 @@
     }
 #endif
 
-    
     if (self.viewModel.sequence.canRepost)
     {
         NSString *localizedRepostRepostedText = [self.viewModel.sequence.hasReposted boolValue] ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
@@ -269,66 +268,124 @@
         contentViewController:(UIViewController *)contentViewController
     actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
 {
-    if ([self.viewModel.sequence canRemix])
+    VSequence *sequence = self.viewModel.sequence;
+    if ([sequence canRemix])
     {
-        NSString *remixActionTitle = NSLocalizedString(@"RemixVerb", @"");
-        if ([self.viewModel.sequence isVideo])
+        if ( [sequence isVideo] )
         {
-            remixActionTitle = NSLocalizedString(@"GIF", @"");
+            [actionItems addObject:[self gifItemForContentViewController:contentViewController
+                                               actionSheetViewController:actionSheetViewController]];
+            [actionItems addObject:[self memeItemForContentViewController:contentViewController
+                                                actionSheetViewController:actionSheetViewController]];
         }
-        VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:remixActionTitle
-                                                              actionIcon:[UIImage imageNamed:@"icon_remix"]
-                                                              detailText:self.viewModel.remixCountText];
-        remixItem.selectionHandler = ^(VActionItem *item)
+        else
         {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
-            
-            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                 dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
-             {
-                 if (!authorized)
-                 {
-                     return;
-                 }
-                 [contentViewController dismissViewControllerAnimated:YES
-                                                           completion:^
-                  {
-                      VSequence *sequence = self.viewModel.sequence;
-                      if ([sequence isVideo])
-                      {
-                          [self.sequenceActionController showRemixOnViewController:self
-                                                                      withSequence:sequence
-                                                              andDependencyManager:self.dependencyManager
-                                                                    preloadedImage:nil
-                                                                  defaultVideoEdit:VDefaultVideoEditGIF
-                                                                        completion:nil];
-                      }
-                      else
-                      {
-                          [self.sequenceActionController showRemixOnViewController:self
-                                                                      withSequence:sequence
-                                                              andDependencyManager:self.dependencyManager
-                                                                    preloadedImage:nil
-                                                                        completion:nil];
-                      }
-                  }];
-             }];
-        };
-        remixItem.detailSelectionHandler = ^(VActionItem *item)
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShowRemixes];
-            
-            [contentViewController dismissViewControllerAnimated:YES
-                                                      completion:^
-             {
-                 [self.sequenceActionController showRemixersOnNavigationController:contentViewController.navigationController
-                                                                          sequence:self.viewModel.sequence
-                                                              andDependencyManager:self.dependencyManager];
-             }];
-        };
-        [actionItems addObject:remixItem];
+            [actionItems addObject:[self remixItemForContentViewController:contentViewController
+                                                 actionSheetViewController:actionSheetViewController]];
+        }
     }
+}
+
+- (VActionItem *)remixItemForContentViewController:(UIViewController *)contentViewController
+                         actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
+{
+    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"RemixVerb", @"")
+                                                          actionIcon:[UIImage imageNamed:@"icon_remix"]
+                                                          detailText:nil];
+    [self setupRemixActionItem:remixItem
+     withContentViewController:contentViewController
+     actionSheetViewController:actionSheetViewController
+      withAutorizedActionBlock:^
+     {
+         [self.sequenceActionController showRemixOnViewController:self
+                                                     withSequence:self.viewModel.sequence
+                                             andDependencyManager:self.dependencyManager
+                                                   preloadedImage:nil
+                                                       completion:nil];
+     }];
+    return remixItem;
+}
+
+- (VActionItem *)gifItemForContentViewController:(UIViewController *)contentViewController
+                       actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
+{
+    VActionItem *gifItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Create a GIF", @"")
+                                                        actionIcon:[UIImage imageNamed:@"D_gifIcon"]
+                                                        detailText:nil];
+    [self setupRemixActionItem:gifItem
+     withContentViewController:contentViewController
+     actionSheetViewController:actionSheetViewController
+      withAutorizedActionBlock:^{
+          
+          [self.sequenceActionController showRemixOnViewController:self
+                                                      withSequence:self.viewModel.sequence
+                                              andDependencyManager:self.dependencyManager
+                                                    preloadedImage:nil
+                                                  defaultVideoEdit:VDefaultVideoEditGIF
+                                                        completion:nil];
+          
+      }];
+    return gifItem;
+}
+
+- (VActionItem *)memeItemForContentViewController:(UIViewController *)contentViewController
+                        actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
+{
+    VActionItem *memeItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Create a meme", @"")
+                                                         actionIcon:[UIImage imageNamed:@"D_memeIcon"]
+                                                         detailText:nil];
+    [self setupRemixActionItem:memeItem
+     withContentViewController:contentViewController
+     actionSheetViewController:actionSheetViewController
+      withAutorizedActionBlock:^{
+          
+          [self.sequenceActionController showRemixOnViewController:self
+                                                      withSequence:self.viewModel.sequence
+                                              andDependencyManager:self.dependencyManager
+                                                    preloadedImage:nil
+                                                  defaultVideoEdit:VDefaultVideoEditSnapshot
+                                                        completion:nil];
+          
+      }];
+    return memeItem;
+}
+
+- (void)setupRemixActionItem:(VActionItem *)remixItem
+   withContentViewController:(UIViewController *)contentViewController
+   actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
+    withAutorizedActionBlock:(void (^)(void))authorizedActionBlock
+{
+    remixItem.selectionHandler = ^(VActionItem *item)
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+        
+        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                             dependencyManager:self.dependencyManager];
+        [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^(BOOL authorized)
+         {
+             if (!authorized)
+             {
+                 return;
+             }
+             [contentViewController dismissViewControllerAnimated:YES
+                                                       completion:^
+              {
+                  authorizedActionBlock();
+              }];
+         }];
+    };
+    remixItem.detailSelectionHandler = ^(VActionItem *item)
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShowRemixes];
+        
+        [contentViewController dismissViewControllerAnimated:YES
+                                                  completion:^
+         {
+             [self.sequenceActionController showRemixersOnNavigationController:contentViewController.navigationController
+                                                                      sequence:self.viewModel.sequence
+                                                          andDependencyManager:self.dependencyManager];
+         }];
+    };
 }
 
 @end

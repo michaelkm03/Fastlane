@@ -47,6 +47,7 @@
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapAwayGestureRecognizer;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
+@property (nonatomic, strong) CAGradientLayer *gradient;
 
 @end
 
@@ -84,19 +85,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
                                   atIndex:0];
 
     self.tableView.separatorInset = kSeparatorInsets;
-    
-    // gradient
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.gradientContainer.bounds;
-    gradient.colors = @[(id)[UIColor blackColor].CGColor,
-                        (id)[UIColor clearColor].CGColor
-                        ];
-    gradient.locations = @[
-                           @(1 - (kBlurrGradientHeight / CGRectGetHeight(self.tableView.bounds))),
-                           @1.0f,
-                           ];
-    [self.gradientContainer.layer insertSublayer:gradient atIndex:0];
-    self.gradientContainer.layer.mask = gradient;
     
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.userCaptionLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] fontWithSize:9];
@@ -214,6 +202,30 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
      }];
     self.actionItems = [NSArray arrayWithArray:actionItems];
     self.blurringContainerHeightConstraint.constant = fminf(blurredContainerHeight, CGRectGetHeight(self.view.bounds) * 0.75f);
+    [self.view layoutIfNeeded];
+    
+    //Need to refresh the gradient layer after adjusting the height constraint to properly mask at the proper spot on the table view
+    [self refreshGradientLayer];
+}
+
+- (void)refreshGradientLayer
+{
+    // gradient
+    [self.gradient removeFromSuperlayer];
+    if ( !self.gradient )
+    {
+        self.gradient = [CAGradientLayer layer];
+    }
+    self.gradient.frame = self.gradientContainer.bounds;
+    self.gradient.colors = @[(id)[UIColor blackColor].CGColor,
+                             (id)[UIColor clearColor].CGColor
+                             ];
+    self.gradient.locations = @[
+                                @(1 - (kBlurrGradientHeight / CGRectGetHeight(self.tableView.bounds))),
+                                @1.0f,
+                                ];
+    [self.gradientContainer.layer insertSublayer:self.gradient atIndex:0];
+    self.gradientContainer.layer.mask = self.gradient;
 }
 
 #pragma mark - UITableViewDataSource
