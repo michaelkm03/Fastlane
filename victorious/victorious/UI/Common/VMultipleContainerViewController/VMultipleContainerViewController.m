@@ -251,6 +251,7 @@ static NSString * const kInitialKey = @"initial";
     }
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
     [self.selector setActiveViewControllerIndex:index];
+    [self.v_navigationController setNavigationBarHidden:NO];
 }
 
 #pragma mark - VMultipleContainerChildDelegate
