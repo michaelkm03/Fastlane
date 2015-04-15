@@ -38,6 +38,7 @@
 #import <MBProgressHUD.h>
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VDependencyManager+VScaffoldViewController.h"
 
@@ -230,32 +231,10 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
                                                                                  action:@selector(composeMessage:)];
     }
     
-    UIImage    *defaultBackgroundImage;
-    if (self.backgroundImageView.image)
-    {
-        defaultBackgroundImage = self.backgroundImageView.image;
-    }
-    else
-    {
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
-    }
-    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
-                                    placeholderImage:defaultBackgroundImage
-                                           tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
     
-    [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
-    
-    NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
-    if (![self.backgroundImageView.sd_imageURL isEqual:pictureURL])
-    {
-        [self.backgroundImageView setBlurredImageWithURL:pictureURL
-                                        placeholderImage:self.backgroundImageView.image
-                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    }
+    [self loadBackgroundImage];
     
     if ( self.streamDataSource.count != 0 )
     {
@@ -278,6 +257,30 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     
     self.didEndViewWillAppear = YES;
     [self attemptToRefreshProfileUI];
+}
+
+- (void)loadBackgroundImage
+{
+    UIImage *placeholderImage = self.backgroundImageView.image;
+    if ( placeholderImage == nil )
+    {
+        placeholderImage = [[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]] applyLightEffect];
+    }
+    
+    if ( self.backgroundImageView == nil )
+    {
+        self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
+    }
+    
+    NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
+    if ( ![self.backgroundImageView.sd_imageURL isEqual:pictureURL] )
+    {
+        [self.backgroundImageView setBlurredImageWithURL:pictureURL
+                                        placeholderImage:placeholderImage
+                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    }
 }
 
 - (void)loadUserWithRemoteId:(NSNumber *)remoteId
