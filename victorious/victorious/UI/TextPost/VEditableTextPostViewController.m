@@ -199,8 +199,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)setText:(NSString *)text
 {
-    [self hidePlaceholderText];
-    
     // This keeps the cursor position the same after adding hashtags in superclass
     NSRange selectedRange = self.textView.selectedRange;
     [super setText:text];
@@ -247,7 +245,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     if ( self.text.length == 0 && self.hashtagHelper.embeddedHashtags.count == 0 )
     {
         self.isShowingPlaceholderText = YES;
-        super.text = NSLocalizedString(self.placeholderText, @"");
+        self.text = NSLocalizedString(self.placeholderText, @"");
         self.textView.alpha = 0.5f;
         self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
     }
@@ -258,7 +256,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     if ( self.isShowingPlaceholderText )
     {
         NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:@""];
-        super.text = text;
+        self.text = text;
         self.isShowingPlaceholderText = NO;
         self.textView.alpha = 1.0;
     }
