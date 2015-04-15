@@ -21,7 +21,6 @@
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
 
-static const NSInteger kCharacterLimit = 1024;
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
@@ -265,11 +264,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     return [self.textView resignFirstResponder];
 }
 
-- (NSInteger)characterLimit
-{
-    return kCharacterLimit;
-}
-
 #pragma mark - UITextViewDelegate methods
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
@@ -305,7 +299,8 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
         }
     }
     
-    return [textView.text stringByReplacingCharactersInRange:range withString:text].length <= (NSUInteger)self.characterLimit;
+    //Character limit is already being enforced by VContentInputAccessoryView
+    return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
