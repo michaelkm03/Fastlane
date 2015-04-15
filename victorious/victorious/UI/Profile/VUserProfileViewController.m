@@ -447,6 +447,8 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     
     _profile = profile;
     
+    [self loadBackgroundImage];
+    
     self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     NSString *profileName = profile.name ?: @"Profile";
     
