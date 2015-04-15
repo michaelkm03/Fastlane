@@ -93,6 +93,9 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     VUser *mainUser = [VObjectManager sharedManager].mainUser;
     BOOL isMe = (mainUser != nil && remoteId.integerValue == mainUser.remoteId.integerValue);
     
+    //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderView
+    viewController.dependencyManager = dependencyManager;
+
     if ( !isMe )
     {
         viewController.remoteId = remoteId;
@@ -102,7 +105,6 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
         viewController.profile = mainUser;
     }
     
-    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -110,6 +112,10 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
 {
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    
+    //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderView
+    viewController.dependencyManager = dependencyManager;
+    
     viewController.profile = aUser;
     
     BOOL isMe = ([VObjectManager sharedManager].mainUser != nil && aUser.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
@@ -123,7 +129,6 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
         viewController.title = aUser.name ?: @"Profile";
     }
     
-    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -213,7 +218,9 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
+    [self loadBackgroundImage];
+    
     if (self.isMe)
     {
         [self addFriendsButton];
@@ -232,8 +239,6 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
-    
-    [self loadBackgroundImage];
     
     if ( self.streamDataSource.count != 0 )
     {
@@ -348,11 +353,10 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
         return _profileHeaderView;
     }
     
-    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newView];
-    headerView.user = self.profile;
-    headerView.delegate = self;
-    headerView.dependencyManager = self.dependencyManager;
-    _profileHeaderView = headerView;
+    _profileHeaderView =  [VUserProfileHeaderView newView];
+    _profileHeaderView.user = self.profile;
+    _profileHeaderView.delegate = self;
+    _profileHeaderView.dependencyManager = self.dependencyManager;
     return _profileHeaderView;
 }
 
@@ -448,7 +452,7 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     _profile = profile;
     
     [self loadBackgroundImage];
-    
+
     self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     NSString *profileName = profile.name ?: @"Profile";
     
@@ -799,6 +803,12 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     
     [self.currentStream removeObserver:self
                             forKeyPath:NSStringFromSelector(@selector(streamItems))];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.profileHeaderView.dependencyManager = dependencyManager;
 }
 
 #pragma mark - VAbstractStreamCollectionViewController
