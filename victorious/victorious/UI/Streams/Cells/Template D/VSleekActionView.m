@@ -132,6 +132,16 @@ static CGFloat const kInterActionSpace = 25.0f;
 
     _sequence = sequence;
     
+    [self updateActionItemsForSequence:_sequence];
+    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
+                                                                       repostButton:self.repostButton
+                                                                      repostedImage:[UIImage imageNamed:@"D_repostIcon-success"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"D_repostIcon"]];
+    [self reloadCommentsCount];
+}
+
+- (void)updateActionItemsForSequence:(VSequence *)sequence
+{
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
@@ -161,12 +171,6 @@ static CGFloat const kInterActionSpace = 25.0f;
     }
     [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
     self.actionBar.actionItems = actionItems;
-    
-    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
-                                                                       repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"D_repostIcon-success"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"D_repostIcon"]];
-    [self reloadCommentsCount];
 }
 
 - (void)reloadCommentsCount
