@@ -74,7 +74,7 @@ static const char kAssociatedObjectKey;
 {
     self.alpha = 0;
     self.image = placeholderImage;
-    objc_setAssociatedObject(image, &kAssociatedObjectKey, self, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_ASSIGN);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                    {
                        UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, self.bounds).size
@@ -85,7 +85,7 @@ static const char kAssociatedObjectKey;
                                                                        maskImage:nil];
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
-                                          if ( ![objc_getAssociatedObject(image, &kAssociatedObjectKey) isEqual:self] )
+                                          if ( ![objc_getAssociatedObject(self, &kAssociatedObjectKey) isEqual:image] )
                                           {
                                               /*
                                                 We've finished blurring this image, but another blur request came in after it.
