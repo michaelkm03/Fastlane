@@ -75,17 +75,17 @@
 - (void)testSetupNilFormattedText
 {
     XCTAssertNoThrow([self.tagSensitiveTextView setupWithDatabaseFormattedText:nil
-                                                                tagAttributes:self.tagAttributes
-                                                            defaultAttributes:self.defaultAttributes
-                                                            andTagTapDelegate:self], @"setupWithDatabaseFormattedText:tagAttributes:defaultAttributes:andTagTapDelegate: should not raise assertion for nil database formatted text");
+                                                                 tagAttributes:self.tagAttributes
+                                                             defaultAttributes:self.defaultAttributes
+                                                             andTagTapDelegate:self], @"setupWithDatabaseFormattedText:tagAttributes:defaultAttributes:andTagTapDelegate: should not raise assertion for nil database formatted text");
 }
 
 - (void)testSetupNilDelegate
 {
     XCTAssertNoThrow([self.tagSensitiveTextView setupWithDatabaseFormattedText:self.databaseFormattedText
-                                                                tagAttributes:self.tagAttributes
-                                                            defaultAttributes:self.defaultAttributes
-                                                            andTagTapDelegate:nil], @"setupWithDatabaseFormattedText:tagAttributes:defaultAttributes:andTagTapDelegate: should not raise assertion for nil delegate");
+                                                                 tagAttributes:self.tagAttributes
+                                                             defaultAttributes:self.defaultAttributes
+                                                             andTagTapDelegate:nil], @"setupWithDatabaseFormattedText:tagAttributes:defaultAttributes:andTagTapDelegate: should not raise assertion for nil delegate");
 }
 
 - (void)testSetupAttributedStringSetting
@@ -104,40 +104,42 @@
     XCTAssertThrows([VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:self.databaseFormattedText
                                                                              tagAttributes:nil
                                                                       andDefaultAttributes:self.defaultAttributes
-                                                                           toCallbackBlock:self.emptyCompletionBlock], @"displayFormattedStringFromDatabaseFormattedText:tagAttributes:defaultAttributes:toCallbackBlock: should raise assertion for nil tag attributes");
+                                                                           toCallbackBlock:self.emptyCompletionBlock], @"displayFormattedStringFromDatabaseFormattedText:tagAttributes:andDefaultAttributes:toCallbackBlock: should raise assertion for nil tag attributes");
 }
 
 - (void)testFormatNilDefaultAttributes
 {
-    XCTAssertThrows([self.tagSensitiveTextView setupWithDatabaseFormattedText:self.databaseFormattedText
-                                                                tagAttributes:self.tagAttributes
-                                                            defaultAttributes:nil
-                                                            andTagTapDelegate:self], @"displayFormattedStringFromDatabaseFormattedText:tagAttributes:defaultAttributes:toCallbackBlock: should raise assertion for nil default attributes");
+    XCTAssertThrows([VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:self.databaseFormattedText
+                                                                             tagAttributes:self.tagAttributes
+                                                                      andDefaultAttributes:nil
+                                                                           toCallbackBlock:self.emptyCompletionBlock], @"displayFormattedStringFromDatabaseFormattedText:tagAttributes:andDefaultAttributes:toCallbackBlock: should raise assertion for nil default attributes");
 }
 
 - (void)testFormatNilFormattedText
 {
-    XCTAssertNoThrow([self.tagSensitiveTextView setupWithDatabaseFormattedText:nil
-                                                                 tagAttributes:self.tagAttributes
-                                                             defaultAttributes:self.defaultAttributes
-                                                             andTagTapDelegate:self], @"should not raise assertion for nil database formatted text");
+    XCTAssertNoThrow([VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:nil
+                                                                              tagAttributes:self.tagAttributes
+                                                                       andDefaultAttributes:self.defaultAttributes
+                                                                            toCallbackBlock:self.emptyCompletionBlock], @"displayFormattedStringFromDatabaseFormattedText:tagAttributes:andDefaultAttributes:toCallbackBlock: should not raise assertion for nil database formatted text");
 }
 
-- (void)testFormatNilDelegate
+- (void)testFormatNilCallbackBlock
 {
-    XCTAssertNoThrow([self.tagSensitiveTextView setupWithDatabaseFormattedText:self.databaseFormattedText
-                                                                 tagAttributes:self.tagAttributes
-                                                             defaultAttributes:self.defaultAttributes
-                                                             andTagTapDelegate:nil], @"should not raise assertion for nil delegate");
+    XCTAssertThrows([VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:self.databaseFormattedText
+                                                                            tagAttributes:self.tagAttributes
+                                                                     andDefaultAttributes:self.defaultAttributes
+                                                                          toCallbackBlock:nil], @"displayFormattedStringFromDatabaseFormattedText:tagAttributes:andDefaultAttributes:toCallbackBlock: should not raise assertion for nil callbackBlock");
 }
 
 - (void)testFormatAttributedStringSetting
 {
-    [self.tagSensitiveTextView setupWithDatabaseFormattedText:self.databaseFormattedText
-                                                tagAttributes:self.tagAttributes
-                                            defaultAttributes:self.defaultAttributes
-                                            andTagTapDelegate:self];
-    XCTAssertTrue([self.tagSensitiveTextView.attributedText isEqualToAttributedString:self.displayFormattedString], @"attributed string should be display-formatted in textView");
+    [VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:self.databaseFormattedText
+                                                             tagAttributes:self.tagAttributes
+                                                      andDefaultAttributes:self.defaultAttributes
+                                                           toCallbackBlock:^(VTagDictionary *foundTags, NSAttributedString *displayFormattedString)
+     {
+         XCTAssertTrue([displayFormattedString isEqualToAttributedString:self.displayFormattedString], @"displayFormattedStringFromDatabaseFormattedText:tagAttributes:andDefaultAttributes:toCallbackBlock: attributed string should provide display-formatted string in callback block");
+     }];
 }
 
 //Just keeps warning from displaying

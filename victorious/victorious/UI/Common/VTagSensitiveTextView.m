@@ -84,6 +84,7 @@
 {
     NSAssert(tagAttributes != nil, @"tagAttributes must be non-nil");
     NSAssert(defaultAttributes != nil, @"defaultAttributes must be non-nil");
+    NSAssert(completionBlock != nil, @"completionBlock must be non-nil");
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:databaseFormattedText != nil ? databaseFormattedText : @"" attributes:defaultAttributes];
     VTagDictionary *foundTags = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attributedString
