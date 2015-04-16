@@ -88,7 +88,7 @@ static CGFloat const kInterActionSpace = 25.0f;
     
     self.shareButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_shareIcon"] action:@selector(share:)];
     self.repostButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_repostIcon"] action:@selector(repost:)];
-    self.memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_commentIcon"] action:@selector(meme:)];
+    self.memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_memeIcon"] action:@selector(meme:)];
     self.gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gifIcon"] action:@selector(gif:)];
     self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
 
@@ -154,7 +154,7 @@ static CGFloat const kInterActionSpace = 25.0f;
         [actionItems addObject:self.memeButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     }
-    if ([sequence canRemix])
+    if ([sequence canRemix] && [sequence isVideo])
     {
         [actionItems addObject:self.gifButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
