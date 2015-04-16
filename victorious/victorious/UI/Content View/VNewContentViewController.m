@@ -966,7 +966,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                                        forIndexPath:indexPath];
                 textCell.dependencyManager = self.dependencyManager;
                 UIColor *backgroundColor = self.viewModel.textBackgroundColor ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-                [textCell setTextContent:self.viewModel.textContent withBackgroundColor:backgroundColor];
+                [textCell setTextContent:self.viewModel.textContent backgroundColor:backgroundColor backgroundImageURL:self.viewModel.textBackgroundImageURL];
                 self.contentCell = textCell;
                 return textCell;
             }

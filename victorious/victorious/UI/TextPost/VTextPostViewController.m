@@ -13,6 +13,7 @@
 #import "VHashTags.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
 #import "UIImage+VTint.h"
+#import <SDWebImage/UIImage+MultiFormat.h>
 
 static const CGFloat kTintedBackgroundImageAlpha            = 0.375f;
 static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLuminosity;
@@ -96,11 +97,6 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 
 #pragma mark - public
 
-- (VTextPostTextView *)textView
-{
-    return self.textPostTextView;
-}
-
 - (void)setColor:(UIColor *)color
 {
     _color = color;
@@ -108,28 +104,28 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     [self updateBackground];
 }
 
-- (void)updateBackground
-{
-    const BOOL shouldTint = self.color != nil && self.backgroundImage != nil;
-    if ( shouldTint )
-    {
-        self.view.backgroundColor = [UIColor blackColor];
-        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.color
-                                                                                alpha:kTintedBackgroundImageAlpha
-                                                                            blendMode:kTintedBackgroundImageBlendMode];
-    }
-    else
-    {
-        self.view.backgroundColor = self.color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-        self.backgroundImageView.image = self.backgroundImage;
-    }
-}
-
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
     _backgroundImage = backgroundImage;
     
     [self updateBackground];
+}
+
+- (void)setImageURL:(NSURL *)imageURL
+{
+    if ( _imageURL == imageURL && imageURL != nil )
+    {
+        return;
+    }
+    
+    _imageURL = imageURL;
+    
+    [self updateBackground];
+}
+
+- (VTextPostTextView *)textView
+{
+    return self.textPostTextView;
 }
 
 - (void)setIsTextSelectable:(BOOL)isTextSelectable
@@ -140,6 +136,55 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 }
 
 #pragma mark - Drawing and layout
+
+- (void)updateBackground
+{
+    if ( self.imageURL != nil )
+    {
+        dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0 ), ^
+        {
+            UIImage *image = [UIImage sd_imageWithData:[NSData dataWithContentsOfURL:self.imageURL]];
+            dispatch_async( dispatch_get_main_queue(), ^
+                           {
+                               const BOOL shouldAnimate = image != nil && self.backgroundImageView.image == nil;
+                               [self updateBackgroundWithImage:image];
+                               if ( shouldAnimate )
+                               {
+                                   [self fadeInBackgroundImage];
+                               }
+                           });
+        });
+    }
+    else if ( self.color != nil || self.backgroundImage != nil )
+    {
+        [self updateBackgroundWithImage:self.backgroundImage];
+    }
+}
+
+- (void)updateBackgroundWithImage:(UIImage *)image
+{
+    if ( image != nil && self.color != nil )
+    {
+        self.view.backgroundColor = [UIColor blackColor];
+        self.backgroundImageView.image = [image v_tintedImageWithColor:self.color
+                                                                 alpha:kTintedBackgroundImageAlpha
+                                                             blendMode:kTintedBackgroundImageBlendMode];
+    }
+    else
+    {
+        self.backgroundImageView.image = image;
+    }
+    self.view.backgroundColor = self.color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+}
+
+- (void)fadeInBackgroundImage
+{
+    self.backgroundImageView.alpha = 0.0f;
+    [UIView animateWithDuration:0.15f animations:^
+     {
+         self.backgroundImageView.alpha = 1.0f;
+     }];
+}
 
 - (void)updateTextIsSelectable
 {

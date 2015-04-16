@@ -83,7 +83,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSParameterAssert( backgroundColor != nil || mediaToUploadURL != nil ); // One or the other must be non-nil
     
     NSDictionary *parameters = @{ @"content" : textContent,
-                                  @"media_data": mediaToUploadURL ?: @"",
+                                  @"background_image": mediaToUploadURL ?: @"",
                                   @"background_color" : [backgroundColor v_hexString] ?: @"" };
     
     VLog( @"Uploading text post with parameters: %@", parameters );

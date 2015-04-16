@@ -37,6 +37,11 @@
 @property (nonatomic, strong) UIColor *color;
 
 /**
+ Sets the background iamge URL.
+ */
+@property (nonatomic, strong) NSURL *imageURL;
+
+/**
  An object that encapsulates various configuration properties of how the text post
  is rendered, including text attributes and background frame properties.
  */
