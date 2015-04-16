@@ -454,6 +454,11 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     [self stopObservingUserProfile];
     
     _profile = profile;
+    
+    if ([self isViewLoaded])
+    {
+        [self loadBackgroundImage];
+    }
 
     self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     NSString *profileName = profile.name ?: @"Profile";
