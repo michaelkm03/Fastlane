@@ -96,7 +96,7 @@ static const CGFloat kBaselineOffset = 0.5f;
     //Check for nil user to avoid trying to navigate to create a profile with a nil user
     if ( user != nil )
     {
-        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.notification.user];
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
         [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
     }
 }
