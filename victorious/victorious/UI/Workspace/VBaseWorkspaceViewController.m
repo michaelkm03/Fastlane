@@ -209,6 +209,7 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
 }
 - (IBAction)publish:(id)sender
 {
+    self.keyboardManager.stopCallingHandlerBlocks = YES;
     [self publishContent];
 }
 
