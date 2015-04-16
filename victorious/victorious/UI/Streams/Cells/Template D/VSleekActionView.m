@@ -28,7 +28,10 @@
 #import "VLargeNumberFormatter.h"
 #import "VRepostAnimator.h"
 
-static CGFloat const kRepostedDisabledAlpha     = 0.3f;
+static CGFloat const kRepostedDisabledAlpha = 0.3f;
+static CGFloat const kLeadingTrailingSpace = 15.0f;
+static CGFloat const kCommentSpaceToActions = 22.0f;
+static CGFloat const kInterActionSpace = 25.0f;
 
 @interface VSleekActionView ()
 
@@ -95,15 +98,15 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     self.gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gifIcon"] action:@selector(gif:)];
     self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
     self.actionBar.actionItems = @[
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:20.0f],
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace],
                                    self.commentButton,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:20.0f],
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions],
                                    self.shareButton,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:20.0f],
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace],
                                    self.repostButton,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:20.0f],
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace],
                                    self.memeButton,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:20.0f],
+                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace],
                                    self.gifButton,
                                    [VActionBarFlexibleSpaceItem flexibleSpaceItem]
                                    ];

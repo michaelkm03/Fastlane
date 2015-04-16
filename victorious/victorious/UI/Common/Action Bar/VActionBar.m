@@ -27,6 +27,14 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
 
 @implementation VActionBar
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    // We need to update flex items when our bounds changes
+    [self updateFlexibleWidthConstraintsToItems:self.actionItems];
+}
+
 #pragma mark - Public Methods
 
 - (void)setActionItems:(NSArray *)actionItems
@@ -62,7 +70,11 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
     [self addLeadingTrailingContraintsForFirstAndLastItems:items];
     [self applyLeadingTrailingConstraintsExclusingFirstObject:items];
     [self addDefaultWidthConstraintsForRequiredItems:items];
-    
+    [self updateFlexibleWidthConstraintsToItems:items];
+}
+
+- (void)updateFlexibleWidthConstraintsToItems:(NSArray *)items
+{
     CGFloat totalFlexSpace = [self remainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItems:items
                                                                                       fromWidth:CGRectGetWidth(self.bounds)];
     CGFloat flexibleItemWidth = [self flexibleSpaceWidthWithFlexibleItemCount:[self flexibleItemCountFromItems:items]
@@ -136,6 +148,7 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
                                                                        multiplier:1.0f
                                                                          constant:0.0f];
     trailingLastItem.priority = UILayoutPriorityDefaultLow;
+
     [self addConstraint:trailingLastItem];
 }
 
@@ -191,10 +204,8 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
             remainingSpace = remainingSpace - actionItem.intrinsicContentSize.width;
             return;
         }
-        
         remainingSpace = remainingSpace - kDefaultActionItemWidth;
     }];
-    
     return remainingSpace;
 }
 
