@@ -155,21 +155,26 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
 - (void)applyLeadingTrailingConstraintsExclusingFirstObject:(NSArray *)items
 {
     // Hookup Leading/Trailing Constraints
+    NSMutableArray *constraintsToAdd = [[NSMutableArray alloc] init];
+    id firstItem = [items firstObject];
+    __block id previousItem = firstItem;
     [items enumerateObjectsUsingBlock:^(UIView *actionItem, NSUInteger idx, BOOL *stop)
      {
          // First item leading is already aligned to self
-         if (actionItem == [items firstObject])
+         if (actionItem == firstItem)
          {
              return;
          }
-         [self addConstraint:[NSLayoutConstraint constraintWithItem:actionItem
-                                                          attribute:NSLayoutAttributeLeading
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:[items objectAtIndex:idx-1]
-                                                          attribute:NSLayoutAttributeTrailing
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+         [constraintsToAdd addObject:[NSLayoutConstraint constraintWithItem:actionItem
+                                                                  attribute:NSLayoutAttributeLeading
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:previousItem
+                                                                  attribute:NSLayoutAttributeTrailing
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f]];
+         previousItem = actionItem;
      }];
+    [self addConstraints:constraintsToAdd];
 }
 
 - (CGFloat)remainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItems:(NSArray *)items
@@ -206,7 +211,8 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
         }
         remainingSpace = remainingSpace - kDefaultActionItemWidth;
     }];
-    return remainingSpace;
+    
+    return remainingSpace > 0 ? remainingSpace : 0.0f;
 }
 
 - (void)applyFlexibleItemWith:(CGFloat)flexibleItemWidth

@@ -123,6 +123,8 @@
     CGFloat calculatedRemainingSpace = [self.actionBar remainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItems:@[]
                                                                                                           fromWidth:totalWidth];
     XCTAssertEqual(totalWidth, calculatedRemainingSpace);
+    
+    #pragma mark -  test never goes negatvive
 }
 
 - (void)testRemainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItemsOneItem
