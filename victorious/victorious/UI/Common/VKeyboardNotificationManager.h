@@ -29,5 +29,9 @@ typedef void (^VKeyboardManagerKeyboardChangeBlock) (CGRect keyboardFrameBegin,
 - (instancetype)initWithKeyboardWillShowBlock:(VKeyboardManagerKeyboardChangeBlock)willShowBlock
                                 willHideBlock:(VKeyboardManagerKeyboardChangeBlock)willHideBlock
                          willChangeFrameBlock:(VKeyboardManagerKeyboardChangeBlock)willChangeFrameBlock NS_DESIGNATED_INITIALIZER;
+/**
+ *  When YES VKeyboardManagerKeyboardChangeBlocks do no get called. Defaults to NO.
+ */
+@property (nonatomic, assign) BOOL stopCallingHandlerBlocks;
 
 @end
