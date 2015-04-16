@@ -22,6 +22,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VPaginationManager.h"
+#import "VRootViewController.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUser.h"
@@ -72,7 +73,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
     }
     return viewController;
 }
@@ -109,8 +110,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -127,7 +126,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         self.refreshRequest = nil;
     }
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 #pragma mark - Properties
@@ -443,7 +441,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    [self refresh:nil];
     if ( self.dependencyManager.objectManager.mainUserLoggedIn )
     {
         [self.messageCountCoordinator updateUnreadMessageCount];

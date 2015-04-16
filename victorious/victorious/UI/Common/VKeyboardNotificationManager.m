@@ -93,7 +93,7 @@
     NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
     
-    if (handler != nil)
+    if (!self.stopCallingHandlerBlocks && handler != nil)
     {
         handler(beingFrameValue.CGRectValue,
                 endFrameValue.CGRectValue,

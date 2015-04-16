@@ -29,6 +29,8 @@
 #import "VVoteType.h"
 #import "VAppInfo.h"
 
+NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
+
 static const NSTimeInterval kAnimationDuration = 0.2;
 
 static NSString * const kDeepLinkURLKey = @"deeplink";
@@ -44,7 +46,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
-#warning Temporary
+@property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VVoteSettings *voteSettings;
 @property (nonatomic) BOOL appearing;
@@ -193,9 +195,16 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - Child View Controllers
 
-- (VDependencyManager *)parentDependencyManager
+- (VDependencyManager *)createNewParentDependencyManager
 {
-    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:[VDependencyManager dependencyManagerWithDefaultValuesForColorsAndFonts]
+    if ( self.rootDependencyManager != nil )
+    {
+        [self.rootDependencyManager cleanup];
+        self.rootDependencyManager = nil;
+    }
+    
+    self.rootDependencyManager = [VDependencyManager dependencyManagerWithDefaultValuesForColorsAndFonts];
+    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:self.rootDependencyManager
                                                                                 configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
                                                             dictionaryOfClassesByTemplateName:nil];
     return basicDependencies;
@@ -206,7 +215,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.launchState = VAppLaunchStateWaiting;
     VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
     loadingViewController.delegate = self;
-    loadingViewController.parentDependencyManager = [self parentDependencyManager];
+    loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
     [self showViewController:loadingViewController animated:NO completion:nil];
 }
 

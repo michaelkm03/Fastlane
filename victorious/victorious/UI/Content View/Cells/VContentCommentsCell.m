@@ -30,7 +30,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VTagSensitiveTextView.h"
 
-static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 55.0f };
+static const UIEdgeInsets kTextInsets        = { 32.0f, 56.0f, 11.0f, 55.0f };
 
 static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
 
