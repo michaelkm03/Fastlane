@@ -10,14 +10,15 @@
 #import "VDependencyManager.h"
 #import "UIView+AutoLayout.h"
 #import "VEditableTextPostViewController.h"
+#import "VRoundedBackgroundButton.h"
 
 @interface VTextCanvasToolViewController () <UITextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak) IBOutlet UIButton *buttonImageSearch;
-@property (nonatomic, weak) IBOutlet UIButton *buttonCamera;
-@property (nonatomic, weak) IBOutlet UIButton *buttonClear;
+@property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonImageSearch;
+@property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonCamera;
+@property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonClear;
 
 @property (nonatomic, strong, readwrite) VEditableTextPostViewController *textPostViewController;
 
@@ -38,10 +39,9 @@
 {
     [super viewDidLoad];
 
-    for ( UIButton *button in @[ self.buttonCamera, self.buttonClear, self.buttonImageSearch ] )
+    for ( VRoundedBackgroundButton *button in @[ self.buttonCamera, self.buttonClear, self.buttonImageSearch ] )
     {
-        button.layer.cornerRadius = CGRectGetWidth(self.buttonCamera.frame) * 0.5;
-        button.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        button.selectedColor = button.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
     
     [self setShouldProvideClearOption:NO animated:NO];

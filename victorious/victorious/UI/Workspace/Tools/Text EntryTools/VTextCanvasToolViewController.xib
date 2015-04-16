@@ -17,9 +17,8 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S56-qz-eG1" userLabel="Button Camera">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S56-qz-eG1" userLabel="Button Camera" customClass="VRoundedBackgroundButton">
                     <rect key="frame" x="552" y="552" width="36" height="36"/>
-                    <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="Djo-As-n6h"/>
                         <constraint firstAttribute="width" constant="36" id="NEp-QT-kpa"/>
@@ -31,9 +30,8 @@
                         <action selector="backgroundImageCameraSelected:" destination="-1" eventType="touchUpInside" id="Fmf-sv-obu"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SbT-qW-4bj" userLabel="Button Image Search">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SbT-qW-4bj" userLabel="Button Image Search" customClass="VRoundedBackgroundButton">
                     <rect key="frame" x="504" y="552" width="36" height="36"/>
-                    <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="36" id="sUe-Ob-gfw"/>
                         <constraint firstAttribute="height" constant="36" id="uwg-gn-PZt"/>
@@ -45,9 +43,8 @@
                         <action selector="backgroundImageSearchSelected:" destination="-1" eventType="touchUpInside" id="eNp-Xw-vty"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DrA-HT-Byt" userLabel="Button Clear Image">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DrA-HT-Byt" userLabel="Button Clear Image" customClass="VRoundedBackgroundButton">
                     <rect key="frame" x="12" y="552" width="36" height="36"/>
-                    <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="PU9-vk-NwL"/>
                         <constraint firstAttribute="width" constant="36" id="dhO-VQ-saE"/>

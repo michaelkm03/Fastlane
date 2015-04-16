@@ -54,4 +54,22 @@ static const CGFloat kHighlightedScale = 0.8f;
     self.circleLayer.affineTransform = highlighted ? CGAffineTransformMakeScale(kHighlightedScale, kHighlightedScale) : CGAffineTransformIdentity;
 }
 
+#pragma mark - Property Accessors
+
+- (void)setSelectedColor:(UIColor *)selectedColor
+{
+    _selectedColor = [selectedColor copy];
+    
+    self.circleLayer.fillColor = self.selected ? selectedColor.CGColor : self.unselectedColor.CGColor;
+    [self setNeedsLayout];
+}
+
+- (void)setUnselectedColor:(UIColor *)unselectedColor
+{
+    _unselectedColor = [unselectedColor copy];
+    
+    self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : _unselectedColor.CGColor;
+    [self setNeedsLayout];
+}
+
 @end
