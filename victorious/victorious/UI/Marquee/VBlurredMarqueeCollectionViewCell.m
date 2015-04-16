@@ -55,7 +55,7 @@
 
 - (UIView *)loadingBackgroundContainerView
 {
-    return self.loadingBackgroundContainer;
+    return nil;
 }
 
 @end
