@@ -73,16 +73,17 @@
             {
                 id <VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
                 __weak typeof(self) welf = self;
+                __weak VNavigationDestinationContainerViewController *weakShim = shimViewController;
                 [badgeProvider setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
                 {
                     [welf updateApplicationBadge];
                     if (badgeNumber > 0)
                     {
-                        shimViewController.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+                        weakShim.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
                     }
                     else
                     {
-                        shimViewController.tabBarItem.badgeValue = nil;
+                        weakShim.tabBarItem.badgeValue = nil;
                     }
                 }];
                 [badgeProviders addObject:badgeProvider];
