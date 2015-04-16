@@ -98,7 +98,7 @@
                             {
                                 [cell setBadgeNumber:badgeNumber];
                             }
-                            self.badgeTotal = [strongSelf calculateBadgeTotal];
+                            strongSelf.badgeTotal = [strongSelf calculateBadgeTotal];
                         }
                     };
                     
