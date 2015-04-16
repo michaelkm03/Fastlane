@@ -91,6 +91,8 @@ static CGFloat const kInterActionSpace = 25.0f;
     self.memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_commentIcon"] action:@selector(meme:)];
     self.gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gifIcon"] action:@selector(gif:)];
     self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
+
+    // Defaults should be updated on setSequence:
     self.actionBar.actionItems = @[
                                    [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace],
                                    self.commentButton,
@@ -129,6 +131,36 @@ static CGFloat const kInterActionSpace = 25.0f;
     [self.repostButtonController invalidate];
 
     _sequence = sequence;
+    
+    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
+    
+    [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
+    
+    if ([sequence canComment])
+    {
+        [actionItems addObject:self.commentButton];
+        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions]];
+    }
+    
+    [actionItems addObject:self.shareButton];
+    [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
+    if ([sequence canRepost])
+    {
+        [actionItems addObject:self.repostButton];
+        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
+    }
+    if ([sequence canRemix])
+    {
+        [actionItems addObject:self.memeButton];
+        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
+    }
+    if ([sequence canRemix])
+    {
+        [actionItems addObject:self.gifButton];
+        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
+    }
+    [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    self.actionBar.actionItems = actionItems;
     
     self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
                                                                        repostButton:self.repostButton
