@@ -697,7 +697,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     return vc.dependencyManager;
 }
 
-#if 0 // Disabled for now. See IOS-2368
+#if 0 // Disabled for now. See https://jira.victorious.com/browse/IOS-2368
 - (void)testCleanupBreaksCycles
 {
     // the main purpose of -cleanup is to break retain cycles created by the dependency manager.
