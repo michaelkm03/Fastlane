@@ -218,7 +218,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     if ( self.isShowingPlaceholderText )
     {
-        self.text = @"";
+        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:@""];
+        self.text = text;
         self.isShowingPlaceholderText = NO;
         self.textView.alpha = 1.0;
     }
@@ -233,6 +234,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    [self hidePlaceholderText];
+    
     self.text = self.textView.text;
     
     [self updateAddedAndDeletedHashtags];
