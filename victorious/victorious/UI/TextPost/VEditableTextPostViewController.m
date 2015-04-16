@@ -14,6 +14,7 @@
 #import "UIView+AutoLayout.h"
 #import "VTextPostTextView.h"
 #import "VEditableTextPostHashtagHelper.h"
+#import "VEditableTextPostImageHelper.h"
 #import "VContentInputAccessoryView.h"
 
 static NSString * const kDefaultTextKey = @"defaultText";
@@ -30,6 +31,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 @property (nonatomic, assign) BOOL hasAppeared;
 
 @property (nonatomic, strong) VEditableTextPostHashtagHelper *hashtagHelper;
+@property (nonatomic, strong) VEditableTextPostImageHelper *imageHelper;
+@property (nonatomic, assign) UIImage *originalImage;
 
 @end
 
@@ -49,9 +52,10 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [super viewDidLoad];
     
     self.hashtagHelper = [[VEditableTextPostHashtagHelper alloc] init];
+    self.imageHelper = [[VEditableTextPostImageHelper alloc] init];
     
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
-    [self.view insertSubview:self.overlayButton atIndex:1];
+    [self.view insertSubview:self.overlayButton belowSubview:self.textView];
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];
     [self.overlayButton addTarget:self action:@selector(overlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -286,23 +290,49 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     return textAfter.length < self.characterCountMax;
 }
 
+#pragma mark - Setting background image and color
+
+- (void)setColor:(UIColor *)color
+{
+    [super setColor:color];
+    
+    [self updateBackroundImageAnimated:NO];
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage
+{
+    [self setBackgroundImage:backgroundImage animated:NO];
+}
+
 - (void)setBackgroundImage:(UIImage *)backgroundImage animated:(BOOL)animated
 {
+    self.originalImage = backgroundImage;
+    
+    [self.imageHelper clearCache];
+    
+    [self updateBackroundImageAnimated:animated];
+}
+
+- (void)updateBackroundImageAnimated:(BOOL)animated
+{
+    UIImage *tintedImage = [self.imageHelper imageWithImage:self.originalImage color:self.color];
+    
     if ( animated )
     {
         [UIView animateWithDuration:0.15f delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
          {
-             self.backgroundImageView.alpha = backgroundImage == nil ? 0.0f : 1.0f;
+             self.backgroundImageView.alpha = tintedImage == nil ? 0.0f : 1.0f;
          }
                          completion:^(BOOL finished)
          {
-             super.backgroundImage = backgroundImage;
+             super.backgroundImage = tintedImage;
          }];
     }
     else
     {
-        super.backgroundImage = backgroundImage;
-    }}
+        super.backgroundImage = tintedImage;
+    }
+}
 
 #pragma mark - VContentInputAccessoryViewDelegate
 

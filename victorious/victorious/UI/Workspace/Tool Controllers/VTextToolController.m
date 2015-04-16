@@ -51,7 +51,10 @@
         NSAssert( NO, @"Cannot set up default tool because there are no tools." );
     }
     
-    [self setSelectedTool:self.tools.firstObject];
+    if ( self.selectedTool == nil )
+    {
+        [self setSelectedTool:self.tools.firstObject];
+    }
     
     [self.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
@@ -196,8 +199,11 @@
 {
     self.previewImage = previewImage;
     self.mediaURL = newMediaURL;
-    [self.textPostViewController setBackgroundImage:previewImage animated:YES];
-    self.textColorTool.shouldShowNoColorOption = previewImage != nil;
+    [self.textColorTool setShouldShowNoColorOption:(previewImage != nil) completion:^
+    {
+        [self.textPostViewController setBackgroundImage:previewImage animated:YES];
+    }];
+    
 }
 
 @end

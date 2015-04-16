@@ -186,7 +186,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) NSURL *textBackgroundImageURL;
 
-
 #pragma mark - Videos
 
 @property (nonatomic, readonly) VVideoCellViewModel *videoViewModel;

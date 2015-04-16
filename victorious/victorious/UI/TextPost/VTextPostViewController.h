@@ -24,7 +24,7 @@
  required calculation and drawing routines to render the text according to the
  design.
  */
-@property (nonatomic, strong) NSString *text;
+@property (nonatomic, copy) NSString *text;
 
 /**
  Sets the background image, which will display and size accodingly.
@@ -32,14 +32,15 @@
 @property (nonatomic, strong) UIImage *backgroundImage;
 
 /**
+ Sets the background iamge URL, which will load asynchronously and then
+ display using the same `backgroundImage` property setter.
+ */
+@property (nonatomic, copy) NSURL *imageURL;
+
+/**
  Sets the background color.
  */
 @property (nonatomic, strong) UIColor *color;
-
-/**
- Sets the background iamge URL.
- */
-@property (nonatomic, strong) NSURL *imageURL;
 
 /**
  An object that encapsulates various configuration properties of how the text post

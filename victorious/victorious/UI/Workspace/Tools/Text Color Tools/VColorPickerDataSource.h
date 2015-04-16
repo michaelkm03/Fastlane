@@ -20,6 +20,10 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
+/**
+ Provides an additional optional that represents a selection of no color, i.e. the absense
+ of a color, intended for when another element, such as an image, will be used instead.
+ */
 @property (nonatomic, assign) BOOL showNoColor;
 
 @end
