@@ -13,7 +13,7 @@
 #import "VHashTags.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
 #import "UIImage+VTint.h"
-#import <SDWebImage/UIImage+MultiFormat.h>
+#import <SDWebImageManager.h>
 
 static const CGFloat kTintedBackgroundImageAlpha            = 0.375f;
 static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLuminosity;
@@ -118,9 +118,16 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
         return;
     }
     
-    _imageURL = imageURL;
-    
-    [self updateBackground];
+    [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
+                          options:0
+                         progress:nil
+                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
+     {
+         if ( image != nil )
+         {
+             self.backgroundImage = image;
+         }
+     }];
 }
 
 - (VTextPostTextView *)textView
@@ -139,51 +146,19 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 
 - (void)updateBackground
 {
-    if ( self.imageURL != nil )
-    {
-        dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0 ), ^
-        {
-            UIImage *image = [UIImage sd_imageWithData:[NSData dataWithContentsOfURL:self.imageURL]];
-            dispatch_async( dispatch_get_main_queue(), ^
-                           {
-                               const BOOL shouldAnimate = image != nil && self.backgroundImageView.image == nil;
-                               [self updateBackgroundWithImage:image];
-                               if ( shouldAnimate )
-                               {
-                                   [self fadeInBackgroundImage];
-                               }
-                           });
-        });
-    }
-    else if ( self.color != nil || self.backgroundImage != nil )
-    {
-        [self updateBackgroundWithImage:self.backgroundImage];
-    }
-}
-
-- (void)updateBackgroundWithImage:(UIImage *)image
-{
-    if ( image != nil && self.color != nil )
+    if ( self.backgroundImage != nil && self.color != nil )
     {
         self.view.backgroundColor = [UIColor blackColor];
-        self.backgroundImageView.image = [image v_tintedImageWithColor:self.color
-                                                                 alpha:kTintedBackgroundImageAlpha
-                                                             blendMode:kTintedBackgroundImageBlendMode];
+        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.color
+                                                                                alpha:kTintedBackgroundImageAlpha
+                                                                            blendMode:kTintedBackgroundImageBlendMode];
     }
     else
     {
-        self.backgroundImageView.image = image;
+        self.backgroundImageView.image = self.backgroundImage;
     }
+    
     self.view.backgroundColor = self.color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-}
-
-- (void)fadeInBackgroundImage
-{
-    self.backgroundImageView.alpha = 0.0f;
-    [UIView animateWithDuration:0.15f animations:^
-     {
-         self.backgroundImageView.alpha = 1.0f;
-     }];
 }
 
 - (void)updateTextIsSelectable
