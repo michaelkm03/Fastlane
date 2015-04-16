@@ -29,6 +29,8 @@
 #import "VVoteType.h"
 #import "VAppInfo.h"
 
+NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
+
 static const NSTimeInterval kAnimationDuration = 0.2;
 
 static NSString * const kDeepLinkURLKey = @"deeplink";
