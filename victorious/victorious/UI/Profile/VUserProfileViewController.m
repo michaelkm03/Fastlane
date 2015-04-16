@@ -213,6 +213,8 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
     
     [self updateCollectionViewDataSource];
+    
+    [self loadBackgroundImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -452,8 +454,6 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     [self stopObservingUserProfile];
     
     _profile = profile;
-    
-    [self loadBackgroundImage];
 
     self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     NSString *profileName = profile.name ?: @"Profile";
