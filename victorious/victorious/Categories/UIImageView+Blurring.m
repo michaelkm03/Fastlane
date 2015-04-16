@@ -10,11 +10,14 @@
 #import "UIImage+ImageEffects.h"
 #import "UIImage+Resize.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <objc/runtime.h>
 
 @import AVFoundation;
 
 static const CGFloat kVBlurRadius = 12.5f;
 static const CGFloat kVSaturationDeltaFactor = 1.8f;
+
+static const char kAssociatedObjectKey;
 
 @implementation UIImageView (Blurring)
 
@@ -71,6 +74,7 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
 {
     self.alpha = 0;
     self.image = placeholderImage;
+    objc_setAssociatedObject(image, &kAssociatedObjectKey, self, OBJC_ASSOCIATION_ASSIGN);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                    {
                        UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, self.bounds).size
@@ -81,6 +85,14 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
                                                                        maskImage:nil];
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
+                                          if ( ![objc_getAssociatedObject(image, &kAssociatedObjectKey) isEqual:self] )
+                                          {
+                                              /*
+                                                We've finished blurring this image, but another blur request came in after it.
+                                                Return before setting this to the blurred image to avoid setting to the wrong image.
+                                               */
+                                              return;
+                                          }
                                           self.image = blurredImage;
                                           [UIView animateWithDuration:duration
                                                                 delay:0.0f
