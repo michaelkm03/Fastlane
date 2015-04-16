@@ -323,7 +323,6 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
         NSDictionary *attributes = font != nil ? [self attributesForTextWithFont:font] : [self attributesForText];
         [VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:text tagAttributes:attributes andDefaultAttributes:attributes toCallbackBlock:^(VTagDictionary *foundTags, NSAttributedString *displayFormattedString)
         {
-            
             boundingRect = [displayFormattedString boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
                                                                 options:NSStringDrawingUsesLineFragmentOrigin
                                                                 context:[[NSStringDrawingContext alloc] init]];
