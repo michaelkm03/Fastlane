@@ -8,9 +8,6 @@
 
 #import "VSleekActionView.h"
 
-// Frameworks
-#import <FBKVOController.h>
-
 // Dependencies
 #import "VDependencyManager.h"
 
@@ -26,9 +23,8 @@
 // Views + Helpers
 #import "UIView+Autolayout.h"
 #import "VLargeNumberFormatter.h"
-#import "VRepostAnimator.h"
+#import "VRepostButtonController.h"
 
-static CGFloat const kRepostedDisabledAlpha = 0.3f;
 static CGFloat const kLeadingTrailingSpace = 15.0f;
 static CGFloat const kCommentSpaceToActions = 22.0f;
 static CGFloat const kInterActionSpace = 25.0f;
@@ -45,7 +41,7 @@ static CGFloat const kInterActionSpace = 25.0f;
 @property (nonatomic, strong) VActionBar *actionBar;
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VRepostAnimator *repostAnimator;
+@property (nonatomic, strong) VRepostButtonController *repostButtonController;
 
 @end
 
@@ -76,8 +72,6 @@ static CGFloat const kInterActionSpace = 25.0f;
 
 - (void)sharedInit
 {
-    self.repostAnimator = [[VRepostAnimator alloc] init];
-    
     self.actionBar = [[VActionBar alloc] initWithFrame:self.bounds];
     [self addSubview:self.actionBar];
     [self v_addFitToParentConstraintsToSubview:self.actionBar];
@@ -132,32 +126,15 @@ static CGFloat const kInterActionSpace = 25.0f;
 
 - (void)setSequence:(VSequence *)sequence
 {
-    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
+    [self.repostButtonController invalidate];
 
     _sequence = sequence;
     
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(hasReposted))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         NSNumber *oldValue = change[NSKeyValueChangeOldKey];
-         NSNumber *newValue = change[NSKeyValueChangeNewKey];
-         if ([newValue boolValue] == [oldValue boolValue])
-         {
-             return;
-         }
-         [welf.repostAnimator updateRepostWithAnimations:^
-          {
-              [welf updateRepostButtonForRepostState];
-          }
-                                                onButton:welf.repostButton
-                                                animated:YES];
-     }];
-    
+    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
+                                                                       repostButton:self.repostButton
+                                                                      repostedImage:[UIImage imageNamed:@"D_repostIcon-success"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"D_repostIcon"]];
     [self reloadCommentsCount];
-    [welf updateRepostButtonForRepostState];
 }
 
 - (void)reloadCommentsCount
@@ -190,18 +167,12 @@ static CGFloat const kInterActionSpace = 25.0f;
 {
     if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)])
     {
-        sender.enabled = NO;
-        __weak typeof(self) welf = self;
+        self.repostButtonController.reposting = YES;
         [self.sequenceActionsDelegate willRepostSequence:self.sequence
                                                 fromView:self
                                               completion:^(BOOL success)
          {
-             [welf.repostAnimator updateRepostWithAnimations:^
-              {
-                  [welf updateRepostButtonForRepostState];
-              }
-                                                    onButton:welf.repostButton
-                                                    animated:YES];
+             self.repostButtonController.reposting = NO;
          }];
     }
 }
@@ -221,20 +192,6 @@ static CGFloat const kInterActionSpace = 25.0f;
     [self.sequenceActionsDelegate willRemixSequence:self.sequence
                                            fromView:self
                                           videoEdit:VDefaultVideoEditGIF];
-}
-
-#pragma mark - Repost Animation
-
-- (void)updateRepostButtonForRepostState
-{
-    BOOL hasRespoted = [self.sequence.hasReposted boolValue];
-    
-    UIImage *selectedImage = [[UIImage imageNamed:@"D_repostIcon-success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *unselectedImage = [[UIImage imageNamed:@"D_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.repostButton setImage:hasRespoted ? selectedImage : unselectedImage
-                       forState:UIControlStateNormal];
-    self.repostButton.enabled = !hasRespoted;
-    self.repostButton.alpha = hasRespoted ? kRepostedDisabledAlpha : 1.0f;
 }
 
 #pragma mark - VHasManagedDependencies

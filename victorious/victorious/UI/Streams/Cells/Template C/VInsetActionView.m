@@ -26,7 +26,7 @@
 // Views + Helpers
 #import "UIView+Autolayout.h"
 #import "VLargeNumberFormatter.h"
-#import "VRepostAnimator.h"
+#import "VRepostButtonController.h"
 
 static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
@@ -39,7 +39,7 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VActionBar *actionBar;
-@property (nonatomic, strong) VRepostAnimator *repostAnimator;
+@property (nonatomic, strong) VRepostButtonController *repostAnimator;
 
 @end
 
@@ -128,17 +128,11 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)])
     {
         sender.enabled = NO;
-        __weak typeof(self) welf = self;
         [self.sequenceActionsDelegate willRepostSequence:self.sequence
                                                 fromView:self
                                               completion:^(BOOL success)
          {
-             [welf.repostAnimator updateRepostWithAnimations:^
-              {
-                  [welf updateRepostButtonForRepostState];
-              }
-                                                    onButton:welf.repostButton
-                                                    animated:YES];
+             sender.enabled = YES;
          }];
     }
 }
