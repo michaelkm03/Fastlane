@@ -28,18 +28,16 @@
 #import "VLargeNumberFormatter.h"
 #import "VRepostButtonController.h"
 
-static CGFloat const kRepostedDisabledAlpha     = 0.3f;
-
 @interface VInsetActionView ()
 
 @property (nonatomic, strong) UIButton *shareButton;
-@property (nonatomic, strong) UIButton *repostButton;
-@property (nonatomic, strong) UIButton *memeButton;
 @property (nonatomic, strong) UIButton *gifButton;
+@property (nonatomic, strong) UIButton *memeButton;
+@property (nonatomic, strong) UIButton *repostButton;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VActionBar *actionBar;
-@property (nonatomic, strong) VRepostButtonController *repostAnimator;
+@property (nonatomic, strong) VRepostButtonController *repostButtonController;
 
 @end
 
@@ -77,6 +75,10 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     
     self.shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                             action:@selector(share:)];
+    self.gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                          action:@selector(gif:)];
+    self.memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_memeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                           action:@selector(meme:)];
     self.repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                                  action:@selector(repost:)];
     
@@ -93,14 +95,55 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 - (UIButton *)actionButtonWithImage:(UIImage *)actionImage
                              action:(SEL)action
 {
-    UIButton *actionButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
     
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     [actionButton setImage:actionImage forState:UIControlStateNormal];
     actionButton.tintColor = [UIColor blackColor];
-    
+    [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     
     return actionButton;
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    [self.repostButtonController invalidate];
+    
+    _sequence = sequence;
+    
+    [self updateActionItemsForSequence:_sequence];
+    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
+                                                                       repostButton:self.repostButton
+                                                                      repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
+}
+
+- (void)updateActionItemsForSequence:(VSequence *)sequence
+{
+    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
+    
+    [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    [actionItems addObject:self.shareButton];
+    [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    
+    if ([sequence canRemix] && [sequence isVideo])
+    {
+        [actionItems addObject:self.gifButton];
+        [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    }
+    if ([sequence canRemix])
+    {
+        [actionItems addObject:self.memeButton];
+        [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    }
+    
+    if ([sequence canRepost])
+    {
+        [actionItems addObject:self.repostButton];
+        [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    }
+
+    self.actionBar.actionItems = actionItems;
 }
 
 #pragma mark - Actions
@@ -152,20 +195,6 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     [self.sequenceActionsDelegate willRemixSequence:self.sequence
                                            fromView:self
                                           videoEdit:VDefaultVideoEditGIF];
-}
-
-#pragma mark - Repost Animation
-
-- (void)updateRepostButtonForRepostState
-{
-    BOOL hasRespoted = [self.sequence.hasReposted boolValue];
-    
-    UIImage *selectedImage = [[UIImage imageNamed:@"C_repostIcon-success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *unselectedImage = [[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.repostButton setImage:hasRespoted ? selectedImage : unselectedImage
-                       forState:UIControlStateNormal];
-    self.repostButton.enabled = !hasRespoted;
-    self.repostButton.alpha = hasRespoted ? kRepostedDisabledAlpha : 1.0f;
 }
 
 @end
