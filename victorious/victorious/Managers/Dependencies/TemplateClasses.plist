@@ -95,7 +95,7 @@
 	<key>sleek.streamCell</key>
 	<string>VSleekStreamCellFactory</string>
 	<key>fullscreen.marqueeCell</key>
-	<string>VBlurredMarqueeController</string>
+	<string>VFullscreenMarqueeController</string>
 	<key>blurred.marqueeCell</key>
 	<string>VBlurredMarqueeController</string>
 	<key>titleOverlay.streamCell</key>
