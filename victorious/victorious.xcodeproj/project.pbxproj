@@ -63,7 +63,6 @@
 		0314D49319B46B5E00FA363C /* VReposterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D36919B46B5E00FA363C /* VReposterTableViewController.m */; };
 		0314D49619B46B5E00FA363C /* VResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37019B46B5E00FA363C /* VResultView.m */; };
 		0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37519B46B5E00FA363C /* VRTCUserPostedAtFormatter.m */; };
-		0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D37719B46B5E00FA363C /* VActionBarViewController.m */; };
 		0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D38619B46B5E00FA363C /* VImageSearchDataSource.m */; };
 		0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D38819B46B5E00FA363C /* VImageSearchResultCell.m */; };
 		0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D38A19B46B5E00FA363C /* VImageSearchResultsFooterView.m */; };
@@ -409,10 +408,10 @@
 		A75C64971AD78DCA00245125 /* VTextPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C648F1AD78DCA00245125 /* VTextPostViewController.m */; };
 		A75C64981AD78DCA00245125 /* VTextPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75C64901AD78DCA00245125 /* VTextPostViewController.xib */; };
 		A75C64991AD78DCA00245125 /* VTextPostViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64921AD78DCA00245125 /* VTextPostViewModel.m */; };
+		A75C649E1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C649D1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m */; };
 		A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A61ADDDFC900245125 /* VTextBackgroundFrameMaker.swift */; };
 		A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */; };
 		A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */; };
-		A75C649E1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C649D1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m */; };
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
@@ -996,8 +995,6 @@
 		0314D37019B46B5E00FA363C /* VResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VResultView.m; sourceTree = "<group>"; };
 		0314D37419B46B5E00FA363C /* VRTCUserPostedAtFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRTCUserPostedAtFormatter.h; sourceTree = "<group>"; };
 		0314D37519B46B5E00FA363C /* VRTCUserPostedAtFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRTCUserPostedAtFormatter.m; sourceTree = "<group>"; };
-		0314D37619B46B5E00FA363C /* VActionBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarViewController.h; sourceTree = "<group>"; };
-		0314D37719B46B5E00FA363C /* VActionBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionBarViewController.m; sourceTree = "<group>"; };
 		0314D38519B46B5E00FA363C /* VImageSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchDataSource.h; sourceTree = "<group>"; };
 		0314D38619B46B5E00FA363C /* VImageSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchDataSource.m; sourceTree = "<group>"; };
 		0314D38719B46B5E00FA363C /* VImageSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultCell.h; sourceTree = "<group>"; };
@@ -1571,11 +1568,11 @@
 		A75C64901AD78DCA00245125 /* VTextPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTextPostViewController.xib; sourceTree = "<group>"; };
 		A75C64911AD78DCA00245125 /* VTextPostViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostViewModel.h; sourceTree = "<group>"; };
 		A75C64921AD78DCA00245125 /* VTextPostViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostViewModel.m; sourceTree = "<group>"; };
+		A75C649D1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewControllerTests.m; sourceTree = "<group>"; };
 		A75C64A31ADC7D0A00245125 /* SwiftBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftBridging.h; sourceTree = "<group>"; };
 		A75C64A61ADDDFC900245125 /* VTextBackgroundFrameMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextBackgroundFrameMaker.swift; sourceTree = "<group>"; };
 		A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextFragmentsBuilder.swift; sourceTree = "<group>"; };
 		A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextCalloutFormatter.swift; sourceTree = "<group>"; };
-		A75C649D1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewControllerTests.m; sourceTree = "<group>"; };
 		A75ECFE91AB0B6B400C35063 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		A75ECFEB1AB0B6B400C35063 /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
@@ -2741,8 +2738,6 @@
 				D82C08F419D0C04200273E0D /* Layouts */,
 				0314D36A19B46B5E00FA363C /* Polls */,
 				0314D37119B46B5E00FA363C /* RealtimeComments */,
-				0314D37619B46B5E00FA363C /* VActionBarViewController.h */,
-				0314D37719B46B5E00FA363C /* VActionBarViewController.m */,
 				A75C10321A65DE6F00439809 /* VCommentHighlighter.h */,
 				A75C10331A65DE6F00439809 /* VCommentHighlighter.m */,
 				A7A343D91A8A8452000F0BCF /* VContentViewAlertHelper.h */,
@@ -6116,7 +6111,6 @@
 				0314D4DF19B46B5E00FA363C /* VFindFacebookFriendsTableViewController.m in Sources */,
 				D8CC902B1ABA6C3F00A4B38C /* VTabMenuShim.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
-				0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */,
 				F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */,
 				A708C9581A7FFF67000EE1EE /* VContentViewRotationHelper.m in Sources */,
 				DB7460371A93A5BE006C2245 /* VInlineUserTableViewCell.m in Sources */,
