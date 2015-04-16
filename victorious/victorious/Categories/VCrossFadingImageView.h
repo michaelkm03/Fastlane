@@ -15,14 +15,27 @@
 @interface VCrossFadingImageView : UIView
 
 /**
-    Loads the images at the provided image URLs and displays them with a blur, the provided tint color, and placeholder image
+    Adds a number of blank image views to this view with proper constraints
  
-    @param imageURLs An array of NSURLs pointing to the images that should crossfade into one another based on the provided offset
-    @param tintColor The color used to lightly tint the images at the provided URLs
-    @param placeholderImage The image to display until the image has finished loading.
-        The same placeholder image is applied to each of the images provided via the imageURLs
+    @param numberOfImageViews The number of image views to add as subviews
  */
-- (void)setupWithImageURLs:(NSArray *)imageURLs tintColor:(UIColor *)tintColor andPlaceholderImage:(UIImage *)placeholderImage;
+- (void)setupWithNumberOfImageViews:(NSInteger)numberOfImageViews;
+
+/**
+    Blurs and applies the provided image to the imageView at the provided index
+ 
+    @param image The image to blur, tint, and set in the imageView at the provided index
+    @param url The url that was used to fetch the image. This is used to prevent the view from reloading unnecessarily.
+    @param tintColor The color that will be shown on top of the blurred image.
+    @param index The index of the imageView that should be updated with the provided image. If the index is
+            out of count from the created imageViews, this function does nothing.
+    @param animated Whether or not the specified imageView should be updated with an animation.
+ */
+- (void)updateBlurredImageViewForImage:(UIImage *)image
+                               fromURL:(NSURL *)url
+                         withTintColor:(UIColor *)tintColor
+                               atIndex:(NSInteger)index
+                              animated:(BOOL)animated;
 
 /**
     Determines how much of each image retrieved from each imageURL is shown based on the image's position in the imageURLs array.
@@ -34,8 +47,8 @@
 @property (nonatomic, assign) CGFloat offset;
 
 /**
-    The imageURLs whose associated images will be displayed in this view based on the provided offset.
+    The number of imageViews inside this view
  */
-@property (nonatomic, readonly) NSArray *imageURLs;
+@property (nonatomic, readonly) NSInteger imageViewCount;
 
 @end
