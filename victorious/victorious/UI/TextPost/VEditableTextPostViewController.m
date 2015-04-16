@@ -315,23 +315,24 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)updateBackroundImageAnimated:(BOOL)animated
 {
-    UIImage *tintedImage = [self.imageHelper imageWithImage:self.originalImage color:self.color];
-    
-    if ( animated )
-    {
-        [UIView animateWithDuration:0.15f delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
+    [self.imageHelper renderImage:self.originalImage color:self.color completion:^(UIImage *tintedImage)
+     {
+         if ( animated )
          {
-             self.backgroundImageView.alpha = tintedImage == nil ? 0.0f : 1.0f;
+             [UIView animateWithDuration:0.15f delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
+              {
+                  self.backgroundImageView.alpha = tintedImage == nil ? 0.0f : 1.0f;
+              }
+                              completion:^(BOOL finished)
+              {
+                  super.backgroundImage = tintedImage;
+              }];
          }
-                         completion:^(BOOL finished)
+         else
          {
              super.backgroundImage = tintedImage;
-         }];
-    }
-    else
-    {
-        super.backgroundImage = tintedImage;
-    }
+         }
+     }];
 }
 
 #pragma mark - VContentInputAccessoryViewDelegate

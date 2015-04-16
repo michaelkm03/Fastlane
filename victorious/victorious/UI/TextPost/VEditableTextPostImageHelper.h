@@ -19,7 +19,7 @@
  Returns an image that combines the input image with the input color that is blended
  accoding to a style that is hardcoded and encapsulated inside this class.
  */
-- (UIImage *)imageWithImage:(UIImage *)image color:(UIColor *)color;
+- (void)renderImage:(UIImage *)image color:(UIColor *)color completion:(void(^)(UIImage *))completion;
 
 /**
  Resets the internal image cache by clearing out all items.  This should be called when

@@ -20,11 +20,14 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 
 @implementation VEditableTextPostImageHelper
 
-- (UIImage *)imageWithImage:(UIImage *)image color:(UIColor *)color
+- (void)renderImage:(UIImage *)image color:(UIColor *)color completion:(void(^)(UIImage *))completion
 {
+    NSParameterAssert( completion != nil );
+    
     if ( color == nil || image == nil )
     {
-        return image;
+        completion( image );
+        return;
     }
     
     NSParameterAssert( [color isKindOfClass:[UIColor class]] );
@@ -33,15 +36,22 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     UIImage *cachedImage = [self.cache objectForKey:color];
     if ( cachedImage != nil )
     {
-        return cachedImage;
+        completion(  cachedImage );
+        return;
     }
     
-    UIImage *output = [image v_tintedImageWithColor:color
-                                              alpha:kTintedBackgroundImageAlpha
-                                          blendMode:kTintedBackgroundImageBlendMode];
-    [self.cache setObject:output forKey:color];
-    
-    return output;
+    dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+    {
+        UIImage *output = [image v_tintedImageWithColor:color
+                                                  alpha:kTintedBackgroundImageAlpha
+                                              blendMode:kTintedBackgroundImageBlendMode];
+        
+        dispatch_async( dispatch_get_main_queue(), ^
+                       {
+                           [self.cache setObject:output forKey:color];
+                           completion( output );
+                       });
+    });
 }
 
 #pragma mark - Image cache
