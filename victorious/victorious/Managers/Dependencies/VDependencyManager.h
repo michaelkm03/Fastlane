@@ -219,10 +219,9 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
 
 /**
- Performs necessary cleanup before deallocating the receiver. This
- should be the last method you call on this object and any of 
- its children and grandchildren before dropping your reference
- to it.
+ Performs necessary cleanup before deallocating the receiver. 
+ After calling this method, any further method calls to this
+ object or its children and grandchildren should be avoided.
  
  @discussion
  VDependencyManager creates several retain cycles as part of
