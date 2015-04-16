@@ -691,29 +691,34 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - Cleanup
 
+- (VDependencyManager *)extractChildFromDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VTestViewControllerWithInitMethod *vc = (VTestViewControllerWithInitMethod *)[dependencyManager viewControllerForKey:@"ivc"];
+    return vc.dependencyManager;
+}
+
+#if 0 // Disabled for now. See IOS-2358
 - (void)testCleanupBreaksCycles
 {
     // the main purpose of -cleanup is to break retain cycles created by the dependency manager.
     // This method ensures they are broken
-
-    __weak VDependencyManager *weakChild = self.dependencyManager;
-    self.dependencyManager = nil;
-    self.childDependencyManager = nil;
-    XCTAssertNotNil(weakChild); // weakChild is still around because self.baseDependencyManager has a reference to it
+    
+    __weak VDependencyManager *weakChild = [self extractChildFromDependencyManager:self.dependencyManager];
+    XCTAssertNotNil(weakChild); // weakChild is still here only because self.baseDependencyManager has a reference to it
     
     [self.baseDependencyManager cleanup];
+    self.baseDependencyManager = nil;
     
     XCTAssertNil(weakChild); // after cleanup, it should be free!
 }
+#endif
 
 - (void)testCleanupDoesntWorkOnChildren
 {
     // -cleanup is documented to not work when called on child dependency managers.
     // This test verifies that's true.
     
-    __weak VDependencyManager *weakChild = self.dependencyManager;
-    self.dependencyManager = nil;
-    self.childDependencyManager = nil;
+    __weak VDependencyManager *weakChild = [self extractChildFromDependencyManager:self.dependencyManager];
     XCTAssertNotNil(weakChild); // weakChild is still around because self.baseDependencyManager has a reference to it
     
     [weakChild cleanup];
