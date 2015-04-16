@@ -7,13 +7,9 @@
 //
 
 #import "VBlurredMarqueeStreamItemCell.h"
-#import "VStreamItem+Fetcher.h"
-#import "UIImageView+Blurring.h"
 #import "UIImageView+VLoadingAnimations.h"
-#import "UIImage+ImageCreation.h"
 #import "VStreamWebViewController.h"
 #import "VSequence.h"
-#import "UIView+AutoLayout.h"
 #import "VSequence+Fetcher.h"
 
 static const CGFloat kImageTopConstraintHeight = 30.0f;
@@ -46,17 +42,24 @@ static const CGFloat kShadowOpacity = 0.4f;
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     [super setStreamItem:streamItem];
-    
-    NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
-    [self.previewImageView fadeInImageAtURL:previewImageUrl
-                           placeholderImage:nil];
-    
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         VSequence *sequence = (VSequence *)streamItem;
         
         self.pollOrImageView.hidden = ![sequence isPoll];
         
+    }
+}
+
+- (void)updateToImage:(UIImage *)image animated:(BOOL)animated
+{
+    if ( !animated )
+    {
+        self.previewImageView.image = image;
+    }
+    else
+    {
+        [self.previewImageView fadeInImage:image];
     }
 }
 

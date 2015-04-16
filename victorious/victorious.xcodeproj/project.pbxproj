@@ -2609,7 +2609,6 @@
 				A7A2E0021A38E41800F8C705 /* Purchases */,
 				0314D3E219B46B5E00FA363C /* Root View */,
 				0314D3EF19B46B5E00FA363C /* Search */,
-				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40019B46B5E00FA363C /* Sharing */,
 				0314D40319B46B5E00FA363C /* Signup and Login */,
 				0314D43319B46B5E00FA363C /* Streams */,
@@ -2997,12 +2996,14 @@
 				A7D707711A797B8A00D9993F /* VVideoSettings.h */,
 				A7D707721A797B8A00D9993F /* VVideoSettings.m */,
 			);
-			path = Settings;
+			name = Settings;
+			path = ../Settings;
 			sourceTree = "<group>";
 		};
 		0314D40019B46B5E00FA363C /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
+				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40119B46B5E00FA363C /* VFacebookActivity.h */,
 				0314D40219B46B5E00FA363C /* VFacebookActivity.m */,
 			);

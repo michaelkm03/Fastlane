@@ -106,7 +106,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)marqueeItemsUpdated
 {
     [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
-    //[self.collectionView reloadData];
 }
 
 #pragma mark - UIScrollViewDelegate

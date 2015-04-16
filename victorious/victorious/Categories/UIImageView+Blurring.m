@@ -63,31 +63,37 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
             placeholderImage:[placeholderImage applyTintEffectWithColor:tintColor]
                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
      {
-         __strong UIImageView *strongSelf = weakSelf;
-         strongSelf.image = placeholderImage;
-         
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                        {
-                            UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
-                                                   interpolationQuality:kCGInterpolationLow];
-                            UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
-                                                                     tintColor:tintColor
-                                                         saturationDeltaFactor:kVSaturationDeltaFactor
-                                                                     maskImage:nil];
-                            dispatch_async(dispatch_get_main_queue(), ^
-                                           {
-                                               weakSelf.image = blurredImage;
-                                               [UIView animateWithDuration:0.5f
-                                                                     delay:0.0f
-                                                                   options:UIViewAnimationOptionCurveEaseInOut
-                                                                animations:^{
-                                                                    weakSelf.alpha = 1.0f;
-                                                                } completion:nil];
-                                           });
-                        });
-         
+         [weakSelf blurAndAnimateImageToVisible:image withPlaceholderImage:placeholderImage tintColor:tintColor andDuration:0.5f];
      }];
 }
+
+- (void)blurAndAnimateImageToVisible:(UIImage *)image withPlaceholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration
+{
+    self.alpha = 0;
+    self.image = placeholderImage;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                   {
+                       UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, self.bounds).size
+                                              interpolationQuality:kCGInterpolationLow];
+                       UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
+                                                                       tintColor:tintColor
+                                                           saturationDeltaFactor:kVSaturationDeltaFactor
+                                                                       maskImage:nil];
+                       dispatch_async(dispatch_get_main_queue(), ^
+                                      {
+                                          self.image = blurredImage;
+                                          [UIView animateWithDuration:duration
+                                                                delay:0.0f
+                                                              options:UIViewAnimationOptionCurveEaseInOut
+                                                           animations:^
+                                           {
+                                               self.alpha = 1.0f;
+                                           }
+                                                           completion:nil];
+                                      });
+                   });
+}
+
 //TODO CAHNGE OTHER THINGS TO EXTRALIGHT
 - (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {
