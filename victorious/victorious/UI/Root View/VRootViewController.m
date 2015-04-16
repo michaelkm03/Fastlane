@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *baseDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
+@property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VVoteSettings *voteSettings;
 @property (nonatomic) BOOL appearing;
@@ -197,14 +197,14 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (VDependencyManager *)createNewParentDependencyManager
 {
-    if ( self.baseDependencyManager != nil )
+    if ( self.rootDependencyManager != nil )
     {
-        [self.baseDependencyManager cleanup];
-        self.baseDependencyManager = nil;
+        [self.rootDependencyManager cleanup];
+        self.rootDependencyManager = nil;
     }
     
-    self.baseDependencyManager = [VDependencyManager dependencyManagerWithDefaultValuesForColorsAndFonts];
-    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:self.baseDependencyManager
+    self.rootDependencyManager = [VDependencyManager dependencyManagerWithDefaultValuesForColorsAndFonts];
+    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:self.rootDependencyManager
                                                                                 configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
                                                             dictionaryOfClassesByTemplateName:nil];
     return basicDependencies;
