@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VTextPostViewController">
             <connections>
+                <outlet property="backgroundImageView" destination="bho-MC-wQa" id="UV2-YQ-4Cd"/>
                 <outlet property="textPostTextView" destination="EdJ-vJ-rzg" id="m0R-s5-8DF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="HSK-lU-PKi"/>
                 <outlet property="viewModel" destination="uf6-RX-Z66" id="cbv-QS-uEE"/>
@@ -16,6 +17,9 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bho-MC-wQa">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                </imageView>
                 <textView multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="EdJ-vJ-rzg" customClass="VTextPostTextView">
                     <rect key="frame" x="7" y="220" width="586" height="160"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -34,9 +38,13 @@
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="EdJ-vJ-rzg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="DfA-4J-TQo"/>
+                <constraint firstItem="bho-MC-wQa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H1C-eW-NF6"/>
+                <constraint firstAttribute="bottom" secondItem="bho-MC-wQa" secondAttribute="bottom" id="PbK-YI-qGi"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="EdJ-vJ-rzg" secondAttribute="bottom" constant="7" id="Qal-tY-f6h"/>
                 <constraint firstItem="EdJ-vJ-rzg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="7" id="QsZ-Db-FEW"/>
+                <constraint firstItem="bho-MC-wQa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="XRp-Nd-K4O"/>
                 <constraint firstAttribute="trailing" secondItem="EdJ-vJ-rzg" secondAttribute="trailing" constant="7" id="gKH-In-kGk"/>
+                <constraint firstAttribute="trailing" secondItem="bho-MC-wQa" secondAttribute="trailing" id="jR4-pw-uki"/>
                 <constraint firstAttribute="centerY" secondItem="EdJ-vJ-rzg" secondAttribute="centerY" id="nCR-gS-ReL"/>
             </constraints>
             <point key="canvasLocation" x="774" y="689"/>

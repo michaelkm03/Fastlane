@@ -12,6 +12,11 @@
 #import "VTextPostViewModel.h"
 #import "VHashTags.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
+#import "UIImage+VTint.h"
+#import <SDWebImageManager.h>
+
+static const CGFloat kTintedBackgroundImageAlpha            = 0.375f;
+static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLuminosity;
 
 @interface VTextPostViewController ()
 
@@ -19,9 +24,9 @@
 
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textPostTextView;
 @property (nonatomic, strong, readwrite) IBOutlet VTextPostViewModel *viewModel;
-
 @property (nonatomic, strong) VTextBackgroundFrameMaker *textBackgroundFrameMaker;
 @property (nonatomic, strong) VTextCalloutFormatter *textCalloutFormatter;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView *backgroundImageView;
 
 @end
 
@@ -77,12 +82,6 @@
     [self updateTextView];
 }
 
-- (void)setColor:(UIColor *)color
-{
-    _color = color;
-    self.view.backgroundColor = color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-}
-
 - (void)updateTextView
 {
     if ( self.text == nil )
@@ -98,6 +97,39 @@
 
 #pragma mark - public
 
+- (void)setColor:(UIColor *)color
+{
+    _color = color;
+    
+    [self updateBackground];
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage
+{
+    _backgroundImage = backgroundImage;
+    
+    [self updateBackground];
+}
+
+- (void)setImageURL:(NSURL *)imageURL
+{
+    if ( _imageURL == imageURL && imageURL != nil )
+    {
+        return;
+    }
+    
+    [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
+                          options:0
+                         progress:nil
+                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
+     {
+         if ( image != nil )
+         {
+             self.backgroundImage = image;
+         }
+     }];
+}
+
 - (VTextPostTextView *)textView
 {
     return self.textPostTextView;
@@ -111,6 +143,23 @@
 }
 
 #pragma mark - Drawing and layout
+
+- (void)updateBackground
+{
+    if ( self.backgroundImage != nil && self.color != nil )
+    {
+        self.view.backgroundColor = [UIColor blackColor];
+        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.color
+                                                                                alpha:kTintedBackgroundImageAlpha
+                                                                            blendMode:kTintedBackgroundImageBlendMode];
+    }
+    else
+    {
+        self.backgroundImageView.image = self.backgroundImage;
+    }
+    
+    self.view.backgroundColor = self.color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+}
 
 - (void)updateTextIsSelectable
 {

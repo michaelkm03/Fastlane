@@ -25,6 +25,7 @@ static NSString * const kPickerKey = @"picker";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIImage *selectedIcon;
 @property (nonatomic, strong) VTextCanvasToolViewController *canvasToolViewController;
+@property (nonatomic, strong) VColorPickerDataSource *colorPickerDataSource;
 @property (nonatomic, strong, readwrite) VTickerPickerViewController *toolPicker;
 
 @end
@@ -42,9 +43,17 @@ static NSString * const kPickerKey = @"picker";
         _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
         _selectedIcon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kSelectedIconKey][kImageURLKey]];
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        _toolPicker.dataSource = [[VColorPickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        _colorPickerDataSource = [[VColorPickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        _toolPicker.dataSource = _colorPickerDataSource;
     }
     return self;
+}
+
+- (void)setShouldShowNoColorOption:(BOOL)shouldShowNoColorOption
+{
+    _shouldShowNoColorOption = shouldShowNoColorOption;
+    _colorPickerDataSource.showNoColor = shouldShowNoColorOption;
+    [_colorPickerDataSource reloadWithCompletion:nil];
 }
 
 - (void)setSharedCanvasToolViewController:(UIViewController *)viewController

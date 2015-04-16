@@ -24,11 +24,15 @@
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
 @property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
 
+@property (nonatomic, strong) UIImage *previewImage;
+
 @end
 
 @implementation VTextToolController
 
 #pragma mark - VToolController overrides
+
+@synthesize mediaURL;  ///< VToolController
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -75,14 +79,10 @@
     
     [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
                                            backgroundColor:[self currentColorSelection]
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                  mediaURL:self.mediaURL
+                                              previewImage:[self textPostPreviewImage]
+                                                completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
-         
-         completion( YES, nil, nil, nil );
-     }
-                                                 failBlock:^(NSOperation *operation, NSError *error)
-     {
-         NSLog( @"error posting text: %@", [error localizedDescription] );
          completion( YES, nil, nil, nil );
      }];
 }
@@ -97,6 +97,16 @@
 - (NSString *)currentText
 {
     return self.textPostViewController.text;
+}
+
+- (UIImage *)textPostPreviewImage
+{
+    UIView *viewToDraw = self.textPostViewController.view;
+    UIGraphicsBeginImageContextWithOptions( viewToDraw.bounds.size, YES, 0.0);
+    [viewToDraw drawViewHierarchyInRect:viewToDraw.bounds afterScreenUpdates:NO];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 - (VTextPostViewController *)textPostViewController
@@ -180,6 +190,14 @@
 - (void)textDidUpdate:(NSString *)text
 {
     [self.textListener textDidUpdate:text];
+}
+
+- (void)setMediaURL:(NSURL *)newMediaURL previewImage:(UIImage *)previewImage
+{
+    self.previewImage = previewImage;
+    self.mediaURL = newMediaURL;
+    [self.textPostViewController setBackgroundImage:previewImage animated:YES];
+    self.textColorTool.shouldShowNoColorOption = previewImage != nil;
 }
 
 @end

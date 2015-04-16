@@ -40,10 +40,13 @@
     }
 }
 
-- (void)setTextContent:(NSString *)text withBackgroundColor:(UIColor *)backgroundColor
+- (void)setTextContent:(NSString *)text
+       backgroundColor:(UIColor *)backgroundColor
+    backgroundImageURL:(NSURL *)backgroundImageURL
 {
     self.textPostViewController.text = text;
-    self.textPostViewController.view.backgroundColor = backgroundColor;
+    self.textPostViewController.color = backgroundColor;
+    self.textPostViewController.imageURL = backgroundImageURL;
 }
 
 @end

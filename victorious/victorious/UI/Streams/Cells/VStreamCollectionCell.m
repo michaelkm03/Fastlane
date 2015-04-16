@@ -203,12 +203,14 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     
     if ( [sequence isText] )
     {
-        VAsset *asset = [self.sequence.firstNode textAsset];
-        if ( asset.data != nil )
+        VAsset *textAsset = [self.sequence.firstNode textAsset];
+        if ( textAsset.data != nil )
         {
-            NSString *text = asset.data;
-            UIColor *color = [UIColor v_colorFromHexString:asset.backgroundColor];
-            [self setupTextPostViewControllerText:text color:color];
+            NSString *text = textAsset.data;
+            UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
+            VAsset *imageAsset = [self.sequence.firstNode imageAsset];
+            NSURL *imageUrl = [NSURL URLWithString:imageAsset.data];
+            [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl];
         }
     }
     
@@ -228,7 +230,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
      }];
 }
 
-- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color
+- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL
 {
     static NSCache *textViewCache;
     if ( textViewCache == nil )
@@ -244,6 +246,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
         self.textPostViewController.text = text;
         self.textPostViewController.color = color;
+        self.textPostViewController.imageURL = backgroundImageURL;
         [textViewCache setObject:self.textPostViewController forKey:text];
     }
     else if ( existing != nil )

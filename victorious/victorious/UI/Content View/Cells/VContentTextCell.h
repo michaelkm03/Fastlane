@@ -18,6 +18,8 @@
 /**
  Sets the text content and color from the text post to display as created by the user.
  */
-- (void)setTextContent:(NSString *)text withBackgroundColor:(UIColor *)backgroundColor;
+- (void)setTextContent:(NSString *)text
+       backgroundColor:(UIColor *)backgroundColor
+    backgroundImageURL:(NSURL *)backgroundImageURL;
 
 @end

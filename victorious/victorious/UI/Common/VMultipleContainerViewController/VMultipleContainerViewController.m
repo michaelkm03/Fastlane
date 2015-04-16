@@ -17,6 +17,7 @@
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
+#import "UIView+AutoLayout.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge>
 
@@ -100,6 +101,7 @@ static NSString * const kInitialKey = @"initial";
     collectionView.delegate = self;
     collectionView.scrollEnabled = NO;
     collectionView.scrollsToTop = NO;
+    collectionView.backgroundColor = [UIColor clearColor];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kCellReuseID];
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
@@ -200,7 +202,15 @@ static NSString * const kInitialKey = @"initial";
     {
         if ( [obj isKindOfClass:[UIViewController class]] )
         {
-            obj.v_layoutInsets = layoutInsets;
+            // TODO: Remove me when we no longer use UITVC
+            if ([obj isKindOfClass:[UITableViewController class]])
+            {
+                obj.v_layoutInsets = UIEdgeInsetsZero;
+            }
+            else
+            {
+                obj.v_layoutInsets = layoutInsets;
+            }
         }
     }];
 }
@@ -344,7 +354,7 @@ static NSString * const kInitialKey = @"initial";
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellReuseID forIndexPath:indexPath];
     UIViewController *viewController = [self viewControllerAtIndexPath:indexPath];
-    viewController.v_layoutInsets = self.v_layoutInsets;
+
     UIView *viewControllerView = viewController.view;
     
     [self addChildViewController:viewController];
@@ -352,14 +362,22 @@ static NSString * const kInitialKey = @"initial";
     [cell.contentView addSubview:viewControllerView];
     [viewController didMoveToParentViewController:self];
     
-    [cell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[viewControllerView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(viewControllerView)]];
-    [cell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[viewControllerView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(viewControllerView)]];
+    // TODO: Remove me once we no longer use UITVC sÜper hacky
+    if ([viewController isKindOfClass:[UITableViewController class]])
+    {
+        viewController.v_layoutInsets = UIEdgeInsetsZero;
+        [cell.contentView v_addFitToParentConstraintsToSubview:viewControllerView
+                                                       leading:self.v_layoutInsets.left
+                                                      trailing:self.v_layoutInsets.right
+                                                           top:self.v_layoutInsets.top
+                                                        bottom:self.v_layoutInsets.bottom];
+    }
+    else
+    {
+        viewController.v_layoutInsets = self.v_layoutInsets;
+        [cell.contentView v_addFitToParentConstraintsToSubview:viewControllerView];
+    }
+
     return cell;
 }
 
