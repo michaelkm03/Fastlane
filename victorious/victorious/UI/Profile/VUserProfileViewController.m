@@ -442,7 +442,7 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
 
 - (void)setProfile:(VUser *)profile
 {
-    NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil when the profile is set");
+    NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil in VUserProfileViewController when the profile is set");
     
     if (profile == _profile)
     {
