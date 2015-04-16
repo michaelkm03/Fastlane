@@ -41,7 +41,7 @@
     for ( UIButton *button in @[ self.buttonCamera, self.buttonClear, self.buttonImageSearch ] )
     {
         button.layer.cornerRadius = CGRectGetWidth(self.buttonCamera.frame) * 0.5;
-        button.backgroundColor = [self.dependencyManager colorForKey:@"color.link"];
+        button.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
     
     [self setShouldProvideClearOption:NO animated:NO];
