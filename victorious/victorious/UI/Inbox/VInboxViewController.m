@@ -39,6 +39,7 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+@property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
 
@@ -97,17 +98,15 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
-    self.tableView.contentInset = self.v_layoutInsets;
-    self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
-    
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.tableView.contentInset = UIEdgeInsetsZero;
+    
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
 
@@ -124,6 +123,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
+    if (self.refreshRequest.isExecuting)
+    {
+        self.refreshRequest = nil;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -353,9 +356,18 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
+    if (self.refreshRequest != nil)
+    {
+        return;
+    }
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [self.refreshControl endRefreshing];
+        if (self.refreshRequest == nil)
+        {
+            return;
+        }
+        self.refreshRequest = nil;
         UIView *viewForHUD = self.parentViewController.view;
         
         if (viewForHUD == nil )
@@ -371,14 +383,20 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self.tableView reloadData];
+        if (self.refreshRequest == nil)
+        {
+            [self.refreshControl endRefreshing];
+            return;
+        }
+        self.refreshRequest = nil;
         [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
         [self setHasMessages:(self.fetchedResultsController.fetchedObjects.count > 0)];
         [self.messageCountCoordinator updateUnreadMessageCount];
     };
 
-    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
-                                                            successBlock:success failBlock:fail];
+    self.refreshRequest = [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
+                                                                              successBlock:success failBlock:fail];
 }
 
 - (void)loadNextPageAction

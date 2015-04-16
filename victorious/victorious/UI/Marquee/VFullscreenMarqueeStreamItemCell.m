@@ -145,6 +145,7 @@ static NSString * const kVOrIconKey = @"orIcon";
 {
     CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
     
+    [self cancelDetailsAnimation];
     if ( animated )
     {
         [UIView animateWithDuration:kVDetailBounceTime animations:^
@@ -165,6 +166,12 @@ static NSString * const kVOrIconKey = @"orIcon";
     {
         self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
     }
+}
+
+- (void)cancelDetailsAnimation
+{
+    [((UIView *)self.detailsBottomLayoutConstraint.firstItem).layer removeAllAnimations];
+    [((UIView *)self.detailsBottomLayoutConstraint.secondItem).layer removeAllAnimations];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

@@ -61,14 +61,14 @@
     }
     
     [tagRanges enumerateObjectsUsingBlock:^(NSValue *tagRangeValue, NSUInteger idx, BOOL *stop)
-    {
-        NSRange tagRange = [tagRangeValue rangeValue];
-        if (tagRange.location && tagRange.length < fieldText.length)
-        {
-            NSRange tagRangeWithHash = {tagRange.location - 1, tagRange.length + 1};
-            [fieldText addAttributes:attributes range:tagRangeWithHash];
-        }
-    }];
+     {
+         NSRange tagRange = [tagRangeValue rangeValue];
+         if (tagRange.location && tagRange.length < fieldText.length)
+         {
+             NSRange tagRangeWithHash = {tagRange.location - 1, tagRange.length + 1};
+             [fieldText addAttributes:attributes range:tagRangeWithHash];
+         }
+     }];
     
     return YES;
 }

@@ -21,7 +21,6 @@
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
 
-static const NSInteger kCharacterLimit = 255;
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
@@ -100,7 +99,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 {
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), [self.delegate initialHeightForKeyboardBar:self])];
     inputAccessoryView.textInputView = self.textView;
-    inputAccessoryView.maxCharacterLength = kCharacterLimit;
     inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
 
     self.textView.inputAccessoryView = inputAccessoryView;
@@ -296,11 +294,12 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
                     [self.delegate didCancelKeyboardBar:self];
                 }
                 return NO;
-                break;
             default:
                 break;
         }
     }
+    
+    //Character limit is already being enforced by VContentInputAccessoryView
     return YES;
 }
 

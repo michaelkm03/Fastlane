@@ -33,6 +33,7 @@ static int const kNotificationFetchBatchSize = 50;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+@property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
 
@@ -114,6 +115,10 @@ static int const kNotificationFetchBatchSize = 50;
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:@"Notifications"];
+    if (self.refreshRequest.isExecuting)
+    {
+        self.refreshRequest = nil;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -126,7 +131,7 @@ static int const kNotificationFetchBatchSize = 50;
     NSFetchRequest *fetchRequest = nil;
     
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(createdAt)) ascending:NO];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(displayOrder)) ascending:YES];
     
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:kNotificationFetchBatchSize];
@@ -209,9 +214,18 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
+    if (self.refreshRequest != nil)
+    {
+        return;
+    }
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [self.refreshControl endRefreshing];
+        if (self.refreshRequest == nil)
+        {
+            return;
+        }
+        self.refreshRequest = nil;
         UIView *viewForHUD = self.parentViewController.view;
         
         if (viewForHUD == nil )
@@ -227,8 +241,14 @@ static int const kNotificationFetchBatchSize = 50;
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self.tableView reloadData];
+        if (self.refreshRequest == nil)
+        {
+            [self.refreshControl endRefreshing];
+            return;
+        }
+        self.refreshRequest = nil;
         [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
         {
@@ -240,8 +260,8 @@ static int const kNotificationFetchBatchSize = 50;
         [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
     };
     
-    [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-                                                        successBlock:success failBlock:fail];
+    self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
+                                                                               successBlock:success failBlock:fail];
 }
 
 - (void)loadNextPageAction

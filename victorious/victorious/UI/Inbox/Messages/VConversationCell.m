@@ -55,8 +55,9 @@ static const CGFloat kBaselineOffset = 0.5f;
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     paragraphStyle.minimumLineHeight = kMinimumLineHeight;
     paragraphStyle.lineSpacing = kLineSpacing;
-        
-    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:conversation.lastMessageText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
+    
+    NSString *safeText = conversation.lastMessageText == nil ? @"" : conversation.lastMessageText;
+    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:safeText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
     self.dateLabel.text = [conversation.postedAt timeSince];
     [self.profileButton setProfileImageURL:[NSURL URLWithString:conversation.user.pictureUrl] forState:UIControlStateNormal];
 

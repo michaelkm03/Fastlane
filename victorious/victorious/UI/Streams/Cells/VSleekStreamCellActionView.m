@@ -74,7 +74,17 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 
 - (void)updateCommentsCount:(NSNumber *)commentsCount
 {
-    [self.commentsButton setTitle:[self.largeNumberFormatter stringForInteger:[commentsCount integerValue]] forState:UIControlStateNormal];
+    NSString *numberValue = @"";
+    if ([commentsCount integerValue] > 0)
+    {
+        self.commentsButton.contentEdgeInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, VCommentButtonContentRightInset);
+        numberValue = [self.largeNumberFormatter stringForInteger:[commentsCount integerValue]];
+    }
+    else
+    {
+        self.commentsButton.contentEdgeInsets = UIEdgeInsetsZero;
+    }
+    [self.commentsButton setTitle:numberValue forState:UIControlStateNormal];
 }
 
 - (void)addCommentsButton
@@ -82,7 +92,6 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
     self.commentsButton = [self addButtonWithImageKey:VStreamCellActionViewCommentIconKey];
     [self.commentsButton addTarget:self action:@selector(commentsAction:) forControlEvents:UIControlEventTouchUpInside];
     self.commentsButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.commentsButton.contentEdgeInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, VCommentButtonContentRightInset);
     CGFloat yOrigin = ( CGRectGetHeight(self.commentsButton.frame) - VButtonHeight ) / 2.0f;
     [self.commentsButton setFrame:CGRectMake(self.commentsButton.frame.origin.x, yOrigin, VCommentButtonWidth, VButtonHeight)];
 

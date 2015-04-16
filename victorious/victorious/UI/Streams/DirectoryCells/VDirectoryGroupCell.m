@@ -154,6 +154,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
         VStreamItem *streamItem = [self hasSequenceStream] ? self.stream : self.stream.streamItems[ indexPath.row ];
         [self.cellDecorator populateCell:directoryCell withStreamItem:streamItem];
         [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.dependencyManager];
+        [self.cellDecorator highlightTagsInCell:directoryCell withTagColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
         
         return directoryCell;
     }

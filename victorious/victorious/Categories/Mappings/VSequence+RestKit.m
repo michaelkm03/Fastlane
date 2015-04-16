@@ -47,7 +47,7 @@
                                   @"preview.type"           : VSelectorName(previewType),
                                   @"preview.data"           : VSelectorName(previewData),
                                   @"stream_content_type" :   VSelectorName(streamContentType),
-                                  @"has_reposted"   :   VSelectorName(hasReposted)
+                                  @"has_reposted"   :   VSelectorName(hasReposted),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

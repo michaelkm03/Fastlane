@@ -25,12 +25,17 @@
 #import "VAuthorizedAction.h"
 #import "UIImage+ImageCreation.h"
 
+#import "VDependencyManager+VBackground.h"
+#import "VBackground.h"
+#import "UIView+AutoLayout.h"
+
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
-@property (strong, nonatomic) IBOutlet UIImageView *backgroundImage;
+@property (strong, nonatomic) UIImageView *backgroundImage;
+@property (strong, nonatomic) UIView *fallbackBackground;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
@@ -58,12 +63,18 @@
                                        placeholderImage:placeholderImage];
     
     self.backgroundImage = newBackgroundView;
-    [self.view insertSubview:self.backgroundImage atIndex:0];
+    [self.view insertSubview:self.backgroundImage aboveSubview:self.fallbackBackground];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIView *viewForBackground = [[self.dependencyManager background] viewForBackground];
+    [self.view addSubview:viewForBackground];
+    [self.view v_addFitToParentConstraintsToSubview:viewForBackground];
+    [self.view sendSubviewToBack:viewForBackground];
+    self.fallbackBackground = viewForBackground;
     
     //Load the image on first load
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];

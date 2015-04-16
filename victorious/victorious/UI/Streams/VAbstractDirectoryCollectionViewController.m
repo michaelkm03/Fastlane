@@ -75,7 +75,7 @@ static NSString * const kMarqueeKey = @"marqueeCell";
                                                                       metrics:nil
                                                                         views:views]];
     
-    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.view.backgroundColor = [[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey] colorWithAlphaComponent:1.0f];
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     NSString *identifier = [self cellIdentifier];

@@ -139,32 +139,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     if ( rangeOfHashtag.location != NSNotFound )
     {
-        NSString *stringToReplace = hashtagTextWithHashMark;
-        NSRange characterAfterHashtagRange = NSMakeRange( rangeOfHashtag.location + rangeOfHashtag.length - 1, 1 );
-        NSRange characterBeforeHashtagRange = NSMakeRange( rangeOfHashtag.location - 1, 1 );
-        
-        if ( rangeOfHashtag.location + rangeOfHashtag.length < self.text.length )
-        {
-            const BOOL isThereASpaceAfterTheHashtag = [[self.text substringWithRange:characterAfterHashtagRange] isEqualToString:@" "];
-            if ( isThereASpaceAfterTheHashtag )
-            {
-                // Remove the space after the hastag as well
-                stringToReplace = [stringToReplace stringByAppendingString:@" "];
-                rangeOfHashtag.length++;
-            }
-        }
-        if ( rangeOfHashtag.location > 0 )
-        {
-            const BOOL isThereASpaceBeforeTheHashtag = [[self.text substringWithRange:characterBeforeHashtagRange] isEqualToString:@" "];
-            if ( isThereASpaceBeforeTheHashtag )
-            {
-                // Remove the space after the hastag as well
-                stringToReplace = [NSString stringWithFormat:@" %@", stringToReplace];
-                rangeOfHashtag.location--;
-                rangeOfHashtag.length++;
-            }
-        }
-        self.text = [self.text stringByReplacingOccurrencesOfString:stringToReplace withString:@""];
+        self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
     }
 
     [self showPlaceholderText];
@@ -179,22 +154,10 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
     if ( ![self.text containsString:hashtagTextWithHashMark] )
     {
-        NSRange replacementRange = self.textView.selectedRange;
-        
-        BOOL isSpaceRequired = NO;
-        if ( replacementRange.location > 0 )
-        {
-            NSRange characterBeforeSelectedRange = NSMakeRange( replacementRange.location-1, 1 );
-            isSpaceRequired = ![[self.text substringWithRange:characterBeforeSelectedRange] isEqualToString:@" "];
-        }
-        
-        NSString *stringReplacement = [NSString stringWithFormat:@"%@%@%@", (isSpaceRequired ? @" " : @""), hashtagTextWithHashMark, @" "];
-        self.text = [self.text stringByReplacingCharactersInRange:replacementRange withString:stringReplacement];
-        NSRange rangeOfAddedString = [self.text rangeOfString:hashtagTextWithHashMark];
-        self.textView.selectedRange = NSMakeRange( rangeOfAddedString.location + rangeOfAddedString.length + 1, 0 );
+        self.text = [self.text stringByAppendingString:hashtagTextWithHashMark];
     }
     
-    [self.delegate textDidUpdate:self.textOutput];  
+    [self.delegate textDidUpdate:self.textOutput];
 }
 
 - (void)setText:(NSString *)text
@@ -245,7 +208,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     if ( self.text.length == 0 && self.hashtagHelper.embeddedHashtags.count == 0 )
     {
         self.isShowingPlaceholderText = YES;
-        self.text = self.placeholderText;
+        self.text = NSLocalizedString(self.placeholderText, @"");
         self.textView.alpha = 0.5f;
         self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
     }
@@ -255,7 +218,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     if ( self.isShowingPlaceholderText )
     {
-        self.text = @"";
+        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:@""];
+        self.text = text;
         self.isShowingPlaceholderText = NO;
         self.textView.alpha = 1.0;
     }
@@ -270,6 +234,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    [self hidePlaceholderText];
+    
     self.text = self.textView.text;
     
     [self updateAddedAndDeletedHashtags];
@@ -317,7 +283,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     [self hidePlaceholderText];
     
-    return YES; //textAfter.length < self.characterCountMax;
+    return YES;
 }
 
 #pragma mark - VContentInputAccessoryViewDelegate
