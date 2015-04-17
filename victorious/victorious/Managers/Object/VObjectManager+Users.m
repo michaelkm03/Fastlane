@@ -20,6 +20,7 @@
 #import "TWAPIManager.h"
 
 #import "VConstants.h"
+#import "VJSONHelper.h"
 
 @import Accounts;
 
@@ -284,8 +285,10 @@ static NSString * const kVAPIParamContext = @"context";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        user.numberOfFollowers = @(((NSString *)fullResponse[kVPayloadKey][@"followers"]).integerValue);
-        user.numberOfFollowing = @(((NSString *)fullResponse[kVPayloadKey][@"subscribed_to"]).integerValue);
+        VJSONHelper *helper = [[VJSONHelper alloc] init];
+        
+        user.numberOfFollowers = [helper numberFromJSONValue:fullResponse[kVPayloadKey][@"followers"]];
+        user.numberOfFollowing = [helper numberFromJSONValue:fullResponse[kVPayloadKey][@"subscribed_to"]];
         
         if ( success != nil )
         {

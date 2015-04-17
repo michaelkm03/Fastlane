@@ -12,5 +12,6 @@
 
 - (void)fadeInImageAtURL:(NSURL *)url
         placeholderImage:(UIImage *)image;
+- (void)fadeInImage:(UIImage *)image;
 
 @end

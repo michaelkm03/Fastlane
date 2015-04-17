@@ -8,6 +8,7 @@
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
+#import "VJSONHelper.h"
 #import "VSolidColorBackground.h"
 #import "VURLMacroReplacement.h"
 
@@ -170,10 +171,12 @@ static NSString * const kMacroReplacement = @"XXXXX";
         return nil;
     }
     
-    NSNumber *red = colorDictionary[kRedKey];
-    NSNumber *green = colorDictionary[kGreenKey];
-    NSNumber *blue = colorDictionary[kBlueKey];
-    NSNumber *alpha = colorDictionary[kAlphaKey];
+    VJSONHelper *helper = [[VJSONHelper alloc] init];
+    
+    NSNumber *red = [helper numberFromJSONValue:colorDictionary[kRedKey]];
+    NSNumber *green = [helper numberFromJSONValue:colorDictionary[kGreenKey]];
+    NSNumber *blue = [helper numberFromJSONValue:colorDictionary[kBlueKey]];
+    NSNumber *alpha = [helper numberFromJSONValue:colorDictionary[kAlphaKey]];
     
     // Work around a bug in the back-end
     if ( alpha.doubleValue == 1.0 )
@@ -181,10 +184,10 @@ static NSString * const kMacroReplacement = @"XXXXX";
         alpha = @255;
     }
     
-    if (![red isKindOfClass:[NSNumber class]] ||
-        ![green isKindOfClass:[NSNumber class]] ||
-        ![blue isKindOfClass:[NSNumber class]] ||
-        ![alpha isKindOfClass:[NSNumber class]])
+    if ( red == nil ||
+         green == nil ||
+         blue == nil ||
+         alpha == nil )
     {
         return nil;
     }
@@ -200,8 +203,9 @@ static NSString * const kMacroReplacement = @"XXXXX";
 {
     NSDictionary *fontDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
+    VJSONHelper *helper = [[VJSONHelper alloc] init];
     NSString *fontName = fontDictionary[kFontNameKey];
-    NSNumber *fontSize = fontDictionary[kFontSizeKey];
+    NSNumber *fontSize = [helper numberFromJSONValue:fontDictionary[kFontSizeKey]];
     
     if (![fontName isKindOfClass:[NSString class]] ||
         ![fontSize isKindOfClass:[NSNumber class]])
@@ -505,6 +509,15 @@ static NSString * const kMacroReplacement = @"XXXXX";
     {
         [self.parentManager setSingletonObject:singletonObject forID:objectID];
     }
+}
+
+- (void)cleanup
+{
+    dispatch_barrier_sync(self.privateQueue, ^(void)
+    {
+        [self.singletonsByID removeAllObjects];
+        [self.childDependencyManagersByID removeAllObjects];
+    });
 }
 
 #pragma mark - Dependency getter primatives

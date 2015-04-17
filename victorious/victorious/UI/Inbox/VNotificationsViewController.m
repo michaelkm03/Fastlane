@@ -15,6 +15,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Login.h"
+#import "VRootViewController.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
@@ -33,6 +34,7 @@ static int const kNotificationFetchBatchSize = 50;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+@property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
 
@@ -51,7 +53,7 @@ static int const kNotificationFetchBatchSize = 50;
         viewController.navigationItem.rightBarButtonItem = nil;
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
         [viewController loggedInChanged:nil];
     }
     return viewController;
@@ -99,8 +101,6 @@ static int const kNotificationFetchBatchSize = 50;
     [super viewWillAppear:animated];
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -114,7 +114,10 @@ static int const kNotificationFetchBatchSize = 50;
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:@"Notifications"];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    if (self.refreshRequest.isExecuting)
+    {
+        self.refreshRequest = nil;
+    }
 }
 
 #pragma mark - Overrides
@@ -201,17 +204,24 @@ static int const kNotificationFetchBatchSize = 50;
     if ([notification.deepLink length] > 0)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectNotification];
-        
         [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:[NSURL URLWithString:notification.deepLink]];
-        
     }
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
+    if (self.refreshRequest != nil)
+    {
+        return;
+    }
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
         [self.refreshControl endRefreshing];
+        if (self.refreshRequest == nil)
+        {
+            return;
+        }
+        self.refreshRequest = nil;
         UIView *viewForHUD = self.parentViewController.view;
         
         if (viewForHUD == nil )
@@ -227,7 +237,12 @@ static int const kNotificationFetchBatchSize = 50;
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self.tableView reloadData];
+        if (self.refreshRequest == nil)
+        {
+            [self.refreshControl endRefreshing];
+            return;
+        }
+        self.refreshRequest = nil;
         [self.refreshControl endRefreshing];
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
@@ -240,8 +255,8 @@ static int const kNotificationFetchBatchSize = 50;
         [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
     };
     
-    [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-                                                        successBlock:success failBlock:fail];
+    self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
+                                                                               successBlock:success failBlock:fail];
 }
 
 - (void)loadNextPageAction
@@ -268,13 +283,11 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    [self refresh:nil];
     if ( self.dependencyManager.objectManager.mainUserLoggedIn )
     {
         [self fetchNotificationCount];
     }
 }
-
 
 - (void)fetchNotificationCount
 {

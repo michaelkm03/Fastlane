@@ -138,7 +138,16 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (void)reloadCommentsCount
 {
     NSNumber *commentCount = [self.sequence commentCount];
-    NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
+    NSString *commentsString = nil;
+    NSInteger cCount = [commentCount integerValue];
+    if (cCount == 0)
+    {
+        commentsString = NSLocalizedString(@"LeaveAComment", @"");
+    }
+    else
+    {
+        commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
+    }
     [self.commentsLabel setText:commentsString];
     self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
 }

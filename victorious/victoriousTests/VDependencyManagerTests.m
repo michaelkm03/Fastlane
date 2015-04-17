@@ -91,6 +91,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 @interface VDependencyManagerTests : XCTestCase
 
 @property (nonatomic, strong) NSDictionary *dictionaryOfClassesByTemplateName;
+@property (nonatomic, strong) VDependencyManager *baseDependencyManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VDependencyManager *childDependencyManager;
 
@@ -108,13 +109,15 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                 @"solidColor.background": @"VSolidColorBackground",
                                             };
     
-    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                                    configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
-                                                                dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                     configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
+                                                 dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
-    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.baseDependencyManager
+                                                                 configuration:configuration
+                                             dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
                                                                       configuration:@{ @"invalidColor": @{ @"red": @"spot",
                                                                                                            @"green": @"monkey",
@@ -134,6 +137,12 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                                                                }
                                                                                        }
                                                   dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+}
+
+- (void)tearDown
+{
+    [self.baseDependencyManager cleanup];
+    [super tearDown];
 }
 
 #pragma mark - Colors, fonts
@@ -678,6 +687,43 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     NSString *expected = @"http://example.com/";
     NSString *actual = [viewController.dependencyManager stringForKey:@"app_store_url"];
     XCTAssertEqualObjects(expected, actual);
+}
+
+#pragma mark - Cleanup
+
+- (VDependencyManager *)extractChildFromDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VTestViewControllerWithInitMethod *vc = (VTestViewControllerWithInitMethod *)[dependencyManager viewControllerForKey:@"ivc"];
+    return vc.dependencyManager;
+}
+
+#if 0 // Disabled for now. See https://jira.victorious.com/browse/IOS-2368
+- (void)testCleanupBreaksCycles
+{
+    // the main purpose of -cleanup is to break retain cycles created by the dependency manager.
+    // This method ensures they are broken
+    
+    __weak VDependencyManager *weakChild = [self extractChildFromDependencyManager:self.dependencyManager];
+    XCTAssertNotNil(weakChild); // weakChild is still here only because self.baseDependencyManager has a reference to it
+    
+    [self.baseDependencyManager cleanup];
+    self.baseDependencyManager = nil;
+    
+    XCTAssertNil(weakChild); // after cleanup, it should be free!
+}
+#endif
+
+- (void)testCleanupDoesntWorkOnChildren
+{
+    // -cleanup is documented to not work when called on child dependency managers.
+    // This test verifies that's true.
+    
+    __weak VDependencyManager *weakChild = [self extractChildFromDependencyManager:self.dependencyManager];
+    XCTAssertNotNil(weakChild); // weakChild is still around because self.baseDependencyManager has a reference to it
+    
+    [weakChild cleanup];
+    
+    XCTAssertNotNil(weakChild); // cleanup should have done nothing
 }
 
 #pragma mark - Children

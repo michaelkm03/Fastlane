@@ -14,7 +14,6 @@
 #import "VCrossFadingLabel.h"
 #import "VStream.h"
 #import "VDependencyManager.h"
-#import "UIImage+ImageCreation.h"
 #import "VAbstractMarqueeController.h"
 
 @interface VBlurredMarqueeCollectionViewCell ()

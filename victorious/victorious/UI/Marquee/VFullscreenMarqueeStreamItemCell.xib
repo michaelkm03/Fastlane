@@ -26,9 +26,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="361" height="365"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="C_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="83k-OL-pLv">
-                        <rect key="frame" x="148" y="147" width="65" height="72"/>
-                    </imageView>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bg-N6-FzQ" userLabel="DetailsContainer">
                         <rect key="frame" x="0.0" y="273" width="361" height="92"/>
                         <subviews>
@@ -74,6 +71,9 @@
                             <constraint firstAttribute="trailing" secondItem="gwI-zs-1vj" secondAttribute="trailing" id="cTT-7U-Uh2"/>
                         </constraints>
                     </view>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="C_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="83k-OL-pLv">
+                        <rect key="frame" x="148" y="147" width="65" height="72"/>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>

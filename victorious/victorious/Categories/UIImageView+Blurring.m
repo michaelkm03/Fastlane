@@ -10,11 +10,14 @@
 #import "UIImage+ImageEffects.h"
 #import "UIImage+Resize.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <objc/runtime.h>
 
 @import AVFoundation;
 
 static const CGFloat kVBlurRadius = 12.5f;
 static const CGFloat kVSaturationDeltaFactor = 1.8f;
+
+static const char kAssociatedObjectKey;
 
 @implementation UIImageView (Blurring)
 
@@ -63,31 +66,46 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
             placeholderImage:[placeholderImage applyTintEffectWithColor:tintColor]
                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
      {
-         __strong UIImageView *strongSelf = weakSelf;
-         strongSelf.image = placeholderImage;
-         
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                        {
-                            UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
-                                                   interpolationQuality:kCGInterpolationLow];
-                            UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
-                                                                     tintColor:tintColor
-                                                         saturationDeltaFactor:kVSaturationDeltaFactor
-                                                                     maskImage:nil];
-                            dispatch_async(dispatch_get_main_queue(), ^
-                                           {
-                                               weakSelf.image = blurredImage;
-                                               [UIView animateWithDuration:0.5f
-                                                                     delay:0.0f
-                                                                   options:UIViewAnimationOptionCurveEaseInOut
-                                                                animations:^{
-                                                                    weakSelf.alpha = 1.0f;
-                                                                } completion:nil];
-                                           });
-                        });
-         
+         [weakSelf blurAndAnimateImageToVisible:image withPlaceholderImage:placeholderImage tintColor:tintColor andDuration:0.5f];
      }];
 }
+
+- (void)blurAndAnimateImageToVisible:(UIImage *)image withPlaceholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration
+{
+    self.alpha = 0;
+    self.image = placeholderImage;
+    objc_setAssociatedObject(self, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_ASSIGN);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                   {
+                       UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, self.bounds).size
+                                              interpolationQuality:kCGInterpolationLow];
+                       UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
+                                                                       tintColor:tintColor
+                                                           saturationDeltaFactor:kVSaturationDeltaFactor
+                                                                       maskImage:nil];
+                       dispatch_async(dispatch_get_main_queue(), ^
+                                      {
+                                          if ( ![objc_getAssociatedObject(self, &kAssociatedObjectKey) isEqual:image] )
+                                          {
+                                              /*
+                                                We've finished blurring this image, but another blur request came in after it.
+                                                Return before setting this to the blurred image to avoid setting to the wrong image.
+                                               */
+                                              return;
+                                          }
+                                          self.image = blurredImage;
+                                          [UIView animateWithDuration:duration
+                                                                delay:0.0f
+                                                              options:UIViewAnimationOptionCurveEaseInOut
+                                                           animations:^
+                                           {
+                                               self.alpha = 1.0f;
+                                           }
+                                                           completion:nil];
+                                      });
+                   });
+}
+
 //TODO CAHNGE OTHER THINGS TO EXTRALIGHT
 - (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {

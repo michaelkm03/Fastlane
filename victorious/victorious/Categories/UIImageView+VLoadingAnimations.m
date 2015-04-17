@@ -15,33 +15,46 @@
 - (void)fadeInImageAtURL:(NSURL *)url
         placeholderImage:(UIImage *)image
 {
+    [self fadeInImageAtURL:url placeholderImage:image completion:nil];
+}
+
+- (void)fadeInImageAtURL:(NSURL *)url
+        placeholderImage:(UIImage *)image
+              completion:(void (^)(UIImage *))completion
+{
     __weak UIImageView *weakSelf = self;
     
     [self sd_setImageWithURL:url
             placeholderImage:image
                      options:SDWebImageRetryFailed
                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
-    {
-        
-        __strong UIImageView *strongSelf = weakSelf;
-        //Check if image was loaded from cache
-        if ( cacheType != SDImageCacheTypeNone || ![self isValidURL:imageURL] )
-        {
-            //Set image without fade animation
-            strongSelf.image = image;
-            return;
-        }
-        
-        strongSelf.alpha = 0;
-        strongSelf.image = image;
-        [UIView animateWithDuration:.3f animations:^
+     {
+         if ( completion != nil )
          {
-             strongSelf.alpha = 1;
-         }];
-        
-        
-    }];
-    
+             completion( image );
+         }
+         
+         __strong UIImageView *strongSelf = weakSelf;
+         //Check if image was loaded from cache
+         if ( cacheType != SDImageCacheTypeNone || ![self isValidURL:imageURL] )
+         {
+             //Set image without fade animation
+             strongSelf.image = image;
+             return;
+         }
+         
+         [strongSelf fadeInImage:image];
+     }];
+}
+
+- (void)fadeInImage:(UIImage *)image
+{
+    self.alpha = 0;
+    self.image = image;
+    [UIView animateWithDuration:.3f animations:^
+     {
+         self.alpha = 1;
+     }];
 }
 
 - (BOOL)isValidURL:(NSURL *)url
