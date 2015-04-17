@@ -253,6 +253,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
             [(VStreamCollectionCell *)cell reloadCommentsCount];
         }
     }
+    
+    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
+    [self updateUserPostAllowed];
 }
 
 - (void)viewDidAppear:(BOOL)animated

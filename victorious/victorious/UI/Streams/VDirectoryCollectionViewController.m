@@ -20,6 +20,7 @@
 #import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VURLMacroReplacement.h"
+#import "VDirectoryCollectionFlowLayout.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -31,7 +32,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceNameKey = @"sequenceName";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
-@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate>
+@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate>
 
 @property (nonatomic, readwrite) UICollectionView *collectionView;
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
@@ -56,8 +57,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager andDirectoryCellFactory:(NSObject <VDirectoryCellFactory> *)directoryCellFactory
 {
-    VDirectoryCollectionViewController *streamDirectory = [[[self class] alloc] initWithNibName:nil
-                                                                                                                       bundle:nil];
+    VDirectoryCollectionViewController *streamDirectory = [[[self class] alloc] initWithNibName:nil bundle:nil];
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
     streamDirectory.dependencyManager = dependencyManager;
@@ -66,8 +66,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     {
         streamDirectory.directoryCellFactory.delegate = streamDirectory;
     }
-    UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
-    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
+    VDirectoryCollectionFlowLayout *flowLayout = streamDirectory.directoryCellFactory.collectionViewFlowLayout;
+    flowLayout.delegate = streamDirectory;
+    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     streamDirectory.marqueeController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:kMarqueeKey];
     [streamDirectory.marqueeController registerCellsWithCollectionView:streamDirectory.collectionView];
     streamDirectory.marqueeController.selectionDelegate = streamDirectory;
@@ -138,6 +139,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     // Layout may have changed between awaking from nib and being added to the container of the SoS
     [self.collectionView.collectionViewLayout invalidateLayout];
+    
+    //Adds the create sequence button if possible. If not called here, the button 
+    [self updateUserPostAllowed];
 }
 
 - (BOOL)shouldAutorotate
@@ -184,6 +188,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (CGSize)marqueeSizeWithCollectionViewBounds:(CGRect)collectionViewBounds
 {
     return [self.marqueeController desiredSizeWithCollectionViewBounds:collectionViewBounds];
+}
+
+#pragma mark - VDirectoryCollectionFlowLayoutMarqueeDelegate
+
+- (BOOL)hasMarqueeCell
+{
+    return self.streamDataSource.hasHeaderCell;
 }
 
 #pragma mark - UICollectionViewDataSource

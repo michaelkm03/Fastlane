@@ -12,6 +12,7 @@
 #import "VCardSeeMoreDirectoryCell.h"
 #import "VCardDirectoryCellDecorator.h"
 #import "VStream.h"
+#import "VCardDirectoryCollectionViewFlowLayout.h"
 
 static CGFloat const kDirectoryInset = 10.0f;
 
@@ -34,6 +35,11 @@ static CGFloat const kDirectoryInset = 10.0f;
         _cellDecorator = [[VCardDirectoryCellDecorator alloc] init];
     }
     return self;
+}
+
+- (VDirectoryCollectionFlowLayout *)collectionViewFlowLayout
+{
+    return [[VCardDirectoryCollectionViewFlowLayout alloc] init];
 }
 
 - (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem

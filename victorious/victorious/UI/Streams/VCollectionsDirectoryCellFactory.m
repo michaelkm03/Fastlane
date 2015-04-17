@@ -15,6 +15,7 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager.h"
 #import "VStream+Fetcher.h"
+#import "VDirectoryCollectionFlowLayout.h"
 
 static const CGFloat kPlaylistCellHeight = 140.0f;
 static const CGFloat kStatusBarHeight = 20.0f;
@@ -46,6 +47,11 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
         _shouldAnimateCells = YES;
     }
     return self;
+}
+
+- (VDirectoryCollectionFlowLayout *)collectionViewFlowLayout
+{
+    return [[VDirectoryCollectionFlowLayout alloc] init];
 }
 
 - (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem

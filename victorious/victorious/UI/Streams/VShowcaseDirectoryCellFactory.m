@@ -11,6 +11,7 @@
 #import "VShowcaseDirectoryCell.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStream.h"
+#import "VDirectoryCollectionFlowLayout.h"
 
 static CGFloat const kDirectoryInset = 5.0f;
 static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
@@ -36,6 +37,11 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
         NSAssert(_groupedDirectoryCellFactory != nil, @"VShowcaseDirectoryCellFactory requires that a valid directory cell factory be returned from the groupedCell of the dependency manager used to create it");
     }
     return self;
+}
+
+- (VDirectoryCollectionFlowLayout *)collectionViewFlowLayout
+{
+    return [[VDirectoryCollectionFlowLayout alloc] init];
 }
 
 - (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem

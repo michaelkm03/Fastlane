@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
-@class VStreamItem, VStream, VDependencyManager;
+@class VStreamItem, VStream, VDependencyManager, VDirectoryCollectionFlowLayout;
 
 @protocol VDirectoryCellFactory <NSObject, VHasManagedDependencies>
 
@@ -26,6 +26,8 @@
 - (CGFloat)minimumLineSpacing;
 
 - (UIEdgeInsets)sectionEdgeInsets;
+
+- (VDirectoryCollectionFlowLayout *)collectionViewFlowLayout;
 
 @optional
 

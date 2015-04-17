@@ -54,12 +54,12 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 + (CGFloat)directoryCellHeightForWidth:(CGFloat)width
 {
     CGFloat multiplicant = width / kStreamDirectoryGroupCellBaseWidth;
-    return ( kStreamSubdirectoryItemCellBaseHeight * multiplicant );
+    return floor( ( kStreamSubdirectoryItemCellBaseHeight * multiplicant ) );
 }
 
 + (CGFloat)desiredCellWidthForBoundsWidth:(CGFloat)width
 {
-    return ( width / kStreamDirectoryGroupCellBaseWidth ) * kStreamSubdirectoryItemCellBaseWidth;
+    return floor( ( width / kStreamDirectoryGroupCellBaseWidth ) * kStreamSubdirectoryItemCellBaseWidth );
 }
 
 #pragma mark - View Model

@@ -816,7 +816,6 @@
 		F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */; };
 		F02024A51ADD68A500C61313 /* VCollectionsDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024A41ADD68A500C61313 /* VCollectionsDirectoryCellFactory.m */; };
 		F02024A81ADD6C9300C61313 /* VShowcaseDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024A71ADD6C9300C61313 /* VShowcaseDirectoryCellFactory.m */; };
-		F02024AA1ADD75E800C61313 /* newDirectoryTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F02024A91ADD75E800C61313 /* newDirectoryTemplate.json */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
 		F028F3BE1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
@@ -831,7 +830,6 @@
 		F04A7CB91AB7E1980092A374 /* VInsetStreamCollectionCellPoll.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04A7CB81AB7E1980092A374 /* VInsetStreamCollectionCellPoll.xib */; };
 		F04A7CBD1AB874A10092A374 /* VSleekStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A7CBC1AB874A10092A374 /* VSleekStreamCellFactory.m */; };
 		F04C2E5A1AE08D2500FF74B7 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F04C2E591AE08D2500FF74B7 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m */; };
-		F04C2E5D1AE0979D00FF74B7 /* marqueeTransparency.json in Resources */ = {isa = PBXBuildFile; fileRef = F04C2E5C1AE0979D00FF74B7 /* marqueeTransparency.json */; };
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6C01AC7791300FBCD50 /* VCrossFadingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
@@ -854,6 +852,9 @@
 		F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
+		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
+		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
+		F0A82AFD1AE1D1C800EB2257 /* newDirectoryTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F0A82AFC1AE1D1C800EB2257 /* newDirectoryTemplate.json */; };
 		F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ADB0671AD367970069DF0D /* VImageViewContainer.m */; };
 		F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390B81A852C7E00EE70C7 /* VTag.m */; };
 		F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
@@ -2353,7 +2354,6 @@
 		F02024A41ADD68A500C61313 /* VCollectionsDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionsDirectoryCellFactory.m; sourceTree = "<group>"; };
 		F02024A61ADD6C9300C61313 /* VShowcaseDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShowcaseDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024A71ADD6C9300C61313 /* VShowcaseDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowcaseDirectoryCellFactory.m; sourceTree = "<group>"; };
-		F02024A91ADD75E800C61313 /* newDirectoryTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newDirectoryTemplate.json; sourceTree = "<group>"; };
 		F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCellFactory.m; sourceTree = "<group>"; };
 		F028F3BC1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VJSONLogging.h"; sourceTree = "<group>"; };
@@ -2376,7 +2376,6 @@
 		F04A7CBC1AB874A10092A374 /* VSleekStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekStreamCellFactory.m; sourceTree = "<group>"; };
 		F04C2E581AE08D2500FF74B7 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.h"; sourceTree = "<group>"; };
 		F04C2E591AE08D2500FF74B7 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m"; sourceTree = "<group>"; };
-		F04C2E5C1AE0979D00FF74B7 /* marqueeTransparency.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = marqueeTransparency.json; sourceTree = "<group>"; };
 		F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCrossFadingImageView.h; path = ../../Categories/VCrossFadingImageView.h; sourceTree = "<group>"; };
 		F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCrossFadingImageView.m; path = ../../Categories/VCrossFadingImageView.m; sourceTree = "<group>"; };
 		F04DC6BE1AC7791300FBCD50 /* VCrossFadingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingLabel.h; sourceTree = "<group>"; };
@@ -2418,6 +2417,11 @@
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
+		F0A82AF51AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
+		F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryCollectionFlowLayout.m; sourceTree = "<group>"; };
+		F0A82AFC1AE1D1C800EB2257 /* newDirectoryTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newDirectoryTemplate.json; sourceTree = "<group>"; };
 		F0ADB0661AD367970069DF0D /* VImageViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageViewContainer.h; sourceTree = "<group>"; };
 		F0ADB0671AD367970069DF0D /* VImageViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageViewContainer.m; sourceTree = "<group>"; };
 		F0B390B71A852C7E00EE70C7 /* VTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTag.h; sourceTree = "<group>"; };
@@ -2553,8 +2557,7 @@
 				0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */,
 				0314D0A019B4698800FA363C /* VObjectManager+Login.h */,
 				0314D0A119B4698800FA363C /* VObjectManager+Login.m */,
-				F04C2E5C1AE0979D00FF74B7 /* marqueeTransparency.json */,
-				F02024A91ADD75E800C61313 /* newDirectoryTemplate.json */,
+				F0A82AFC1AE1D1C800EB2257 /* newDirectoryTemplate.json */,
 				0314D0A219B4698800FA363C /* VObjectManager+Pagination.h */,
 				0314D0A319B4698800FA363C /* VObjectManager+Pagination.m */,
 				0314D0A419B4698800FA363C /* VObjectManager+Private.h */,
@@ -5425,8 +5428,7 @@
 				F02024A41ADD68A500C61313 /* VCollectionsDirectoryCellFactory.m */,
 				F02024A61ADD6C9300C61313 /* VShowcaseDirectoryCellFactory.h */,
 				F02024A71ADD6C9300C61313 /* VShowcaseDirectoryCellFactory.m */,
-				F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */,
-				F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */,
+				F0A82AFB1AE1D12700EB2257 /* Card Directory Cell Factory */,
 			);
 			name = DirectoryCellFactories;
 			sourceTree = "<group>";
@@ -5475,6 +5477,8 @@
 			children = (
 				F06F10C41AC2024A0062E1D1 /* VDirectoryCollectionViewController.h */,
 				F06F10C51AC2024A0062E1D1 /* VDirectoryCollectionViewController.m */,
+				F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */,
+				F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */,
 				F04C2E581AE08D2500FF74B7 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.h */,
 				F04C2E591AE08D2500FF74B7 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m */,
 				F04C2E5E1AE17DCD00FF74B7 /* DirectoryCellFactories */,
@@ -5517,6 +5521,17 @@
 				F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */,
 			);
 			name = Blurred;
+			sourceTree = "<group>";
+		};
+		F0A82AFB1AE1D12700EB2257 /* Card Directory Cell Factory */ = {
+			isa = PBXGroup;
+			children = (
+				F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */,
+				F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */,
+				F0A82AF51AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.h */,
+				F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */,
+			);
+			name = "Card Directory Cell Factory";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5733,7 +5748,6 @@
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				037FCF191A8DAF0E00E8ABFC /* VHamburgerButton.xib in Resources */,
 				A7AEF9A91A83F1C300A3D3A0 /* VStreamCollectionCell.xib in Resources */,
-				F04C2E5D1AE0979D00FF74B7 /* marqueeTransparency.json in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7299E951AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib in Resources */,
@@ -5778,7 +5792,7 @@
 				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
 				A7A922641AC61B3500F4755E /* VContentTextCell.xib in Resources */,
-				F02024AA1ADD75E800C61313 /* newDirectoryTemplate.json in Resources */,
+				F0A82AFD1AE1D1C800EB2257 /* newDirectoryTemplate.json in Resources */,
 				034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */,
 				0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */,
 				036F388A1A0C4DEA0014DF66 /* PT_Serif-Web-Regular.ttf in Resources */,
@@ -6140,6 +6154,7 @@
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
 				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
 				D8F8B1EF1AC4C4CF00AA2DB7 /* VTilePatternBackground.m in Sources */,
+				F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */,
 				A7E398731A362578000E4CAC /* NSData+AES.m in Sources */,
@@ -6473,6 +6488,7 @@
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
 				A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */,
 				BE2C071219D5E842002AB82A /* VFullscreenMarqueeTabIndicatorView.m in Sources */,
+				F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */,
 				0314D47F19B46B5E00FA363C /* VCameraViewController.m in Sources */,
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
