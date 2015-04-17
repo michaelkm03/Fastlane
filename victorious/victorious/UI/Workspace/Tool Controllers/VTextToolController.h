@@ -34,4 +34,6 @@
  */
 @property (nonatomic, strong) id<VTextListener> textListener;
 
+- (void)setMediaURL:(NSURL *)newMediaURL previewImage:(UIImage *)previewImage;
+
 @end

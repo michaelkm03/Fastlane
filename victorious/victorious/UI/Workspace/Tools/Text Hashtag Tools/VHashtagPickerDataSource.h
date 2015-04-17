@@ -27,13 +27,6 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
- Reload the data that this data source provides, after which the completion callback
- will be called with an array of VWorkspaceTool objects to which loaded data has been 
- marshalled.
- */
-- (void)reloadWithCompletion:(void(^)(NSArray *tools))completion;
-
-/**
  Given some hashtag text, find the corresponding VWorkspaceTool in this
  data source's tools.  If a corresponding tool does not exist, `nil` will be returned.
  */

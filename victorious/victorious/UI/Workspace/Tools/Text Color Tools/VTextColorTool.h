@@ -23,4 +23,9 @@
  */
 @property (nonatomic, strong, readonly) VTickerPickerViewController *toolPicker;
 
+/**
+ Adds a "no color option", as when an image is used for the background instead.
+ */
+- (void)setShouldShowNoColorOption:(BOOL)shouldShowNoColorOption completion:(void(^)())completion;
+
 @end

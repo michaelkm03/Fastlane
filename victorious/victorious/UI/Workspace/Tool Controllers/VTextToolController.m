@@ -17,18 +17,24 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VHashtagPickerDataSource.h"
 #import "VEditableTextPostViewController.h"
+#import "VTextPostImageHelper.h"
 
 @interface VTextToolController() <VMultipleToolPickerDelegate, VEditableTextPostViewControllerDelegate>
 
 @property (nonatomic, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
 @property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
+@property (nonatomic, strong) VTextPostImageHelper *imageHelper;
+
+@property (nonatomic, strong) UIImage *previewImage;
 
 @end
 
 @implementation VTextToolController
 
 #pragma mark - VToolController overrides
+
+@synthesize mediaURL;  ///< VToolController
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -47,7 +53,10 @@
         NSAssert( NO, @"Cannot set up default tool because there are no tools." );
     }
     
-    [self setSelectedTool:self.tools.firstObject];
+    if ( self.selectedTool == nil )
+    {
+        [self setSelectedTool:self.tools.firstObject];
+    }
     
     [self.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
@@ -73,16 +82,34 @@
 {
     self.textPostViewController.isEditing = NO;
     
+    if ( self.mediaURL == nil )
+    {
+        [self publishWithRenderedAssetURL:nil Completion:completion];
+        return;
+    }
+    
+    self.imageHelper = [[VTextPostImageHelper alloc] init];
+    [self.imageHelper exportWithAssetAtURL:self.mediaURL color:[self currentColorSelection] completion:^(NSURL *renderedAssetURL, NSError *error )
+    {
+        if ( renderedAssetURL != nil )
+        {
+            [self publishWithRenderedAssetURL:renderedAssetURL Completion:completion];
+        }
+        else
+        {
+            completion( NO, nil, nil, error );
+        }
+    }];
+}
+
+- (void)publishWithRenderedAssetURL:(NSURL *)renderedAssetURL Completion:(void (^)(BOOL, NSURL *, UIImage *, NSError *))completion
+{
     [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
                                            backgroundColor:[self currentColorSelection]
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                  mediaURL:renderedAssetURL
+                                              previewImage:[self textPostPreviewImage]
+                                                completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
-         
-         completion( YES, nil, nil, nil );
-     }
-                                                 failBlock:^(NSOperation *operation, NSError *error)
-     {
-         NSLog( @"error posting text: %@", [error localizedDescription] );
          completion( YES, nil, nil, nil );
      }];
 }
@@ -96,7 +123,17 @@
 
 - (NSString *)currentText
 {
-    return self.textPostViewController.text;
+    return self.textPostViewController.textOutput;
+}
+
+- (UIImage *)textPostPreviewImage
+{
+    UIView *viewToDraw = self.textPostViewController.view;
+    UIGraphicsBeginImageContextWithOptions( viewToDraw.bounds.size, YES, 0.0);
+    [viewToDraw drawViewHierarchyInRect:viewToDraw.bounds afterScreenUpdates:NO];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 - (VTextPostViewController *)textPostViewController
@@ -180,6 +217,17 @@
 - (void)textDidUpdate:(NSString *)text
 {
     [self.textListener textDidUpdate:text];
+}
+
+- (void)setMediaURL:(NSURL *)newMediaURL previewImage:(UIImage *)previewImage
+{
+    self.previewImage = previewImage;
+    self.mediaURL = newMediaURL;
+    [self.textColorTool setShouldShowNoColorOption:(previewImage != nil) completion:^
+    {
+        [self.textPostViewController setBackgroundImage:previewImage animated:YES];
+    }];
+    
 }
 
 @end
