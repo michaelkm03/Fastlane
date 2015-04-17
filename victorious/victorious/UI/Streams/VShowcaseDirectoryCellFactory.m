@@ -33,6 +33,7 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     {
         dependencyManager = localDependencyManager;
         _groupedDirectoryCellFactory = [dependencyManager templateValueConformingToProtocol:@protocol(VDirectoryCellFactory) forKey:kGroupedDirectoryCellFactoryKey];
+        NSAssert(_groupedDirectoryCellFactory != nil, @"VShowcaseDirectoryCellFactory requires that a valid directory cell factory be returned from the groupedCell of the dependency manager used to create it");
     }
     return self;
 }

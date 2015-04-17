@@ -87,9 +87,9 @@
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
 	<key>collections.directoryCell</key>
-	<string>VCollectionsDirectoryCellFactory</string>
+	<string>VCardDirectoryCellFactory</string>
 	<key>showcase.directoryCell</key>
-	<string>VShowcaseDirectoryCellFactory</string>
+	<string>VCardDirectoryCellFactory</string>
 	<key>card.directoryCell</key>
 	<string>VCardDirectoryCellFactory</string>
 	<key>inset.streamCell</key>

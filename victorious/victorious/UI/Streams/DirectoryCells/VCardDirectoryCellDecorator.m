@@ -72,7 +72,7 @@
     cell.borderColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     cell.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
-    cell.imageColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    cell.imageColor = cell.seeMoreLabel.textColor;
     cell.seeMoreLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 

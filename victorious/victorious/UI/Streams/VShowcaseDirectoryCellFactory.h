@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "VDirectoryCellFactory.h"
 
+/**
+    This factory provides sizing and collection view registration for VShowcaseDirectoryCells.
+ */
 @interface VShowcaseDirectoryCellFactory : NSObject <VDirectoryCellFactory>
 
 @end
