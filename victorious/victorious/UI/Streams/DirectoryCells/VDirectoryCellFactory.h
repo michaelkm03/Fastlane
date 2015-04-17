@@ -15,8 +15,6 @@
 
 @required
 
-- (UICollectionViewLayout *)collectionViewLayout;
-
 - (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem;
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
@@ -36,5 +34,6 @@
 - (void)collectionViewDidScroll:(UICollectionView *)collectionView;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, weak) id delegate;
 
 @end

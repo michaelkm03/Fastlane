@@ -1,5 +1,5 @@
 //
-//  VDirectoryItemCell.h
+//  VCardDirectoryCell.h
 //  victorious
 //
 //  Created by Will Long on 9/11/14.
@@ -14,10 +14,12 @@ extern const CGFloat VDirectoryItemBaseHeight;
 extern const CGFloat VDirectoryItemStackHeight;
 extern const CGFloat VDirectoryItemBaseWidth;
 
+@class VStreamItem;
+
 /**
  A cell for the VDirectoryCollectionViewController.
  */
-@interface VDirectoryItemCell : VBaseCollectionViewCell
+@interface VCardDirectoryCell : VBaseCollectionViewCell
 
 /**
  The desired height for a directory item cell that has space for a stack-style extension at the bottom.
@@ -30,6 +32,8 @@ extern const CGFloat VDirectoryItemBaseWidth;
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
 - (void)setPreviewImagePath:(NSString *)previewImagePath placeholderImage:(UIImage *)placeholderImage;
+
++ (BOOL)wantsToShowStackedBackgroundForStreamItem:(VStreamItem *)streamItem;
 
 @property (nonatomic, assign) BOOL showVideo;
 

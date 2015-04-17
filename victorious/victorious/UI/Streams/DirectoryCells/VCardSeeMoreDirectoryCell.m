@@ -1,17 +1,17 @@
 //
-//  VDirectorySeeMoreItemCell.m
+//  VCardSeeMoreDirectoryCell.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/23/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VDirectorySeeMoreItemCell.h"
+#import "VCardSeeMoreDirectoryCell.h"
 #import "VExtendedView.h"
 
 static const CGFloat kBorderWidth = 0.5f;
 
-@interface VDirectorySeeMoreItemCell ()
+@interface VCardSeeMoreDirectoryCell ()
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomConstriant;
 @property (nonatomic, weak) IBOutlet VExtendedView *extendedView;
@@ -19,7 +19,7 @@ static const CGFloat kBorderWidth = 0.5f;
 
 @end
 
-@implementation VDirectorySeeMoreItemCell
+@implementation VCardSeeMoreDirectoryCell
 
 - (void)awakeFromNib
 {

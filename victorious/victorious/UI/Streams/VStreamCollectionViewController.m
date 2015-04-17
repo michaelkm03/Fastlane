@@ -71,7 +71,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <FBKVOController.h>
 
-#import "VAbstractDirectoryCollectionViewController.h"
+#import "VDirectoryCollectionViewController.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -406,7 +406,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     else if ( [streamItem isStreamOfStreams] )
     {
-        VAbstractDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VAbstractDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
+        VDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
         
         //Set the selected stream as the current stream in the directory
         directory.currentStream = (VStream *)streamItem;

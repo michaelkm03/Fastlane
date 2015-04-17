@@ -63,15 +63,7 @@
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
 	<key>directory.screen</key>
-	<string>VAbstractDirectoryCollectionViewController</string>
-	<key>collections.directoryCell</key>
-	<string>VCollectionsCellFactory</string>
-	<key>showcase.directoryCell</key>
-	<string>VShowcaseCellFactory</string>
-	<key>card.DirectoryCell</key>
-	<string>VCardDirectoryCellFactory</string>
-	<key>nestedCard.DirectoryCell</key>
-	<string>VNestedCardDirectoryCellFactory</string>
+	<string>VDirectoryCollectionViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>
@@ -94,6 +86,12 @@
 	<string>VDiscoverContainerViewController</string>
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
+	<key>collections.directoryCell</key>
+	<string>VCollectionsDirectoryCellFactory</string>
+	<key>showcase.directoryCell</key>
+	<string>VShowcaseDirectoryCellFactory</string>
+	<key>card.directoryCell</key>
+	<string>VCardDirectoryCellFactory</string>
 	<key>inset.streamCell</key>
 	<string>VInsetStreamCellFactory</string>
 	<key>sleek.streamCell</key>

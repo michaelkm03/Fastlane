@@ -1,12 +1,12 @@
 //
-//  VDirectoryItemCell.m
+//  VCardDirectoryCell.m
 //  victorious
 //
 //  Created by Will Long on 9/11/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VDirectoryItemCell.h"
+#import "VCardDirectoryCell.h"
 
 // Views
 #import "VExtendedView.h"
@@ -14,6 +14,8 @@
 // Categories
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
+#import "VStreamItem+Fetcher.h"
+#import "VStream.h"
 
 const CGFloat VDirectoryItemBaseHeight = 217.0f;
 const CGFloat VDirectoryItemStackHeight = 8.0f;
@@ -21,7 +23,7 @@ const CGFloat VDirectoryItemBaseWidth = 145.0f;
 
 static const CGFloat kBorderWidth = 0.5f;
 
-@interface VDirectoryItemCell()
+@interface VCardDirectoryCell()
 
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewImageTopConstraint;
@@ -37,7 +39,7 @@ static const CGFloat kBorderWidth = 0.5f;
 
 @end
 
-@implementation VDirectoryItemCell
+@implementation VCardDirectoryCell
 
 #pragma mark - Initialization
 
@@ -88,6 +90,11 @@ static const CGFloat kBorderWidth = 0.5f;
     self.bottomStack.hidden = !showStackedBackground;
     self.middleStack.hidden = !showStackedBackground;
     self.topStackBottomConstraint.constant = showStackedBackground ? VDirectoryItemStackHeight : 0.0f;
+}
+
++ (BOOL)wantsToShowStackedBackgroundForStreamItem:(VStreamItem *)streamItem
+{
+    return [streamItem isKindOfClass:[VStream class]] && [streamItem isStreamOfStreams];
 }
 
 #pragma mark - UICollectionReusableView

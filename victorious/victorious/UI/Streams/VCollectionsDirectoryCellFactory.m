@@ -1,16 +1,16 @@
 //
-//  VCollectionsCellFactory.m
+//  VCollectionsDirectoryCellFactory.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 4/14/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VCollectionsCellFactory.h"
-#import "VDirectoryCollectionsCell.h"
-#import "VAbstractDirectoryCollectionViewController.h"
+#import "VCollectionsDirectoryCellFactory.h"
+#import "VCollectionsDirectoryCell.h"
+#import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager.h"
-#import "VShowcaseCellFactory.h"
+#import "VShowcaseDirectoryCellFactory.h"
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager.h"
@@ -27,14 +27,13 @@ static const CGFloat kStatusBarHeight = 20.0f;
  */
 static const CGFloat kAnimationPropogationDivisor = 3.5f;
 
-@interface VCollectionsCellFactory ()
+@interface VCollectionsDirectoryCellFactory ()
 
-@property (nonatomic, strong) UICollectionViewLayout *collectionViewLayout;
 @property (nonatomic, assign) BOOL shouldAnimateCells;
 
 @end
 
-@implementation VCollectionsCellFactory
+@implementation VCollectionsDirectoryCellFactory
 
 @synthesize dependencyManager;
 
@@ -49,31 +48,20 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     return self;
 }
 
-- (UICollectionViewLayout *)collectionViewLayout
-{
-    if ( _collectionViewLayout != nil )
-    {
-        return _collectionViewLayout;
-    }
-    
-    _collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
-    return _collectionViewLayout;
-}
-
 - (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem
 {
-    return [VDirectoryCollectionsCell desiredSizeWithCollectionViewBounds:bounds];
+    return [VCollectionsDirectoryCell desiredSizeWithCollectionViewBounds:bounds];
 }
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VDirectoryCollectionsCell nibForCell] forCellWithReuseIdentifier:[VDirectoryCollectionsCell suggestedReuseIdentifier]];
+    [collectionView registerNib:[VCollectionsDirectoryCell nibForCell] forCellWithReuseIdentifier:[VCollectionsDirectoryCell suggestedReuseIdentifier]];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForIndexPath:(NSIndexPath *)indexPath withStreamItem:(VStreamItem *)streamItem
 {
-    NSString *identifier = [VDirectoryCollectionsCell suggestedReuseIdentifier];
-    VDirectoryCollectionsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    NSString *identifier = [VCollectionsDirectoryCell suggestedReuseIdentifier];
+    VCollectionsDirectoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.stream = streamItem;
     cell.dependencyManager = self.dependencyManager;
     CGFloat interLineSpace = self.minimumLineSpacing;
@@ -105,8 +93,8 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     {
         CGFloat collectionViewHeight = CGRectGetHeight(collectionView.bounds);
         CGFloat percentageDownscreen = CGRectGetMinY(cell.frame) / collectionViewHeight;
-        [(VDirectoryCollectionsCell *)cell animate:NO toVisible:NO afterDelay:0.0f];
-        [(VDirectoryCollectionsCell *)cell animate:YES toVisible:YES afterDelay:percentageDownscreen / kAnimationPropogationDivisor];
+        [(VCollectionsDirectoryCell *)cell animate:NO toVisible:NO afterDelay:0.0f];
+        [(VCollectionsDirectoryCell *)cell animate:YES toVisible:YES afterDelay:percentageDownscreen / kAnimationPropogationDivisor];
         if ( CGRectGetMaxY(cell.frame) > collectionViewHeight || indexPath.row == [collectionView numberOfItemsInSection:indexPath.section] - 1 )
         {
             self.shouldAnimateCells = NO;
@@ -123,14 +111,14 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
 {
     for ( UICollectionViewCell *cell in collectionView.visibleCells )
     {
-        if ( [cell isKindOfClass:[VDirectoryCollectionsCell class]] )
+        if ( [cell isKindOfClass:[VCollectionsDirectoryCell class]] )
         {
-            [self updateParallaxYOffsetOfCell:(VDirectoryCollectionsCell *)cell inCollectionView:collectionView withYOrigin:CGRectGetMinY(cell.frame)];
+            [self updateParallaxYOffsetOfCell:(VCollectionsDirectoryCell *)cell inCollectionView:collectionView withYOrigin:CGRectGetMinY(cell.frame)];
         }
     }
 }
 
-- (void)updateParallaxYOffsetOfCell:(VDirectoryCollectionsCell *)playlistCell inCollectionView:(UICollectionView *)collectionView withYOrigin:(CGFloat)yOrigin
+- (void)updateParallaxYOffsetOfCell:(VCollectionsDirectoryCell *)playlistCell inCollectionView:(UICollectionView *)collectionView withYOrigin:(CGFloat)yOrigin
 {
     //Determine and set the parallaxYOffset for the provided cell.
     

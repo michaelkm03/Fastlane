@@ -1,15 +1,15 @@
 //
-//  VDirectoryGroupCell.m
+//  VShowcaseDirectoryCell.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VDirectoryGroupCell.h"
-#import "VDirectoryItemCell.h"
-#import "VDirectorySeeMoreItemCell.h"
-#import "VDirectoryCellDecorator.h"
+#import "VShowcaseDirectoryCell.h"
+#import "VCardDirectoryCell.h"
+#import "VCardSeeMoreDirectoryCell.h"
+#import "VCardDirectoryCellDecorator.h"
 
 // Models
 #import "VStream+Fetcher.h"
@@ -23,15 +23,15 @@ static CGFloat const kStreamSubdirectoryItemCellBaseWidth = 140.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 
-@interface VDirectoryGroupCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface VShowcaseDirectoryCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
-@property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
+@property (nonatomic, strong) VCardDirectoryCellDecorator *cellDecorator;
 
 @end
 
-@implementation VDirectoryGroupCell
+@implementation VShowcaseDirectoryCell
 
 #pragma mark - Sizing Methods
 
@@ -83,16 +83,20 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 {
     [super awakeFromNib];
     
-    self.cellDecorator = [[VDirectoryCellDecorator alloc] init];
+    self.cellDecorator = [[VCardDirectoryCellDecorator alloc] init];
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     
-    [self.directoryCellFactory registerCellsWithCollectionView:self.collectionView];
-    
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     self.collectionView.contentInset = UIEdgeInsetsZero;
+}
+
+- (void)setDirectoryCellFactory:(NSObject<VDirectoryCellFactory> *)directoryCellFactory
+{
+    _directoryCellFactory = directoryCellFactory;
+    [_directoryCellFactory registerCellsWithCollectionView:self.collectionView];
 }
 
 #pragma mark - Property Accessors
@@ -169,10 +173,17 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 - (VStreamItem *)streamItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *streamItem = nil;
-    NSOrderedSet *streamItems = self.stream.streamItems;
-    if ( (NSUInteger)indexPath.row < streamItems.count )
+    if ( [self.stream isKindOfClass:[VSequence class]] )
     {
-        streamItem = streamItems[indexPath.row];
+        return self.stream;
+    }
+    else if ( [self.stream isKindOfClass:[VStream class]] )
+    {
+        NSOrderedSet *streamItems = self.stream.streamItems;
+        if ( (NSUInteger)indexPath.row < streamItems.count )
+        {
+            streamItem = streamItems[indexPath.row];
+        }   
     }
     return streamItem;
 }
@@ -181,7 +192,7 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.delegate streamDirectoryGroupCell:self didSelectItemAtIndexPath:indexPath];
+    [self.delegate showcaseDirectoryCell:self didSelectItemAtIndexPath:indexPath];
 }
 
 #pragma mark - UICollectionViewFlowLayout
@@ -192,18 +203,18 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 {
     CGFloat width = CGRectGetWidth(self.bounds);
     
-    CGFloat height = [VDirectoryGroupCell directoryCellHeightForWidth:width];
+    CGFloat height = [VShowcaseDirectoryCell directoryCellHeightForWidth:width];
     if ( self.stream.isStreamOfStreams )
     {
         height += VDirectoryItemStackHeight;
     }
     
-    return CGSizeMake([VDirectoryGroupCell desiredCellWidthForBoundsWidth:width], height);
+    return CGSizeMake([VShowcaseDirectoryCell desiredCellWidthForBoundsWidth:width], height);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return 0.0f;
+    return kStreamDirectoryGroupCellInset;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -214,11 +225,6 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
                             kStreamDirectoryGroupCellInset,
                             kStreamDirectoryGroupCellInset,
                             kStreamDirectoryGroupCellInset);
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return kStreamDirectoryGroupCellInset;
 }
 
 @end

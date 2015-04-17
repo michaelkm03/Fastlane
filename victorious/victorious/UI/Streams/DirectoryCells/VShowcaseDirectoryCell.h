@@ -1,5 +1,5 @@
 //
-//  VDirectoryGroupCell.h
+//  VShowcaseDirectoryCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
@@ -10,22 +10,22 @@
 #import "VDependencyManager.h"
 #import "VDirectoryCellFactory.h"
 
-@class VStreamItem, VDirectoryGroupCell, VStream, VSequence;
+@class VStreamItem, VShowcaseDirectoryCell, VStream, VSequence;
 
-@protocol VDirectoryGroupCellDelegate <NSObject>
+@protocol VShowcaseDirectoryCellDelegate <NSObject>
 
-- (void)streamDirectoryGroupCell:(VDirectoryGroupCell *)groupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)showcaseDirectoryCell:(VShowcaseDirectoryCell *)showcaseDirectoryCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-@interface VDirectoryGroupCell : VBaseCollectionViewCell
+@interface VShowcaseDirectoryCell : VBaseCollectionViewCell
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
     The item cell delegate that will respond to selections made within the collectionView contained in this cell
  */
-@property (nonatomic, weak) id <VDirectoryGroupCellDelegate> delegate;
+@property (nonatomic, weak) id <VShowcaseDirectoryCellDelegate> delegate;
 
 /**
  *  The VStream used to populate fields on the cell.

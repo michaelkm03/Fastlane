@@ -352,8 +352,9 @@
                       "createSequenceIcon": {
                       "imageURL": "createContentButton"
                       },
-                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%STREAM_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                       "id": "552d4286e1d65",
+                      "name": "stream.screen",
                       "streamCell": {
                       "showComments": true,
                       "loadingBackground": {
@@ -428,11 +429,11 @@
                       "directoryCell": {
                       "name": "showcase.directoryCell",
                       "groupedCell": {
-                      "name": "nestedCard.directoryCell"
+                      "name": "card.directoryCell"
                       }
                       },
                       "name": "directory.screen",
-                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%STREAM_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                       "marqueeCell": {
                       "name": "fullscreen.marqueeCell",
                       "loadingBackground": {
@@ -458,13 +459,42 @@
                       },
                       "identifier": "Menu Channels"
                       },
+                      "destinationDirectory": {
                       "directoryCell": {
-                      "name": "collections.directoryCell",
+                      "name": "showcase.directoryCell",
                       "groupedCell": {
                       "name": "card.directoryCell"
                       }
                       },
+                      "name": "directory.screen",
+                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                      "marqueeCell": {
+                      "name": "fullscreen.marqueeCell",
+                      "loadingBackground": {
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true,
+                      "name": "tilePattern.background",
+                      "image": {
+                      "imageURL": "pat_geometric"
+                      },
+                      "color": {
+                      "red": 161,
+                      "alpha": 1,
+                      "blue": 114,
+                      "green": 132
+                      }
+                      },
+                      "orIcon": {
+                      "imageURL": {
+                      "imageURL": "D_pollOr"
+                      }
+                      }
+                      }
+                      },
                       "identifier": "Menu Channels",
+                      "directoryCell": {
+                      "name": "collections.directoryCell"
+                      },
                       "name": "directory.screen",
                       "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                       "marqueeCell": {

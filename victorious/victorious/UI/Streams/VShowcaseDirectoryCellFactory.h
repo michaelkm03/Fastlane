@@ -1,5 +1,5 @@
 //
-//  VShowcaseCellFactory.h
+//  VShowcaseDirectoryCellFactory.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 4/14/15.
@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "VDirectoryCellFactory.h"
 
-@interface VShowcaseCellFactory : NSObject <VDirectoryCellFactory>
+@interface VShowcaseDirectoryCellFactory : NSObject <VDirectoryCellFactory>
 
 @end

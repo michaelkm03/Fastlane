@@ -2,17 +2,17 @@
 //  VDirectoryCollectionViewController.h
 //  victorious
 //
-//  Created by Will Long on 9/8/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 3/24/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VAbstractStreamCollectionViewController.h"
 
-#import "VAbstractDirectoryCollectionViewController.h"
+@interface VDirectoryCollectionViewController : VAbstractStreamCollectionViewController
 
 /**
- *  A view controller that uses a UICollectionView to display the streamItems in a VStream.
+ 
  */
-@interface VDirectoryCollectionViewController : VAbstractDirectoryCollectionViewController
+- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  VNestedCardDirectoryCellFactory.h
+//  VCollectionsDirectoryCellFactory.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 4/14/15.
@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VNestedDirectoryCellFactory.h"
+#import "VDirectoryCellFactory.h"
 
-@interface VNestedCardDirectoryCellFactory : NSObject <VNestedDirectoryCellFactory>
+@interface VCollectionsDirectoryCellFactory : NSObject <VDirectoryCellFactory>
 
 @end
