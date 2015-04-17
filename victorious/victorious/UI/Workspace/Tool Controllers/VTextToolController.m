@@ -82,7 +82,7 @@
 {
     self.textPostViewController.isEditing = NO;
     
-    if ( source == nil )
+    if ( self.mediaURL == nil )
     {
         [self publishWithRenderedAssetURL:nil Completion:completion];
         return;
