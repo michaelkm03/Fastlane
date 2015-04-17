@@ -210,7 +210,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
             UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
             VAsset *imageAsset = [self.sequence.firstNode imageAsset];
             NSURL *imageUrl = [NSURL URLWithString:imageAsset.data];
-            [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl];
+            [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:self.sequence.remoteId];
         }
     }
     
@@ -230,7 +230,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
      }];
 }
 
-- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL
+- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL cacheKey:(NSString *)cacheKey
 {
     static NSCache *textViewCache;
     if ( textViewCache == nil )
@@ -238,7 +238,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         textViewCache = [[NSCache alloc] init];
     }
     
-    VTextPostViewController *existing = [textViewCache objectForKey:text];
+    VTextPostViewController *existing = [textViewCache objectForKey:cacheKey];
     if ( existing == nil && self.textPostViewController == nil )
     {
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
@@ -247,7 +247,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         self.textPostViewController.text = text;
         self.textPostViewController.color = color;
         self.textPostViewController.imageURL = backgroundImageURL;
-        [textViewCache setObject:self.textPostViewController forKey:text];
+        [textViewCache setObject:self.textPostViewController forKey:cacheKey];
     }
     else if ( existing != nil )
     {
