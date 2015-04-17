@@ -97,7 +97,7 @@
 {
     _color = color;
     
-    self.view.backgroundColor = self.color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.view.backgroundColor = _color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage

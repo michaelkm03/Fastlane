@@ -410,7 +410,7 @@
 		A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A61ADDDFC900245125 /* VTextBackgroundFrameMaker.swift */; };
 		A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */; };
 		A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */; };
-		A75C64B01AE0299900245125 /* VEditableTextPostImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AF1AE0299900245125 /* VEditableTextPostImageHelper.m */; };
+		A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */; };
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
@@ -1571,8 +1571,8 @@
 		A75C64A61ADDDFC900245125 /* VTextBackgroundFrameMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextBackgroundFrameMaker.swift; sourceTree = "<group>"; };
 		A75C64A81ADDE00900245125 /* VTextFragmentsBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextFragmentsBuilder.swift; sourceTree = "<group>"; };
 		A75C64AC1ADDE07B00245125 /* VTextCalloutFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextCalloutFormatter.swift; sourceTree = "<group>"; };
-		A75C64AE1AE0299900245125 /* VEditableTextPostImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditableTextPostImageHelper.h; sourceTree = "<group>"; };
-		A75C64AF1AE0299900245125 /* VEditableTextPostImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditableTextPostImageHelper.m; sourceTree = "<group>"; };
+		A75C64AE1AE0299900245125 /* VTextPostImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextPostImageHelper.h; sourceTree = "<group>"; };
+		A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextPostImageHelper.m; sourceTree = "<group>"; };
 		A75ECFE91AB0B6B400C35063 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		A75ECFEB1AB0B6B400C35063 /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
@@ -3941,8 +3941,8 @@
 				A75C64871AD78DCA00245125 /* VEditableTextPostHashtagHelper.m */,
 				A75C64881AD78DCA00245125 /* VEditableTextPostViewController.h */,
 				A75C64891AD78DCA00245125 /* VEditableTextPostViewController.m */,
-				A75C64AE1AE0299900245125 /* VEditableTextPostImageHelper.h */,
-				A75C64AF1AE0299900245125 /* VEditableTextPostImageHelper.m */,
+				A75C64AE1AE0299900245125 /* VTextPostImageHelper.h */,
+				A75C64AF1AE0299900245125 /* VTextPostImageHelper.m */,
 				A75C648C1AD78DCA00245125 /* VTextPostTextView.h */,
 				A75C648D1AD78DCA00245125 /* VTextPostTextView.m */,
 				A75C648E1AD78DCA00245125 /* VTextPostViewController.h */,
@@ -6369,7 +6369,7 @@
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
-				A75C64B01AE0299900245125 /* VEditableTextPostImageHelper.m in Sources */,
+				A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */,
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,

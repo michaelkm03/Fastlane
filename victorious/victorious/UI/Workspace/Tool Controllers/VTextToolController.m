@@ -17,12 +17,14 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VHashtagPickerDataSource.h"
 #import "VEditableTextPostViewController.h"
+#import "VTextPostImageHelper.h"
 
 @interface VTextToolController() <VMultipleToolPickerDelegate, VEditableTextPostViewControllerDelegate>
 
 @property (nonatomic, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
 @property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
+@property (nonatomic, strong) VTextPostImageHelper *imageHelper;
 
 @property (nonatomic, strong) UIImage *previewImage;
 
@@ -80,9 +82,25 @@
 {
     self.textPostViewController.isEditing = NO;
     
+    self.imageHelper = [[VTextPostImageHelper alloc] init];
+    [self.imageHelper exportWithAssetAtURL:self.mediaURL color:[self currentColorSelection] completion:^(NSURL *renderedAssetURL, NSError *error )
+    {
+        if ( renderedAssetURL != nil )
+        {
+            [self publishWithRenderedAssetURL:renderedAssetURL Completion:completion];
+        }
+        else
+        {
+            completion( NO, nil, nil, error );
+        }
+    }];
+}
+
+- (void)publishWithRenderedAssetURL:(NSURL *)renderedAssetURL Completion:(void (^)(BOOL, NSURL *, UIImage *, NSError *))completion
+{
     [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
                                            backgroundColor:[self currentColorSelection]
-                                                  mediaURL:self.mediaURL
+                                                  mediaURL:renderedAssetURL
                                               previewImage:[self textPostPreviewImage]
                                                 completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {

@@ -14,7 +14,7 @@
 #import "UIView+AutoLayout.h"
 #import "VTextPostTextView.h"
 #import "VEditableTextPostHashtagHelper.h"
-#import "VEditableTextPostImageHelper.h"
+#import "VTextPostImageHelper.h"
 #import "VContentInputAccessoryView.h"
 
 static NSString * const kDefaultTextKey = @"defaultText";
@@ -31,7 +31,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 @property (nonatomic, assign) BOOL hasAppeared;
 
 @property (nonatomic, strong) VEditableTextPostHashtagHelper *hashtagHelper;
-@property (nonatomic, strong) VEditableTextPostImageHelper *imageHelper;
+@property (nonatomic, strong) VTextPostImageHelper *imageHelper;
 @property (nonatomic, assign) UIImage *originalImage;
 
 @end
@@ -52,7 +52,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [super viewDidLoad];
     
     self.hashtagHelper = [[VEditableTextPostHashtagHelper alloc] init];
-    self.imageHelper = [[VEditableTextPostImageHelper alloc] init];
+    self.imageHelper = [[VTextPostImageHelper alloc] init];
     
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
     [self.view insertSubview:self.overlayButton belowSubview:self.textView];

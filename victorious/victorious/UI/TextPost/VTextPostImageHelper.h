@@ -1,5 +1,5 @@
 //
-//  VEditableTextPostImageHelper.h
+//  VTextPostImageHelper.h
 //  victorious
 //
 //  Created by Patrick Lynch on 4/16/15.
@@ -8,12 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VEditableTextPostImageHelper : NSObject
+@interface VTextPostImageHelper : NSObject
 
 /**
  Sets the background iamge URL.
  */
 @property (nonatomic, strong) NSURL *imageURL;
+
+
+/**
+ Loads an image using the provided asset URL, renders a new image that combines the input image with
+ the input color that is blended accoding to a style that is hardcoded and encapsulated inside this class,
+ then saves the rendered image to a new asset URL and provides it as single parameter in the completion block.
+ This method is used for rendered final output.
+ */
+- (void)exportWithAssetAtURL:(NSURL *)assetURL color:(UIColor *)color completion:(void(^)(NSURL *, NSError *))completion;
 
 /**
  Returns an image that combines the input image with the input color that is blended
