@@ -14,11 +14,12 @@
 - (void)setHeaderView:(VUserProfileHeaderView *)headerView
 {
     self.clipsToBounds = NO;
-    [_headerView removeFromSuperview];
+    [_headerView.view removeFromSuperview];
     _headerView = headerView;
-    _headerView.frame = self.bounds;//Make sure the header view is set to an origin of 0 0
-    [self addSubview:_headerView];
-    [self v_addFitToParentConstraintsToSubview:_headerView];
+    _headerView.view.frame = self.bounds;//Make sure the header view is set to an origin of 0 0
+    [self addSubview:_headerView.view];
+#warning IMplement view controller containment
+    [self v_addFitToParentConstraintsToSubview:_headerView.view];
 }
 
 @end

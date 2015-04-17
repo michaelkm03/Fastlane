@@ -20,7 +20,7 @@
 
 @end
 
-@interface VUserProfileHeaderView : UIView
+@interface VUserProfileHeaderView : UIViewController
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;

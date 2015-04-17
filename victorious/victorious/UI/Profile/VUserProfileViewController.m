@@ -277,7 +277,7 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     {
         self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
         self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
+        [self.profileHeaderView.view insertSubview:self.backgroundImageView atIndex:0];
     }
     
     NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
@@ -355,7 +355,7 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
         return _profileHeaderView;
     }
     
-    _profileHeaderView =  [VUserProfileHeaderView newView];
+    _profileHeaderView =  [[VUserProfileHeaderView alloc] init];
     _profileHeaderView.user = self.profile;
     _profileHeaderView.delegate = self;
     _profileHeaderView.dependencyManager = self.dependencyManager;

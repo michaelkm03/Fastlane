@@ -30,16 +30,19 @@ static NSString * const kEditButtonStylePill = @"rounded";
 
 @implementation VUserProfileHeaderView
 
-+ (instancetype)newView
+- (instancetype)initWit
 {
-    NSArray *nibViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VUserProfileHeaderView class]) owner:self options:nil];
-    VUserProfileHeaderView *view = [nibViews objectAtIndex:0];
-    return view;
+    self = [super initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
+    if ( self != nil )
+    {
+        self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    }
+    return self;
 }
 
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
-    [super awakeFromNib];
+    [super viewDidLoad];
     
     self.profileImageView.layer.borderWidth = 2.0;
 
@@ -52,8 +55,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
     
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
-    
-    self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
 }
 
 - (void)applyEditProfileButtonStyle
