@@ -106,7 +106,7 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"MM-dd_HH:mm:ss";
-    NSString *imageName = [NSString stringWithFormat:@"fuck.jpg", [dateFormatter stringFromDate:[NSDate date]]];
+    NSString *imageName = [NSString stringWithFormat:@"text_post_%@.jpg", [dateFormatter stringFromDate:[NSDate date]]];
     NSArray *cachePathes = NSSearchPathForDirectoriesInDomains( NSCachesDirectory, NSUserDomainMask, YES );
     return [cachePathes.firstObject stringByAppendingPathComponent:imageName];
 }
