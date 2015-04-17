@@ -325,7 +325,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
               }
                               completion:^(BOOL finished)
               {
-                  if ( super.color == color )
+                  if ( self.color == color )
                   {
                       super.backgroundImage = tintedImage;
                   }
@@ -333,7 +333,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
          }
          else
          {
-             if ( super.color == color )
+             if ( self.color == color )
              {
                  super.backgroundImage = tintedImage;
              }
