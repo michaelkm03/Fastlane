@@ -114,7 +114,7 @@
 - (void)willNavigateToIndex:(NSInteger)index
 {
     // Track selection of main menu item
-    VNavigationMenuItem *menuItem = [self.menuItems objectAtIndex:index];
+    VNavigationMenuItem *menuItem = self.menuItems[index];
     NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueTabBar, VTrackingKeySection : menuItem.title };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
     
