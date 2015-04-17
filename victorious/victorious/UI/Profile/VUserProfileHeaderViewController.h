@@ -1,5 +1,5 @@
 //
-//  VUserProfileHeaderView.h
+//  VUserProfileHeaderViewController.h
 //  victorious
 //
 //  Created by Will Long on 6/18/14.
@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VButton.h"
+#import "VHasManagedDependencies.h"
 
 @class VUser, VDefaultProfileImageView, VDependencyManager;
 
@@ -20,30 +21,33 @@
 
 @end
 
-@interface VUserProfileHeaderView : UIViewController
+@interface VUserProfileHeaderViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VButton *editProfileButton;
+
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
 @property (nonatomic, weak) IBOutlet UILabel *taglineLabel;
-
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet UILabel *followersLabel;
 @property (nonatomic, weak) IBOutlet UILabel *followersHeader;
 @property (nonatomic, weak) IBOutlet UIButton *followersButton;
 @property (nonatomic, weak) IBOutlet UILabel *followingLabel;
 @property (nonatomic, weak) IBOutlet UILabel *followingHeader;
 @property (nonatomic, weak) IBOutlet UIButton *followingButton;
-
-@property (nonatomic, weak) IBOutlet VButton *editProfileButton;
 @property (nonatomic, weak) IBOutlet UIView *userStatsBar;
 
 @property (nonatomic, strong) VUser *user;
+
 @property (nonatomic, weak) id<VUserProfileHeaderDelegate> delegate;
 
 @property (nonatomic, assign) BOOL isFollowingUser;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-+ (instancetype)newView;
+- (void)loadBackgroundImage:(NSURL *)imageURL;
+
+- (void)clearBackgroundImage;
 
 @end

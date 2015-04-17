@@ -1,12 +1,12 @@
 //
-//  VUserProfileHeaderView.m
+//  VUserProfileHeaderViewController.m
 //  victorious
 //
 //  Created by Will Long on 6/18/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VUserProfileHeaderView.h"
+#import "VUserProfileHeaderViewController.h"
 
 #import "VUser+Fetcher.h"
 
@@ -16,26 +16,31 @@
 #import "VDefaultProfileImageView.h"
 #import "VSettingManager.h"
 #import "VThemeManager.h"
+#import "UIImage+ImageEffects.h"
+#import "UIImageView+Blurring.h"
+#import "UIImage+ImageCreation.h"
 
 #import <KVOController/FBKVOController.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 static NSString * const kEditButtonStyleKey = @"editButtonStyle";
 static NSString * const kEditButtonStylePill = @"rounded";
 
-@interface VUserProfileHeaderView()
+@interface VUserProfileHeaderViewController()
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
 @end
 
-@implementation VUserProfileHeaderView
+@implementation VUserProfileHeaderViewController
 
-- (instancetype)initWit
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
     if ( self != nil )
     {
-        self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+        _dependencyManager = dependencyManager;
+        _largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     }
     return self;
 }
@@ -55,6 +60,32 @@ static NSString * const kEditButtonStylePill = @"rounded";
     
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
+    
+    [self applyEditProfileButtonStyle];
+    [self applyStyle];
+}
+
+- (void)loadBackgroundImage:(NSURL *)imageURL
+{
+    UIImage *placeholderImage = self.backgroundImageView.image;
+    if ( placeholderImage == nil )
+    {
+        placeholderImage = [[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]] applyLightEffect];
+    }
+    
+    if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
+    {
+        [self.backgroundImageView setBlurredImageWithURL:imageURL
+                                        placeholderImage:placeholderImage
+                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    }
+}
+
+- (void)clearBackgroundImage
+{
+    [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
+                                           placeholderImage:nil
+                                                  tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
 }
 
 - (void)applyEditProfileButtonStyle
@@ -206,10 +237,8 @@ static NSString * const kEditButtonStylePill = @"rounded";
     }
 }
 
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+- (void)applyStyle
 {
-    _dependencyManager = dependencyManager;
-    
     UIColor *linkColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     if ( linkColor == nil )
     {

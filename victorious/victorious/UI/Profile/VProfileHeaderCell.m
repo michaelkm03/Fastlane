@@ -11,7 +11,7 @@
 
 @implementation VProfileHeaderCell
 
-- (void)setHeaderView:(VUserProfileHeaderView *)headerView
+- (void)setHeaderView:(VUserProfileHeaderViewController *)headerView
 {
     self.clipsToBounds = NO;
     [_headerView.view removeFromSuperview];
