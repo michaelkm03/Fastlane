@@ -82,6 +82,12 @@
 {
     self.textPostViewController.isEditing = NO;
     
+    if ( source == nil )
+    {
+        [self publishWithRenderedAssetURL:nil Completion:completion];
+        return;
+    }
+    
     self.imageHelper = [[VTextPostImageHelper alloc] init];
     [self.imageHelper exportWithAssetAtURL:self.mediaURL color:[self currentColorSelection] completion:^(NSURL *renderedAssetURL, NSError *error )
     {
@@ -117,7 +123,7 @@
 
 - (NSString *)currentText
 {
-    return self.textPostViewController.text;
+    return self.textPostViewController.textOutput;
 }
 
 - (UIImage *)textPostPreviewImage

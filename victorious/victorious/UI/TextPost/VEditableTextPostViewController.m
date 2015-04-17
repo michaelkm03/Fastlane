@@ -94,7 +94,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (NSString *)textOutput
 {
-    return self.isShowingPlaceholderText ? @"" : self.text;
+    return self.isShowingPlaceholderText ? @"" : self.textView.text;
 }
 
 - (BOOL)addHashtag:(NSString *)hashtagText
