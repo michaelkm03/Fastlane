@@ -24,7 +24,7 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 {
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                    {
-                       NSString *path = [self assetExportPath];
+                       NSURL *exportURL = [self assetExportURL];
                        
                        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:assetURL]];
                        if ( image != nil )
@@ -32,20 +32,19 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
                            UIImage *tintentImage = [self tintedImageWithImage:image color:color];
                            NSData *imageData = UIImageJPEGRepresentation( tintentImage, 1 );
                            NSError *error;
-                           BOOL success = [imageData writeToFile:path options:NSDataWritingAtomic error:&error];
+                           BOOL success = [imageData writeToURL:exportURL options:NSDataWritingAtomic error:&error];
                            dispatch_async( dispatch_get_main_queue(), ^
                                           {
-                                              NSString *fileURLPath = [NSString stringWithFormat:@"file://%@", path];
-                                              NSURL *outputURL = [NSURL URLWithString:fileURLPath];
-                                              completion( success ? outputURL : nil, error );
+                                              completion( success ? exportURL : nil, error );
                                           });
                            return;
                        }
                        
                        dispatch_async( dispatch_get_main_queue(), ^
                                       {
-                                          NSString *domain = @"Invalid `assetURL` parameter.";
-                                          NSError *error = [NSError errorWithDomain:domain code:-1 userInfo:nil];
+                                          NSString *description = @"Invalid `assetURL` parameter.";
+                                          NSDictionary *info = @{ NSLocalizedDescriptionKey : description };
+                                          NSError *error = [NSError errorWithDomain:@"" code:-1 userInfo:info];
                                           completion( nil, error );
                                       });
                        
@@ -53,13 +52,13 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 
 }
 
-- (void)renderImage:(UIImage *)image color:(UIColor *)color completion:(void(^)(UIImage *))completion
+- (void)renderImage:(UIImage *)image color:(UIColor *)color completion:(void(^)(UIImage *, UIColor *))completion
 {
     NSParameterAssert( completion != nil );
     
     if ( color == nil || image == nil )
     {
-        completion( image );
+        completion( image, color );
         return;
     }
     
@@ -69,7 +68,7 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     UIImage *cachedImage = [self.cache objectForKey:color];
     if ( cachedImage != nil )
     {
-        completion(  cachedImage );
+        completion(  cachedImage, color );
         return;
     }
     
@@ -79,7 +78,7 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
         dispatch_async( dispatch_get_main_queue(), ^
                        {
                            [self.cache setObject:tintentImage forKey:color];
-                           completion( tintentImage );
+                           completion( tintentImage, color );
                        });
     });
 }
@@ -102,13 +101,13 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 
 #pragma mark - Private helpers
 
-- (NSString *)assetExportPath
+- (NSURL *)assetExportURL
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"MM-dd_HH:mm:ss";
     NSString *imageName = [NSString stringWithFormat:@"text_post_%@.jpg", [dateFormatter stringFromDate:[NSDate date]]];
     NSArray *cachePathes = NSSearchPathForDirectoriesInDomains( NSCachesDirectory, NSUserDomainMask, YES );
-    return [cachePathes.firstObject stringByAppendingPathComponent:imageName];
+    return [NSURL fileURLWithPath:[cachePathes.firstObject stringByAppendingPathComponent:imageName]];
 }
 
 - (UIImage *)tintedImageWithImage:(UIImage *)image color:(UIColor *)color

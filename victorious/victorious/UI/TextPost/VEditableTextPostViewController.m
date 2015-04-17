@@ -315,7 +315,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)updateBackroundImageAnimated:(BOOL)animated
 {
-    [self.imageHelper renderImage:self.originalImage color:self.color completion:^(UIImage *tintedImage)
+    [self.imageHelper renderImage:self.originalImage color:self.color completion:^(UIImage *tintedImage, UIColor *color)
      {
          if ( animated )
          {
@@ -325,12 +325,18 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
               }
                               completion:^(BOOL finished)
               {
-                  super.backgroundImage = tintedImage;
+                  if ( super.color == color )
+                  {
+                      super.backgroundImage = tintedImage;
+                  }
               }];
          }
          else
          {
-             super.backgroundImage = tintedImage;
+             if ( super.color == color )
+             {
+                 super.backgroundImage = tintedImage;
+             }
          }
      }];
 }
