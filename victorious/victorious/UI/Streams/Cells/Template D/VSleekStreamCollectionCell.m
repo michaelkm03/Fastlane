@@ -92,11 +92,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.captionTextViewBottomConstraint.constant = zeroConstraints ? 0.0f : kSleekCellTextNeighboringViewSeparatorHeight;
 }
 
-
 - (NSUInteger)maxCaptionLines
 {
     return 0;
 }
+
 #pragma mark - VBackgroundContainer
 
 - (UIView *)loadingBackgroundContainerView

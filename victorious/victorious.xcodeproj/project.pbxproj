@@ -685,6 +685,7 @@
 		D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */ = {isa = PBXBuildFile; fileRef = D87AD2B01AD48AC500C481D0 /* VAsset+VCachedData.m */; };
 		D87D70931A97C9EC002D4FED /* VTabMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */; };
 		D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */; };
+		D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */; };
 		D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */; };
 		D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = D888B5291A86FC7800B34149 /* VRadialGradientView.m */; };
 		D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D88CEAE31A92E17C00F5A837 /* VVideoSnapshotTool.m */; };
@@ -2112,6 +2113,8 @@
 		D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabMenuViewController.m; sourceTree = "<group>"; };
 		D87D70941A9804CD002D4FED /* VNavigationDestinationContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationContainerViewController.h; sourceTree = "<group>"; };
 		D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationDestinationContainerViewController.m; sourceTree = "<group>"; };
+		D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractActionView.h; sourceTree = "<group>"; };
+		D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractActionView.m; sourceTree = "<group>"; };
 		D888B5261A86FC7800B34149 /* VRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRadialGradientLayer.h; sourceTree = "<group>"; };
 		D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRadialGradientLayer.m; sourceTree = "<group>"; };
 		D888B5281A86FC7800B34149 /* VRadialGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRadialGradientView.h; sourceTree = "<group>"; };
@@ -2127,7 +2130,6 @@
 		D89367451ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionBarFlexibleSpaceItem.m; sourceTree = "<group>"; };
 		D89367471ADDBAA1001D2426 /* VActionBarFixedWidthItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarFixedWidthItem.h; sourceTree = "<group>"; };
 		D89367481ADDBAA1001D2426 /* VActionBarFixedWidthItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionBarFixedWidthItem.m; sourceTree = "<group>"; };
-		D893674A1ADDDCA7001D2426 /* VActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionView.h; sourceTree = "<group>"; };
 		D893674B1ADDDD5E001D2426 /* VSleekActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekActionView.h; sourceTree = "<group>"; };
 		D893674C1ADDDD5E001D2426 /* VSleekActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekActionView.m; sourceTree = "<group>"; };
 		D893674E1ADDE1B9001D2426 /* VRepostButtonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRepostButtonController.h; sourceTree = "<group>"; };
@@ -4303,9 +4305,13 @@
 		A7AEF96C1A83F1C300A3D3A0 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				D8B44CC51ADCB3A3006340E8 /* Template D */,
 				0308B1161AB2AE9700144E53 /* Template C */,
+				D8B44CC51ADCB3A3006340E8 /* Template D */,
+				D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */,
+				D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */,
 				F04A7CB41AB7E0E40092A374 /* VInsetStreamCellHeaderView.xib */,
+				D893674E1ADDE1B9001D2426 /* VRepostButtonController.h */,
+				D893674F1ADDE1B9001D2426 /* VRepostButtonController.m */,
 				A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */,
 				A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */,
 				0308B1121AB2A80900144E53 /* VStreamCellFactory.h */,
@@ -4323,9 +4329,6 @@
 				A7AEF9851A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.xib */,
 				0308B1131AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.h */,
 				0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */,
-				D893674A1ADDDCA7001D2426 /* VActionView.h */,
-				D893674E1ADDE1B9001D2426 /* VRepostButtonController.h */,
-				D893674F1ADDE1B9001D2426 /* VRepostButtonController.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6323,6 +6326,7 @@
 				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */,
+				D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */,
 				D8E39BDD19CB7C80007FD86A /* VContentVideoCell.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
 				A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */,

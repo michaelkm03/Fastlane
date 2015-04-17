@@ -38,7 +38,6 @@ static CGFloat const kInterActionSpace = 25.0f;
 @property (nonatomic, strong) VRoundedBackgroundButton *gifButton;
 @property (nonatomic, strong) NSArray *actionButtons;
 
-@property (nonatomic, strong) VActionBar *actionBar;
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VRepostButtonController *repostButtonController;
@@ -46,9 +45,6 @@ static CGFloat const kInterActionSpace = 25.0f;
 @end
 
 @implementation VSleekActionView
-
-@synthesize sequence = _sequence;
-@synthesize sequenceActionsDelegate = _sequenceActionsDelegate;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -70,12 +66,18 @@ static CGFloat const kInterActionSpace = 25.0f;
     return self;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
 - (void)sharedInit
 {
-    self.actionBar = [[VActionBar alloc] initWithFrame:self.bounds];
-    [self addSubview:self.actionBar];
-    [self v_addFitToParentConstraintsToSubview:self.actionBar];
-    
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
     self.commentButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectZero];
@@ -91,56 +93,40 @@ static CGFloat const kInterActionSpace = 25.0f;
     self.memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_memeIcon"] action:@selector(meme:)];
     self.gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gifIcon"] action:@selector(gif:)];
     self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
-
-    // Defaults should be updated on setSequence:
-    self.actionBar.actionItems = @[
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace],
-                                   self.commentButton,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions],
-                                   self.shareButton,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace],
-                                   self.repostButton,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace],
-                                   self.memeButton,
-                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace],
-                                   self.gifButton,
-                                   [VActionBarFlexibleSpaceItem flexibleSpaceItem]
-                                   ];
 }
 
-- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)actionImage
-                                             action:(SEL)action
+#pragma mark - VHasManagedDependencies
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    CGFloat colorVal = 238.0f / 255.0f;
-    actionButton.unselectedColor = [UIColor colorWithRed:colorVal green:colorVal blue:colorVal alpha:1.0f];
-    actionButton.selected = NO;
-    actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                  forState:UIControlStateNormal];
-    [actionButton v_addWidthConstraint:31.0f];
-    [actionButton v_addHeightConstraint:31.0f];
-    [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-    
-    return actionButton;
+    _dependencyManager = dependencyManager;
+    if (_dependencyManager != nil)
+    {
+        //Override the default tint color to always have white text in the comment label
+        [self.commentButton setTintColor:[UIColor whiteColor]];
+        [[self.commentButton titleLabel] setFont:[_dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
+        self.commentButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        
+        [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
+         {
+             actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+         }];
+    }
 }
 
-- (void)setSequence:(VSequence *)sequence
+#pragma mark - VAbstractActionView
+
+- (void)setReposting:(BOOL)reposting
 {
-    [self.repostButtonController invalidate];
-
-    _sequence = sequence;
+    [super setReposting:reposting];
     
-    [self updateActionItemsForSequence:_sequence];
-    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
-                                                                       repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"D_repostIcon-success"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"D_repostIcon"]];
-    [self reloadCommentsCount];
+    self.repostButtonController.reposting = reposting;
 }
 
-- (void)updateActionItemsForSequence:(VSequence *)sequence
+#pragma mark - VUpdateHooks
+
+- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+                   forSequence:(VSequence *)sequence
 {
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
@@ -170,83 +156,42 @@ static CGFloat const kInterActionSpace = 25.0f;
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     }
     [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
-    self.actionBar.actionItems = actionItems;
+    actionBar.actionItems = actionItems;
 }
 
-- (void)reloadCommentsCount
+- (void)updateCommentCountForSequence:(VSequence *)sequence
 {
-    [self.commentButton setTitle:[self.largeNumberFormatter stringForInteger:[[self.sequence commentCount] integerValue]]
+    [self.commentButton setTitle:[self.largeNumberFormatter stringForInteger:[[sequence commentCount] integerValue]]
                         forState:UIControlStateNormal];
 }
 
-#pragma mark - Actions
-
-- (void)comment:(VRoundedBackgroundButton *)sender
+- (void)updateRepostButtonForSequence:(VSequence *)sequence
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence
-                                                   fromView:self];
-    }
+    [self.repostButtonController invalidate];
+    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
+                                                                       repostButton:self.repostButton
+                                                                      repostedImage:[UIImage imageNamed:@"D_repostIcon-success"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"D_repostIcon"]];
 }
 
-- (void)share:(VRoundedBackgroundButton *)sender
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willShareSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willShareSequence:self.sequence
-                                               fromView:self];
-    }
-}
+#pragma mark - Button Factory
 
-- (void)repost:(VRoundedBackgroundButton *)sender
+- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)actionImage
+                                             action:(SEL)action
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)])
-    {
-        self.repostButtonController.reposting = YES;
-        [self.sequenceActionsDelegate willRepostSequence:self.sequence
-                                                fromView:self
-                                              completion:^(BOOL success)
-         {
-             self.repostButtonController.reposting = NO;
-         }];
-    }
-}
-
-- (void)meme:(VRoundedBackgroundButton *)meme
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
-    {
-        [self.sequenceActionsDelegate willRemixSequence:self.sequence
-                                               fromView:self
-                                              videoEdit:VDefaultVideoEditSnapshot];
-    }
-}
-
-- (void)gif:(VRoundedBackgroundButton *)gif
-{
-    [self.sequenceActionsDelegate willRemixSequence:self.sequence
-                                           fromView:self
-                                          videoEdit:VDefaultVideoEditGIF];
-}
-
-#pragma mark - VHasManagedDependencies
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    if (_dependencyManager != nil)
-    {
-        //Override the default tint color to always have white text in the comment label
-        [self.commentButton setTintColor:[UIColor whiteColor]];
-        [[self.commentButton titleLabel] setFont:[_dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
-        self.commentButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        
-        [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
-         {
-             actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-         }];
-    }
+    VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    actionButton.translatesAutoresizingMaskIntoConstraints = NO;
+    CGFloat colorVal = 238.0f / 255.0f;
+    actionButton.unselectedColor = [UIColor colorWithRed:colorVal green:colorVal blue:colorVal alpha:1.0f];
+    actionButton.selected = NO;
+    actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                  forState:UIControlStateNormal];
+    [actionButton v_addWidthConstraint:31.0f];
+    [actionButton v_addHeightConstraint:31.0f];
+    [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    
+    return actionButton;
 }
 
 @end

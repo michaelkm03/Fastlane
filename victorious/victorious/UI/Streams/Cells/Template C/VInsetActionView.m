@@ -36,16 +36,11 @@
 @property (nonatomic, strong) UIButton *repostButton;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VActionBar *actionBar;
 @property (nonatomic, strong) VRepostButtonController *repostButtonController;
 
 @end
 
 @implementation VInsetActionView
-
-@synthesize sequence = _sequence;
-@synthesize sequenceActionsDelegate = _sequenceActionsDelegate;
-
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -67,12 +62,18 @@
     return self;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
 - (void)sharedInit
 {
-    self.actionBar = [[VActionBar alloc] initWithFrame:self.bounds];
-    [self addSubview:self.actionBar];
-    [self v_addFitToParentConstraintsToSubview:self.actionBar];
-    
     self.shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                             action:@selector(share:)];
     self.gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
@@ -81,44 +82,21 @@
                                            action:@selector(meme:)];
     self.repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                                  action:@selector(repost:)];
-    
-    self.actionBar.actionItems = @[
-                                   [VActionBarFlexibleSpaceItem flexibleSpaceItem],
-                                   self.shareButton,
-                                   [VActionBarFlexibleSpaceItem flexibleSpaceItem],
-                                   self.repostButton,
-                                   [VActionBarFlexibleSpaceItem flexibleSpaceItem],
-                                   ];
-    ;
 }
 
-- (UIButton *)actionButtonWithImage:(UIImage *)actionImage
-                             action:(SEL)action
+#pragma mark - VAbstractActionView
+
+- (void)setReposting:(BOOL)reposting
 {
-    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [super setReposting:reposting];
     
-    actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [actionButton setImage:actionImage forState:UIControlStateNormal];
-    actionButton.tintColor = [UIColor blackColor];
-    [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-    
-    return actionButton;
+    self.repostButtonController.reposting = reposting;
 }
 
-- (void)setSequence:(VSequence *)sequence
-{
-    [self.repostButtonController invalidate];
-    
-    _sequence = sequence;
-    
-    [self updateActionItemsForSequence:_sequence];
-    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
-                                                                       repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
-}
+#pragma mark - VUpdateHooks
 
-- (void)updateActionItemsForSequence:(VSequence *)sequence
+- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+                   forSequence:(VSequence *)sequence
 {
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
@@ -142,59 +120,32 @@
         [actionItems addObject:self.repostButton];
         [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
     }
-
-    self.actionBar.actionItems = actionItems;
+    
+    actionBar.actionItems = actionItems;
 }
 
-#pragma mark - Actions
-
-- (void)comment:(VRoundedBackgroundButton *)sender
+- (void)updateRepostButtonForSequence:(VSequence *)sequence
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence
-                                                   fromView:self];
-    }
+    [self.repostButtonController invalidate];
+    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
+                                                                       repostButton:self.repostButton
+                                                                      repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
 }
 
-- (void)share:(VRoundedBackgroundButton *)sender
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willShareSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willShareSequence:self.sequence
-                                               fromView:self];
-    }
-}
+#pragma mark - Button Factory
 
-- (void)repost:(VRoundedBackgroundButton *)sender
+- (UIButton *)actionButtonWithImage:(UIImage *)actionImage
+                             action:(SEL)action
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)])
-    {
-        sender.enabled = NO;
-        [self.sequenceActionsDelegate willRepostSequence:self.sequence
-                                                fromView:self
-                                              completion:^(BOOL success)
-         {
-             sender.enabled = YES;
-         }];
-    }
-}
-
-- (void)meme:(VRoundedBackgroundButton *)meme
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
-    {
-        [self.sequenceActionsDelegate willRemixSequence:self.sequence
-                                               fromView:self
-                                              videoEdit:VDefaultVideoEditSnapshot];
-    }
-}
-
-- (void)gif:(VRoundedBackgroundButton *)gif
-{
-    [self.sequenceActionsDelegate willRemixSequence:self.sequence
-                                           fromView:self
-                                          videoEdit:VDefaultVideoEditGIF];
+    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    
+    actionButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [actionButton setImage:actionImage forState:UIControlStateNormal];
+    actionButton.tintColor = [UIColor blackColor];
+    [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    
+    return actionButton;
 }
 
 @end

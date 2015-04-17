@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VActionView.h"
+#import "VAbstractActionView.h"
 #import "VHasManagedDependencies.h"
 
-@interface VSleekActionView : UIView <VHasManagedDependencies, VActionView>
+/**
+ *  An VAbstractActionView for sleek cells
+ */
+@interface VSleekActionView : VAbstractActionView <VHasManagedDependencies>
 
 @end

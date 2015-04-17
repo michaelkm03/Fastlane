@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VActionView.h"
+#import "VAbstractActionView.h"
 #import "VHasManagedDependencies.h"
 
-@interface VInsetActionView : UIView <VHasManagedDependencies, VActionView>
+/**
+ *  VInsetActionView is a VAbstractActionView subclass for use in insetCollectionCells.
+ */
+@interface VInsetActionView : VAbstractActionView <VHasManagedDependencies>
 
 @end
