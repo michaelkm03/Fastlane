@@ -9,6 +9,12 @@
 #import "VSideMenuViewController.h"
 #import "VDeeplinkReceiver.h"
 
+/**
+ Posted at the same time as UIApplicationDidBecomeActiveNotification, but
+ only if a new session is NOT starting.
+ */
+extern NSString * const VApplicationDidBecomeActiveNotification;
+
 @interface VRootViewController : UIViewController
 
 /**

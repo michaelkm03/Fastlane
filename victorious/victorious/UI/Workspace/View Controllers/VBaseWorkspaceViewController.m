@@ -142,6 +142,22 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
     
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.toolController setupDefaultTool];
+    
+    [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *toolButton, NSUInteger idx, BOOL *stop)
+     {
+         if (self.toolController.selectedTool == toolButton.associatedObjectForButton)
+         {
+             [self setSelectedButton:toolButton];
+             *stop = YES;
+         }
+     }];
     
     __weak typeof(self) welf = self;
     self.keyboardManager = [[VKeyboardNotificationManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
@@ -162,35 +178,17 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
                                                                           willChangeFrameBlock:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.toolController setupDefaultTool];
-    [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *toolButton, NSUInteger idx, BOOL *stop)
-     {
-         if (self.toolController.selectedTool == toolButton.associatedObjectForButton)
-         {
-             [self setSelectedButton:toolButton];
-             *stop = YES;
-         }
-     }];
-    
-    self.keyboardManager.stopCallingHandlerBlocks = NO;
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    self.keyboardManager.stopCallingHandlerBlocks = YES;
+    self.keyboardManager = nil;
 }
 
 - (void)callCompletionWithSuccess:(BOOL)success
                      previewImage:(UIImage *)previewImage
                  renderedMediaURL:(NSURL *)renderedMediaURL
 {
-    self.keyboardManager = nil;
     if (self.completionBlock != nil)
     {
         self.completionBlock(success, previewImage, renderedMediaURL);
@@ -212,6 +210,7 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
 }
 - (IBAction)publish:(id)sender
 {
+    self.keyboardManager.stopCallingHandlerBlocks = YES;
     [self publishContent];
 }
 

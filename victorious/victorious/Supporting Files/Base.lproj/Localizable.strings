@@ -526,6 +526,7 @@
 
 "No Color"  = "No Color";    // No color selected
 "Standard"  = "Standard";   // The default color before a selection is made
+"No Color"  = "No Color" ;  // The absence of a color selection
 "Red"       = "Red";        // The color red
 "Magenta"   = "Magenta";    // The color, a pink/red
 "Orange"    = "Orange";     // The color orange

@@ -511,6 +511,15 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
 }
 
+- (void)cleanup
+{
+    dispatch_barrier_sync(self.privateQueue, ^(void)
+    {
+        [self.singletonsByID removeAllObjects];
+        [self.childDependencyManagersByID removeAllObjects];
+    });
+}
+
 #pragma mark - Dependency getter primatives
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key

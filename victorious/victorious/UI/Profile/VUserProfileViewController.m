@@ -17,7 +17,6 @@
 #import "VMessageContainerViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
-#import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 #import <UIImageView+WebCache.h>
 #import "VStream+Fetcher.h"
@@ -38,6 +37,7 @@
 #import <MBProgressHUD.h>
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VDependencyManager+VScaffoldViewController.h"
 
@@ -93,6 +93,9 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     VUser *mainUser = [VObjectManager sharedManager].mainUser;
     BOOL isMe = (mainUser != nil && remoteId.integerValue == mainUser.remoteId.integerValue);
     
+    //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderView
+    viewController.dependencyManager = dependencyManager;
+
     if ( !isMe )
     {
         viewController.remoteId = remoteId;
@@ -102,7 +105,6 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
         viewController.profile = mainUser;
     }
     
-    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -110,6 +112,10 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
 {
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    
+    //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderView
+    viewController.dependencyManager = dependencyManager;
+    
     viewController.profile = aUser;
     
     BOOL isMe = ([VObjectManager sharedManager].mainUser != nil && aUser.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
@@ -123,7 +129,6 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
         viewController.title = aUser.name ?: @"Profile";
     }
     
-    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -208,12 +213,16 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
     
     [self updateCollectionViewDataSource];
+    
+    [self loadBackgroundImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
+    [self loadBackgroundImage];
+    
     if (self.isMe)
     {
         [self addFriendsButton];
@@ -230,32 +239,8 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
                                                                                  action:@selector(composeMessage:)];
     }
     
-    UIImage    *defaultBackgroundImage;
-    if (self.backgroundImageView.image)
-    {
-        defaultBackgroundImage = self.backgroundImageView.image;
-    }
-    else
-    {
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
-    }
-    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
-                                    placeholderImage:defaultBackgroundImage
-                                           tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
-    
-    [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
-    
-    NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
-    if (![self.backgroundImageView.sd_imageURL isEqual:pictureURL])
-    {
-        [self.backgroundImageView setBlurredImageWithURL:pictureURL
-                                        placeholderImage:self.backgroundImageView.image
-                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    }
     
     if ( self.streamDataSource.count != 0 )
     {
@@ -278,6 +263,30 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     
     self.didEndViewWillAppear = YES;
     [self attemptToRefreshProfileUI];
+}
+
+- (void)loadBackgroundImage
+{
+    UIImage *placeholderImage = self.backgroundImageView.image;
+    if ( placeholderImage == nil )
+    {
+        placeholderImage = [[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]] applyLightEffect];
+    }
+    
+    if ( self.backgroundImageView == nil )
+    {
+        self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
+    }
+    
+    NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
+    if ( ![self.backgroundImageView.sd_imageURL isEqual:pictureURL] )
+    {
+        [self.backgroundImageView setBlurredImageWithURL:pictureURL
+                                        placeholderImage:placeholderImage
+                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    }
 }
 
 - (void)loadUserWithRemoteId:(NSNumber *)remoteId
@@ -346,11 +355,10 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
         return _profileHeaderView;
     }
     
-    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newView];
-    headerView.user = self.profile;
-    headerView.delegate = self;
-    headerView.dependencyManager = self.dependencyManager;
-    _profileHeaderView = headerView;
+    _profileHeaderView =  [VUserProfileHeaderView newView];
+    _profileHeaderView.user = self.profile;
+    _profileHeaderView.delegate = self;
+    _profileHeaderView.dependencyManager = self.dependencyManager;
     return _profileHeaderView;
 }
 
@@ -436,6 +444,8 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
 
 - (void)setProfile:(VUser *)profile
 {
+    NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil in VUserProfileViewController when the profile is set");
+    
     if (profile == _profile)
     {
         return;
@@ -445,6 +455,11 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     
     _profile = profile;
     
+    if ([self isViewLoaded])
+    {
+        [self loadBackgroundImage];
+    }
+
     self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     NSString *profileName = profile.name ?: @"Profile";
     
@@ -795,6 +810,12 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     
     [self.currentStream removeObserver:self
                             forKeyPath:NSStringFromSelector(@selector(streamItems))];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.profileHeaderView.dependencyManager = dependencyManager;
 }
 
 #pragma mark - VAbstractStreamCollectionViewController
