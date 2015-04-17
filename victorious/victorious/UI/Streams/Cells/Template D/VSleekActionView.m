@@ -161,8 +161,16 @@ static CGFloat const kInterActionSpace = 25.0f;
 
 - (void)updateCommentCountForSequence:(VSequence *)sequence
 {
-    [self.commentButton setTitle:[self.largeNumberFormatter stringForInteger:[[sequence commentCount] integerValue]]
-                        forState:UIControlStateNormal];
+    if ([[sequence commentCount] integerValue] == 0)
+    {
+        [self.commentButton setTitle:@""
+                            forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.commentButton setTitle:[self.largeNumberFormatter stringForInteger:[[sequence commentCount] integerValue]]
+                            forState:UIControlStateNormal];
+    }
 }
 
 - (void)updateRepostButtonForSequence:(VSequence *)sequence
