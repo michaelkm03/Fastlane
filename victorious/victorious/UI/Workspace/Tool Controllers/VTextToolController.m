@@ -82,12 +82,14 @@
 {
     self.textPostViewController.isEditing = NO;
     
-    if ( self.mediaURL == nil )
+    // If there is no background image selector or there is no color, then skip ahead to publish
+    if ( self.mediaURL == nil || [self currentColorSelection] == nil )
     {
-        [self publishWithRenderedAssetURL:nil Completion:completion];
+        [self publishWithRenderedAssetURL:self.mediaURL Completion:completion];
         return;
     }
     
+    // If there is a background image and color, they must be rendered together into the final tinted output image
     self.imageHelper = [[VTextPostImageHelper alloc] init];
     [self.imageHelper exportWithAssetAtURL:self.mediaURL color:[self currentColorSelection] completion:^(NSURL *renderedAssetURL, NSError *error )
     {
