@@ -33,27 +33,43 @@ static NSString * const kTitleKey = @"title";
     {
         _dependencyManager = dependencyManager;
         
-        NSArray *colorOptions = [_dependencyManager templateValueOfType:[NSArray class] forKey:@"colorOptions"];
-        
-        NSArray *suppliedColors = [colorOptions v_map:^VColorType *(NSDictionary *dictionary)
-                                   {
-                                       NSString *title = dictionary[ kTitleKey ];
-                                       UIColor *color = [dependencyManager colorFromDictionary:dictionary[ kColorKey ]];
-                                       if ( color != nil && title != nil )
-                                       {
-                                           return [[VColorType alloc] initWithColor:color title:title];
-                                       }
-                                       return nil;
-                                   }];
-        UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-        if ( accentColor )
-        {
-            VColorType *defaultColorOption = [[VColorType alloc] initWithColor:accentColor title:NSLocalizedString(@"Standard", nil)];
-            suppliedColors = [@[ defaultColorOption ] arrayByAddingObjectsFromArray:suppliedColors];
-        }
-        self.tools = suppliedColors;
+        [self reloadWithCompletion:nil];
     }
     return self;
+}
+
+- (void)reloadWithCompletion:(void(^)(NSArray *tools))completion
+{
+    NSArray *colorOptions = [_dependencyManager templateValueOfType:[NSArray class] forKey:@"colorOptions"];
+    NSArray *suppliedColors = [colorOptions v_map:^VColorType *(NSDictionary *dictionary)
+                               {
+                                   NSString *title = dictionary[ kTitleKey ];
+                                   UIColor *color = [self.dependencyManager colorFromDictionary:dictionary[ kColorKey ]];
+                                   if ( color != nil && title != nil )
+                                   {
+                                       return [[VColorType alloc] initWithColor:color title:title];
+                                   }
+                                   return nil;
+                               }];
+    UIColor *accentColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    if ( accentColor != nil )
+    {
+        VColorType *defaultColorOption = [[VColorType alloc] initWithColor:accentColor title:NSLocalizedString( @"Standard", nil)];
+        suppliedColors = [@[ defaultColorOption ] arrayByAddingObjectsFromArray:suppliedColors];
+    }
+    
+    if ( self.showNoColor )
+    {
+        VColorType *noColorOption = [[VColorType alloc] initWithColor:nil title:NSLocalizedString( @"No Color", nil)];
+        suppliedColors = [suppliedColors arrayByAddingObject:noColorOption];
+    }
+    
+    self.tools = suppliedColors;
+    
+    if ( completion != nil )
+    {
+        completion( self.tools );
+    }
 }
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView

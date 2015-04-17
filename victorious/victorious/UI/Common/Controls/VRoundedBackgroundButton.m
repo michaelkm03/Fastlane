@@ -65,6 +65,7 @@ static const CGFloat kHighlightedScale = 0.8f;
     _selectedColor = [selectedColor copy];
     
     self.circleLayer.fillColor = self.selected ? selectedColor.CGColor : self.unselectedColor.CGColor;
+    [self setNeedsLayout];
 }
 
 - (void)setUnselectedColor:(UIColor *)unselectedColor
@@ -72,6 +73,7 @@ static const CGFloat kHighlightedScale = 0.8f;
     _unselectedColor = [unselectedColor copy];
     
     self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : _unselectedColor.CGColor;
+    [self setNeedsLayout];
 }
 
 @end
