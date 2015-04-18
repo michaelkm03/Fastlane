@@ -17,6 +17,7 @@
 #import "VUserProfileViewController.h"
 
 #import "VDefaultProfileButton.h"
+#import "VDependencyManager+VUserProfile.h"
 
 const CGFloat VConversationCellHeight = 64.0f;
 static const CGFloat kLineSpacing = 3.0f;

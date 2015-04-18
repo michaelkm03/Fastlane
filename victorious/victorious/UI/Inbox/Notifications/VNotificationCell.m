@@ -14,6 +14,7 @@
 #import "VDependencyManager.h"
 #import "VTagStringFormatter.h"
 #import "VUserProfileViewController.h"
+#import "VDependencyManager+VUserProfile.h"
 
 static const CGFloat kLineSpacing = 3.0f;
 static const CGFloat kMinimumLineHeight = 15.0f;

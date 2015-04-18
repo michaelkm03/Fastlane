@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VUserProfileHeaderViewController.h"
 
 @interface VProfileHeaderCell : UICollectionViewCell
 
-@property (nonatomic, weak) VUserProfileHeaderViewController *headerView;
+@property (nonatomic, weak) UIViewController *headerViewController;
 
 @end

@@ -19,6 +19,7 @@
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
+#import "VDependencyManager+VUserProfile.h"
 
 #import <KVOController/FBKVOController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -30,9 +31,29 @@ static NSString * const kEditButtonStylePill = @"rounded";
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VButton *editProfileButton;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *locationLabel;
+@property (nonatomic, weak) IBOutlet UILabel *taglineLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, weak) IBOutlet UILabel *followersLabel;
+@property (nonatomic, weak) IBOutlet UILabel *followersHeader;
+@property (nonatomic, weak) IBOutlet UIButton *followersButton;
+@property (nonatomic, weak) IBOutlet UILabel *followingLabel;
+@property (nonatomic, weak) IBOutlet UILabel *followingHeader;
+@property (nonatomic, weak) IBOutlet UIButton *followingButton;
+@property (nonatomic, weak) IBOutlet UIView *userStatsBar;
+
 @end
 
 @implementation VUserProfileHeaderViewController
+
+@synthesize delegate;
+@synthesize isFollowingUser = _isFollowingUser;
+@synthesize user = _user;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -63,6 +84,8 @@ static NSString * const kEditButtonStylePill = @"rounded";
     
     [self applyEditProfileButtonStyle];
     [self applyStyle];
+    
+    self.user = [_dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
 }
 
 - (void)loadBackgroundImage:(NSURL *)imageURL
@@ -140,27 +163,47 @@ static NSString * const kEditButtonStylePill = @"rounded";
 
 #pragma mark - Setters
 
+- (void)setIsLoading:(BOOL)isLoading
+{
+    if ( isLoading )
+    {
+        [self.editProfileButton showActivityIndicator];
+        self.editProfileButton.enabled = NO;
+    }
+    else
+    {
+        [self.editProfileButton hideActivityIndicator];
+        self.editProfileButton.enabled = YES;
+    }
+}
+
 - (void)setIsFollowingUser:(BOOL)isFollowingUser
 {
     _isFollowingUser = isFollowingUser;
+    
     [self applyEditProfileButtonStyle];
 }
 
 - (void)setUser:(VUser *)user
 {
-    if ( _user == user )
-    {
-        [self applyEditProfileButtonStyle];
-        return;
-    }
+    _user = user;
+        
+    [self clearBackgroundImage];
+    [self loadBackgroundImage:[NSURL URLWithString:self.user.pictureUrl]];
+    
+    [self update];
+}
+
+- (void)update
+{
+    [self applyEditProfileButtonStyle];
+    
     if ( _user != nil )
     {
         [self cleanupKVOControllerWithUser:_user];
     }
-
-    _user = user;
     
-    if ( _user == nil )
+    if ( self.user == nil )
     {
         [self applyEditProfileButtonStyle];
         return;
@@ -174,7 +217,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
                                                 failBlock:nil];
     
     __weak typeof(self) welf = self;
-    if (user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
+    if ( self.user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
     {
         [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
     }
@@ -184,7 +227,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
         {
             welf.editProfileButton.alpha = 0.0f;
             [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                         following:user
+                                         following:self.user
                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
                  welf.isFollowingUser = [resultObjects[0] boolValue];

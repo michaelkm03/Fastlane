@@ -72,6 +72,7 @@
 #import <FBKVOController.h>
 
 #import "VAbstractDirectoryCollectionViewController.h"
+#import "VDependencyManager+VUserProfile.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 

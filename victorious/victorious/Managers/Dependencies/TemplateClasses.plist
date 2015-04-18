@@ -82,6 +82,8 @@
 	<string>VNotificationsViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
+	<key>staticProfile.header</key>
+	<string>VUserProfileHeaderViewController</string>
 	<key>userProfile.screen</key>
 	<string>VUserProfileViewController</string>
 	<key>settings.screen</key>

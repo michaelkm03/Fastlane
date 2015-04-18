@@ -87,7 +87,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 #endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
-        template = [self templateByConcatenatingWorkspaceTemplateWithTemplate:template];
+        template = [self templateByConcatenatingTemplateWithFilename:kWorkspaceTemplateName withTemplate:template];
+        template = [self templateByConcatenatingTemplateWithFilename:@"DEV_profileHeaderTemplate" withTemplate:template];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
                                                                                     configuration:template
@@ -102,25 +103,31 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
            failBlock:failed];
 }
 
-- (NSDictionary *)templateByConcatenatingWorkspaceTemplateWithTemplate:(NSDictionary *)originalTemplate
+- (NSDictionary *)templateByConcatenatingTemplateWithFilename:(NSString *)filename withTemplate:(NSDictionary *)originalTemplate
 {
-    NSString *workspaceTemplatePath = [[NSBundle bundleForClass:[self class]] pathForResource:kWorkspaceTemplateName ofType:kJSONType];
+    NSString *templateAdditionPath = [[NSBundle bundleForClass:[self class]] pathForResource:filename ofType:kJSONType];
     NSError *error = nil;
-    NSData *defaultTemplateData = [NSData dataWithContentsOfFile:workspaceTemplatePath options:kNilOptions error:&error];
+    
+    NSAssert( templateAdditionPath != nil, @"Cannot find path in bundle for filename \"%@\".  Make sure the file is added to the project.", filename );
+    
+    NSData *defaultTemplateData = [NSData dataWithContentsOfFile:templateAdditionPath options:kNilOptions error:&error];
     if (defaultTemplateData == nil)
     {
         return originalTemplate;
     }
-    NSDictionary *workspaceTemplate = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
-    if (workspaceTemplate == nil)
+    NSDictionary *templateAddition = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
+    if (templateAddition == nil)
     {
         return originalTemplate;
     }
     
     // Combine templates
     NSMutableDictionary *combinedDictionary = [[NSMutableDictionary alloc] init];
-    [combinedDictionary addEntriesFromDictionary:workspaceTemplate];
     [combinedDictionary addEntriesFromDictionary:originalTemplate];
+    for ( NSString *key in templateAddition )
+    {
+        combinedDictionary[ key ] = templateAddition[ key ];
+    }
     
     return [NSDictionary dictionaryWithDictionary:combinedDictionary];
 }

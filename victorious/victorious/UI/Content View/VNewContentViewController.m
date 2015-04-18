@@ -101,6 +101,7 @@
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
 #import "VNode+Fetcher.h"
+#import "VDependencyManager+VUserProfile.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;

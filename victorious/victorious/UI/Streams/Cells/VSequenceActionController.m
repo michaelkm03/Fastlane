@@ -49,6 +49,7 @@
 #import "VAuthorizedAction.h"
 
 #import "VAppInfo.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 

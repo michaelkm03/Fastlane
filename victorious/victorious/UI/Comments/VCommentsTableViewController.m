@@ -47,6 +47,7 @@
 #import "VHashtagStreamCollectionViewController.h"
 
 #import "UIStoryboard+VMainStoryboard.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @import Social;
 

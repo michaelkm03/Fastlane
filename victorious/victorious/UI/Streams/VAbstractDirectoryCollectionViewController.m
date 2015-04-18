@@ -13,6 +13,7 @@
 #import "VObjectManager.h"
 #import "VAbstractMarqueeController.h"
 #import "VUserProfileViewController.h"
+#import "VDependencyManager+VUserProfile.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";

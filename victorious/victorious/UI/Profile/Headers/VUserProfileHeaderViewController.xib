@@ -9,11 +9,11 @@
                 <outlet property="backgroundImageView" destination="Nua-VV-KOT" id="JWb-8j-a9j"/>
                 <outlet property="editProfileButton" destination="reE-xi-zdS" id="Ijl-Jb-Oh4"/>
                 <outlet property="followersButton" destination="Ezs-M5-j6u" id="Wml-oO-qic"/>
-                <outlet property="followersHeader" destination="deh-3g-hYk" id="o7n-a8-4HC"/>
-                <outlet property="followersLabel" destination="Mu0-ll-MRk" id="4Kh-nP-HtS"/>
+                <outlet property="followersHeader" destination="Mu0-ll-MRk" id="03Y-W8-1US"/>
+                <outlet property="followersLabel" destination="deh-3g-hYk" id="Z2w-Vc-IbT"/>
                 <outlet property="followingButton" destination="PdG-wg-hxI" id="mP5-64-wZZ"/>
-                <outlet property="followingHeader" destination="vy6-BJ-bJh" id="vUN-6b-jA4"/>
-                <outlet property="followingLabel" destination="vjG-ri-5ts" id="RHy-hg-XXh"/>
+                <outlet property="followingHeader" destination="vjG-ri-5ts" id="J6T-AS-H07"/>
+                <outlet property="followingLabel" destination="vy6-BJ-bJh" id="jpY-xU-g1Z"/>
                 <outlet property="locationLabel" destination="hnb-2H-Iq8" id="DJk-SD-Z3y"/>
                 <outlet property="nameLabel" destination="Xdy-I6-0YY" id="qFx-xT-hCf"/>
                 <outlet property="profileImageView" destination="HHC-1V-OAe" id="838-6E-XgD"/>
@@ -97,7 +97,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="pressedFollowering:" destination="-1" eventType="touchUpInside" id="qJn-4j-6bD"/>
+                                <action selector="pressedFollowers:" destination="-1" eventType="touchUpInside" id="aSc-BE-3NT"/>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PdG-wg-hxI" userLabel="Following Button">
@@ -109,7 +109,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="pressedFollowers:" destination="-1" eventType="touchUpInside" id="Lx4-qZ-BgL"/>
+                                <action selector="pressedFollowering:" destination="-1" eventType="touchUpInside" id="nOz-x0-R1g"/>
                             </connections>
                         </button>
                     </subviews>

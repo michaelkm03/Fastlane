@@ -27,7 +27,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VDefaultProfileImageView.h"
 #import "UIStoryboard+VMainStoryboard.h"
-
+#import "VDependencyManager+VUserProfile.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VMessageViewController () <VMessageTableDataDelegate>

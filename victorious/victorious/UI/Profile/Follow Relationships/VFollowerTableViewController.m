@@ -1,77 +1,62 @@
 //
-//  VFollowingTableViewController.m
+//  VFollowerTableViewController.m
 //  victorious
 //
 //  Created by Gary Philipp on 5/13/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VFollowingTableViewController.h"
+#import "VFollowerTableViewController.h"
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VAuthorizedAction.h"
 #import "VUser.h"
-#import "VUserProfileViewController.h"
-#import "VNoContentView.h"
-#import "VConstants.h"
 #import "VThemeManager.h"
+#import "VNoContentView.h"
+#import "VUserProfileViewController.h"
+#import "VConstants.h"
 #import "MBProgressHUD.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VUserProfile.h"
 
-static NSString * const kVFollowerCellName = @"followerCell";
+@interface VFollowerTableViewController ()
 
-@interface VFollowingTableViewController ()
-
-@property (nonatomic, strong)   NSArray    *following;
+@property (nonatomic, strong)   NSArray    *followers;
 @property (nonatomic) BOOL isMe;
 
 @end
 
-@implementation VFollowingTableViewController
-
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self = [super init];
-    if ( self != nil )
-    {
-        _dependencyManager = dependencyManager;
-    }
-    return self;
-}
+@implementation VFollowerTableViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    [self.tableView registerNib:[UINib nibWithNibName:kVFollowerCellName bundle:nil] forCellReuseIdentifier:kVFollowerCellName];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     if (!self.profile)
     {
         [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse
                                                                     usingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-         {
-             if ([obj isKindOfClass:[VUserProfileViewController class]])
-             {
-                 VUserProfileViewController *userProfile = obj;
-                 self.profile = userProfile.profile;
-                 *stop = YES;
-             }
-         }];
+        {
+            if ([obj isKindOfClass:[VUserProfileViewController class]])
+            {
+                VUserProfileViewController *userProfile = obj;
+                self.profile = userProfile.profile;
+                *stop = YES;
+            }
+        }];
     }
     
-    [self refreshFollowingList];
-    
-    // Set insets and layout margin
-    [self.tableView setLayoutMargins:UIEdgeInsetsZero];
-
-    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    [self refreshFollowersList];
 }
 
 - (BOOL)shouldAutorotate
@@ -88,7 +73,7 @@ static NSString * const kVFollowerCellName = @"followerCell";
 {
     [super viewDidAppear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueProfileFollowing forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueProfileFollowers forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -175,11 +160,21 @@ static NSString * const kVFollowerCellName = @"followerCell";
             VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
             if (cell.profile == user)
             {
+                void (^animations)() = ^(void)
+                {
+                    cell.haveRelationship = NO;
+                };
+                [UIView transitionWithView:cell.followButton
+                                  duration:0.3
+                                   options:UIViewAnimationOptionTransitionFlipFromTop
+                                animations:animations
+                                completion:nil];
+
                 [cell flipFollowIconAction:nil];
                 return;
             }
         }
-        
+
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -202,7 +197,6 @@ static NSString * const kVFollowerCellName = @"followerCell";
                     return;
                 }
             }
-            
         }
         
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
@@ -220,18 +214,19 @@ static NSString * const kVFollowerCellName = @"followerCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.following count];
+    return [self.followers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser *profile = self.following[indexPath.row];
+    VUser *profile = self.followers[indexPath.row];
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     BOOL haveRelationship = [mainUser.following containsObject:profile];
-
-    VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:kVFollowerCellName forIndexPath:indexPath];
-    cell.profile = self.following[indexPath.row];
-    cell.showButton = NO;
+    
+    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
+    cell.profile = self.followers[indexPath.row];
+    cell.showButton = YES;
+    cell.owner = self.profile;
     cell.haveRelationship = haveRelationship;
     cell.dependencyManager = self.dependencyManager;
     
@@ -257,16 +252,15 @@ static NSString * const kVFollowerCellName = @"followerCell";
                  [self followFriendAction:profile];
              }
          }];
-
     };
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser  *user = self.following[indexPath.row];
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
-    [self.navigationController pushViewController:profileViewController animated:YES];
+    VUser *user = self.followers[indexPath.row];
+    VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:user];
+    [self.navigationController pushViewController:profileVC animated:YES];
 }
 
 - (IBAction)refresh:(id)sender
@@ -275,18 +269,18 @@ static NSString * const kVFollowerCellName = @"followerCell";
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
     {
-        [self refreshFollowingList];
+        [self refreshFollowersList];
         [self.refreshControl endRefreshing];
     });
 }
 
-- (void)refreshFollowingList
+- (void)refreshFollowersList
 {
     VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        self.following = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-        [self setIsFollowing:self.following.count];
+        self.followers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
+        [self setHasFollowers:self.followers.count];
         
         [self.tableView reloadData];
     };
@@ -295,80 +289,66 @@ static NSString * const kVFollowerCellName = @"followerCell";
     {
         if (error.code)
         {
-            self.following = [[NSArray alloc] init];
+            self.followers = [[NSArray alloc] init];
             [self.tableView reloadData];
-            [self setIsFollowing:NO];
+            [self setHasFollowers:NO];
         }
     };
-    
+
     if (self.profile != nil)
     {
-        [[VObjectManager sharedManager] loadFollowingsForUser:self.profile
-                                                     pageType:VPageTypeFirst
-                                                 successBlock:followerSuccess
-                                                    failBlock:followerFail];
-    }
-    else
-    {
-        MBProgressHUD *failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        failureHUD.mode = MBProgressHUDModeText;
-        failureHUD.detailsLabelText = NSLocalizedString(@"NotLoggedInMessage", @"");
-        [failureHUD hide:YES afterDelay:3.0f];
+        [[VObjectManager sharedManager] loadFollowersForUser:self.profile
+                                                    pageType:VPageTypeFirst
+                                                successBlock:followerSuccess
+                                                   failBlock:followerFail];
     }
 }
 
-- (void)loadMoreFollowings
+- (void)loadMoreFollowers
 {
-    VSuccessBlock followingSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSet *uniqueFollowings = [NSSet setWithArray:[self.following arrayByAddingObjectsFromArray:resultObjects]];
-        self.following = [[uniqueFollowings allObjects] sortedArrayUsingDescriptors:@[sort]];
-        [self setIsFollowing:self.following.count];
+        NSSet *uniqueFollowers = [NSSet setWithArray:[self.followers arrayByAddingObjectsFromArray:resultObjects]];
+        self.followers = [[uniqueFollowers allObjects] sortedArrayUsingDescriptors:@[sort]];
+        [self setHasFollowers:self.followers.count];
         
         [self.tableView reloadData];
     };
     
     if (self.profile != nil)
     {
-        [[VObjectManager sharedManager] loadFollowingsForUser:self.profile
-                                                     pageType:VPageTypeNext
-                                                 successBlock:followingSuccess
-                                                    failBlock:nil];
-    }
-    else
-    {
-        MBProgressHUD *failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        failureHUD.mode = MBProgressHUDModeText;
-        failureHUD.detailsLabelText = NSLocalizedString(@"NotLoggedInMessage", @"");
-        [failureHUD hide:YES afterDelay:3.0f];
+        [[VObjectManager sharedManager] loadFollowersForUser:self.profile
+                                                    pageType:VPageTypeNext
+                                                successBlock:followerSuccess
+                                                   failBlock:nil];
     }
 }
 
-- (void)setIsFollowing:(BOOL)isFollowing
+- (void)setHasFollowers:(BOOL)hasFollowers
 {
-    if (!isFollowing)
+    if (!hasFollowers)
     {
         NSString *msg, *title;
         
-        self.isMe = [[VObjectManager sharedManager] mainUser] != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue;
+        self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
         
         if (self.isMe)
         {
-            title = NSLocalizedString(@"NotFollowingTitle", @"");
-            msg = NSLocalizedString(@"NotFollowingMessage", @"");
+            title = NSLocalizedString(@"NoFollowersTitle", @"");
+            msg = NSLocalizedString(@"NoFollowersMessage", @"");
         }
         else
         {
-            title = NSLocalizedString(@"ProfileNotFollowingTitle", @"");
-            msg = NSLocalizedString(@"ProfileNotFollowingMessage", @"");
+            title = NSLocalizedString(@"ProfileNoFollowersTitle", @"");
+            msg = NSLocalizedString(@"ProfileNoFollowersMessage", @"");
         }
         
-        VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
-        self.tableView.backgroundView = notFollowingView;
-        notFollowingView.titleLabel.text = title;
-        notFollowingView.messageLabel.text = msg;
-        notFollowingView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+        VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        self.tableView.backgroundView = noFollowersView;
+        noFollowersView.titleLabel.text = title;
+        noFollowersView.messageLabel.text = msg;
+        noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
