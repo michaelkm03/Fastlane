@@ -90,7 +90,7 @@
                             <constraint firstAttribute="height" constant="50" id="MAn-nL-aYh"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R7e-A2-yzh" customClass="VSleekStreamCellActionView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R7e-A2-yzh" customClass="VSleekActionView">
                         <rect key="frame" x="-1" y="380" width="322" height="41"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -137,7 +137,7 @@
                 <outlet property="previewImageTwo" destination="DYL-sd-dM5" id="Rz0-Dy-cOS"/>
                 <outlet property="previewImageView" destination="4hb-9q-so0" id="iJ9-Ef-J30"/>
                 <outlet property="shadeView" destination="8QT-3n-Tuc" id="whN-fE-uL0"/>
-                <outlet property="sleekCellActionView" destination="R7e-A2-yzh" id="8t6-3N-BoV"/>
+                <outlet property="sleekActionView" destination="R7e-A2-yzh" id="uBu-Lq-NdY"/>
                 <outlet property="streamCellHeaderView" destination="EGy-dZ-mCE" id="ZbT-d5-nLb"/>
             </connections>
             <point key="canvasLocation" x="415" y="223.5"/>

@@ -68,7 +68,7 @@
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
 
-#import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/SDWebImagePrefetcher.h>
 #import <FBKVOController.h>
 
 #import "VAbstractDirectoryCollectionViewController.h"
@@ -93,7 +93,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
-@property (strong, nonatomic) NSCache *preloadImageCache;
 @property (nonatomic, strong) id<VStreamCellFactory> streamCellFactory;
 @property (nonatomic, strong) VAbstractMarqueeController *marqueeCellController;
 
@@ -263,13 +262,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self updateCurrentlyPlayingMediaAsset];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [self.preloadImageCache removeAllObjects];
-}
-
 - (BOOL)shouldAutorotate
 {
     return NO;
@@ -278,23 +270,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-    self.preloadImageCache = nil;
-}
-
-- (NSCache *)preloadImageCache
-{
-    if (!_preloadImageCache)
-    {
-        self.preloadImageCache = [[NSCache alloc] init];
-        self.preloadImageCache.countLimit = 20;
-    }
-    return _preloadImageCache;
 }
 
 #pragma mark - Properties
@@ -509,14 +484,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         NSIndexPath *preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
         VSequence *preloadSequence = (VSequence *)[dataSource itemAtIndexPath:preloadPath];
-        
-        for (NSURL *imageUrl in [preloadSequence initialImageURLs])
-        {
-            UIImageView *preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-            [preloadView sd_setImageWithURL:imageUrl];
-            
-            [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];
-        }
+        [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[preloadSequence initialImageURLs]];
     }
 }
 
