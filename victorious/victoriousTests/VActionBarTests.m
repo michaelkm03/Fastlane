@@ -17,6 +17,8 @@
 // Layout Helpers
 #import "UIView+Autolayout.h"
 
+static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as VActionBar's internal constant: kDefaultActionItemWidth
+
 @class VActionBarFlexibleSpaceItem;
 @class VActionBarFixedWidthItem;
 
@@ -131,7 +133,7 @@
 {
     CGFloat totalWidth = 300.0f;
     CGFloat fixedItemWidth = 50.0f;
-    CGFloat defaultItemWidth = 44.0f; // ATTENTION! This must be the same as VActionBar's internal constant: kDefaultActionItemWidth
+
     CGFloat expectedWidth = totalWidth - fixedItemWidth;
     
     // Test flex ignoring
@@ -163,14 +165,13 @@
     UIView *viewWithNoIntrinsicContentSizeOrInternalWidthConstraint = [[UIView alloc] initWithFrame:CGRectZero];
     calculatedRemainingSpace = [self.actionBar remainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItems:@[viewWithNoIntrinsicContentSizeOrInternalWidthConstraint]
                                                                                                   fromWidth:totalWidth];
-    XCTAssertEqual(calculatedRemainingSpace, totalWidth - defaultItemWidth);
+    XCTAssertEqual(calculatedRemainingSpace, totalWidth - kDefaultItemWidth);
 }
 
 - (void)testRemainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItemsManyItems
 {
     CGFloat totalWidth = 300.0f;
     CGFloat fixedItemWidth = 50.0f;
-    CGFloat defaultItemWidth = 44.0f; // ATTENTION! This must be the same as VActionBar's internal constant: kDefaultActionItemWidth
     
     VActionBarFixedWidthItem *fixedWidthItem = [VActionBarFixedWidthItem fixedWidthItemWithWidth:fixedItemWidth];
     UIView *viewWithNoIntrinsicContentSizeOrInternalWidthConstraint = [[UIView alloc] initWithFrame:CGRectZero];
@@ -180,7 +181,7 @@
     // Test fixed item + default item
     CGFloat calculatedRemainingSpace = [self.actionBar remainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItems:@[fixedWidthItem, viewWithNoIntrinsicContentSizeOrInternalWidthConstraint]
                                                                                                           fromWidth:totalWidth];
-    XCTAssertEqual(calculatedRemainingSpace, totalWidth - fixedItemWidth - defaultItemWidth);
+    XCTAssertEqual(calculatedRemainingSpace, totalWidth - fixedItemWidth - kDefaultItemWidth);
     
     // Test fixed item + Intrinsic Content Size
     calculatedRemainingSpace = [self.actionBar remainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItems:@[fixedWidthItem, testLabel]
