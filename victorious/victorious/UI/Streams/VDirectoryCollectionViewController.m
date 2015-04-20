@@ -252,6 +252,10 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
                                                                                                  forKey:kStreamCollectionKey
                                                                                   withAddedDependencies:@{ kSequenceIDKey: streamItem.remoteId, VDependencyManagerTitleKey: streamItem.name }];
+        if ( streamCollection == nil )
+        {
+            streamCollection = [VStreamCollectionViewController newWithDependencyManager:self.dependencyManager];
+        }
         [self.navigationController pushViewController:streamCollection animated:YES];
     }
     else if ( streamItem.isContent )
