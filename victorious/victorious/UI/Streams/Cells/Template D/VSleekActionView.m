@@ -49,53 +49,77 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 
 @implementation VSleekActionView
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self != nil)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self != nil)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
+#pragma mark - VAbstractActionView
 
-- (instancetype)init
+- (void)setReposting:(BOOL)reposting
 {
-    self = [super init];
-    if (self != nil)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (void)sharedInit
-{
-    self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    [super setReposting:reposting];
     
-    self.commentButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectZero];
-    [self.commentButton addTarget:self action:@selector(comment:) forControlEvents:UIControlEventTouchUpInside];
-    [self.commentButton setImage:[UIImage imageNamed:@"D_commentIcon"] forState:UIControlStateNormal];
-    [self.commentButton v_addWidthConstraint:kCommentWidth];
-    [self.commentButton v_addHeightConstraint:kActionButtonHeight];
-    self.commentButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.commentButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.repostButtonController.reposting = reposting;
+}
+
+#pragma mark - Property Accessors
+
+- (VLargeNumberFormatter *)largeNumberFormatter
+{
+    if (_largeNumberFormatter == nil)
+    {
+        _largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    }
     
-    self.shareButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_shareIcon"] action:@selector(share:)];
-    self.repostButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_repostIcon"] action:@selector(repost:)];
-    self.memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_memeIcon"] action:@selector(meme:)];
-    self.gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gifIcon"] action:@selector(gif:)];
-    self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
+    return _largeNumberFormatter;
+}
+
+- (VRoundedBackgroundButton *)commentButton
+{
+    if (_commentButton == nil)
+    {
+        _commentButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectZero];
+        [_commentButton addTarget:self action:@selector(comment:) forControlEvents:UIControlEventTouchUpInside];
+        [_commentButton setImage:[UIImage imageNamed:@"D_commentIcon"] forState:UIControlStateNormal];
+        [_commentButton v_addWidthConstraint:kCommentWidth];
+        [_commentButton v_addHeightConstraint:kActionButtonHeight];
+        _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _commentButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    }
+    return _commentButton;
+}
+
+- (VRoundedBackgroundButton *)shareButton
+{
+    if (_shareButton == nil)
+    {
+        _shareButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_shareIcon"] action:@selector(share:)];
+    }
+    return _shareButton;
+}
+
+- (VRoundedBackgroundButton *)repostButton
+{
+    if (_repostButton == nil)
+    {
+        _repostButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_repostIcon"] action:@selector(repost:)];
+    }
+    return _repostButton;
+}
+
+- (VRoundedBackgroundButton *)memeButton
+{
+    if (_memeButton == nil)
+    {
+        _memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_memeIcon"] action:@selector(meme:)];
+    }
+    return _memeButton;
+}
+
+- (VRoundedBackgroundButton *)gifButton
+{
+    if (_gifButton == nil)
+    {
+        _gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gifIcon"] action:@selector(gif:)];
+    }
+    return _gifButton;
 }
 
 #pragma mark - VHasManagedDependencies
@@ -110,20 +134,12 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
         [[self.commentButton titleLabel] setFont:[_dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
         self.commentButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
+        self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
         [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
          {
              actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
          }];
     }
-}
-
-#pragma mark - VAbstractActionView
-
-- (void)setReposting:(BOOL)reposting
-{
-    [super setReposting:reposting];
-    
-    self.repostButtonController.reposting = reposting;
 }
 
 #pragma mark - VUpdateHooks

@@ -44,48 +44,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 @implementation VInsetActionView
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self != nil)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self != nil)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self != nil)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (void)sharedInit
-{
-    self.shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                            action:@selector(share:)];
-    self.gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                          action:@selector(gif:)];
-    self.memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_memeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                           action:@selector(meme:)];
-    self.repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                                                 action:@selector(repost:)];
-}
-
 #pragma mark - VAbstractActionView
 
 - (void)setReposting:(BOOL)reposting
@@ -93,6 +51,48 @@ static const CGFloat kActionButtonWidth = 44.0f;
     [super setReposting:reposting];
     
     self.repostButtonController.reposting = reposting;
+}
+
+#pragma mark - Property Accessors
+
+- (UIButton *)shareButton
+{
+    if (_shareButton == nil)
+    {
+        _shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                            action:@selector(share:)];
+    }
+    return _shareButton;
+}
+
+- (UIButton *)gifButton
+{
+    if (_gifButton == nil)
+    {
+        _gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                          action:@selector(gif:)];
+    }
+    return _gifButton;
+}
+
+- (UIButton *)memeButton
+{
+    if (_memeButton == nil)
+    {
+        _memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_memeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                           action:@selector(meme:)];
+    }
+    return _memeButton;
+}
+
+- (UIButton *)repostButton
+{
+    if (_repostButton == nil)
+    {
+        _repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                                             action:@selector(repost:)];
+    }
+    return _repostButton;
 }
 
 #pragma mark - VUpdateHooks
