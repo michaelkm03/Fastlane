@@ -352,9 +352,6 @@
                       "createSequenceIcon": {
                       "imageURL": "createContentButton"
                       },
-                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
-                      "id": "552d4286e1d65",
-                      "name": "stream.screen",
                       "streamCell": {
                       "showComments": true,
                       "loadingBackground": {
@@ -394,100 +391,17 @@
                       }
                       }
                       },
-                      "marqueeCell": {
-                      "name": "fullscreen.marqueeCell",
-                      "loadingBackground": {
-                      "tiltParallax": true,
-                      "shimmerAnimationActive": true,
-                      "name": "tilePattern.background",
-                      "image": {
-                      "imageURL": "pat_geometric"
-                      },
-                      "color": {
-                      "red": 161,
-                      "alpha": 1,
-                      "blue": 114,
-                      "green": 132
-                      }
-                      },
-                      "orIcon": {
-                      "imageURL": {
-                      "imageURL": "D_pollOr"
-                      }
-                      }
-                      },
-                      "background": {
-                      "name": "solidColor.background",
-                      "color": {
-                      "red": 241,
-                      "alpha": 255,
-                      "blue": 241,
-                      "green": 241
-                      }
+                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                      "id": "552d4286e1d65",
+                      "name": "stream.screen"
                       },
                       "destinationDirectory": {
+                      "name": "directory.screen",
+                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                       "directoryCell": {
                       "name": "showcase.directoryCell",
                       "groupedCell": {
                       "name": "card.directoryCell"
-                      }
-                      },
-                      "name": "directory.screen",
-                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
-                      "marqueeCell": {
-                      "name": "fullscreen.marqueeCell",
-                      "loadingBackground": {
-                      "tiltParallax": true,
-                      "shimmerAnimationActive": true,
-                      "name": "tilePattern.background",
-                      "image": {
-                      "imageURL": "pat_geometric"
-                      },
-                      "color": {
-                      "red": 161,
-                      "alpha": 1,
-                      "blue": 114,
-                      "green": 132
-                      }
-                      },
-                      "orIcon": {
-                      "imageURL": {
-                      "imageURL": "D_pollOr"
-                      }
-                      }
-                      }
-                      },
-                      "identifier": "Menu Channels"
-                      },
-                      "destinationDirectory": {
-                      "directoryCell": {
-                      "name": "showcase.directoryCell",
-                      "groupedCell": {
-                      "name": "card.directoryCell"
-                      }
-                      },
-                      "name": "directory.screen",
-                      "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/%%SEQUENCE_ID%%/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
-                      "marqueeCell": {
-                      "name": "fullscreen.marqueeCell",
-                      "loadingBackground": {
-                      "tiltParallax": true,
-                      "shimmerAnimationActive": true,
-                      "name": "tilePattern.background",
-                      "image": {
-                      "imageURL": "pat_geometric"
-                      },
-                      "color": {
-                      "red": 161,
-                      "alpha": 1,
-                      "blue": 114,
-                      "green": 132
-                      }
-                      },
-                      "orIcon": {
-                      "imageURL": {
-                      "imageURL": "D_pollOr"
-                      }
                       }
                       }
                       },
