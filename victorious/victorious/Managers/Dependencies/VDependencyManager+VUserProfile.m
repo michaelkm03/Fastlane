@@ -10,6 +10,12 @@
 #import "VUserProfileHeader.h"
 #import "VUserProfileViewController.h"
 
+@interface VDependencyManager()
+
+@property (nonatomic, strong) NSDictionary *configuration;
+
+@end
+
 NSString * const VDependencyManagerUserProfileViewComponentKey = @"userProfileView";
 NSString * const VDependencyManagerUserProfileHeaderComponentKey = @"userProfileHeader";
 NSString * const VDependencyManagerUserKey = @"user";

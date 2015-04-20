@@ -102,7 +102,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         successBlock:fullSuccess
            failBlock:failed];
 }
-
 - (NSDictionary *)templateByConcatenatingTemplateWithFilename:(NSString *)filename withTemplate:(NSDictionary *)originalTemplate
 {
     NSString *templateAdditionPath = [[NSBundle bundleForClass:[self class]] pathForResource:filename ofType:kJSONType];

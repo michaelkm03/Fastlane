@@ -593,6 +593,7 @@
 		A7F712021AE1D5A00086F729 /* VNotAuthorizedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F711F41AE1D5A00086F729 /* VNotAuthorizedDataSource.m */; };
 		A7F712031AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F711F61AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m */; };
 		A7F712041AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7F711F71AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib */; };
+		A7F7120A1AE580380086F729 /* DEV_profileHeaderTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = A7F712091AE580380086F729 /* DEV_profileHeaderTemplate.json */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
@@ -1912,6 +1913,7 @@
 		A7F711F51AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotAuthorizedProfileCollectionViewCell.h; sourceTree = "<group>"; };
 		A7F711F61AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotAuthorizedProfileCollectionViewCell.m; sourceTree = "<group>"; };
 		A7F711F71AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotAuthorizedProfileCollectionViewCell.xib; sourceTree = "<group>"; };
+		A7F712091AE580380086F729 /* DEV_profileHeaderTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DEV_profileHeaderTemplate.json; sourceTree = "<group>"; };
 		A7F8DD621A0B1A8B00F82256 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionControllerTests.m; sourceTree = "<group>"; };
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
@@ -3431,6 +3433,7 @@
 		039D02A71A1043D300DB9236 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				A7F712091AE580380086F729 /* DEV_profileHeaderTemplate.json */,
 				035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */,
 				036F4E751A1302E600F9E721 /* Template Generator */,
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
@@ -5643,6 +5646,7 @@
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */,
 				036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */,
+				A7F7120A1AE580380086F729 /* DEV_profileHeaderTemplate.json in Resources */,
 				036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */,
 				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,

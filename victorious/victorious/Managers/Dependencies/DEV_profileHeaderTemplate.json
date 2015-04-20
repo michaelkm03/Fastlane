@@ -566,39 +566,7 @@
                     },
                     "userProfileHeader": {
                         "editButtonStyle": "rounded",
-                        "name": "staticProfile.header",
-                        "background": {
-                            "name": "solidColor.background",
-                            "color": {
-                                "red": 255,
-                                "green": 255,
-                                "blue": 255,
-                                "alpha": 255
-                            }
-                        },
-                        "background": {
-                            "name": "solidColor.background",
-                            "color": {
-                                "red": 241,
-                                "green": 241,
-                                "blue": 241,
-                                "alpha": 255
-                            }
-                        },
-                        "loadingBackground": {
-                            "name": "tilePattern.background",
-                            "color": {
-                                "red": 161,
-                                "green": 132,
-                                "blue": 114,
-                                "alpha": 1
-                            },
-                            "image": {
-                                "imageURL": "pat_geometric"
-                            },
-                            "tiltParallax": true,
-                            "shimmerAnimationActive": true
-                        },
+                        "name": "staticProfile.streamHeader"
                     },
                     "marqueeCell": {
                         "name": "fullscreen.marqueeCell",
@@ -659,6 +627,20 @@
                             "blue": 102,
                             "alpha": 255
                         }
+                    },
+                    "loadingBackground": {
+                        "name": "tilePattern.background",
+                        "color": {
+                            "red": 161,
+                            "green": 132,
+                            "blue": 114,
+                            "alpha": 1
+                        },
+                        "image": {
+                            "imageURL": "pat_geometric"
+                        },
+                        "tiltParallax": true,
+                        "shimmerAnimationActive": true
                     },
                     "background": {
                         "name": "solidColor.background",
@@ -752,6 +734,15 @@
         },
         "template_c_enabled": false,
         "userProfileView": {
+            "background": {
+                "name": "solidColor.background",
+                "color": {
+                    "red": 255,
+                    "green": 255,
+                    "blue": 255,
+                    "alpha": 255
+                }
+            },
             "name": "userProfile.screen",
             "streamCell": {
                 "name": "sleek.streamCell",
@@ -788,7 +779,11 @@
                     "tiltParallax": true,
                     "shimmerAnimationActive": true
                 }
-            }
+            },
+            "userProfileHeader": {
+                "editButtonStyle": "rounded",
+                "name": "staticProfile.streamHeader"
+            },
         },
         "firstTimeContent": {
             "name": "lightweight.contentView",

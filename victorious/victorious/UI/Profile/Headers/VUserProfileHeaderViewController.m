@@ -83,9 +83,13 @@ static NSString * const kEditButtonStylePill = @"rounded";
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
     
     [self applyEditProfileButtonStyle];
-    [self applyStyle];
+    [self applyStyleWithDependencyManager:self.dependencyManager];
     
-    self.user = [_dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
+    self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+    
+    [self applyEditProfileButtonStyle];
+    
+    self.user = [self.dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
 }
 
 - (void)loadBackgroundImage:(NSURL *)imageURL
@@ -180,7 +184,6 @@ static NSString * const kEditButtonStylePill = @"rounded";
 - (void)setIsFollowingUser:(BOOL)isFollowingUser
 {
     _isFollowingUser = isFollowingUser;
-    
     [self applyEditProfileButtonStyle];
 }
 
@@ -191,10 +194,10 @@ static NSString * const kEditButtonStylePill = @"rounded";
     [self clearBackgroundImage];
     [self loadBackgroundImage:[NSURL URLWithString:self.user.pictureUrl]];
     
-    [self update];
+    [self reload];
 }
 
-- (void)update
+- (void)reload
 {
     [self applyEditProfileButtonStyle];
     
@@ -216,13 +219,14 @@ static NSString * const kEditButtonStylePill = @"rounded";
                                              successBlock:nil
                                                 failBlock:nil];
     
-    __weak typeof(self) welf = self;
-    if ( self.user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
+    const BOOL isCurrentUser = [self.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId];
+    if ( isCurrentUser )
     {
-        [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
     }
     else
     {
+        __weak typeof(self) welf = self;
         if ([VObjectManager sharedManager].mainUser)
         {
             welf.editProfileButton.alpha = 0.0f;
@@ -230,7 +234,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
                                          following:self.user
                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
-                 welf.isFollowingUser = [resultObjects[0] boolValue];
+                 welf.isFollowingUser = [resultObjects.firstObject boolValue];
                  [UIView animateWithDuration:0.2f
                                   animations:^
                   {
@@ -280,39 +284,34 @@ static NSString * const kEditButtonStylePill = @"rounded";
     }
 }
 
-- (void)applyStyle
+- (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIColor *linkColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    if ( linkColor == nil )
-    {
-        linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    }
-    
-    UIColor *accentColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     
     self.profileImageView.layer.borderColor = linkColor.CGColor;
     
-    self.nameLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
-    self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
+    self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
-    self.locationLabel.font = [_dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    self.locationLabel.font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     
-    self.taglineLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
-    self.taglineLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-        
-    self.followersLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    self.taglineLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+    self.taglineLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    
+    self.followersLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.followersLabel.textColor = accentColor;
     
-    self.followersHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    self.followersHeader.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followersHeader.textColor = accentColor;
-
-    self.followingLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    
+    self.followingLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.followingLabel.textColor = accentColor;
-
-    self.followingHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    
+    self.followingHeader.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followingHeader.textColor = accentColor;
-
-    UIColor *backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    
+    UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.userStatsBar.backgroundColor = backgroundColor;
     [self applyEditProfileButtonStyle];
 }
@@ -386,25 +385,32 @@ static NSString * const kEditButtonStylePill = @"rounded";
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         [welf applyEditProfileButtonStyle];
-         
-         //Set a minimum line height by setting an NSParagraphStyle to properly display emojis without cutting them off
-         NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-         paragraphStyle.minimumLineHeight = welf.nameLabel.font.lineHeight + 2.0;
-         paragraphStyle.alignment = NSTextAlignmentCenter;
-         NSString *safeName = user.name != nil ? user.name : @"";
-         welf.nameLabel.attributedText = [[NSAttributedString alloc] initWithString:safeName attributes:@{ NSParagraphStyleAttributeName : paragraphStyle }];
-         welf.locationLabel.text = user.location;
-         
-         if ( user.tagline != nil && user.tagline.length > 0 )
-         {
-             welf.taglineLabel.text = user.tagline;
-         }
-         else
-         {
-             welf.taglineLabel.text = @"";
-         }
+         [welf reloadObservedProfileProperties];
      }];
+}
+
+- (void)reloadObservedProfileProperties
+{
+    [self applyEditProfileButtonStyle];
+    
+    //Set a minimum line height by setting an NSParagraphStyle to properly display emojis without cutting them off
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    paragraphStyle.minimumLineHeight = self.nameLabel.font.lineHeight + 2.0;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    NSString *safeName = self.user.name != nil ? self.user.name : @"";
+    NSDictionary *attributes = @{ NSParagraphStyleAttributeName : paragraphStyle };
+    self.nameLabel.attributedText = [[NSAttributedString alloc] initWithString:safeName
+                                                                    attributes:attributes];
+    self.locationLabel.text = self.user.location;
+    
+    if ( self.user.tagline != nil && self.user.tagline.length > 0 )
+    {
+        self.taglineLabel.text = self.user.tagline;
+    }
+    else
+    {
+        self.taglineLabel.text = @"";
+    }
 }
 
 @end

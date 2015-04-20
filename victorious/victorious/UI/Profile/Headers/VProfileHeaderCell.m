@@ -13,7 +13,8 @@
 
 - (void)setHeaderViewController:(UIViewController *)headerViewController
 {
-    if ( _headerViewController != nil && _headerViewController == headerViewController  )
+    const BOOL isExistingHeaderViewController = _headerViewController != nil && _headerViewController == headerViewController;
+    if ( isExistingHeaderViewController || headerViewController == nil  )
     {
         return;
     }

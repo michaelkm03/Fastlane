@@ -201,11 +201,22 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     self.profileHeaderViewController.delegate = self;
 }
 
+- (UIViewController<VUserProfileHeader> *)profileHeaderViewController
+{
+    if ( self.profile != nil && _profileHeaderViewController == nil)
+    {
+        _profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.profile];
+        _profileHeaderViewController.delegate = self;
+    }
+#warning Handle if no header is provided, i.e. profile header is nil
+    return _profileHeaderViewController;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self.profileHeaderViewController update];
+    [self.profileHeaderViewController reload];
     
     if (self.isMe)
     {
@@ -432,7 +443,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
         CGFloat width = CGRectGetWidth(self.view.bounds);
         self.currentProfileSize = CGSizeMake(width, height);
         
-        [self.profileHeaderViewController update];
+        [self.profileHeaderViewController reload];
         
         if ( self.streamDataSource.count == 0 )
         {
@@ -464,9 +475,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
                                      following:self.profile
                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
-             UIViewController<VUserProfileHeader> *header = self.profileHeaderViewController;
-             header.isFollowingUser = [resultObjects[0] boolValue];
-             [header update];
+             self.profileHeaderViewController.isFollowingUser = [resultObjects.firstObject boolValue];
          }
                                      failBlock:nil];
     }
