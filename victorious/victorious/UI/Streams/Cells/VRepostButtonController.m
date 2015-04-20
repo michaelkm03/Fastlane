@@ -103,6 +103,8 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
                           onButton:(UIButton *)button
                           animated:(BOOL)animated
 {
+    NSParameterAssert(animations != nil);
+    
     if (!animated)
     {
         if (animations)
@@ -129,10 +131,7 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
                         options:kNilOptions
                      animations:^
      {
-         if (animations != nil)
-         {
-             animations();
-         }
+         animations();
          button.transform = CGAffineTransformMakeScale( kScaleScaledUp, kScaleScaledUp );
          button.alpha = kRepostedDisabledAlpha;
      }
