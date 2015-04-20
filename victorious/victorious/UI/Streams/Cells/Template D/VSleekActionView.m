@@ -29,7 +29,8 @@ static CGFloat const kLeadingTrailingSpace = 15.0f;
 static CGFloat const kCommentSpaceToActions = 22.0f;
 static CGFloat const kInterActionSpace = 25.0f;
 static CGFloat const kCommentWidth = 68.0f;
-static CGFloat const kCommentHeight = 31.0f;
+static CGFloat const kActionButtonHeight = 31.0f;
+static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 
 @interface VSleekActionView ()
 
@@ -86,7 +87,7 @@ static CGFloat const kCommentHeight = 31.0f;
     [self.commentButton addTarget:self action:@selector(comment:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentButton setImage:[UIImage imageNamed:@"D_commentIcon"] forState:UIControlStateNormal];
     [self.commentButton v_addWidthConstraint:kCommentWidth];
-    [self.commentButton v_addHeightConstraint:kCommentHeight];
+    [self.commentButton v_addHeightConstraint:kActionButtonHeight];
     self.commentButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.commentButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
@@ -189,16 +190,16 @@ static CGFloat const kCommentHeight = 31.0f;
 - (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)actionImage
                                              action:(SEL)action
 {
-    VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    CGFloat colorVal = 238.0f / 255.0f;
+    CGFloat colorVal = kActionBackgroundColorConstant;
     actionButton.unselectedColor = [UIColor colorWithRed:colorVal green:colorVal blue:colorVal alpha:1.0f];
     actionButton.selected = NO;
     actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                   forState:UIControlStateNormal];
-    [actionButton v_addWidthConstraint:31.0f];
-    [actionButton v_addHeightConstraint:31.0f];
+    [actionButton v_addWidthConstraint:kActionButtonHeight];
+    [actionButton v_addHeightConstraint:kActionButtonHeight];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     
     return actionButton;
