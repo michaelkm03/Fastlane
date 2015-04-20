@@ -100,7 +100,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 - (void)updateActionItemsOnBar:(VActionBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
-    if (!actionBar)
+    if (actionBar == nil)
     {
         return;
     }

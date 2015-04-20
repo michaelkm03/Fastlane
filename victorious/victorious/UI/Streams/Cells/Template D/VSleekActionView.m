@@ -147,6 +147,11 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 - (void)updateActionItemsOnBar:(VActionBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
+    if (actionBar == nil)
+    {
+        return;
+    }
+    
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
