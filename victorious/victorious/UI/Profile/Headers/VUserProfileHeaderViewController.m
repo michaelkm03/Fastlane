@@ -7,45 +7,21 @@
 //
 
 #import "VUserProfileHeaderViewController.h"
-
 #import "VUser+Fetcher.h"
-
 #import "VDependencyManager.h"
 #import "VObjectManager+Users.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
 #import "VSettingManager.h"
 #import "VThemeManager.h"
-#import "UIImage+ImageEffects.h"
-#import "UIImageView+Blurring.h"
-#import "UIImage+ImageCreation.h"
 #import "VDependencyManager+VUserProfile.h"
 
 #import <KVOController/FBKVOController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static NSString * const kEditButtonStyleKey = @"editButtonStyle";
-static NSString * const kEditButtonStylePill = @"rounded";
-
 @interface VUserProfileHeaderViewController()
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
-
-@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
-@property (nonatomic, weak) IBOutlet VButton *editProfileButton;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-@property (nonatomic, weak) IBOutlet UILabel *nameLabel;
-@property (nonatomic, weak) IBOutlet UILabel *locationLabel;
-@property (nonatomic, weak) IBOutlet UILabel *taglineLabel;
-@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, weak) IBOutlet UILabel *followersLabel;
-@property (nonatomic, weak) IBOutlet UILabel *followersHeader;
-@property (nonatomic, weak) IBOutlet UIButton *followersButton;
-@property (nonatomic, weak) IBOutlet UILabel *followingLabel;
-@property (nonatomic, weak) IBOutlet UILabel *followingHeader;
-@property (nonatomic, weak) IBOutlet UIButton *followingButton;
-@property (nonatomic, weak) IBOutlet UIView *userStatsBar;
 
 @end
 
@@ -54,6 +30,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
 @synthesize delegate;
 @synthesize isFollowingUser = _isFollowingUser;
 @synthesize user = _user;
+@synthesize preferredHeight;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -70,7 +47,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
 {
     [super viewDidLoad];
     
-    self.profileImageView.layer.borderWidth = 2.0;
+    [self applyProfileImageViewStyle];
 
     self.followersHeader.text = NSLocalizedString(@"FOLLOWERS", @"");
 
@@ -82,87 +59,83 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
     
-    [self applyEditProfileButtonStyle];
+    [self updatePrimaryActionButton];
     [self applyStyleWithDependencyManager:self.dependencyManager];
     
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
-    [self applyEditProfileButtonStyle];
+    [self updatePrimaryActionButton];
     
     self.user = [self.dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
 }
 
 - (void)loadBackgroundImage:(NSURL *)imageURL
 {
-    UIImage *placeholderImage = self.backgroundImageView.image;
-    if ( placeholderImage == nil )
-    {
-        placeholderImage = [[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]] applyLightEffect];
-    }
-    
-    if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
-    {
-        [self.backgroundImageView setBlurredImageWithURL:imageURL
-                                        placeholderImage:placeholderImage
-                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    }
+    [self.backgroundImageView sd_setImageWithURL:imageURL placeholderImage:nil completed:nil];
 }
 
 - (void)clearBackgroundImage
 {
-    [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
-                                           placeholderImage:nil
-                                                  tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
+    [self.backgroundImageView setImage:nil];
 }
 
-- (void)applyEditProfileButtonStyle
+- (void)updatePrimaryActionButton
 {
     if ( self.user == nil || self.dependencyManager == nil )
     {
         return;
     }
     
-    const VUser *loggedInUser = [VObjectManager sharedManager].mainUser;
-    const BOOL isCurrentUser = loggedInUser != nil && [self.user.remoteId isEqualToNumber:loggedInUser.remoteId];
-
-    UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    if ( linkColor == nil )
-    {
-        linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    }
-    UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    self.editProfileButton.titleLabel.font = buttonFont;
-
-    if ( [[self.dependencyManager stringForKey:kEditButtonStyleKey] isEqualToString:kEditButtonStylePill] )
-    {
-        self.editProfileButton.cornerRadius = CGRectGetHeight(self.editProfileButton.bounds) / 2.0f;
-    }
+    [self applyAllStatesEditButtonStyle];
     
-    // Set the text
-    if ( isCurrentUser )
+    
+    if ( self.isCurrentUser )
     {
-        [self.editProfileButton setStyle:VButtonStyleSecondary];
-        self.editProfileButton.primaryColor = linkColor;
-        self.editProfileButton.secondaryColor = linkColor;
-        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+        [self applyCurrentUserStyle];
     }
     else
     {
         if ( self.isFollowingUser )
         {
-            [self.editProfileButton setStyle:VButtonStyleSecondary];
-            self.editProfileButton.primaryColor = linkColor;
-            self.editProfileButton.secondaryColor = linkColor;
-            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+            [self applyFollowingStyle];
         }
         else
         {
-            [self.editProfileButton setStyle:VButtonStylePrimary];
-            self.editProfileButton.primaryColor = linkColor;
-            self.editProfileButton.secondaryColor = linkColor;
-            [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+            [self applyNotFollowingStyle];
         }
     }
+}
+
+- (BOOL)isCurrentUser
+{
+    const VUser *loggedInUser = [VObjectManager sharedManager].mainUser;
+    return loggedInUser != nil && [self.user.remoteId isEqualToNumber:loggedInUser.remoteId];
+}
+
+- (void)applyProfileImageViewStyle
+{
+}
+
+#pragma mark - Edit profile button
+
+- (void)applyCurrentUserStyle
+{
+    NSAssert( NO, @"`applyCurrentUserStyle` method must be implemented in a subclass of `VUserProfileHeaderViewController`." );
+}
+
+- (void)applyFollowingStyle
+{
+    NSAssert( NO, @"`applyFollowingStyle` method must be implemented in a subclass of `VUserProfileHeaderViewController`." );
+}
+
+- (void)applyNotFollowingStyle
+{
+    NSAssert( NO, @"`applyNotFollowingStyle` method must be implemented in a subclass of `VUserProfileHeaderViewController`." );
+}
+
+- (void)applyAllStatesEditButtonStyle
+{
+    // This method is optional
 }
 
 #pragma mark - Setters
@@ -171,20 +144,18 @@ static NSString * const kEditButtonStylePill = @"rounded";
 {
     if ( isLoading )
     {
-        [self.editProfileButton showActivityIndicator];
-        self.editProfileButton.enabled = NO;
+        self.primaryActionButton.enabled = NO;
     }
     else
     {
-        [self.editProfileButton hideActivityIndicator];
-        self.editProfileButton.enabled = YES;
+        self.primaryActionButton.enabled = YES;
     }
 }
 
 - (void)setIsFollowingUser:(BOOL)isFollowingUser
 {
     _isFollowingUser = isFollowingUser;
-    [self applyEditProfileButtonStyle];
+    [self updatePrimaryActionButton];
 }
 
 - (void)setUser:(VUser *)user
@@ -199,7 +170,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
 
 - (void)reload
 {
-    [self applyEditProfileButtonStyle];
+    [self updatePrimaryActionButton];
     
     if ( _user != nil )
     {
@@ -208,11 +179,11 @@ static NSString * const kEditButtonStylePill = @"rounded";
     
     if ( self.user == nil )
     {
-        [self applyEditProfileButtonStyle];
+        [self updatePrimaryActionButton];
         return;
     }
     
-    [self applyEditProfileButtonStyle];
+    [self updatePrimaryActionButton];
     [self setupKVOControllerWithUser:_user];
     
     [[VObjectManager sharedManager] countOfFollowsForUser:_user
@@ -222,14 +193,14 @@ static NSString * const kEditButtonStylePill = @"rounded";
     const BOOL isCurrentUser = [self.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId];
     if ( isCurrentUser )
     {
-        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+        [self applyCurrentUserStyle];
     }
     else
     {
         __weak typeof(self) welf = self;
         if ([VObjectManager sharedManager].mainUser)
         {
-            welf.editProfileButton.alpha = 0.0f;
+            welf.primaryActionButton.alpha = 0.0f;
             [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
                                          following:self.user
                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -238,7 +209,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
                  [UIView animateWithDuration:0.2f
                                   animations:^
                   {
-                      welf.editProfileButton.alpha = 1.0f;
+                      welf.primaryActionButton.alpha = 1.0f;
                   }];
              }
                                          failBlock:nil];
@@ -286,34 +257,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
 
 - (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    
-    self.profileImageView.layer.borderColor = linkColor.CGColor;
-    
-    self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
-    self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    
-    self.locationLabel.font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-    
-    self.taglineLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
-    self.taglineLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    
-    self.followersLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-    self.followersLabel.textColor = accentColor;
-    
-    self.followersHeader.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
-    self.followersHeader.textColor = accentColor;
-    
-    self.followingLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-    self.followingLabel.textColor = accentColor;
-    
-    self.followingHeader.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
-    self.followingHeader.textColor = accentColor;
-    
-    UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.userStatsBar.backgroundColor = backgroundColor;
-    [self applyEditProfileButtonStyle];
+    NSAssert( NO, @"`applyStyleWithDependencyManager:` method must be implemented in a subclass of `VUserProfileHeaderViewController`." );
 }
 
 #pragma mark - Actions
@@ -391,16 +335,9 @@ static NSString * const kEditButtonStylePill = @"rounded";
 
 - (void)reloadObservedProfileProperties
 {
-    [self applyEditProfileButtonStyle];
+    [self updatePrimaryActionButton];
     
-    //Set a minimum line height by setting an NSParagraphStyle to properly display emojis without cutting them off
-    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    paragraphStyle.minimumLineHeight = self.nameLabel.font.lineHeight + 2.0;
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    NSString *safeName = self.user.name != nil ? self.user.name : @"";
-    NSDictionary *attributes = @{ NSParagraphStyleAttributeName : paragraphStyle };
-    self.nameLabel.attributedText = [[NSAttributedString alloc] initWithString:safeName
-                                                                    attributes:attributes];
+    self.nameLabel.text = self.user.name != nil ? self.user.name : @"";
     self.locationLabel.text = self.user.location;
     
     if ( self.user.tagline != nil && self.user.tagline.length > 0 )

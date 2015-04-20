@@ -566,7 +566,7 @@
                     },
                     "userProfileHeader": {
                         "editButtonStyle": "rounded",
-                        "name": "staticProfile.streamHeader"
+                        "name": "floatingProfile.streamHeader"
                     },
                     "marqueeCell": {
                         "name": "fullscreen.marqueeCell",

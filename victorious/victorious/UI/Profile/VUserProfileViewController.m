@@ -37,8 +37,6 @@
 #import "VUserProfileHeader.h"
 #import "VDependencyManager+VUserProfile.h"
 
-static const CGFloat kVSmallUserHeaderHeight = 319.0f;
-
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 
@@ -196,7 +194,6 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     
     [self updateCollectionViewDataSource];
     
-#warning Handle if no header is provided, i.e. profile header is nil
     self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.profile];
     self.profileHeaderViewController.delegate = self;
 }
@@ -208,7 +205,9 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
         _profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.profile];
         _profileHeaderViewController.delegate = self;
     }
-#warning Handle if no header is provided, i.e. profile header is nil
+    
+    self.streamDataSource.hasHeaderCell = _profileHeaderViewController != nil;
+    
     return _profileHeaderViewController;
 }
 
@@ -322,7 +321,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 - (void)viewDidLayoutSubviews
 {
     CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
-    height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
+    height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
     
     CGFloat width = CGRectGetWidth(self.collectionView.bounds);
     CGSize newProfileSize = CGSizeMake(width, height);
@@ -438,7 +437,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     if ( self.didEndViewWillAppear && self.profile != nil )
     {
         CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
-        height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
+        height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
         
         CGFloat width = CGRectGetWidth(self.view.bounds);
         self.currentProfileSize = CGSizeMake(width, height);
@@ -635,12 +634,12 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 {
     if ( !animated )
     {
-        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), kVSmallUserHeaderHeight);
+        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.profileHeaderViewController.preferredHeight);
         [self.currentProfileCell invalidateIntrinsicContentSize];
     }
     else
     {
-        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), kVSmallUserHeaderHeight);
+        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), self.profileHeaderViewController.preferredHeight);
         CGRect newFrame = self.currentProfileCell.frame;
         newFrame.size.height = self.currentProfileSize.height;
         [UIView animateWithDuration:0.4f
@@ -684,7 +683,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     {
         return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
     }
-    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+    else if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return self.currentProfileSize;
     }

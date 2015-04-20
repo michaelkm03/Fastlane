@@ -4,10 +4,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VUserProfileHeaderViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VStaticUserProfileHeaderViewController">
             <connections>
                 <outlet property="backgroundImageView" destination="Nua-VV-KOT" id="JWb-8j-a9j"/>
-                <outlet property="editProfileButton" destination="reE-xi-zdS" id="Ijl-Jb-Oh4"/>
                 <outlet property="followersButton" destination="Ezs-M5-j6u" id="Wml-oO-qic"/>
                 <outlet property="followersHeader" destination="Mu0-ll-MRk" id="03Y-W8-1US"/>
                 <outlet property="followersLabel" destination="deh-3g-hYk" id="Z2w-Vc-IbT"/>
@@ -16,6 +15,7 @@
                 <outlet property="followingLabel" destination="vy6-BJ-bJh" id="jpY-xU-g1Z"/>
                 <outlet property="locationLabel" destination="hnb-2H-Iq8" id="DJk-SD-Z3y"/>
                 <outlet property="nameLabel" destination="Xdy-I6-0YY" id="qFx-xT-hCf"/>
+                <outlet property="primaryActionButton" destination="reE-xi-zdS" id="BtM-uD-uK3"/>
                 <outlet property="profileImageView" destination="HHC-1V-OAe" id="838-6E-XgD"/>
                 <outlet property="taglineLabel" destination="eWJ-1h-9hk" id="Rw1-7l-1vz"/>
                 <outlet property="userStatsBar" destination="bHl-Un-gmi" id="98Q-eM-ey7"/>

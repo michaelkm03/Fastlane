@@ -83,7 +83,9 @@
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
 	<key>staticProfile.streamHeader</key>
-	<string>VUserProfileHeaderViewController</string>
+	<string>VStaticUserProfileHeaderViewController</string>
+	<key>floatingProfile.streamHeader</key>
+	<string>VFloatingUserProfileHeaderViewController</string>
 	<key>userProfile.screen</key>
 	<string>VUserProfileViewController</string>
 	<key>settings.screen</key>

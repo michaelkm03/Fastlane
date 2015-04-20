@@ -17,6 +17,8 @@ extern NSString * const VDependencyManagerUserProfileHeaderComponentKey;
 extern NSString * const VDependencyManagerUserKey;
 extern NSString * const VDependencyManagerUserRemoteIdKey;
 extern NSString * const VDependencyManagerFindFriendsIconKey;
+extern NSString * const VDependencyManagerProfileEditButtonStyleKey;
+extern NSString * const VDependencyManagerProfileEditButtonStylePill;
 
 @interface VDependencyManager (VUserProfileViewController)
 

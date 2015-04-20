@@ -67,4 +67,10 @@
  */
 @property (nonatomic, strong) VUser *user;
 
+/**
+ The height to which a containing stream cell must be sized in order to properly
+ display this header view.
+ */
+@property (nonatomic, assign, readonly) CGFloat preferredHeight;
+
 @end

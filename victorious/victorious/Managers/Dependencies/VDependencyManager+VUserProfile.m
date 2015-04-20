@@ -21,6 +21,8 @@ NSString * const VDependencyManagerUserProfileHeaderComponentKey = @"userProfile
 NSString * const VDependencyManagerUserKey = @"user";
 NSString * const VDependencyManagerUserRemoteIdKey = @"remoteId";
 NSString * const VDependencyManagerFindFriendsIconKey = @"findFriendsIcon";
+NSString * const VDependencyManagerProfileEditButtonStyleKey = @"editButtonStyle";
+NSString * const VDependencyManagerProfileEditButtonStylePill = @"rounded";
 
 @implementation VDependencyManager (VUserProfileViewController)
 
