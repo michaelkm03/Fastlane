@@ -46,7 +46,6 @@
  *  @abstract Use this to cleanup any KVO.
  *
  *  @description Unusable after this point.
- *
  */
 - (void)invalidate;
 

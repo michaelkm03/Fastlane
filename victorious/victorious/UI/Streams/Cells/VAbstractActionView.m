@@ -33,7 +33,7 @@
     [self addSubview:self.actionBar];
     [self v_addFitToParentConstraintsToSubview:self.actionBar];
     
-    // If we got a sequence before we setup our aciton bar
+    // If we got a sequence before we setup our action bar
     if (self.sequence != nil)
     {
         [self updateActionItemsOnBar:self.actionBar

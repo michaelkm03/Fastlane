@@ -22,7 +22,6 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 @property (nonatomic, assign) BOOL isAnimating;
 
-
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, weak) UIButton *repostButton;
 @property (nonatomic, strong) UIImage *repostedImage;
