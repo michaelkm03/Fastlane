@@ -31,6 +31,7 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "NSURL+VPathHelper.h"
 #import "VInboxDeeplinkHandler.h"
+#import "VNavigationController.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -411,7 +412,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
-    [self.navigationController pushViewController:userSearch animated:YES];
+    
+    //Create a navigation controller that will hold the user search view controller
+    VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+    navigationController.innerNavigationController.viewControllers = @[userSearch];
+    navigationController.innerNavigationController.navigationBarHidden = YES;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - UIScrollViewDelegate

@@ -146,6 +146,8 @@ static const NSInteger kSearchResultLimit = 100;
     
     // SET THE SEARCH FIELD ACTIVE
     [self.searchField becomeFirstResponder];
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -209,7 +211,7 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (IBAction)closeButtonAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)composeMessageToUser:(VUser *)profile
