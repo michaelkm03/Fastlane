@@ -107,19 +107,13 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     
     if (!animated)
     {
-        if (animations)
-        {
-            animations();
-        }
+        animations();
         return;
     }
     
     if (self.isAnimating)
     {
-        if (animations)
-        {
-            animations();
-        }
+        animations();
         return;
     }
     
