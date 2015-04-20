@@ -28,6 +28,8 @@
 #import "VLargeNumberFormatter.h"
 #import "VRepostButtonController.h"
 
+static const CGFloat kActionButtonWidth = 44.0f;
+
 @interface VInsetActionView ()
 
 @property (nonatomic, strong) UIButton *shareButton;
@@ -98,30 +100,50 @@
 - (void)updateActionItemsOnBar:(VActionBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
-    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
+    if (!actionBar)
+    {
+        return;
+    }
     
-    [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
-    [actionItems addObject:self.shareButton];
-    [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
-    
+    // Create an array of available action items
+    NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
+    [justActionItems addObject:self.shareButton];
     if ([sequence canRemix] && [sequence isVideo])
     {
-        [actionItems addObject:self.gifButton];
-        [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+        [justActionItems addObject:self.gifButton];
     }
     if ([sequence canRemix])
     {
-        [actionItems addObject:self.memeButton];
-        [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+        [justActionItems addObject:self.memeButton];
     }
-    
     if ([sequence canRepost])
     {
-        [actionItems addObject:self.repostButton];
-        [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+        [justActionItems addObject:self.repostButton];
     }
     
-    actionBar.actionItems = actionItems;
+    // Calculate spacing
+    __block CGFloat remainingSpace = CGRectGetWidth(actionBar.bounds);
+    [justActionItems enumerateObjectsUsingBlock:^(UIButton *actionItem, NSUInteger idx, BOOL *stop)
+    {
+        remainingSpace = remainingSpace - [actionItem v_internalWidthConstraint].constant;
+    }];
+    CGFloat spacingWidth = remainingSpace / justActionItems.count;
+    
+    // Add our action items and spacing to an array to provide to the action bar
+    // Edge spacing should be half the inter-item spacing
+    NSMutableArray *actionItemsAndSpacing = [[NSMutableArray alloc] init];
+    [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth * 0.5f]];
+    [justActionItems enumerateObjectsUsingBlock:^(UIButton *actionButton, NSUInteger idx, BOOL *stop)
+    {
+        [actionItemsAndSpacing addObject:actionButton];
+        if (actionButton != [justActionItems lastObject])
+        {
+            [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth]];
+        }
+    }];
+    [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth * 0.5f]];
+    
+    actionBar.actionItems = [NSArray arrayWithArray:actionItemsAndSpacing];
 }
 
 - (void)updateRepostButtonForSequence:(VSequence *)sequence
@@ -144,6 +166,7 @@
     [actionButton setImage:actionImage forState:UIControlStateNormal];
     actionButton.tintColor = [UIColor blackColor];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    [actionButton v_addWidthConstraint:kActionButtonWidth];
     
     return actionButton;
 }
