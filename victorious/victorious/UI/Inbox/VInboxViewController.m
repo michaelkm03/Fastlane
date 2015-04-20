@@ -411,6 +411,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
+    if ( self.messageViewControllers == nil )
+    {
+        self.messageViewControllers = [[NSMutableDictionary alloc] init];
+    }
+    userSearch.messageViewControllers = self.messageViewControllers;
     [self.navigationController pushViewController:userSearch animated:YES];
 }
 

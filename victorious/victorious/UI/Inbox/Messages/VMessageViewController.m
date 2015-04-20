@@ -80,11 +80,14 @@
 {
     [super viewWillAppear:animated];
     
-    self.tableDataSource = [[VMessageTableDataSource alloc] initWithObjectManager:[VObjectManager sharedManager]];
-    self.tableDataSource.otherUser = self.otherUser;
-    self.tableDataSource.tableView = self.tableView;
-    self.tableDataSource.delegate = self;
-    self.tableDataSource.messageCountCoordinator = self.messageCountCoordinator;
+    if (!self.tableDataSource)
+    {
+        self.tableDataSource = [[VMessageTableDataSource alloc] initWithObjectManager:[VObjectManager sharedManager]];
+        self.tableDataSource.otherUser = self.otherUser;
+        self.tableDataSource.tableView = self.tableView;
+        self.tableDataSource.delegate = self;
+        self.tableDataSource.messageCountCoordinator = self.messageCountCoordinator;
+    }
     self.tableView.dataSource = self.tableDataSource;
 
     if (self.shouldRefreshOnAppearance)

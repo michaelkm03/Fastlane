@@ -25,5 +25,6 @@
  Defaults to: VObjectManagerSearchContextDiscover
  */
 @property (nonatomic, strong) NSString *searchContext;
+@property (nonatomic, strong) NSMutableDictionary *messageViewControllers;
 
 @end

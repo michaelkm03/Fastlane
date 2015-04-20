@@ -31,6 +31,7 @@
 
 #import "VLoginViewController.h"
 #import "VMessageContainerViewController.h"
+#import "VMessageViewController.h"
 
 #import "VThemeManager.h"
 
@@ -224,7 +225,13 @@ static const NSInteger kSearchResultLimit = 100;
         {
             return;
         }
-        VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile dependencyManager:self.dependencyManager];
+        VMessageContainerViewController *composeController = self.messageViewControllers[profile.remoteId];
+        if (composeController == nil)
+        {
+            composeController = [VMessageContainerViewController messageViewControllerForUser:profile dependencyManager:self.dependencyManager];
+            self.messageViewControllers[profile.remoteId] = composeController;
+        }
+        [(VMessageViewController *)composeController.conversationTableViewController setShouldRefreshOnAppearance:YES];
         [self.navigationController pushViewController:composeController animated:YES];
     }];
 }
