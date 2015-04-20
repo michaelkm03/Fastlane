@@ -34,11 +34,10 @@
     [self v_addFitToParentConstraintsToSubview:self.actionBar];
     
     // If we got a sequence before we setup our aciton bar
-    if (self.sequence)
+    if (self.sequence != nil)
     {
         [self updateActionItemsOnBar:self.actionBar
                          forSequence:self.sequence];
-
     }
 }
 
@@ -89,7 +88,7 @@
     }
 }
 
-- (void)meme:(id)meme
+- (void)meme:(id)sender
 {
     if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
@@ -99,11 +98,14 @@
     }
 }
 
-- (void)gif:(id)gif
+- (void)gif:(id)sender
 {
-    [self.sequenceActionsDelegate willRemixSequence:self.sequence
-                                           fromView:self
-                                          videoEdit:VDefaultVideoEditGIF];
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
+    {
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence
+                                               fromView:self
+                                              videoEdit:VDefaultVideoEditGIF];
+    }
 }
 
 @end

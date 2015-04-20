@@ -38,7 +38,7 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
                  unRepostedImage:(UIImage *)unRepostedImage
 {
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         _sequence = sequenceToObserve;
         _repostButton = repostButton;
@@ -130,7 +130,7 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
                         options:kNilOptions
                      animations:^
      {
-         if (animations)
+         if (animations != nil)
          {
              animations();
          }

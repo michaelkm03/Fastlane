@@ -61,12 +61,12 @@
 /**
  *  Dispatch the sequence meme message to the current sequence actions delegate.
  */
-- (void)meme:(id)meme;
+- (void)meme:(id)sender;
 
 /**
  *  Dispatch the sequence gif message to the current sequence actions delegate.
  */
-- (void)gif:(id)gif;
+- (void)gif:(id)sender;
 
 @end
 
