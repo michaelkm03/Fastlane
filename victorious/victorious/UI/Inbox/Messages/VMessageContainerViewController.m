@@ -191,24 +191,41 @@
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     keyboardBar.sendButtonEnabled = NO;
-    VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
-    self.busyView.hidden = NO;
-    [messageViewController.tableDataSource createMessageWithText:text mediaURL:mediaURL completion:^(NSError *error)
+    if ( self.presentingFromUserSearch )
     {
-        keyboardBar.sendButtonEnabled = YES;
-        self.busyView.hidden = YES;
-        if (error)
+        /*
+         We've been presented from user search and need to, without animation, drop back into the
+            navigation stack below us.
+         */
+        VMessageContainerViewController *newContainer = [VMessageContainerViewController messageViewControllerForUser:self.otherUser dependencyManager:self.dependencyManager];
+        NSLog(@"presenter %@, vnav is %@", [self v_navigationController].presentingViewController.navigationController, [self.presentingViewController v_navigationController]);
+        [self.searchPresentingViewController.navigationController pushViewController:newContainer animated:NO];
+        [self.searchPresentingViewController dismissViewControllerAnimated:NO completion:^
         {
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeText;
-            hud.labelText = NSLocalizedString(@"ConversationSendError", @"");
-            [hud hide:YES afterDelay:3.0];
-        }
-        else
-        {
-            [keyboardBar clearKeyboardBar];
-        }
-    }];
+            [newContainer keyboardBar:newContainer.keyboardBarViewController didComposeWithText:text mediaURL:mediaURL];
+        }];
+    }
+    else
+    {
+        VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
+        self.busyView.hidden = NO;
+        [messageViewController.tableDataSource createMessageWithText:text mediaURL:mediaURL completion:^(NSError *error)
+         {
+             keyboardBar.sendButtonEnabled = YES;
+             self.busyView.hidden = YES;
+             if (error)
+             {
+                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                 hud.mode = MBProgressHUDModeText;
+                 hud.labelText = NSLocalizedString(@"ConversationSendError", @"");
+                 [hud hide:YES afterDelay:3.0];
+             }
+             else
+             {
+                 [keyboardBar clearKeyboardBar];
+             }
+         }];
+    }
 }
 
 @end

@@ -76,6 +76,8 @@ static BOOL isRunningTests(void) __attribute__((const));
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     
+    //[self.window.layer setSpeed:.1f];
+    
     return YES;
 }
 

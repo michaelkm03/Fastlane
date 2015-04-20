@@ -154,6 +154,7 @@ static const NSInteger kSearchResultLimit = 100;
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSearchDidAppear];
+    NSLog(@"presenting is %@", self.presentingViewController);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -228,6 +229,8 @@ static const NSInteger kSearchResultLimit = 100;
         }
         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile dependencyManager:self.dependencyManager];
         [self.navigationController pushViewController:composeController animated:YES];
+        composeController.presentingFromUserSearch = YES;
+        composeController.searchPresentingViewController = self.presentingViewController;
     }];
 }
 
