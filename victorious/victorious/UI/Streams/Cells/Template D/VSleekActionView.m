@@ -28,6 +28,8 @@
 static CGFloat const kLeadingTrailingSpace = 15.0f;
 static CGFloat const kCommentSpaceToActions = 22.0f;
 static CGFloat const kInterActionSpace = 25.0f;
+static CGFloat const kCommentWidth = 68.0f;
+static CGFloat const kCommentHeight = 31.0f;
 
 @interface VSleekActionView ()
 
@@ -83,8 +85,8 @@ static CGFloat const kInterActionSpace = 25.0f;
     self.commentButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectZero];
     [self.commentButton addTarget:self action:@selector(comment:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentButton setImage:[UIImage imageNamed:@"D_commentIcon"] forState:UIControlStateNormal];
-    [self.commentButton v_addWidthConstraint:68.0f];
-    [self.commentButton v_addHeightConstraint:31.0f];
+    [self.commentButton v_addWidthConstraint:kCommentWidth];
+    [self.commentButton v_addHeightConstraint:kCommentHeight];
     self.commentButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.commentButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     

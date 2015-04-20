@@ -18,8 +18,6 @@
  *         any other views. (i.e. secondItem should be nil.)
  *      2. The intrinsic content size width.
  *      3. Defaults to 44 pt width
- *
- *
  */
 @interface VActionBar : UIView
 
@@ -27,7 +25,6 @@
  *  The items to distribute over the action bar.
  *
  *  Each item should only appear once in the array. A view appearing twice in the array is undefined.
- *
  */
 @property (nonatomic, copy) NSArray *actionItems;
 
