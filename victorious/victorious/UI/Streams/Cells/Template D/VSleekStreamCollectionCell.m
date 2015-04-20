@@ -56,10 +56,10 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
+    [super setDependencyManager:dependencyManager];
+    
     if ( dependencyManager != nil )
     {
-        [super setDependencyManager:dependencyManager];
-        
         self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
