@@ -23,12 +23,6 @@
     },
     "template_c_enabled" : false,
     "selector" : {
-"color.text" : {
-        "red" : 51,
-        "alpha" : 255,
-        "blue" : 51,
-        "green" : 51
-      },
       "background" : {
         "name" : "solidColor.background",
           "color" : {
@@ -38,7 +32,7 @@
               "green" : 112
           }
       },
-      "name" : "rounded.multiScreenSelector"
+      "name" : "textbar.multiScreenSelector"
     },
     "menu" : {
       "color.link" : {

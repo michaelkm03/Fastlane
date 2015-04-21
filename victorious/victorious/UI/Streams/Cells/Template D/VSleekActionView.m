@@ -49,7 +49,6 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 
 @implementation VSleekActionView
 
-
 #pragma mark - VAbstractActionView
 
 - (void)setReposting:(BOOL)reposting
