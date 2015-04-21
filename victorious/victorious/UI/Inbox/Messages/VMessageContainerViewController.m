@@ -194,21 +194,21 @@
     VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
     self.busyView.hidden = NO;
     [messageViewController.tableDataSource createMessageWithText:text mediaURL:mediaURL completion:^(NSError *error)
-     {
-         keyboardBar.sendButtonEnabled = YES;
-         self.busyView.hidden = YES;
-         if (error)
-         {
-             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-             hud.mode = MBProgressHUDModeText;
-             hud.labelText = NSLocalizedString(@"ConversationSendError", @"");
-             [hud hide:YES afterDelay:3.0];
-         }
-         else
-         {
-             [keyboardBar clearKeyboardBar];
-         }
-     }];
+    {
+        keyboardBar.sendButtonEnabled = YES;
+        self.busyView.hidden = YES;
+        if (error)
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"ConversationSendError", @"");
+            [hud hide:YES afterDelay:3.0];
+        }
+        else
+        {
+            [keyboardBar clearKeyboardBar];
+        }
+    }];
 }
 
 @end

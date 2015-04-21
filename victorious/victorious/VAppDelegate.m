@@ -75,9 +75,7 @@ static BOOL isRunningTests(void) __attribute__((const));
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
-    
-    //[self.window.layer setSpeed:.1f];
-    
+        
     return YES;
 }
 
