@@ -37,6 +37,11 @@
 @property (nonatomic, readonly) UIView *supplementaryHeaderView;
 
 /**
+ Returns the desired status bar style based on the luminance of the provided color
+ */
++ (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color;
+
+/**
  Adds a transform to the navigation bar and any supplemental header views
  */
 - (void)transformNavigationBar:(CGAffineTransform)transform;

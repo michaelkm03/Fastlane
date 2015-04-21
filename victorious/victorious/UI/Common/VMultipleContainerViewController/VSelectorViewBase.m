@@ -36,4 +36,9 @@
     // To be implemented by subclasses
 }
 
+- (UIColor *)foregroundColor
+{
+    return self.lightStyle ? [UIColor whiteColor] : [UIColor blackColor];
+}
+
 @end

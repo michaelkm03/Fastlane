@@ -823,6 +823,7 @@
 		DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */; };
 		DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */; };
 		DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */; };
+		F01234CC1AE6C3D7001F1D5B /* fakeResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = F01234CB1AE6C3D7001F1D5B /* fakeResponse.json */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC41AA9468500B95642 /* VTimerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC31AA9468500B95642 /* VTimerManagerTests.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
@@ -2368,6 +2369,7 @@
 		E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.release.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
+		F01234CB1AE6C3D7001F1D5B /* fakeResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = fakeResponse.json; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
 		F0140BC31AA9468500B95642 /* VTimerManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManagerTests.m; sourceTree = "<group>"; };
@@ -2564,6 +2566,7 @@
 				0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */,
 				0314D0A019B4698800FA363C /* VObjectManager+Login.h */,
 				0314D0A119B4698800FA363C /* VObjectManager+Login.m */,
+				F01234CB1AE6C3D7001F1D5B /* fakeResponse.json */,
 				0314D0A219B4698800FA363C /* VObjectManager+Pagination.h */,
 				0314D0A319B4698800FA363C /* VObjectManager+Pagination.m */,
 				0314D0A419B4698800FA363C /* VObjectManager+Private.h */,
@@ -3433,14 +3436,7 @@
 				A734A04A1A98018800C3E86F /* VMultipleContainer.h */,
 				037FCF221A8DAF5400E8ABFC /* VMultipleContainerViewController.h */,
 				037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */,
-				037FCF201A8DAF5400E8ABFC /* VSegmentedSelectorView.h */,
-				037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */,
-				037FCF241A8DAF5400E8ABFC /* VSelectorViewBase.h */,
-				037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */,
-				F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */,
-				F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */,
-				F0140BC51AAA37EC00B95642 /* VRoundedSegmentedSelectorView.h */,
-				F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */,
+				F01234CD1AE6C8DB001F1D5B /* MultiScreenSelectors */,
 			);
 			path = VMultipleContainerViewController;
 			sourceTree = "<group>";
@@ -5442,6 +5438,21 @@
 			path = FollowHashtagControl;
 			sourceTree = "<group>";
 		};
+		F01234CD1AE6C8DB001F1D5B /* MultiScreenSelectors */ = {
+			isa = PBXGroup;
+			children = (
+				037FCF241A8DAF5400E8ABFC /* VSelectorViewBase.h */,
+				037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */,
+				037FCF201A8DAF5400E8ABFC /* VSegmentedSelectorView.h */,
+				037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */,
+				F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */,
+				F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */,
+				F0140BC51AAA37EC00B95642 /* VRoundedSegmentedSelectorView.h */,
+				F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */,
+			);
+			name = MultiScreenSelectors;
+			sourceTree = "<group>";
+		};
 		F0140BC21AA9463600B95642 /* TimerManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -5687,6 +5698,7 @@
 				03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */,
 				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
+				F01234CC1AE6C3D7001F1D5B /* fakeResponse.json in Resources */,
 				D8B44CD31ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib in Resources */,
 				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
 				A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */,

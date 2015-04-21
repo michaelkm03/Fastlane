@@ -58,7 +58,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
-        _statusBarStyle = [self statusBarStyleForColor:[[_dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey]];
+        _statusBarStyle = [[self class] statusBarStyleForColor:[[_dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey]];
     }
     return self;
 }
@@ -70,14 +70,14 @@ static const CGFloat kStatusBarHeight = 20.0f;
     _innerNavigationController.delegate = nil;
 }
 
-- (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
++ (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
 {
     switch ([color v_colorLuminance])
     {
         case VColorLuminanceBright:
-            return UIStatusBarStyleDefault;
-        case VColorLuminanceDark:
             return UIStatusBarStyleLightContent;
+        case VColorLuminanceDark:
+            return UIStatusBarStyleDefault;
     }
 }
 

@@ -358,7 +358,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     {
         return _pillColor;
     }
-    _pillColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    _pillColor = self.foregroundColor;
     return _pillColor;
 }
 
