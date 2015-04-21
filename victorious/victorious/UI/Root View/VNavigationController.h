@@ -47,6 +47,11 @@
  */
 - (void)setNavigationBarHidden:(BOOL)hidden;
 
+/**
+ Updates the appearance of the supplementary header view
+ */
+- (void)updateSupplementaryHeaderViewForViewController:(UIViewController *)viewController;
+
 @end
 
 #pragma mark -

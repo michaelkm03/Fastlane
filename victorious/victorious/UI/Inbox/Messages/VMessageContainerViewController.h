@@ -16,8 +16,6 @@
 @property (nonatomic, weak) IBOutlet UIView *busyView;
 @property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic, assign) BOOL presentingFromProfile;
-@property (nonatomic, assign) BOOL presentingFromUserSearch;
-@property (nonatomic, weak) UIViewController *searchPresentingViewController;
 
 + (instancetype)messageViewControllerForUser:(VUser *)otherUser dependencyManager:(VDependencyManager *)dependencyManager;
 

@@ -412,31 +412,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
         [self.innerNavigationController setToolbarHidden:NO animated:animated];
     }
     
-    UIView *newSupplementaryHeaderView = viewController.navigationItem.v_supplementaryHeaderView;
-    if ( self.supplementaryHeaderView != nil &&
-         self.supplementaryHeaderView != newSupplementaryHeaderView )
-    {
-        if ( viewController.transitionCoordinator == nil )
-        {
-            [self removeSupplementaryHeaderView];
-        }
-        else
-        {
-            [self removeSupplementaryHeaderViewWithTransitionCoordinator:viewController.transitionCoordinator];
-        }
-    }
-    
-    if ( !prefersNavigationBarHidden && newSupplementaryHeaderView != nil )
-    {
-        if ( viewController.transitionCoordinator == nil )
-        {
-            [self addSupplementaryHeaderView:newSupplementaryHeaderView];
-        }
-        else
-        {
-            [self addSupplementaryHeaderView:newSupplementaryHeaderView withTransitionCoordinator:viewController.transitionCoordinator];
-        }
-    }
+    [self updateSupplementaryHeaderViewForViewController:viewController];
     
     BOOL wantsStatusBarHidden = prefersNavigationBarHidden;
     if ( wantsStatusBarHidden != self.wantsStatusBarHidden )
@@ -464,6 +440,36 @@ static const CGFloat kStatusBarHeight = 20.0f;
          navigationController.viewControllers[0] == viewController )
     {
         viewController.navigationItem.leftBarButtonItems = @[ self.leftBarButtonItem ];
+    }
+}
+
+- (void)updateSupplementaryHeaderViewForViewController:(UIViewController *)viewController
+{
+    BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
+    UIView *newSupplementaryHeaderView = viewController.navigationItem.v_supplementaryHeaderView;
+    if ( self.supplementaryHeaderView != nil &&
+        self.supplementaryHeaderView != newSupplementaryHeaderView )
+    {
+        if ( viewController.transitionCoordinator == nil )
+        {
+            [self removeSupplementaryHeaderView];
+        }
+        else
+        {
+            [self removeSupplementaryHeaderViewWithTransitionCoordinator:viewController.transitionCoordinator];
+        }
+    }
+    
+    if ( !prefersNavigationBarHidden && newSupplementaryHeaderView != nil )
+    {
+        if ( viewController.transitionCoordinator == nil )
+        {
+            [self addSupplementaryHeaderView:newSupplementaryHeaderView];
+        }
+        else
+        {
+            [self addSupplementaryHeaderView:newSupplementaryHeaderView withTransitionCoordinator:viewController.transitionCoordinator];
+        }
     }
 }
 
