@@ -11,16 +11,16 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb</string>
+				<string>fb1471657219790958</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string></string>
+	<string>1471657219790958</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string></string>
+	<string>tjwbhUUF0NEx5748CySYc7vMC</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string></string>
+	<string>VVq46Gcx9tCWkh4JHBSxcRs7dyU9bRojyQgunPJnaxs1JB3r5R</string>
 	<key>VictoriousAppID</key>
 	<integer>45</integer>
 	<key>StagingAppID</key>
