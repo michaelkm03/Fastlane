@@ -53,7 +53,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 @property (nonatomic, strong) NSNumber *remoteId;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
-@property (nonatomic, strong) VUser *profile;
+@property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
 @property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
@@ -70,19 +70,18 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
-    VUser *mainUser = [VObjectManager sharedManager].mainUser;
-    BOOL isMe = (mainUser != nil && remoteId.integerValue == mainUser.remoteId.integerValue);
-    
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
-
-    if ( !isMe )
+    
+    VUser *mainUser = [VObjectManager sharedManager].mainUser;
+    const BOOL isCurrentUser = (mainUser != nil && [remoteId isEqualToNumber:mainUser.remoteId]);
+    if ( isCurrentUser )
     {
-        viewController.remoteId = remoteId;
+        viewController.user = mainUser;
     }
     else
     {
-        viewController.profile = mainUser;
+        viewController.remoteId = remoteId;
     }
     
     return viewController;
@@ -96,11 +95,11 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
     
-    viewController.profile = aUser;
+    viewController.user = aUser;
     
-    BOOL isMe = ([VObjectManager sharedManager].mainUser != nil && aUser.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
-    
-    if (isMe)
+    VUser *mainUser = [VObjectManager sharedManager].mainUser;
+    const BOOL isCurrentUser = (mainUser != nil && [aUser.remoteId isEqualToNumber:mainUser.remoteId]);
+    if ( isCurrentUser )
     {
         viewController.title = NSLocalizedString(@"me", "");
     }
@@ -149,24 +148,15 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     return self;
 }
 
-- (void)userProfileSharedInit
-{
-    self.canShowContent = NO;
-}
-
-- (BOOL)canShowMarquee
-{
-    //This will stop our superclass from adjusting the "hasHeaderCell" property, which in turn affects whether or not the profileHeader is shown, based on whether or not this stream contains a marquee
-    return NO;
-}
-
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusChanged:) name:kLoggedInChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginStateDidChange:)
+                                                 name:kLoggedInChangedNotification object:nil];
 
     [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
                                  pushAccessoryMenuItemsOn:self.navigationController];
@@ -177,55 +167,50 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
     
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(loginStateDidChange:)
-                                                     name:kLoggedInChangedNotification
-                                                   object:nil];
-    }
-    
+    [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
     [self.KVOController observe:self.currentStream
                         keyPath:@"sequences"
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
     
-    [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
+    [self.collectionView registerClass:[VProfileHeaderCell class]
+            forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
     
     [self updateCollectionViewDataSource];
     
-    self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.profile];
-    self.profileHeaderViewController.delegate = self;
+    [self createProfileHeader];
 }
 
-- (UIViewController<VUserProfileHeader> *)profileHeaderViewController
+- (void)createProfileHeader
 {
-    if ( self.profile != nil && _profileHeaderViewController == nil)
+    if ( self.user != nil )
     {
-        _profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.profile];
-        _profileHeaderViewController.delegate = self;
+        self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
+        self.profileHeaderViewController.delegate = self;
+        if ( self.profileHeaderViewController != nil )
+        {
+            self.streamDataSource.hasHeaderCell = YES;
+            self.profileHeaderViewController.delegate = self;
+            [self reloadUserFollowCounts];
+        }
     }
-    
-    self.streamDataSource.hasHeaderCell = _profileHeaderViewController != nil;
-    
-    return _profileHeaderViewController;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self.profileHeaderViewController reload];
+    [self setInitialHeaderState];
     
-    if (self.isMe)
+    if ( self.isCurrentUser )
     {
         [self addFriendsButton];
     }
-    else if ( self.profile == nil && self.remoteId != nil )
+    else if ( self.user == nil && self.remoteId != nil )
     {
         [self loadUserWithRemoteId:self.remoteId];
     }
-    else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
+    else if (!self.isCurrentUser && !self.user.isDirectMessagingDisabled.boolValue)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
                                                                                   style:UIBarButtonItemStylePlain
@@ -259,6 +244,124 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     [self attemptToRefreshProfileUI];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
+    height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.bounds);
+    CGSize newProfileSize = CGSizeMake(width, height);
+    
+    if ( !CGSizeEqualToSize(newProfileSize, self.currentProfileSize) )
+    {
+        self.currentProfileSize = newProfileSize;
+    }
+}
+
+- (void)dealloc
+{
+    if (self.currentStream != nil)
+    {
+        [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+#pragma mark -
+
+- (void)userProfileSharedInit
+{
+    self.canShowContent = NO;
+}
+
+- (BOOL)canShowMarquee
+{
+    //This will stop our superclass from adjusting the "hasHeaderCell" property, which in turn affects whether or
+    // not the profileHeader is shown, based on whether or not this stream contains a marquee
+    return NO;
+}
+
+- (BOOL)isCurrentUser
+{
+    const VUser *loggedInUser = [VObjectManager sharedManager].mainUser;
+    return loggedInUser != nil && [self.user.remoteId isEqualToNumber:loggedInUser.remoteId];
+}
+
+#pragma mark - Loading data
+
+- (void)reloadUserFollowCounts
+{
+    [[VObjectManager sharedManager] countOfFollowsForUser:self.user successBlock:nil failBlock:nil];
+}
+
+- (void)setInitialHeaderState
+{
+    if ( self.profileHeaderViewController == nil )
+    {
+        return;
+    }
+    
+    if ( self.isCurrentUser )
+    {
+        self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
+    }
+    else
+    {
+        self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
+        [self reloadUserFollowCounts];
+    }
+}
+
+- (void)reloadUserFollowingRelationship
+{
+    if ( self.isCurrentUser )
+    {
+        return;
+    }
+    
+    id<VUserProfileHeader> header = self.profileHeaderViewController;
+    if ( header == nil )
+    {
+        return;
+    }
+    
+    if ([VObjectManager sharedManager].mainUser)
+    {
+        header.isLoading = YES;
+        [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
+                                     following:self.user
+                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+         {
+             header.isLoading = NO;
+             const BOOL isFollowingUser = [resultObjects.firstObject boolValue];
+             header.state = isFollowingUser ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
+         }
+                                     failBlock:^(NSOperation *operation, NSError *error)
+         {
+             header.isLoading = NO;
+         }];
+    }
+    else
+    {
+        header.state = VUserProfileHeaderStateNotFollowingUser;
+    }
+}
+
 - (void)loadUserWithRemoteId:(NSNumber *)remoteId
 {
     self.remoteId = remoteId;
@@ -279,7 +382,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
          [self.retryHUD hide:YES];
          [self.retryProfileLoadButton removeFromSuperview];
          self.retryHUD = nil;
-         self.profile = [resultObjects lastObject];
+         self.user = [resultObjects lastObject];
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -318,47 +421,108 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     return _retryProfileLoadButton;
 }
 
-- (void)viewDidLayoutSubviews
+- (void)attemptToRefreshProfileUI
 {
-    CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
-    height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
-    
-    CGFloat width = CGRectGetWidth(self.collectionView.bounds);
-    CGSize newProfileSize = CGSizeMake(width, height);
-
-    if ( !CGSizeEqualToSize(newProfileSize, self.currentProfileSize) )
+    //Ensuring viewWillAppear has finished and we have a valid profile ensures smooth profile and stream presentation by avoiding unnecessary refreshes even when loading from a remoteId
+    if ( self.didEndViewWillAppear && self.user != nil )
     {
-        self.currentProfileSize = newProfileSize;
+        CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
+        height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
+        
+        CGFloat width = CGRectGetWidth(self.view.bounds);
+        self.currentProfileSize = CGSizeMake(width, height);
+        
+        [self reloadUserFollowingRelationship];
+        
+        if ( self.streamDataSource.count == 0 )
+        {
+            [self refresh:nil];
+        }
+        else
+        {
+            [self shrinkHeaderAnimated:YES];
+            [self.collectionView reloadData];
+        }
     }
 }
 
-- (void)dealloc
+- (void)refreshWithCompletion:(void (^)(void))completionBlock
 {
-    if (self.currentStream != nil)
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
-        [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+        return;
     }
-    
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
-    if (self.profile != nil)
+    else
     {
-        [self stopObservingUserProfile];
+        if ( self.user != nil )
+        {
+            void (^fullCompletionBlock)(void) = ^void(void)
+            {
+                if (self.streamDataSource.count)
+                {
+                    [self shrinkHeaderAnimated:YES];
+                }
+                if ( completionBlock != nil )
+                {
+                    completionBlock();
+                }
+            };
+            [super refreshWithCompletion:fullCompletionBlock];
+        }
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)toggleFollowUser
 {
-    [super viewDidAppear:animated];
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+        self.profileHeaderViewController.isLoading = NO;
+        [[[UIAlertView alloc] initWithTitle:nil
+                                    message:NSLocalizedString(@"UnfollowError", @"")
+                                   delegate:nil
+                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                          otherButtonTitles:nil] show];
+    };
     
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
+    if ( self.profileHeaderViewController.state == VUserProfileHeaderStateFollowingUser )
+    {
+        self.profileHeaderViewController.isLoading = YES;
+        [[VObjectManager sharedManager] unfollowUser:self.user
+                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
+         }
+                                           failBlock:fail];
+    }
+    else if ( self.profileHeaderViewController.state == VUserProfileHeaderStateNotFollowingUser )
+    {
+        self.profileHeaderViewController.isLoading = YES;
+        [[VObjectManager sharedManager] followUser:self.user
+                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
+         }
+                                         failBlock:fail];
+    }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+#pragma mark - Login status change
+
+- (void)loginStateDidChange:(NSNotification *)notification
 {
-    [super viewWillDisappear:animated];
-    
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    if ( [VObjectManager sharedManager].authorized )
+    {
+        [self reloadUserFollowingRelationship];
+    }
+    else if ( self.representsMainUser )
+    {
+        self.user = [VObjectManager sharedManager].mainUser;
+        [self updateCollectionViewDataSource];
+    }
 }
 
 #pragma mark - Find Friends
@@ -372,6 +536,15 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
                                                                              target:self
                                                                              action:@selector(findFriendsAction:)];
 }
+
+#pragma mark - Accessors
+
+- (NSString *)viewName
+{
+    return @"Profile";
+}
+
+#pragma mark - Actions
 
 - (IBAction)findFriendsAction:(id)sender
 {
@@ -391,125 +564,29 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
      }];
 }
 
-#pragma mark - Accessors
-
-- (NSString *)viewName
-{
-    return @"Profile";
-}
-
-- (void)setProfile:(VUser *)profile
+- (void)setUser:(VUser *)user
 {
     NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil in VUserProfileViewController when the profile is set");
     
-    if (profile == _profile)
+    if ( user == _user )
     {
         return;
     }
     
-    [self stopObservingUserProfile];
+    _user = user;
     
-    _profile = profile;
-    
-    self.profileHeaderViewController.user = profile;
+    self.profileHeaderViewController.user = user;
 
-    self.isMe = ([VObjectManager sharedManager].mainUser != nil && self.profile != nil && self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
-    NSString *profileName = profile.name ?: @"Profile";
+    NSString *profileName = user.name ?: @"Profile";
     
-    self.title = self.isMe ? NSLocalizedString(@"me", "") : profileName;
+    self.title = self.isCurrentUser ? NSLocalizedString(@"me", "") : profileName;
     
-    [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    
-    self.currentStream = [VStream streamForUser:self.profile];
+    self.currentStream = [VStream streamForUser:self.user];
     
     //Update title AFTER updating current stream as that update resets the title to nil (because there is nil name in the stream)
     self.navigationItem.title = profileName;
 
     [self attemptToRefreshProfileUI];
-}
-
-- (void)attemptToRefreshProfileUI
-{
-    //Ensuring viewWillAppear has finished and we have a valid profile ensures smooth profile and stream presentation by avoiding unnecessary refreshes even when loading from a remoteId
-    if ( self.didEndViewWillAppear && self.profile != nil )
-    {
-        CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
-        height = self.streamDataSource.count ? self.profileHeaderViewController.preferredHeight : height;
-        
-        CGFloat width = CGRectGetWidth(self.view.bounds);
-        self.currentProfileSize = CGSizeMake(width, height);
-        
-        [self.profileHeaderViewController reload];
-        
-        if ( self.streamDataSource.count == 0 )
-        {
-            [self refresh:nil];
-        }
-        else
-        {
-            [self shrinkHeaderAnimated:YES];
-            [self.collectionView reloadData];
-        }
-    }
-}
-
-#pragma mark - Support
-
-- (void)stopObservingUserProfile
-{
-    [self.KVOController unobserve:_profile keyPath:NSStringFromSelector(@selector(name))];
-    [self.KVOController unobserve:_profile keyPath:NSStringFromSelector(@selector(location))];
-    [self.KVOController unobserve:_profile keyPath:NSStringFromSelector(@selector(tagline))];
-    [self.KVOController unobserve:_profile keyPath:NSStringFromSelector(@selector(pictureUrl))];
-}
-
-- (void)loginStateDidChange:(NSNotification *)notification
-{
-    if ([VObjectManager sharedManager].mainUser)
-    {
-        [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                     following:self.profile
-                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             self.profileHeaderViewController.isFollowingUser = [resultObjects.firstObject boolValue];
-         }
-                                     failBlock:nil];
-    }
-}
-
-#pragma mark - Actions
-
-- (void)refreshWithCompletion:(void (^)(void))completionBlock
-{
-    if (self.collectionView.dataSource == self.notLoggedInDataSource)
-    {
-        if (completionBlock)
-        {
-            completionBlock();
-        }
-        return;
-    }
-    else
-    {
-        if ( self.profile != nil )
-        {
-            void (^fullCompletionBlock)(void) = ^void(void)
-            {
-                if (self.streamDataSource.count)
-                {
-                    [self shrinkHeaderAnimated:YES];
-                }
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            };
-            [super refreshWithCompletion:fullCompletionBlock];
-        }
-    }
 }
 
 - (IBAction)composeMessage:(id)sender
@@ -523,7 +600,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
              return;
          }
          
-         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile dependencyManager:self.dependencyManager];
+         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.user dependencyManager:self.dependencyManager];
          composeController.presentingFromProfile = YES;
          
          if ([self.navigationController.viewControllers containsObject:composeController])
@@ -537,11 +614,18 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
      }];
 }
 
-- (void)editProfileHandler
+#pragma mark - VUserProfileHeaderDelegate
+
+- (void)secondaryActionHandler
+{
+    
+}
+
+- (void)primaryActionHandler
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
     
-    VAuthorizationContext context = self.isMe ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
+    VAuthorizationContext context = self.isCurrentUser ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
     [authorization performFromViewController:self context:context completion:^(BOOL authorized)
@@ -551,7 +635,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
              return;
          }
          
-         if ( self.isMe )
+         if ( self.isCurrentUser )
          {
              [self performSegueWithIdentifier:@"toEditProfile" sender:self];
          }
@@ -562,49 +646,24 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
      }];
 }
 
-- (void)toggleFollowUser
-{
-    [self.profileHeaderViewController setIsLoading:YES];
-    
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        [self.profileHeaderViewController setIsLoading:NO];
-        
-        [[[UIAlertView alloc] initWithTitle:nil
-                                    message:NSLocalizedString(@"UnfollowError", @"")
-                                   delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                          otherButtonTitles:nil] show];
-    };
-    
-    if ( self.profileHeaderViewController.isFollowingUser )
-    {
-        [[VObjectManager sharedManager] unfollowUser:self.profile
-                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [self.profileHeaderViewController setIsLoading:NO];
-             self.profileHeaderViewController.isFollowingUser = NO;
-         }
-                                           failBlock:fail];
-    }
-    else
-    {
-        [[VObjectManager sharedManager] followUser:self.profile
-                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [self.profileHeaderViewController setIsLoading:NO];
-             self.profileHeaderViewController.isFollowingUser = YES;
-         }
-                                         failBlock:fail];
-    }
-}
-
-#pragma mark - Navigation
-
 - (void)followerHandler
 {
     [self performSegueWithIdentifier:@"toFollowers" sender:self];
 }
+
+- (void)followingHandler
+{
+    if (self.isCurrentUser)
+    {
+        [self performSegueWithIdentifier:@"toHashtagsAndFollowing" sender:self];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"toFollowing" sender:self];
+    }
+}
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -613,18 +672,6 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     if ( [segue.destinationViewController respondsToSelector:@selector(setDependencyManager:)] )
     {
         [segue.destinationViewController setDependencyManager:self.dependencyManager];
-    }
-}
-
-- (void)followingHandler
-{
-    if (self.isMe)
-    {
-        [self performSegueWithIdentifier:@"toHashtagsAndFollowing" sender:self];
-    }
-    else
-    {
-        [self performSegueWithIdentifier:@"toFollowing" sender:self];
     }
 }
 
@@ -668,7 +715,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
             headerCell.headerViewController = self.profileHeaderViewController;
             self.currentProfileCell = headerCell;
         }
-        self.currentProfileCell.hidden = self.profile == nil;
+        self.currentProfileCell.hidden = self.user == nil;
         return self.currentProfileCell;
     }
     VBaseCollectionViewCell *cell = (VBaseCollectionViewCell *)[super dataSource:dataSource cellForIndexPath:indexPath];
@@ -712,17 +759,6 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     {
         self.collectionView.dataSource = self.streamDataSource;
         [self.collectionView addSubview:self.refreshControl];
-    }
-}
-
-#pragma mark - Notification
-
-- (void)loginStatusChanged:(NSNotification *)notification
-{
-    if (self.representsMainUser)
-    {
-        self.profile = [VObjectManager sharedManager].mainUser;
-        [self updateCollectionViewDataSource];
     }
 }
 

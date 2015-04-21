@@ -13,7 +13,7 @@
 
 @interface VUserProfileViewController : VStreamCollectionViewController
 
-@property (nonatomic, readonly) VUser *profile;
+@property (nonatomic, readonly) VUser *user;
 
 /**
  *  While this property is YES, the viewController will listen for

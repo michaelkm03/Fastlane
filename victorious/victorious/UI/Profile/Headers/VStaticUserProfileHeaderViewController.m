@@ -18,8 +18,6 @@
 
 @interface VStaticUserProfileHeaderViewController ()
 
-@property (nonatomic, readonly) VButton *primaryActionButton;
-
 @end
 
 @implementation VStaticUserProfileHeaderViewController
@@ -43,11 +41,6 @@
     self.profileImageView.layer.borderWidth = 2.0;
 }
 
-- (VButton *)primaryActionButton
-{
-    return (VButton *)super.primaryActionButton;
-}
-
 - (void)loadBackgroundImage:(NSURL *)imageURL
 {
     UIImage *placeholderImage = self.backgroundImageView.image;
@@ -64,20 +57,6 @@
     }
 }
 
-- (void)setIsLoading:(BOOL)isLoading
-{
-    [super setIsLoading:isLoading];
-    
-    if ( isLoading )
-    {
-        [self.primaryActionButton showActivityIndicator];
-    }
-    else
-    {
-        [self.primaryActionButton hideActivityIndicator];
-    }
-}
-
 - (void)clearBackgroundImage
 {
     [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
@@ -85,38 +64,40 @@
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
 }
 
-- (void)applyCurrentUserStyle
+- (void)setState:(VUserProfileHeaderState)state
 {
-    [self.primaryActionButton setStyle:VButtonStyleSecondary];
-    self.primaryActionButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.primaryActionButton.secondaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    [self.primaryActionButton setTitle:NSLocalizedString(@"self.primaryActionButton", @"") forState:UIControlStateNormal];
-}
-
-- (void)applyFollowingStyle
-{
-    [self.primaryActionButton setStyle:VButtonStyleSecondary];
-    self.primaryActionButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.primaryActionButton.secondaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    [self.primaryActionButton setTitle:NSLocalizedString(@"self.primaryActionButton", @"") forState:UIControlStateNormal];
-}
-
-- (void)applyNotFollowingStyle
-{
-    [self.primaryActionButton setStyle:VButtonStylePrimary];
-    self.primaryActionButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.primaryActionButton.secondaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    [self.primaryActionButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
-}
-
-- (void)applyAllStatesEditButtonStyle
-{
-    UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    self.primaryActionButton.titleLabel.font = buttonFont;
+    super.state = state;
     
-    if ( [[self.dependencyManager stringForKey:VDependencyManagerProfileEditButtonStyleKey] isEqualToString:VDependencyManagerProfileEditButtonStylePill] )
+    switch ( state )
     {
-        self.primaryActionButton.cornerRadius = CGRectGetHeight( self.primaryActionButton.bounds ) / 2.0f;
+        case VUserProfileHeaderStateCurrentUser:
+            [self.primaryActionButton setStyle:VButtonStyleSecondary];
+            [self.primaryActionButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+            break;
+        case VUserProfileHeaderStateFollowingUser:
+            [self.primaryActionButton setStyle:VButtonStyleSecondary];
+            [self.primaryActionButton setTitle:NSLocalizedString(@"unfollow", @"") forState:UIControlStateNormal];
+            break;
+        case VUserProfileHeaderStateNotFollowingUser:
+            [self.primaryActionButton setStyle:VButtonStylePrimary];
+            [self.primaryActionButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)setIsLoading:(BOOL)isLoading
+{
+    if ( isLoading )
+    {
+        [self.primaryActionButton showActivityIndicator];
+        self.primaryActionButton.userInteractionEnabled = NO;
+    }
+    else
+    {
+        [self.primaryActionButton hideActivityIndicator];
+        self.primaryActionButton.userInteractionEnabled = YES;
     }
 }
 
@@ -124,6 +105,9 @@
 {
     UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    
+    self.primaryActionButton.primaryColor = linkColor;
+    self.primaryActionButton.secondaryColor = linkColor;
     
     self.profileImageView.layer.borderColor = linkColor.CGColor;
     
@@ -150,7 +134,13 @@
     UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.userStatsBar.backgroundColor = backgroundColor;
     
-    [self applyAllStatesEditButtonStyle];
+    UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.primaryActionButton.titleLabel.font = buttonFont;
+    
+    if ( [[self.dependencyManager stringForKey:VDependencyManagerProfileEditButtonStyleKey] isEqualToString:VDependencyManagerProfileEditButtonStylePill] )
+    {
+        self.primaryActionButton.cornerRadius = CGRectGetHeight( self.primaryActionButton.bounds ) / 2.0f;
+    }
 }
 
 @end

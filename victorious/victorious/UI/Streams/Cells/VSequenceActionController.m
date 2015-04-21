@@ -78,7 +78,7 @@
     }
     
     if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
-        [((VUserProfileViewController *)viewController).profile isEqual:sequence.user] )
+        [((VUserProfileViewController *)viewController).user isEqual:sequence.user] )
     {
         return NO;
     }

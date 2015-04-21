@@ -50,7 +50,7 @@
             if ([obj isKindOfClass:[VUserProfileViewController class]])
             {
                 VUserProfileViewController *userProfile = obj;
-                self.profile = userProfile.profile;
+                self.profile = userProfile.user;
                 *stop = YES;
             }
         }];

@@ -566,7 +566,25 @@
                     },
                     "userProfileHeader": {
                         "editButtonStyle": "rounded",
-                        "name": "floatingProfile.streamHeader"
+                        "name": "floatingProfile.streamHeader",              
+                        "color.text.content": {
+                            "red": 255,
+                            "green": 255,
+                            "blue": 255,
+                            "alpha": 128
+                        },              
+                        "color.text": {
+                            "red": 255,
+                            "green": 255,
+                            "blue": 255,
+                            "alpha": 255
+                        },
+                        "color.accent.secondary": {
+                            "red": 128,
+                            "green": 128,
+                            "blue": 128,
+                            "alpha": 255
+                        }
                     },
                     "marqueeCell": {
                         "name": "fullscreen.marqueeCell",
@@ -782,7 +800,31 @@
             },
             "userProfileHeader": {
                 "editButtonStyle": "rounded",
-                "name": "staticProfile.streamHeader"
+                "name": "staticProfile.streamHeader",    
+                "content.text": {
+                    "red": 161,
+                    "green": 132,
+                    "blue": 114,
+                    "alpha": 1
+                },              
+                "color.text.content": {
+                    "red": 255,
+                    "green": 255,
+                    "blue": 255,
+                    "alpha": 128
+                },              
+                "color.text": {
+                    "red": 255,
+                    "green": 255,
+                    "blue": 255,
+                    "alpha": 255
+                },
+                "color.accent.secondary": {
+                    "red": 128,
+                    "green": 128,
+                    "blue": 128,
+                    "alpha": 255
+                }
             },
         },
         "firstTimeContent": {

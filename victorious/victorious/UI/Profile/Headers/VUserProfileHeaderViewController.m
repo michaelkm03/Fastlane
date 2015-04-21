@@ -2,14 +2,13 @@
 //  VUserProfileHeaderViewController.m
 //  victorious
 //
-//  Created by Will Long on 6/18/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 4/20/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import "VUserProfileHeaderViewController.h"
 #import "VUser+Fetcher.h"
 #import "VDependencyManager.h"
-#import "VObjectManager+Users.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
 #import "VSettingManager.h"
@@ -27,10 +26,11 @@
 
 @implementation VUserProfileHeaderViewController
 
-@synthesize delegate;
-@synthesize isFollowingUser = _isFollowingUser;
 @synthesize user = _user;
+@synthesize state = _state;
+@synthesize isLoading = _isLoading;
 @synthesize preferredHeight;
+@synthesize delegate;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -47,6 +47,9 @@
 {
     [super viewDidLoad];
     
+    [self setFollowersCount:nil];
+    [self setFollowingCount:nil];
+    
     [self applyProfileImageViewStyle];
 
     self.followersHeader.text = NSLocalizedString(@"FOLLOWERS", @"");
@@ -59,12 +62,9 @@
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
     
-    [self updatePrimaryActionButton];
     [self applyStyleWithDependencyManager:self.dependencyManager];
     
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
-    
-    [self updatePrimaryActionButton];
     
     self.user = [self.dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
 }
@@ -79,84 +79,11 @@
     [self.backgroundImageView setImage:nil];
 }
 
-- (void)updatePrimaryActionButton
-{
-    if ( self.user == nil || self.dependencyManager == nil )
-    {
-        return;
-    }
-    
-    [self applyAllStatesEditButtonStyle];
-    
-    
-    if ( self.isCurrentUser )
-    {
-        [self applyCurrentUserStyle];
-    }
-    else
-    {
-        if ( self.isFollowingUser )
-        {
-            [self applyFollowingStyle];
-        }
-        else
-        {
-            [self applyNotFollowingStyle];
-        }
-    }
-}
-
-- (BOOL)isCurrentUser
-{
-    const VUser *loggedInUser = [VObjectManager sharedManager].mainUser;
-    return loggedInUser != nil && [self.user.remoteId isEqualToNumber:loggedInUser.remoteId];
-}
-
 - (void)applyProfileImageViewStyle
 {
 }
 
-#pragma mark - Edit profile button
-
-- (void)applyCurrentUserStyle
-{
-    NSAssert( NO, @"`applyCurrentUserStyle` method must be implemented in a subclass of `VUserProfileHeaderViewController`." );
-}
-
-- (void)applyFollowingStyle
-{
-    NSAssert( NO, @"`applyFollowingStyle` method must be implemented in a subclass of `VUserProfileHeaderViewController`." );
-}
-
-- (void)applyNotFollowingStyle
-{
-    NSAssert( NO, @"`applyNotFollowingStyle` method must be implemented in a subclass of `VUserProfileHeaderViewController`." );
-}
-
-- (void)applyAllStatesEditButtonStyle
-{
-    // This method is optional
-}
-
 #pragma mark - Setters
-
-- (void)setIsLoading:(BOOL)isLoading
-{
-    if ( isLoading )
-    {
-        self.primaryActionButton.enabled = NO;
-    }
-    else
-    {
-        self.primaryActionButton.enabled = YES;
-    }
-}
-
-- (void)setIsFollowingUser:(BOOL)isFollowingUser
-{
-    _isFollowingUser = isFollowingUser;
-    [self updatePrimaryActionButton];
-}
 
 - (void)setUser:(VUser *)user
 {
@@ -165,60 +92,20 @@
     [self clearBackgroundImage];
     [self loadBackgroundImage:[NSURL URLWithString:self.user.pictureUrl]];
     
-    [self reload];
-}
-
-- (void)reload
-{
-    [self updatePrimaryActionButton];
-    
     if ( _user != nil )
     {
         [self cleanupKVOControllerWithUser:_user];
     }
     
-    if ( self.user == nil )
-    {
-        [self updatePrimaryActionButton];
-        return;
-    }
-    
-    [self updatePrimaryActionButton];
+    [self applyStyleWithDependencyManager:self.dependencyManager];
     [self setupKVOControllerWithUser:_user];
+}
+
+- (void)setState:(VUserProfileHeaderState)state
+{
+    NSLog( @"SETTING STATE %@", @(state) );
     
-    [[VObjectManager sharedManager] countOfFollowsForUser:_user
-                                             successBlock:nil
-                                                failBlock:nil];
-    
-    const BOOL isCurrentUser = [self.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId];
-    if ( isCurrentUser )
-    {
-        [self applyCurrentUserStyle];
-    }
-    else
-    {
-        __weak typeof(self) welf = self;
-        if ([VObjectManager sharedManager].mainUser)
-        {
-            welf.primaryActionButton.alpha = 0.0f;
-            [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                         following:self.user
-                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-             {
-                 welf.isFollowingUser = [resultObjects.firstObject boolValue];
-                 [UIView animateWithDuration:0.2f
-                                  animations:^
-                  {
-                      welf.primaryActionButton.alpha = 1.0f;
-                  }];
-             }
-                                         failBlock:nil];
-        }
-        else
-        {
-            welf.isFollowingUser = NO;
-        }
-    }
+    _state = state;
 }
 
 - (void)setFollowersCount:(NSNumber *)followerCount
@@ -262,32 +149,23 @@
 
 #pragma mark - Actions
 
-- (IBAction)pressedEditProfile:(id)sender
+- (IBAction)pressedPrimaryAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(editProfileHandler)])
-    {
-        [self.delegate editProfileHandler];
-    }
+    [self.delegate primaryActionHandler];
 }
 
 - (IBAction)pressedFollowers:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectProfileFollowers];
     
-    if ([self.delegate respondsToSelector:@selector(followerHandler)])
-    {
-        [self.delegate followerHandler];
-    }
+    [self.delegate followerHandler];
 }
 
 - (IBAction)pressedFollowering:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectProfileFollowing];
     
-    if ([self.delegate respondsToSelector:@selector(followingHandler)])
-    {
-        [self.delegate followingHandler];
-    }
+    [self.delegate followingHandler];
 }
 
 #pragma mark - KVOController for properties of VUser
@@ -335,8 +213,6 @@
 
 - (void)reloadObservedProfileProperties
 {
-    [self updatePrimaryActionButton];
-    
     self.nameLabel.text = self.user.name != nil ? self.user.name : @"";
     self.locationLabel.text = self.user.location;
     

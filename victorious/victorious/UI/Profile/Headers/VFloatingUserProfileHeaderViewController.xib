@@ -17,8 +17,10 @@
                 <outlet property="gradientView" destination="Re0-my-vzT" id="DqI-UB-TtJ"/>
                 <outlet property="locationLabel" destination="hnb-2H-Iq8" id="DJk-SD-Z3y"/>
                 <outlet property="nameLabel" destination="Xdy-I6-0YY" id="qFx-xT-hCf"/>
-                <outlet property="primaryActionButton" destination="reE-xi-zdS" id="29B-GL-AEM"/>
+                <outlet property="primaryActionButton" destination="qUS-eN-tgK" id="np6-al-e8A"/>
+                <outlet property="primaryActionButtonHeightConstraint" destination="kRu-mV-T1U" id="TFb-xg-xEs"/>
                 <outlet property="profileImageView" destination="HHC-1V-OAe" id="838-6E-XgD"/>
+                <outlet property="secondaryActionButton" destination="reE-xi-zdS" id="y1Y-C1-Cg4"/>
                 <outlet property="taglineLabel" destination="eWJ-1h-9hk" id="Rw1-7l-1vz"/>
                 <outlet property="userStatsBar" destination="bHl-Un-gmi" id="98Q-eM-ey7"/>
                 <outlet property="view" destination="HNG-L2-8S5" id="Lfl-UU-LZu"/>
@@ -47,7 +49,7 @@
                     <rect key="frame" x="22" y="24" width="80" height="80"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Some really long user name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdy-I6-0YY" userLabel="Username Label">
-                    <rect key="frame" x="22" y="368" width="556" height="21"/>
+                    <rect key="frame" x="22" y="329" width="556" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="NKF-Y1-sqV"/>
                     </constraints>
@@ -56,7 +58,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnb-2H-Iq8" userLabel="Location Label">
-                    <rect key="frame" x="22" y="392" width="556" height="25"/>
+                    <rect key="frame" x="22" y="350" width="556" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="2al-bi-NqB"/>
                     </constraints>
@@ -65,7 +67,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="eWJ-1h-9hk" userLabel="Tagline Label">
-                    <rect key="frame" x="22" y="425" width="556" height="100"/>
+                    <rect key="frame" x="22" y="379" width="556" height="100"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="100" id="DOe-Si-h9Y"/>
                     </constraints>
@@ -156,7 +158,7 @@
                         <constraint firstItem="vy6-BJ-bJh" firstAttribute="top" secondItem="Z4U-aK-xHH" secondAttribute="top" constant="11" id="k9f-VO-ihH"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="reE-xi-zdS" userLabel="Edit/Follow/Unfollow Action Button">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="reE-xi-zdS" userLabel="Secondary Action Button" customClass="VButton">
                     <rect key="frame" x="536" y="510" width="50" height="50"/>
                     <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -167,16 +169,32 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="pressedEditProfile:" destination="-1" eventType="touchUpInside" id="idb-Wm-8tl"/>
+                        <action selector="pressedSecondaryAction:" destination="-1" eventType="touchUpInside" id="rhL-LR-unm"/>
+                    </connections>
+                </button>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qUS-eN-tgK" userLabel="Primary Action Button" customClass="VButton">
+                    <rect key="frame" x="22" y="491" width="115" height="33"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="115" id="IuZ-WG-WjD"/>
+                        <constraint firstAttribute="height" constant="33" id="kRu-mV-T1U"/>
+                        <constraint firstAttribute="width" priority="4" constant="115" id="wtI-MH-vFb"/>
+                    </constraints>
+                    <state key="normal" title="Edit Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="pressedPrimaryAction:" destination="-1" eventType="touchUpInside" id="ecv-Kd-W2B"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="bHl-Un-gmi" secondAttribute="trailing" id="00J-9T-S7m"/>
+                <constraint firstItem="bHl-Un-gmi" firstAttribute="top" secondItem="qUS-eN-tgK" secondAttribute="bottom" constant="22" id="1hg-cy-89a"/>
                 <constraint firstAttribute="bottom" secondItem="Z4U-aK-xHH" secondAttribute="bottom" constant="2" id="3ys-Jb-LiJ"/>
+                <constraint firstItem="qUS-eN-tgK" firstAttribute="top" secondItem="eWJ-1h-9hk" secondAttribute="bottom" priority="999" constant="12" id="4dh-Gm-6NJ"/>
                 <constraint firstItem="Nua-VV-KOT" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="ARt-dL-cBb"/>
-                <constraint firstItem="hnb-2H-Iq8" firstAttribute="top" secondItem="Xdy-I6-0YY" secondAttribute="bottom" constant="3" id="Ais-sh-gwn"/>
+                <constraint firstItem="hnb-2H-Iq8" firstAttribute="top" secondItem="Xdy-I6-0YY" secondAttribute="bottom" id="Ais-sh-gwn"/>
                 <constraint firstItem="Nua-VV-KOT" firstAttribute="top" secondItem="HNG-L2-8S5" secondAttribute="top" id="CjM-et-q0D"/>
                 <constraint firstItem="bHl-Un-gmi" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="Qt0-Qh-lKq"/>
                 <constraint firstAttribute="trailing" secondItem="Re0-my-vzT" secondAttribute="trailing" id="R7j-Iv-gjd"/>
@@ -187,16 +205,16 @@
                 <constraint firstAttribute="trailing" secondItem="reE-xi-zdS" secondAttribute="trailing" constant="14" id="T6b-fY-iib"/>
                 <constraint firstAttribute="trailing" secondItem="Xdy-I6-0YY" secondAttribute="trailing" constant="22" id="WLS-Pe-Joh"/>
                 <constraint firstItem="Z4U-aK-xHH" firstAttribute="leading" secondItem="SeW-rn-JyV" secondAttribute="trailing" id="aR9-v4-hoQ"/>
-                <constraint firstAttribute="bottom" secondItem="eWJ-1h-9hk" secondAttribute="bottom" constant="75" id="bYo-70-Nik"/>
                 <constraint firstAttribute="trailing" secondItem="Nua-VV-KOT" secondAttribute="trailing" id="bja-fI-E4P"/>
                 <constraint firstAttribute="bottom" secondItem="bHl-Un-gmi" secondAttribute="bottom" id="cAS-LZ-ctK"/>
                 <constraint firstItem="bHl-Un-gmi" firstAttribute="top" secondItem="Nua-VV-KOT" secondAttribute="bottom" id="cHn-5V-BIF"/>
                 <constraint firstItem="SeW-rn-JyV" firstAttribute="width" secondItem="bHl-Un-gmi" secondAttribute="width" multiplier="1:2" id="gQy-EV-ekr"/>
+                <constraint firstItem="qUS-eN-tgK" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="22" id="gSi-JO-TQX"/>
                 <constraint firstItem="hnb-2H-Iq8" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="22" id="hGr-pV-hCU"/>
                 <constraint firstItem="SeW-rn-JyV" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="hmQ-ko-s7X"/>
                 <constraint firstItem="Re0-my-vzT" firstAttribute="top" secondItem="HNG-L2-8S5" secondAttribute="top" id="oyE-kZ-CGq"/>
                 <constraint firstItem="eWJ-1h-9hk" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="22" id="pi8-93-zwX"/>
-                <constraint firstItem="eWJ-1h-9hk" firstAttribute="top" secondItem="hnb-2H-Iq8" secondAttribute="bottom" constant="8" id="pwP-Ny-pqR"/>
+                <constraint firstItem="eWJ-1h-9hk" firstAttribute="top" secondItem="hnb-2H-Iq8" secondAttribute="bottom" constant="4" id="pwP-Ny-pqR"/>
                 <constraint firstAttribute="trailing" secondItem="Z4U-aK-xHH" secondAttribute="trailing" id="t84-OD-GHe"/>
                 <constraint firstItem="Re0-my-vzT" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="tgt-19-K5i"/>
                 <constraint firstAttribute="trailing" secondItem="hnb-2H-Iq8" secondAttribute="trailing" constant="22" id="tz6-Ey-ELB"/>
