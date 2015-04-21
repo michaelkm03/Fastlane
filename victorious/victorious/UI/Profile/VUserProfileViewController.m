@@ -494,6 +494,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
         [[VObjectManager sharedManager] unfollowUser:self.user
                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
+             self.profileHeaderViewController.isLoading = NO;
              self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
          }
                                            failBlock:fail];
@@ -504,6 +505,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
         [[VObjectManager sharedManager] followUser:self.user
                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
+             self.profileHeaderViewController.isLoading = NO;
              self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
          }
                                          failBlock:fail];

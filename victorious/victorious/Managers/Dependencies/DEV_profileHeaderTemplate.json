@@ -566,7 +566,7 @@
                     },
                     "userProfileHeader": {
                         "editButtonStyle": "rounded",
-                        "name": "floatingProfile.streamHeader",              
+                        "name": "staticProfile.streamHeader",              
                         "color.text.content": {
                             "red": 255,
                             "green": 255,

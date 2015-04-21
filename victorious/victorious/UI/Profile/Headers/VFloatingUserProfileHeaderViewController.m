@@ -91,11 +91,13 @@
 {
     if ( isLoading )
     {
-        [self.primaryActionButton showActivityIndicator];
+        [self.secondaryActionButton showActivityIndicator];
+        self.secondaryActionButton.userInteractionEnabled = NO;
     }
     else
     {
-        [self.primaryActionButton hideActivityIndicator];
+        [self.secondaryActionButton hideActivityIndicator];
+        self.secondaryActionButton.userInteractionEnabled = YES;
     }
 }
 
@@ -116,8 +118,9 @@
     [self.primaryActionButton setStyle:VButtonStyleSecondary];
     [self.primaryActionButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
     [self.primaryActionButton setNeedsDisplay];
-    
+    self.primaryActionButton.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerButton1FontKey];
     [self.primaryActionButton setStyle:VButtonStyleNone];
+    
     self.secondaryActionButton.layer.borderWidth = 2.0f;
     self.secondaryActionButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.secondaryActionButton.layer.cornerRadius = CGRectGetHeight( self.secondaryActionButton.bounds ) / 2.0f;

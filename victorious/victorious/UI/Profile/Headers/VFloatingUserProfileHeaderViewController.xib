@@ -36,9 +36,21 @@
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bHl-Un-gmi" userLabel="User Stats Bar">
                     <rect key="frame" x="0.0" y="546" width="600" height="54"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zpd-xs-0XE" userLabel="Divider">
+                            <rect key="frame" x="300" y="4" width="1" height="45"/>
+                            <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="ggZ-jC-eYU"/>
+                            </constraints>
+                        </view>
+                    </subviews>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="54" id="EWM-IL-3LV"/>
+                        <constraint firstAttribute="centerX" secondItem="Zpd-xs-0XE" secondAttribute="centerX" constant="-0.5" id="qE2-15-I9T"/>
+                        <constraint firstAttribute="bottom" secondItem="Zpd-xs-0XE" secondAttribute="bottom" constant="5" id="swD-lJ-y5Z"/>
+                        <constraint firstItem="Zpd-xs-0XE" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" constant="4" id="ycb-xi-qlq"/>
                     </constraints>
                 </view>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Re0-my-vzT" userLabel="Gradient Overlay" customClass="VLinearGradientView">
@@ -49,7 +61,7 @@
                     <rect key="frame" x="22" y="24" width="80" height="80"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Some really long user name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdy-I6-0YY" userLabel="Username Label">
-                    <rect key="frame" x="22" y="329" width="556" height="21"/>
+                    <rect key="frame" x="21" y="329" width="503" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="NKF-Y1-sqV"/>
                     </constraints>
@@ -58,7 +70,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnb-2H-Iq8" userLabel="Location Label">
-                    <rect key="frame" x="22" y="350" width="556" height="25"/>
+                    <rect key="frame" x="22" y="350" width="502" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="2al-bi-NqB"/>
                     </constraints>
@@ -67,7 +79,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="eWJ-1h-9hk" userLabel="Tagline Label">
-                    <rect key="frame" x="22" y="379" width="556" height="100"/>
+                    <rect key="frame" x="22" y="379" width="503" height="100"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="100" id="DOe-Si-h9Y"/>
                     </constraints>
@@ -199,11 +211,11 @@
                 <constraint firstItem="bHl-Un-gmi" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="Qt0-Qh-lKq"/>
                 <constraint firstAttribute="trailing" secondItem="Re0-my-vzT" secondAttribute="trailing" id="R7j-Iv-gjd"/>
                 <constraint firstAttribute="bottom" secondItem="SeW-rn-JyV" secondAttribute="bottom" id="RWl-yI-oiE"/>
-                <constraint firstItem="Xdy-I6-0YY" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="22" id="RsA-4F-Cdf"/>
+                <constraint firstItem="Xdy-I6-0YY" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="21" id="RsA-4F-Cdf"/>
                 <constraint firstAttribute="bottom" secondItem="Re0-my-vzT" secondAttribute="bottom" id="SMb-cM-rEC"/>
-                <constraint firstAttribute="trailing" secondItem="eWJ-1h-9hk" secondAttribute="trailing" constant="22" id="ST4-h7-gxi"/>
+                <constraint firstAttribute="trailing" secondItem="eWJ-1h-9hk" secondAttribute="trailing" constant="75" id="ST4-h7-gxi"/>
                 <constraint firstAttribute="trailing" secondItem="reE-xi-zdS" secondAttribute="trailing" constant="14" id="T6b-fY-iib"/>
-                <constraint firstAttribute="trailing" secondItem="Xdy-I6-0YY" secondAttribute="trailing" constant="22" id="WLS-Pe-Joh"/>
+                <constraint firstAttribute="trailing" secondItem="Xdy-I6-0YY" secondAttribute="trailing" constant="76" id="WLS-Pe-Joh"/>
                 <constraint firstItem="Z4U-aK-xHH" firstAttribute="leading" secondItem="SeW-rn-JyV" secondAttribute="trailing" id="aR9-v4-hoQ"/>
                 <constraint firstAttribute="trailing" secondItem="Nua-VV-KOT" secondAttribute="trailing" id="bja-fI-E4P"/>
                 <constraint firstAttribute="bottom" secondItem="bHl-Un-gmi" secondAttribute="bottom" id="cAS-LZ-ctK"/>
@@ -217,7 +229,7 @@
                 <constraint firstItem="eWJ-1h-9hk" firstAttribute="top" secondItem="hnb-2H-Iq8" secondAttribute="bottom" constant="4" id="pwP-Ny-pqR"/>
                 <constraint firstAttribute="trailing" secondItem="Z4U-aK-xHH" secondAttribute="trailing" id="t84-OD-GHe"/>
                 <constraint firstItem="Re0-my-vzT" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="tgt-19-K5i"/>
-                <constraint firstAttribute="trailing" secondItem="hnb-2H-Iq8" secondAttribute="trailing" constant="22" id="tz6-Ey-ELB"/>
+                <constraint firstAttribute="trailing" secondItem="hnb-2H-Iq8" secondAttribute="trailing" constant="76" id="tz6-Ey-ELB"/>
                 <constraint firstAttribute="bottom" secondItem="reE-xi-zdS" secondAttribute="bottom" constant="40" id="vqK-F9-x8I"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

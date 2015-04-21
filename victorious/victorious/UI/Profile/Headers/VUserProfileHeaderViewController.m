@@ -103,8 +103,6 @@
 
 - (void)setState:(VUserProfileHeaderState)state
 {
-    NSLog( @"SETTING STATE %@", @(state) );
-    
     _state = state;
 }
 
