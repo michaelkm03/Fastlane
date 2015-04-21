@@ -43,17 +43,30 @@
         return;
     }
     
-    // We've already added a background do nothing
-    if (containerView.subviews.count > 0)
+    __block BOOL alreadyContainsBackground = NO;
+    [containerView.subviews enumerateObjectsUsingBlock:^(UIView *subView, NSUInteger idx, BOOL *stop)
     {
-        return;
+        if ([subView isKindOfClass:[VBackground class]])
+        {
+            alreadyContainsBackground = YES;
+            *stop = YES;
+        }
+    }];
+    
+    if (!alreadyContainsBackground)
+    {
+        // We've already added a background do nothing
+        if (containerView.subviews.count > 0)
+        {
+            return;
+        }
+        
+        UIView *backgroundView = [background viewForBackground];
+        
+        backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+        [containerView addSubview:backgroundView];
+        [containerView v_addFitToParentConstraintsToSubview:backgroundView];
     }
-    
-    UIView *backgroundView = [background viewForBackground];
-    
-    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    [containerView addSubview:backgroundView];
-    [containerView v_addFitToParentConstraintsToSubview:backgroundView];
 }
 
 @end

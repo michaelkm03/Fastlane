@@ -23,7 +23,8 @@
 - (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundContainer;
 
 /**
- *  Adds a loading background to background hosts that provide a loading backgroundContainer.
+ *  Adds a loading background to background hosts that provide a loading backgroundContainer. 
+ *  Only adds the background if the viewForBackground has not VBackground subviews.
  *
  *  @param backgroundHost An object that conforms to <VBackgroundContainer>
  */
