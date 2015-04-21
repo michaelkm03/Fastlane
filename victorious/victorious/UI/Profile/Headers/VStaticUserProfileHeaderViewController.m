@@ -76,7 +76,7 @@
             break;
         case VUserProfileHeaderStateFollowingUser:
             [self.primaryActionButton setStyle:VButtonStyleSecondary];
-            [self.primaryActionButton setTitle:NSLocalizedString(@"unfollow", @"") forState:UIControlStateNormal];
+            [self.primaryActionButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
             break;
         case VUserProfileHeaderStateNotFollowingUser:
             [self.primaryActionButton setStyle:VButtonStylePrimary];
