@@ -49,8 +49,6 @@
     
     [self setFollowersCount:nil];
     [self setFollowingCount:nil];
-    
-    [self applyProfileImageViewStyle];
 
     self.followersHeader.text = NSLocalizedString(@"FOLLOWERS", @"");
 
@@ -77,10 +75,6 @@
 - (void)clearBackgroundImage
 {
     [self.backgroundImageView setImage:nil];
-}
-
-- (void)applyProfileImageViewStyle
-{
 }
 
 #pragma mark - Setters

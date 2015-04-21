@@ -36,11 +36,6 @@
 
 #pragma mark - VUserProfileHeaderViewController overrides
 
-- (void)applyProfileImageViewStyle
-{
-    self.profileImageView.layer.borderWidth = 2.0;
-}
-
 - (void)loadBackgroundImage:(NSURL *)imageURL
 {
     UIImage *placeholderImage = self.backgroundImageView.image;
@@ -105,6 +100,8 @@
 {
     UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    
+    self.profileImageView.layer.borderWidth = 2.0;
     
     self.primaryActionButton.primaryColor = linkColor;
     self.primaryActionButton.secondaryColor = linkColor;

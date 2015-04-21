@@ -101,13 +101,10 @@
     }
 }
 
-- (void)applyProfileImageViewStyle
-{
-    self.profileImageView.layer.borderWidth = 2.0;
-}
-
 - (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    self.profileImageView.layer.borderWidth = 2.0;
+    
     UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     UIColor *contentTextColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];

@@ -1,4 +1,4 @@
-//
+ //
 //  VUserProfileViewController.m
 //  victorious
 //
@@ -714,8 +714,10 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
         if ( self.currentProfileCell == nil )
         {
             VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class]) forIndexPath:indexPath];
+            [self.profileHeaderViewController willMoveToParentViewController:self];
             headerCell.headerViewController = self.profileHeaderViewController;
             self.currentProfileCell = headerCell;
+            [self.profileHeaderViewController didMoveToParentViewController:self];
         }
         self.currentProfileCell.hidden = self.user == nil;
         return self.currentProfileCell;
