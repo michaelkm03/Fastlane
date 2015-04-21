@@ -8,8 +8,6 @@
 
 #import "VStreamCollectionCell.h"
 
-@class VStreamCellActionView;
-
 //Subviews should use the following cell subview height values to determine desired and actual cell height
 extern const CGFloat kInsetCellHeaderHeight;
 extern const CGFloat kInsetCellActionViewHeight;

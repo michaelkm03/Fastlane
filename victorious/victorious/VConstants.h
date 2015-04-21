@@ -76,10 +76,6 @@ static NSString * const   kVictoriousAppIDKey      = @"VictoriousAppID";
 static NSString * const   kStagingAppIDKey         = @"StagingAppID";
 static NSString * const   kQAAppIDKey              = @"QAAppID";
 
-static NSString * const   kTestflightQAToken       = @"TestflightQAAppToken";
-static NSString * const   kTestflightStagingToken  = @"TestflightStagingAppToken";
-static NSString * const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
-
 static NSString * const   kGAID                    = @"GAID";
 
 #pragma mark - API Payload keys

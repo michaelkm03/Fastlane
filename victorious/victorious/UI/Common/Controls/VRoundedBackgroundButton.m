@@ -20,6 +20,8 @@ static const CGFloat kHighlightedScale = 0.8f;
 
 @implementation VRoundedBackgroundButton
 
+#pragma mark - UIView Overrides
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -38,6 +40,8 @@ static const CGFloat kHighlightedScale = 0.8f;
                                                            cornerRadii:self.bounds.size];
     self.circleLayer.path = circlePath.CGPath;
 }
+
+#pragma mark - UIControl Overrides
 
 - (void)setSelected:(BOOL)selected
 {

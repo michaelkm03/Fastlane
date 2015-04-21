@@ -27,7 +27,7 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LDv-jo-7gZ" customClass="VStreamCellActionView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LDv-jo-7gZ" customClass="VInsetActionView">
                         <rect key="frame" x="-1" y="414" width="304" height="41"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -113,12 +113,12 @@
                 <outlet property="captionTextView" destination="QyC-HK-x2o" id="cMd-VE-Gge"/>
                 <outlet property="captionTextViewBottomConstraint" destination="u0E-OZ-gY2" id="zUj-rx-H7e"/>
                 <outlet property="captionTextViewTopConstraint" destination="A3e-xE-iUM" id="OUm-Pz-YPf"/>
-                <outlet property="cellActionView" destination="LDv-jo-7gZ" id="68A-oz-UVy"/>
                 <outlet property="commentHeightConstraint" destination="NDj-86-whc" id="JEg-AB-qBh"/>
                 <outlet property="commentLabelBottomConstraint" destination="rXC-pD-yT2" id="Hqm-PP-cMD"/>
                 <outlet property="commentsLabel" destination="cW4-bM-sNC" id="luq-a5-YM5"/>
                 <outlet property="commentsLeftConstraint" destination="9KD-hj-9El" id="GtG-Hl-072"/>
                 <outlet property="contentContainer" destination="Yqk-3U-Cvu" id="WaC-5x-TYc"/>
+                <outlet property="insetActionView" destination="LDv-jo-7gZ" id="ob3-rm-aMu"/>
                 <outlet property="loadingBackgroundContainer" destination="cYN-Ie-nea" id="LZw-te-TBa"/>
                 <outlet property="playBackgroundImageView" destination="IRG-lN-Zwl" id="xkg-6p-V7g"/>
                 <outlet property="playImageView" destination="EYB-Sg-RQg" id="eFi-Uc-FSE"/>
