@@ -10,6 +10,7 @@
 #import "VStreamItem+Fetcher.h"
 
 @class VAsset;
+@class VUser;
 
 @interface VSequence (Fetcher)
 
@@ -39,5 +40,8 @@
 
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
+
+- (VUser *)originalPoster;
+- (VUser *)realParentUser;
 
 @end

@@ -298,4 +298,14 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return NO;
 }
 
+- (VUser *)originalPoster
+{
+    return [self.isRepost boolValue] ? self.parentUser : self.user;
+}
+
+- (VUser *)realParentUser
+{
+    return [self.isRepost boolValue] ? self.user : self.parentUser;
+}
+
 @end

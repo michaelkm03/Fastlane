@@ -16,6 +16,7 @@
 
 // Models
 #import "VSequence+Fetcher.h"
+#import "VUser+Fetcher.h"
 
 // Formatters
 #import "VLargeNumberFormatter.h"
@@ -184,7 +185,35 @@
         return;
     }
     
-    // KVO and setup labels
+    if (_sequence.user != nil)
+    {
+        [self.KVOController unobserve:_sequence.user];
+    }
+    
+    _sequence = sequence;
+    
+    [self updateWithSequence:_sequence];
+
+    if (sequence.user != nil)
+    {
+        __weak typeof(self) welf = self;
+        [self.KVOController observe:sequence.user
+                            keyPaths:@[NSStringFromSelector(@selector(name))]
+                            options:NSKeyValueObservingOptionNew
+                              block:^(id observer, VUser *object, NSDictionary *change)
+         {
+             [welf updateWithSequence:_sequence];
+         }];
+    }
+}
+
+#pragma mark - Update UI
+
+- (void)updateWithSequence:(VSequence *)sequence
+{
+    self.creatorLabel.text = [sequence originalPoster].name;
+    self.parentUserLabel.text = [sequence parentUser].name;
+#warning Update timeAgo label
 }
 
 #pragma mark - VHasManagedDependencies
