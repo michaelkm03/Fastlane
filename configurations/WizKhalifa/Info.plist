@@ -13,16 +13,16 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1480263852212846</string>
+				<string>fb904586286249954</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1480263852212846</string>
+	<string>904586286249954</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>3eWPit0znW5VM0Aqv1F8gbzGn</string>
+	<string>0uaPfdT0Gi9GofwwMmFXXaTVK</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>YdlO7Wef36NqaYciRPgGsoXnp3wZHfxWNEsL9r5MDGayXrPnof</string>
+	<string>jk5wGkmvArgJdFnrYPjwdeTiQjWB8AxalkuJ5kdj73q65TPeot</string>
 	<key>VictoriousAppID</key>
 	<integer>46</integer>
 	<key>StagingAppID</key>
