@@ -678,7 +678,6 @@
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D85E26F21AE5D27B00AD82E4 /* VEStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F11AE5D27B00AD82E4 /* VEStreamCellFactory.m */; };
 		D85E26F61AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F41AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m */; };
-		D85E26F71AE5D68F00AD82E4 /* VEStreamCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D85E26F51AE5D68F00AD82E4 /* VEStreamCollectionViewCell.xib */; };
 		D85E26FA1AE5E38D00AD82E4 /* VECreatorInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F91AE5E38D00AD82E4 /* VECreatorInfoView.m */; };
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86BF34F1A42364B00C9F420 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */; };
@@ -2087,7 +2086,6 @@
 		D8332DBC1A7C275800C3FEE0 /* VCameraControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraControl.m; sourceTree = "<group>"; };
 		D8332DBE1A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVCameraShutterOverAnimator.h; sourceTree = "<group>"; };
 		D8332DBF1A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVCameraShutterOverAnimator.m; sourceTree = "<group>"; };
-		D835AD0A1AE5AAE900C4D019 /* VActionBarTruncation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarTruncation.h; sourceTree = "<group>"; };
 		D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNewContentViewController+Actions.h"; sourceTree = "<group>"; };
 		D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNewContentViewController+Actions.m"; sourceTree = "<group>"; };
 		D8360CEE19E3768300D7E260 /* VExperienceEnhancerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperienceEnhancerController.h; sourceTree = "<group>"; };
@@ -2109,7 +2107,6 @@
 		D85E26F11AE5D27B00AD82E4 /* VEStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEStreamCellFactory.m; sourceTree = "<group>"; };
 		D85E26F31AE5D68F00AD82E4 /* VEStreamCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEStreamCollectionViewCell.h; sourceTree = "<group>"; };
 		D85E26F41AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEStreamCollectionViewCell.m; sourceTree = "<group>"; };
-		D85E26F51AE5D68F00AD82E4 /* VEStreamCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEStreamCollectionViewCell.xib; sourceTree = "<group>"; };
 		D85E26F81AE5E38D00AD82E4 /* VECreatorInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VECreatorInfoView.h; sourceTree = "<group>"; };
 		D85E26F91AE5E38D00AD82E4 /* VECreatorInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VECreatorInfoView.m; sourceTree = "<group>"; };
 		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
@@ -5092,7 +5089,6 @@
 				D85E26F11AE5D27B00AD82E4 /* VEStreamCellFactory.m */,
 				D85E26F31AE5D68F00AD82E4 /* VEStreamCollectionViewCell.h */,
 				D85E26F41AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m */,
-				D85E26F51AE5D68F00AD82E4 /* VEStreamCollectionViewCell.xib */,
 				D85E26F81AE5E38D00AD82E4 /* VECreatorInfoView.h */,
 				D85E26F91AE5E38D00AD82E4 /* VECreatorInfoView.m */,
 			);
@@ -5294,7 +5290,6 @@
 				D89367481ADDBAA1001D2426 /* VActionBarFixedWidthItem.m */,
 				D89367441ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.h */,
 				D89367451ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m */,
-				D835AD0A1AE5AAE900C4D019 /* VActionBarTruncation.h */,
 			);
 			path = "Action Bar";
 			sourceTree = "<group>";
@@ -5681,7 +5676,6 @@
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
 				DB7460381A93A5BE006C2245 /* VInlineUserTableViewCell.xib in Resources */,
-				D85E26F71AE5D68F00AD82E4 /* VEStreamCollectionViewCell.xib in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
 				036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */,
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,

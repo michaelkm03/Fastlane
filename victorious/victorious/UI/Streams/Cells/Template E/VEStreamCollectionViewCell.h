@@ -8,6 +8,12 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@interface VEStreamCollectionViewCell : VBaseCollectionViewCell
+#import "VBackgroundContainer.h"
+
+@class VSequence;
+
+@interface VEStreamCollectionViewCell : VBaseCollectionViewCell <VBackgroundContainer>
+
+@property (nonatomic, strong) VSequence *sequence;
 
 @end

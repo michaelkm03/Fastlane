@@ -158,16 +158,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
 
-    NSURL *imageUrl;
-    if ([sequence isImage])
-    {
-        imageUrl = [NSURL URLWithString:[self.sequence.firstNode imageAsset].data];
-    }
-    else
-    {
-        imageUrl = [NSURL URLWithString:self.sequence.previewImagesObject];
-    }
-    [self.previewImageView fadeInImageAtURL:imageUrl
+    [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
                            placeholderImage:nil];
     
     [self setDescriptionText:self.sequence.name];
