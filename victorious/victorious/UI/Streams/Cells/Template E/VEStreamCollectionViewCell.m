@@ -110,13 +110,17 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
         
         VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
         creationContainer.translatesAutoresizingMaskIntoConstraints = NO;
+        creationContainer.sequence = self.sequence;
+        if ([creationContainer respondsToSelector:@selector(setDependencyManager:)])
+        {
+            [creationContainer setDependencyManager:self.dependencyManager];
+        }
         [creationContainer v_addHeightConstraint:44.0f];
         self.creationInfoContainer = creationContainer;
         actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace],
                                   button,
                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
                                   creationContainer];
-        
         
         self.hasLayedOutViews = YES;
     }

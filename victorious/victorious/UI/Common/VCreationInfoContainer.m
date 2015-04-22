@@ -99,6 +99,12 @@ static const CGFloat kDefaultHeigh = 44.0f;
     self.timeSinceLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
+    
+#warning Remove Me
+    self.creatorLabel.textColor = [UIColor whiteColor];
+    self.parentUserLabel.textColor = [UIColor whiteColor];
+    self.timeSinceLabel.textColor = [UIColor whiteColor];
+    self.clockImageView.tintColor = [UIColor whiteColor];
 }
 
 #pragma mark - UIView
@@ -141,11 +147,12 @@ static const CGFloat kDefaultHeigh = 44.0f;
         self.layedOutDefaultConstraints = YES;
     }
     
+    [self removeConstraint:self.creatorBottomToCenterConstraint];
+    [self removeConstraint:self.parentUserTopToCenterConstraint];
+    [self removeConstraint:self.centerCreatorLabelConstraint];
     if (self.parentUserLabel.text == nil)
     {
         // Center the creator label vertically
-        [self removeConstraint:self.creatorBottomToCenterConstraint];
-        [self removeConstraint:self.parentUserTopToCenterConstraint];
         self.centerCreatorLabelConstraint = [NSLayoutConstraint constraintWithItem:self.creatorLabel
                                                                          attribute:NSLayoutAttributeCenterY
                                                                          relatedBy:NSLayoutRelationEqual
@@ -158,7 +165,6 @@ static const CGFloat kDefaultHeigh = 44.0f;
     else
     {
         // Distribute Creator/subtitle vertically
-        [self removeConstraint:self.centerCreatorLabelConstraint];
         self.creatorBottomToCenterConstraint = [NSLayoutConstraint constraintWithItem:self.creatorLabel
                                                                            attribute:NSLayoutAttributeBottom
                                                                            relatedBy:NSLayoutRelationEqual
@@ -247,12 +253,6 @@ static const CGFloat kDefaultHeigh = 44.0f;
 //    self.parentUserLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 //    self.timeSinceLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
 //    self.clockImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-
-#warning Remove Me
-    self.creatorLabel.textColor = [UIColor whiteColor];
-    self.parentUserLabel.textColor = [UIColor whiteColor];
-    self.timeSinceLabel.textColor = [UIColor whiteColor];
-    self.clockImageView.tintColor = [UIColor whiteColor];
 }
 
 #pragma mark - VActionBarFlexibleWidth
