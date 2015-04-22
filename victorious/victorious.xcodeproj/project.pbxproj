@@ -141,6 +141,9 @@
 		035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */; };
 		035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */; };
 		035ABE7E1AD8871F00B6B1A5 /* VDefaultTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */; };
+		035FA7781AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */; };
+		035FA77A1AE1890D0002EE63 /* menuSectionsTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035FA7791AE1890D0002EE63 /* menuSectionsTemplate.json */; };
+		035FA77C1AE1B42E0002EE63 /* menuItemsTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035FA77B1AE1B42E0002EE63 /* menuItemsTemplate.json */; };
 		035FA77F1AE6C3330002EE63 /* VMessageViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA77E1AE6C3330002EE63 /* VMessageViewControllerFactory.m */; };
 		035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA7871AE6C4D50002EE63 /* VNotificationsViewController.m */; };
 		035FA78D1AE6C4E20002EE63 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA78A1AE6C4E20002EE63 /* VInboxViewController.m */; };
@@ -1163,6 +1166,9 @@
 		035ABE7A1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VDefaultTemplate.h"; sourceTree = "<group>"; };
 		035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VDefaultTemplate.m"; sourceTree = "<group>"; };
 		035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultTemplateTests.m; sourceTree = "<group>"; };
+		035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDependencyManager_VNavigationMenuItemTests.m; sourceTree = "<group>"; };
+		035FA7791AE1890D0002EE63 /* menuSectionsTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = menuSectionsTemplate.json; sourceTree = "<group>"; };
+		035FA77B1AE1B42E0002EE63 /* menuItemsTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = menuItemsTemplate.json; sourceTree = "<group>"; };
 		035FA77D1AE6C3330002EE63 /* VMessageViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessageViewControllerFactory.h; sourceTree = "<group>"; };
 		035FA77E1AE6C3330002EE63 /* VMessageViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessageViewControllerFactory.m; sourceTree = "<group>"; };
 		035FA7861AE6C4D50002EE63 /* VNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationsViewController.h; sourceTree = "<group>"; };
@@ -3515,6 +3521,8 @@
 				039420471AB88A450087ADFA /* image-template.json */,
 				A7CFC1B619FAF64700726772 /* landscape_left.m4v */,
 				A7CFC1B719FAF64700726772 /* landscape_right.m4v */,
+				035FA77B1AE1B42E0002EE63 /* menuItemsTemplate.json */,
+				035FA7791AE1890D0002EE63 /* menuSectionsTemplate.json */,
 				A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */,
 				A7CFC1B919FAF64700726772 /* portrait.m4v */,
 				037CB73419CFE02C0084BBED /* sampleImage.jpg */,
@@ -4602,6 +4610,7 @@
 				A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */,
 				0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */,
 				035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */,
+				035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */,
 				039420491AB88A9A0087ADFA /* VDependencyManagerImageTests.m */,
 				039D02AE1A10441500DB9236 /* VDependencyManagerTests.m */,
 				A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */,
@@ -4944,7 +4953,6 @@
 		BE76FBE218E4AA95009E6DD7 /* AppSpecific */ = {
 			isa = PBXGroup;
 			children = (
-				0329B9B91ACFBEA6003BBCC5 /* InfoPlist.strings */,
 				A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */,
 				A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */,
 				D811BBBD19B92F75007398BF /* homeHeaderImage.png */,
@@ -4953,6 +4961,7 @@
 				0314D07F19B4688E00FA363C /* Icon-40@2x.png */,
 				0314D08019B4688E00FA363C /* Icon-60@2x.png */,
 				0314D08119B4688E00FA363C /* Info.plist */,
+				0329B9B91ACFBEA6003BBCC5 /* InfoPlist.strings */,
 				DB81FB621AAE49FE00EA4E3C /* LaunchImage@2x.png */,
 			);
 			path = AppSpecific;
@@ -5803,9 +5812,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */,
+				035FA77C1AE1B42E0002EE63 /* menuItemsTemplate.json in Resources */,
 				A7CFC1BD19FAF6BF00726772 /* portrait.m4v in Resources */,
 				A7CFC1CB19FEE24300726772 /* front_portrait_upsidedown.m4v in Resources */,
 				A7CFC1C919FEE24300726772 /* front_landscape_left.m4v in Resources */,
+				035FA77A1AE1890D0002EE63 /* menuSectionsTemplate.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				039420481AB88A450087ADFA /* image-template.json in Resources */,
@@ -6582,6 +6593,7 @@
 				F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */,
 				039D02AF1A10441500DB9236 /* VDependencyManagerTests.m in Sources */,
 				A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */,
+				035FA7781AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */,
 				A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */,
 				A769C3F91A13E7A400698D0C /* VSequenceWebContentTests.m in Sources */,
 				F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */,
