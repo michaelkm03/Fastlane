@@ -9,6 +9,9 @@
 #import "VActionBar.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VActionBarFlexibleSpaceItem.h"
+#import "VActionBarFlexibleWidth.h"
+
+#import "NSArray+VMap.h"
 
 // Layout Helpers
 #import "UIView+Autolayout.h"
@@ -24,6 +27,8 @@
 #endif
 
 static const CGFloat kDefaultActionItemWidth = 44.0f;
+
+static NSString *kConstraintIdentifier = @"com.getVictorious.vActionBarConstraints";
 
 @implementation VActionBar
 
@@ -102,12 +107,7 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
     [items enumerateObjectsUsingBlock:^(UIView *actionItem, NSUInteger idx, BOOL *stop)
     {
         // Flexible space items are ignored
-        if ([actionItem isKindOfClass:[VActionBarFlexibleSpaceItem class]])
-        {
-            return;
-        }
-        
-        if ([actionItem isKindOfClass:[VActionBarFixedWidthItem class]])
+        if ([self isFlexibleActionItem:actionItem])
         {
             return;
         }
@@ -185,7 +185,7 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
     [items enumerateObjectsUsingBlock:^(UIView *actionItem, NSUInteger idx, BOOL *stop)
     {
         // Flexible space items are ignored
-        if ([actionItem isKindOfClass:[VActionBarFlexibleSpaceItem class]])
+        if ([self isFlexibleActionItem:actionItem])
         {
             return;
         }
@@ -218,13 +218,23 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
 - (void)applyFlexibleItemWith:(CGFloat)flexibleItemWidth
        toFlexibleItemsInItems:(NSArray *)items
 {
-    [items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+    [items enumerateObjectsUsingBlock:^(UIView *actionItem, NSUInteger idx, BOOL *stop)
     {
-        if ([obj isKindOfClass:[VActionBarFlexibleSpaceItem class]])
+        if ([self isFlexibleActionItem:actionItem])
         {
-            VActionBarFlexibleSpaceItem *flexibleSpaceItem = (VActionBarFlexibleSpaceItem *)obj;
-            [flexibleSpaceItem removeConstraints:[flexibleSpaceItem constraints]];
-            [flexibleSpaceItem v_addWidthConstraint:flexibleItemWidth];
+            NSPredicate *filterPredicate = [NSPredicate predicateWithBlock:^BOOL(NSLayoutConstraint *constraint, NSDictionary *bindings)
+                                            {
+                                                if ([constraint.identifier isEqualToString:kConstraintIdentifier])
+                                                {
+                                                    return YES;
+                                                }
+                                                return NO;
+                                            }];
+            NSArray *filteredConstrains = [[actionItem constraints] filteredArrayUsingPredicate:filterPredicate];
+            [actionItem removeConstraints:filteredConstrains];
+            [actionItem setNeedsUpdateConstraints];
+            NSLayoutConstraint *widthConstraint = [actionItem v_addWidthConstraint:flexibleItemWidth];
+            widthConstraint.identifier = kConstraintIdentifier;
         }
     }];
 }
@@ -232,9 +242,9 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
 - (NSInteger)flexibleItemCountFromItems:(NSArray *)items
 {
     __block NSInteger numberOfFlexibleItems = 0;
-    [items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+    [items enumerateObjectsUsingBlock:^(UIView *actionItem, NSUInteger idx, BOOL *stop)
      {
-         if ([obj isKindOfClass:[VActionBarFlexibleSpaceItem class]])
+         if ([self isFlexibleActionItem:actionItem])
          {
              numberOfFlexibleItems++;
          }
@@ -247,6 +257,20 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
 {
     CGFloat flexibleSpaceWidth = (CGFloat)(width / numberOfFlexibleItems);
     return floorCGFloat(flexibleSpaceWidth);
+}
+
+- (BOOL)isFlexibleActionItem:(UIView *)actionItem
+{
+    if ([actionItem conformsToProtocol:@protocol(VActionBarFlexibleWidth)])
+    {
+        id <VActionBarFlexibleWidth> flexibleWidthConformer = (id <VActionBarFlexibleWidth>)actionItem;
+        return [flexibleWidthConformer canApplyFlexibleWidth];
+    }
+    if ([actionItem isKindOfClass:[VActionBarFlexibleSpaceItem class]])
+    {
+        return YES;
+    }
+    return NO;
 }
 
 @end

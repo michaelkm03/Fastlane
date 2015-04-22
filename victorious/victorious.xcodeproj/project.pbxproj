@@ -2074,6 +2074,7 @@
 		D81404101AB372760099EC4B /* VNotAuthorizedProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotAuthorizedProfileCollectionViewCell.xib; sourceTree = "<group>"; };
 		D816F7E21A966A0B00120798 /* UIScrollView+VCenterContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+VCenterContent.h"; sourceTree = "<group>"; };
 		D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+VCenterContent.m"; sourceTree = "<group>"; };
+		D8282B181AE72E44005D9DCF /* VActionBarFlexibleWidth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarFlexibleWidth.h; sourceTree = "<group>"; };
 		D82E76DC19F5BFED00FFB722 /* VContentPollQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentPollQuestionCell.h; sourceTree = "<group>"; };
 		D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentPollQuestionCell.m; sourceTree = "<group>"; };
 		D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollQuestionCell.xib; sourceTree = "<group>"; };
@@ -5290,6 +5291,7 @@
 				D89367481ADDBAA1001D2426 /* VActionBarFixedWidthItem.m */,
 				D89367441ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.h */,
 				D89367451ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m */,
+				D8282B181AE72E44005D9DCF /* VActionBarFlexibleWidth.h */,
 			);
 			path = "Action Bar";
 			sourceTree = "<group>";

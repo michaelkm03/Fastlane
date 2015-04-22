@@ -25,9 +25,10 @@
 #import "UIView+Autolayout.h"
 
 static const CGFloat kClockSize = 8.0f;
-static const CGFloat kSpaceToCenterWhenTwoLines = 2.0f;
+static const CGFloat kSpaceToCenterWhenTwoLines = 3.0f;
 static const CGFloat kSpaceCreatorLabelToClockImageView = 4.0f;
 static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
+static const CGFloat kDefaultHeigh = 44.0f;
 
 @interface VCreationInfoContainer ()
 
@@ -102,11 +103,6 @@ static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
 
 #pragma mark - UIView
 
-- (CGSize)intrinsicContentSize
-{
-    return CGSizeMake(100.0f, 44.0f);
-}
-
 - (void)updateConstraints
 {
     NSDictionary *viewDictionary = @{
@@ -162,7 +158,6 @@ static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
     else
     {
         // Distribute Creator/subtitle vertically
-        
         [self removeConstraint:self.centerCreatorLabelConstraint];
         self.creatorBottomToCenterConstraint = [NSLayoutConstraint constraintWithItem:self.creatorLabel
                                                                            attribute:NSLayoutAttributeBottom
@@ -180,6 +175,11 @@ static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
                                                                            multiplier:1.0f
                                                                              constant:kSpaceToCenterWhenTwoLines];
         [self addConstraint:self.parentUserTopToCenterConstraint];
+    }
+    
+    if ([self v_internalHeightConstraint] == nil)
+    {
+        [self v_addHeightConstraint:44.0f];
     }
     
     [super updateConstraints];
@@ -214,6 +214,12 @@ static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
              [welf updateWithSequence:_sequence];
          }];
     }
+    
+#warning Remove mE
+    self.creatorLabel.textColor = [UIColor whiteColor];
+    self.parentUserLabel.textColor = [UIColor whiteColor];
+    self.timeSinceLabel.textColor = [UIColor whiteColor];
+    self.clockImageView.tintColor = [UIColor whiteColor];
 }
 
 #pragma mark - Update UI
@@ -247,6 +253,13 @@ static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
     self.parentUserLabel.textColor = [UIColor whiteColor];
     self.timeSinceLabel.textColor = [UIColor whiteColor];
     self.clockImageView.tintColor = [UIColor whiteColor];
+}
+
+#pragma mark - VActionBarFlexibleWidth
+
+- (BOOL)canApplyFlexibleWidth
+{
+    return YES;
 }
 
 @end

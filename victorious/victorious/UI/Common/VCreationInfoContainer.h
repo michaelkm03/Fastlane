@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
+#import "VActionBarFlexibleWidth.h"
 
 @class VSequence;
 
@@ -18,7 +19,7 @@
  *
  *  VCreationInfoContainer implements VActionBarTruncation and can safely be truncated.
  */
-@interface VCreationInfoContainer : UIView <VHasManagedDependencies>
+@interface VCreationInfoContainer : UIView <VHasManagedDependencies, VActionBarFlexibleWidth>
 
 /**
  *  The sequence that this creation infor container view represents.
