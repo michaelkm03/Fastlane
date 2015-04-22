@@ -2,15 +2,15 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Lawrence Leach on 11/14/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 4/22/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "VStreamItem.h"
 
-@class VAdBreak, VComment, VNode, VPollResult, VTracking, VUser, VVoteResult, VEndCard;
+@class VAdBreak, VComment, VEndCard, VNode, VPollResult, VTracking, VUser, VVoteResult;
 
 @interface VSequence : VStreamItem
 
@@ -19,33 +19,33 @@
 @property (nonatomic, retain) NSNumber * createdBy;
 @property (nonatomic, retain) NSDate * expiresAt;
 @property (nonatomic, retain) NSString * gameStatus;
+@property (nonatomic, retain) NSNumber * hasReposted;
 @property (nonatomic, retain) NSNumber * isComplete;
 @property (nonatomic, retain) NSNumber * isRemix;
 @property (nonatomic, retain) NSNumber * isRepost;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
 @property (nonatomic, retain) NSNumber * permissions;
+@property (nonatomic, retain) id previewData;
+@property (nonatomic, retain) NSString * previewType;
 @property (nonatomic, retain) NSDate * releasedAt;
-@property (nonatomic, retain) NSNumber * remixCount;
+@property (nonatomic, retain) NSNumber * gifCount;
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
-@property (nonatomic, retain) id previewData;
-@property (nonatomic, retain) NSString * previewType;
+@property (nonatomic, retain) NSNumber * memeCount;
 @property (nonatomic, retain) NSOrderedSet *adBreaks;
 @property (nonatomic, retain) NSOrderedSet *comments;
+@property (nonatomic, retain) VEndCard *endCard;
 @property (nonatomic, retain) NSOrderedSet *nodes;
+@property (nonatomic, retain) VEndCard *parentEndCard;
 @property (nonatomic, retain) VUser *parentUser;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *remixers;
 @property (nonatomic, retain) NSSet *reposters;
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
-@property (nonatomic, retain) VEndCard *endCard;
-@property (nonatomic, retain) VEndCard *parentEndCard;
 @property (nonatomic, retain) NSSet *voteResults;
-@property (nonatomic, retain) NSNumber *hasReposted;
-
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)

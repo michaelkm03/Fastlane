@@ -51,8 +51,13 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 @interface VDependencyManager (VStreamCollectionViewController)
 
 /**
- Returns a stream of remixes for the given sequence.
+ Returns a stream of memes for the given sequence.
  */
-- (VStreamCollectionViewController *)remixStreamForSequence:(VSequence *)sequence;
+- (VStreamCollectionViewController *)memeStreamForSequence:(VSequence *)sequence;
+
+/**
+ Returns a stream of gifs for the given sequence.
+ */
+- (VStreamCollectionViewController *)gifStreamForSequence:(VSequence *)sequence;
 
 @end

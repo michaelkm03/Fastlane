@@ -18,7 +18,6 @@
 "Messages" = "Nachrichten";
 "Notifications" = "Benachrichtungen";
 "Comments" = "Kommentare";
-"Remixes" = "Remixes";
 "OK" = "OK";
 "CancelButton" = "Abbrechen";
 "DeleteButton" = "Löschen";
@@ -137,9 +136,6 @@
 
 "NoRepostersTitle" = "MACHE DEN 1. REPOST!";
 "NoRepostersMessage" = "Teile diesen Inhalt mit all deinen Anhängern!";
-
-"NoRemixersTitle" = "MACHE DEN 1. REMIX!";
-"NoRemixersMessage" = "Mache dir diesen Inhalt zu eigen, indem du Kommentare, weitere Videoclips und mehr hinzufügst!";
 
 "OwnerSharePollFormat" = "Sieh dir diese Umfrage von %@ an!"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" = "Sieh dir \"%@\" von %@ an!";    //Check out "<video name>" by <creator>! <URL>

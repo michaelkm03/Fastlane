@@ -275,35 +275,11 @@
         {
             [actionItems addObject:[self gifItemForContentViewController:contentViewController
                                                actionSheetViewController:actionSheetViewController]];
-            [actionItems addObject:[self memeItemForContentViewController:contentViewController
-                                                actionSheetViewController:actionSheetViewController]];
         }
-        else
-        {
-            [actionItems addObject:[self remixItemForContentViewController:contentViewController
-                                                 actionSheetViewController:actionSheetViewController]];
-        }
+       
+        [actionItems addObject:[self memeItemForContentViewController:contentViewController
+                                            actionSheetViewController:actionSheetViewController]];
     }
-}
-
-- (VActionItem *)remixItemForContentViewController:(UIViewController *)contentViewController
-                         actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
-{
-    VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"RemixVerb", @"")
-                                                          actionIcon:[UIImage imageNamed:@"icon_remix"]
-                                                          detailText:nil];
-    [self setupRemixActionItem:remixItem
-     withContentViewController:contentViewController
-     actionSheetViewController:actionSheetViewController
-      withAutorizedActionBlock:^
-     {
-         [self.sequenceActionController showRemixOnViewController:self
-                                                     withSequence:self.viewModel.sequence
-                                             andDependencyManager:self.dependencyManager
-                                                   preloadedImage:nil
-                                                       completion:nil];
-     }];
-    return remixItem;
 }
 
 - (VActionItem *)gifItemForContentViewController:(UIViewController *)contentViewController
@@ -311,20 +287,27 @@
 {
     VActionItem *gifItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Create a GIF", @"")
                                                         actionIcon:[UIImage imageNamed:@"D_gifIcon"]
-                                                        detailText:nil];
+                                                        detailText:self.viewModel.gifCountText];
     [self setupRemixActionItem:gifItem
      withContentViewController:contentViewController
      actionSheetViewController:actionSheetViewController
-      withAutorizedActionBlock:^{
-          
-          [self.sequenceActionController showRemixOnViewController:self
-                                                      withSequence:self.viewModel.sequence
-                                              andDependencyManager:self.dependencyManager
-                                                    preloadedImage:nil
-                                                  defaultVideoEdit:VDefaultVideoEditGIF
-                                                        completion:nil];
-          
-      }];
+      withAutorizedActionBlock:^
+     {
+         
+         [self.sequenceActionController showRemixOnViewController:self
+                                                     withSequence:self.viewModel.sequence
+                                             andDependencyManager:self.dependencyManager
+                                                   preloadedImage:nil
+                                                 defaultVideoEdit:VDefaultVideoEditGIF
+                                                       completion:nil];
+         
+     }
+        dismissCompletionBlock:^
+     {
+         [self.sequenceActionController showGiffersOnNavigationController:contentViewController.navigationController
+                                                                  sequence:self.viewModel.sequence
+                                                      andDependencyManager:self.dependencyManager];
+     }];
     return gifItem;
 }
 
@@ -333,20 +316,26 @@
 {
     VActionItem *memeItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Create a meme", @"")
                                                          actionIcon:[UIImage imageNamed:@"D_memeIcon"]
-                                                         detailText:nil];
+                                                         detailText:self.viewModel.memeCountText];
     [self setupRemixActionItem:memeItem
      withContentViewController:contentViewController
      actionSheetViewController:actionSheetViewController
-      withAutorizedActionBlock:^{
-          
-          [self.sequenceActionController showRemixOnViewController:self
-                                                      withSequence:self.viewModel.sequence
-                                              andDependencyManager:self.dependencyManager
-                                                    preloadedImage:nil
-                                                  defaultVideoEdit:VDefaultVideoEditSnapshot
-                                                        completion:nil];
-          
-      }];
+      withAutorizedActionBlock:^
+     {
+         [self.sequenceActionController showRemixOnViewController:self
+                                                     withSequence:self.viewModel.sequence
+                                             andDependencyManager:self.dependencyManager
+                                                   preloadedImage:nil
+                                                 defaultVideoEdit:VDefaultVideoEditSnapshot
+                                                       completion:nil];
+         
+     }
+        dismissCompletionBlock:^
+     {
+         [self.sequenceActionController showMemersOnNavigationController:contentViewController.navigationController
+                                                                  sequence:self.viewModel.sequence
+                                                      andDependencyManager:self.dependencyManager];
+     }];
     return memeItem;
 }
 
@@ -354,7 +343,11 @@
    withContentViewController:(UIViewController *)contentViewController
    actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
     withAutorizedActionBlock:(void (^)(void))authorizedActionBlock
+      dismissCompletionBlock:(void (^)(void))dismissCompletionBlock
 {
+    NSAssert(authorizedActionBlock != nil, @"autorized action block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
+    NSAssert(dismissCompletionBlock != nil, @"dismiss completion block cannot be nil in setupRemixActionItem:withContentViewController:actionSheetViewController:withAutorizedActionBlock:dismissCompletionBlock: in VNewContentViewController+Actions");
+    
     remixItem.selectionHandler = ^(VActionItem *item)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
@@ -381,9 +374,7 @@
         [contentViewController dismissViewControllerAnimated:YES
                                                   completion:^
          {
-             [self.sequenceActionController showRemixersOnNavigationController:contentViewController.navigationController
-                                                                      sequence:self.viewModel.sequence
-                                                          andDependencyManager:self.dependencyManager];
+             dismissCompletionBlock();
          }];
     };
 }

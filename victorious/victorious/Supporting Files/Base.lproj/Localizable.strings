@@ -19,6 +19,8 @@
 "Notifications"         =   "Notifications";
 "Comments"              =   "Comments";
 "Remixes"               =   "Remixes";
+"Gifs"                  =   "Gifs";
+"Memes"                 =   "Memes";
 "OK"                    =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
@@ -135,11 +137,11 @@
 "SuggestedFollowersPlur" =   "%@ Followers";
 "SuggestedFollowersK"    =   "%@ Followers";
 
-"NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
-"NoRepostersMessage"    =   "Share this content with all of your followers!";
+"NoGiffersTitle"       =   "BE THE 1ST TO GIF!";
+"NoGiffersMessage"     =   "Make a GIF by selecting your favorite clip from this video and sharing it with other fans!";
 
-"NoRemixersTitle"       =   "BE THE 1ST TO REMIX!";
-"NoRemixersMessage"     =   "Make this content your own by adding commentary, additional video clips, and more!";
+"NoMemersTitle"       =   "BE THE 1ST TO MEME!";
+"NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
 
 "OwnerSharePollFormat"  =   "Check out this poll by %@!"; //Check out this poll by <creator>! <URL>
 "OwnerShareVideoFormat" =   "Check out \"%@\" by %@!";    //Check out "<video name>" by <creator>! <URL>

@@ -173,17 +173,18 @@
         <attribute name="createdBy" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="expiresAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="gameStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gifCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="hasReposted" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isComplete" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isRemix" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isRepost" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="memeCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="nameEmbeddedInContent" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="parentUserId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="permissions" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="previewData" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="previewType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="remixCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
@@ -290,7 +291,7 @@
         <element name="NotificationSettings" positionX="621" positionY="-747" width="128" height="150"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="510"/>
+        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="525"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="300"/>

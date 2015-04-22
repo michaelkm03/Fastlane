@@ -711,9 +711,14 @@
     return [NSURL URLWithString:self.sequence.user.pictureUrl];
 }
 
-- (NSString *)remixCountText
+- (NSString *)memeCountText
 {
-    return [NSString stringWithFormat:@"%@", self.sequence.remixCount];
+    return [NSString stringWithFormat:@"%@", self.sequence.memeCount];
+}
+
+- (NSString *)gifCountText
+{
+    return [NSString stringWithFormat:@"%@", self.sequence.gifCount];
 }
 
 - (NSString *)repostCountText
