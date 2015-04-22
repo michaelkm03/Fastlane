@@ -13,9 +13,17 @@
 @implementation UIImageView (VLoadingAnimations)
 
 - (void)fadeInImageAtURL:(NSURL *)url
+{
+    [self fadeInImageAtURL:url
+          placeholderImage:nil];
+}
+
+- (void)fadeInImageAtURL:(NSURL *)url
         placeholderImage:(UIImage *)image
 {
-    [self fadeInImageAtURL:url placeholderImage:image completion:nil];
+    [self fadeInImageAtURL:url
+          placeholderImage:image
+                completion:nil];
 }
 
 - (void)fadeInImageAtURL:(NSURL *)url
