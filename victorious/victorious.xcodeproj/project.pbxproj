@@ -141,6 +141,7 @@
 		035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */; };
 		035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */; };
 		035ABE7E1AD8871F00B6B1A5 /* VDefaultTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */; };
+		035FA77F1AE6C3330002EE63 /* VMessageViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA77E1AE6C3330002EE63 /* VMessageViewControllerFactory.m */; };
 		035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA7871AE6C4D50002EE63 /* VNotificationsViewController.m */; };
 		035FA78D1AE6C4E20002EE63 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA78A1AE6C4E20002EE63 /* VInboxViewController.m */; };
 		035FA78E1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA78C1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m */; };
@@ -262,6 +263,7 @@
 		039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29419C908F400305987 /* VCVideoPlayerViewController.m */; };
 		039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29619C908F400305987 /* VElapsedTimeFormatter.m */; };
 		039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */; };
+		03A00E5B1AE7272E00A2B733 /* VMessageViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A00E5A1AE7272E00A2B733 /* VMessageViewControllerFactoryTests.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03AC453A19BA1F1000CE4351 /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453919BA1F1000CE4351 /* NSString+VCrypto.m */; };
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
@@ -1161,6 +1163,8 @@
 		035ABE7A1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VDefaultTemplate.h"; sourceTree = "<group>"; };
 		035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VDefaultTemplate.m"; sourceTree = "<group>"; };
 		035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultTemplateTests.m; sourceTree = "<group>"; };
+		035FA77D1AE6C3330002EE63 /* VMessageViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessageViewControllerFactory.h; sourceTree = "<group>"; };
+		035FA77E1AE6C3330002EE63 /* VMessageViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessageViewControllerFactory.m; sourceTree = "<group>"; };
 		035FA7861AE6C4D50002EE63 /* VNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationsViewController.h; sourceTree = "<group>"; };
 		035FA7871AE6C4D50002EE63 /* VNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationsViewController.m; sourceTree = "<group>"; };
 		035FA7891AE6C4E20002EE63 /* VInboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInboxViewController.h; sourceTree = "<group>"; };
@@ -1344,6 +1348,7 @@
 		039ED29619C908F400305987 /* VElapsedTimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatter.m; sourceTree = "<group>"; };
 		039ED29719C908F400305987 /* VVideoDownloadProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoDownloadProgressIndicatorView.h; sourceTree = "<group>"; };
 		039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
+		03A00E5A1AE7272E00A2B733 /* VMessageViewControllerFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessageViewControllerFactoryTests.m; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		03AC453819BA1F1000CE4351 /* NSString+VCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VCrypto.h"; sourceTree = "<group>"; };
@@ -2879,6 +2884,8 @@
 				0314D3A119B46B5E00FA363C /* VMessageTableDataSource.m */,
 				0314D3A219B46B5E00FA363C /* VMessageViewController.h */,
 				0314D3A319B46B5E00FA363C /* VMessageViewController.m */,
+				035FA77D1AE6C3330002EE63 /* VMessageViewControllerFactory.h */,
+				035FA77E1AE6C3330002EE63 /* VMessageViewControllerFactory.m */,
 				035FA78B1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.h */,
 				035FA78C1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m */,
 			);
@@ -4586,6 +4593,7 @@
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
 				039D2FD4197D93C600DFBE60 /* Test Data */,
+				D8DCE5911ADD85820004B782 /* VActionBarTests.m */,
 				A77AD4FA1A1FF33100142F24 /* VAlertControllerAdvancedTests.m */,
 				A77AD4F81A1FEDD100142F24 /* VAlertControllerBasicTests.m */,
 				A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */,
@@ -4616,6 +4624,7 @@
 				BE9674F819E335060072E87A /* VLargeNumberFormatterTests.m */,
 				BE9674F919E335060072E87A /* VMarqueeControllerTests.m */,
 				0309318F1A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m */,
+				03A00E5A1AE7272E00A2B733 /* VMessageViewControllerFactoryTests.m */,
 				BE9674FA19E335060072E87A /* VMultipartFormDataWriterTests.m */,
 				D80BAB561A688673003A3068 /* VNodeFetcherTests.m */,
 				A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */,
@@ -4647,7 +4656,6 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
-				D8DCE5911ADD85820004B782 /* VActionBarTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -6081,6 +6089,7 @@
 				A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
+				035FA77F1AE6C3330002EE63 /* VMessageViewControllerFactory.m in Sources */,
 				A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */,
 				A780ED5D1A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m in Sources */,
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
@@ -6548,6 +6557,7 @@
 				A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */,
 				A7D288201A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m in Sources */,
 				A72005311A03073B00285A9C /* VUIAlertView+VBlocksTests.m in Sources */,
+				03A00E5B1AE7272E00A2B733 /* VMessageViewControllerFactoryTests.m in Sources */,
 				A72005291A03073B00285A9C /* VHistogramDataSourceTests.m in Sources */,
 				035ABE7E1AD8871F00B6B1A5 /* VDefaultTemplateTests.m in Sources */,
 				A72005321A03073B00285A9C /* VUploadManagerTests.m in Sources */,

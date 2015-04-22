@@ -8,6 +8,8 @@
 
 #import "VHasManagedDependencies.h"
 
+#import <UIKit/UIKit.h>
+
 @class VMessageTableDataSource, VUnreadMessageCountCoordinator, VUser;
 
 @interface VMessageViewController : UITableViewController <VHasManagedDependencies>
