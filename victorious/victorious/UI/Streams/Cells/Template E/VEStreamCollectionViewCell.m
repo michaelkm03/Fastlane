@@ -16,6 +16,7 @@
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"
 #import "VRoundedCommentButton.h"
+#import "VLinearGradientView.h"
 
 // Models
 #import "VSequence+Fetcher.h"
@@ -25,6 +26,8 @@ static const CGFloat kInfoContainerHeight = 81.0f;
 static const CGFloat kLeadingTrailingSpace = 22.0f;
 static const CGFloat kAvatarSize = 28.5;
 static const CGFloat kSpaceAvatarToLabels = 3.0f;
+static const CGFloat kGradientEndAlpha = 0.15f;
+static const CGFloat kGradientHeight = 78.0f;
 
 @interface VEStreamCollectionViewCell ()
 
@@ -35,6 +38,7 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) VRoundedCommentButton *commentButton;
+@property (nonatomic, strong) VLinearGradientView *linearGradientView;
 
 @end
 
@@ -88,6 +92,16 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
         
         [self.contentContainerView addSubview:self.previewView];
         [self.contentContainerView v_addFitToParentConstraintsToSubview:self.previewView];
+        
+        self.linearGradientView = [[VLinearGradientView alloc] initWithFrame:CGRectZero];
+        [self.linearGradientView setColors:@[[[UIColor blackColor] colorWithAlphaComponent:kGradientEndAlpha],
+                                             [UIColor blackColor]]];
+        [self.contentContainerView addSubview:self.linearGradientView];
+        [self.contentContainerView v_addPinToLeadingTrailingToSubview:self.linearGradientView];
+        [self.contentContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[linearGradientView(height)]|"
+                                                                                          options:kNilOptions
+                                                                                          metrics:@{@"height":@(kGradientHeight)}
+                                                                                            views:@{@"linearGradientView":self.linearGradientView}]];
         
         UIView *contentInfoContainerView = [[UIView alloc] initWithFrame:CGRectZero];
         contentInfoContainerView.translatesAutoresizingMaskIntoConstraints = NO;
