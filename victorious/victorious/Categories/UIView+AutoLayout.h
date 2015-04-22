@@ -42,6 +42,12 @@
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview;
 
 /**
+ Applies left to left and right to right constraints from the container view to the 
+ passed in subview.
+ */
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView;
+
+/**
  Applies internal width constraint to view.
  */
 - (void)v_addWidthConstraint:(CGFloat)width;

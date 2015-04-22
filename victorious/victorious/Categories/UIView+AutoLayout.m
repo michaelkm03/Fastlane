@@ -98,6 +98,18 @@
                                                       constant:height]];
 }
 
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView
+{
+    NSParameterAssert( [subView isDescendantOfView:self] );
+    
+    subView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[subView]|"
+                                                                 options:kNilOptions
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(subView)]];
+}
+
 - (NSLayoutConstraint *)v_internalWidthConstraint
 {
     __block NSLayoutConstraint *internalWidthConstraint;
