@@ -12,6 +12,7 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
 #import "VTextPostViewController.h"
+#import "VPollView.h"
 #import "UIColor+VHex.h"
 
 // Models
@@ -19,56 +20,20 @@
 #import "VSequence+Fetcher.h"
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
+#import "VAnswer+Fetcher.h"
 
 @interface VAbstractStreamCollectionCell ()
 
 @property (nonatomic, strong, readwrite) UIView *previewView;
 @property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
+@property (nonatomic, strong) VPollView *pollView;
 
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VAbstractStreamCollectionCell
-
-#pragma mark - Init
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (void)sharedInit
-{
-    _previewView = [[UIView alloc] initWithFrame:CGRectZero];
-    _previewView.translatesAutoresizingMaskIntoConstraints = NO;
-}
 
 #pragma mark - Class Methods
 
@@ -78,26 +43,17 @@
     return nil;
 }
 
-#pragma mark - UIView Overrides
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    // If we already created our content views put them in the container
-    if (self.previewImageView != nil)
-    {
-        [self.previewView addSubview:self.previewImageView];
-        [self.previewView v_addFitToParentConstraintsToSubview:self.previewImageView];
-    }
-    if (self.textPostViewController != nil)
-    {
-        [self.previewView addSubview:self.textPostViewController.view];
-        [self.previewView v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-    }
-}
-
 #pragma mark - Property Accessors
+
+- (UIView *)previewView
+{
+    if (_previewView == nil)
+    {
+        _previewView = [[UIView alloc] initWithFrame:CGRectZero];
+        _previewView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _previewView;
+}
 
 - (void)setSequence:(VSequence *)sequence
 {
@@ -126,6 +82,16 @@
     else if ([sequence isPoll])
     {
         VLog(@"%@, poll cell", self);
+        if (self.pollView == nil)
+        {
+            self.pollView = [[VPollView alloc] initWithFrame:CGRectZero];
+            [self.previewView addSubview:self.pollView];
+            [self.previewView v_addFitToParentConstraintsToSubview:self.pollView];
+        }
+        [self.pollView setImageURL:[[[sequence firstNode] answerA] previewMediaURL]
+                     forPollAnswer:VPollAnswerA];
+        [self.pollView setImageURL:[[[sequence firstNode] answerB] previewMediaURL]
+                     forPollAnswer:VPollAnswerB];
     }
     else if ([sequence isVideo])
     {

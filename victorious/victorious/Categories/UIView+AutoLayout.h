@@ -48,6 +48,12 @@
 - (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView;
 
 /**
+ Applies top to top and bottom to bottom constraints form teh container view ot the
+ passed in subview.
+ */
+- (void)v_addPintoTopBottomToSubview:(UIView *)subView;
+
+/**
  Applies internal width constraint to view. Returns the added constraint
  */
 - (NSLayoutConstraint *)v_addWidthConstraint:(CGFloat)width;

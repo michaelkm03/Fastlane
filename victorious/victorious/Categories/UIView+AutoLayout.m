@@ -114,6 +114,18 @@
                                                                    views:NSDictionaryOfVariableBindings(subView)]];
 }
 
+- (void)v_addPintoTopBottomToSubview:(UIView *)subView
+{
+    NSParameterAssert( [subView isDescendantOfView:self] );
+    
+    subView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subView]|"
+                                                                 options:kNilOptions
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(subView)]];
+}
+
 - (NSLayoutConstraint *)v_internalWidthConstraint
 {
     __block NSLayoutConstraint *internalWidthConstraint;

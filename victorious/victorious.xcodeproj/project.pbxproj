@@ -682,6 +682,8 @@
 		D85E26FA1AE5E38D00AD82E4 /* VECreatorInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F91AE5E38D00AD82E4 /* VECreatorInfoView.m */; };
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86528EF1AE80628003832AC /* VAbstractStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */; };
+		D86528F31AE82ABF003832AC /* VPollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528F21AE82ABF003832AC /* VPollView.m */; };
+		D86528F61AE838F1003832AC /* VAnswer+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528F51AE838F1003832AC /* VAnswer+Fetcher.m */; };
 		D86BF34F1A42364B00C9F420 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */; };
 		D86BF35C1A42683E00C9F420 /* VPublishBlurOverAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF35B1A42683E00C9F420 /* VPublishBlurOverAnimator.m */; };
 		D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
@@ -2118,6 +2120,10 @@
 		D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceToWorkspaceAnimator.m; sourceTree = "<group>"; };
 		D86528ED1AE80628003832AC /* VAbstractStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamCollectionCell.h; sourceTree = "<group>"; };
 		D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamCollectionCell.m; sourceTree = "<group>"; };
+		D86528F11AE82ABF003832AC /* VPollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollView.h; sourceTree = "<group>"; };
+		D86528F21AE82ABF003832AC /* VPollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollView.m; sourceTree = "<group>"; };
+		D86528F41AE838F1003832AC /* VAnswer+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAnswer+Fetcher.h"; sourceTree = "<group>"; };
+		D86528F51AE838F1003832AC /* VAnswer+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAnswer+Fetcher.m"; sourceTree = "<group>"; };
 		D86BF34D1A42364B00C9F420 /* UIView+VDynamicsHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VDynamicsHelpers.h"; sourceTree = "<group>"; };
 		D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VDynamicsHelpers.m"; sourceTree = "<group>"; };
 		D86BF35A1A42683E00C9F420 /* VPublishBlurOverAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishBlurOverAnimator.h; sourceTree = "<group>"; };
@@ -2705,6 +2711,7 @@
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				F05AA97D1A83F6E3002F8917 /* Inline Search */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
+				D86528F01AE82AAC003832AC /* PollView */,
 				A7B5144A1A4517A80074282F /* SwipeCell */,
 				A7738AFE1A4A35DF008EA973 /* Transitions */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
@@ -2718,6 +2725,8 @@
 				0314D35119B46B5E00FA363C /* VCommentTextAndMediaView.m */,
 				0314D35219B46B5E00FA363C /* VContentInputAccessoryView.h */,
 				0314D35319B46B5E00FA363C /* VContentInputAccessoryView.m */,
+				D8A411C01AE5B17A000A7229 /* VCreationInfoContainer.h */,
+				D8A411C11AE5B17A000A7229 /* VCreationInfoContainer.m */,
 				A74C87F81ABA5859004D2E16 /* VCreatorInfoHelper.h */,
 				A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */,
 				D8C8F5711A0400DF006BE3E8 /* VExtendedView.h */,
@@ -2755,8 +2764,6 @@
 				F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */,
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
-				D8A411C01AE5B17A000A7229 /* VCreationInfoContainer.h */,
-				D8A411C11AE5B17A000A7229 /* VCreationInfoContainer.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -4798,6 +4805,8 @@
 				BE11F26419CCADD200DEC776 /* VStreamItem+Fetcher.m */,
 				BE89D97F192141D600D97E7F /* VUser+Fetcher.h */,
 				BE89D980192141D600D97E7F /* VUser+Fetcher.m */,
+				D86528F41AE838F1003832AC /* VAnswer+Fetcher.h */,
+				D86528F51AE838F1003832AC /* VAnswer+Fetcher.m */,
 			);
 			path = Fetchers;
 			sourceTree = "<group>";
@@ -5102,6 +5111,15 @@
 				D85E26F91AE5E38D00AD82E4 /* VECreatorInfoView.m */,
 			);
 			path = "Template E";
+			sourceTree = "<group>";
+		};
+		D86528F01AE82AAC003832AC /* PollView */ = {
+			isa = PBXGroup;
+			children = (
+				D86528F11AE82ABF003832AC /* VPollView.h */,
+				D86528F21AE82ABF003832AC /* VPollView.m */,
+			);
+			path = PollView;
 			sourceTree = "<group>";
 		};
 		D86BF3591A42683E00C9F420 /* Animators */ = {
@@ -5983,6 +6001,7 @@
 				A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */,
 				03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */,
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
+				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
@@ -6073,6 +6092,7 @@
 				0314D4E319B46B5E00FA363C /* VFindTwitterFriendsTableViewController.m in Sources */,
 				2B6B3F9A1AB8F1EB00AA32D7 /* VNotificationsViewController.m in Sources */,
 				0314D07119B4670A00FA363C /* UIImage+Masking.m in Sources */,
+				D86528F61AE838F1003832AC /* VAnswer+Fetcher.m in Sources */,
 				A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */,
 				A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */,
 				BE88FF7F1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m in Sources */,

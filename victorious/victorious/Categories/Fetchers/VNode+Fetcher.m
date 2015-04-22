@@ -19,6 +19,29 @@ static NSString * const kmp4MimeType = @"video/mp4";
 
 #pragma mark - Public Methods
 
+- (VAnswer *)answerA
+{
+    if (![self isPoll])
+    {
+        return nil;
+    }
+    return [[self firstAnswers] firstObject];
+}
+
+- (VAnswer *)answerB
+{
+    if (![self isPoll])
+    {
+        return nil;
+    }
+    VAnswer *answerB;
+    if ([self firstAnswers].count > 1)
+    {
+        answerB = [self firstAnswers][1];
+    }
+    return answerB;
+}
+
 - (NSArray *)firstAnswers
 {
     VInteraction *firstInteraction =  [self.interactions.array firstObject];
