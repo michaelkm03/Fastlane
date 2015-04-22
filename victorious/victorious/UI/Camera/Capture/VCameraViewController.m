@@ -394,7 +394,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.closeButton.enabled = YES;
             
             self.searchButton.enabled = YES;
-            self.searchButton.hidden = self.hideImageSearch ?: NO;
+            self.searchButton.hidden = self.hideImageSearch;
             
             [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
                                                 animated:NO];
