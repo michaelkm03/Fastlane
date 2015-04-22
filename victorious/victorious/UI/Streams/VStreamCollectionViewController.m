@@ -200,7 +200,17 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.sequenceActionController.dependencyManager = self.dependencyManager;
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
-    [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
+
+    if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
+    {
+        [self.streamCellFactory registerCellsWithCollectionView:self.collectionView
+                                                withStreamItems:[self.streamDataSource.stream.streamItems array]];
+    }
+    else
+    {
+        [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
+    }
+    
     
     self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
     self.marqueeCellController.dataDelegate = self;
@@ -456,6 +466,15 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 }
 
 #pragma mark - VStreamCollectionDataDelegate
+
+- (void)dataSource:(VStreamCollectionViewDataSource *)dataSource
+ hasNewStreamItems:(NSArray *)streamItems
+{
+    if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
+    {
+        [self.streamCellFactory registerCellsWithCollectionView:self.collectionView withStreamItems:streamItems];
+    }
+}
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {

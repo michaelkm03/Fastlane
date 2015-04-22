@@ -33,6 +33,7 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
 
+@property (nonatomic, strong) UIView *contentContainerView;
 @property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, strong) VActionBar *sequenceInfoActionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
@@ -42,6 +43,38 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 @end
 
 @implementation VEStreamCollectionViewCell
+
+#pragma mark - VAbstractStreamCollectionCell Overrides
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+{
+    NSMutableString *identifier = [NSStringFromClass([self class]) mutableCopy];
+    
+    if ([sequence isText])
+    {
+        [identifier appendString:@"Text"];
+    }
+    else if ([sequence isPoll])
+    {
+        [identifier appendString:@"Poll"];
+    }
+    else if ([sequence isVideo])
+    {
+        [identifier appendString:@"Video"];
+    }
+    else if ([sequence isImage])
+    {
+        [identifier appendString:@"Image"];
+    }
+    else
+    {
+        VLog(@"%@, doesn't support sequence type for sequence: %@", NSStringFromClass(self), sequence);
+    }
+    
+    return [NSString stringWithString:identifier];
+}
+
+#pragma mark - UIView Overrides
 
 - (void)layoutSubviews
 {
@@ -55,6 +88,14 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
         contentContainerView.translatesAutoresizingMaskIntoConstraints = NO;
         contentContainerView.backgroundColor = [UIColor orangeColor];
         [self addSubview:contentContainerView];
+        self.contentContainerView = contentContainerView;
+        
+        // If we already created our content views put them in the container
+        if (self.previewImageView != nil)
+        {
+            [self.contentContainerView addSubview:self.previewImageView];
+            [self.contentContainerView v_addFitToParentConstraintsToSubview:self.previewImageView];
+        }
         
         UIView *contentInfoContainerView = [[UIView alloc] initWithFrame:CGRectZero];
         contentInfoContainerView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -82,13 +123,6 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
                                                                      metrics:nil
                                                                        views:viewDictionary]];
         [contentInfoContainerView v_addHeightConstraint:kInfoContainerHeight];
-        
-        // Layout Detail Views
-        UIImageView *previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
-        [contentContainerView addSubview:previewImageView];
-        [contentContainerView v_addFitToParentConstraintsToSubview:previewImageView];
-        self.previewImageView = previewImageView;
         
         VActionBar *actionBar = [[VActionBar alloc] init];
         actionBar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -137,17 +171,47 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
         
         self.hasLayedOutViews = YES;
     }
+    
+    [super layoutSubviews];
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
     
-    [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
+    if ([sequence isText])
+    {
+        VLog(@"%@, text cell", self);
+    }
+    else if ([sequence isPoll])
+    {
+        VLog(@"%@, poll cell", self);
+    }
+    else if ([sequence isVideo])
+    {
+        VLog(@"%@, video cell", self);
+    }
+    else if ([sequence isImage])
+    {
+        VLog(@"%@, image cell", self);
+        if (self.previewImageView == nil)
+        {
+            UIImageView *previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+            previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
+            [self.contentContainerView addSubview:previewImageView];
+            [self.contentContainerView v_addFitToParentConstraintsToSubview:previewImageView];
+            self.previewImageView = previewImageView;
+        }
+        [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
+    }
+    
+
     [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                   forState:UIControlStateNormal];
     self.creationInfoContainer.sequence = sequence;
 }
+
+#pragma mark - VHasManagedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {

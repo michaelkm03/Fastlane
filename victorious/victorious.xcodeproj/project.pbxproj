@@ -681,6 +681,7 @@
 		D85E26F61AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F41AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m */; };
 		D85E26FA1AE5E38D00AD82E4 /* VECreatorInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F91AE5E38D00AD82E4 /* VECreatorInfoView.m */; };
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
+		D86528EF1AE80628003832AC /* VAbstractStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */; };
 		D86BF34F1A42364B00C9F420 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */; };
 		D86BF35C1A42683E00C9F420 /* VPublishBlurOverAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF35B1A42683E00C9F420 /* VPublishBlurOverAnimator.m */; };
 		D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
@@ -2115,6 +2116,8 @@
 		D85E26F91AE5E38D00AD82E4 /* VECreatorInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VECreatorInfoView.m; sourceTree = "<group>"; };
 		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
 		D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceToWorkspaceAnimator.m; sourceTree = "<group>"; };
+		D86528ED1AE80628003832AC /* VAbstractStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamCollectionCell.h; sourceTree = "<group>"; };
+		D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamCollectionCell.m; sourceTree = "<group>"; };
 		D86BF34D1A42364B00C9F420 /* UIView+VDynamicsHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VDynamicsHelpers.h"; sourceTree = "<group>"; };
 		D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VDynamicsHelpers.m"; sourceTree = "<group>"; };
 		D86BF35A1A42683E00C9F420 /* VPublishBlurOverAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishBlurOverAnimator.h; sourceTree = "<group>"; };
@@ -4347,6 +4350,8 @@
 				A7AEF9851A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.xib */,
 				0308B1131AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.h */,
 				0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */,
+				D86528ED1AE80628003832AC /* VAbstractStreamCollectionCell.h */,
+				D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6453,6 +6458,7 @@
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
+				D86528EF1AE80628003832AC /* VAbstractStreamCollectionCell.m in Sources */,
 				03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A7299E901AA5331000B6BC1F /* VDirectoryGroupCell.m in Sources */,

@@ -6,14 +6,15 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VBaseCollectionViewCell.h"
+#import "VAbstractStreamCollectionCell.h"
 
+// Protocols
 #import "VBackgroundContainer.h"
 #import "VHasManagedDependencies.h"
 
 @class VSequence;
 
-@interface VEStreamCollectionViewCell : VBaseCollectionViewCell <VBackgroundContainer, VHasManagedDependencies>
+@interface VEStreamCollectionViewCell : VAbstractStreamCollectionCell <VBackgroundContainer, VHasManagedDependencies>
 
 @property (nonatomic, strong) VSequence *sequence;
 

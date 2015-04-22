@@ -44,6 +44,28 @@
      forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
 }
 
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+                        withStreamItems:(NSArray *)streamItems
+{
+    for (VStreamItem *streamItem in streamItems)
+    {
+        NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
+        
+        VSequence *sequence = (VSequence *)streamItem;
+        
+        if ([sequence isWebContent])
+        {
+            [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
+             forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
+        }
+        else
+        {
+            [collectionView registerClass:[VEStreamCollectionViewCell class]
+               forCellWithReuseIdentifier:[VEStreamCollectionViewCell reuseIdentifierForSequence:sequence]];
+        }
+    }
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                        cellForStreamItem:(VStreamItem *)streamItem
                              atIndexPath:(NSIndexPath *)indexPath
@@ -53,20 +75,16 @@
     VSequence *sequence = (VSequence *)streamItem;
     UICollectionViewCell *cell;
     
-    if ([sequence isPoll])
-    {
-        
-    }
-    else if ([sequence isPreviewWebContent])
+    if ([sequence isPreviewWebContent])
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]
-                                                                                          forIndexPath:indexPath];
+                                                         forIndexPath:indexPath];
         VStreamCollectionCellWebContent *webCell = (VStreamCollectionCellWebContent *)cell;
         webCell.sequence = sequence;
     }
     else
     {
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEStreamCollectionViewCell suggestedReuseIdentifier]
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEStreamCollectionViewCell reuseIdentifierForSequence:sequence]
                                                          forIndexPath:indexPath];
         VEStreamCollectionViewCell *eCollectionViewCell = (VEStreamCollectionViewCell *)cell;
         eCollectionViewCell.sequence = sequence;

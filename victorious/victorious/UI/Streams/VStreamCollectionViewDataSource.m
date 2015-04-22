@@ -202,6 +202,11 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 {
     if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
+        if ([self.delegate respondsToSelector:@selector(dataSource:hasNewStreamItems:)])
+        {
+            [self.delegate dataSource:self
+                    hasNewStreamItems:[self.stream.streamItems array]];
+        }
         [self.collectionView reloadData];
         [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
                                                             object:self];

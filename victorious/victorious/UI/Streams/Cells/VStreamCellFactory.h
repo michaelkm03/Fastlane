@@ -46,4 +46,12 @@
  */
 - (UIEdgeInsets)sectionInsets;
 
+@optional
+
+/**
+ For factories that allow cells to specialize themselves.
+ */
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+                        withStreamItems:(NSArray *)streamItems;
+
 @end
