@@ -308,4 +308,18 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return [self.isRepost boolValue] ? self.user : self.parentUser;
 }
 
+- (NSURL *)inStreamPreviewImageURL
+{
+    NSURL *imageUrl;
+    if ([self isImage])
+    {
+        imageUrl = [NSURL URLWithString:[self.firstNode imageAsset].data];
+    }
+    else
+    {
+        imageUrl = [NSURL URLWithString:self.previewImagesObject];
+    }
+    return imageUrl;
+}
+
 @end

@@ -44,4 +44,6 @@
 - (VUser *)originalPoster;
 - (VUser *)realParentUser;
 
+- (NSURL *)inStreamPreviewImageURL;
+
 @end
