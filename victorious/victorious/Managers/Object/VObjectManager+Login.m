@@ -26,6 +26,7 @@
 #import "MBProgressHUD.h"
 
 #import "VUserManager.h"
+#import "VTemplateDecorator.h"
 
 //Imported to log out the payload from the database and the payload we would have gotten from the (deprecated) api/init and the VTemplateGenerator
 #import "VTemplateGenerator.h"
@@ -36,7 +37,6 @@
 NSString * const kLoggedInChangedNotification   = @"com.getvictorious.LoggedInChangedNotification";
 
 static NSString * const kWorkspaceTemplateName  = @"workspaceTemplate";
-static NSString * const kJSONType               = @"json";
 
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
@@ -87,8 +87,14 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 #endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
-        template = [self templateByConcatenatingTemplateWithFilename:kWorkspaceTemplateName withTemplate:template];
-        template = [self templateByConcatenatingTemplateWithFilename:@"DEV_profileHeaderTemplate" withTemplate:template];
+        
+        VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+        [templateDecorator concatonateTemplateWithFilename:kWorkspaceTemplateName];
+        [templateDecorator setComponentForKeyPath:@"scaffold/userProfileView/userProfileHeader"
+                             withComponentInFileNamed:@"DEV_floatingProfile"];
+        [templateDecorator setComponentForKeyPath:@"scaffold/menu/items/3/destination/userProfileHeader"
+                             withComponentInFileNamed:@"DEV_floatingProfile"];
+        template = templateDecorator.decoratedTemplate;
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
                                                                                     configuration:template
@@ -101,34 +107,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
           parameters:nil
         successBlock:fullSuccess
            failBlock:failed];
-}
-- (NSDictionary *)templateByConcatenatingTemplateWithFilename:(NSString *)filename withTemplate:(NSDictionary *)originalTemplate
-{
-    NSString *templateAdditionPath = [[NSBundle bundleForClass:[self class]] pathForResource:filename ofType:kJSONType];
-    NSError *error = nil;
-    
-    NSAssert( templateAdditionPath != nil, @"Cannot find path in bundle for filename \"%@\".  Make sure the file is added to the project.", filename );
-    
-    NSData *defaultTemplateData = [NSData dataWithContentsOfFile:templateAdditionPath options:kNilOptions error:&error];
-    if (defaultTemplateData == nil)
-    {
-        return originalTemplate;
-    }
-    NSDictionary *templateAddition = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
-    if (templateAddition == nil)
-    {
-        return originalTemplate;
-    }
-    
-    // Combine templates
-    NSMutableDictionary *combinedDictionary = [[NSMutableDictionary alloc] init];
-    [combinedDictionary addEntriesFromDictionary:originalTemplate];
-    for ( NSString *key in templateAddition )
-    {
-        combinedDictionary[ key ] = templateAddition[ key ];
-    }
-    
-    return [NSDictionary dictionaryWithDictionary:combinedDictionary];
 }
 
 #pragma mark - Login and status
