@@ -17,6 +17,8 @@
 // Models
 #import "VSequence+Fetcher.h"
 #import "VUser+Fetcher.h"
+#import "VNode+Fetcher.h"
+#import "VAsset+Fetcher.h"
 
 // Formatters
 #import "VLargeNumberFormatter.h"
@@ -24,11 +26,11 @@
 // Views + Helpers
 #import "UIView+Autolayout.h"
 
-static const CGFloat kClockSize = 8.0f;
-static const CGFloat kSpaceToCenterWhenTwoLines = 3.0f;
+static const CGFloat kClockSize = 8.5f;
+static const CGFloat kSpaceToCenterWhenTwoLines = 2.5f;
 static const CGFloat kSpaceCreatorLabelToClockImageView = 4.0f;
 static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
-static const CGFloat kDefaultHeigh = 44.0f;
+static const CGFloat kDefaultHeight = 44.0f;
 
 @interface VCreationInfoContainer ()
 
@@ -150,7 +152,7 @@ static const CGFloat kDefaultHeigh = 44.0f;
     [self removeConstraint:self.creatorBottomToCenterConstraint];
     [self removeConstraint:self.parentUserTopToCenterConstraint];
     [self removeConstraint:self.centerCreatorLabelConstraint];
-    if (self.parentUserLabel.text == nil)
+    if (self.parentUserLabel.text == nil || self.parentUserLabel.attributedText == nil || [self.parentUserLabel.text isEqualToString:@""])
     {
         // Center the creator label vertically
         self.centerCreatorLabelConstraint = [NSLayoutConstraint constraintWithItem:self.creatorLabel
@@ -185,7 +187,7 @@ static const CGFloat kDefaultHeigh = 44.0f;
     
     if ([self v_internalHeightConstraint] == nil)
     {
-        [self v_addHeightConstraint:44.0f];
+        [self v_addHeightConstraint:kDefaultHeight];
     }
     
     [super updateConstraints];
@@ -233,10 +235,65 @@ static const CGFloat kDefaultHeigh = 44.0f;
 - (void)updateWithSequence:(VSequence *)sequence
 {
     self.creatorLabel.text = [sequence originalPoster].name;
-    self.parentUserLabel.text = [sequence parentUser].name;
+    [self updateParentUserLabelWithSequence:sequence];
 #warning Update timeAgo label
     self.timeSinceLabel.text = @"5h";
     [self setNeedsUpdateConstraints];
+}
+
+
+- (void)updateParentUserLabelWithSequence:(VSequence *)sequence
+{
+    // Format repost / remix string
+    NSString *parentUserString = sequence.parentUser.name ?: @"";
+    NSString *formattedString = nil;
+    
+    if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
+    {
+        NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
+        if ( repostCount == 0 )
+        {
+            formattedString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), parentUserString];
+        }
+        else if ( repostCount == 1 )
+        {
+            formattedString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), parentUserString];
+        }
+        else
+        {
+            formattedString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), parentUserString, [self.sequence.repostCount unsignedLongValue]];
+        }
+    }
+    
+    if (self.sequence.isRemix.boolValue && self.sequence.parentUser != nil)
+    {
+        NSString *formatString = NSLocalizedString(@"remixedFromFormat", nil);
+        if ([[[[self.sequence firstNode] mp4Asset] playerControlsDisabled] boolValue])
+        {
+            formatString = NSLocalizedString(@"giffedFromFormat", nil);
+        }
+        formattedString = [NSString stringWithFormat:formatString, parentUserString];
+    }
+    
+    if (formattedString != nil && self.dependencyManager != nil)
+    {
+        NSRange range = [formattedString rangeOfString:parentUserString];
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName: self.parentUserLabel.font,
+                                     NSForegroundColorAttributeName: [UIColor whiteColor],
+                                     };
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:formattedString
+                                                                                             attributes:attributes];
+        [attributedString addAttribute:NSForegroundColorAttributeName
+                                 value:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                                 range:range];
+        self.parentUserLabel.attributedText = attributedString;
+    }
+    else
+    {
+        self.parentUserLabel.text = nil;
+        self.parentUserLabel.attributedText = nil;
+    }
 }
 
 #pragma mark - VHasManagedDependencies

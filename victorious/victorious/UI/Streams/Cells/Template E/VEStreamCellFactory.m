@@ -87,7 +87,7 @@
 
 - (CGFloat)minimumLineSpacing
 {
-    return 32.0f;
+    return 17.5f;
 }
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem

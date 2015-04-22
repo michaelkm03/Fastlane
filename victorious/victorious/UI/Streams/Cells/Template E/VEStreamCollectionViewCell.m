@@ -16,14 +16,15 @@
 #import "VActionBarFixedWidthItem.h"
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"
+#import "VRoundedCommentButton.h"
 
 // Models
 #import "VUser+Fetcher.h"
 #import "VSequence+Fetcher.h"
 
 static const CGFloat kInfoContainerHeight = 81.0f;
-static const CGFloat kLeadingTrailingSpace = 16.0f;
-static const CGFloat kAvatarSize = 32.0f;
+static const CGFloat kLeadingTrailingSpace = 22.0f;
+static const CGFloat kAvatarSize = 28.5;
 static const CGFloat kSpaceAvatarToLabels = 3.0f;
 
 @interface VEStreamCollectionViewCell ()
@@ -36,6 +37,7 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 @property (nonatomic, strong) VActionBar *sequenceInfoActionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
+@property (nonatomic, strong) VRoundedCommentButton *commentButton;
 
 @end
 
@@ -117,10 +119,21 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
         }
         [creationContainer v_addHeightConstraint:44.0f];
         self.creationInfoContainer = creationContainer;
+        
+        VRoundedCommentButton *commentButton = [[VRoundedCommentButton alloc] initWithFrame:CGRectZero];
+        commentButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.commentButton = commentButton;
+        if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
+        {
+            [self.commentButton setDependencyManager:self.dependencyManager];
+        }
+        
         actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace],
                                   button,
                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
-                                  creationContainer];
+                                  creationContainer,
+                                  commentButton,
+                                  [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
         
         self.hasLayedOutViews = YES;
     }
@@ -140,7 +153,14 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 {
     _dependencyManager = dependencyManager;
     
-    [self.creationInfoContainer setDependencyManager:_dependencyManager];
+    if ([self.creationInfoContainer respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.creationInfoContainer setDependencyManager:_dependencyManager];
+    }
+    if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.commentButton setDependencyManager:_dependencyManager];
+    }
 }
 
 @end
