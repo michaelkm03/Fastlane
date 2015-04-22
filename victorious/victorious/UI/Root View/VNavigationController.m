@@ -72,6 +72,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
 {
+    return UIStatusBarStyleDefault;
     switch ([color v_colorLuminance])
     {
         case VColorLuminanceBright:
@@ -361,50 +362,15 @@ static const CGFloat kStatusBarHeight = 20.0f;
     [self provideLayoutInsetsToViewController:viewController];
     [viewController v_setNavigationController:self];
     
+    UIColor *statusBarBackgroundColor = [viewController statusBarBackgroundColor];
+    statusBarBackgroundColor = statusBarBackgroundColor ?: [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
+    self.statusBarBackgroundView.backgroundColor = statusBarBackgroundColor;
+    
     BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
     
-    if ( !prefersNavigationBarHidden && self.statusBarBackgroundView.hidden )
+    if ( prefersNavigationBarHidden != self.innerNavigationController.navigationBarHidden )
     {
-        if ( viewController.transitionCoordinator == nil )
-        {
-            self.statusBarBackgroundView.hidden = YES;
-        }
-        else
-        {
-            [self performCompanionAnimation:^(void)
-            {
-                self.statusBarBackgroundView.alpha = 1.0f;
-            }
-                  withTransitionCoordinator:viewController.transitionCoordinator
-                                     before:^(void)
-            {
-                self.statusBarBackgroundView.hidden = NO;
-                self.statusBarBackgroundView.alpha = 0;
-            }
-                                 completion:nil];
-        }
-    }
-    else if ( prefersNavigationBarHidden && !self.statusBarBackgroundView.hidden )
-    {
-        [self performCompanionAnimation:^(void)
-        {
-            self.statusBarBackgroundView.alpha = 0;
-        }
-              withTransitionCoordinator:viewController.transitionCoordinator
-                                 before:nil
-                             completion:^(void)
-        {
-            self.statusBarBackgroundView.hidden = YES;
-        }];
-    }
-    
-    if ( !prefersNavigationBarHidden && self.innerNavigationController.navigationBarHidden )
-    {
-        [self.innerNavigationController setNavigationBarHidden:NO animated:animated];
-    }
-    else if ( prefersNavigationBarHidden && !self.innerNavigationController.navigationBarHidden )
-    {
-        [self.innerNavigationController setNavigationBarHidden:YES animated:animated];
+        [self.innerNavigationController setNavigationBarHidden:prefersNavigationBarHidden animated:animated];
     }
     
     if ( viewController.toolbarItems.count > 0 )
@@ -414,7 +380,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     
     [self updateSupplementaryHeaderViewForViewController:viewController];
     
-    BOOL wantsStatusBarHidden = prefersNavigationBarHidden;
+    BOOL wantsStatusBarHidden = [viewController prefersStatusBarHidden];
     if ( wantsStatusBarHidden != self.wantsStatusBarHidden )
     {
         if ( [viewController.transitionCoordinator isInteractive] )
@@ -432,6 +398,42 @@ static const CGFloat kStatusBarHeight = 20.0f;
         {
             self.wantsStatusBarHidden = wantsStatusBarHidden;
             [self setNeedsStatusBarAppearanceUpdate];
+        }
+        
+        if ( !wantsStatusBarHidden )
+        {
+            if ( viewController.transitionCoordinator == nil )
+            {
+                self.statusBarBackgroundView.alpha = 1.0f;
+                self.statusBarBackgroundView.hidden = NO;
+            }
+            else
+            {
+                [self performCompanionAnimation:^(void)
+                 {
+                     self.statusBarBackgroundView.alpha = 1.0f;
+                 }
+                      withTransitionCoordinator:viewController.transitionCoordinator
+                                         before:^(void)
+                 {
+                     self.statusBarBackgroundView.hidden = NO;
+                     self.statusBarBackgroundView.alpha = 0.0f;
+                 }
+                                     completion:nil];
+            }
+        }
+        else
+        {
+            [self performCompanionAnimation:^(void)
+             {
+                 self.statusBarBackgroundView.alpha = 0;
+             }
+                  withTransitionCoordinator:viewController.transitionCoordinator
+                                     before:nil
+                                 completion:^(void)
+             {
+                 self.statusBarBackgroundView.hidden = YES;
+             }];
         }
     }
     
@@ -493,6 +495,11 @@ static char kNavigationControllerKey;
 - (BOOL)v_prefersNavigationBarHidden
 {
     return NO;
+}
+
+- (UIColor *)statusBarBackgroundColor
+{
+    return nil;
 }
 
 - (VNavigationController *)v_navigationController

@@ -148,16 +148,20 @@
 
 - (void)addBackgroundImage
 {
-    UIImage *defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyExtraLightEffect];
-    
     if (self.otherUser)
     {
-        [self.backgroundImageView setExtraLightBlurredImageWithURL:[NSURL URLWithString:self.otherUser.pictureUrl]
-                                                  placeholderImage:defaultBackgroundImage];
+        [self.backgroundImageView applyExtraLightBlurAndAnimateImageWithURLToVisible:[NSURL URLWithString:self.otherUser.pictureUrl]];
     }
     else
     {
-        self.backgroundImageView.image = defaultBackgroundImage;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+        {
+            UIImage *defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyExtraLightEffect];
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                self.backgroundImageView.image = defaultBackgroundImage;
+            });
+        });
     }
 }
 
@@ -169,6 +173,11 @@
     {
         [(VMessageViewController *)self.conversationTableViewController setMessageCountCoordinator:messageCountCoordinator];
     }
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 - (BOOL)v_prefersNavigationBarHidden

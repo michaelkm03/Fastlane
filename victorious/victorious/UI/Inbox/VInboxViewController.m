@@ -447,6 +447,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
      }];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

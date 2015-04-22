@@ -146,8 +146,6 @@ static const NSInteger kSearchResultLimit = 100;
     
     // SET THE SEARCH FIELD ACTIVE
     [self.searchField becomeFirstResponder];
-    
-    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -161,12 +159,6 @@ static const NSInteger kSearchResultLimit = 100;
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventSearchDidAppear];
     [self.searchField resignFirstResponder];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -186,7 +178,6 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)characterCheck:(id)sender
 {
-    
     self.charCount++;
     
     if (self.charCount == 3)
@@ -223,7 +214,6 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)runUserSearch:(id)sender
 {
-    
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
@@ -472,21 +462,6 @@ static const NSInteger kSearchResultLimit = 100;
 {
     [self runUserSearch:nil];
     [self.searchField resignFirstResponder];
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    BOOL ans = YES;
-    return ans;
-}
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
     return YES;
 }
 

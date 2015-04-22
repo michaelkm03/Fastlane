@@ -73,6 +73,12 @@
  */
 - (VNavigationController *)v_navigationController;
 
+/**
+ An optional method for supplying a custom background color for the status bar background view.
+ If unimplemented or nil is returned, the background color of the navigation bar will be used.
+ */
+- (UIColor *)statusBarBackgroundColor;
+
 @end
 
 #pragma mark - 
