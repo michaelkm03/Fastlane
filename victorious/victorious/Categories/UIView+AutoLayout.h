@@ -48,14 +48,14 @@
 - (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView;
 
 /**
- Applies internal width constraint to view.
+ Applies internal width constraint to view. Returns the added constraint
  */
-- (void)v_addWidthConstraint:(CGFloat)width;
+- (NSLayoutConstraint *)v_addWidthConstraint:(CGFloat)width;
 
 /**
- Applies internal height constraint to view.
+ Applies internal height constraint to view. Returns the added constraint
  */
-- (void)v_addHeightConstraint:(CGFloat)height;
+- (NSLayoutConstraint *)v_addHeightConstraint:(CGFloat)height;
 
 /**
  Returns the first width constraint found by enumerating constraints according
@@ -64,5 +64,13 @@
     2. firstAttribute == NSLayoutAttributeWidth
  */
 - (NSLayoutConstraint *)v_internalWidthConstraint;
+
+/**
+ Returns the first height constraint found by enumerating constraints according
+ to the following criteria:
+ 1. secondItem is nil
+ 2. firstAttribute == NSLayoutAttributeHeight
+ */
+- (NSLayoutConstraint *)v_internalHeightConstraint;
 
 @end
