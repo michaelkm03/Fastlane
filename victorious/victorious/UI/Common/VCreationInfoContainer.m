@@ -21,6 +21,14 @@
 // Formatters
 #import "VLargeNumberFormatter.h"
 
+// Views + Helpers
+#import "UIView+Autolayout.h"
+
+static const CGFloat kClockSize = 8.0f;
+static const CGFloat kSpaceToCenterWhenTwoLines = 2.0f;
+static const CGFloat kSpaceCreatorLabelToClockImageView = 4.0f;
+static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
+
 @interface VCreationInfoContainer ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -70,31 +78,26 @@
     
     self.creatorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.creatorLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.creatorLabel.backgroundColor = [UIColor lightGrayColor];
     self.creatorLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.creatorLabel];
     
     self.parentUserLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.parentUserLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.parentUserLabel.backgroundColor = [UIColor whiteColor];
     self.parentUserLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.parentUserLabel];
     
     UIImage *clockImage = [[UIImage imageNamed:@"StreamDate"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.clockImageView = [[UIImageView alloc] initWithImage:clockImage];
-    self.clockImageView.contentMode = UIViewContentModeLeft;
+    self.clockImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.clockImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.clockImageView v_addWidthConstraint:kClockSize];
+    [self.clockImageView v_addHeightConstraint:kClockSize];
     [self addSubview:self.clockImageView];
 
     self.timeSinceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.timeSinceLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
-
-#warning Remove me
-//    self.creatorLabel.text = @"asdfasdfasdfasdf";
-//    self.timeSinceLabel.text = @"asdfasdfasdfasdf";
-//    self.parentUserLabel.text = @"asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf";
 }
 
 #pragma mark - UIView
@@ -115,9 +118,10 @@
     
     if (!self.layedOutDefaultConstraints)
     {
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[creatorLabel][clockImageView][timeSinceLabel]|"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[creatorLabel]-kSpaceCreatorLabelToClockImageView-[clockImageView]-kSpaceClockImageViewToTimeSinceLabel-[timeSinceLabel]"
                                                                      options:kNilOptions
-                                                                     metrics:nil
+                                                                     metrics:@{@"kSpaceCreatorLabelToClockImageView": @(kSpaceCreatorLabelToClockImageView),
+                                                                               @"kSpaceClockImageViewToTimeSinceLabel": @(kSpaceClockImageViewToTimeSinceLabel)}
                                                                        views:viewDictionary]];
         [self addConstraint:[NSLayoutConstraint constraintWithItem:self.clockImageView
                                                          attribute:NSLayoutAttributeCenterY
@@ -144,7 +148,6 @@
     if (self.parentUserLabel.text == nil)
     {
         // Center the creator label vertically
-        
         [self removeConstraint:self.creatorBottomToCenterConstraint];
         [self removeConstraint:self.parentUserTopToCenterConstraint];
         self.centerCreatorLabelConstraint = [NSLayoutConstraint constraintWithItem:self.creatorLabel
@@ -167,7 +170,7 @@
                                                                               toItem:self
                                                                            attribute:NSLayoutAttributeCenterY
                                                                           multiplier:1.0f
-                                                                            constant:0.0f];
+                                                                            constant:-kSpaceToCenterWhenTwoLines];
         [self addConstraint:self.creatorBottomToCenterConstraint];
         self.parentUserTopToCenterConstraint = [NSLayoutConstraint constraintWithItem:self.parentUserLabel
                                                                             attribute:NSLayoutAttributeTop
@@ -175,7 +178,7 @@
                                                                                toItem:self
                                                                             attribute:NSLayoutAttributeCenterY
                                                                            multiplier:1.0f
-                                                                             constant:0.0f];
+                                                                             constant:kSpaceToCenterWhenTwoLines];
         [self addConstraint:self.parentUserTopToCenterConstraint];
     }
     
@@ -220,6 +223,7 @@
     self.creatorLabel.text = [sequence originalPoster].name;
     self.parentUserLabel.text = [sequence parentUser].name;
 #warning Update timeAgo label
+    self.timeSinceLabel.text = @"5h";
     [self setNeedsUpdateConstraints];
 }
 
@@ -228,12 +232,21 @@
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-
+#warning RESTOEREME
     self.creatorLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    self.creatorLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.parentUserLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     self.timeSinceLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    self.timeSinceLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.clockImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    
+//    self.creatorLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+//    self.parentUserLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+//    self.timeSinceLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+//    self.clockImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+
+#warning Remove Me
+    self.creatorLabel.textColor = [UIColor whiteColor];
+    self.parentUserLabel.textColor = [UIColor whiteColor];
+    self.timeSinceLabel.textColor = [UIColor whiteColor];
+    self.clockImageView.tintColor = [UIColor whiteColor];
 }
 
 @end
