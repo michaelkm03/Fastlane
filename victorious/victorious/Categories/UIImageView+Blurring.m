@@ -27,16 +27,16 @@ static const char kAssociatedObjectKey;
     __weak typeof(self) weakSelf = self;
     self.image = placeholderImage;
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
-    {
-        weakSelf.image = blurredImage;
-    }];
+     {
+         weakSelf.image = blurredImage;
+     }];
 }
 
 - (void)applyTintAndBlurToImageWithURL:(NSURL *)url withTintColor:(UIColor *)tintColor
 {
     NSParameterAssert(!CGRectEqualToRect(self.bounds, CGRectZero));
     __weak UIImageView *weakSelf = self;
-
+    
     self.alpha = 0;
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed
@@ -53,17 +53,20 @@ static const char kAssociatedObjectKey;
     self.image = placeholderImage;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
      {
-         if ( error != nil )
-         {
-             weakSelf.image = nil;
-             return;
-         }
-         
-         UIImage *blurredImage = [image applyLightEffect];
-         dispatch_async(dispatch_get_main_queue(), ^
-         {
-             weakSelf.image = blurredImage;
-         });
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                        {
+                            if ( error != nil )
+                            {
+                                weakSelf.image = nil;
+                                return;
+                            }
+                            
+                            UIImage *blurredImage = [image applyLightEffect];
+                            dispatch_async(dispatch_get_main_queue(), ^
+                                           {
+                                               weakSelf.image = blurredImage;
+                                           });
+                        });
      }];
 }
 
@@ -73,17 +76,20 @@ static const char kAssociatedObjectKey;
     self.alpha = 0.0f;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
      {
-         if ( error != nil )
-         {
-             weakSelf.image = nil;
-             weakSelf.alpha = 1.0f;
-             return;
-         }
-         
-         UIImage *blurredImage = [image applyLightEffect];
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
-         });
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                        {
+                            if ( error != nil )
+                            {
+                                weakSelf.image = nil;
+                                weakSelf.alpha = 1.0f;
+                                return;
+                            }
+                            
+                            UIImage *blurredImage = [image applyLightEffect];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
+                            });
+                        });
      }];
 }
 
@@ -93,17 +99,20 @@ static const char kAssociatedObjectKey;
     self.image = placeholderImage;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
      {
-         if ( error != nil )
-         {
-             weakSelf.image = nil;
-             return;
-         }
-         
-         UIImage *blurredImage = [image applyExtraLightEffect];
-         dispatch_async(dispatch_get_main_queue(), ^
-         {
-             weakSelf.image = blurredImage;
-         });
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                        {
+                            if ( error != nil )
+                            {
+                                weakSelf.image = nil;
+                                return;
+                            }
+                            
+                            UIImage *blurredImage = [image applyExtraLightEffect];
+                            dispatch_async(dispatch_get_main_queue(), ^
+                                           {
+                                               weakSelf.image = blurredImage;
+                                           });
+                        });
      }];
 }
 
@@ -113,24 +122,26 @@ static const char kAssociatedObjectKey;
     self.alpha = 0.0f;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
      {
-         if ( error != nil )
-         {
-             weakSelf.image = nil;
-             weakSelf.alpha = 1.0f;
-             return;
-         }
-         
-         UIImage *blurredImage = [image applyExtraLightEffect];
-         dispatch_async(dispatch_get_main_queue(), ^
-         {
-             [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
-         });
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                        {
+                            if ( error != nil )
+                            {
+                                weakSelf.image = nil;
+                                weakSelf.alpha = 1.0f;
+                                return;
+                            }
+                            
+                            UIImage *blurredImage = [image applyExtraLightEffect];
+                            dispatch_async(dispatch_get_main_queue(), ^
+                                           {
+                                               [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
+                                           });
+                        });
      }];
 }
 
 #pragma mark - internal helpers
 
-//NOTE: The callback block is called on a background thread
 - (void)downloadImageWithURL:(NSURL *)url toCallbackBlock:(void (^)(UIImage *, NSError *))callbackBlock
 {
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
@@ -138,13 +149,10 @@ static const char kAssociatedObjectKey;
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+         if ( callbackBlock != nil )
          {
-             if ( callbackBlock != nil )
-             {
-                 callbackBlock(image, error);
-             }
-         });
+             callbackBlock(image, error);
+         }
      }];
 }
 
@@ -154,25 +162,25 @@ static const char kAssociatedObjectKey;
     self.alpha = 0.0f;
     objc_setAssociatedObject(weakSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_ASSIGN);
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
-    {
-        if ( ![objc_getAssociatedObject(weakSelf, &kAssociatedObjectKey) isEqual:image] )
-        {
-            /*
-             We've finished blurring this image, but another blur request came in after it.
-             Return before setting this to the blurred image to avoid setting to the wrong image.
-             */
-            return;
-        }
-        weakSelf.image = blurredImage;
-        [UIView animateWithDuration:duration
-                              delay:0.0f
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^
+     {
+         if ( ![objc_getAssociatedObject(weakSelf, &kAssociatedObjectKey) isEqual:image] )
          {
-             weakSelf.alpha = 1.0f;
+             /*
+              We've finished blurring this image, but another blur request came in after it.
+              Return before setting this to the blurred image to avoid setting to the wrong image.
+              */
+             return;
          }
-                         completion:nil];
-    }];
+         weakSelf.image = blurredImage;
+         [UIView animateWithDuration:duration
+                               delay:0.0f
+                             options:UIViewAnimationOptionCurveEaseInOut
+                          animations:^
+          {
+              weakSelf.alpha = 1.0f;
+          }
+                          completion:nil];
+     }];
 }
 
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock
