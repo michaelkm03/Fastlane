@@ -87,7 +87,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 #endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
-        template = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"fakeResponse" ofType:@"json"]] options:0 error:nil];
         template = [self templateByConcatenatingWorkspaceTemplateWithTemplate:template];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager

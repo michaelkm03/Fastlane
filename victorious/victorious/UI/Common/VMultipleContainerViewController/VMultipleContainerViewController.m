@@ -89,8 +89,8 @@ static NSString * const kInitialKey = @"initial";
 //Determines if the selector should be displayed with a light style
 - (BOOL)selectorIsLightStyleForDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VDependencyManager *joinedDependencyManager = [[VDependencyManager alloc] initWithParentManager:dependencyManager configuration:[dependencyManager styleDictionaryForNavigationBar] dictionaryOfClassesByTemplateName:nil];
-    return [VNavigationController statusBarStyleForColor:[joinedDependencyManager colorForKey:VDependencyManagerMainTextColorKey]] == UIStatusBarStyleLightContent;
+    VDependencyManager *navigationBarDependencyManager = [self.dependencyManager dependencyManagerForNavigationBar];
+    return [VNavigationController statusBarStyleForColor:[navigationBarDependencyManager colorForKey:VDependencyManagerMainTextColorKey]] == UIStatusBarStyleLightContent;
 }
 
 #pragma mark - View Lifecycle
