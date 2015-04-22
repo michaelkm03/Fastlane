@@ -9,7 +9,6 @@
 #import "VEStreamCollectionViewCell.h"
 
 // Views + Helpers
-#import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
 #import "VActionBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
@@ -17,14 +16,10 @@
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"
 #import "VRoundedCommentButton.h"
-#import "VTextPostViewController.h"
-#import "UIColor+VHex.h"
 
 // Models
-#import "VUser+Fetcher.h"
 #import "VSequence+Fetcher.h"
-#import "VAsset+Fetcher.h"
-#import "VNode+Fetcher.h"
+#import "VUser+Fetcher.h"
 
 static const CGFloat kInfoContainerHeight = 81.0f;
 static const CGFloat kLeadingTrailingSpace = 22.0f;
@@ -33,17 +28,13 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 
 @interface VEStreamCollectionViewCell ()
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @property (nonatomic, assign) BOOL hasLayedOutViews;
 
 @property (nonatomic, strong) UIView *contentContainerView;
-@property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, strong) VActionBar *sequenceInfoActionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) VRoundedCommentButton *commentButton;
-@property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -95,17 +86,8 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
         [self addSubview:contentContainerView];
         self.contentContainerView = contentContainerView;
         
-        // If we already created our content views put them in the container
-        if (self.previewImageView != nil)
-        {
-            [self.contentContainerView addSubview:self.previewImageView];
-            [self.contentContainerView v_addFitToParentConstraintsToSubview:self.previewImageView];
-        }
-        if (self.textPostViewController != nil)
-        {
-            [self.contentContainerView addSubview:self.textPostViewController.view];
-            [self.contentContainerView v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-        }
+        [self.contentContainerView addSubview:self.previewView];
+        [self.contentContainerView v_addFitToParentConstraintsToSubview:self.previewView];
         
         UIView *contentInfoContainerView = [[UIView alloc] initWithFrame:CGRectZero];
         contentInfoContainerView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -187,51 +169,8 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
     
-    if ([sequence isText])
-    {
-        VLog(@"%@, text cell", self);
-        
-        if (self.textPostViewController == nil)
-        {
-            self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-            [self.contentContainerView addSubview:self.textPostViewController.view];
-            [self.contentContainerView v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-        }
-        
-        VAsset *textAsset = [self.sequence.firstNode textAsset];
-        if ( textAsset.data != nil )
-        {
-            VAsset *imageAsset = [self.sequence.firstNode imageAsset];
-            self.textPostViewController.text = textAsset.data;
-            self.textPostViewController.color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
-            self.textPostViewController.imageURL = [NSURL URLWithString:imageAsset.data];
-        }
-    }
-    else if ([sequence isPoll])
-    {
-        VLog(@"%@, poll cell", self);
-    }
-    else if ([sequence isVideo])
-    {
-        VLog(@"%@, video cell", self);
-    }
-    else if ([sequence isImage])
-    {
-        VLog(@"%@, image cell", self);
-        if (self.previewImageView == nil)
-        {
-            UIImageView *previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-            previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
-            [self.contentContainerView addSubview:previewImageView];
-            [self.contentContainerView v_addFitToParentConstraintsToSubview:previewImageView];
-            self.previewImageView = previewImageView;
-        }
-        [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
-    }
-    
-
     [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                   forState:UIControlStateNormal];
     self.creationInfoContainer.sequence = sequence;
@@ -241,23 +180,16 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    _dependencyManager = dependencyManager;
+    [super setDependencyManager:dependencyManager];
     
     if ([self.creationInfoContainer respondsToSelector:@selector(setDependencyManager:)])
     {
-        [self.creationInfoContainer setDependencyManager:_dependencyManager];
+        [self.creationInfoContainer setDependencyManager:dependencyManager];
     }
     if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
     {
-        [self.commentButton setDependencyManager:_dependencyManager];
+        [self.commentButton setDependencyManager:dependencyManager];
     }
-}
-
-#pragma mark - VBackgroundContainer
-
-- (UIView *)loadingBackgroundContainerView
-{
-    return self.contentContainerView;
 }
 
 @end

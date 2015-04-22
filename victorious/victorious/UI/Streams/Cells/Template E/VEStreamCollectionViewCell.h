@@ -8,14 +8,8 @@
 
 #import "VAbstractStreamCollectionCell.h"
 
-// Protocols
-#import "VBackgroundContainer.h"
-#import "VHasManagedDependencies.h"
-
 @class VSequence;
 
-@interface VEStreamCollectionViewCell : VAbstractStreamCollectionCell <VBackgroundContainer, VHasManagedDependencies>
-
-@property (nonatomic, strong) VSequence *sequence;
+@interface VEStreamCollectionViewCell : VAbstractStreamCollectionCell
 
 @end

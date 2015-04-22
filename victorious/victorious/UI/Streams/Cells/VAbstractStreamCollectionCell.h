@@ -8,9 +8,34 @@
 
 #import "VBaseCollectionViewCell.h"
 
+// Protocols
+#import "VBackgroundContainer.h"
+#import "VHasManagedDependencies.h"
+
 @class VSequence;
 
-@interface VAbstractStreamCollectionCell : VBaseCollectionViewCell
+@interface VAbstractStreamCollectionCell : VBaseCollectionViewCell <VBackgroundContainer, VHasManagedDependencies>
+
+/**
+ *  The sequence this stream collection cell represents. Subclasses may override
+ *  "-setSequence:" but they MUST call super in their implementation.
+ */
+@property (nonatomic, strong) VSequence *sequence;
+
+/**
+ *  The previewView contains a preview for the given sequence. A pollView for 
+ *  a poll, an imageView for an image, etc.
+ *
+ *  Subclasses should add this view to their view hierarchy where appropriate. 
+ *  It will exist after any init family method returns.
+ */
+@property (nonatomic, strong, readonly) UIView *previewView;
+
+/**
+ *  For subclasses to reference. Subclasses may override VHasManagedDependencies'
+ *  "-setDependencyManager:", but you MUST call super.
+ */
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 
 /**
  *  Return an identifier that will minimize the amount of view hierarchy setup
