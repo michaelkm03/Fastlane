@@ -84,6 +84,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 @property (nonatomic, strong) dispatch_queue_t captureAnimationQueue;
 @property (nonatomic, assign) BOOL animationCompleted;
+@property (nonatomic, assign) BOOL hideImageSearch;
 
 @end
 
@@ -103,6 +104,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 + (VCameraViewController *)cameraViewControllerStartingWithVideoCapture
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
+    cameraViewController.hideImageSearch = YES;
     return cameraViewController;
 }
 
@@ -165,6 +167,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
     self.cameraControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.cameraControlContainer addSubview:self.cameraControl];
+    
+    self.searchButton.hidden = self.hideImageSearch;
     
     VCameraControlCaptureMode captureMode = 0;
     if (self.allowVideo)
@@ -390,7 +394,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.closeButton.enabled = YES;
             
             self.searchButton.enabled = YES;
-            self.searchButton.hidden = NO;
+            self.searchButton.hidden = self.hideImageSearch ?: NO;
             
             [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
                                                 animated:NO];
