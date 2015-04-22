@@ -11,6 +11,9 @@
 #import "VDefaultProfileImageView.h"
 #import "VLinearGradientView.h"
 #import "VButton.h"
+#import "UIView+AutoLayout.h"
+
+static const CGFloat kFloatProfileImageSize = 57.0f;
 
 @interface VFloatingUserProfileHeaderViewController ()
 
@@ -18,10 +21,19 @@
 @property (nonatomic, weak) IBOutlet VButton *secondaryActionButton;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *primaryActionButtonHeightConstraint;
 @property (nonatomic, assign) CGFloat primaryActionButtonStartHeight;
+@property (nonatomic, strong) VDefaultProfileImageView *floatingProfileImageView;
 
 @end
 
 @implementation VFloatingUserProfileHeaderViewController
+
+- (void)loadView
+{
+    CGRect profileFrame = CGRectMake( 0, 0, kFloatProfileImageSize, kFloatProfileImageSize );
+    self.floatingProfileImageView = [[VDefaultProfileImageView alloc] initWithFrame:profileFrame];
+    
+    [super loadView];
+}
 
 - (void)viewDidLoad
 {
@@ -30,8 +42,6 @@
     self.gradientView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
     self.gradientView.colors = @[ [UIColor clearColor], [UIColor blackColor] ];
     self.gradientView.locations = @[ @0.3f, @0.75f ];
-    
-    self.profileImageView.layer.borderWidth = 2.0;
     
     self.primaryActionButtonStartHeight = self.primaryActionButtonHeightConstraint.constant;
     self.primaryActionButtonHeightConstraint.constant = 0;
@@ -47,6 +57,16 @@
 - (CGFloat)preferredHeight
 {
     return 374.0f;
+}
+
+- (VDefaultProfileImageView *)profileImageView
+{
+    return self.floatingProfileImageView;
+}
+
+- (UIView *)floatingProfileImage
+{
+    return self.floatingProfileImageView;
 }
 
 #pragma mark - Actions

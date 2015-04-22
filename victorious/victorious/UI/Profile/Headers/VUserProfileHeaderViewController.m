@@ -77,13 +77,25 @@
     [self.backgroundImageView setImage:nil];
 }
 
+#pragma mark - VUserProfileHeader
+
+- (UIView *)floatingProfileImage
+{
+    return nil;
+}
+
 #pragma mark - Setters
 
 - (void)setUser:(VUser *)user
 {
+    BOOL isSameUser = user != nil && user == _user;
+    
     _user = user;
-        
-    [self clearBackgroundImage];
+    
+    if ( !isSameUser )
+    {
+        [self clearBackgroundImage];
+    }
     [self loadBackgroundImage:[NSURL URLWithString:self.user.pictureUrl]];
     
     if ( _user != nil )

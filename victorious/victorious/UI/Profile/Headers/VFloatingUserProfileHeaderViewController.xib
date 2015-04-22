@@ -19,7 +19,6 @@
                 <outlet property="nameLabel" destination="Xdy-I6-0YY" id="qFx-xT-hCf"/>
                 <outlet property="primaryActionButton" destination="qUS-eN-tgK" id="np6-al-e8A"/>
                 <outlet property="primaryActionButtonHeightConstraint" destination="kRu-mV-T1U" id="TFb-xg-xEs"/>
-                <outlet property="profileImageView" destination="HHC-1V-OAe" id="838-6E-XgD"/>
                 <outlet property="secondaryActionButton" destination="reE-xi-zdS" id="y1Y-C1-Cg4"/>
                 <outlet property="taglineLabel" destination="eWJ-1h-9hk" id="Rw1-7l-1vz"/>
                 <outlet property="userStatsBar" destination="bHl-Un-gmi" id="98Q-eM-ey7"/>
@@ -57,9 +56,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.48999999999999999" colorSpace="calibratedRGB"/>
                 </view>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HHC-1V-OAe" userLabel="Profile Image View" customClass="VDefaultProfileImageView">
-                    <rect key="frame" x="22" y="24" width="80" height="80"/>
-                </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Some really long user name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdy-I6-0YY" userLabel="Username Label">
                     <rect key="frame" x="21" y="329" width="503" height="21"/>
                     <constraints>

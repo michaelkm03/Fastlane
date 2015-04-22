@@ -463,6 +463,7 @@
 		A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B071A4A36C9008EA973 /* VTransitionModel.m */; };
 		A7738B101A4B4A0D008EA973 /* VCommentCellUtilitesController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitesController.m */; };
 		A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */; };
+		A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */ = {isa = PBXBuildFile; fileRef = A776E00D1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m */; };
 		A776EF1C1ACC99C20093992F /* VMultiplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF1B1ACC99C20093992F /* VMultiplePickerViewController.m */; };
 		A776EF661AD45A760093992F /* VEndCardModelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF651AD45A760093992F /* VEndCardModelFactory.m */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
@@ -1679,6 +1680,9 @@
 		A7738B0D1A4B4A0D008EA973 /* VCommentCellUtilitiesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCellUtilitiesDelegate.h; sourceTree = "<group>"; };
 		A7738B0E1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsUtilityButtonConfiguration.h; sourceTree = "<group>"; };
 		A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsUtilityButtonConfiguration.m; sourceTree = "<group>"; };
+		A776E00B1AE743F3001F25FF /* VNavigationViewFloatingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationViewFloatingController.h; sourceTree = "<group>"; };
+		A776E00C1AE743F3001F25FF /* VStreamNavigationViewFloatingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamNavigationViewFloatingController.h; sourceTree = "<group>"; };
+		A776E00D1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamNavigationViewFloatingController.m; sourceTree = "<group>"; };
 		A776EF191ACC94F00093992F /* VCollectionToolPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCollectionToolPicker.h; sourceTree = "<group>"; };
 		A776EF1A1ACC99C20093992F /* VMultiplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultiplePickerViewController.h; sourceTree = "<group>"; };
 		A776EF1B1ACC99C20093992F /* VMultiplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerViewController.m; sourceTree = "<group>"; };
@@ -2702,6 +2706,7 @@
 				D876E1F91A9DA685002CAA29 /* Background */,
 				D89A50071A000D540010D050 /* Controls */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
+				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				F05AA97D1A83F6E3002F8917 /* Inline Search */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				A7B5144A1A4517A80074282F /* SwipeCell */,
@@ -2730,6 +2735,8 @@
 				D8B70FE91A805CC800090C5E /* VInlineValidationView.m */,
 				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
 				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
+				A7F712191AE5A3B10086F729 /* VLinearGradientView.h */,
+				A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */,
 				037FCF1F1A8DAF5400E8ABFC /* VMultipleContainerViewController */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
@@ -2745,8 +2752,6 @@
 				D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */,
 				D888B5281A86FC7800B34149 /* VRadialGradientView.h */,
 				D888B5291A86FC7800B34149 /* VRadialGradientView.m */,
-				A7F712191AE5A3B10086F729 /* VLinearGradientView.h */,
-				A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */,
 				A7F1CDA31A673DE9003CB936 /* VScrollPaginator.h */,
 				A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */,
 				0314D35719B46B5E00FA363C /* VSelectorViewController.h */,
@@ -4194,6 +4199,16 @@
 				A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */,
 			);
 			path = CommentCellUtilities;
+			sourceTree = "<group>";
+		};
+		A776E00A1AE743F3001F25FF /* Floating Navigation View */ = {
+			isa = PBXGroup;
+			children = (
+				A776E00B1AE743F3001F25FF /* VNavigationViewFloatingController.h */,
+				A776E00C1AE743F3001F25FF /* VStreamNavigationViewFloatingController.h */,
+				A776E00D1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m */,
+			);
+			path = "Floating Navigation View";
 			sourceTree = "<group>";
 		};
 		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
@@ -6553,6 +6568,7 @@
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
 				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
+				A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */,
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				A74C87FA1ABA5859004D2E16 /* VCreatorInfoHelper.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,

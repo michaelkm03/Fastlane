@@ -48,8 +48,7 @@
 
 - (void)setProfileImageURL:(NSURL *)url
 {
-    [self sd_setImageWithURL:url
-            placeholderImage:[self defaultImage]];
+    [self sd_setImageWithURL:url placeholderImage:[self defaultImage]];
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
 }
 

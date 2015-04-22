@@ -36,6 +36,8 @@
 #import "VNotAuthorizedProfileCollectionViewCell.h"
 #import "VUserProfileHeader.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VStreamNavigationViewFloatingController.h"
+#import "VNavigationController.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -43,7 +45,7 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 // According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate>
 
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
 @property (nonatomic, assign) BOOL isMe;
@@ -273,6 +275,8 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     [super viewDidAppear:animated];
     
     [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
+    
+    [self setupFloatingView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -280,6 +284,21 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     [super viewWillDisappear:animated];
     
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)setupFloatingView
+{
+    UIView *floatingView = self.profileHeaderViewController.floatingProfileImage;
+    if ( floatingView != nil && self.navigationViewfloatingController == nil )
+    {
+        const CGFloat threshold = CGRectGetMidY(self.profileHeaderViewController.view.bounds);
+        self.navigationViewfloatingController = [[VStreamNavigationViewFloatingController alloc] initWithFloatingView:floatingView
+                                                                                         floatingParentViewController:[self v_navigationController]
+                                                                                              verticalScrollThreshold:threshold];
+        self.navigationViewfloatingController.delegate = self;
+        self.navigationBarShouldAutoHide = NO;
+        self.title = nil;
+    }
 }
 
 #pragma mark -
@@ -618,9 +637,9 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
 #pragma mark - VUserProfileHeaderDelegate
 
-- (void)secondaryActionHandler
+- (UIView *)detachedViewParentView
 {
-    
+    return self.navigationController.view;
 }
 
 - (void)primaryActionHandler
@@ -817,6 +836,14 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+#pragma mark - VNavigationViewFloatingControllerDelegate
+
+- (void)floatingViewSelected:(UIView *)floatingView
+{
+    // Scroll to top
+    [self.collectionView setContentOffset:CGPointZero animated:YES];
 }
 
 @end

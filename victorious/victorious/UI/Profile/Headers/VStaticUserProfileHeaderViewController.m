@@ -18,6 +18,8 @@
 
 @interface VStaticUserProfileHeaderViewController ()
 
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
+
 @end
 
 @implementation VStaticUserProfileHeaderViewController
@@ -35,6 +37,11 @@
 }
 
 #pragma mark - VUserProfileHeaderViewController overrides
+
+- (VDefaultProfileImageView *)profileImageView
+{
+    return self.staticProfileImageView;
+}
 
 - (void)loadBackgroundImage:(NSURL *)imageURL
 {

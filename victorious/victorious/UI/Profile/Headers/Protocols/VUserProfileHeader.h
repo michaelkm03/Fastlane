@@ -85,4 +85,6 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
  */
 @property (nonatomic, assign) VUserProfileHeaderState state;
 
+- (UIView *)floatingProfileImage;
+
 @end
