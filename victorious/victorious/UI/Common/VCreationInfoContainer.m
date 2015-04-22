@@ -82,6 +82,7 @@
     
     UIImage *clockImage = [[UIImage imageNamed:@"StreamDate"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.clockImageView = [[UIImageView alloc] initWithImage:clockImage];
+    self.clockImageView.contentMode = UIViewContentModeLeft;
     self.clockImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.clockImageView];
 
@@ -97,6 +98,11 @@
 }
 
 #pragma mark - UIView
+
+- (CGSize)intrinsicContentSize
+{
+    return CGSizeMake(100.0f, 44.0f);
+}
 
 - (void)updateConstraints
 {
@@ -214,6 +220,7 @@
     self.creatorLabel.text = [sequence originalPoster].name;
     self.parentUserLabel.text = [sequence parentUser].name;
 #warning Update timeAgo label
+    [self setNeedsUpdateConstraints];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -227,13 +234,6 @@
     self.timeSinceLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     self.timeSinceLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     self.clockImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-}
-
-#pragma mark - VActionBarTruncation
-
-- (CGSize)minimumSize
-{
-    return CGSizeMake(50, 44.0f);
 }
 
 @end

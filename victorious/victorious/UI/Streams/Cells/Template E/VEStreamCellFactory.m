@@ -8,11 +8,15 @@
 
 #import "VEStreamCellFactory.h"
 
+// Dependencies
+#import "VDependencyManager+VBackgroundContainer.h"
+
 // Models
 #import "VSequence+Fetcher.h"
 
 // Cells
 #import "VEStreamCollectionViewCell.h"
+#import "VStreamCollectionCellWebContent.h"
 
 @interface VEStreamCellFactory ()
 
@@ -34,8 +38,10 @@
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VEStreamCollectionViewCell nibForCell]
-     forCellWithReuseIdentifier:[VEStreamCollectionViewCell suggestedReuseIdentifier]];
+    [collectionView registerClass:[VEStreamCollectionViewCell class]
+       forCellWithReuseIdentifier:[VEStreamCollectionViewCell suggestedReuseIdentifier]];
+    [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
+     forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -45,12 +51,33 @@
     NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
     
     VSequence *sequence = (VSequence *)streamItem;
+    UICollectionViewCell *cell;
     
-    VEStreamCollectionViewCell *collectionViewCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEStreamCollectionViewCell suggestedReuseIdentifier]
-                                                                                               forIndexPath:indexPath];
+    if ([sequence isPoll])
+    {
+        
+    }
+    else if ([sequence isPreviewWebContent])
+    {
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]
+                                                                                          forIndexPath:indexPath];
+        VStreamCollectionCellWebContent *webCell = (VStreamCollectionCellWebContent *)cell;
+        webCell.sequence = sequence;
+    }
+    else
+    {
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEStreamCollectionViewCell suggestedReuseIdentifier]
+                                                         forIndexPath:indexPath];
+        VEStreamCollectionViewCell *eCollectionViewCell = (VEStreamCollectionViewCell *)cell;
+        eCollectionViewCell.sequence = sequence;
+    }
+
+    if ([cell conformsToProtocol:@protocol(VBackgroundContainer)])
+    {
+        [self.dependencyManager addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)cell];
+    }
     
-    
-    return collectionViewCell;
+    return cell;
 }
 
 - (CGFloat)minimumLineSpacing
@@ -60,7 +87,7 @@
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
+    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) + 75);
 }
 
 - (UIEdgeInsets)sectionInsets
