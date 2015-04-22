@@ -17,10 +17,14 @@
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"
 #import "VRoundedCommentButton.h"
+#import "VTextPostViewController.h"
+#import "UIColor+VHex.h"
 
 // Models
 #import "VUser+Fetcher.h"
 #import "VSequence+Fetcher.h"
+#import "VAsset+Fetcher.h"
+#import "VNode+Fetcher.h"
 
 static const CGFloat kInfoContainerHeight = 81.0f;
 static const CGFloat kLeadingTrailingSpace = 22.0f;
@@ -39,6 +43,7 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) VRoundedCommentButton *commentButton;
+@property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -95,6 +100,11 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
         {
             [self.contentContainerView addSubview:self.previewImageView];
             [self.contentContainerView v_addFitToParentConstraintsToSubview:self.previewImageView];
+        }
+        if (self.textPostViewController != nil)
+        {
+            [self.contentContainerView addSubview:self.textPostViewController.view];
+            [self.contentContainerView v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
         }
         
         UIView *contentInfoContainerView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -182,6 +192,22 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
     if ([sequence isText])
     {
         VLog(@"%@, text cell", self);
+        
+        if (self.textPostViewController == nil)
+        {
+            self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+            [self.contentContainerView addSubview:self.textPostViewController.view];
+            [self.contentContainerView v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+        }
+        
+        VAsset *textAsset = [self.sequence.firstNode textAsset];
+        if ( textAsset.data != nil )
+        {
+            VAsset *imageAsset = [self.sequence.firstNode imageAsset];
+            self.textPostViewController.text = textAsset.data;
+            self.textPostViewController.color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
+            self.textPostViewController.imageURL = [NSURL URLWithString:imageAsset.data];
+        }
     }
     else if ([sequence isPoll])
     {
@@ -225,6 +251,13 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
     {
         [self.commentButton setDependencyManager:_dependencyManager];
     }
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)loadingBackgroundContainerView
+{
+    return self.contentContainerView;
 }
 
 @end

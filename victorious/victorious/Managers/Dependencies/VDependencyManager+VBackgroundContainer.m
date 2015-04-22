@@ -65,6 +65,7 @@
         
         backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
         [containerView addSubview:backgroundView];
+        [containerView sendSubviewToBack:backgroundView];
         [containerView v_addFitToParentConstraintsToSubview:backgroundView];
     }
 }

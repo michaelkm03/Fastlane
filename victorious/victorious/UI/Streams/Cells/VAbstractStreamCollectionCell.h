@@ -14,12 +14,12 @@
 
 /**
  *  Return an identifier that will minimize the amount of view hierarchy setup
- *  and layout calculations that need to occur when a new cell comes on screen. 
- *  
+ *  and layout calculations that need to occur when a new cell comes on screen.
+ *
  *  For example an image post and poll post should be separate identifiers so
  *  that the content view (imageView or pollView) will only have to undergo
  *  setup/layout once.
- *  
+ *
  *  Abstract method. Should be overriden by concrete subclasses.
  */
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence;

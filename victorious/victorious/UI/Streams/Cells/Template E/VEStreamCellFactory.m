@@ -86,8 +86,6 @@
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEStreamCollectionViewCell reuseIdentifierForSequence:sequence]
                                                          forIndexPath:indexPath];
-        VEStreamCollectionViewCell *eCollectionViewCell = (VEStreamCollectionViewCell *)cell;
-        eCollectionViewCell.sequence = sequence;
     }
 
     if ([cell respondsToSelector:@selector(setDependencyManager:)])
@@ -98,6 +96,12 @@
     if ([cell conformsToProtocol:@protocol(VBackgroundContainer)])
     {
         [self.dependencyManager addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)cell];
+    }
+    
+    if ([cell isKindOfClass:[VEStreamCollectionViewCell class]])
+    {
+        VEStreamCollectionViewCell *eCollectionViewCell = (VEStreamCollectionViewCell *)cell;
+        eCollectionViewCell.sequence = sequence;
     }
     
     return cell;
