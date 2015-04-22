@@ -9,10 +9,11 @@
 #import "VBaseCollectionViewCell.h"
 
 #import "VBackgroundContainer.h"
+#import "VHasManagedDependencies.h"
 
 @class VSequence;
 
-@interface VEStreamCollectionViewCell : VBaseCollectionViewCell <VBackgroundContainer>
+@interface VEStreamCollectionViewCell : VBaseCollectionViewCell <VBackgroundContainer, VHasManagedDependencies>
 
 @property (nonatomic, strong) VSequence *sequence;
 

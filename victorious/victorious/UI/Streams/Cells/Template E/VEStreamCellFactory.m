@@ -72,6 +72,11 @@
         eCollectionViewCell.sequence = sequence;
     }
 
+    if ([cell respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [((id <VHasManagedDependencies>)cell) setDependencyManager:self.dependencyManager];
+    }
+    
     if ([cell conformsToProtocol:@protocol(VBackgroundContainer)])
     {
         [self.dependencyManager addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)cell];

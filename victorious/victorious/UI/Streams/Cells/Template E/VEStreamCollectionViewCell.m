@@ -13,6 +13,7 @@
 #import "UIView+AutoLayout.h"
 #import "VActionBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
+#import "VActionBarFixedWidthItem.h"
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"
 
@@ -21,8 +22,13 @@
 #import "VSequence+Fetcher.h"
 
 static const CGFloat kInfoContainerHeight = 81.0f;
+static const CGFloat kLeadingTrailingSpace = 16.0f;
+static const CGFloat kAvatarSize = 32.0f;
+static const CGFloat kSpaceAvatarToLabels = 3.0f;
 
 @interface VEStreamCollectionViewCell ()
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
 
@@ -37,6 +43,9 @@ static const CGFloat kInfoContainerHeight = 81.0f;
 
 - (void)layoutSubviews
 {
+#warning Remove Me
+    self.backgroundColor = [UIColor blackColor];
+    
     if (!self.hasLayedOutViews)
     {
         // Layout containers
@@ -47,7 +56,6 @@ static const CGFloat kInfoContainerHeight = 81.0f;
         
         UIView *contentInfoContainerView = [[UIView alloc] initWithFrame:CGRectZero];
         contentInfoContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        contentInfoContainerView.backgroundColor = [UIColor purpleColor];
         [self addSubview:contentInfoContainerView];
         
         NSDictionary *viewDictionary = NSDictionaryOfVariableBindings(contentContainerView, contentInfoContainerView);
@@ -94,19 +102,19 @@ static const CGFloat kInfoContainerHeight = 81.0f;
         [actionBar v_addHeightConstraint:55.0f];
         self.sequenceInfoActionBar = actionBar;
         
-        
-        
         VDefaultProfileButton *button = [[VDefaultProfileButton alloc] initWithFrame:CGRectZero];
         button.translatesAutoresizingMaskIntoConstraints = NO;
-        [button v_addHeightConstraint:44.0f];
-        [button v_addWidthConstraint:44.0f];
+        [button v_addHeightConstraint:kAvatarSize];
+        [button v_addWidthConstraint:kAvatarSize];
         self.profileButton = button;
         
         VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
         creationContainer.translatesAutoresizingMaskIntoConstraints = NO;
         [creationContainer v_addHeightConstraint:44.0f];
         self.creationInfoContainer = creationContainer;
-        actionBar.actionItems = @[button,
+        actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace],
+                                  button,
+                                  [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
                                   creationContainer];
         
         
@@ -122,6 +130,13 @@ static const CGFloat kInfoContainerHeight = 81.0f;
     [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                   forState:UIControlStateNormal];
     self.creationInfoContainer.sequence = sequence;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    [self.creationInfoContainer setDependencyManager:_dependencyManager];
 }
 
 @end
