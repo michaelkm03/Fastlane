@@ -8,6 +8,8 @@
 
 #import "VAbstractStreamCollectionCell.h"
 
+#import "VSequenceActionsDelegate.h"
+
 // Views
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
@@ -31,6 +33,8 @@
 
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 
+@property (nonatomic, weak) id <VSequenceActionsDelegate> sequenceActionsDelegate;
+
 @end
 
 @implementation VAbstractStreamCollectionCell
@@ -41,6 +45,16 @@
 {
     NSAssert(false, @"Must implement in subclasses!");
     return nil;
+}
+
++ (BOOL)canOverlayContentForSequence:(VSequence *)sequence
+{
+    if ([sequence isText])
+    {
+        return NO;
+    }
+    
+    return (sequence.nameEmbeddedInContent != nil) ? [sequence.nameEmbeddedInContent boolValue] : YES;
 }
 
 #pragma mark - Property Accessors
@@ -61,8 +75,6 @@
     
     if ([sequence isText])
     {
-        VLog(@"%@, text cell", self);
-        
         if (self.textPostViewController == nil)
         {
             self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
@@ -81,7 +93,6 @@
     }
     else if ([sequence isPoll])
     {
-        VLog(@"%@, poll cell", self);
         if (self.pollView == nil)
         {
             self.pollView = [[VPollView alloc] initWithFrame:CGRectZero];
@@ -99,7 +110,6 @@
     }
     else if ([sequence isImage])
     {
-        VLog(@"%@, image cell", self);
         if (self.previewImageView == nil)
         {
             UIImageView *previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -124,6 +134,29 @@
 - (UIView *)loadingBackgroundContainerView
 {
     return self.previewView;
+}
+
+@end
+
+@implementation VAbstractStreamCollectionCell (Actions)
+
+- (void)selectedHashTag:(NSString *)hashTag
+{
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    {
+        [self.sequenceActionsDelegate hashTag:hashTag
+                           tappedFromSequence:self.sequence
+                                     fromView:self];
+    }
+}
+
+- (void)comment
+{
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
+    {
+        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence
+                                                   fromView:self];
+    }
 }
 
 @end

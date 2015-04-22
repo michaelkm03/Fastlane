@@ -8,7 +8,12 @@
 
 #import "VEStreamCollectionViewCell.h"
 
+// Dependencies
+#import "VDependencyManager.h"
+
 // Views + Helpers
+#import "VHashTagTextView.h"
+#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 #import "UIView+AutoLayout.h"
 #import "VActionBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
@@ -29,7 +34,7 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 static const CGFloat kGradientEndAlpha = 0.15f;
 static const CGFloat kGradientHeight = 78.0f;
 
-@interface VEStreamCollectionViewCell ()
+@interface VEStreamCollectionViewCell () <CCHLinkTextViewDelegate>
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
 
@@ -39,6 +44,7 @@ static const CGFloat kGradientHeight = 78.0f;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) VRoundedCommentButton *commentButton;
 @property (nonatomic, strong) VLinearGradientView *linearGradientView;
+@property (nonatomic, strong) VHashTagTextView *captionTextView;
 
 @end
 
@@ -103,6 +109,15 @@ static const CGFloat kGradientHeight = 78.0f;
                                                                                           metrics:@{@"height":@(kGradientHeight)}
                                                                                             views:@{@"linearGradientView":self.linearGradientView}]];
         
+        
+        self.captionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero];
+        self.captionTextView.linkDelegate = self;
+        self.captionTextView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.captionTextView.backgroundColor = [UIColor clearColor];
+
+        [self.linearGradientView addSubview:self.captionTextView];
+        [self.linearGradientView v_addFitToParentConstraintsToSubview:self.captionTextView];
+        
         UIView *contentInfoContainerView = [[UIView alloc] initWithFrame:CGRectZero];
         contentInfoContainerView.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:contentInfoContainerView];
@@ -152,7 +167,7 @@ static const CGFloat kGradientHeight = 78.0f;
         
         VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
         creationContainer.translatesAutoresizingMaskIntoConstraints = NO;
-        creationContainer.sequence = self.sequence;
+
         if ([creationContainer respondsToSelector:@selector(setDependencyManager:)])
         {
             [creationContainer setDependencyManager:self.dependencyManager];
@@ -161,6 +176,7 @@ static const CGFloat kGradientHeight = 78.0f;
         self.creationInfoContainer = creationContainer;
         
         VRoundedCommentButton *commentButton = [[VRoundedCommentButton alloc] initWithFrame:CGRectZero];
+        [commentButton addTarget:self action:@selector(comment) forControlEvents:UIControlEventTouchUpInside];
         commentButton.translatesAutoresizingMaskIntoConstraints = NO;
         self.commentButton = commentButton;
         if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
@@ -178,6 +194,11 @@ static const CGFloat kGradientHeight = 78.0f;
         self.hasLayedOutViews = YES;
     }
     
+    // Do any updates if we just created the views
+    [self updateCaptionViewWithSequence:self.sequence];
+    [self updateProfileButtonWithSequence:self.sequence];
+    [self updateCreationInfoContainerWithSequence:self.sequence];
+    
     [super layoutSubviews];
 }
 
@@ -185,9 +206,9 @@ static const CGFloat kGradientHeight = 78.0f;
 {
     [super setSequence:sequence];
     
-    [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
-                                  forState:UIControlStateNormal];
-    self.creationInfoContainer.sequence = sequence;
+    [self updateProfileButtonWithSequence:sequence];
+    [self updateCreationInfoContainerWithSequence:sequence];
+    [self updateCaptionViewWithSequence:sequence];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -203,6 +224,44 @@ static const CGFloat kGradientHeight = 78.0f;
     if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.commentButton setDependencyManager:dependencyManager];
+    }
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    [self selectedHashTag:value];
+}
+
+#pragma mark - Internal Methods
+
+- (void)updateCreationInfoContainerWithSequence:(VSequence *)sequence
+{
+    self.creationInfoContainer.sequence = self.sequence;
+}
+
+- (void)updateProfileButtonWithSequence:(VSequence *)sequence
+{
+    [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
+                                  forState:UIControlStateNormal];
+}
+
+- (void)updateCaptionViewWithSequence:(VSequence *)sequence
+{
+    if ([[self class] canOverlayContentForSequence:sequence])
+    {
+        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name ?: @""
+                                                                              attributes:@{
+                                                                                           NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
+                                                                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
+                                                                                           }];
+        BOOL stringNotEmpty = ((sequence.name != nil) && (![sequence.name isEqualToString:@""]));
+        self.linearGradientView.hidden = stringNotEmpty;
+    }
+    else
+    {
+        self.linearGradientView.hidden = YES;
     }
 }
 

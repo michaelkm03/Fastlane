@@ -11,10 +11,11 @@
 // Protocols
 #import "VBackgroundContainer.h"
 #import "VHasManagedDependencies.h"
+#import "VSequenceActionsSender.h"
 
 @class VSequence;
 
-@interface VAbstractStreamCollectionCell : VBaseCollectionViewCell <VBackgroundContainer, VHasManagedDependencies>
+@interface VAbstractStreamCollectionCell : VBaseCollectionViewCell <VBackgroundContainer, VHasManagedDependencies, VSequenceActionsSender>
 
 /**
  *  The sequence this stream collection cell represents. Subclasses may override
@@ -48,5 +49,24 @@
  *  Abstract method. Should be overriden by concrete subclasses.
  */
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence;
+
+/**
+ *  Convenience method for subclasses to determine whether or not they should 
+ *  overlay UI on top of the previewView.
+ */
++ (BOOL)canOverlayContentForSequence:(VSequence *)sequence;
+
+@end
+
+
+/**
+ *  These methods provide convenience checks to ensure the delegate responds to 
+ *  the appropriate delegate methods.
+ */
+@interface VAbstractStreamCollectionCell (Actions)
+
+- (void)selectedHashTag:(NSString *)hashTag;
+
+- (void)comment;
 
 @end

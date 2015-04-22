@@ -101,12 +101,6 @@ static const CGFloat kDefaultHeight = 44.0f;
     self.timeSinceLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
-    
-#warning Remove Me
-    self.creatorLabel.textColor = [UIColor whiteColor];
-    self.parentUserLabel.textColor = [UIColor whiteColor];
-    self.timeSinceLabel.textColor = [UIColor whiteColor];
-    self.clockImageView.tintColor = [UIColor whiteColor];
 }
 
 #pragma mark - UIView
@@ -222,12 +216,6 @@ static const CGFloat kDefaultHeight = 44.0f;
              [welf updateWithSequence:_sequence];
          }];
     }
-    
-#warning Remove mE
-    self.creatorLabel.textColor = [UIColor whiteColor];
-    self.parentUserLabel.textColor = [UIColor whiteColor];
-    self.timeSinceLabel.textColor = [UIColor whiteColor];
-    self.clockImageView.tintColor = [UIColor whiteColor];
 }
 
 #pragma mark - Update UI
@@ -301,15 +289,15 @@ static const CGFloat kDefaultHeight = 44.0f;
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-#warning RESTOEREME
+
     self.creatorLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.parentUserLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     self.timeSinceLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     
-//    self.creatorLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-//    self.parentUserLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-//    self.timeSinceLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-//    self.clockImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.creatorLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.parentUserLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.timeSinceLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.clockImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }
 
 #pragma mark - VActionBarFlexibleWidth
