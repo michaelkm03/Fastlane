@@ -233,7 +233,7 @@ static const CGFloat kDefaultHeight = 44.0f;
 - (void)updateParentUserLabelWithSequence:(VSequence *)sequence
 {
     // Format repost / remix string
-    NSString *parentUserString = sequence.parentUser.name ?: @"";
+    NSString *parentUserString = sequence.user.name ?: @"";
     NSString *formattedString = nil;
     
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
@@ -268,7 +268,7 @@ static const CGFloat kDefaultHeight = 44.0f;
         NSRange range = [formattedString rangeOfString:parentUserString];
         NSDictionary *attributes = @{
                                      NSFontAttributeName: self.parentUserLabel.font,
-                                     NSForegroundColorAttributeName: [UIColor whiteColor],
+                                     NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
                                      };
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:formattedString
                                                                                              attributes:attributes];

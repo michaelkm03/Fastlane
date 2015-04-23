@@ -55,8 +55,20 @@
     {
         return NO;
     }
+
+    BOOL nameIsEmpty = ((sequence.name.length == 0) || ([sequence.name isEqualToString:@""]));
+    if (nameIsEmpty)
+    {
+        return NO;
+    }
     
-    return (sequence.nameEmbeddedInContent != nil) ? [sequence.nameEmbeddedInContent boolValue] : YES;
+    BOOL nameIsEmbedded = [sequence.nameEmbeddedInContent boolValue];
+    if (nameIsEmbedded)
+    {
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - Property Accessors

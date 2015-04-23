@@ -260,8 +260,7 @@ static const CGFloat kGradientHeight = 78.0f;
                                                                                            NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
                                                                                            NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
                                                                                            }];
-        BOOL stringNotEmpty = ((sequence.name != nil) && (![sequence.name isEqualToString:@""]));
-        self.linearGradientView.hidden = stringNotEmpty;
+        self.linearGradientView.hidden = NO;
     }
     else
     {
