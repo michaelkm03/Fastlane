@@ -146,20 +146,18 @@ static const CGFloat kScaleHide = 0.4f;
 - (void)setVisible:(BOOL)visible
 {
     CATransform3D transform = CATransform3DIdentity;
-    CGFloat eyePosition = 200.0;
+    CGFloat eyePosition = 100.0;
     transform.m34 = -1.0 / eyePosition;
-    const CGFloat scale = 0.75f;
-    transform = CATransform3DScale( transform, scale, scale, scale );
     
     if ( visible )
     {
     }
     else
     {
-        transform = CATransform3DRotate( transform, M_PI_2, 1.0f, 0.0f, 0.0f );
+        transform = CATransform3DTranslate( transform, 0.0f, 15.0f, 0.0f );
+        transform = CATransform3DRotate( transform, -M_PI_2, 1.0f, 0.0f, 0.0f );
     }
     
-    transform = CATransform3DTranslate( transform, 0.0f, 0.0f, 50.0f );
     self.floatingView.layer.zPosition = 1000;
     self.floatingView.layer.transform = transform;
     self.floatingView.alpha = visible ? 1.0f : 0.0f;
@@ -205,7 +203,7 @@ static const CGFloat kScaleHide = 0.4f;
     
     [UIView animateWithDuration:self.velocityMultiplier * kAnimationDurationShow
                           delay:0.0f
-         usingSpringWithDamping:0.9f
+         usingSpringWithDamping:0.45f
           initialSpringVelocity:0.5f
                         options:kNilOptions
                      animations:^
