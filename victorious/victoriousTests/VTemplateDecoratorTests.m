@@ -123,4 +123,27 @@
     XCTAssertEqualObjects( output[ @"key2" ][1][ @"subkey3" ], component[ @"subkey3" ] );
 }
 
+
+- (void)testReadValue
+{
+    NSDictionary *template = @{ @"key1" : @"value1",
+                                @"key2" : @[@"subvalue1", @"subvalue2" ],
+                                @"key3" : @"value3" };
+    
+    VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+    BOOL didSucceed = [templateDecorator setComponentWithFilename:@"component" forKeyPath:@"key2/1"];
+    XCTAssert( didSucceed, @"Failed to set component value" );
+    
+    NSDictionary *output = templateDecorator.decoratedTemplate;
+    
+    XCTAssertEqualObjects( output[ @"key2" ], [templateDecorator templateValueForKeyPath:@"key2"] );
+    XCTAssertEqualObjects( output[ @"key2" ][1], [templateDecorator templateValueForKeyPath:@"key2/1"] );
+    XCTAssertEqualObjects( output[ @"key2" ][1][ @"subkey3" ], [templateDecorator templateValueForKeyPath:@"key2/1/subkey3"] );
+    
+    XCTAssertNil( [templateDecorator templateValueForKeyPath:@"key2/2/subkey3"] ); // Undefined index
+    XCTAssertNil( [templateDecorator templateValueForKeyPath:@"key2/-1/subkey3"] ); // Undefined index
+    XCTAssertNil( [templateDecorator templateValueForKeyPath:@"UNDEFINED_KEY/1/subkey3"] );
+    XCTAssertNil( [templateDecorator templateValueForKeyPath:@"key2/1/UNDEFINED_KEY"] );
+}
+
 @end

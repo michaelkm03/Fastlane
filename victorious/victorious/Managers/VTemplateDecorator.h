@@ -28,7 +28,7 @@
  @param filename Name of the file (without extension) to load from bundle
  @throws Assertion when no such file is present in the bundle.
  */
-- (NSDictionary *)dictionaryFromJSONFile:(NSString *)filename;
++ (NSDictionary *)dictionaryFromJSONFile:(NSString *)filename;
 
 /**
  Add the provided component to the top level of the template, thereby concatonating it.
@@ -67,6 +67,15 @@
  */
 
 - (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath;
+
+/**
+ Returns the current value with any previous decorations for the specified keypath.
+ 
+ @param keyPath A slash-separated path that indicates where in the hierarchy of dictionary keys
+ and array indexes to place the new component.
+ @return Object at the specified key path or nil if not found.
+ */
+- (id)templateValueForKeyPath:(NSString *)keyPath;
 
 /**
  Returns output as an NSDictionary instance which contains all modifications

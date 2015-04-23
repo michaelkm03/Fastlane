@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -1200,11 +1200,11 @@
                             <constraint firstAttribute="trailing" secondItem="8OA-Ea-FRh" secondAttribute="trailing" id="ilT-xn-3z9"/>
                             <constraint firstItem="Pf7-EC-k9e" firstAttribute="top" secondItem="Xi3-H1-J9H" secondAttribute="top" constant="4" id="nf1-xF-cFh"/>
                             <constraint firstItem="Pf7-EC-k9e" firstAttribute="right" secondItem="Xi3-H1-J9H" secondAttribute="right" constant="-1" id="syA-oV-LOf"/>
-                            <constraint firstItem="Xi3-H1-J9H" firstAttribute="top" secondItem="l7B-Qc-5jj" secondAttribute="bottom" id="tWY-RL-JVj"/>
                             <constraint firstItem="Vh8-1q-gMV" firstAttribute="leading" secondItem="BXj-uF-ln6" secondAttribute="leading" id="ttZ-5h-Rzs"/>
                             <constraint firstAttribute="bottom" secondItem="Vh8-1q-gMV" secondAttribute="bottom" id="uUK-Ck-8pB"/>
                             <constraint firstAttribute="trailing" secondItem="Xi3-H1-J9H" secondAttribute="trailing" id="wpr-IK-POa"/>
                             <constraint firstAttribute="centerY" secondItem="j3n-Uc-zOp" secondAttribute="centerY" multiplier="1.618" id="yJm-zN-bm2"/>
+                            <constraint firstItem="Xi3-H1-J9H" firstAttribute="top" secondItem="l7B-Qc-5jj" secondAttribute="top" id="z7N-B8-dQi"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>

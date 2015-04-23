@@ -20,6 +20,28 @@ static NSString * const kJSONType = @"json";
 
 @implementation VTemplateDecorator
 
++ (NSDictionary *)dictionaryFromJSONFile:(NSString *)filename
+{
+    NSString *pathInBundle = [[NSBundle bundleForClass:[self class]] pathForResource:filename ofType:kJSONType];
+    NSError *error = nil;
+    
+    NSAssert( pathInBundle != nil, @"Cannot find path in bundle for filename \"%@\". \
+             Make sure the file is added to the project.", filename );
+    
+    NSData *data = [NSData dataWithContentsOfFile:pathInBundle options:kNilOptions error:&error];
+    if ( data == nil )
+    {
+        return nil;
+    }
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+    if ( dictionary == nil )
+    {
+        return nil;
+    }
+    
+    return dictionary;
+}
+
 - (instancetype)init
 {
     return [self initWithTemplateDictionary:nil];
@@ -52,31 +74,9 @@ static NSString * const kJSONType = @"json";
     return [NSDictionary dictionaryWithDictionary:self.workingTemplate];
 }
 
-- (NSDictionary *)dictionaryFromJSONFile:(NSString *)filename
-{
-    NSString *pathInBundle = [[NSBundle bundleForClass:[self class]] pathForResource:filename ofType:kJSONType];
-    NSError *error = nil;
-    
-    NSAssert( pathInBundle != nil, @"Cannot find path in bundle for filename \"%@\". \
-             Make sure the file is added to the project.", filename );
-    
-    NSData *data = [NSData dataWithContentsOfFile:pathInBundle options:kNilOptions error:&error];
-    if ( data == nil )
-    {
-        return nil;
-    }
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-    if ( dictionary == nil )
-    {
-        return nil;
-    }
-    
-    return dictionary;
-}
-
 - (BOOL)concatonateTemplateWithFilename:(NSString *)filename
 {
-    NSDictionary *templateAddition = [self dictionaryFromJSONFile:filename];
+    NSDictionary *templateAddition = [VTemplateDecorator dictionaryFromJSONFile:filename];
     
     if ( templateAddition == nil )
     {
@@ -94,7 +94,7 @@ static NSString * const kJSONType = @"json";
 
 - (BOOL)setComponentWithFilename:(NSString *)filename forKeyPath:(NSString *)keyPath
 {
-    NSDictionary *component = [self dictionaryFromJSONFile:filename];
+    NSDictionary *component = [VTemplateDecorator dictionaryFromJSONFile:filename];
     if ( component != nil )
     {
         return [self setTemplateValue:component forKeyPath:keyPath];
@@ -194,6 +194,53 @@ static NSString * const kJSONType = @"json";
         
         return destination;
     }
+}
+
+- (id)templateValueForKeyPath:(NSString *)keyPath
+{
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:@"/"]];
+    NSDictionary *source = [NSDictionary dictionaryWithDictionary:self.workingTemplate];
+    return [self valueInCollection:source forKeyPathKeys:keyPathKeys];
+}
+
+- (id)valueInCollection:(id)source forKeyPathKeys:(NSMutableArray *)keyPathKeys
+{
+    NSString *currentKey = keyPathKeys.firstObject;
+    [keyPathKeys removeObjectAtIndex:0];
+    
+    if ( [source isKindOfClass:[NSArray class]] && [self.numberFormatter numberFromString:currentKey] != nil )
+    {
+        NSInteger index = [self.numberFormatter numberFromString:currentKey].integerValue;
+        NSMutableArray *sourceArray = (NSMutableArray *)source;
+        id value = index >= 0 && index < (NSInteger)sourceArray.count ? sourceArray[ index ] : nil;
+        if ( value != nil )
+        {
+            if ( keyPathKeys.count == 0 )
+            {
+                return value;
+            }
+            else if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+            {
+                return [self valueInCollection:value forKeyPathKeys:keyPathKeys];
+            }
+        }
+    }
+    else if ( [source isKindOfClass:[NSDictionary class]] )
+    {
+        id value = ((NSDictionary *)source)[ currentKey ];
+        if ( value != nil )
+        {
+            if ( keyPathKeys.count == 0 )
+            {
+                return value;
+            }
+            else if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+            {
+                return [self valueInCollection:value forKeyPathKeys:keyPathKeys];
+            }
+        }
+    }
+    return nil;
 }
 
 @end

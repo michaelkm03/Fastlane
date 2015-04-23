@@ -45,17 +45,9 @@
 
 - (void)loadBackgroundImage:(NSURL *)imageURL
 {
-    UIImage *placeholderImage = self.backgroundImageView.image;
-    if ( placeholderImage == nil )
-    {
-        placeholderImage = [[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]] applyLightEffect];
-    }
-    
     if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
     {
-        [self.backgroundImageView setBlurredImageWithURL:imageURL
-                                        placeholderImage:placeholderImage
-                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+        [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     }
 }
 

@@ -166,6 +166,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.cameraControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.cameraControlContainer addSubview:self.cameraControl];
     
+    self.searchButton.hidden = !self.allowPhotos;
+    
     VCameraControlCaptureMode captureMode = 0;
     if (self.allowVideo)
     {
@@ -390,7 +392,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.closeButton.enabled = YES;
             
             self.searchButton.enabled = YES;
-            self.searchButton.hidden = NO;
+            self.searchButton.hidden = !self.allowPhotos;
             
             [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
                                                 animated:NO];

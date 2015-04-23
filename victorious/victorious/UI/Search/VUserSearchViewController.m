@@ -161,12 +161,6 @@ static const NSInteger kSearchResultLimit = 100;
     [self.searchField resignFirstResponder];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-}
-
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -184,7 +178,6 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)characterCheck:(id)sender
 {
-    
     self.charCount++;
     
     if (self.charCount == 3)
@@ -209,29 +202,18 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (IBAction)closeButtonAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)composeMessageToUser:(VUser *)profile
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectUserFromSearchRecipient];
     
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
-    {
-        if (!authorized)
-        {
-            return;
-        }
-        VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile dependencyManager:self.dependencyManager];
-        [self.navigationController pushViewController:composeController animated:YES];
-    }];
+    [self.messageSearchDelegate userSelectedFromMessageSearch:profile];
 }
 
 - (void)runUserSearch:(id)sender
 {
-    
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
@@ -480,21 +462,6 @@ static const NSInteger kSearchResultLimit = 100;
 {
     [self runUserSearch:nil];
     [self.searchField resignFirstResponder];
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    BOOL ans = YES;
-    return ans;
-}
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
     return YES;
 }
 

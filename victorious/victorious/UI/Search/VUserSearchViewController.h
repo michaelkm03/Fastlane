@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDependencyManager;
+@class VDependencyManager, VUser;
+
+@protocol VUserSearchViewControllerDelegate <NSObject>
+
+@required
+
+- (void)userSelectedFromMessageSearch:(VUser *)user;
+
+@end
 
 @interface VUserSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
@@ -25,5 +33,6 @@
  Defaults to: VObjectManagerSearchContextDiscover
  */
 @property (nonatomic, strong) NSString *searchContext;
+@property (nonatomic, weak) id <VUserSearchViewControllerDelegate> messageSearchDelegate;
 
 @end
