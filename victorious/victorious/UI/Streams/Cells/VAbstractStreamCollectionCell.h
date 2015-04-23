@@ -70,3 +70,21 @@
 - (void)comment;
 
 @end
+
+/**
+ *  Override these methods to update UI where appropriate. VAbstractStreamCollectionCell 
+ *  will observe the appropriate models to provide subclasses an opportunity to update 
+ *  themselves. External classes may call these methods using the sequence property of
+ *  the VAbstractStreamCollectionCell for the sequence parameter.
+ *
+ *  Base implementation does nothing.
+ */
+@interface VAbstractStreamCollectionCell (UpdateHooks)
+
+- (void)updateCommentsForSequence:(VSequence *)sequence;
+
+- (void)updateUsernameForSequence:(VSequence *)sequence;
+
+- (void)updateUserAvatarForSequence:(VSequence *)sequence;
+
+@end

@@ -12,6 +12,7 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
 #import "VStreamCollectionCell.h"
+#import "VAbstractStreamCollectionCell.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 
 //Controllers
@@ -257,6 +258,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
     for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
     {
+        if ([cell isKindOfClass:[VAbstractStreamCollectionCell class]])
+        {
+            [(VAbstractStreamCollectionCell *)cell updateCommentsForSequence:((VAbstractStreamCollectionCell *)cell).sequence];
+        }
         if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
         {
             [(VStreamCollectionCell *)cell reloadCommentsCount];

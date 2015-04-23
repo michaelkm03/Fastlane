@@ -53,7 +53,7 @@
         
         VSequence *sequence = (VSequence *)streamItem;
         
-        if ([sequence isWebContent])
+        if ([sequence isPreviewWebContent])
         {
             [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
              forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
@@ -75,7 +75,7 @@
     VSequence *sequence = (VSequence *)streamItem;
     UICollectionViewCell *cell;
     
-    if ([sequence isWebContent])
+    if ([sequence isPreviewWebContent])
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]
                                                          forIndexPath:indexPath];
@@ -96,6 +96,7 @@
     if ([cell conformsToProtocol:@protocol(VBackgroundContainer)])
     {
         [self.dependencyManager addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)cell];
+        [self.dependencyManager addBackgroundToBackgroundHost:(id <VBackgroundContainer>)cell];
     }
     
     if ([cell isKindOfClass:[VEStreamCollectionViewCell class]])

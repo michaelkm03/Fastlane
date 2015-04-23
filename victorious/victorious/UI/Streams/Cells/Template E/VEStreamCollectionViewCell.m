@@ -21,6 +21,7 @@
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"
 #import "VRoundedCommentButton.h"
+#import "VLargeNumberFormatter.h"
 #import "VLinearGradientView.h"
 
 // Models
@@ -43,6 +44,7 @@ static const CGFloat kGradientHeight = 78.0f;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) VRoundedCommentButton *commentButton;
+@property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
 @property (nonatomic, strong) VLinearGradientView *linearGradientView;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 
@@ -88,15 +90,11 @@ static const CGFloat kGradientHeight = 78.0f;
 
 - (void)layoutSubviews
 {
-#warning Remove Me
-    self.backgroundColor = [UIColor blackColor];
-    
     if (!self.hasLayedOutViews)
     {
         // Layout containers
         UIView *contentContainerView = [[UIView alloc] initWithFrame:CGRectZero];
         contentContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        contentContainerView.backgroundColor = [UIColor orangeColor];
         [self addSubview:contentContainerView];
         self.contentContainerView = contentContainerView;
         
@@ -112,7 +110,6 @@ static const CGFloat kGradientHeight = 78.0f;
                                                                                           options:kNilOptions
                                                                                           metrics:@{@"height":@(kGradientHeight)}
                                                                                             views:@{@"linearGradientView":self.linearGradientView}]];
-        
         
         self.captionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero];
         self.captionTextView.linkDelegate = self;
@@ -202,6 +199,7 @@ static const CGFloat kGradientHeight = 78.0f;
     [self updateCaptionViewWithSequence:self.sequence];
     [self updateProfileButtonWithSequence:self.sequence];
     [self updateCreationInfoContainerWithSequence:self.sequence];
+    [self updateCommentsForSequence:self.sequence];
     
     [super layoutSubviews];
 }
@@ -213,6 +211,17 @@ static const CGFloat kGradientHeight = 78.0f;
     [self updateProfileButtonWithSequence:sequence];
     [self updateCreationInfoContainerWithSequence:sequence];
     [self updateCaptionViewWithSequence:sequence];
+}
+
+#pragma mark - Property Accessors
+
+- (VLargeNumberFormatter *)numberFormatter
+{
+    if (_numberFormatter == nil)
+    {
+        _numberFormatter = [[VLargeNumberFormatter alloc] init];
+    }
+    return _numberFormatter;
 }
 
 #pragma mark - VHasManagedDependencies
@@ -236,6 +245,13 @@ static const CGFloat kGradientHeight = 78.0f;
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
     [self selectedHashTag:value];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.contentView;
 }
 
 #pragma mark - Internal Methods
@@ -266,6 +282,27 @@ static const CGFloat kGradientHeight = 78.0f;
     {
         self.linearGradientView.hidden = YES;
     }
+}
+
+@end
+
+
+@implementation VEStreamCollectionViewCell (UpdateHooks)
+
+- (void)updateCommentsForSequence:(VSequence *)sequence
+{
+    NSString *commentCount = self.sequence.commentCount.integerValue ? [self.numberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
+    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
+}
+
+- (void)updateUsernameForSequence:(VSequence *)sequence
+{
+    [self updateCreationInfoContainerWithSequence:sequence];
+}
+
+- (void)updateUserAvatarForSequence:(VSequence *)sequence
+{
+    [self updateProfileButtonWithSequence:sequence];
 }
 
 @end

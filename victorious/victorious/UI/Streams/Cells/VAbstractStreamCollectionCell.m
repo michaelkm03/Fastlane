@@ -8,6 +8,9 @@
 
 #import "VAbstractStreamCollectionCell.h"
 
+// Libraries
+#import <FBKVOController.h>
+
 #import "VSequenceActionsDelegate.h"
 
 // Views
@@ -85,7 +88,11 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self unobserveSequence:_sequence];
+    
     _sequence = sequence;
+    
+    [self observeSequence:_sequence];
     
     if ([sequence isText])
     {
@@ -135,6 +142,8 @@
     {
         NSAssert(false, @"Not setup for sequence!");
     }
+    
+    [self updateCommentsForSequence:_sequence];
 }
 
 - (UIImageView *)playCircleImageView
@@ -169,6 +178,35 @@
         [self.previewView v_addFitToParentConstraintsToSubview:_previewImageView];
     }
     return _previewImageView;
+}
+
+#pragma mark - Observers
+
+- (void)unobserveSequence:(VSequence *)sequence
+{
+    [self.KVOController unobserve:sequence.user
+                          keyPath:NSStringFromSelector(@selector(name))];
+    [self.KVOController unobserve:sequence.user
+                          keyPath:NSStringFromSelector(@selector(pictureUrl))];
+}
+
+- (void)observeSequence:(VSequence *)sequence
+{
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:sequence.user
+                       keyPaths:@[NSStringFromSelector(@selector(name))]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+    {
+                              [welf updateUsernameForSequence:welf.sequence];
+    }];
+    [self.KVOController observe:sequence.user
+                       keyPaths:@[NSStringFromSelector(@selector(pictureUrl))]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateUsernameForSequence:welf.sequence];
+     }];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -206,6 +244,25 @@
         [self.sequenceActionsDelegate willCommentOnSequence:self.sequence
                                                    fromView:self];
     }
+}
+
+@end
+
+@implementation VAbstractStreamCollectionCell (UpdateHooks)
+
+- (void)updateCommentsForSequence:(VSequence *)sequence
+{
+    // Implement in subclasses
+}
+
+- (void)updateUsernameForSequence:(VSequence *)sequence
+{
+    // Implement in sublcasses
+}
+
+- (void)updateUserAvatarForSequence:(VSequence *)sequence
+{
+    // Implement in subclasses
 }
 
 @end
