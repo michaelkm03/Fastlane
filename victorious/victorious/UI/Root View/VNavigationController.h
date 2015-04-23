@@ -47,6 +47,11 @@
  */
 - (void)setNavigationBarHidden:(BOOL)hidden;
 
+/**
+ Updates the appearance of the supplementary header view
+ */
+- (void)updateSupplementaryHeaderViewForViewController:(UIViewController *)viewController;
+
 @end
 
 #pragma mark -
@@ -67,6 +72,12 @@
  controlled by an instance of VNavigationController, return it.
  */
 - (VNavigationController *)v_navigationController;
+
+/**
+ An optional method for supplying a custom background color for the status bar background view.
+ If unimplemented or nil is returned, the background color of the navigation bar will be used.
+ */
+- (UIColor *)statusBarBackgroundColor;
 
 @end
 

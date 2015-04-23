@@ -25,8 +25,9 @@
     NSString *ownerName = appInfo.ownerName;
     NSURL *profileImageURL = appInfo.profileImageURL;
     
-    
-    if ( ![self stringIsValidForDisplay:ownerName] || ![profileImageURL.absoluteString isEqualToString:@""] )
+    BOOL stringIsValid = [self stringIsValidForDisplay:ownerName];
+    BOOL profileImageURLIsEmpty = [profileImageURL.absoluteString isEqualToString:@""];
+    if ( !stringIsValid || profileImageURLIsEmpty )
     {
         // If there's no valid data to show for this creator, hide these views
         self.creatorNameLabel.hidden = YES;

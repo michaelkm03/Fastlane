@@ -35,9 +35,9 @@
     
     if (self.previewImage != nil)
     {
-        [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.previewImage
-                                                      placeholderImage:nil
-                                                             tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+        [self.blurredBackgroundImageView blurAndAnimateImageToVisible:self.previewImage
+                                                        withTintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
+                                                          andDuration:0.5f];
     }
     
     if ([self.toolController isKindOfClass:[VImageToolController class]])
@@ -81,10 +81,9 @@
             return;
         }
         welf.previewImage = snapshotImage;
-        [welf.blurredBackgroundImageView setBlurredImageWithClearImage:snapshotImage
-                                                      placeholderImage:nil
-                                                             tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
-                                                               animate:YES];
+        [welf.blurredBackgroundImageView blurAndAnimateImageToVisible:snapshotImage
+                                                        withTintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
+                                                          andDuration:0.5f];
     };
     self.toolController.mediaURL = mediaURL;
     self.toolController.delegate = self;
