@@ -1350,6 +1350,8 @@
 		039ED29619C908F400305987 /* VElapsedTimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatter.m; sourceTree = "<group>"; };
 		039ED29719C908F400305987 /* VVideoDownloadProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoDownloadProgressIndicatorView.h; sourceTree = "<group>"; };
 		039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
+		03A00E5C1AE882D200A2B733 /* environments.all.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = environments.all.plist; sourceTree = "<group>"; };
+		03A00E5E1AE8885900A2B733 /* environments.prod.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = environments.prod.plist; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		03AC453819BA1F1000CE4351 /* NSString+VCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VCrypto.h"; sourceTree = "<group>"; };
@@ -5065,6 +5067,8 @@
 			children = (
 				A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */,
 				A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */,
+				03A00E5C1AE882D200A2B733 /* environments.all.plist */,
+				03A00E5E1AE8885900A2B733 /* environments.prod.plist */,
 				D811BBBD19B92F75007398BF /* homeHeaderImage.png */,
 				D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */,
 				0314D07E19B4688E00FA363C /* Icon-29@2x.png */,
@@ -5695,10 +5699,11 @@
 				BE171D721868BE64004E5202 /* Sources */,
 				BE171D731868BE64004E5202 /* Frameworks */,
 				BE171D741868BE64004E5202 /* Resources */,
+				03A00E601AE889BA00A2B733 /* Copy Environments Configuration */,
 				3FF8C50618A5A06A00812968 /* Set Build Number */,
 				03CE66F819B50C340011BB9E /* Objective Clean */,
-				032948A81970BDA700208FBA /* Crashlytics */,
 				22C3ACF4C6878DDD064D31BF /* Copy Pods Resources */,
+				032948A81970BDA700208FBA /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -5993,6 +5998,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./3rd\\ Party\\ SDKs/Crashlytics.framework/run 58f61748f3d33b03387e43014fdfff29c5a1da73 1f6107cc26a24ef5594a23046bc37d904f8a2f33ef5c68c4b0a22309236c4f1d\n";
+			showEnvVarsInLog = 0;
+		};
+		03A00E601AE889BA00A2B733 /* Copy Environments Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Environments Configuration";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nSOURCE=\"$PROJECT_DIR/$EnvironmentsConfigurationFile\"\n\nif [ -e \"$SOURCE\" ]; then\n    cp \"$SOURCE\" \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/environments.plist\"\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 		03CE66F819B50C340011BB9E /* Objective Clean */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6007,6 +6028,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ -d \"${LOCAL_APPS_DIR}/Objective-Clean.app\" ]]; then\n\"${LOCAL_APPS_DIR}\"/Objective-Clean.app/Contents/Resources/ObjClean.app/Contents/MacOS/ObjClean \"${SRCROOT}\"?!Pods,!3rd\\ Party\\ SDKs,!ManagedObjectModels,!SCAudioVideoRecorder\nelse\necho \"warning: Please install Objective-Clean to check for style issues in the code!\"\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 		22C3ACF4C6878DDD064D31BF /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6036,6 +6058,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
+			showEnvVarsInLog = 0;
 		};
 		589F0499A2CD6F9EB3A82CC5 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6980,6 +7003,7 @@
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Production;
 				ENABLE_NS_ASSERTIONS = NO;
+				EnvironmentsConfigurationFile = AppSpecific/environments.prod.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -7095,6 +7119,7 @@
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Staging;
 				ENABLE_NS_ASSERTIONS = NO;
+				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
@@ -7211,6 +7236,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				DefaultEnvironment = Dev;
+				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -7272,6 +7298,7 @@
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Production;
 				ENABLE_NS_ASSERTIONS = NO;
+				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -7453,6 +7480,7 @@
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = QA;
 				ENABLE_NS_ASSERTIONS = YES;
+				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
