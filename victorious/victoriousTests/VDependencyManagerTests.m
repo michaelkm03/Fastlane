@@ -697,33 +697,33 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     return vc.dependencyManager;
 }
 
-#if 0 // Disabled for now. See https://jira.victorious.com/browse/IOS-2368
-- (void)testCleanupBreaksCycles
+- (void)testCleanupRemovesSingletons
 {
-    // the main purpose of -cleanup is to break retain cycles created by the dependency manager.
-    // This method ensures they are broken
+    // One of the main sources of retain cycles that -cleanup targets is singletons.
+    // This method ensures they are released
     
-    __weak VDependencyManager *weakChild = [self extractChildFromDependencyManager:self.dependencyManager];
-    XCTAssertNotNil(weakChild); // weakChild is still here only because self.baseDependencyManager has a reference to it
-    
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result1);
+
     [self.baseDependencyManager cleanup];
-    self.baseDependencyManager = nil;
     
-    XCTAssertNil(weakChild); // after cleanup, it should be free!
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotEqual(result1, result2);
 }
-#endif
 
 - (void)testCleanupDoesntWorkOnChildren
 {
     // -cleanup is documented to not work when called on child dependency managers.
     // This test verifies that's true.
     
-    __weak VDependencyManager *weakChild = [self extractChildFromDependencyManager:self.dependencyManager];
-    XCTAssertNotNil(weakChild); // weakChild is still around because self.baseDependencyManager has a reference to it
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result1);
     
-    [weakChild cleanup];
+    [self.dependencyManager cleanup];
     
-    XCTAssertNotNil(weakChild); // cleanup should have done nothing
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
 }
 
 #pragma mark - Children

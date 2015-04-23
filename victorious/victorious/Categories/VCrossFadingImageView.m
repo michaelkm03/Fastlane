@@ -182,8 +182,7 @@ static const char kAssociatedObjectKey;
             objc_setAssociatedObject(imageViewContainer, &kAssociatedObjectKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
         NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
-        UIImage *placeholder = [UIImage resizeableImageWithColor:tintColor];
-        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withPlaceholderImage:placeholder tintColor:tintColor andDuration:duration];
+        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration];
     }
 }
 
