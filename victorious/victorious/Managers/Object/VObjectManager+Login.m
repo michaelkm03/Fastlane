@@ -92,9 +92,11 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         
         [templateDecorator concatonateTemplateWithFilename:kWorkspaceTemplateName];
         
+#warning This should be removed once backend supports it:
         [templateDecorator setComponentForKeyPath:@"scaffold/userProfileView/userProfileHeader"
                              withComponentInFileNamed:@"floatingProfileHeader"];
         
+#warning This should be removed once backend supports it:
         [templateDecorator setComponentForKeyPath:@"scaffold/menu/items/3/destination/userProfileHeader"
                              withComponentInFileNamed:@"floatingProfileHeader"];
         
