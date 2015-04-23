@@ -163,8 +163,17 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
                                  pushAccessoryMenuItemsOn:self.navigationController];
     
-    self.streamDataSource.hasHeaderCell = YES;
-    self.collectionView.alwaysBounceVertical = YES;
+    [self createProfileHeader];
+    
+    if ( self.profileHeaderViewController != nil )
+    {
+        self.streamDataSource.hasHeaderCell = YES;
+        self.collectionView.alwaysBounceVertical = YES;
+        
+        [self.collectionView registerClass:[VProfileHeaderCell class]
+                forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
+
+    }
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
@@ -173,13 +182,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
                         keyPath:@"sequences"
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
-    
-    [self.collectionView registerClass:[VProfileHeaderCell class]
-            forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
-    
     [self updateCollectionViewDataSource];
-    
-    [self createProfileHeader];
 }
 
 - (void)createProfileHeader
@@ -753,7 +756,8 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     {
         if ( self.currentProfileCell == nil )
         {
-            VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class]) forIndexPath:indexPath];
+            NSString *identifier = [VProfileHeaderCell preferredReuseIdentifier];
+            VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
             [self.profileHeaderViewController willMoveToParentViewController:self];
             headerCell.headerViewController = self.profileHeaderViewController;
             self.currentProfileCell = headerCell;

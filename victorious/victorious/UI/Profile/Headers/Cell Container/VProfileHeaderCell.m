@@ -31,4 +31,9 @@
     }
 }
 
++ (NSString *)preferredReuseIdentifier
+{
+    return NSStringFromClass( [self class] );
+}
+
 @end

@@ -10,6 +10,8 @@
 
 @interface VProfileHeaderCell : UICollectionViewCell
 
++ (NSString *)preferredReuseIdentifier;
+
 /**
  Getter/setter for the child header view controller.  Set this property to add as a child
  to the cell.  If the same header view controller is already a child, this is a no-op.  If
