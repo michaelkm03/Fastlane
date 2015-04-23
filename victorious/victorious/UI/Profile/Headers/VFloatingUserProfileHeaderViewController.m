@@ -112,22 +112,24 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     if ( isLoading )
     {
         [self.secondaryActionButton showActivityIndicator];
-        self.secondaryActionButton.userInteractionEnabled = NO;
+        self.secondaryActionButton.enabled = NO;
     }
     else
     {
         [self.secondaryActionButton hideActivityIndicator];
-        self.secondaryActionButton.userInteractionEnabled = YES;
+        self.secondaryActionButton.enabled = YES;
     }
 }
 
 - (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self.profileImageView.layer.borderWidth = 2.0;
-    
-    UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     UIColor *contentTextColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    UIColor *secondaryLinkColor = [dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
+    
+    self.profileImageView.layer.borderWidth = 2.0;
+    self.profileImageView.layer.borderColor = secondaryLinkColor.CGColor;
     
     self.primaryActionButton.primaryColor = [UIColor whiteColor];
     self.primaryActionButton.secondaryColor = [UIColor whiteColor];
@@ -141,8 +143,6 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     self.secondaryActionButton.layer.borderWidth = 2.0f;
     self.secondaryActionButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.secondaryActionButton.layer.cornerRadius = CGRectGetHeight( self.secondaryActionButton.bounds ) / 2.0f;
-    
-    self.profileImageView.layer.borderColor = linkColor.CGColor;
     
     self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.nameLabel.textColor = textColor;
@@ -168,7 +168,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     self.primaryActionButton.titleLabel.font = buttonFont;
     
-    self.userStatsBar.backgroundColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.userStatsBar.backgroundColor = accentColor;
 }
 
 @end

@@ -94,12 +94,12 @@
     if ( isLoading )
     {
         [self.primaryActionButton showActivityIndicator];
-        self.primaryActionButton.userInteractionEnabled = NO;
+        self.primaryActionButton.enabled = NO;
     }
     else
     {
         [self.primaryActionButton hideActivityIndicator];
-        self.primaryActionButton.userInteractionEnabled = YES;
+        self.primaryActionButton.enabled = YES;
     }
 }
 

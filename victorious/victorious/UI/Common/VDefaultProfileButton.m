@@ -8,10 +8,7 @@
 
 #import "VDefaultProfileButton.h"
 
-#import "VThemeManager.h"
-
 #import <SDWebImage/UIButton+WebCache.h>
-#import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
 
@@ -36,14 +33,14 @@
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     [self setImage:defaultImage forState:UIControlStateNormal];
-    //Was previously accent color for A and D
-    NSString *colorKey = kVLinkColor;
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
     self.clipsToBounds = YES;
-    
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 
+}
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
 }
 
 - (void)updateCornerRadius

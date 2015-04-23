@@ -8,16 +8,61 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ A decorator object for a template dictionary that allows the easy modification of that
+ template according to many of the development and production needs of this app.
+ */
 @interface VTemplateDecorator : NSObject
 
+/**
+ Designated initializer that takes in the required template dictionary to which modifications
+ will be made.  Use the `decoratedTemplate` property to get access to an NSDictionary instance
+ that contains modifications made during the lifetime of this object.
+ */
 - (instancetype)initWithTemplateDictionary:(NSDictionary *)templateDictionary NS_DESIGNATED_INITIALIZER;
 
+/**
+ Simple utility method that loads a JSON file from the app bundle accoding to the
+ provided filename and parses it into a dictionary.
+ 
+ @param filename Name of the file (without extension) to load from bundle
+ @throws Assertion when no such file is present in the bundle.
+ */
 - (NSDictionary *)dictionaryFromJSONFile:(NSString *)filename;
 
+/**
+ Add the provided component to the top level of the template, thereby concatonating it.
+ Any keys used at the top level of the component will overwite those already
+ in present on the templste.
+ 
+ @param filename The name of the file (without its json extension) in the bundle that contains
+ a component to be parsed in a dictionary and added to the template.
+ @return Boolean that indicates whether the component was successfully concatonated.
+ */
 - (BOOL)concatonateTemplateWithFilename:(NSString *)filename;
+
+/**
+ Adds a new component to the template by adding or overwriting at the speciifed key path.
+ 
+ @param keyPath A slash-separated path that indicates where in the hierarchy of dictionary keys
+ and array indexes to place the new component.  For example, the key path "key1/key2/4/key3"
+ will add the component for "key3" of a dictionary at index 5 of an array at "key2" of a
+ dictionary at "key1".  If the last path component is an index, that index in the array will
+ be overwritten if present, or the component will be added to the end of the array if not present.
+ If any objects are not dictionaries or arrays as implied by the keypath, the operation will fail
+ and return NO.
+ @param filename The name of the file (without its json extension) in the bundle that contains
+ a component to be parsed in a dictionary and added to the template.
+ @return Boolean that indicates whether the keypath provided was valid and the method was
+ able to add the component.
+ */
 
 - (BOOL)setComponentForKeyPath:(NSString *)keyPath withComponentInFileNamed:(NSString *)filename;
 
+/**
+ Returns output as an NSDictionary instance which contains all modifications
+ that have yet been made to the template using any of the methods available on this class.
+ */
 @property (nonatomic, readonly) NSDictionary *decoratedTemplate;
 
 @end

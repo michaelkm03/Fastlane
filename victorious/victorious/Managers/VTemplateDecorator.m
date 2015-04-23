@@ -18,11 +18,17 @@ static NSString * const kJSONType = @"json";
 
 @end
 
-
 @implementation VTemplateDecorator
+
+- (instancetype)init
+{
+    return [self initWithTemplateDictionary:nil];
+}
 
 - (instancetype)initWithTemplateDictionary:(NSDictionary *)templateDictionary
 {
+    NSParameterAssert( templateDictionary != nil );
+    
     self = [super init];
     if (self)
     {
@@ -72,7 +78,7 @@ static NSString * const kJSONType = @"json";
 {
     NSDictionary *templateAddition = [self dictionaryFromJSONFile:filename];
     
-    if ( templateAddition != nil )
+    if ( templateAddition == nil )
     {
         return NO;
     }

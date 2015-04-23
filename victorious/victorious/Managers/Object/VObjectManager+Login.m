@@ -89,15 +89,17 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
         
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+        
         [templateDecorator concatonateTemplateWithFilename:kWorkspaceTemplateName];
+        
         [templateDecorator setComponentForKeyPath:@"scaffold/userProfileView/userProfileHeader"
-                             withComponentInFileNamed:@"DEV_floatingProfile"];
+                             withComponentInFileNamed:@"floatingProfileHeader"];
+        
         [templateDecorator setComponentForKeyPath:@"scaffold/menu/items/3/destination/userProfileHeader"
-                             withComponentInFileNamed:@"DEV_floatingProfile"];
-        template = templateDecorator.decoratedTemplate;
+                             withComponentInFileNamed:@"floatingProfileHeader"];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
-                                                                                    configuration:template
+                                                                                    configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
         success(operation, fullResponse, dependencyManager);
     };

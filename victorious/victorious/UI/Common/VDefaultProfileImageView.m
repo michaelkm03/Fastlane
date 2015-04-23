@@ -8,10 +8,6 @@
 
 #import "VDefaultProfileImageView.h"
 
-// Utilities
-#import "VThemeManager.h"
-#import "VSettingManager.h"
-
 // Categories
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -37,19 +33,18 @@
 {
     self.image = [self defaultImage];
     
-    //Was previously accent color on A and D
-    NSString *colorKey = kVLinkColor;
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
-    
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
     self.clipsToBounds = YES;
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 }
 
 - (void)setProfileImageURL:(NSURL *)url
 {
     [self sd_setImageWithURL:url placeholderImage:[self defaultImage]];
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
+}
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
 }
 
 - (UIImage *)defaultImage

@@ -169,7 +169,6 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
     
-    [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
     [self.KVOController observe:self.currentStream
                         keyPath:@"sequences"
                         options:NSKeyValueObservingOptionNew
@@ -262,11 +261,6 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
 - (void)dealloc
 {
-    if (self.currentStream != nil)
-    {
-        [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
-    }
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
 }
 
@@ -355,6 +349,11 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     
     id<VUserProfileHeader> header = self.profileHeaderViewController;
     if ( header == nil )
+    {
+        return;
+    }
+    
+    if ( header.isLoading )
     {
         return;
     }
@@ -520,6 +519,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     }
     else if ( self.profileHeaderViewController.state == VUserProfileHeaderStateNotFollowingUser )
     {
+        [self stopObservingUserProfile];
         self.profileHeaderViewController.isLoading = YES;
         [[VObjectManager sharedManager] followUser:self.user
                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
@@ -535,14 +535,16 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
 - (void)loginStateDidChange:(NSNotification *)notification
 {
-    if ( [VObjectManager sharedManager].authorized )
-    {
-        [self reloadUserFollowingRelationship];
-    }
-    else if ( self.representsMainUser )
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    
+    if ( self.representsMainUser )
     {
         self.user = [VObjectManager sharedManager].mainUser;
         [self updateCollectionViewDataSource];
+    }
+    else if ( [VObjectManager sharedManager].authorized )
+    {
+        [self reloadUserFollowingRelationship];
     }
 }
 
@@ -594,6 +596,8 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
         return;
     }
     
+    [self stopObservingUserProfile];
+    
     _user = user;
     
     self.profileHeaderViewController.user = user;
@@ -602,12 +606,29 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     
     self.title = self.isCurrentUser ? NSLocalizedString(@"me", "") : profileName;
     
+    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    
     self.currentStream = [VStream streamForUser:self.user];
     
     //Update title AFTER updating current stream as that update resets the title to nil (because there is nil name in the stream)
     self.navigationItem.title = profileName;
 
     [self attemptToRefreshProfileUI];
+}
+
+- (void)setTitle:(NSString *)title
+{
+    if ( self.profileHeaderViewController.floatingProfileImage != nil )
+    {
+        [super setTitle:nil];
+    }
+    else
+    {
+        [super setTitle:title];
+    }
 }
 
 - (IBAction)composeMessage:(id)sender
@@ -844,6 +865,14 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 {
     // Scroll to top
     [self.collectionView setContentOffset:CGPointZero animated:YES];
+}
+
+- (void)stopObservingUserProfile
+{
+    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(name))];
+    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(location))];
+    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(tagline))];
+    [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
 }
 
 @end

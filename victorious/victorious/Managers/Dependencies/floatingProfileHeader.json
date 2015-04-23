@@ -13,6 +13,12 @@
         "blue": 255,
         "alpha": 255
     },
+    "color.link.secondary": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+    },
     "color.accent.secondary": {
         "red": 128,
         "green": 128,

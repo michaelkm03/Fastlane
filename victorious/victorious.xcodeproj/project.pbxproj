@@ -596,7 +596,7 @@
 		A7F712021AE1D5A00086F729 /* VNotAuthorizedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F711F41AE1D5A00086F729 /* VNotAuthorizedDataSource.m */; };
 		A7F712031AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F711F61AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m */; };
 		A7F712041AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7F711F71AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib */; };
-		A7F7120A1AE580380086F729 /* DEV_floatingProfile.json in Resources */ = {isa = PBXBuildFile; fileRef = A7F712091AE580380086F729 /* DEV_floatingProfile.json */; };
+		A7F7120A1AE580380086F729 /* floatingProfileHeader.json in Resources */ = {isa = PBXBuildFile; fileRef = A7F712091AE580380086F729 /* floatingProfileHeader.json */; };
 		A7F7120D1AE585D20086F729 /* VStaticUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F7120C1AE585D20086F729 /* VStaticUserProfileHeaderViewController.m */; };
 		A7F712101AE585DE0086F729 /* VFloatingUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F7120F1AE585DE0086F729 /* VFloatingUserProfileHeaderViewController.m */; };
 		A7F712121AE5863A0086F729 /* VFloatingUserProfileHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7F712111AE5863A0086F729 /* VFloatingUserProfileHeaderViewController.xib */; };
@@ -1931,7 +1931,7 @@
 		A7F711F51AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotAuthorizedProfileCollectionViewCell.h; sourceTree = "<group>"; };
 		A7F711F61AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotAuthorizedProfileCollectionViewCell.m; sourceTree = "<group>"; };
 		A7F711F71AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotAuthorizedProfileCollectionViewCell.xib; sourceTree = "<group>"; };
-		A7F712091AE580380086F729 /* DEV_floatingProfile.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DEV_floatingProfile.json; sourceTree = "<group>"; };
+		A7F712091AE580380086F729 /* floatingProfileHeader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = floatingProfileHeader.json; sourceTree = "<group>"; };
 		A7F7120B1AE585D20086F729 /* VStaticUserProfileHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStaticUserProfileHeaderViewController.h; sourceTree = "<group>"; };
 		A7F7120C1AE585D20086F729 /* VStaticUserProfileHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStaticUserProfileHeaderViewController.m; sourceTree = "<group>"; };
 		A7F7120E1AE585DE0086F729 /* VFloatingUserProfileHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFloatingUserProfileHeaderViewController.h; sourceTree = "<group>"; };
@@ -3480,7 +3480,7 @@
 		039D02A71A1043D300DB9236 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				A7F712091AE580380086F729 /* DEV_floatingProfile.json */,
+				A7F712091AE580380086F729 /* floatingProfileHeader.json */,
 				035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */,
 				036F4E751A1302E600F9E721 /* Template Generator */,
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
@@ -5753,7 +5753,7 @@
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */,
 				036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */,
-				A7F7120A1AE580380086F729 /* DEV_floatingProfile.json in Resources */,
+				A7F7120A1AE580380086F729 /* floatingProfileHeader.json in Resources */,
 				036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */,
 				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,

@@ -96,20 +96,28 @@
     {
         [self clearBackgroundImage];
     }
+
+    [self updateUser];
+}
+
+- (void)updateUser
+{
     [self loadBackgroundImage:[NSURL URLWithString:self.user.pictureUrl]];
     
-    if ( _user != nil )
+    if ( self.user != nil )
     {
-        [self cleanupKVOControllerWithUser:_user];
+        [self cleanupKVOControllerWithUser:self.user];
     }
     
     [self applyStyleWithDependencyManager:self.dependencyManager];
-    [self setupKVOControllerWithUser:_user];
+    [self setupKVOControllerWithUser:self.user];
 }
 
 - (void)setState:(VUserProfileHeaderState)state
 {
     _state = state;
+    
+    [self updateUser];
 }
 
 - (void)setFollowersCount:(NSNumber *)followerCount
