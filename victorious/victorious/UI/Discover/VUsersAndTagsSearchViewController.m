@@ -167,6 +167,11 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (BOOL)v_prefersNavigationBarHidden
 {
     return YES;

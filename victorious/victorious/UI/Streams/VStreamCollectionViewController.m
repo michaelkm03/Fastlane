@@ -567,10 +567,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {    
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
     
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
-    [newBackgroundView setBlurredImageWithURL:url
-                             placeholderImage:placeholderImage
-                                    tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    [newBackgroundView applyTintAndBlurToImageWithURL:url
+                                        withTintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     
     self.collectionView.backgroundView = newBackgroundView;
 }
