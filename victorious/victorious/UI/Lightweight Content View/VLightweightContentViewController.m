@@ -18,6 +18,7 @@
 #import "VNode+Fetcher.h"
 #import "VScaffoldViewController.h"
 #import "VTrackingConstants.h"
+#import "VTracking.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
@@ -33,6 +34,10 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, assign) BOOL hasVideoPlayed;
+@property (nonatomic, strong) NSDate *videoLoadedDate;
+@property (nonatomic, strong) VSequence *sequence;
 
 /**
  Url referencing video to be played
@@ -175,6 +180,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
              VAsset *asset = [node mp4Asset];
              if (asset.dataURL != nil)
              {
+                 self.sequence = sequence;
                  self.mediaUrl = asset.dataURL;
                  [self.videoPlayerViewController enableTrackingWithTrackingItem:sequence.tracking];
                  [self showVideo];
@@ -201,7 +207,27 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     }
 }
 
+- (void)trackSequenceViewStart
+{
+    if ( !self.hasVideoPlayed )
+    {
+        self.hasVideoPlayed = YES;
+        
+        NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeySequenceId : self.sequence.remoteId,
+                                  VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[],
+                                  VTrackingKeyLoadTime : @(videoLoadTime) };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    }
+}
+
 #pragma mark - VCVideoPlayerDelegate
+
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
+{
+    [self trackSequenceViewStart];
+}
 
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
@@ -224,6 +250,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 {
     [self.videoPlayerViewController setItemURL:self.mediaUrl loop:NO];
     [self.videoPlayerViewController.player play];
+    self.videoLoadedDate = [NSDate date];
 }
 
 #pragma mark - Close Button Action
