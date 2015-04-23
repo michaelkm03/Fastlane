@@ -10,6 +10,16 @@
 
 #import "VThemeManager.h"
 
+#if CGFLOAT_IS_DOUBLE
+#define roundCGFloat(x) round(x)
+#define floorCGFloat(x) floor(x)
+#define ceilCGFloat(x) ceil(x)
+#else
+#define roundCGFloat(x) roundf(x)
+#define floorCGFloat(x) floor(x)
+#define ceilCGFloat(x) ceil(x)
+#endif
+
 static CGFloat const kMinimumCellHeight = 90.0f;
 static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
@@ -54,7 +64,7 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
                                               attributes:attributes
                                                  context:[[NSStringDrawingContext alloc] init]];
     
-    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, CGRectGetHeight(boundingRect) + kLabelInset.top + kLabelInset.bottom));
+    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, ceilCGFloat(CGRectGetHeight(boundingRect)) + kLabelInset.top + kLabelInset.bottom));
 
     [[self sizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
                            forKey:keyForQuestionBoundsAndAttribute];
