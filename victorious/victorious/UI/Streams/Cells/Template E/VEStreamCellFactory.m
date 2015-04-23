@@ -36,6 +36,8 @@
     return self;
 }
 
+#pragma mark - VStreamCellFactory
+
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
     [collectionView registerClass:[VEStreamCollectionViewCell class]

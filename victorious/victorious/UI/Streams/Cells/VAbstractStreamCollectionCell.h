@@ -58,6 +58,17 @@
 
 @end
 
+@interface VAbstractStreamCollectionCell (Sizing)
+
+/**
+ *  Override this method in subclasses to provide callers a custom sizing. 
+ *  Default method will return a size of CGSizeMake(bounds.width,bounds.width).
+ */
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
+                                    sequence:(VSequence *)sequence
+                           dependencyManager:(VDependencyManager *)dependencyManager;
+
+@end
 
 /**
  *  These methods provide convenience checks to ensure the delegate responds to 

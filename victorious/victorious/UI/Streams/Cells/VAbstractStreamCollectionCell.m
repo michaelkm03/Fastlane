@@ -225,6 +225,19 @@
 
 @end
 
+#pragma mark - Categories
+
+@implementation VAbstractStreamCollectionCell (Sizing)
+
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
+                                    sequence:(VSequence *)sequence
+                           dependencyManager:(VDependencyManager *)dependencyManager
+{
+    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
+}
+
+@end
+
 @implementation VAbstractStreamCollectionCell (Actions)
 
 - (void)selectedHashTag:(NSString *)hashTag
