@@ -1,12 +1,12 @@
 //
-//  VEStreamCellFactory.m
+//  VHermesStreamCellFactory.m
 //  victorious
 //
 //  Created by Michael Sena on 4/20/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VEStreamCellFactory.h"
+#import "VHermesStreamCellFactory.h"
 
 // Dependencies
 #import "VDependencyManager+VBackgroundContainer.h"
@@ -15,16 +15,16 @@
 #import "VSequence+Fetcher.h"
 
 // Cells
-#import "VEStreamCollectionViewCell.h"
+#import "VHermesStreamCollectionViewCell.h"
 #import "VStreamCollectionCellWebContent.h"
 
-@interface VEStreamCellFactory ()
+@interface VHermesStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VEStreamCellFactory
+@implementation VHermesStreamCellFactory
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -40,8 +40,8 @@
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerClass:[VEStreamCollectionViewCell class]
-       forCellWithReuseIdentifier:[VEStreamCollectionViewCell suggestedReuseIdentifier]];
+    [collectionView registerClass:[VHermesStreamCollectionViewCell class]
+       forCellWithReuseIdentifier:[VHermesStreamCollectionViewCell suggestedReuseIdentifier]];
     [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
      forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
 }
@@ -62,8 +62,8 @@
         }
         else
         {
-            [collectionView registerClass:[VEStreamCollectionViewCell class]
-               forCellWithReuseIdentifier:[VEStreamCollectionViewCell reuseIdentifierForSequence:sequence]];
+            [collectionView registerClass:[VHermesStreamCollectionViewCell class]
+               forCellWithReuseIdentifier:[VHermesStreamCollectionViewCell reuseIdentifierForSequence:sequence]];
         }
     }
 }
@@ -86,7 +86,7 @@
     }
     else
     {
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VEStreamCollectionViewCell reuseIdentifierForSequence:sequence]
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHermesStreamCollectionViewCell reuseIdentifierForSequence:sequence]
                                                          forIndexPath:indexPath];
     }
 
@@ -101,9 +101,9 @@
         [self.dependencyManager addBackgroundToBackgroundHost:(id <VBackgroundContainer>)cell];
     }
     
-    if ([cell isKindOfClass:[VEStreamCollectionViewCell class]])
+    if ([cell isKindOfClass:[VHermesStreamCollectionViewCell class]])
     {
-        VEStreamCollectionViewCell *eCollectionViewCell = (VEStreamCollectionViewCell *)cell;
+        VHermesStreamCollectionViewCell *eCollectionViewCell = (VHermesStreamCollectionViewCell *)cell;
         eCollectionViewCell.sequence = sequence;
     }
     

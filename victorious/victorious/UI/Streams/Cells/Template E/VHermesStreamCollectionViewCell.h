@@ -1,5 +1,5 @@
 //
-//  VEStreamCollectionViewCell.h
+//  VHermesStreamCollectionViewCell.h
 //  victorious
 //
 //  Created by Michael Sena on 4/20/15.
@@ -10,6 +10,6 @@
 
 @class VSequence;
 
-@interface VEStreamCollectionViewCell : VAbstractStreamCollectionCell
+@interface VHermesStreamCollectionViewCell : VAbstractStreamCollectionCell
 
 @end

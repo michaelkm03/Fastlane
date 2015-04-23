@@ -1,12 +1,12 @@
 //
-//  VEStreamCollectionViewCell.m
+//  VHermesStreamCollectionViewCell.m
 //  victorious
 //
 //  Created by Michael Sena on 4/20/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VEStreamCollectionViewCell.h"
+#import "VHermesStreamCollectionViewCell.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -35,7 +35,7 @@ static const CGFloat kSpaceAvatarToLabels = 3.0f;
 static const CGFloat kGradientEndAlpha = 0.15f;
 static const CGFloat kGradientHeight = 78.0f;
 
-@interface VEStreamCollectionViewCell () <CCHLinkTextViewDelegate>
+@interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate>
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
 
@@ -50,7 +50,7 @@ static const CGFloat kGradientHeight = 78.0f;
 
 @end
 
-@implementation VEStreamCollectionViewCell
+@implementation VHermesStreamCollectionViewCell
 
 #pragma mark - VAbstractStreamCollectionCell Overrides
 
@@ -287,7 +287,7 @@ static const CGFloat kGradientHeight = 78.0f;
 @end
 
 
-@implementation VEStreamCollectionViewCell (UpdateHooks)
+@implementation VHermesStreamCollectionViewCell (UpdateHooks)
 
 - (void)updateCommentsForSequence:(VSequence *)sequence
 {

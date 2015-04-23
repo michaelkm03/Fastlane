@@ -680,8 +680,8 @@
 		D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D83AC7A91AB201A600F63603 /* VPlayerView.m */; };
 		D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
-		D85E26F21AE5D27B00AD82E4 /* VEStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F11AE5D27B00AD82E4 /* VEStreamCellFactory.m */; };
-		D85E26F61AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F41AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m */; };
+		D85E26F21AE5D27B00AD82E4 /* VHermesStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F11AE5D27B00AD82E4 /* VHermesStreamCellFactory.m */; };
+		D85E26F61AE5D68F00AD82E4 /* VHermesStreamCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E26F41AE5D68F00AD82E4 /* VHermesStreamCollectionViewCell.m */; };
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86528EF1AE80628003832AC /* VAbstractStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */; };
 		D86528F31AE82ABF003832AC /* VPollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528F21AE82ABF003832AC /* VPollView.m */; };
@@ -2117,10 +2117,10 @@
 		D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBadgeStringFormatter.m; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
-		D85E26F01AE5D27B00AD82E4 /* VEStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEStreamCellFactory.h; sourceTree = "<group>"; };
-		D85E26F11AE5D27B00AD82E4 /* VEStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEStreamCellFactory.m; sourceTree = "<group>"; };
-		D85E26F31AE5D68F00AD82E4 /* VEStreamCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEStreamCollectionViewCell.h; sourceTree = "<group>"; };
-		D85E26F41AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEStreamCollectionViewCell.m; sourceTree = "<group>"; };
+		D85E26F01AE5D27B00AD82E4 /* VHermesStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHermesStreamCellFactory.h; sourceTree = "<group>"; };
+		D85E26F11AE5D27B00AD82E4 /* VHermesStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHermesStreamCellFactory.m; sourceTree = "<group>"; };
+		D85E26F31AE5D68F00AD82E4 /* VHermesStreamCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHermesStreamCollectionViewCell.h; sourceTree = "<group>"; };
+		D85E26F41AE5D68F00AD82E4 /* VHermesStreamCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHermesStreamCollectionViewCell.m; sourceTree = "<group>"; };
 		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
 		D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceToWorkspaceAnimator.m; sourceTree = "<group>"; };
 		D86528ED1AE80628003832AC /* VAbstractStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamCollectionCell.h; sourceTree = "<group>"; };
@@ -5119,10 +5119,10 @@
 		D85E26EF1AE5D24100AD82E4 /* Template E */ = {
 			isa = PBXGroup;
 			children = (
-				D85E26F01AE5D27B00AD82E4 /* VEStreamCellFactory.h */,
-				D85E26F11AE5D27B00AD82E4 /* VEStreamCellFactory.m */,
-				D85E26F31AE5D68F00AD82E4 /* VEStreamCollectionViewCell.h */,
-				D85E26F41AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m */,
+				D85E26F01AE5D27B00AD82E4 /* VHermesStreamCellFactory.h */,
+				D85E26F11AE5D27B00AD82E4 /* VHermesStreamCellFactory.m */,
+				D85E26F31AE5D68F00AD82E4 /* VHermesStreamCollectionViewCell.h */,
+				D85E26F41AE5D68F00AD82E4 /* VHermesStreamCollectionViewCell.m */,
 			);
 			path = "Template E";
 			sourceTree = "<group>";
@@ -6381,7 +6381,7 @@
 				A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */,
 				A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */,
 				037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */,
-				D85E26F21AE5D27B00AD82E4 /* VEStreamCellFactory.m in Sources */,
+				D85E26F21AE5D27B00AD82E4 /* VHermesStreamCellFactory.m in Sources */,
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */,
@@ -6477,7 +6477,7 @@
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
-				D85E26F61AE5D68F00AD82E4 /* VEStreamCollectionViewCell.m in Sources */,
+				D85E26F61AE5D68F00AD82E4 /* VHermesStreamCollectionViewCell.m in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */,

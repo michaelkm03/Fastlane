@@ -1,5 +1,5 @@
 //
-//  VEStreamCellFactory.h
+//  VHermesStreamCellFactory.h
 //  victorious
 //
 //  Created by Michael Sena on 4/20/15.
@@ -11,7 +11,7 @@
 #import "VStreamCellFactory.h"
 #import "VHasManagedDependencies.h"
 
-@interface VEStreamCellFactory : NSObject <VHasManagedDependencies, VStreamCellFactory>
+@interface VHermesStreamCellFactory : NSObject <VHasManagedDependencies, VStreamCellFactory>
 
 /**
  Initializes the stream cell factory with an instance of VDependencyManager
