@@ -13,6 +13,7 @@
 
 + (void)addLaunchScreenToView:(UIView *)view
 {
+    NSAssert(view != nil, @"View that should recieve launch screen passed to addLaunchScreenToView: should not be nil");
     UIView *launchScreenView = [self launchScreen];
     launchScreenView.translatesAutoresizingMaskIntoConstraints = NO;
     [view addSubview:launchScreenView];
