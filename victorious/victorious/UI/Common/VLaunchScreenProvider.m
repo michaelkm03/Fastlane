@@ -11,15 +11,6 @@
 
 @implementation VLaunchScreenProvider
 
-+ (void)addLaunchScreenToView:(UIView *)view
-{
-    NSAssert(view != nil, @"View that should recieve launch screen passed to addLaunchScreenToView: should not be nil");
-    UIView *launchScreenView = [self launchScreen];
-    launchScreenView.translatesAutoresizingMaskIntoConstraints = NO;
-    [view addSubview:launchScreenView];
-    [view v_addFitToParentConstraintsToSubview:launchScreenView];
-}
-
 + (UIImage *)screenshotOfLaunchScreenAtSize:(CGSize)size
 {
     UIView *launchScreenView = [self launchScreen];

@@ -120,14 +120,8 @@
                        self.backgroundImage = [image applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
                        dispatch_async(dispatch_get_main_queue(), ^(void)
                                       {
-                                          UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-                                          imageView.image = self.backgroundImage;
-                                          imageView.contentMode = UIViewContentModeScaleAspectFill;
-                                          imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                                          self.backgroundImageView = imageView;
-                                          [self.view insertSubview:self.backgroundImageView atIndex:0];
+                                          [self setupBackgroundImageView];
                                       });
-                       
                    });
     
     self.contentButton = ({
@@ -163,6 +157,16 @@
     {
         [self displayResultOfNavigation:initialVC];
     }
+}
+
+- (void)setupBackgroundImageView
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    imageView.image = self.backgroundImage;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.backgroundImageView = imageView;
+    [self.view insertSubview:self.backgroundImageView atIndex:0];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

@@ -35,7 +35,7 @@ static const char kAssociatedURLKey;
 
 - (void)applyTintAndBlurToImageWithURL:(NSURL *)url withTintColor:(UIColor *)tintColor
 {
-    if ( [self alreadyDownloadedURL:url] )
+    if ( [self isURLDownloaded:url] )
     {
         return;
     }
@@ -56,7 +56,7 @@ static const char kAssociatedURLKey;
 
 - (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {
-    if ( [self alreadyDownloadedURL:url] )
+    if ( [self isURLDownloaded:url] )
     {
         return;
     }
@@ -84,7 +84,7 @@ static const char kAssociatedURLKey;
 
 - (void)applyLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url
 {
-    if ( [self alreadyDownloadedURL:url] )
+    if ( [self isURLDownloaded:url] )
     {
         return;
     }
@@ -112,7 +112,7 @@ static const char kAssociatedURLKey;
 
 - (void)setExtraLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {
-    if ( [self alreadyDownloadedURL:url] )
+    if ( [self isURLDownloaded:url] )
     {
         return;
     }
@@ -140,7 +140,7 @@ static const char kAssociatedURLKey;
 
 - (void)applyExtraLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url
 {
-    if ( [self alreadyDownloadedURL:url] )
+    if ( [self isURLDownloaded:url] )
     {
         return;
     }
@@ -169,7 +169,7 @@ static const char kAssociatedURLKey;
 
 #pragma mark - internal helpers
 
-- (BOOL)alreadyDownloadedURL:(NSURL *)url
+- (BOOL)isURLDownloaded:(NSURL *)url
 {
     return [objc_getAssociatedObject(self, &kAssociatedURLKey) isEqual:url];
 }

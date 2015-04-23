@@ -11,11 +11,11 @@
 @interface VLaunchScreenProvider : NSObject
 
 /*
-    Adds the view from the launch screen as a subview of the provided view and adds fitting constraints
+ Initializes the launch screen from the nib and returns the view inside
  
-    @param view The view that should have the launch screen view added as a subview
+ @return The view from the launch screen
  */
-+ (void)addLaunchScreenToView:(UIView *)view;
++ (UIView *)launchScreen;
 
 /*
  Creates a screenshot of the launch screen with the provided size dimensions
