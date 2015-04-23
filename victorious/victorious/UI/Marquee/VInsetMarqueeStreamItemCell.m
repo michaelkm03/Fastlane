@@ -92,7 +92,7 @@ static const CGFloat kShadowOpacity = 0.4f;
     [super setDependencyManager:dependencyManager];
     if ( dependencyManager != nil )
     {
-        [self.titleLabel setFont:[dependencyManager fontForKey:VDependencyManagerHeading1FontKey]];
+        [self.titleLabel setFont:[dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
         [self layoutIfNeeded];
         [self updateGradientLayer];
     }
