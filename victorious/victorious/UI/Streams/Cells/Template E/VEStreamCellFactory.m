@@ -75,7 +75,7 @@
     VSequence *sequence = (VSequence *)streamItem;
     UICollectionViewCell *cell;
     
-    if ([sequence isPreviewWebContent])
+    if ([sequence isWebContent])
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]
                                                          forIndexPath:indexPath];

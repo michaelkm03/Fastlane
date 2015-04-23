@@ -72,6 +72,10 @@ static const CGFloat kGradientHeight = 78.0f;
     {
         [identifier appendString:@"Image"];
     }
+    else if ([sequence isAnnouncement])
+    {
+        [identifier appendString:@"Announcement"];
+    }
     else
     {
         VLog(@"%@, doesn't support sequence type for sequence: %@", NSStringFromClass(self), sequence);

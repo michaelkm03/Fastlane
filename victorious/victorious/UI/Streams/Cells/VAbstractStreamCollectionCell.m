@@ -28,6 +28,8 @@
 
 @property (nonatomic, strong, readwrite) UIView *previewView;
 @property (nonatomic, strong) UIImageView *previewImageView;
+@property (nonatomic, strong) UIImageView *playTriangleImageView;
+@property (nonatomic, strong) UIImageView *playCircleImageView;
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 @property (nonatomic, strong) VPollView *pollView;
 
@@ -106,20 +108,55 @@
     }
     else if ([sequence isVideo])
     {
-        VLog(@"%@, video cell", self);
+        [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
+        self.playButtonImageView.hidden = NO;
     }
     else if ([sequence isImage])
     {
-        if (self.previewImageView == nil)
-        {
-            UIImageView *previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-            previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
-            [self.previewView addSubview:previewImageView];
-            [self.previewView v_addFitToParentConstraintsToSubview:previewImageView];
-            self.previewImageView = previewImageView;
-        }
         [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
     }
+    else if ([sequence isAnnouncement])
+    {
+        [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
+    }
+    else
+    {
+        NSAssert(false, @"Not setup for sequence!");
+    }
+}
+
+- (UIImageView *)playCircleImageView
+{
+    if (_playCircleImageView == nil)
+    {
+        _playCircleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayCircle"]];
+        [self.previewView addSubview:_playCircleImageView];
+        [self.previewView v_addCenterToParentContraintsToSubview:_playCircleImageView];
+    }
+    return _playCircleImageView;
+}
+
+- (UIImageView *)playButtonImageView
+{
+    if (_playTriangleImageView == nil)
+    {
+        _playTriangleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayTriangle"]];
+        [self.playCircleImageView addSubview:_playTriangleImageView];
+        [self.playCircleImageView v_addCenterToParentContraintsToSubview:_playTriangleImageView];
+    }
+    return _playTriangleImageView;
+}
+
+- (UIImageView *)previewImageView
+{
+    if (_previewImageView == nil)
+    {
+        _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.previewView addSubview:_previewImageView];
+        [self.previewView v_addFitToParentConstraintsToSubview:_previewImageView];
+    }
+    return _previewImageView;
 }
 
 #pragma mark - VHasManagedDependencies
