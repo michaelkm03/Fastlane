@@ -97,8 +97,10 @@
 	<key>titleOverlay.streamCell</key>
 	<string>VTitleOverlayStreamCellFactory</string>
 	<key>fullscreen.marqueeCell</key>
-	<string>VFullscreenMarqueeController</string>
+	<string>VInsetMarqueeController</string>
 	<key>blurred.marqueeCell</key>
 	<string>VBlurredMarqueeController</string>
+	<key>inset.marqueeCell</key>
+	<string>VInsetMarqueeController</string>
 </dict>
 </plist>

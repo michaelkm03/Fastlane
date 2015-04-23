@@ -72,19 +72,17 @@ static NSString * const kVOrIconKey = @"orIcon";
     
     self.detailsBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
-    if ( [streamItem isKindOfClass:[VSequence class]] )
+    BOOL populateProfileImage = [streamItem isKindOfClass:[VSequence class]] && !self.hideMarqueePosterImage;
+    
+    if ( populateProfileImage )
     {
         VSequence *sequence = (VSequence *)streamItem;
-        
-        self.pollOrImageView.hidden = ![sequence isPoll];
         
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
     }
-    else
-    {
-        self.profileImageButton.hidden = YES;
-    }
+    
+    self.profileImageButton.hidden = !populateProfileImage;
     
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];

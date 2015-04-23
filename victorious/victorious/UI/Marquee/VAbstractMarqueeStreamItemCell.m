@@ -61,6 +61,8 @@ static NSString * const kOrIconKey = @"orIcon";
         {
             [self cleanupWebView];
         }
+        
+        self.pollOrImageView.hidden = ![sequence isPoll];
     }
 }
 
