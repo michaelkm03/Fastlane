@@ -114,16 +114,6 @@
         _contentViewInPortraitOffsetCenterX  = CGRectGetWidth(self.view.frame) + 30.f;
     }
     
-    UIImage *image = [VLaunchScreenProvider screenshotOfLaunchScreenAtSize:self.view.bounds.size];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-                   {
-                       self.backgroundImage = [image applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
-                       dispatch_async(dispatch_get_main_queue(), ^(void)
-                                      {
-                                          [self setupBackgroundImageView];
-                                      });
-                   });
-    
     self.contentButton = ({
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectNull];
         [button addTarget:self action:@selector(hideMenuViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -156,6 +146,23 @@
     if (initialVC != nil)
     {
         [self displayResultOfNavigation:initialVC];
+    }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if ( self.backgroundImageView == nil )
+    {
+        UIImage *image = [VLaunchScreenProvider screenshotOfLaunchScreenAtSize:self.view.bounds.size];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                       {
+                           self.backgroundImage = [image applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+                           dispatch_async(dispatch_get_main_queue(), ^(void)
+                                          {
+                                              [self setupBackgroundImageView];
+                                          });
+                       });
     }
 }
 
