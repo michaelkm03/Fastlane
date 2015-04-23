@@ -2738,6 +2738,8 @@
 				D8B70FE91A805CC800090C5E /* VInlineValidationView.m */,
 				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
 				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
+				D86528F71AE83D6C003832AC /* VLinearGradientView.h */,
+				D86528F81AE83D6C003832AC /* VLinearGradientView.m */,
 				037FCF1F1A8DAF5400E8ABFC /* VMultipleContainerViewController */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
@@ -2762,8 +2764,6 @@
 				F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */,
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
-				D86528F71AE83D6C003832AC /* VLinearGradientView.h */,
-				D86528F81AE83D6C003832AC /* VLinearGradientView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
