@@ -11,6 +11,7 @@
 #import "VStreamItem+Fetcher.h"
 #import "UIImage+ImageCreation.h"
 #import "VDependencyManager.h"
+#import <objc/runtime.h>
 
 static const CGFloat kOverlayOpacity = 0.2f;
 static const CGFloat kOverlayWhiteAmount = 0.0f;
@@ -19,11 +20,11 @@ static const CGFloat kShadowOpacity = 0.4f;
 
 @interface VInsetMarqueeStreamItemCell ()
 
-@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
-@property (nonatomic, weak) IBOutlet UIImageView *overlayImageView;
-@property (nonatomic, weak) IBOutlet UIView *gradientContainer;
-@property (nonatomic, strong) CAGradientLayer *gradientLayer;
-@property (nonatomic, weak) IBOutlet UIView *contentContainer;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel; //The label displaying the title of the content
+@property (nonatomic, weak) IBOutlet UIView *gradientContainer; //The view containing the black gradient behind the titleLabel
+@property (nonatomic, strong) CAGradientLayer *gradientLayer; //The gradient displayed in the gradient container
+@property (nonatomic, strong) CALayer *darkOverlayLayer; //An overlay to apply to the imageView
+@property (nonatomic, weak) IBOutlet UIView *contentContainer; //The container for all variable cell content, will have shadow applied to it
 
 @end
 
@@ -32,11 +33,11 @@ static const CGFloat kShadowOpacity = 0.4f;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.overlayImageView.image = [UIImage resizeableImageWithColor:[UIColor colorWithWhite:kOverlayWhiteAmount alpha:kOverlayOpacity]];
     
     self.contentContainer.layer.shadowColor = [UIColor blackColor].CGColor;
     self.contentContainer.layer.shadowOffset = CGSizeZero;
     self.contentContainer.layer.shadowOpacity = kShadowOpacity;
+    self.previewImageView.alpha = 0.0f;
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -87,12 +88,30 @@ static const CGFloat kShadowOpacity = 0.4f;
     [self.gradientContainer.layer insertSublayer:self.gradientLayer atIndex:0];
 }
 
+- (void)setBounds:(CGRect)bounds
+{
+    CGRect oldBounds = self.bounds;
+    [super setBounds:bounds];
+    
+    if ( !CGRectEqualToRect(oldBounds, bounds) && !CGRectEqualToRect(CGRectZero, bounds) )
+    {
+        //Updating to new valid bounds, update overlay layer
+        [self.darkOverlayLayer removeFromSuperlayer];
+        
+        self.darkOverlayLayer = [CALayer layer];
+        self.darkOverlayLayer.backgroundColor = [UIColor colorWithWhite:kOverlayWhiteAmount alpha:kOverlayOpacity].CGColor;
+        self.darkOverlayLayer.frame = bounds;
+        [self.previewImageView.layer addSublayer:self.darkOverlayLayer];
+    }
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     [super setDependencyManager:dependencyManager];
     if ( dependencyManager != nil )
     {
         [self.titleLabel setFont:[dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
+        [self.contentContainer setBackgroundColor:[dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey]];
         [self layoutIfNeeded];
         [self updateGradientLayer];
     }

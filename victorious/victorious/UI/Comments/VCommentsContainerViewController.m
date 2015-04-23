@@ -58,9 +58,7 @@
     [self.backgroundImage removeFromSuperview];
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
     
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
-    [newBackgroundView setExtraLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
-                                       placeholderImage:placeholderImage];
+    [newBackgroundView applyExtraLightBlurAndAnimateImageWithURLToVisible:[[self.sequence initialImageURLs] firstObject]];
     
     self.backgroundImage = newBackgroundView;
     [self.view insertSubview:self.backgroundImage aboveSubview:self.fallbackBackground];
@@ -75,12 +73,6 @@
     [self.view v_addFitToParentConstraintsToSubview:viewForBackground];
     [self.view sendSubviewToBack:viewForBackground];
     self.fallbackBackground = viewForBackground;
-    
-    //Load the image on first load
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
-    [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
-                                     placeholderImage:placeholderImage];
-    
     
     [self.backButton setImage:[self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.backButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];

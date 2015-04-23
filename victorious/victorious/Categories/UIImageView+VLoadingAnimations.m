@@ -39,6 +39,7 @@
          if ( cacheType != SDImageCacheTypeNone || ![self isValidURL:imageURL] )
          {
              //Set image without fade animation
+             strongSelf.alpha = 1.0f;
              strongSelf.image = image;
              return;
          }

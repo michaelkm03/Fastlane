@@ -19,9 +19,6 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PpQ-h4-xfD">
                                 <rect key="frame" x="0.0" y="0.0" width="314" height="349"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7sy-o8-d7W" userLabel="Overlay">
-                                <rect key="frame" x="0.0" y="0.0" width="314" height="349"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wSV-Lt-gb5">
                                 <rect key="frame" x="125" y="140" width="65" height="70"/>
                                 <constraints>
@@ -48,20 +45,16 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="wSV-Lt-gb5" secondAttribute="centerX" id="2PC-dC-ERk"/>
                             <constraint firstItem="PpQ-h4-xfD" firstAttribute="leading" secondItem="38y-W4-W3o" secondAttribute="leading" id="463-2s-ka2"/>
-                            <constraint firstAttribute="bottom" secondItem="7sy-o8-d7W" secondAttribute="bottom" id="AQR-FQ-K5v"/>
                             <constraint firstAttribute="trailing" secondItem="Arx-NR-LSu" secondAttribute="trailing" id="Tiu-6G-Ftl"/>
                             <constraint firstAttribute="trailing" secondItem="PpQ-h4-xfD" secondAttribute="trailing" id="XMj-5f-SMk"/>
                             <constraint firstAttribute="bottom" secondItem="PpQ-h4-xfD" secondAttribute="bottom" id="b74-w4-GUq"/>
-                            <constraint firstItem="7sy-o8-d7W" firstAttribute="leading" secondItem="38y-W4-W3o" secondAttribute="leading" id="c9O-OR-Kd1"/>
                             <constraint firstItem="PpQ-h4-xfD" firstAttribute="top" secondItem="38y-W4-W3o" secondAttribute="top" id="eyb-Eo-tFr"/>
-                            <constraint firstItem="7sy-o8-d7W" firstAttribute="top" secondItem="38y-W4-W3o" secondAttribute="top" id="f8N-EX-rnJ"/>
                             <constraint firstAttribute="centerY" secondItem="wSV-Lt-gb5" secondAttribute="centerY" id="hSU-fy-H0T"/>
                             <constraint firstItem="Arx-NR-LSu" firstAttribute="leading" secondItem="38y-W4-W3o" secondAttribute="leading" id="kjL-N6-OLk"/>
-                            <constraint firstAttribute="trailing" secondItem="7sy-o8-d7W" secondAttribute="trailing" id="msR-jM-tYt"/>
                             <constraint firstAttribute="bottom" secondItem="Arx-NR-LSu" secondAttribute="bottom" id="z92-zf-FLk"/>
                         </constraints>
                     </view>
@@ -79,7 +72,6 @@
             <connections>
                 <outlet property="contentContainer" destination="38y-W4-W3o" id="6F2-bA-2kM"/>
                 <outlet property="gradientContainer" destination="Arx-NR-LSu" id="nba-5m-cld"/>
-                <outlet property="overlayImageView" destination="7sy-o8-d7W" id="99h-pK-srE"/>
                 <outlet property="pollOrImageView" destination="wSV-Lt-gb5" id="gB1-22-0e0"/>
                 <outlet property="previewImageView" destination="PpQ-h4-xfD" id="9Ur-6r-TJw"/>
                 <outlet property="titleLabel" destination="X9X-X4-bi7" id="gq6-Z6-d0A"/>

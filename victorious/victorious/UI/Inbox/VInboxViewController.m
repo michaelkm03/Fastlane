@@ -31,10 +31,13 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "NSURL+VPathHelper.h"
 #import "VInboxDeeplinkHandler.h"
+#import "VNavigationController.h"
+#import "VAuthorizedAction.h"
+#import "VNavigationController.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
-@interface VInboxViewController ()
+@interface VInboxViewController () <VUserSearchViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
@@ -411,7 +414,42 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
-    [self.navigationController pushViewController:userSearch animated:YES];
+    
+    //Create a navigation controller that will hold the user search view controller
+    VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+    navigationController.innerNavigationController.viewControllers = @[userSearch];
+    navigationController.innerNavigationController.navigationBarHidden = YES;
+    userSearch.messageSearchDelegate = self;
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)userSelectedFromMessageSearch:(VUser *)user
+{
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
+     {
+         if (!authorized)
+         {
+             return;
+         }
+         
+         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:user dependencyManager:self.dependencyManager];
+         [self.navigationController pushViewController:composeController animated:NO];
+         
+         /*
+          Call this to update the top bar before dismissing since UINavigationDelegate methods will not fire
+            from a navigation controller that is not in the foreground and thus not update the top bar appearance
+          */
+         [[self v_navigationController] updateSupplementaryHeaderViewForViewController:self];
+         [self dismissViewControllerAnimated:YES completion:nil];
+     }];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 #pragma mark - UIScrollViewDelegate
