@@ -85,7 +85,8 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 - (BOOL)isText
 {
     return [self.category isEqualToString:kVUGCTextCategory] ||
-           [self.category isEqualToString:kVOwnerTextCategory];
+           [self.category isEqualToString:kVOwnerTextCategory] ||
+           [self.category isEqualToString:kVUGCTextRepostCategory];
 }
 
 - (BOOL)isOwnerContent

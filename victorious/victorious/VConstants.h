@@ -123,6 +123,7 @@ static NSString * const   kVOwnerAnnouncementCategory  = @"owner_announcement";
 
 static NSString * const   kVUGCPollCategory            = @"ugc_poll";
 static NSString * const   kVUGCTextCategory            = @"ugc_text";
+static NSString * const   kVUGCTextRepostCategory      = @"ugc_text_repost";
 static NSString * const   kVUGCImageCategory           = @"ugc_image";
 static NSString * const   kVUGCImageRepostCategory     = @"ugc_image_repost";
 static NSString * const   kVUGCImageQuoteCategory      = @"ugc_image_secret";
