@@ -18,7 +18,7 @@
 #import "VReachability.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"
-#import "UIView+autolayout.h"
+#import "VLaunchScreenProvider.h"
 
 #import "MBProgressHUD.h"
 
@@ -57,11 +57,7 @@ static const NSUInteger kRetryAttempts = 5;
 {
     [super viewDidLoad];
     
-    UINib *launchScreenNib = [UINib nibWithNibName:@"Launch Screen" bundle:nil];
-    UIView *launchScreenView = [[launchScreenNib instantiateWithOwner:nil options:nil] firstObject];
-    launchScreenView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.backgroundContainer addSubview:launchScreenView];
-    [self.backgroundContainer v_addFitToParentConstraintsToSubview:launchScreenView];
+    [VLaunchScreenProvider addLaunchScreenToView:self.backgroundContainer];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kVReachabilityChangedNotification object:nil];
 }

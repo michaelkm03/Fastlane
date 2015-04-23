@@ -17,7 +17,6 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VConversation.h"
-#import "VThemeManager.h"
 #import "VUser.h"
 #import "NSString+VParseHelp.h"
 
@@ -25,6 +24,7 @@
 #import "VUserTaggingTextStorage.h"
 
 #import "MBProgressHUD.h"
+#import "VLaunchScreenProvider.h"
 
 @interface VMessageContainerViewController ()
 
@@ -154,9 +154,10 @@
     }
     else
     {
+        UIImage *launchScreenImage = [VLaunchScreenProvider screenshotOfLaunchScreenAtSize:self.view.bounds.size];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
         {
-            UIImage *defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyExtraLightEffect];
+            UIImage *defaultBackgroundImage = [launchScreenImage applyExtraLightEffect];
             dispatch_async(dispatch_get_main_queue(), ^
             {
                 self.backgroundImageView.image = defaultBackgroundImage;

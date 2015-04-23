@@ -19,7 +19,7 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "UIView+AutoLayout.h"
+#import "VLaunchScreenProvider.h"
 
 @interface VSideMenuViewController ()
 
@@ -98,12 +98,6 @@
 {
     self.view = [[UIView alloc] init];
     
-    UINib *launchScreenNib = [UINib nibWithNibName:@"Launch Screen" bundle:nil];
-    UIView *launchScreenView = [[launchScreenNib instantiateWithOwner:nil options:nil] firstObject];
-    launchScreenView.frame = self.view.bounds;
-    launchScreenView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-    [self.view addSubview:launchScreenView];
-    
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     
     self.hamburgerButton = [VHamburgerButton newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
@@ -120,19 +114,21 @@
         _contentViewInPortraitOffsetCenterX  = CGRectGetWidth(self.view.frame) + 30.f;
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^(void)
-    {
-        self.backgroundImage = [self blurredSnapshotOfView:launchScreenView];
-        self.backgroundImageView = ({
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-            imageView.image = self.backgroundImage;
-            imageView.contentMode = UIViewContentModeScaleAspectFill;
-            imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            imageView;
-        });
-        [self.view insertSubview:self.backgroundImageView atIndex:0];
-        [launchScreenView removeFromSuperview];
-    });
+    UIImage *image = [VLaunchScreenProvider screenshotOfLaunchScreenAtSize:self.view.bounds.size];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                   {
+                       self.backgroundImage = [image applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+                       dispatch_async(dispatch_get_main_queue(), ^(void)
+                                      {
+                                          UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+                                          imageView.image = self.backgroundImage;
+                                          imageView.contentMode = UIViewContentModeScaleAspectFill;
+                                          imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                                          self.backgroundImageView = imageView;
+                                          [self.view insertSubview:self.backgroundImageView atIndex:0];
+                                      });
+                       
+                   });
     
     self.contentButton = ({
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectNull];

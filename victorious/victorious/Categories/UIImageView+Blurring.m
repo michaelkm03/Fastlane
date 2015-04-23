@@ -18,7 +18,8 @@ static const CGFloat kBlurRadius = 12.5f;
 static const CGFloat kSaturationDeltaFactor = 1.8f;
 static const NSTimeInterval kDefaultAnimationDuration = 0.5f;
 
-static const char kAssociatedObjectKey;
+static const char kAssociatedImageKey;
+static const char kAssociatedURLKey;
 
 @implementation UIImageView (Blurring)
 
@@ -34,9 +35,15 @@ static const char kAssociatedObjectKey;
 
 - (void)applyTintAndBlurToImageWithURL:(NSURL *)url withTintColor:(UIColor *)tintColor
 {
+    if ( [self alreadyDownloadedURL:url] )
+    {
+        return;
+    }
+    
     NSParameterAssert(!CGRectEqualToRect(self.bounds, CGRectZero));
     __weak UIImageView *weakSelf = self;
-    
+    objc_setAssociatedObject(self, &kAssociatedURLKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
     self.alpha = 0;
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed
@@ -49,6 +56,11 @@ static const char kAssociatedObjectKey;
 
 - (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {
+    if ( [self alreadyDownloadedURL:url] )
+    {
+        return;
+    }
+    
     __weak UIImageView *weakSelf = self;
     self.image = placeholderImage;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
@@ -72,6 +84,11 @@ static const char kAssociatedObjectKey;
 
 - (void)applyLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url
 {
+    if ( [self alreadyDownloadedURL:url] )
+    {
+        return;
+    }
+    
     __weak UIImageView *weakSelf = self;
     self.alpha = 0.0f;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
@@ -95,6 +112,11 @@ static const char kAssociatedObjectKey;
 
 - (void)setExtraLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {
+    if ( [self alreadyDownloadedURL:url] )
+    {
+        return;
+    }
+    
     __weak UIImageView *weakSelf = self;
     self.image = placeholderImage;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
@@ -118,6 +140,11 @@ static const char kAssociatedObjectKey;
 
 - (void)applyExtraLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url
 {
+    if ( [self alreadyDownloadedURL:url] )
+    {
+        return;
+    }
+    
     __weak UIImageView *weakSelf = self;
     self.alpha = 0.0f;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
@@ -142,13 +169,24 @@ static const char kAssociatedObjectKey;
 
 #pragma mark - internal helpers
 
+- (BOOL)alreadyDownloadedURL:(NSURL *)url
+{
+    return [objc_getAssociatedObject(self, &kAssociatedURLKey) isEqual:url];
+}
+
 - (void)downloadImageWithURL:(NSURL *)url toCallbackBlock:(void (^)(UIImage *, NSError *))callbackBlock
 {
+    __weak typeof(self) weakSelf = self;
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
+         if ( error == nil )
+         {
+             objc_setAssociatedObject(weakSelf, &kAssociatedURLKey, image, OBJC_ASSOCIATION_ASSIGN);
+         }
+         
          if ( callbackBlock != nil )
          {
              callbackBlock(image, error);
@@ -160,10 +198,10 @@ static const char kAssociatedObjectKey;
 {
     __weak UIImageView *weakSelf = self;
     self.alpha = 0.0f;
-    objc_setAssociatedObject(weakSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(weakSelf, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
-         if ( ![objc_getAssociatedObject(weakSelf, &kAssociatedObjectKey) isEqual:image] )
+         if ( ![objc_getAssociatedObject(weakSelf, &kAssociatedImageKey) isEqual:image] )
          {
              /*
               We've finished blurring this image, but another blur request came in after it.

@@ -72,7 +72,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
 {
-    return UIStatusBarStyleDefault;
     switch ([color v_colorLuminance])
     {
         case VColorLuminanceBright:
