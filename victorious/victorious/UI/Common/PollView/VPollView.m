@@ -23,24 +23,58 @@
 
 @implementation VPollView
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    self.answerAImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    self.answerAImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.answerAImageView];
+    
+    self.answerBImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    self.answerBImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.answerBImageView];
+    
+#warning Make this template driven
+    self.pollIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"D_pollOr"]];
+    self.pollIconImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.pollIconImageView];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
     if (!self.hasLayedOutViews)
     {
-        self.answerAImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        self.answerAImageView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:self.answerAImageView];
-        
-        self.answerBImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        self.answerBImageView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:self.answerBImageView];
-        
-        self.pollIconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        self.pollIconImageView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:self.pollIconImageView];
-        
         [self v_addPintoTopBottomToSubview:self.answerAImageView];
         [self v_addPintoTopBottomToSubview:self.answerBImageView];
         
@@ -73,6 +107,8 @@
                                                         multiplier:1.0f
                                                           constant:0.0f]];
         
+        [self v_addCenterToParentContraintsToSubview:self.pollIconImageView];
+        
         self.answerAImageView.contentMode = UIViewContentModeScaleAspectFill;
         self.answerAImageView.clipsToBounds = YES;
         self.answerBImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -99,7 +135,12 @@
 
 - (void)setPollIcon:(UIImage *)pollIcon
 {
-    _pollIcon = pollIcon;
+    self.pollIconImageView.image = pollIcon;
+}
+
+- (UIImage *)pollIcon
+{
+    return self.pollIconImageView.image;
 }
 
 @end
