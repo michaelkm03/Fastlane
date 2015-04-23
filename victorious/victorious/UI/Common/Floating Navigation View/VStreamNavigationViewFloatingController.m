@@ -120,7 +120,7 @@ static const CGFloat kScaleHide = 0.4f;
     self.lastContentOffset = contentOffset;
 }
 
-- (void)setVisible:(BOOL)visible
+/*- (void)setVisible:(BOOL)visible
 {
     CGAffineTransform transform = CGAffineTransformIdentity;
     if ( visible )
@@ -140,6 +140,28 @@ static const CGFloat kScaleHide = 0.4f;
         transform = CGAffineTransformRotate( transform, rotationZ );
     }
     self.floatingView.transform = transform;
+    self.floatingView.alpha = visible ? 1.0f : 0.0f;
+}*/
+
+- (void)setVisible:(BOOL)visible
+{
+    CATransform3D transform = CATransform3DIdentity;
+    CGFloat eyePosition = 200.0;
+    transform.m34 = -1.0 / eyePosition;
+    const CGFloat scale = 0.75f;
+    transform = CATransform3DScale( transform, scale, scale, scale );
+    
+    if ( visible )
+    {
+    }
+    else
+    {
+        transform = CATransform3DRotate( transform, M_PI_2, 1.0f, 0.0f, 0.0f );
+    }
+    
+    transform = CATransform3DTranslate( transform, 0.0f, 0.0f, 50.0f );
+    self.floatingView.layer.zPosition = 1000;
+    self.floatingView.layer.transform = transform;
     self.floatingView.alpha = visible ? 1.0f : 0.0f;
 }
 
@@ -183,7 +205,7 @@ static const CGFloat kScaleHide = 0.4f;
     
     [UIView animateWithDuration:self.velocityMultiplier * kAnimationDurationShow
                           delay:0.0f
-         usingSpringWithDamping:0.5f
+         usingSpringWithDamping:0.9f
           initialSpringVelocity:0.5f
                         options:kNilOptions
                      animations:^

@@ -42,6 +42,15 @@
 - (BOOL)concatonateTemplateWithFilename:(NSString *)filename;
 
 /**
+ Loads a JSON file from the app bundle with the specified filename, parses it into a dictionary
+ and then adds that dictionary as a template value with the specified keypath using the
+ `setTemplateValue:forKeyPath:` method of this class.
+ 
+ @see `setTemplateValue:forKeyPath:`
+ */
+- (BOOL)setComponentWithFilename:(NSString *)filename forKeyPath:(NSString *)keyPath;
+
+/**
  Adds a new component to the template by adding or overwriting at the speciifed key path.
  
  @param keyPath A slash-separated path that indicates where in the hierarchy of dictionary keys
@@ -57,7 +66,7 @@
  able to add the component.
  */
 
-- (BOOL)setComponentForKeyPath:(NSString *)keyPath withComponentInFileNamed:(NSString *)filename;
+- (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath;
 
 /**
  Returns output as an NSDictionary instance which contains all modifications

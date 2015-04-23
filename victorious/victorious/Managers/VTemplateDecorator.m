@@ -91,24 +91,33 @@ static NSString * const kJSONType = @"json";
     return YES;
 }
 
-- (BOOL)setComponentForKeyPath:(NSString *)keyPath withComponentInFileNamed:(NSString *)filename
+
+- (BOOL)setComponentWithFilename:(NSString *)filename forKeyPath:(NSString *)keyPath
 {
     NSDictionary *component = [self dictionaryFromJSONFile:filename];
-    
+    if ( component != nil )
+    {
+        return [self setTemplateValue:component forKeyPath:keyPath];
+    }
+    return NO;
+}
+
+- (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath
+{
     NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:@"/"]];
-    BOOL didSetComponent = NO;
+    BOOL didSetTemplateValue = NO;
     self.workingTemplate = [self collectionFromCollection:self.workingTemplate
-                                       bySettingComponent:component
+                                   bySettingTemplateValue:templateValue
                                            forKeyPathKeys:keyPathKeys
-                                                   didSet:&didSetComponent];
+                                                   didSet:&didSetTemplateValue];
     
     return YES;
 }
 
 - (id)collectionFromCollection:(id)source
-            bySettingComponent:(NSDictionary *)component
+        bySettingTemplateValue:(id)templateValue
                 forKeyPathKeys:(NSMutableArray *)keyPathKeys
-                        didSet:(BOOL *)didSetComponent
+                        didSet:(BOOL *)didSetTemplateValue
 {
     NSString *currentKey = keyPathKeys.firstObject;
     [keyPathKeys removeObjectAtIndex:0];
@@ -120,19 +129,19 @@ static NSString * const kJSONType = @"json";
         NSMutableArray *destination = [[NSMutableArray alloc] initWithCapacity:sourceArray.count];
         for ( NSInteger i = 0; i < (NSInteger)sourceArray.count; i++ )
         {
-            if ( i == index && !(*didSetComponent) )
+            if ( i == index && !(*didSetTemplateValue) )
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    destination[i] = component;
-                    *didSetComponent = YES;
+                    destination[i] = templateValue;
+                    *didSetTemplateValue = YES;
                 }
                 else
                 {
                     destination[i] = [self collectionFromCollection:source[i]
-                                                 bySettingComponent:component
+                                             bySettingTemplateValue:templateValue
                                                      forKeyPathKeys:keyPathKeys
-                                                             didSet:didSetComponent];
+                                                             didSet:didSetTemplateValue];
                 }
             }
             else
@@ -141,10 +150,10 @@ static NSString * const kJSONType = @"json";
             }
         }
         
-        if ( !(*didSetComponent) && keyPathKeys.count == 0 )
+        if ( !(*didSetTemplateValue) && keyPathKeys.count == 0 )
         {
-            [destination addObject:component];
-            *didSetComponent = YES;
+            [destination addObject:templateValue];
+            *didSetTemplateValue = YES;
         }
         
         return destination;
@@ -155,19 +164,19 @@ static NSString * const kJSONType = @"json";
         NSMutableDictionary *destination = [[NSMutableDictionary alloc] init];
         for ( NSString *key in sourceDictionary.allKeys )
         {
-            if ( [key isEqualToString:currentKey] && !(*didSetComponent) )
+            if ( [key isEqualToString:currentKey] && !(*didSetTemplateValue) )
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    destination[ currentKey ] = component;
-                    *didSetComponent = YES;
+                    destination[ currentKey ] = templateValue;
+                    *didSetTemplateValue = YES;
                 }
                 else
                 {
                     destination[ key ] = [self collectionFromCollection:source[ key ]
-                                                     bySettingComponent:component
+                                                 bySettingTemplateValue:templateValue
                                                          forKeyPathKeys:keyPathKeys
-                                                                 didSet:didSetComponent];
+                                                                 didSet:didSetTemplateValue];
                 }
             }
             else
@@ -177,22 +186,14 @@ static NSString * const kJSONType = @"json";
             }
         }
         
-        if ( !(*didSetComponent) && keyPathKeys.count == 0 )
+        if ( !(*didSetTemplateValue) && keyPathKeys.count == 0 )
         {
-            destination[ currentKey ] = component;
-            *didSetComponent = YES;
+            destination[ currentKey ] = templateValue;
+            *didSetTemplateValue = YES;
         }
         
         return destination;
     }
-}
-
-- (NSMutableArray *)arrayFromArray:(NSArray *)source
-                bySettingComponent:(NSDictionary *)component
-                        forIndexes:(NSMutableArray *)indexes
-                            didSet:(BOOL *)didSetComponent
-{
-    return nil;
 }
 
 @end

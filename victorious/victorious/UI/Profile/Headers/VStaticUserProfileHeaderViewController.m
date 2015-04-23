@@ -105,15 +105,18 @@
 
 - (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    [super applyStyleWithDependencyManager:dependencyManager];
+    
     UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     self.profileImageView.layer.borderWidth = 2.0;
+    self.profileImageView.layer.borderColor = linkColor.CGColor;
     
     self.primaryActionButton.primaryColor = linkColor;
     self.primaryActionButton.secondaryColor = linkColor;
-    
-    self.profileImageView.layer.borderColor = linkColor.CGColor;
+    self.primaryActionButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
     self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
@@ -135,16 +138,7 @@
     self.followingHeader.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followingHeader.textColor = textColor;
     
-    UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.userStatsBar.backgroundColor = backgroundColor;
-    
-    UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    self.primaryActionButton.titleLabel.font = buttonFont;
-    
-    if ( [[self.dependencyManager stringForKey:VDependencyManagerProfileEditButtonStyleKey] isEqualToString:VDependencyManagerProfileEditButtonStylePill] )
-    {
-        self.primaryActionButton.cornerRadius = CGRectGetHeight( self.primaryActionButton.bounds ) / 2.0f;
-    }
 }
 
 @end

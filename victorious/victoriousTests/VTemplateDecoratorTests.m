@@ -32,7 +32,34 @@
     [super tearDown];
 }
 
-- (void)testReplaceInDictionary
+- (void)testSetValue
+{
+    NSDictionary *template = @{ @"key1" : @"value1",
+                                @"key2" : @{ @"subkey0" : @{ @"subkey1" : @"subvalue1",
+                                                             @"subkey2" : @"subvalue2" }
+                                             },
+                                @"key3" : @"value3" };
+    
+    VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+    
+    NSString *newStringValue = @"templateValue";
+    NSNumber *newNumberValue = @5.04f;
+    
+    BOOL didSucceed = [templateDecorator setTemplateValue:newStringValue forKeyPath:@"key2/subkey0/subkey1"];
+    XCTAssert( didSucceed, @"Failed to set component value" );
+    
+    didSucceed = [templateDecorator setTemplateValue:newNumberValue forKeyPath:@"key2/subkey0/subkey2"];
+    XCTAssert( didSucceed, @"Failed to set component value" );
+    
+    NSDictionary *output = templateDecorator.decoratedTemplate;
+    
+    XCTAssert( [output[ @"key2" ][ @"subkey0" ][ @"subkey1" ] isKindOfClass:[NSString class]] );
+    XCTAssert( [output[ @"key2" ][ @"subkey0" ][ @"subkey2" ] isKindOfClass:[NSNumber class]] );
+    XCTAssertEqualObjects( output[ @"key2" ][ @"subkey0" ][ @"subkey1" ], newStringValue );
+    XCTAssertEqualObjects( output[ @"key2" ][ @"subkey0" ][ @"subkey2" ], newNumberValue );
+}
+
+- (void)testSetInTemplate
 {
     NSDictionary *template = @{ @"key1" : @"value1",
                                 @"key2" : @{ @"subkey0" : @{ @"subkey1" : @"subvalue1",
@@ -44,7 +71,8 @@
     
     NSDictionary *component = [templateDecorator dictionaryFromJSONFile:@"component"];
     
-    [templateDecorator replaceComponentForKeyPath:@"key2/subkey0/subkey1" withComponentInFileNamed:@"component"];
+    BOOL didSucceed = [templateDecorator setComponentWithFilename:@"component" forKeyPath:@"key2/subkey0/subkey1"];
+    XCTAssert( didSucceed, @"Failed to set component value" );
     
     NSDictionary *output = templateDecorator.decoratedTemplate;
     
@@ -53,7 +81,7 @@
     XCTAssertEqualObjects( output[ @"key2" ][ @"subkey0" ][ @"subkey1" ][ @"subkey3" ], component[ @"subkey3" ] );
 }
 
-- (void)testAddInDictionary
+- (void)testAddInTemplate
 {
     NSDictionary *template = @{ @"key1" : @"value1",
                                 @"key2" : @{ @"subkey0" : @{ @"subkey1" : @"subvalue1",
@@ -65,7 +93,8 @@
     
     NSDictionary *component = [templateDecorator dictionaryFromJSONFile:@"component"];
     
-    [templateDecorator replaceComponentForKeyPath:@"key2/subkey0/subkey5" withComponentInFileNamed:@"component"];
+    BOOL didSucceed = [templateDecorator setComponentWithFilename:@"component" forKeyPath:@"key2/subkey0/subkey5"];
+    XCTAssert( didSucceed, @"Failed to set component value" );
     
     NSDictionary *output = templateDecorator.decoratedTemplate;
     
@@ -74,7 +103,7 @@
     XCTAssertEqualObjects( output[ @"key2" ][ @"subkey0" ][ @"subkey5" ][ @"subkey3" ], component[ @"subkey3" ] );
 }
 
-- (void)testArray
+- (void)testArrayHierarchyIteration
 {
     NSDictionary *template = @{ @"key1" : @"value1",
                                 @"key2" : @[@"subvalue1", @"subvalue2" ],
@@ -84,7 +113,8 @@
     
     NSDictionary *component = [templateDecorator dictionaryFromJSONFile:@"component"];
     
-    [templateDecorator replaceComponentForKeyPath:@"key2/1" withComponentInFileNamed:@"component"];
+    BOOL didSucceed = [templateDecorator setComponentWithFilename:@"component" forKeyPath:@"key2/1"];
+    XCTAssert( didSucceed, @"Failed to set component value" );
     
     NSDictionary *output = templateDecorator.decoratedTemplate;
     

@@ -1,11 +1,5 @@
 {
     "name": "floatingProfile.streamHeader",
-    "color.text.content": {
-        "red": 255,
-        "green": 255,
-        "blue": 255,
-        "alpha": 128
-    },
     "color.text": {
         "red": 255,
         "green": 255,

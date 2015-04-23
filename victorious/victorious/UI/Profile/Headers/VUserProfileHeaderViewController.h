@@ -16,8 +16,8 @@
 @interface VUserProfileHeaderViewController : UIViewController <VUserProfileHeader, VHasManagedDependencies>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readonly) VDefaultProfileImageView *profileImageView;
 @property (nonatomic, assign, readonly) BOOL isCurrentUser;
-
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet VButton *primaryActionButton;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
@@ -31,6 +31,6 @@
 @property (nonatomic, weak) IBOutlet UIButton *followingButton;
 @property (nonatomic, weak) IBOutlet UIView *userStatsBar;
 
-@property (nonatomic, readonly) VDefaultProfileImageView *profileImageView;
+- (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

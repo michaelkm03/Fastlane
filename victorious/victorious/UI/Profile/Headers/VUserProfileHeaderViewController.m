@@ -60,11 +60,16 @@
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
     
-    [self applyStyleWithDependencyManager:self.dependencyManager];
-    
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
     self.user = [self.dependencyManager templateValueOfType:[VUser class] forKey:VDependencyManagerUserKey];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self applyStyleWithDependencyManager:self.dependencyManager];
 }
 
 - (void)loadBackgroundImage:(NSURL *)imageURL
@@ -156,7 +161,11 @@
 
 - (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSAssert( NO, @"`applyStyleWithDependencyManager:` method must be implemented in a subclass of `VUserProfileHeaderViewController`." );
+    NSString *editButtonStyle = [self.dependencyManager stringForKey:VDependencyManagerProfileEditButtonStyleKey];
+    const BOOL isRounded = [editButtonStyle isEqualToString:VDependencyManagerProfileEditButtonStylePill];
+    [self.primaryActionButton layoutIfNeeded];
+    const CGFloat roundedCornerRadius = CGRectGetHeight( self.primaryActionButton.bounds ) / 2.0f;
+    self.primaryActionButton.cornerRadius = isRounded ? roundedCornerRadius : 0.0f;
 }
 
 #pragma mark - Actions

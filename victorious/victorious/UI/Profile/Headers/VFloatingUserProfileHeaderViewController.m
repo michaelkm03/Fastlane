@@ -86,6 +86,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     {
         case VUserProfileHeaderStateCurrentUser:
             self.secondaryActionButton.hidden = YES;
+            [self.primaryActionButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
             self.primaryActionButtonHeightConstraint.constant = self.primaryActionButtonStartHeight;
             break;
         case VUserProfileHeaderStateFollowingUser:
@@ -123,6 +124,8 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 
 - (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    [super applyStyleWithDependencyManager:dependencyManager];
+    
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     UIColor *contentTextColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
@@ -131,14 +134,10 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = secondaryLinkColor.CGColor;
     
-    self.primaryActionButton.primaryColor = [UIColor whiteColor];
-    self.primaryActionButton.secondaryColor = [UIColor whiteColor];
-    self.primaryActionButton.cornerRadius = 0;
+    self.primaryActionButton.primaryColor = secondaryLinkColor;
+    self.primaryActionButton.secondaryColor = secondaryLinkColor;
+    self.primaryActionButton.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     [self.primaryActionButton setStyle:VButtonStyleSecondary];
-    [self.primaryActionButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-    [self.primaryActionButton setNeedsDisplay];
-    self.primaryActionButton.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerButton1FontKey];
-    [self.primaryActionButton setStyle:VButtonStyleNone];
     
     self.secondaryActionButton.layer.borderWidth = 2.0f;
     self.secondaryActionButton.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -164,9 +163,6 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     
     self.followingHeader.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followingHeader.textColor = textColor;
-    
-    UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    self.primaryActionButton.titleLabel.font = buttonFont;
     
     self.userStatsBar.backgroundColor = accentColor;
 }
