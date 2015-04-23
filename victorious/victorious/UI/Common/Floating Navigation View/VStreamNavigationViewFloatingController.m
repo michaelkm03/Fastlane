@@ -9,10 +9,16 @@
 #import "VStreamNavigationViewFloatingController.h"
 #import "UIView+AutoLayout.h"
 
-static const CGFloat kAnimationDurationShow = 1.0f;
-static const CGFloat kAnimationDurationHide = 0.4f;
-static const CGFloat kVerticalTranslation = 5.0f;
-static const CGFloat kScaleHide = 0.4f;
+/**
+ @see http://gizma.com/easing/
+ */
+static CGFloat easeInSine( CGFloat t )
+{
+    CGFloat b = 0.0f;
+    CGFloat c = 1.0f;
+    CGFloat d = 1.0f;
+    return -c * cos(t/d * (M_PI_2)) + c + b;
+};
 
 @interface VStreamNavigationViewFloatingController()
 
@@ -27,24 +33,35 @@ static const CGFloat kScaleHide = 0.4f;
 @property (nonatomic, weak) UIView *floatingView;
 @property (nonatomic, weak) UIViewController *floatingParentViewController;
 
+@property (nonatomic, strong) NSTimer *animationTimer;
+@property (nonatomic, assign) CGFloat targetVisibility;
+@property (nonatomic, assign) CGFloat visibility;
+
+@property (nonatomic, assign) CGFloat verticalScrollThresholdStart;
+@property (nonatomic, assign) CGFloat verticalScrollThresholdEnd;
+
 @end
 
 @implementation VStreamNavigationViewFloatingController
 
-@synthesize verticalScrollThreshold = _verticalScrollThreshold;
 @synthesize delegate;
+@synthesize animationEnabled = _animationEnabled;
 
 - (instancetype)initWithFloatingView:(UIView *)floatingView
         floatingParentViewController:(UIViewController *)floatingParentViewController
-             verticalScrollThreshold:(CGFloat)verticalScrollThreshold
+        verticalScrollThresholdStart:(CGFloat)verticalScrollThresholdStart
+          verticalScrollThresholdEnd:(CGFloat)verticalScrollThresholdEnd
 {
     self = [super init];
     if (self)
     {
         NSParameterAssert( floatingView != nil );
         NSParameterAssert( floatingParentViewController != nil );
+        NSParameterAssert( verticalScrollThresholdStart < verticalScrollThresholdEnd );
         
-        _verticalScrollThreshold = verticalScrollThreshold;
+        _verticalScrollThresholdStart = verticalScrollThresholdStart;
+        _verticalScrollThresholdEnd = verticalScrollThresholdEnd;
+        
         _floatingParentViewController = floatingParentViewController;
         _floatingView = floatingView;
         _alternatingRotationMultiplier = 1.0f;
@@ -52,6 +69,45 @@ static const CGFloat kScaleHide = 0.4f;
         [self setupViews];
     }
     return self;
+}
+
+- (void)setVerticalThresholdWithStart:(CGFloat)start end:(CGFloat)end
+{
+    NSParameterAssert( start < end );
+    
+    self.verticalScrollThresholdStart = start;
+    self.verticalScrollThresholdEnd = end;
+}
+
+- (void)setAnimationEnabled:(BOOL)animationEnabled
+{
+    _animationEnabled = animationEnabled;
+    
+    if ( _animationEnabled )
+    {
+        self.animationTimer = [NSTimer timerWithTimeInterval:1.0f/60.0f //< 60 FPS
+                                                      target:self
+                                                    selector:@selector(updateAnimation)
+                                                    userInfo:nil
+                                                     repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.animationTimer forMode:NSRunLoopCommonModes];
+        self.floatingView.hidden = NO;
+    }
+    else
+    {
+        [self.animationTimer invalidate];
+        self.animationTimer = nil;
+    }
+    
+    const CGFloat targetAlpha = animationEnabled ? 1.0f : 0.0f;
+    const CGFloat delay = animationEnabled ? 0.5f : 0.0f;
+    [UIView animateWithDuration:0.2f
+                          delay:delay
+                        options:kNilOptions animations:^
+    {
+        self.floatingView.alpha = targetAlpha;
+    }
+     completion:nil];
 }
 
 - (void)setupViews
@@ -95,7 +151,8 @@ static const CGFloat kScaleHide = 0.4f;
                                                                              views:views]];
     self.hasBeenSetup = YES;
     
-    [self setVisible:NO];
+    self.targetVisibility = self.visibility = 0.0f;
+    [self updateAnimation];
 }
 
 - (void)floatingViewButtonTapped:(UIButton *)button
@@ -105,14 +162,9 @@ static const CGFloat kScaleHide = 0.4f;
 
 - (void)updateContentOffsetOnScroll:(CGPoint)contentOffset
 {
-    if ( contentOffset.y >= self.verticalScrollThreshold )
-    {
-        [self show];
-    }
-    else
-    {
-        [self hide];
-    }
+    const CGFloat start = self.verticalScrollThresholdStart;
+    const CGFloat end = self.verticalScrollThresholdEnd;
+    self.targetVisibility = MIN( MAX( (contentOffset.y - start) / (end - start), 0.0f ), 1.0f );
     
     // Calculate scroll speed in screen points to be used for calculations in aniamtion later on
     self.scrollVelocity = CGPointMake( contentOffset.x - self.lastContentOffset.x,
@@ -120,47 +172,20 @@ static const CGFloat kScaleHide = 0.4f;
     self.lastContentOffset = contentOffset;
 }
 
-/*- (void)setVisible:(BOOL)visible
+- (void)updateAnimation
 {
-    CGAffineTransform transform = CGAffineTransformIdentity;
-    if ( visible )
-    {
-        transform = CGAffineTransformRotate( transform, 0.0f );
-        transform = CGAffineTransformScale( transform, 1.0f, 1.0f );
-        transform = CGAffineTransformTranslate( transform, 0.0f, 0.0f );
-    }
-    else
-    {
-        // Alternate rotation direction so that rotation in/out are oppsite next time:
-        self.alternatingRotationMultiplier *= -1.0f;
-        
-        transform = CGAffineTransformTranslate( transform, 0.0f, kVerticalTranslation );
-        transform = CGAffineTransformScale( transform, kScaleHide, kScaleHide );
-        const CGFloat rotationZ = self.alternatingRotationMultiplier * (M_PI - 0.01);
-        transform = CGAffineTransformRotate( transform, rotationZ );
-    }
-    self.floatingView.transform = transform;
-    self.floatingView.alpha = visible ? 1.0f : 0.0f;
-}*/
-
-- (void)setVisible:(BOOL)visible
-{
+    self.visibility += (self.targetVisibility - self.visibility) / 5.0f;
+    
     CATransform3D transform = CATransform3DIdentity;
-    CGFloat eyePosition = 100.0;
+    const CGFloat eyePosition = 50.0;
     transform.m34 = -1.0 / eyePosition;
-    
-    if ( visible )
-    {
-    }
-    else
-    {
-        transform = CATransform3DTranslate( transform, 0.0f, 15.0f, 0.0f );
-        transform = CATransform3DRotate( transform, -M_PI_2, 1.0f, 0.0f, 0.0f );
-    }
-    
+    const CGFloat translationZ = 40.0f;
+    transform = CATransform3DTranslate( transform, 0.0f, 0.0f, -translationZ );
+    transform = CATransform3DRotate( transform, easeInSine(1.0f - self.visibility) * -M_PI_2, 1.0f, 0.0f, 0.0f );
+    transform = CATransform3DTranslate( transform, 0.0f, 0.0f, translationZ );
     self.floatingView.layer.zPosition = 1000;
     self.floatingView.layer.transform = transform;
-    self.floatingView.alpha = visible ? 1.0f : 0.0f;
+    self.floatingView.alpha = easeInSine( self.visibility * 1.0f );
 }
 
 /**
@@ -172,45 +197,6 @@ static const CGFloat kScaleHide = 0.4f;
 {
     const CGFloat value = ABS( self.scrollVelocity.y ) / 120.0f;
     return 1.0f - MIN( 0.9f, MAX( value, 0.0f ) );
-}
-
-- (void)hide
-{
-    if ( !self.isVisible )
-    {
-        return;
-    }
-    self.isVisible = NO;
-    
-    [UIView animateWithDuration:self.velocityMultiplier * kAnimationDurationHide
-                          delay:0.0f
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^
-     {
-         [self setVisible:NO];
-     }
-                     completion:nil];
-}
-
-- (void)show
-{
-    if ( self.isVisible )
-    {
-        return;
-    }
-    
-    self.isVisible = YES;
-    
-    [UIView animateWithDuration:self.velocityMultiplier * kAnimationDurationShow
-                          delay:0.0f
-         usingSpringWithDamping:0.45f
-          initialSpringVelocity:0.5f
-                        options:kNilOptions
-                     animations:^
-     {
-         [self setVisible:YES];
-     }
-                     completion:nil];
 }
 
 @end

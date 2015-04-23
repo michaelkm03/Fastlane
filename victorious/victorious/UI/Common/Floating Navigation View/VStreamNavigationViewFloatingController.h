@@ -16,6 +16,7 @@
  */
 - (instancetype)initWithFloatingView:(UIView *)floatingView
         floatingParentViewController:(UIViewController *)floatingParentViewController
-             verticalScrollThreshold:(CGFloat)verticalScrollThreshold NS_DESIGNATED_INITIALIZER;
+        verticalScrollThresholdStart:(CGFloat)verticalScrollThresholdStart
+          verticalScrollThresholdEnd:(CGFloat)verticalScrollThresholdEnd NS_DESIGNATED_INITIALIZER;
 
 @end

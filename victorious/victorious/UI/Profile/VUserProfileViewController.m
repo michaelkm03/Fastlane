@@ -45,6 +45,8 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 // According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
+static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
+
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate>
 
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
@@ -246,6 +248,8 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     
     self.didEndViewWillAppear = YES;
     [self attemptToRefreshProfileUI];
+    
+    self.navigationViewfloatingController.animationEnabled = YES;
 }
 
 - (void)viewDidLayoutSubviews
@@ -281,18 +285,24 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
     [super viewWillDisappear:animated];
     
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    
+    self.navigationViewfloatingController.animationEnabled = NO;
 }
 
 - (void)setupFloatingView
 {
     UIView *floatingView = self.profileHeaderViewController.floatingProfileImage;
-    if ( floatingView != nil && self.navigationViewfloatingController == nil )
+    UIViewController *parent = [self v_navigationController];
+    if ( parent != nil && floatingView != nil && self.navigationViewfloatingController == nil )
     {
-        const CGFloat threshold = CGRectGetMidY(self.profileHeaderViewController.view.bounds);
+        const CGFloat middle = CGRectGetMidY(self.profileHeaderViewController.view.bounds);
+        const CGFloat thresholdStart = middle - kScrollAnimationThreshholdHeight * 0.5f;
+        const CGFloat thresholdEnd = middle + kScrollAnimationThreshholdHeight * 0.5f;
         self.navigationViewfloatingController = [[VStreamNavigationViewFloatingController alloc] initWithFloatingView:floatingView
-                                                                                         floatingParentViewController:[self v_navigationController]
-                                                                                              verticalScrollThreshold:threshold];
+                                                                                         floatingParentViewController:parent
+                                                                                         verticalScrollThresholdStart:thresholdStart verticalScrollThresholdEnd:thresholdEnd];
         self.navigationViewfloatingController.delegate = self;
+        self.navigationViewfloatingController.animationEnabled = YES;
         self.navigationBarShouldAutoHide = NO;
         self.title = nil;
     }

@@ -31,9 +31,11 @@
 - (void)updateContentOffsetOnScroll:(CGPoint)contentOffset;
 
 /**
- The threshold used to determine if floating child view should be visible or not.
+ Animation should be enabled and disabled as the parent navigation controller appears
+ or disappears.  Disabling animation also works as a clean up function by disabling
+ any animation mechanisms that may cause retain cycles, such as timers or display links.
  */
-@property (nonatomic, assign) CGFloat verticalScrollThreshold;
+@property (nonatomic, assign) BOOL animationEnabled;
 
 @property (nonatomic, weak) id<VNavigationViewFloatingControllerDelegate> delegate;
 
