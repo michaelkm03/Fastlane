@@ -172,7 +172,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
          {
              VSequence *sequence = (VSequence *)resultObjects.firstObject;
              VNode *node = (VNode *)[sequence firstNode];
-             VAsset *asset = [node mp4Asset];
+             VAsset *asset = [node httpLiveStreamingAsset];
              if (asset.dataURL != nil)
              {
                  self.mediaUrl = asset.dataURL;
