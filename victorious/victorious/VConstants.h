@@ -110,6 +110,7 @@ static NSString * const VConstantAppStoreURL = @"com.getvictorious.appstoreurl";
 //NOTE: If you add categories, add them all to the necessary C functions in this section
 static NSString * const   kVOwnerPollCategory          = @"owner_poll";
 static NSString * const   kVOwnerTextCategory          = @"owner_text";
+static NSString * const   kVOwnerTextRepostCategory    = @"owner_text_repost";
 static NSString * const   kVOwnerImageCategory         = @"owner_image";
 static NSString * const   kVOwnerImageRepostCategory   = @"owner_image_repost";
 static NSString * const   kVOwnerImageQuoteCategory    = @"owner_image_secret";
