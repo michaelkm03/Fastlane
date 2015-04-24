@@ -83,9 +83,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
         case VColorLuminanceDark:
             return UIStatusBarStyleDefault;
             break;
-            
-        default:
-            break;
     }
 }
 
