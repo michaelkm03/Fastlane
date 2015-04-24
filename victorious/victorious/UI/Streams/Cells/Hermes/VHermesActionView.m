@@ -72,7 +72,7 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
 {
     if (_shareButton == nil)
     {
-        _shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        _shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"B_stream_share"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                             action:@selector(share:)];
     }
     return _shareButton;
@@ -82,7 +82,7 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
 {
     if (_gifButton == nil)
     {
-        _gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        _gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"B_stream_gif"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                           action:@selector(gif:)];
     }
     return _gifButton;
@@ -92,7 +92,7 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
 {
     if (_memeButton == nil)
     {
-        _memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_memeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        _memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"B_stream_meme"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                            action:@selector(meme:)];
     }
     return _memeButton;
@@ -102,7 +102,7 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
 {
     if (_repostButton == nil)
     {
-        _repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        _repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"B_stream_repost"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                              action:@selector(repost:)];
     }
     return _repostButton;
@@ -185,8 +185,8 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
     [self.repostButtonController invalidate];
     self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
                                                                        repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
+                                                                      repostedImage:[UIImage imageNamed:@"B_stream_repost-success"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"B_stream_repost"]];
 
 }
 
