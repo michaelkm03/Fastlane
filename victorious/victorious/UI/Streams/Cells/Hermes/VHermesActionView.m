@@ -35,9 +35,36 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
 
 @property (nonatomic, strong) VRepostButtonController *repostButtonController;
 
+// Each view will be reused for a unique configuration (share only, share+repost, et)
+@property (nonatomic, assign) BOOL hasLayedOutActionView;
+
 @end
 
 @implementation VHermesActionView
+
+#pragma mark - Reuse Identifiers
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSMutableString *identifier = [baseIdentifier mutableCopy];
+    
+    [identifier appendString:@"share"];
+    if ([sequence canRepost])
+    {
+        [identifier appendString:@"repost"];
+    }
+    if ([sequence canRemix])
+    {
+        [identifier appendString:@"meme"];
+    }
+    if ([sequence canRemix] && [sequence isVideo])
+    {
+        [identifier appendString:@"gif"];
+    }
+    
+    return [NSString stringWithString:identifier];
+}
 
 #pragma mark - Property Accessors
 
@@ -119,6 +146,11 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
         return;
     }
     
+    if (self.hasLayedOutActionView)
+    {
+        return;
+    }
+    
     NSMutableArray *actionButtons = [[NSMutableArray alloc] init];
     
     [actionButtons addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingActionButtonMargin]];
@@ -145,6 +177,7 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
     [actionButtons addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
     
     actionBar.actionItems = [NSArray arrayWithArray:actionButtons];
+    self.hasLayedOutActionView = YES;
 }
 
 - (void)updateRepostButtonForSequence:(VSequence *)sequence

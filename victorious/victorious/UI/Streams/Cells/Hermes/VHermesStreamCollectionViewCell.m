@@ -92,7 +92,8 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
         VLog(@"%@, doesn't support sequence type for sequence: %@", NSStringFromClass(self), sequence);
     }
     
-    return [NSString stringWithString:identifier];
+    return [VHermesActionView reuseIdentifierForSequence:sequence
+                                          baseIdentifier:identifier];
 }
 
 #pragma mark - UIView Overrides
