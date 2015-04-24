@@ -9,6 +9,7 @@
 #import "UIImage+VSolidColor.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VScaffoldViewController.h"
+#import "UIColor+VBrightness.h"
 
 NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigationBarAppearance";
 
@@ -52,6 +53,12 @@ NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigatio
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
     }
     navigationBar.titleTextAttributes = titleAttributes;
+}
+
+- (BOOL)hasLightNavigationBarText
+{
+    UIColor *navBarTextColor = [[self dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
+    return [navBarTextColor v_colorLuminance] == VColorLuminanceBright;
 }
 
 @end

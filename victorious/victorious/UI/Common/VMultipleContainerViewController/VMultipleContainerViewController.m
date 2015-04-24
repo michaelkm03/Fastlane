@@ -62,7 +62,7 @@ static NSString * const kInitialKey = @"initial";
         _dependencyManager = dependencyManager;
         self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
         _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
-        _selector.lightStyle = [self selectorIsLightStyleForDependencyManager:dependencyManager];
+        _selector.lightStyle = [_dependencyManager hasLightNavigationBarText];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
@@ -84,13 +84,6 @@ static NSString * const kInitialKey = @"initial";
         }
     }
     return self;
-}
-
-//Determines if the selector should be displayed with a light style
-- (BOOL)selectorIsLightStyleForDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VDependencyManager *navigationBarDependencyManager = [self.dependencyManager dependencyManagerForNavigationBar];
-    return [VNavigationController statusBarStyleForColor:[navigationBarDependencyManager colorForKey:VDependencyManagerMainTextColorKey]] == UIStatusBarStyleLightContent;
 }
 
 #pragma mark - View Lifecycle

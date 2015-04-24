@@ -43,4 +43,9 @@ extern NSString * const VScaffoldViewControllerNavigationBarAppearanceKey;
  */
 - (VDependencyManager *)dependencyManagerForNavigationBar;
 
+/**
+ Returns YES if the text color of the navigation bar text has > 50% luminance
+ */
+- (BOOL)hasLightNavigationBarText;
+
 @end
