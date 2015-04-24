@@ -16,7 +16,6 @@
 #import "VDefaultProfileImageView.h"
 #import "VSettingManager.h"
 #import "VThemeManager.h"
-#import "UIColor+VBrightness.h"
 
 #import <KVOController/FBKVOController.h>
 
@@ -216,11 +215,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
         linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     }
     
-    UIColor *backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.userStatsBar.backgroundColor = backgroundColor;
-    
-    BOOL hasBrightBackground = [backgroundColor v_colorLuminance] == VColorLuminanceBright;
-    UIColor *barTextColor = hasBrightBackground ? [UIColor blackColor] : [UIColor whiteColor];
+    UIColor *barTextColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     
     self.profileImageView.layer.borderColor = linkColor.CGColor;
     
@@ -244,6 +239,8 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.followingHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followingHeader.textColor = barTextColor;
 
+    UIColor *backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.userStatsBar.backgroundColor = backgroundColor;
     [self applyEditProfileButtonStyle];
 }
 

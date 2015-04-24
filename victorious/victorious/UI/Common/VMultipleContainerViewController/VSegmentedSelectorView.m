@@ -70,7 +70,8 @@
         self.segmentedControl.selectedSegmentIndex = 0;
     }
     
-    segmentedControl.tintColor = self.foregroundColor;
+    UIColor *foregroundColor = self.foregroundColor;
+    segmentedControl.tintColor = foregroundColor;
     segmentedControl.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     segmentedControl.layer.cornerRadius = 4;
     segmentedControl.clipsToBounds = YES;
@@ -91,7 +92,7 @@
                               barMetrics:UIBarMetricsDefault];
     [segmentedControl setTitleTextAttributes:@{
                                                NSFontAttributeName: [UIFont boldSystemFontOfSize:12],
-                                               NSForegroundColorAttributeName: self.foregroundColor
+                                               NSForegroundColorAttributeName: foregroundColor
                                                }
                                     forState:UIControlStateNormal];
     UIColor *secondaryAccentColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
