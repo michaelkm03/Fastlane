@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <KVOController/FBKVOController.h>
-
 #import "VStreamCollectionCell.h"
 
 #import "VStreamCellHeaderView.h"
@@ -27,8 +25,6 @@
 #import "VConstants.h"
 
 #import "VCommentCell.h"
-#import "VStreamCellActionView.h"
-#import "VSleekStreamCellActionView.h"
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
@@ -203,32 +199,19 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     
     if ( [sequence isText] )
     {
-        VAsset *asset = [self.sequence.firstNode textAsset];
-        if ( asset.data != nil )
+        VAsset *textAsset = [self.sequence.firstNode textAsset];
+        if ( textAsset.data != nil )
         {
-            NSString *text = asset.data;
-            UIColor *color = [UIColor v_colorFromHexString:asset.backgroundColor];
-            [self setupTextPostViewControllerText:text color:color];
+            NSString *text = textAsset.data;
+            UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
+            VAsset *imageAsset = [self.sequence.firstNode imageAsset];
+            NSURL *imageUrl = [NSURL URLWithString:imageAsset.data];
+            [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:self.sequence.remoteId];
         }
     }
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(hasReposted))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         NSNumber *oldValue = change[NSKeyValueChangeOldKey];
-         NSNumber *newValue = change[NSKeyValueChangeNewKey];
-         if ([newValue boolValue] == [oldValue boolValue])
-         {
-             return;
-         }
-         [welf.actionView updateRepostButtonAnimated:YES];
-     }];
 }
 
-- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color
+- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL cacheKey:(NSString *)cacheKey
 {
     static NSCache *textViewCache;
     if ( textViewCache == nil )
@@ -236,7 +219,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         textViewCache = [[NSCache alloc] init];
     }
     
-    VTextPostViewController *existing = [textViewCache objectForKey:text];
+    VTextPostViewController *existing = [textViewCache objectForKey:cacheKey];
     if ( existing == nil && self.textPostViewController == nil )
     {
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
@@ -244,7 +227,8 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
         self.textPostViewController.text = text;
         self.textPostViewController.color = color;
-        [textViewCache setObject:self.textPostViewController forKey:text];
+        self.textPostViewController.imageURL = backgroundImageURL;
+        [textViewCache setObject:self.textPostViewController forKey:cacheKey];
     }
     else if ( existing != nil )
     {
@@ -345,12 +329,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
-}
-
-- (VStreamCellActionView *)actionView
-{
-    // Override in subclasses
-    return nil;
 }
 
 #pragma mark - VSequenceActionsDelegate

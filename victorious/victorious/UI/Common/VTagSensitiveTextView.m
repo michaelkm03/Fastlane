@@ -61,19 +61,36 @@
                      defaultAttributes:(NSDictionary *)defaultAttributes
                      andTagTapDelegate:(id<VTagSensitiveTextViewDelegate>)tagTapDelegate
 {
+    [VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:databaseFormattedText
+                                                             tagAttributes:tagAttributes
+                                                      andDefaultAttributes:defaultAttributes
+                                                           toCallbackBlock:^(VTagDictionary *foundTags, NSAttributedString *displayFormattedString)
+     {
+         self.tagDictionary = foundTags;
+         self.tagStringAttributes = tagAttributes;
+         self.attributedText = displayFormattedString;
+         if ( tagTapDelegate != nil )
+         {
+             self.tagTapDelegate = tagTapDelegate;
+         }
+         
+     }];
+}
+
++ (void)displayFormattedStringFromDatabaseFormattedText:(NSString *)databaseFormattedText
+                                                          tagAttributes:(NSDictionary *)tagAttributes
+                                                   andDefaultAttributes:(NSDictionary *)defaultAttributes
+                                                        toCallbackBlock:(void (^)(VTagDictionary *foundTags, NSAttributedString *displayFormattedString))completionBlock
+{
     NSAssert(tagAttributes != nil, @"tagAttributes must be non-nil");
     NSAssert(defaultAttributes != nil, @"defaultAttributes must be non-nil");
+    NSAssert(completionBlock != nil, @"completionBlock must be non-nil");
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:databaseFormattedText != nil ? databaseFormattedText : @"" attributes:defaultAttributes];
-    self.tagStringAttributes = tagAttributes;
-    self.tagDictionary = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attributedString
-                                                                  withTagStringAttributes:tagAttributes
-                                                               andDefaultStringAttributes:defaultAttributes];
-    self.attributedText = attributedString;
-    if ( tagTapDelegate != nil )
-    {
-        self.tagTapDelegate = tagTapDelegate;
-    }
+    VTagDictionary *foundTags = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attributedString
+                                             withTagStringAttributes:tagAttributes
+                                          andDefaultStringAttributes:defaultAttributes];
+    completionBlock(foundTags, attributedString);
 }
 
 #pragma mark - Touch handling

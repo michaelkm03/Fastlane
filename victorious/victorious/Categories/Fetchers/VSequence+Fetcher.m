@@ -245,6 +245,11 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
         return NO;
     }
     
+    if ( [self isText])
+    {
+        return NO;
+    }
+    
     if ( self.isImage && [[[self firstNode] imageAsset] dataURL] == nil )
     {
         return NO;

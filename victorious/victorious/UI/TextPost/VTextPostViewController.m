@@ -12,6 +12,7 @@
 #import "VTextPostViewModel.h"
 #import "VHashTags.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
+#import <SDWebImageManager.h>
 
 @interface VTextPostViewController ()
 
@@ -19,9 +20,9 @@
 
 @property (nonatomic, weak) IBOutlet VTextPostTextView *textPostTextView;
 @property (nonatomic, strong, readwrite) IBOutlet VTextPostViewModel *viewModel;
-
 @property (nonatomic, strong) VTextBackgroundFrameMaker *textBackgroundFrameMaker;
 @property (nonatomic, strong) VTextCalloutFormatter *textCalloutFormatter;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView *backgroundImageView;
 
 @end
 
@@ -77,12 +78,6 @@
     [self updateTextView];
 }
 
-- (void)setColor:(UIColor *)color
-{
-    _color = color;
-    self.view.backgroundColor = color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-}
-
 - (void)updateTextView
 {
     if ( self.text == nil )
@@ -98,6 +93,41 @@
 
 #pragma mark - public
 
+- (void)setColor:(UIColor *)color
+{
+    _color = color;
+    
+    self.view.backgroundColor = _color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage
+{
+    _backgroundImage = backgroundImage;
+    
+    self.backgroundImageView.image = backgroundImage;
+}
+
+- (void)setImageURL:(NSURL *)imageURL
+{
+    if ( _imageURL == imageURL && imageURL != nil )
+    {
+        return;
+    }
+    
+    _imageURL = imageURL;
+    
+    [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
+                          options:0
+                         progress:nil
+                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
+     {
+         if ( image != nil )
+         {
+             self.backgroundImage = image;
+         }
+     }];
+}
+
 - (VTextPostTextView *)textView
 {
     return self.textPostTextView;
@@ -109,8 +139,6 @@
     
     [self updateTextIsSelectable];
 }
-
-#pragma mark - Drawing and layout
 
 - (void)updateTextIsSelectable
 {

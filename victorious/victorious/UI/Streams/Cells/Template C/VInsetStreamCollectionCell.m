@@ -12,8 +12,8 @@
 #import "VDependencyManager.h"
 #import "VInsetStreamCollectionCell.h"
 #import "VSequence+Fetcher.h"
-#import "VStreamCellActionView.h"
 #import "VStreamCellHeaderView.h"
+#import "VInsetActionView.h"
 
 // IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
@@ -28,7 +28,8 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 @interface VInsetStreamCollectionCell ()
 
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
-@property (nonatomic, weak) IBOutlet VStreamCellActionView *cellActionView;
+
+@property (nonatomic, weak) IBOutlet VInsetActionView *insetActionView;
 
 @end
 
@@ -82,11 +83,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     };
 }
 
-- (VStreamCellActionView *)actionView
-{
-    return self.cellActionView;
-}
-
 - (NSString *)headerViewNibName
 {
     return @"VInsetStreamCellHeaderView";
@@ -100,13 +96,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
 {
     [super setSequenceActionsDelegate:sequenceActionsDelegate];
-    self.actionView.sequenceActionsDelegate = sequenceActionsDelegate;
+    self.insetActionView.sequenceActionsDelegate = sequenceActionsDelegate;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     [super setDependencyManager:dependencyManager];
-    self.actionView.dependencyManager = dependencyManager;
+    [self.insetActionView setDependencyManager:dependencyManager];
     
     if ( dependencyManager != nil )
     {
@@ -124,30 +120,9 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 {
     [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
     [super setSequence:sequence];
-    self.actionView.sequence = sequence;
-    [self reloadCommentsCount];
-    [self setupActionBar];
-}
 
-- (void)setupActionBar
-{
-    [self.actionView clearButtons];
-    
-    [self.actionView addShareButton];
-    if ( [self.sequence canMeme] )
-    {
-        [self.actionView addMemeButton];
-    }
-    if ( [self.sequence canGif] )
-    {
-        [self.actionView addGifButton];
-    }
-    if ( [self.sequence canRepost] || [self.sequence.hasReposted boolValue] )
-    {
-        [self.actionView addRepostButton];
-    }
-    
-    [self.actionView updateLayoutOfButtons];
+    self.insetActionView.sequence = sequence;
+    [self reloadCommentsCount];
 }
 
 - (void)setDescriptionText:(NSString *)text

@@ -1,6 +1,6 @@
 #!/bin/bash
 ###########
-# Uploads all apps in the 'products' folder to TestFlight.
+# Uploads all apps in the 'products' folder to TestFairy.
 ###########
 
 TF_DISTRO_LIST="$1"

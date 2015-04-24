@@ -14,6 +14,7 @@
 #import "UIView+AutoLayout.h"
 #import "VTextPostTextView.h"
 #import "VEditableTextPostHashtagHelper.h"
+#import "VTextPostImageHelper.h"
 #import "VContentInputAccessoryView.h"
 
 static NSString * const kDefaultTextKey = @"defaultText";
@@ -30,6 +31,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 @property (nonatomic, assign) BOOL hasAppeared;
 
 @property (nonatomic, strong) VEditableTextPostHashtagHelper *hashtagHelper;
+@property (nonatomic, strong) VTextPostImageHelper *imageHelper;
+@property (nonatomic, assign) UIImage *originalImage;
 
 @end
 
@@ -49,9 +52,10 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [super viewDidLoad];
     
     self.hashtagHelper = [[VEditableTextPostHashtagHelper alloc] init];
+    self.imageHelper = [[VTextPostImageHelper alloc] init];
     
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
-    [self.view insertSubview:self.overlayButton atIndex:0];
+    [self.view insertSubview:self.overlayButton belowSubview:self.textView];
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];
     [self.overlayButton addTarget:self action:@selector(overlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -90,7 +94,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (NSString *)textOutput
 {
-    return self.isShowingPlaceholderText ? @"" : self.text;
+    return self.isShowingPlaceholderText ? @"" : self.textView.text;
 }
 
 - (BOOL)addHashtag:(NSString *)hashtagText
@@ -139,32 +143,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     if ( rangeOfHashtag.location != NSNotFound )
     {
-        NSString *stringToReplace = hashtagTextWithHashMark;
-        NSRange characterAfterHashtagRange = NSMakeRange( rangeOfHashtag.location + rangeOfHashtag.length - 1, 1 );
-        NSRange characterBeforeHashtagRange = NSMakeRange( rangeOfHashtag.location - 1, 1 );
-        
-        if ( rangeOfHashtag.location + rangeOfHashtag.length < self.text.length )
-        {
-            const BOOL isThereASpaceAfterTheHashtag = [[self.text substringWithRange:characterAfterHashtagRange] isEqualToString:@" "];
-            if ( isThereASpaceAfterTheHashtag )
-            {
-                // Remove the space after the hastag as well
-                stringToReplace = [stringToReplace stringByAppendingString:@" "];
-                rangeOfHashtag.length++;
-            }
-        }
-        if ( rangeOfHashtag.location > 0 )
-        {
-            const BOOL isThereASpaceBeforeTheHashtag = [[self.text substringWithRange:characterBeforeHashtagRange] isEqualToString:@" "];
-            if ( isThereASpaceBeforeTheHashtag )
-            {
-                // Remove the space after the hastag as well
-                stringToReplace = [NSString stringWithFormat:@" %@", stringToReplace];
-                rangeOfHashtag.location--;
-                rangeOfHashtag.length++;
-            }
-        }
-        self.text = [self.text stringByReplacingOccurrencesOfString:stringToReplace withString:@""];
+        self.text = [self.text stringByReplacingOccurrencesOfString:hashtagTextWithHashMark withString:@""];
     }
 
     [self showPlaceholderText];
@@ -179,22 +158,10 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
     if ( ![self.text containsString:hashtagTextWithHashMark] )
     {
-        NSRange replacementRange = self.textView.selectedRange;
-        
-        BOOL isSpaceRequired = NO;
-        if ( replacementRange.location > 0 )
-        {
-            NSRange characterBeforeSelectedRange = NSMakeRange( replacementRange.location-1, 1 );
-            isSpaceRequired = ![[self.text substringWithRange:characterBeforeSelectedRange] isEqualToString:@" "];
-        }
-        
-        NSString *stringReplacement = [NSString stringWithFormat:@"%@%@%@", (isSpaceRequired ? @" " : @""), hashtagTextWithHashMark, @" "];
-        self.text = [self.text stringByReplacingCharactersInRange:replacementRange withString:stringReplacement];
-        NSRange rangeOfAddedString = [self.text rangeOfString:hashtagTextWithHashMark];
-        self.textView.selectedRange = NSMakeRange( rangeOfAddedString.location + rangeOfAddedString.length + 1, 0 );
+        self.text = [self.text stringByAppendingString:hashtagTextWithHashMark];
     }
     
-    [self.delegate textDidUpdate:self.textOutput];  
+    [self.delegate textDidUpdate:self.textOutput];
 }
 
 - (void)setText:(NSString *)text
@@ -255,7 +222,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     if ( self.isShowingPlaceholderText )
     {
-        self.text = @"";
+        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:@""];
+        self.text = text;
         self.isShowingPlaceholderText = NO;
         self.textView.alpha = 1.0;
     }
@@ -270,6 +238,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    [self hidePlaceholderText];
+    
     self.text = self.textView.text;
     
     [self updateAddedAndDeletedHashtags];
@@ -317,7 +287,58 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     [self hidePlaceholderText];
     
-    return YES;
+    return textAfter.length < self.characterCountMax;
+}
+
+#pragma mark - Setting background image and color
+
+- (void)setColor:(UIColor *)color
+{
+    [super setColor:color];
+    
+    [self updateBackroundImageAnimated:NO];
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage
+{
+    [self setBackgroundImage:backgroundImage animated:NO];
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage animated:(BOOL)animated
+{
+    self.originalImage = backgroundImage;
+    
+    [self.imageHelper clearCache];
+    
+    [self updateBackroundImageAnimated:animated];
+}
+
+- (void)updateBackroundImageAnimated:(BOOL)animated
+{
+    [self.imageHelper renderImage:self.originalImage color:self.color completion:^(UIImage *tintedImage, UIColor *color)
+     {
+         if ( animated )
+         {
+             [UIView animateWithDuration:0.15f delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
+              {
+                  self.backgroundImageView.alpha = tintedImage == nil ? 0.0f : 1.0f;
+              }
+                              completion:^(BOOL finished)
+              {
+                  if ( self.color == color )
+                  {
+                      super.backgroundImage = tintedImage;
+                  }
+              }];
+         }
+         else
+         {
+             if ( self.color == color )
+             {
+                 super.backgroundImage = tintedImage;
+             }
+         }
+     }];
 }
 
 #pragma mark - VContentInputAccessoryViewDelegate

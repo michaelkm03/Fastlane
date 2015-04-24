@@ -17,6 +17,13 @@
 
 @implementation VColorOptionCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.colorSwatchView.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor;
+}
+
 - (void)setFont:(UIFont *)font
 {
     _font = font;
@@ -26,7 +33,17 @@
 
 - (void)setColor:(UIColor *)color withTitle:(NSString *)title
 {
-    self.colorSwatchView.backgroundColor = color;
+    if ( color == nil )
+    {
+        self.colorSwatchView.backgroundColor = [UIColor clearColor];
+        self.colorSwatchView.layer.borderWidth = 1.0f;
+    }
+    else
+    {
+        self.colorSwatchView.backgroundColor = color;
+        self.colorSwatchView.layer.borderWidth = 0.0f;
+    }
+    
     self.labelTitle.text = title;
 }
 

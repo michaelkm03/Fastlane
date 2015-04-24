@@ -24,11 +24,21 @@
  required calculation and drawing routines to render the text according to the
  design.
  */
-@property (nonatomic, strong) NSString *text;
+@property (nonatomic, copy) NSString *text;
 
 /**
- Sets the background color of the text post.
- design.
+ Sets the background image, which will display and size accodingly.
+ */
+@property (nonatomic, strong) UIImage *backgroundImage;
+
+/**
+ Sets the background iamge URL, which will load asynchronously and then
+ display using the same `backgroundImage` property setter.
+ */
+@property (nonatomic, copy) NSURL *imageURL;
+
+/**
+ Sets the background color.
  */
 @property (nonatomic, strong) UIColor *color;
 
@@ -49,5 +59,11 @@
  with by calling code unless you know what you're doing.
  */
 @property (nonatomic, readonly) VTextPostTextView *textView;
+
+/**
+ The image background view, exposed here for subclasses.  Don't mess with this
+ unless you know exactly what you're doing.
+ */
+@property (nonatomic, weak, readonly) IBOutlet UIImageView *backgroundImageView;
 
 @end

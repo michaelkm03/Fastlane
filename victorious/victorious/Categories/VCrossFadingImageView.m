@@ -11,11 +11,15 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
 #import "VImageViewContainer.h"
+#import "UIImage+ImageCreation.h"
+#import <objc/runtime.h>
+
+static const NSTimeInterval kFadeAnimationDuration = 0.3f;
+static const char kAssociatedObjectKey;
 
 @interface VCrossFadingImageView ()
 
 @property (nonatomic, strong) NSMutableArray *imageViewContainers;
-@property (nonatomic, readwrite) NSArray *imageURLs;
 
 @end
 
@@ -47,32 +51,34 @@
     self.offset = 0.0f;
 }
 
-- (void)setupWithImageURLs:(NSArray *)imageURLs tintColor:(UIColor *)tintColor andPlaceholderImage:(UIImage *)placeholderImage
+- (void)setupWithNumberOfImageViews:(NSInteger)numberOfImageViews
 {
-    if ( [self.imageURLs isEqualToArray:imageURLs] )
-    {
-        //Nothing to update, return to avoid unnecessary reloading of images
-        return;
-    }
+    [self reset];
     
-    self.imageURLs = imageURLs;
-    for ( VImageViewContainer *imageViewContainer in self.imageViewContainers )
-    {
-        [imageViewContainer removeFromSuperview];
-    }
-    [self.imageViewContainers removeAllObjects];
-    
-    for (NSURL *imageURL in imageURLs)
+    for (NSInteger i = 0 ; i < numberOfImageViews; i++ )
     {
         VImageViewContainer *imageViewContainer = [[VImageViewContainer alloc] initWithFrame:self.bounds];
         imageViewContainer.alpha = 0.0f;
-        [imageViewContainer.imageView setBlurredImageWithURL:imageURL placeholderImage:placeholderImage tintColor:tintColor];
         [self addSubview:imageViewContainer];
         [self v_addFitToParentConstraintsToSubview:imageViewContainer];
         [self.imageViewContainers addObject:imageViewContainer];
     }
     
     [self updateVisibleImageViewsForOffset:self.offset];
+}
+
+- (NSInteger)imageViewCount
+{
+    return self.imageViewContainers.count;
+}
+
+- (void)reset
+{
+    for ( VImageViewContainer *imageViewContainer in self.imageViewContainers )
+    {
+        [imageViewContainer removeFromSuperview];
+    }
+    [self.imageViewContainers removeAllObjects];
 }
 
 - (void)updateVisibleImageViewsForOffset:(CGFloat)offset
@@ -155,6 +161,29 @@
     }
     
     return [NSArray arrayWithArray:visibleImageViewContainers];
+}
+
+- (void)updateBlurredImageViewForImage:(UIImage *)image fromURL:(NSURL *)url withTintColor:(UIColor *)tintColor atIndex:(NSInteger)index animated:(BOOL)animated
+{
+    NSInteger count = (NSInteger)self.imageViewContainers.count;
+    if ( index >= count )
+    {
+        return;
+    }
+    
+    VImageViewContainer *imageViewContainer = ((VImageViewContainer *)self.imageViewContainers[index]);
+    NSURL *loadedURL = objc_getAssociatedObject(imageViewContainer, &kAssociatedObjectKey);
+    //Only need to update the imageViewContainer if it isn't already showing the image
+    if ( ![loadedURL isEqual:url] )
+    {
+        //Check if image load failed; if so, don't associate it with the url so it retries the next time this method is called
+        if ( !( url != nil && image == nil ) )
+        {
+            objc_setAssociatedObject(imageViewContainer, &kAssociatedObjectKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        }
+        NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
+        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration];
+    }
 }
 
 @end

@@ -76,4 +76,47 @@
                                                       constant:0.0f]];
 }
 
+- (void)v_addWidthConstraint:(CGFloat)width
+{
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:nil
+                                                     attribute:NSLayoutAttributeNotAnAttribute
+                                                    multiplier:1.0f
+                                                      constant:width]];
+}
+
+- (void)v_addHeightConstraint:(CGFloat)height
+{
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:nil
+                                                     attribute:NSLayoutAttributeNotAnAttribute
+                                                    multiplier:1.0f
+                                                      constant:height]];
+}
+
+- (NSLayoutConstraint *)v_internalWidthConstraint
+{
+    __block NSLayoutConstraint *internalWidthConstraint;
+    
+    [self.constraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         if (constraint.secondItem != nil)
+         {
+             return;
+         }
+         if (constraint.firstAttribute != NSLayoutAttributeWidth)
+         {
+             return;
+         }
+         internalWidthConstraint = constraint;
+         *stop = YES;
+     }];
+    
+    return internalWidthConstraint;
+}
+
 @end

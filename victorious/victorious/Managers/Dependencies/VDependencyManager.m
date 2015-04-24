@@ -511,6 +511,15 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
 }
 
+- (void)cleanup
+{
+    dispatch_barrier_sync(self.privateQueue, ^(void)
+    {
+        [self.singletonsByID removeAllObjects];
+        [self.childDependencyManagersByID removeAllObjects];
+    });
+}
+
 #pragma mark - Dependency getter primatives
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key
@@ -769,39 +778,74 @@ static NSString * const kMacroReplacement = @"XXXXX";
         if ( [value isKindOfClass:[NSDictionary class]] )
         {
             NSDictionary *component = (NSDictionary *)value;
-            if ( [self isDictionaryAComponentWithoutAnID:component] )
+            if ( [self isDictionaryAComponent:component] )
             {
                 preparedDictionary[key] = [self componentByAddingIDToComponent:component];
+            }
+            else
+            {
+                preparedDictionary[key] = [self preparedConfigurationWithUnpreparedDictionary:component];
             }
         }
         else if ( [value isKindOfClass:[NSArray class]] )
         {
-            NSMutableArray *preparedArray = [value mutableCopy];
-            NSUInteger count = preparedArray.count;
-            for (NSUInteger n = 0; n < count; n++)
-            {
-                NSDictionary *component = preparedArray[n];
-                if ( [component isKindOfClass:[NSDictionary class]] && [self isDictionaryAComponentWithoutAnID:component] )
-                {
-                    preparedArray[n] = [self componentByAddingIDToComponent:component];
-                }
-            }
-            preparedDictionary[key] = preparedArray;
+            preparedDictionary[key] = [self preparedArrayWithUnpreparedArray:value];
         }
     }
-    return preparedDictionary;
+    return [preparedDictionary copy];
+}
+
+/**
+ Takes an array of configuration objeccts and returns it after adding IDs to any components that are missing one.
+ */
+- (NSArray *)preparedArrayWithUnpreparedArray:(NSArray *)configurationArray
+{
+    NSMutableArray *preparedArray = [configurationArray mutableCopy];
+    
+    for (NSUInteger n = 0; n < preparedArray.count; n++)
+    {
+        if ( [preparedArray[n] isKindOfClass:[NSDictionary class]] )
+        {
+            NSDictionary *component = (NSDictionary *)preparedArray[n];
+            if ( [self isDictionaryAComponent:component] )
+            {
+                preparedArray[n] = [self componentByAddingIDToComponent:component];
+            }
+            else
+            {
+                preparedArray[n] = [self preparedConfigurationWithUnpreparedDictionary:component];
+            }
+        }
+        else if ( [preparedArray[n] isKindOfClass:[NSArray class]] )
+        {
+            preparedArray[n] = [self preparedArrayWithUnpreparedArray:preparedArray[n]];
+        }
+    }
+    return [preparedArray copy];
 }
 
 - (NSDictionary *)componentByAddingIDToComponent:(NSDictionary *)component
 {
-    NSMutableDictionary *preparedComponent = [component mutableCopy];
-    preparedComponent[kIDKey] = [[NSUUID UUID] UUIDString];
-    return preparedComponent;
+    if ( ![self componentHasID:component] )
+    {
+        NSMutableDictionary *preparedComponent = [component mutableCopy];
+        preparedComponent[kIDKey] = [[NSUUID UUID] UUIDString];
+        return preparedComponent;
+    }
+    else
+    {
+        return component;
+    }
 }
 
-- (BOOL)isDictionaryAComponentWithoutAnID:(NSDictionary *)possibleComponent
+- (BOOL)isDictionaryAComponent:(NSDictionary *)possibleComponent
 {
-    return possibleComponent[kClassNameKey] != nil && possibleComponent[kIDKey] == nil;
+    return possibleComponent[kClassNameKey] != nil;
+}
+
+- (BOOL)componentHasID:(NSDictionary *)component
+{
+    return component[kIDKey] != nil;
 }
 
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration

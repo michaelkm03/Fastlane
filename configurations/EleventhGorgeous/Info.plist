@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}TeeAndEss</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}teeandess</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1471657219790958</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1471657219790958</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>tjwbhUUF0NEx5748CySYc7vMC</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>VVq46Gcx9tCWkh4JHBSxcRs7dyU9bRojyQgunPJnaxs1JB3r5R</string>
+	<key>VictoriousAppID</key>
+	<integer>45</integer>
+	<key>StagingAppID</key>
+	<integer>60</integer>
+	<key>QAAppID</key>
+	<integer>43</integer>
+	<key>CreatorSalutation</key>
+	<string>TeeAndEss</string>
+	<key>FlurryAPIKey</key>
+	<string></string>
+</dict>
+</plist>

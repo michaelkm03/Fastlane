@@ -233,7 +233,7 @@
     XCTAssert( delegate.endCalled );
     XCTAssertEqualObjects( delegate.eventNameReceived, eventName );
     XCTAssertNil( self.trackingMgr.durationEvents[ eventName ] );
-    XCTAssertEqualWithAccuracy( delegate.durationReceived, duration, 0.05 );
+    XCTAssertEqualWithAccuracy( delegate.durationReceived, duration, 0.2 );
 }
 
 - (void)testQueuedEvents

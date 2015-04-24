@@ -114,11 +114,13 @@ Creates a new realtime comment
                                       failBlock:(VFailBlock)fail;
 
 /**
- Creates a text post with supplied text and background color.
+ Creates a text post with supplied text, background color and image.
  */
-- (RKManagedObjectRequestOperation *)createTextPostWithText:(NSString *)textContent
-                                            backgroundColor:(UIColor *)backgroundColor
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail;
+
+- (void)createTextPostWithText:(NSString *)textContent
+               backgroundColor:(UIColor *)backgroundColor
+                      mediaURL:(NSURL *)mediaToUploadURL
+                  previewImage:(UIImage *)previewImage
+                    completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
 @end

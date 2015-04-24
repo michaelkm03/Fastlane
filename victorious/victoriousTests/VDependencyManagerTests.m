@@ -91,6 +91,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 @interface VDependencyManagerTests : XCTestCase
 
 @property (nonatomic, strong) NSDictionary *dictionaryOfClassesByTemplateName;
+@property (nonatomic, strong) VDependencyManager *baseDependencyManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VDependencyManager *childDependencyManager;
 
@@ -108,13 +109,15 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                 @"solidColor.background": @"VSolidColorBackground",
                                             };
     
-    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                                    configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
-                                                                dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                     configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
+                                                 dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
-    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.baseDependencyManager
+                                                                 configuration:configuration
+                                             dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
                                                                       configuration:@{ @"invalidColor": @{ @"red": @"spot",
                                                                                                            @"green": @"monkey",
@@ -134,6 +137,12 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                                                                }
                                                                                        }
                                                   dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+}
+
+- (void)tearDown
+{
+    [self.baseDependencyManager cleanup];
+    [super tearDown];
 }
 
 #pragma mark - Colors, fonts
@@ -678,6 +687,43 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     NSString *expected = @"http://example.com/";
     NSString *actual = [viewController.dependencyManager stringForKey:@"app_store_url"];
     XCTAssertEqualObjects(expected, actual);
+}
+
+#pragma mark - Cleanup
+
+- (VDependencyManager *)extractChildFromDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VTestViewControllerWithInitMethod *vc = (VTestViewControllerWithInitMethod *)[dependencyManager viewControllerForKey:@"ivc"];
+    return vc.dependencyManager;
+}
+
+- (void)testCleanupRemovesSingletons
+{
+    // One of the main sources of retain cycles that -cleanup targets is singletons.
+    // This method ensures they are released
+    
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result1);
+
+    [self.baseDependencyManager cleanup];
+    
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotEqual(result1, result2);
+}
+
+- (void)testCleanupDoesntWorkOnChildren
+{
+    // -cleanup is documented to not work when called on child dependency managers.
+    // This test verifies that's true.
+    
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result1);
+    
+    [self.dependencyManager cleanup];
+    
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
 }
 
 #pragma mark - Children

@@ -484,6 +484,12 @@
     return [UIColor v_colorFromHexString:self.currentAsset.backgroundColor];
 }
 
+- (NSURL *)textBackgroundImageURL
+{
+    VAsset *imageAsset = [self.sequence.firstNode imageAsset];
+    return [NSURL URLWithString:imageAsset.data];
+}
+
 - (void)setComments:(NSArray *)comments
 {
     NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)

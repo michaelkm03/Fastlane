@@ -65,7 +65,7 @@
                             <constraint firstAttribute="height" constant="50" id="hkQ-iO-XH0"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hj-dg-nbn" customClass="VStreamCellActionView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hj-dg-nbn" customClass="VInsetActionView">
                         <rect key="frame" x="-1" y="306" width="304" height="41"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -124,11 +124,11 @@
                 <outlet property="captionTextView" destination="2qV-rt-BGZ" id="df9-Wt-hPG"/>
                 <outlet property="captionTextViewBottomConstraint" destination="JAG-QQ-ijc" id="8ia-qC-GMX"/>
                 <outlet property="captionTextViewTopConstraint" destination="KgH-Vm-tWb" id="EqT-3D-nVM"/>
-                <outlet property="cellActionView" destination="5hj-dg-nbn" id="Y2b-Yv-Ru3"/>
                 <outlet property="commentHeightConstraint" destination="6vN-fS-UbQ" id="iZf-Zv-gCD"/>
                 <outlet property="commentLabelBottomConstraint" destination="94C-gP-RsR" id="auf-38-7UF"/>
                 <outlet property="commentsLabel" destination="2I4-YY-QY7" id="5lr-hl-IfK"/>
                 <outlet property="commentsLeftConstraint" destination="KoS-bo-F34" id="WDj-zN-HP2"/>
+                <outlet property="insetActionView" destination="5hj-dg-nbn" id="aOw-4b-mUq"/>
                 <outlet property="loadingContainer" destination="yYl-by-YLg" id="nIp-be-3sG"/>
                 <outlet property="lowerGradientView" destination="gza-QN-Veo" id="hsn-cS-K5e"/>
                 <outlet property="previewImageTwo" destination="JTX-77-BzI" id="cfM-uu-BJ7"/>
