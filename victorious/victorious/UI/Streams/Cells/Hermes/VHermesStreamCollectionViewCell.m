@@ -26,6 +26,7 @@
 #import "VLargeNumberFormatter.h"
 #import "VSlantView.h"
 #import "VHermesActionView.h"
+#import "NSString+VParseHelp.h"
 
 // Models
 #import "VSequence+Fetcher.h"
@@ -40,6 +41,7 @@ static const CGFloat kTopSpaceActionBarToTopOfSlant = 25.0f;
 static const CGFloat kMinimumCaptionContainerHeight = 15.0f;
 static const CGFloat kActionBarHeight = 30.0f;
 static const CGFloat kCreationInfoContainerHeight = 44.0f;
+static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
 
 @interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate>
 
@@ -103,15 +105,25 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
     if (!self.hasLayedOutViews)
     {
         [self.contentView addSubview:self.captionContainerView];
+
+        [self.contentView v_addPinToLeadingTrailingToSubview:self.contentContainerView];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentContainerView][captionContainer]|"
+                                                                                 options:kNilOptions
+                                                                                 metrics:@{@"kMinimumCaptionContainerHeight": @(kMinimumCaptionContainerHeight)}
+                                                                                   views:@{@"contentContainerView":self.contentContainerView,
+                                                                                           @"captionContainer": self.captionContainerView}]];
+        
         [self.contentView v_addPinToLeadingTrailingToSubview:self.captionContainerView];
-        [self v_addPinToLeadingTrailingToSubview:self.contentContainerView]; // restoer me
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentContainerView][captionContainer(kMinimumCaptionContainerHeight)]|"
-                                                                     options:kNilOptions
-                                                                     metrics:@{@"kMinimumCaptionContainerHeight": @(kMinimumCaptionContainerHeight)}
-                                                                       views:@{@"contentContainerView":self.contentContainerView,
-                                                                               @"captionContainer": self.captionContainerView}]];
+        
         [self.contentContainerView addSubview:self.slantView];
         [self.contentContainerView v_addPinToLeadingTrailingToSubview:self.slantView];
+        [self.contentContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentContainerView
+                                                                              attribute:NSLayoutAttributeWidth
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:self.contentContainerView
+                                                                              attribute:NSLayoutAttributeHeight
+                                                                             multiplier:1.0f
+                                                                               constant:0.0f]];
         [self.contentContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[slantView(kSlantHeight)]|"
                                                                                           options:kNilOptions
                                                                                           metrics:@{@"kSlantHeight": @(kSlantHeight)}
@@ -138,7 +150,9 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
                                                                      attribute:NSLayoutAttributeTop
                                                                     multiplier:1.0f
                                                                       constant:kTopSpaceActionBarToTopOfSlant]];
+        self.hasLayedOutViews = YES;
     }
+    
     // Do any updates if we just created the views
     [self updateCaptionViewWithSequence:self.sequence];
     [self updateProfileButtonWithSequence:self.sequence];
@@ -155,6 +169,7 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
     [self updateProfileButtonWithSequence:sequence];
     [self updateCreationInfoContainerWithSequence:sequence];
     [self updateCaptionViewWithSequence:sequence];
+    
     self.actionBar.sequence = sequence;
 }
 
@@ -170,10 +185,11 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
 {
     if (_captionTextView == nil)
     {
-        self.captionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero];
-        self.captionTextView.linkDelegate = self;
-        self.captionTextView.translatesAutoresizingMaskIntoConstraints = NO;
-        self.captionTextView.backgroundColor = [UIColor clearColor];
+        _captionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero];
+        _captionTextView.linkDelegate = self;
+        _captionTextView.translatesAutoresizingMaskIntoConstraints = NO;
+        _captionTextView.backgroundColor = [UIColor clearColor];
+        _captionTextView.textContainerInset = kTextInsets;
     }
     return _captionTextView;
 }
@@ -199,7 +215,9 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
     {
         UIView *captionContainerView = [[UIView alloc] initWithFrame:CGRectZero];
         captionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.contentView addSubview:_captionContainerView];
+        captionContainerView.backgroundColor = [UIColor purpleColor];
+        [captionContainerView addSubview:self.captionTextView];
+        [captionContainerView v_addFitToParentConstraintsToSubview:self.captionTextView];
         _captionContainerView = captionContainerView;
     }
     return _captionContainerView;
@@ -339,13 +357,28 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
 - (void)updateCaptionViewWithSequence:(VSequence *)sequence
 {
     self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name ?: @""
-                                                                          attributes:@{
-                                                                                       NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
-                                                                                       NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
-                                                                                       }];
+                                                                          attributes:[[self class] sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+}
+
++ (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    
+    attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    attributes[ NSFontAttributeName ] = [[dependencyManager fontForKey:VDependencyManagerHeading2FontKey] fontWithSize:19];
+    
+    paragraphStyle.maximumLineHeight = 25;
+    paragraphStyle.minimumLineHeight = 25;
+    
+    attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;
+    
+    return [NSDictionary dictionaryWithDictionary:attributes];
 }
 
 @end
+
+#pragma mark - Category Implementations
 
 @implementation VHermesStreamCollectionViewCell (Sizing)
 
@@ -353,11 +386,21 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
                                     sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) + kMinimumCaptionContainerHeight);
+    CGSize size = CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) + kMinimumCaptionContainerHeight);
+    
+    if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
+    {
+        CGFloat insetWidth = size.width - kTextInsets.left - kTextInsets.right;
+        // Subtract insets and line fragment padding that is padding text in textview BEFORE calculating size
+        CGSize textSize = [sequence.name frameSizeForWidth:insetWidth
+                                             andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
+        size.height += textSize.height + kTextInsets.top + kTextInsets.bottom;
+    }
+    
+    return size;
 }
 
 @end
-
 
 @implementation VHermesStreamCollectionViewCell (UpdateHooks)
 
