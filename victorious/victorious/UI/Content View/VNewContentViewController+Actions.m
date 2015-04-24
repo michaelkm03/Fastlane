@@ -269,14 +269,13 @@
     actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
 {
     VSequence *sequence = self.viewModel.sequence;
-    if ([sequence canRemix])
+    if ( [sequence canGif] )
     {
-        if ( [sequence isVideo] )
-        {
-            [actionItems addObject:[self gifItemForContentViewController:contentViewController
-                                               actionSheetViewController:actionSheetViewController]];
-        }
-       
+        [actionItems addObject:[self gifItemForContentViewController:contentViewController
+                                           actionSheetViewController:actionSheetViewController]];
+    }
+    if ( [sequence canMeme] )
+    {
         [actionItems addObject:[self memeItemForContentViewController:contentViewController
                                             actionSheetViewController:actionSheetViewController]];
     }

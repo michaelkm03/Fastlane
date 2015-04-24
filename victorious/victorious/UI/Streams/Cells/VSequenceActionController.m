@@ -163,8 +163,8 @@
                      andDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSParameterAssert(sequence != nil);
-    VStreamCollectionViewController *remixStream = [dependencyManager gifStreamForSequence:sequence];
-    [navigationController pushViewController:remixStream animated:YES];
+    VStreamCollectionViewController *gifStream = [dependencyManager gifStreamForSequence:sequence];
+    [navigationController pushViewController:gifStream animated:YES];
 }
 
 - (void)showMemersOnNavigationController:(UINavigationController *)navigationController
@@ -172,8 +172,8 @@
                     andDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSParameterAssert(sequence != nil);
-    VStreamCollectionViewController *remixStream = [dependencyManager memeStreamForSequence:sequence];
-    [navigationController pushViewController:remixStream animated:YES];
+    VStreamCollectionViewController *memeStream = [dependencyManager memeStreamForSequence:sequence];
+    [navigationController pushViewController:memeStream animated:YES];
 }
 
 #pragma mark - Repost

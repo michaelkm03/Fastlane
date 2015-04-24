@@ -22,7 +22,8 @@
 - (BOOL)isPreviewWebContent;
 - (BOOL)isAnnouncement;
 - (BOOL)canDelete;
-- (BOOL)canRemix;
+- (BOOL)canMeme;
+- (BOOL)canGif;
 - (BOOL)canComment;
 - (BOOL)canRepost;
 - (BOOL)isVoteCountVisible;

@@ -116,18 +116,13 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     {
         [self.actionView addRepostButton];
     }
-    
-    if ( [self.sequence canRemix] )
+    if ( [self.sequence canMeme] )
     {
-        BOOL isVideo = [self.sequence isVideo];
-        if ( [self.sequence isImage] || isVideo )
-        {
-            [self.sleekActionView addMemeButton];
-        }
-        if ( isVideo )
-        {
-            [self.sleekActionView addGifButton];
-        }
+        [self.sleekActionView addMemeButton];
+    }
+    if ( [self.sequence canGif] )
+    {
+        [self.sleekActionView addGifButton];
     }
     
     [self.actionView updateLayoutOfButtons];

@@ -22,8 +22,10 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     VSequencePermissionOptionsDelete      = 1 << 0,
     VSequencePermissionOptionsRemix       = 1 << 1,
     VSequencePermissionOptionsVoteCount   = 1 << 2,
-    VSequencePermissionOptionsCanComment  = 1 << 3,
-    VSequencePermissionOptionsCanRepost   = 1 << 4,
+    VSequencePermissionOptionsComment     = 1 << 3,
+    VSequencePermissionOptionsRepost      = 1 << 4,
+    VSequencePermissionOptionsGif         = 1 << 5,
+    VSequencePermissionOptionsMeme        = 1 << 6,
 };
 
 @implementation VSequence (Fetcher)
@@ -252,13 +254,29 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
         return NO;
     }
     
-    if (self.permissions)
+    return YES;
+}
+
+- (BOOL)canGif
+{
+    if (self.permissions && [self canRemix])
     {
         NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsRemix);
+        return (permissionsMask & VSequencePermissionOptionsGif);
     }
     
-    return YES;
+    return NO;
+}
+
+- (BOOL)canMeme
+{
+    if (self.permissions && [self canRemix])
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsMeme);
+    }
+    
+    return NO;
 }
 
 - (BOOL)canComment
@@ -266,7 +284,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     if (self.permissions)
     {
         NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsCanComment);
+        return (permissionsMask & VSequencePermissionOptionsComment);
     }
     
     return YES;
@@ -277,7 +295,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     if (self.permissions)
     {
         NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsCanRepost);
+        return (permissionsMask & VSequencePermissionOptionsRepost);
     }
     
     return YES;
