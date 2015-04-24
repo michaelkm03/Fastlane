@@ -65,12 +65,13 @@ static const CGFloat kShadowOpacity = 0.4f;
     }
     
     self.titleLabel.text = streamItem.name;
-    [self layoutIfNeeded];
     [self updateGradientLayer];
 }
 
 - (void)updateGradientLayer
 {
+    [self layoutIfNeeded];
+    
     CGRect gradientBounds = self.gradientContainer.bounds;
     if ( CGRectEqualToRect(self.gradientLayer.frame, gradientBounds) )
     {
@@ -82,9 +83,9 @@ static const CGFloat kShadowOpacity = 0.4f;
     self.gradientLayer = [CAGradientLayer layer];
     self.gradientLayer.frame = gradientBounds;
     self.gradientLayer.colors = @[
-                             (id)[UIColor colorWithWhite:0.0f alpha:0.0f].CGColor,
-                             (id)[UIColor colorWithWhite:0.0f alpha:kGadientEndOpacity].CGColor
-                             ];
+                                  (id)[[UIColor blackColor] colorWithAlphaComponent:0.0f].CGColor,
+                                  (id)[[UIColor blackColor] colorWithAlphaComponent:kGadientEndOpacity].CGColor
+                                  ];
     [self.gradientContainer.layer insertSublayer:self.gradientLayer atIndex:0];
 }
 
@@ -112,7 +113,6 @@ static const CGFloat kShadowOpacity = 0.4f;
     {
         [self.titleLabel setFont:[dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
         [self.contentContainer setBackgroundColor:[dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey]];
-        [self layoutIfNeeded];
         [self updateGradientLayer];
     }
 }
