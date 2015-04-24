@@ -11,6 +11,9 @@
 #import <CoreMedia/CMTime.h>
 #import <CoreMedia/CMTimeRange.h>
 
+extern const CGFloat VTrimHeadHeight;
+extern const CGFloat VTrimHeadInset;
+
 // Sends UIControlEventValueChanged on new selection
 
 /**

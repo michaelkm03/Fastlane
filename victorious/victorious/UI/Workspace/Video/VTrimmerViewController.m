@@ -20,9 +20,8 @@
 
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
-static const CGFloat kTimelineTopPadding = 48.0f;
 static const CGFloat kTimelineDarkeningAlpha = 0.5f;
-static const CGFloat kTimelineLabelPadding = 20.0f;
+static const CGFloat kTimelineLabelPadding = 12.0f;
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
@@ -333,7 +332,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     NSString *title = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%.2f", CMTimeGetSeconds(time)]];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
-                                                                       attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
+                                                                       attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:16.0f]}];
 }
 
 - (CGFloat)timelineWidthPerSecond
@@ -382,7 +381,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
     NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollectionView,
                               @"titleLabel": self.titleLabel};
-    
+    CGFloat topPadding = VTrimHeadHeight + VTrimHeadInset;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
@@ -393,7 +392,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                         views:viewMap]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView]-kTimelineLabelPadding-[titleLabel]-kTimelineLabelPadding-|"
                                                                       options:kNilOptions
-                                                                      metrics:@{@"kTimelineTopPadding":@(kTimelineTopPadding),
+                                                                      metrics:@{@"kTimelineTopPadding":@(topPadding),
                                                                                 @"kTimelineLabelPadding":@(kTimelineLabelPadding)}
                                                                         views:viewMap]];
 }
@@ -445,8 +444,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.trimControl];
     
-    NSDictionary *viewMap = @{@"trimControl": self.trimControl,
-                              @"titleLabel": self.titleLabel};
+    NSDictionary *viewMap = @{@"trimControl": self.trimControl};
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[trimControl]|"
                                                                       options:kNilOptions
