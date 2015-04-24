@@ -10,6 +10,8 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VDependencyManager+VBackground.h"
+#import "VSolidColorBackground.h"
 
 // Views + Helpers
 #import "VHashTagTextView.h"
@@ -22,30 +24,31 @@
 #import "VDefaultProfileButton.h"
 #import "VRoundedCommentButton.h"
 #import "VLargeNumberFormatter.h"
-#import "VLinearGradientView.h"
+#import "VSlantView.h"
 
 // Models
 #import "VSequence+Fetcher.h"
 #import "VUser+Fetcher.h"
 
-static const CGFloat kInfoContainerHeight = 81.0f;
-static const CGFloat kLeadingTrailingSpace = 22.0f;
-static const CGFloat kAvatarSize = 28.5;
+static const CGFloat kLeadingTrailingHeaderSpace = 15.0f;
+static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 3.0f;
-static const CGFloat kGradientEndAlpha = 0.15f;
-static const CGFloat kGradientHeight = 78.0f;
+static const CGFloat kHeaderHeight = 62.0f;
+static const CGFloat kSlantHeight = 58.0f;
 
 @interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate>
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
 
 @property (nonatomic, strong) UIView *contentContainerView;
-@property (nonatomic, strong) VActionBar *sequenceInfoActionBar;
+@property (nonatomic, strong) UIView *captionContainerView;
+@property (nonatomic, strong) VActionBar *headerBar;
+@property (nonatomic, strong) VActionBar *actionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
+@property (nonatomic, strong) VSlantView *slantView;
 @property (nonatomic, strong) VRoundedCommentButton *commentButton;
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
-@property (nonatomic, strong) VLinearGradientView *linearGradientView;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 
 @end
@@ -92,109 +95,34 @@ static const CGFloat kGradientHeight = 78.0f;
 {
     if (!self.hasLayedOutViews)
     {
-        // Layout containers
-        UIView *contentContainerView = [[UIView alloc] initWithFrame:CGRectZero];
-        contentContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:contentContainerView];
-        self.contentContainerView = contentContainerView;
+        [self.contentView v_addFitToParentConstraintsToSubview:self.contentContainerView]; // remove me
+        [self.contentView addSubview:self.captionContainerView];
+        [self.contentView v_addPinToLeadingTrailingToSubview:self.captionContainerView];
+        [self v_addPinToLeadingTrailingToSubview:self.contentContainerView]; // restoer me
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentContainerView][captionContainer(75)]|"
+                                                                     options:kNilOptions
+                                                                     metrics:nil
+                                                                       views:@{@"contentContainerView":self.contentContainerView,
+                                                                               @"captionContainer": self.captionContainerView}]];
+        [self.contentContainerView addSubview:self.slantView];
+        [self.contentContainerView v_addPinToLeadingTrailingToSubview:self.slantView];
         
-        [self.contentContainerView addSubview:self.previewView];
-        [self.contentContainerView v_addFitToParentConstraintsToSubview:self.previewView];
-        
-        self.linearGradientView = [[VLinearGradientView alloc] initWithFrame:CGRectZero];
-        [self.linearGradientView setColors:@[[[UIColor blackColor] colorWithAlphaComponent:kGradientEndAlpha],
-                                             [UIColor blackColor]]];
-        [self.contentContainerView addSubview:self.linearGradientView];
-        [self.contentContainerView v_addPinToLeadingTrailingToSubview:self.linearGradientView];
-        [self.contentContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[linearGradientView(height)]|"
+
+        [self.contentContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[slantView(kSlantHeight)]|"
                                                                                           options:kNilOptions
-                                                                                          metrics:@{@"height":@(kGradientHeight)}
-                                                                                            views:@{@"linearGradientView":self.linearGradientView}]];
+                                                                                          metrics:@{@"kSlantHeight": @(kSlantHeight)}
+                                                                                            views:@{@"slantView":self.slantView}]];
         
-        self.captionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero];
-        self.captionTextView.linkDelegate = self;
-        self.captionTextView.translatesAutoresizingMaskIntoConstraints = NO;
-        self.captionTextView.backgroundColor = [UIColor clearColor];
+        [self.contentContainerView addSubview:self.headerBar];
+        [self.contentContainerView v_addPinToLeadingTrailingToSubview:self.headerBar];
+        [self.contentContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerBar(kHeaderHeight)]"
+                                                                                          options:kNilOptions
+                                                                                          metrics:@{@"kHeaderHeight":@(kHeaderHeight)}
+                                                                                            views:@{@"headerBar":self.headerBar}]];
+        
 
-        [self.linearGradientView addSubview:self.captionTextView];
-        [self.linearGradientView v_addFitToParentConstraintsToSubview:self.captionTextView];
-        
-        UIView *contentInfoContainerView = [[UIView alloc] initWithFrame:CGRectZero];
-        contentInfoContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:contentInfoContainerView];
-        
-        NSDictionary *viewDictionary = NSDictionaryOfVariableBindings(contentContainerView, contentInfoContainerView);
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[contentContainerView]|"
-                                                                     options:kNilOptions
-                                                                     metrics:nil
-                                                                       views:viewDictionary]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentContainerView][contentInfoContainerView]"
-                                                                     options:kNilOptions
-                                                                     metrics:nil
-                                                                       views:viewDictionary]];
-        [contentContainerView addConstraint:[NSLayoutConstraint constraintWithItem:contentContainerView
-                                                                         attribute:NSLayoutAttributeWidth
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:contentContainerView
-                                                                         attribute:NSLayoutAttributeHeight
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[contentInfoContainerView]|"
-                                                                     options:kNilOptions
-                                                                     metrics:nil
-                                                                       views:viewDictionary]];
-        [contentInfoContainerView v_addHeightConstraint:kInfoContainerHeight];
-        
-        VActionBar *actionBar = [[VActionBar alloc] init];
-        actionBar.translatesAutoresizingMaskIntoConstraints = NO;
-        [contentInfoContainerView addSubview:actionBar];
-        [contentInfoContainerView v_addPinToLeadingTrailingToSubview:actionBar];
-        [contentInfoContainerView addConstraint:[NSLayoutConstraint constraintWithItem:contentInfoContainerView
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:actionBar
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:0.0f]];
-        [actionBar v_addHeightConstraint:55.0f];
-        self.sequenceInfoActionBar = actionBar;
-        
-        VDefaultProfileButton *button = [[VDefaultProfileButton alloc] initWithFrame:CGRectZero];
-        button.translatesAutoresizingMaskIntoConstraints = NO;
-        [button v_addHeightConstraint:kAvatarSize];
-        [button v_addWidthConstraint:kAvatarSize];
-        self.profileButton = button;
-        
-        VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
-        creationContainer.translatesAutoresizingMaskIntoConstraints = NO;
 
-        if ([creationContainer respondsToSelector:@selector(setDependencyManager:)])
-        {
-            [creationContainer setDependencyManager:self.dependencyManager];
-        }
-        [creationContainer v_addHeightConstraint:44.0f];
-        self.creationInfoContainer = creationContainer;
-        
-        VRoundedCommentButton *commentButton = [[VRoundedCommentButton alloc] initWithFrame:CGRectZero];
-        [commentButton addTarget:self action:@selector(comment) forControlEvents:UIControlEventTouchUpInside];
-        commentButton.translatesAutoresizingMaskIntoConstraints = NO;
-        self.commentButton = commentButton;
-        if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
-        {
-            [self.commentButton setDependencyManager:self.dependencyManager];
-        }
-        
-        actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace],
-                                  button,
-                                  [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
-                                  creationContainer,
-                                  commentButton,
-                                  [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
-        
-        self.hasLayedOutViews = YES;
     }
-    
     // Do any updates if we just created the views
     [self updateCaptionViewWithSequence:self.sequence];
     [self updateProfileButtonWithSequence:self.sequence];
@@ -214,6 +142,102 @@ static const CGFloat kGradientHeight = 78.0f;
 }
 
 #pragma mark - Property Accessors
+
+- (VHashTagTextView *)captionTextView
+{
+    if (_captionTextView == nil)
+    {
+        self.captionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero];
+        self.captionTextView.linkDelegate = self;
+        self.captionTextView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.captionTextView.backgroundColor = [UIColor clearColor];
+    }
+    return _captionTextView;
+}
+
+- (UIView *)contentContainerView
+{
+    if (_contentContainerView == nil)
+    {
+        UIView *contentContainerView = [[UIView alloc] initWithFrame:CGRectZero];
+        contentContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.contentView addSubview:contentContainerView];
+        _contentContainerView = contentContainerView;
+        [_contentContainerView addSubview:self.previewView];
+        [_contentContainerView v_addFitToParentConstraintsToSubview:self.previewView];
+    }
+    
+    return _contentContainerView;
+}
+
+- (UIView *)captionContainerView
+{
+    if (_captionContainerView == nil)
+    {
+        UIView *captionContainerView = [[UIView alloc] initWithFrame:CGRectZero];
+        captionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.contentView addSubview:_captionContainerView];
+        _captionContainerView = captionContainerView;
+    }
+    return _captionContainerView;
+}
+
+- (VSlantView *)slantView
+{
+    if (_slantView == nil)
+    {
+        _slantView = [[VSlantView alloc] initWithFrame:CGRectZero];
+        _slantView.translatesAutoresizingMaskIntoConstraints = NO;
+        _slantView.slantColor = [UIColor blueColor];
+        _slantView.layer.masksToBounds = YES;
+        _slantView.clipsToBounds = YES;
+    }
+    return _slantView;
+}
+
+- (VActionBar *)headerBar
+{
+    if (_headerBar == nil)
+    {
+        VActionBar *headerBar = [[VActionBar alloc] init];
+        headerBar.translatesAutoresizingMaskIntoConstraints = NO;
+        self.headerBar = headerBar;
+        
+        VDefaultProfileButton *button = [[VDefaultProfileButton alloc] initWithFrame:CGRectZero];
+        button.translatesAutoresizingMaskIntoConstraints = NO;
+        [button v_addHeightConstraint:kAvatarSize];
+        [button v_addWidthConstraint:kAvatarSize];
+        self.profileButton = button;
+        
+        VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
+        creationContainer.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        if ([creationContainer respondsToSelector:@selector(setDependencyManager:)])
+        {
+            [creationContainer setDependencyManager:self.dependencyManager];
+        }
+        [creationContainer v_addHeightConstraint:44.0f];
+        self.creationInfoContainer = creationContainer;
+        
+        VRoundedCommentButton *commentButton = [[VRoundedCommentButton alloc] initWithFrame:CGRectZero];
+        [commentButton addTarget:self action:@selector(comment) forControlEvents:UIControlEventTouchUpInside];
+        commentButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.commentButton = commentButton;
+        if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
+        {
+            [self.commentButton setDependencyManager:self.dependencyManager];
+        }
+        
+        headerBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
+                                  button,
+                                  [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
+                                  creationContainer,
+                                  commentButton,
+                                  [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
+    }
+    
+    return _headerBar;
+}
 
 - (VLargeNumberFormatter *)numberFormatter
 {
@@ -238,6 +262,12 @@ static const CGFloat kGradientHeight = 78.0f;
     {
         [self.commentButton setDependencyManager:dependencyManager];
     }
+    VBackground *slantBackground = [dependencyManager background];
+    if ([slantBackground isKindOfClass:[VSolidColorBackground class]])
+    {
+        self.slantView.slantColor = ((VSolidColorBackground *)slantBackground).backgroundColor;
+        self.captionContainerView.backgroundColor = ((VSolidColorBackground *)slantBackground).backgroundColor;
+    }
 }
 
 #pragma mark - CCHLinkTextViewDelegate
@@ -245,13 +275,6 @@ static const CGFloat kGradientHeight = 78.0f;
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
     [self selectedHashTag:value];
-}
-
-#pragma mark - VBackgroundContainer
-
-- (UIView *)backgroundContainerView
-{
-    return self.contentView;
 }
 
 #pragma mark - Internal Methods
@@ -276,12 +299,21 @@ static const CGFloat kGradientHeight = 78.0f;
                                                                                            NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
                                                                                            NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
                                                                                            }];
-        self.linearGradientView.hidden = NO;
     }
     else
     {
-        self.linearGradientView.hidden = YES;
     }
+}
+
+@end
+
+@implementation VHermesStreamCollectionViewCell (Sizing)
+
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
+                                    sequence:(VSequence *)sequence
+                           dependencyManager:(VDependencyManager *)dependencyManager
+{
+    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) + 50);
 }
 
 @end

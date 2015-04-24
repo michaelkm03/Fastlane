@@ -94,6 +94,8 @@
 	<string>VInsetStreamCellFactory</string>
 	<key>sleek.streamCell</key>
 	<string>VSleekStreamCellFactory</string>
+	<key>hermes.streamCell</key>
+	<string>VHermesStreamCellFactory</string>
 	<key>titleOverlay.streamCell</key>
 	<string>VTitleOverlayStreamCellFactory</string>
 	<key>fullscreen.marqueeCell</key>
