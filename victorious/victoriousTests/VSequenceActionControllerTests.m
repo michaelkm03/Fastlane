@@ -85,4 +85,30 @@
     XCTAssertFalse( [self.sequenceActionController showPosterProfileFromViewController:self.viewController sequence:nil] );
 }
 
+- (void)testShowProfileFromViewController
+{
+    [self.navigationController pushViewController:self.viewController animated:NO];
+    XCTAssert( [self.sequenceActionController showProfile:self.sequence.user fromViewController:self.viewController] );
+}
+
+- (void)testShowProfileFromViewControllerWithParent
+{
+    [self.navigationController pushViewController:self.userProfileViewController animated:NO];
+    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user fromViewController:self.viewController] );
+}
+
+- (void)testShowProfileFromViewControllerFail
+{
+    XCTAssertFalse( [self.sequenceActionController showProfile:nil fromViewController:nil] );
+    
+    XCTAssertFalse( [self.sequenceActionController showProfile:nil fromViewController:self.viewController] );
+    
+    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user fromViewController:self.viewController] );
+    
+    XCTAssertFalse( [self.sequenceActionController showProfile:self.sequence.user fromViewController:nil] );
+    
+    [self.navigationController pushViewController:self.viewController animated:NO];
+    XCTAssertFalse( [self.sequenceActionController showProfile:nil fromViewController:self.viewController] );
+}
+
 @end
