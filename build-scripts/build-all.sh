@@ -167,11 +167,11 @@ applyConfiguration(){
     fi
 
     xcodebuild -exportArchive -exportFormat ipa -archivePath "victorious.xcarchive" \
-               -exportPath "products/$CONFIG" -exportSigningIdentity "$CODESIGN_ID"
+               -exportPath "products/$FOLDER" -exportSigningIdentity "$CODESIGN_ID"
     EXPORTRESULT=$?
 
     if [ $EXPORTRESULT == 0 ]; then
-        cp victorious.app.dSYM.zip "products/$CONFIG.app.dSYM.zip"
+        cp victorious.app.dSYM.zip "products/$FOLDER.app.dSYM.zip"
     else
         exit $EXPORTRESULT
     fi
@@ -180,17 +180,17 @@ applyConfiguration(){
 ANY_APP_BUILT=0
 
 if [ $# == 0 ]; then
-    CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
+    CONFIG_FOLDERS=`find configurations -type d -depth 1 -exec basename {} \;`
     IFS=$'\n'
 else
-    CONFIGS=$*
+    CONFIG_FOLDERS=$*
 fi
 
-for CONFIG in $CONFIGS
+for FOLDER in $CONFIG_FOLDERS
 do
-    DEFAULT_APP_ID=$(./build-scripts/get-app-id.sh $CONFIG $CONFIGURATION)
+    DEFAULT_APP_ID=$(./build-scripts/get-app-id.sh $FOLDER $CONFIGURATION)
     if [ "$DEFAULT_APP_ID" != "0" -a "$DEFAULT_APP_ID" != "" ]; then # don't build apps with empty app ID or 0
-        applyConfiguration $CONFIG
+        applyConfiguration $FOLDER
         ANY_APP_BUILT=1
     fi
 done
