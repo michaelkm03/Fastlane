@@ -16,6 +16,7 @@
 #import "VDefaultProfileImageView.h"
 #import "VSettingManager.h"
 #import "VThemeManager.h"
+#import "UIColor+VBrightness.h"
 
 #import <KVOController/FBKVOController.h>
 
@@ -215,7 +216,11 @@ static NSString * const kEditButtonStylePill = @"rounded";
         linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     }
     
-    UIColor *accentColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    UIColor *backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.userStatsBar.backgroundColor = backgroundColor;
+    
+    BOOL hasBrightBackground = [backgroundColor v_colorLuminance] == VColorLuminanceBright;
+    UIColor *barTextColor = hasBrightBackground ? [UIColor blackColor] : [UIColor whiteColor];
     
     self.profileImageView.layer.borderColor = linkColor.CGColor;
     
@@ -228,19 +233,17 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.taglineLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         
     self.followersLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-    self.followersLabel.textColor = accentColor;
+    self.followersLabel.textColor = barTextColor;
     
     self.followersHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
-    self.followersHeader.textColor = accentColor;
+    self.followersHeader.textColor = barTextColor;
 
     self.followingLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-    self.followingLabel.textColor = accentColor;
+    self.followingLabel.textColor = barTextColor;
 
     self.followingHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
-    self.followingHeader.textColor = accentColor;
+    self.followingHeader.textColor = barTextColor;
 
-    UIColor *backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.userStatsBar.backgroundColor = backgroundColor;
     [self applyEditProfileButtonStyle];
 }
 
