@@ -29,16 +29,23 @@
 {
     [super layoutSubviews];
     
-    self.actionBar = [[VActionBar alloc] initWithFrame:self.bounds];
-    [self addSubview:self.actionBar];
-    [self v_addFitToParentConstraintsToSubview:self.actionBar];
-    
     // If we got a sequence before we setup our action bar
     if (self.sequence != nil)
     {
         [self updateActionItemsOnBar:self.actionBar
                          forSequence:self.sequence];
     }
+}
+
+- (VActionBar *)actionBar
+{
+    if (_actionBar == nil)
+    {
+        _actionBar = [[VActionBar alloc] initWithFrame:self.bounds];
+        [self addSubview:_actionBar];
+        [self v_addFitToParentConstraintsToSubview:_actionBar];
+    }
+    return _actionBar;
 }
 
 - (void)setSequence:(VSequence *)sequence

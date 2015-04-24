@@ -112,12 +112,18 @@
 
 - (CGFloat)minimumLineSpacing
 {
-    return 17.5f;
+    return 0.0f;
 }
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) + 75);
+    NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
+    
+    VSequence *sequence = (VSequence *)streamItem;
+
+    return [VHermesStreamCollectionViewCell actualSizeWithCollectionViewBounds:bounds
+                                                                      sequence:sequence
+                                                             dependencyManager:self.dependencyManager];
 }
 
 - (UIEdgeInsets)sectionInsets

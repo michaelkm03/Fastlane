@@ -25,6 +25,7 @@
 #import "VRoundedCommentButton.h"
 #import "VLargeNumberFormatter.h"
 #import "VSlantView.h"
+#import "VHermesActionView.h"
 
 // Models
 #import "VSequence+Fetcher.h"
@@ -35,6 +36,10 @@ static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 3.0f;
 static const CGFloat kHeaderHeight = 62.0f;
 static const CGFloat kSlantHeight = 58.0f;
+static const CGFloat kTopSpaceActionBarToTopOfSlant = 25.0f;
+static const CGFloat kMinimumCaptionContainerHeight = 15.0f;
+static const CGFloat kActionBarHeight = 30.0f;
+static const CGFloat kCreationInfoContainerHeight = 44.0f;
 
 @interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate>
 
@@ -43,9 +48,10 @@ static const CGFloat kSlantHeight = 58.0f;
 @property (nonatomic, strong) UIView *contentContainerView;
 @property (nonatomic, strong) UIView *captionContainerView;
 @property (nonatomic, strong) VActionBar *headerBar;
-@property (nonatomic, strong) VActionBar *actionBar;
+@property (nonatomic, strong) VHermesActionView *actionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
+@property (nonatomic, strong) UIImageView *gradientView;
 @property (nonatomic, strong) VSlantView *slantView;
 @property (nonatomic, strong) VRoundedCommentButton *commentButton;
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
@@ -95,33 +101,42 @@ static const CGFloat kSlantHeight = 58.0f;
 {
     if (!self.hasLayedOutViews)
     {
-        [self.contentView v_addFitToParentConstraintsToSubview:self.contentContainerView]; // remove me
         [self.contentView addSubview:self.captionContainerView];
         [self.contentView v_addPinToLeadingTrailingToSubview:self.captionContainerView];
         [self v_addPinToLeadingTrailingToSubview:self.contentContainerView]; // restoer me
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentContainerView][captionContainer(75)]|"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentContainerView][captionContainer(kMinimumCaptionContainerHeight)]|"
                                                                      options:kNilOptions
-                                                                     metrics:nil
+                                                                     metrics:@{@"kMinimumCaptionContainerHeight": @(kMinimumCaptionContainerHeight)}
                                                                        views:@{@"contentContainerView":self.contentContainerView,
                                                                                @"captionContainer": self.captionContainerView}]];
         [self.contentContainerView addSubview:self.slantView];
         [self.contentContainerView v_addPinToLeadingTrailingToSubview:self.slantView];
-        
-
         [self.contentContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[slantView(kSlantHeight)]|"
                                                                                           options:kNilOptions
                                                                                           metrics:@{@"kSlantHeight": @(kSlantHeight)}
                                                                                             views:@{@"slantView":self.slantView}]];
-        
+        [self.contentContainerView addSubview:self.gradientView];
+        [self.contentContainerView v_addPinToLeadingTrailingToSubview:self.gradientView];
+        [self.contentContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[gradient(kHeaderHeight)]"
+                                                                                          options:kNilOptions
+                                                                                          metrics:@{@"kHeaderHeight":@(kHeaderHeight)}
+                                                                                            views:@{@"gradient":self.gradientView}]];
         [self.contentContainerView addSubview:self.headerBar];
         [self.contentContainerView v_addPinToLeadingTrailingToSubview:self.headerBar];
         [self.contentContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerBar(kHeaderHeight)]"
                                                                                           options:kNilOptions
                                                                                           metrics:@{@"kHeaderHeight":@(kHeaderHeight)}
                                                                                             views:@{@"headerBar":self.headerBar}]];
-        
-
-
+        [self.contentView addSubview:self.actionBar];
+        [self.contentView v_addPinToLeadingTrailingToSubview:self.actionBar];
+        [self.actionBar v_addHeightConstraint:kActionBarHeight];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.actionBar
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.slantView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0f
+                                                                      constant:kTopSpaceActionBarToTopOfSlant]];
     }
     // Do any updates if we just created the views
     [self updateCaptionViewWithSequence:self.sequence];
@@ -139,6 +154,13 @@ static const CGFloat kSlantHeight = 58.0f;
     [self updateProfileButtonWithSequence:sequence];
     [self updateCreationInfoContainerWithSequence:sequence];
     [self updateCaptionViewWithSequence:sequence];
+    self.actionBar.sequence = sequence;
+}
+
+- (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)delegate
+{
+    [super setSequenceActionsDelegate:delegate];
+    self.actionBar.sequenceActionsDelegate = delegate;
 }
 
 #pragma mark - Property Accessors
@@ -182,6 +204,17 @@ static const CGFloat kSlantHeight = 58.0f;
     return _captionContainerView;
 }
 
+- (UIImageView *)gradientView
+{
+    if (_gradientView == nil)
+    {
+        _gradientView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"topGradient"]];
+        _gradientView.translatesAutoresizingMaskIntoConstraints = NO;
+        _gradientView.backgroundColor = [UIColor clearColor];
+    }
+    return _gradientView;
+}
+
 - (VSlantView *)slantView
 {
     if (_slantView == nil)
@@ -193,6 +226,17 @@ static const CGFloat kSlantHeight = 58.0f;
         _slantView.clipsToBounds = YES;
     }
     return _slantView;
+}
+
+- (VHermesActionView *)actionBar
+{
+    if (_actionBar == nil)
+    {
+        _actionBar = [[VHermesActionView alloc] init];
+        _actionBar.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    
+    return _actionBar;
 }
 
 - (VActionBar *)headerBar
@@ -216,7 +260,7 @@ static const CGFloat kSlantHeight = 58.0f;
         {
             [creationContainer setDependencyManager:self.dependencyManager];
         }
-        [creationContainer v_addHeightConstraint:44.0f];
+        [creationContainer v_addHeightConstraint:kCreationInfoContainerHeight];
         self.creationInfoContainer = creationContainer;
         
         VRoundedCommentButton *commentButton = [[VRoundedCommentButton alloc] initWithFrame:CGRectZero];
@@ -268,6 +312,7 @@ static const CGFloat kSlantHeight = 58.0f;
         self.slantView.slantColor = ((VSolidColorBackground *)slantBackground).backgroundColor;
         self.captionContainerView.backgroundColor = ((VSolidColorBackground *)slantBackground).backgroundColor;
     }
+    [self.actionBar setDependencyManager:dependencyManager];
 }
 
 #pragma mark - CCHLinkTextViewDelegate
@@ -292,17 +337,11 @@ static const CGFloat kSlantHeight = 58.0f;
 
 - (void)updateCaptionViewWithSequence:(VSequence *)sequence
 {
-    if ([[self class] canOverlayContentForSequence:sequence])
-    {
-        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name ?: @""
-                                                                              attributes:@{
-                                                                                           NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
-                                                                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
-                                                                                           }];
-    }
-    else
-    {
-    }
+    self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name ?: @""
+                                                                          attributes:@{
+                                                                                       NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
+                                                                                       NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
+                                                                                       }];
 }
 
 @end
@@ -313,7 +352,7 @@ static const CGFloat kSlantHeight = 58.0f;
                                     sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) + 50);
+    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) + kMinimumCaptionContainerHeight);
 }
 
 @end
