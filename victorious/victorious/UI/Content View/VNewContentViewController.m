@@ -517,9 +517,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if (self.viewModel.sequence.isImage)
     {
-        [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
-                                               placeholderImage:nil
-                                                      tintColor:nil];
+        [self.blurredBackgroundImageView applyTintAndBlurToImageWithURL:self.viewModel.imageURLRequest.URL
+                                                          withTintColor:nil];
     }
     else
     {
@@ -634,6 +633,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         [self.videoCell pause];
     }
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 - (BOOL)v_prefersNavigationBarHidden

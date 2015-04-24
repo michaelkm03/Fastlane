@@ -307,7 +307,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             }
             break;
         case VWorkspaceFlowControllerInitialCaptureStateVideo:
-            self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
+            self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
             break;
     }
     self.cameraViewController.shouldSkipPreview = YES;

@@ -154,7 +154,7 @@ static NSString * const kInitialKey = @"initial";
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
