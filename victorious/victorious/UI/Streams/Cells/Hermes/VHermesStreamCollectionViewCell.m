@@ -39,7 +39,7 @@ static const CGFloat kSlantHeight = 58.0f;
 static const CGFloat kMinimumCaptionContainerHeight = 15.0f;
 static const CGFloat kActionBarHeight = 30.0f;
 static const CGFloat kCreationInfoContainerHeight = 44.0f;
-static const UIEdgeInsets kTextInsets = {10.0f, 15.0f, 15.0f, 15.0f};
+static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
 
 @interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate>
 
