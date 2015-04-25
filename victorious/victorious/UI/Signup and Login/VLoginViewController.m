@@ -176,7 +176,8 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return [self.navigationController.presentingViewController prefersStatusBarHidden];
+    //Simply don't change the hidden state of the status bar
+    return [[UIApplication sharedApplication] isStatusBarHidden];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
