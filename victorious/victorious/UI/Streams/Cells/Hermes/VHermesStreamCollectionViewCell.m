@@ -214,10 +214,9 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
 {
     if (_contentContainerView == nil)
     {
-        UIView *contentContainerView = [[UIView alloc] initWithFrame:CGRectZero];
-        contentContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.contentView addSubview:contentContainerView];
-        _contentContainerView = contentContainerView;
+        _contentContainerView = [[UIView alloc] initWithFrame:CGRectZero];
+        _contentContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.contentView addSubview:_contentContainerView];
         [_contentContainerView addSubview:self.previewView];
         [_contentContainerView v_addFitToParentConstraintsToSubview:self.previewView];
     }
@@ -229,12 +228,11 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
 {
     if (_captionContainerView == nil)
     {
-        UIView *captionContainerView = [[UIView alloc] initWithFrame:CGRectZero];
-        captionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        captionContainerView.backgroundColor = [UIColor purpleColor];
-        [captionContainerView addSubview:self.captionTextView];
-        [captionContainerView v_addFitToParentConstraintsToSubview:self.captionTextView];
-        _captionContainerView = captionContainerView;
+        _captionContainerView = [[UIView alloc] initWithFrame:CGRectZero];
+        _captionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+        _captionContainerView.backgroundColor = [UIColor purpleColor];
+        [_captionContainerView addSubview:self.captionTextView];
+        [_captionContainerView v_addFitToParentConstraintsToSubview:self.captionTextView];
     }
     return _captionContainerView;
 }
