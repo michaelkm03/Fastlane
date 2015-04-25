@@ -76,8 +76,19 @@
  */
 @interface VAbstractStreamCollectionCell (Actions)
 
+/**
+ *  Base implementation checks conformance on sequenceActionsDelegate for the approrpiate 
+ *  delegate method and sends that message.
+ *
+ *  @param hashTag the hash tag selected from this cell.
+ */
 - (void)selectedHashTag:(NSString *)hashTag;
 
+
+/**
+ *  Base implementation checks conformance on sequenceActionsDelegate for the approrpiate
+ *  delegate method and sends that message.
+ */
 - (void)comment;
 
 @end
@@ -88,14 +99,25 @@
  *  themselves. External classes may call these methods using the sequence property of
  *  the VAbstractStreamCollectionCell for the sequence parameter.
  *
- *  Base implementation does nothing.
+ *  Base implementations do nothing.
  */
 @interface VAbstractStreamCollectionCell (UpdateHooks)
 
+/**
+ *  Subclasses should override this method to update comment counts for this sequence.
+ */
 - (void)updateCommentsForSequence:(VSequence *)sequence;
 
+/**
+ *  Subclass should override this method to update the username for the author of this 
+ *  sequence.
+ */
 - (void)updateUsernameForSequence:(VSequence *)sequence;
 
+/**
+ *  Subclasses should override this method ot update an avatar imageView for the author
+ *  of this sequence.
+ */
 - (void)updateUserAvatarForSequence:(VSequence *)sequence;
 
 @end
