@@ -121,6 +121,7 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
 {
     _dependencyManager = dependencyManager;
     // configure
+    
 }
 
 #pragma mark - Button Factory
@@ -151,6 +152,10 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
                    forSequence:(VSequence *)sequence
 {
     if (actionBar == nil)
+    {
+        return;
+    }
+    if (sequence == nil)
     {
         return;
     }
