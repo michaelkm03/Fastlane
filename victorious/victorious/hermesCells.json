@@ -1,0 +1,1090 @@
+{
+    "ad_systems": [
+        {
+            "ad_system": "1",
+            "publisher_id": "80355"
+        },
+        {
+            "ad_system": "3",
+            "tremor_app_id": "test"
+        }
+    ],
+    "appName": "Braindex",
+    "appStoreURL": "https://itunes.apple.com/us/app/id889351747",
+    "background": {
+        "color": {
+            "alpha": 255,
+            "blue": 0,
+            "green": 0,
+            "red": 0
+        },
+        "name": "solidColor.background"
+    },
+    "color": {
+        "alpha": 1,
+        "blue": 78,
+        "green": 37,
+        "red": 54
+    },
+    "color.accent": {
+        "alpha": 1,
+        "blue": 114,
+        "green": 132,
+        "red": 161
+    },
+    "color.accent.secondary": {
+        "alpha": 1,
+        "blue": 97,
+        "green": 112,
+        "red": 137
+    },
+    "color.background": {
+        "alpha": 1,
+        "blue": 0,
+        "green": 0,
+        "red": 0
+    },
+    "color.cancel": {
+        "alpha": 1,
+        "blue": 153,
+        "green": 153,
+        "red": 153
+    },
+    "color.link": {
+        "alpha": 1,
+        "blue": 112,
+        "green": 52,
+        "red": 236
+    },
+    "color.link.secondary": {
+        "alpha": 1,
+        "blue": 95,
+        "green": 44,
+        "red": 201
+    },
+    "color.text": {
+        "alpha": 1,
+        "blue": 255,
+        "green": 255,
+        "red": 255
+    },
+    "color.text.content": {
+        "alpha": 1,
+        "blue": 0,
+        "green": 0,
+        "red": 0
+    },
+    "email.support": "services@creator.us",
+    "font.button1": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 25
+    },
+    "font.button2": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 17
+    },
+    "font.header": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 18
+    },
+    "font.heading1": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 24
+    },
+    "font.heading2": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 20
+    },
+    "font.heading3": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 17
+    },
+    "font.heading4": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 15
+    },
+    "font.label1": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 13
+    },
+    "font.label2": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 12
+    },
+    "font.label3": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 11
+    },
+    "font.label4": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 10
+    },
+    "font.paragraph": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 13
+    },
+    "googlePlayStoreURL": "https://play.google.com/store/apps/details?id=com.getvictorious.dev",
+    "owner": {
+        "name": "Daily Grace",
+        "profile_image": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/8014f65c49262c46848877f3679cddbb/80x80.jpg"
+    },
+    "privacyURL": "http://dev.getvictorious.com/api/static/privacy",
+    "requireProfileImage": true,
+    "scaffold": {
+        "contentView": {
+            "histogram_enabled": false,
+            "name": "standard.contentView",
+            "orIcon": {
+                "imageURL": "A_pollOr"
+            },
+            "remixStream": {
+                "background": {
+                    "color": {
+                        "alpha": 1,
+                        "blue": 97,
+                        "green": 112,
+                        "red": 137
+                    },
+                    "name": "solidColor.background"
+                },
+                "canAddContent": false,
+                "createSequenceIcon": {
+                    "imageURL": "createContentButton"
+                },
+                "id": "55392ea135155",
+                "marqueeCell": {
+                    "loadingBackground": {
+                        "color": {
+                            "alpha": 0,
+                            "blue": 0,
+                            "green": 0,
+                            "red": 0
+                        },
+                        "image": {
+                            "imageURL": "pat_geometric"
+                        },
+                        "name": "tilePattern.background",
+                        "shimmerAnimationActive": true,
+                        "tiltParallax": true
+                    },
+                    "name": "fullscreen.marqueeCell",
+                    "orIcon": {
+                        "imageURL": "A_pollOr"
+                    }
+                },
+                "name": "stream.screen",
+                "streamCell": {
+                    "background": {
+                        "color": {
+                            "alpha": 255,
+                            "blue": 255,
+                            "green": 255,
+                            "red": 255
+                        },
+                        "name": "solidColor.background"
+                    },
+                    "loadingBackground": {
+                        "color": {
+                            "alpha": 0,
+                            "blue": 0,
+                            "green": 0,
+                            "red": 0
+                        },
+                        "image": {
+                            "imageURL": "pat_geometric"
+                        },
+                        "name": "tilePattern.background",
+                        "shimmerAnimationActive": true,
+                        "tiltParallax": true
+                    },
+                    "name": "hermes.streamCell",
+                    "showComments": true
+                },
+                "streamURL": "http://dev.getvictorious.com/api/sequence/remixes_by_sequence_with_marquee/%%SEQUENCE_ID%%/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                "title": "Remix"
+            }
+        },
+        "firstTimeContent": {
+            "name": "lightweight.contentView",
+            "sequenceURL": "http://dev.getvictorious.com/api/sequence/fetch/12318",
+            "tracking": {
+                "start": [
+                    "http://dev.getvictorious.com/api/tracking/first_time_user"
+                ]
+            }
+        },
+        "hashtagStream": {
+            "background": {
+                "color": {
+                    "alpha": 1,
+                    "blue": 97,
+                    "green": 112,
+                    "red": 137
+                },
+                "name": "solidColor.background"
+            },
+            "canAddContent": false,
+            "createSequenceIcon": {
+                "imageURL": "createContentButton"
+            },
+            "id": "55392ea1351ec",
+            "marqueeCell": {
+                "loadingBackground": {
+                    "color": {
+                        "alpha": 0,
+                        "blue": 0,
+                        "green": 0,
+                        "red": 0
+                    },
+                    "image": {
+                        "imageURL": "pat_geometric"
+                    },
+                    "name": "tilePattern.background",
+                    "shimmerAnimationActive": true,
+                    "tiltParallax": true
+                },
+                "name": "fullscreen.marqueeCell",
+                "orIcon": {
+                    "imageURL": "A_pollOr"
+                }
+            },
+            "name": "hashtagStream.screen",
+            "streamCell": {
+                "background": {
+                    "color": {
+                        "alpha": 255,
+                        "blue": 255,
+                        "green": 255,
+                        "red": 255
+                    },
+                    "name": "solidColor.background"
+                },
+                "loadingBackground": {
+                    "color": {
+                        "alpha": 0,
+                        "blue": 0,
+                        "green": 0,
+                        "red": 0
+                    },
+                    "image": {
+                        "imageURL": "pat_geometric"
+                    },
+                    "name": "tilePattern.background",
+                    "shimmerAnimationActive": true,
+                    "tiltParallax": true
+                },
+                "name": "hermes.streamCell",
+                "showComments": true
+            },
+            "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_hashtag_with_marquee/%%HASHTAG%%/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+            "title": null
+        },
+        "initialScreen": {
+            "referenceID": "55392ea134f91"
+        },
+        "menu": {
+            "background": {
+                "color": {
+                    "alpha": 255,
+                    "blue": 255,
+                    "green": 255,
+                    "red": 255
+                },
+                "name": "solidColor.background"
+            },
+            "color.link": {
+                "alpha": 1,
+                "blue": 112,
+                "green": 52,
+                "red": 236
+            },
+            "color.link.secondary": {
+                "alpha": 1,
+                "blue": 95,
+                "green": 44,
+                "red": 201
+            },
+            "items": [
+                {
+                    "destination": {
+                        "id": "55392ea134f91",
+                        "initial": {
+                            "referenceID": "55392ea134e2f"
+                        },
+                        "name": "basic.multiScreen",
+                        "screens": [
+                            {
+                                "background": {
+                                    "color": {
+                                        "alpha": 1,
+                                        "blue": 97,
+                                        "green": 112,
+                                        "red": 137
+                                    },
+                                    "name": "solidColor.background"
+                                },
+                                "canAddContent": false,
+                                "createSequenceIcon": {
+                                    "imageURL": "createContentButton"
+                                },
+                                "destinationDirectory": {
+                                    "background": {
+                                        "color": {
+                                            "alpha": 255,
+                                            "blue": 255,
+                                            "green": 255,
+                                            "red": 255
+                                        },
+                                        "name": "solidColor.background"
+                                    },
+                                    "icon": {
+                                        "imageURL": "A_channels"
+                                    },
+                                    "identifier": "Menu Channels",
+                                    "name": "streamDirectory.screen",
+                                    "selectedIcon": {
+                                        "imageURL": "A_channels_selected"
+                                    },
+                                    "streamCell": {
+                                        "background": {
+                                            "color": {
+                                                "alpha": 255,
+                                                "blue": 255,
+                                                "green": 255,
+                                                "red": 255
+                                            },
+                                            "name": "solidColor.background"
+                                        },
+                                        "loadingBackground": {
+                                            "color": {
+                                                "alpha": 0,
+                                                "blue": 0,
+                                                "green": 0,
+                                                "red": 0
+                                            },
+                                            "image": {
+                                                "imageURL": "pat_geometric"
+                                            },
+                                            "name": "tilePattern.background",
+                                            "shimmerAnimationActive": true,
+                                            "tiltParallax": true
+                                        },
+                                        "name": "hermes.streamCell",
+                                        "showComments": true
+                                    },
+                                    "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                },
+                                "id": "55392ea134e2f",
+                                "marqueeCell": {
+                                    "loadingBackground": {
+                                        "color": {
+                                            "alpha": 0,
+                                            "blue": 0,
+                                            "green": 0,
+                                            "red": 0
+                                        },
+                                        "image": {
+                                            "imageURL": "pat_geometric"
+                                        },
+                                        "name": "tilePattern.background",
+                                        "shimmerAnimationActive": true,
+                                        "tiltParallax": true
+                                    },
+                                    "name": "fullscreen.marqueeCell",
+                                    "orIcon": {
+                                        "imageURL": "A_pollOr"
+                                    }
+                                },
+                                "marqueeURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream/marquee/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                "name": "followingStream.screen",
+                                "streamCell": {
+                                    "background": {
+                                        "color": {
+                                            "alpha": 255,
+                                            "blue": 255,
+                                            "green": 255,
+                                            "red": 255
+                                        },
+                                        "name": "solidColor.background"
+                                    },
+                                    "loadingBackground": {
+                                        "color": {
+                                            "alpha": 0,
+                                            "blue": 0,
+                                            "green": 0,
+                                            "red": 0
+                                        },
+                                        "image": {
+                                            "imageURL": "pat_geometric"
+                                        },
+                                        "name": "tilePattern.background",
+                                        "shimmerAnimationActive": true,
+                                        "tiltParallax": true
+                                    },
+                                    "name": "hermes.streamCell",
+                                    "showComments": true
+                                },
+                                "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/following/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                "title": "Following"
+                            },
+                            {
+                                "name": "discover.screen",
+                                "title": "Discover"
+                            },
+                            {
+                                "background": {
+                                    "color": {
+                                        "alpha": 1,
+                                        "blue": 97,
+                                        "green": 112,
+                                        "red": 137
+                                    },
+                                    "name": "solidColor.background"
+                                },
+                                "canAddContent": false,
+                                "createSequenceIcon": {
+                                    "imageURL": "createContentButton"
+                                },
+                                "destinationDirectory": {
+                                    "background": {
+                                        "color": {
+                                            "alpha": 255,
+                                            "blue": 255,
+                                            "green": 255,
+                                            "red": 255
+                                        },
+                                        "name": "solidColor.background"
+                                    },
+                                    "icon": {
+                                        "imageURL": "A_channels"
+                                    },
+                                    "identifier": "Menu Channels",
+                                    "name": "streamDirectory.screen",
+                                    "selectedIcon": {
+                                        "imageURL": "A_channels_selected"
+                                    },
+                                    "streamCell": {
+                                        "background": {
+                                            "color": {
+                                                "alpha": 255,
+                                                "blue": 255,
+                                                "green": 255,
+                                                "red": 255
+                                            },
+                                            "name": "solidColor.background"
+                                        },
+                                        "loadingBackground": {
+                                            "color": {
+                                                "alpha": 0,
+                                                "blue": 0,
+                                                "green": 0,
+                                                "red": 0
+                                            },
+                                            "image": {
+                                                "imageURL": "pat_geometric"
+                                            },
+                                            "name": "tilePattern.background",
+                                            "shimmerAnimationActive": true,
+                                            "tiltParallax": true
+                                        },
+                                        "name": "hermes.streamCell",
+                                        "showComments": true
+                                    },
+                                    "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                },
+                                "id": "55392ea134ee5",
+                                "marqueeCell": {
+                                    "loadingBackground": {
+                                        "color": {
+                                            "alpha": 0,
+                                            "blue": 0,
+                                            "green": 0,
+                                            "red": 0
+                                        },
+                                        "image": {
+                                            "imageURL": "pat_geometric"
+                                        },
+                                        "name": "tilePattern.background",
+                                        "shimmerAnimationActive": true,
+                                        "tiltParallax": true
+                                    },
+                                    "name": "fullscreen.marqueeCell",
+                                    "orIcon": {
+                                        "imageURL": "A_pollOr"
+                                    }
+                                },
+                                "marqueeURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream/marquee/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                "name": "stream.screen",
+                                "streamCell": {
+                                    "background": {
+                                        "color": {
+                                            "alpha": 255,
+                                            "blue": 190,
+                                            "green": 237,
+                                            "red": 59
+                                        },
+                                        "name": "solidColor.background"
+                                    },
+                                    "loadingBackground": {
+                                        "color": {
+                                            "alpha": 0,
+                                            "blue": 0,
+                                            "green": 0,
+                                            "red": 0
+                                        },
+                                        "image": {
+                                            "imageURL": "pat_geometric"
+                                        },
+                                        "name": "tilePattern.background",
+                                        "shimmerAnimationActive": true,
+                                        "tiltParallax": true
+                                    },
+                                    "name": "hermes.streamCell",
+                                    "showComments": true
+                                },
+                                "orIcon": {
+                                "imageURL": "A_pollOr"
+                                },
+                                "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_category_with_marquee/owner_announcement,owner_image,owner_image_meme,owner_image_repost,owner_image_secret,owner_meme_repost,owner_secret_repost,owner_video,owner_video_remix,owner_poll,ugc_image,ugc_image_meme,ugc_image_repost,ugc_image_secret,ugc_meme_repost,ugc_secret_repost,ugc_video,ugc_video_remix,ugc_video_repost,ugc_poll/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                "title": "Recent"
+                            }
+                        ],
+                        "title": "Home",
+                        "titleImage": {
+                            "imageURL": "homeHeaderImage"
+                        }
+                    },
+                    "icon": {
+                        "imageURL": "A_home"
+                    },
+                    "identifier": "Menu Home",
+                    "selectedIcon": {
+                        "imageURL": "A_home_selected"
+                    },
+                    "title": "Home"
+                },
+                {
+                    "destination": {
+                        "marqueeCell": {
+                            "loadingBackground": {
+                                "color": {
+                                    "alpha": 0,
+                                    "blue": 0,
+                                    "green": 0,
+                                    "red": 0
+                                },
+                                "image": {
+                                    "imageURL": "pat_geometric"
+                                },
+                                "name": "tilePattern.background",
+                                "shimmerAnimationActive": true,
+                                "tiltParallax": true
+                            },
+                            "name": "fullscreen.marqueeCell",
+                            "orIcon": {
+                                "imageURL": "A_pollOr"
+                            }
+                        },
+                        "name": "streamDirectory.screen",
+                        "streamCell": {
+                            "background": {
+                                "color": {
+                                    "alpha": 255,
+                                    "blue": 255,
+                                    "green": 255,
+                                    "red": 255
+                                },
+                                "name": "solidColor.background"
+                            },
+                            "loadingBackground": {
+                                "color": {
+                                    "alpha": 0,
+                                    "blue": 0,
+                                    "green": 0,
+                                    "red": 0
+                                },
+                                "image": {
+                                    "imageURL": "pat_geometric"
+                                },
+                                "name": "tilePattern.background",
+                                "shimmerAnimationActive": true,
+                                "tiltParallax": true
+                            },
+                            "name": "hermes.streamCell",
+                            "showComments": true
+                        },
+                        "streamURL": "http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                        "title": "Channels"
+                    },
+                    "icon": {
+                        "imageURL": "A_channels"
+                    },
+                    "identifier": "Menu Channels",
+                    "selectedIcon": {
+                        "imageURL": "A_channels_selected"
+                    },
+                    "title": "Channels"
+                },
+                {
+                    "destination": {
+                        "name": "workspace"
+                    },
+                    "icon": {
+                        "imageURL": "A_create"
+                    },
+                    "selectedIcon": {
+                        "imageURL": "A_create_selected"
+                    },
+                    "title": "Create"
+                },
+                {
+                    "accessoryScreens": [
+                        {
+                            "destination": {
+                                "name": "settings.screen"
+                            },
+                            "icon": {
+                                "imageURL": "A_settings"
+                            },
+                            "identifier": "Menu Settings",
+                            "selectedIcon": {
+                                "imageURL": "A_settings_selected"
+                            },
+                            "title": "Settings"
+                        }
+                    ],
+                    "destination": {
+                        "background": {
+                            "color": {
+                                "alpha": 1,
+                                "blue": 97,
+                                "green": 112,
+                                "red": 137
+                            },
+                            "name": "solidColor.background"
+                        },
+                        "findFriendsIcon": {
+                            "imageURL": "A_findFriendsIcon"
+                        },
+                        "marqueeCell": {
+                            "loadingBackground": {
+                                "color": {
+                                    "alpha": 0,
+                                    "blue": 0,
+                                    "green": 0,
+                                    "red": 0
+                                },
+                                "image": {
+                                    "imageURL": "pat_geometric"
+                                },
+                                "name": "tilePattern.background",
+                                "shimmerAnimationActive": true,
+                                "tiltParallax": true
+                            },
+                            "name": "fullscreen.marqueeCell",
+                            "orIcon": {
+                                "imageURL": "A_pollOr"
+                            }
+                        },
+                        "name": "currentUserProfile.screen",
+                        "streamCell": {
+                            "background": {
+                                "color": {
+                                    "alpha": 255,
+                                    "blue": 255,
+                                    "green": 255,
+                                    "red": 255
+                                },
+                                "name": "solidColor.background"
+                            },
+                            "loadingBackground": {
+                                "color": {
+                                    "alpha": 0,
+                                    "blue": 0,
+                                    "green": 0,
+                                    "red": 0
+                                },
+                                "image": {
+                                    "imageURL": "pat_geometric"
+                                },
+                                "name": "tilePattern.background",
+                                "shimmerAnimationActive": true,
+                                "tiltParallax": true
+                            },
+                            "name": "hermes.streamCell",
+                            "showComments": true
+                        }
+                    },
+                    "editButtonStyle": "default",
+                    "icon": {
+                        "imageURL": "A_profile"
+                    },
+                    "identifier": "Menu Profile",
+                    "selectedIcon": {
+                        "imageURL": "A_profile_selected"
+                    },
+                    "title": "Profile"
+                },
+                {
+                    "destination": {
+                        "name": "basic.multiScreen",
+                        "screens": [
+                            {
+                                "name": "inbox.screen",
+                                "title": "Messages"
+                            },
+                            {
+                                "name": "notifications.screen",
+                                "title": "Notifications"
+                            }
+                        ],
+                        "title": "Inbox"
+                    },
+                    "icon": {
+                        "imageURL": "A_inbox"
+                    },
+                    "identifier": "Menu Inbox",
+                    "selectedIcon": {
+                        "imageURL": "A_inbox_selected"
+                    },
+                    "title": "Inbox"
+                }
+            ],
+            "name": "tab.menu"
+        },
+        "menuIcon": {
+            "imageURL": "Menu"
+        },
+        "name": "tabMenu.scaffold",
+        "navigationBarAppearance": {
+            "background": {
+                "color": {
+                    "alpha": 1,
+                    "blue": 97,
+                    "green": 112,
+                    "red": 137
+                },
+                "name": "solidColor.background"
+            },
+            "color.text": {
+                "alpha": 1,
+                "blue": 255,
+                "green": 255,
+                "red": 255
+            }
+        },
+        "selector": {
+            "background": {
+                "color": {
+                    "alpha": 1,
+                    "blue": 97,
+                    "green": 112,
+                    "red": 137
+                },
+                "name": "solidColor.background"
+            },
+            "name": "basic.multiScreenSelector"
+        },
+        "template_c_enabled": false,
+        "userProfileView": {
+            "background": {
+                "color": {
+                    "alpha": 1,
+                    "blue": 97,
+                    "green": 112,
+                    "red": 137
+                },
+                "name": "solidColor.background"
+            },
+            "editButtonStyle": "default",
+            "marqueeCell": {
+                "loadingBackground": {
+                    "color": {
+                        "alpha": 0,
+                        "blue": 0,
+                        "green": 0,
+                        "red": 0
+                    },
+                    "image": {
+                        "imageURL": "pat_geometric"
+                    },
+                    "name": "tilePattern.background",
+                    "shimmerAnimationActive": true,
+                    "tiltParallax": true
+                },
+                "name": "fullscreen.marqueeCell",
+                "orIcon": {
+                    "imageURL": "A_pollOr"
+                }
+            },
+            "name": "userProfile.screen",
+            "streamCell": {
+                "background": {
+                    "color": {
+                        "alpha": 255,
+                        "blue": 255,
+                        "green": 255,
+                        "red": 255
+                    },
+                    "name": "solidColor.background"
+                },
+                "loadingBackground": {
+                    "color": {
+                        "alpha": 0,
+                        "blue": 0,
+                        "green": 0,
+                        "red": 0
+                    },
+                    "image": {
+                        "imageURL": "pat_geometric"
+                    },
+                    "name": "tilePattern.background",
+                    "shimmerAnimationActive": true,
+                    "tiltParallax": true
+                },
+                "name": "hermes.streamCell",
+                "showComments": true
+            }
+        }
+    },
+    "streamAtfViewThreshold": 0.5,
+    "tosURL": "http://dev.getvictorious.com/api/tos",
+    "tracking": {
+        "init": [
+            "http://dev.getvictorious.com/api/tracking/app_init/?notification_id=%%NOTIF_ID%%"
+        ],
+        "install": [
+            "http://dev.getvictorious.com/api/tracking/app_install"
+        ],
+        "start": [
+            "http://dev.getvictorious.com/api/tracking/app_start/?notification_id=%%NOTIF_ID%%"
+        ],
+        "stop": [
+            "http://dev.getvictorious.com/api/tracking/app_stop/?session_time=%%SESSION_TIME%%"
+        ]
+    },
+    "voteTypes": [
+        {
+            "animationDuration": 500,
+            "appleProductID": null,
+            "displayOrder": 5,
+            "flightDuration": 500,
+            "googlePlayProductID": null,
+            "icon": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/icon/heart_icon.png"
+            },
+            "id": "55392ea135a17",
+            "images": {
+                "imageCount": 13,
+                "imageMacro": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_XXXXX.png",
+                "scale": 1
+            },
+            "isPaid": false,
+            "name": "animated.voteType",
+            "tracking": {
+                "ballistic_count": [
+                    "http://dev.getvictorious.com/api/tracking/vote/?sequence_id=%%SEQUENCE_ID%%&votetype_id=6&count=%%COUNT%%&realtime=%%TIME_CURRENT%%&stream_id=%%STREAM_ID%%"
+                ]
+            },
+            "value": "1",
+            "viewContentMode": "scaleaspectfill",
+            "voteTypeID": "6",
+            "voteTypeName": "heart"
+        },
+        {
+            "animationDuration": 500,
+            "appleProductID": "com.getvictorious.qa_eatyourkimchi.ballistic.spudgy",
+            "displayOrder": 2,
+            "flightDuration": 350,
+            "googlePlayProductID": "com.getvictorious.qa_eatyourkimchi.ballistic.spudgy",
+            "icon": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/7/icon/firework_icon.png"
+            },
+            "iconLarge": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/7/icon/firework_icon_large.png"
+            },
+            "id": "55392ea135bf1",
+            "images": {
+                "imageCount": 21,
+                "imageMacro": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/7/images/firework_XXXXX.png",
+                "scale": 2
+            },
+            "isPaid": true,
+            "name": "animated.voteType",
+            "tracking": {
+                "ballistic_count": [
+                    "http://dev.getvictorious.com/api/tracking/vote/?sequence_id=%%SEQUENCE_ID%%&votetype_id=7&count=%%COUNT%%&realtime=%%TIME_CURRENT%%&stream_id=%%STREAM_ID%%"
+                ]
+            },
+            "value": "0",
+            "viewContentMode": "scaleaspectfill",
+            "voteTypeID": "7",
+            "voteTypeName": "firework"
+        },
+        {
+            "animationDuration": 500,
+            "appleProductID": null,
+            "displayOrder": 7,
+            "flightDuration": 0,
+            "googlePlayProductID": null,
+            "icon": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/8/icon/sadface_icon.png"
+            },
+            "id": "55392ea135db8",
+            "images": {
+                "imageCount": 21,
+                "imageMacro": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/8/images/sadface_XXXXX.png",
+                "scale": 1
+            },
+            "isPaid": false,
+            "name": "animated.voteType",
+            "tracking": {
+                "ballistic_count": [
+                    "http://dev.getvictorious.com/api/tracking/vote/?sequence_id=%%SEQUENCE_ID%%&votetype_id=8&count=%%COUNT%%&realtime=%%TIME_CURRENT%%&stream_id=%%STREAM_ID%%"
+                ]
+            },
+            "value": "0",
+            "viewContentMode": "scaleaspectfill",
+            "voteTypeID": "8",
+            "voteTypeName": "sadface"
+        },
+        {
+            "animationDuration": 500,
+            "appleProductID": null,
+            "displayOrder": 3,
+            "flightDuration": 0,
+            "googlePlayProductID": null,
+            "icon": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/9/icon/lol_icon.png"
+            },
+            "id": "55392ea135f55",
+            "images": {
+                "imageCount": 25,
+                "imageMacro": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/9/images/lol_XXXXX.png",
+                "scale": 1
+            },
+            "isPaid": false,
+            "name": "animated.voteType",
+            "tracking": {
+                "ballistic_count": [
+                    "http://dev.getvictorious.com/api/tracking/vote/?sequence_id=%%SEQUENCE_ID%%&votetype_id=9&count=%%COUNT%%&realtime=%%TIME_CURRENT%%&stream_id=%%STREAM_ID%%"
+                ]
+            },
+            "value": "0",
+            "viewContentMode": "scaleaspectfill",
+            "voteTypeID": "9",
+            "voteTypeName": "lol"
+        },
+        {
+            "animationDuration": 500,
+            "appleProductID": null,
+            "displayOrder": 8,
+            "flightDuration": 0,
+            "googlePlayProductID": null,
+            "icon": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/11/icon/glitter_icon.png"
+            },
+            "id": "55392ea1360ef",
+            "images": {
+                "imageCount": 31,
+                "imageMacro": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/11/images/glitter_XXXXX.png",
+                "scale": 1
+            },
+            "isPaid": false,
+            "name": "animated.voteType",
+            "tracking": {
+                "ballistic_count": [
+                    "http://dev.getvictorious.com/api/tracking/vote/?sequence_id=%%SEQUENCE_ID%%&votetype_id=11&count=%%COUNT%%&realtime=%%TIME_CURRENT%%&stream_id=%%STREAM_ID%%"
+                ]
+            },
+            "value": "0",
+            "viewContentMode": "scaleaspectfill",
+            "voteTypeID": "11",
+            "voteTypeName": "glitter"
+        },
+        {
+            "animationDuration": 500,
+            "appleProductID": null,
+            "displayOrder": 6,
+            "flightDuration": 0,
+            "googlePlayProductID": null,
+            "icon": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/12/icon/kiss_icon.png"
+            },
+            "id": "55392ea136284",
+            "images": {
+                "imageCount": 21,
+                "imageMacro": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/12/images/kiss_XXXXX.png",
+                "scale": 1
+            },
+            "isPaid": false,
+            "name": "animated.voteType",
+            "tracking": {
+                "ballistic_count": [
+                    "http://dev.getvictorious.com/api/tracking/vote/?sequence_id=%%SEQUENCE_ID%%&votetype_id=12&count=%%COUNT%%&realtime=%%TIME_CURRENT%%&stream_id=%%STREAM_ID%%"
+                ]
+            },
+            "value": "0",
+            "viewContentMode": "scaleaspectfill",
+            "voteTypeID": "12",
+            "voteTypeName": "kiss"
+        },
+        {
+            "animationDuration": 500,
+            "appleProductID": null,
+            "displayOrder": 4,
+            "flightDuration": 0,
+            "googlePlayProductID": null,
+            "icon": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/17/icon/unicorn_icon.png"
+            },
+            "id": "55392ea136418",
+            "images": {
+                "imageCount": 37,
+                "imageMacro": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/17/images/unicorn_XXXXX.png",
+                "scale": 1
+            },
+            "isPaid": false,
+            "name": "animated.voteType",
+            "tracking": {
+                "ballistic_count": [
+                    "http://dev.getvictorious.com/api/tracking/vote/?sequence_id=%%SEQUENCE_ID%%&votetype_id=17&count=%%COUNT%%&realtime=%%TIME_CURRENT%%&stream_id=%%STREAM_ID%%"
+                ]
+            },
+            "value": "0",
+            "viewContentMode": "scaleaspectfill",
+            "voteTypeID": "17",
+            "voteTypeName": "unicorn"
+        },
+        {
+            "animationDuration": 1000,
+            "appleProductID": "com.getvictorious.qa_eatyourkimchi.ballistic.meemers",
+            "displayOrder": 1,
+            "flightDuration": 0,
+            "googlePlayProductID": "com.getvictorious.qa_eatyourkimchi.ballistic.meemers",
+            "icon": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/20/icon/meemers_icon.png"
+            },
+            "iconLarge": {
+                "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/20/icon/meemers_icon_large.png"
+            },
+            "id": "55392ea1365c0",
+            "images": {
+                "imageCount": 38,
+                "imageMacro": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/20/images/meemers_XXXXX.png",
+                "scale": 1
+            },
+            "isPaid": true,
+            "name": "animated.voteType",
+            "tracking": {
+                "ballistic_count": [
+                    "http://dev.getvictorious.com/api/tracking/vote/?sequence_id=%%SEQUENCE_ID%%&votetype_id=20&count=%%COUNT%%&realtime=%%TIME_CURRENT%%&stream_id=%%STREAM_ID%%"
+                ]
+            },
+            "value": "0",
+            "viewContentMode": "scaleaspectfill",
+            "voteTypeID": "20",
+            "voteTypeName": "meemers"
+        }
+    ]
+}

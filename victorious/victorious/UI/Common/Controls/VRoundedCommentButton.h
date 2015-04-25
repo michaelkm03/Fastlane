@@ -7,9 +7,12 @@
 //
 
 #import "VRoundedBackgroundButton.h"
-
 #import "VHasManagedDependencies.h"
 
+/**
+ *  Based off of the template D sleek cell. This class provides a reusable component
+ *  for comment buttons of that style.
+ */
 @interface VRoundedCommentButton : VRoundedBackgroundButton <VHasManagedDependencies>
 
 @end

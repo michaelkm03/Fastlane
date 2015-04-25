@@ -19,42 +19,12 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 @implementation VRoundedCommentButton
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
+#pragma mark - UIView
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (void)sharedInit
+- (void)layoutSubviews
 {
     [self setImage:[UIImage imageNamed:@"D_commentIcon"] forState:UIControlStateNormal];
 }
-
-#pragma mark - UIView
 
 - (CGSize)intrinsicContentSize
 {

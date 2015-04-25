@@ -679,6 +679,7 @@
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D83AC7A91AB201A600F63603 /* VPlayerView.m */; };
 		D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */; };
+		D84C338C1AEB3231006F0F3B /* hermesCells.json in Resources */ = {isa = PBXBuildFile; fileRef = D84C338B1AEB3231006F0F3B /* hermesCells.json */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86528EF1AE80628003832AC /* VAbstractStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */; };
@@ -2117,6 +2118,7 @@
 		D83AC7A91AB201A600F63603 /* VPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlayerView.m; sourceTree = "<group>"; };
 		D84558FE1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeStringFormatter.h; sourceTree = "<group>"; };
 		D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBadgeStringFormatter.m; sourceTree = "<group>"; };
+		D84C338B1AEB3231006F0F3B /* hermesCells.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = hermesCells.json; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
 		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
@@ -4599,6 +4601,7 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
+				D84C338B1AEB3231006F0F3B /* hermesCells.json */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
@@ -5834,6 +5837,7 @@
 				F04A7CB91AB7E1980092A374 /* VInsetStreamCollectionCellPoll.xib in Resources */,
 				03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */,
 				036F38811A0C4DEA0014DF66 /* OpenSans-Semibold.ttf in Resources */,
+				D84C338C1AEB3231006F0F3B /* hermesCells.json in Resources */,
 				036F38661A0C4DEA0014DF66 /* Arvo-Regular.ttf in Resources */,
 				036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */,
 				D88CEAE91A92EEED00F5A837 /* VSnapshotViewController.xib in Resources */,

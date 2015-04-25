@@ -10,6 +10,10 @@
 
 @protocol VActionBarFlexibleWidth <NSObject>
 
+/**
+ *  Return yes to inform VActionBar that this view can be stretched 
+ *  horizontally like a flexible width item.
+ */
 - (BOOL)canApplyFlexibleWidth;
 
 @end

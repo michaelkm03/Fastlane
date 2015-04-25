@@ -11,7 +11,11 @@
 // Libraries
 #import <FBKVOController.h>
 
+// Delegate
 #import "VSequenceActionsDelegate.h"
+
+// Dependencies
+#import "VDependencyManager.h"
 
 // Views
 #import "UIImageView+VLoadingAnimations.h"
@@ -31,7 +35,6 @@
 
 @property (nonatomic, strong, readwrite) UIView *previewView;
 @property (nonatomic, strong) UIImageView *previewImageView;
-@property (nonatomic, strong) UIImageView *playTriangleImageView;
 @property (nonatomic, strong) UIImageView *playCircleImageView;
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 @property (nonatomic, strong) VPollView *pollView;
@@ -124,11 +127,12 @@
                      forPollAnswer:VPollAnswerA];
         [self.pollView setImageURL:[[[sequence firstNode] answerB] previewMediaURL]
                      forPollAnswer:VPollAnswerB];
+        self.pollView.pollIcon = [self.dependencyManager imageForKey:@"orIcon"];
     }
     else if ([sequence isVideo])
     {
         [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
-        self.playButtonImageView.hidden = NO;
+        self.playCircleImageView.hidden = NO;
     }
     else if ([sequence isImage])
     {
@@ -151,21 +155,15 @@
     if (_playCircleImageView == nil)
     {
         _playCircleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayCircle"]];
+        _playCircleImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        UIImageView *playtriangle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayTriangle"]];
+        playtriangle.translatesAutoresizingMaskIntoConstraints = NO;
+        [_playCircleImageView addSubview:playtriangle];
+        [_playCircleImageView v_addFitToParentConstraintsToSubview:playtriangle];
         [self.previewView addSubview:_playCircleImageView];
         [self.previewView v_addCenterToParentContraintsToSubview:_playCircleImageView];
     }
     return _playCircleImageView;
-}
-
-- (UIImageView *)playButtonImageView
-{
-    if (_playTriangleImageView == nil)
-    {
-        _playTriangleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayTriangle"]];
-        [self.playCircleImageView addSubview:_playTriangleImageView];
-        [self.playCircleImageView v_addCenterToParentContraintsToSubview:_playTriangleImageView];
-    }
-    return _playTriangleImageView;
 }
 
 - (UIImageView *)previewImageView
@@ -214,6 +212,8 @@
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
+    
+    self.pollView.pollIcon = [dependencyManager imageForKey:@"orIcon"];
 }
 
 #pragma mark - VBackgroundContainer
