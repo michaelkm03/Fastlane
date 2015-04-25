@@ -64,8 +64,7 @@ static NSString *kOrIconKey = @"orIcon";
         return NO;
     }
 
-    BOOL nameIsEmpty = ((sequence.name.length == 0) || ([sequence.name isEqualToString:@""]));
-    if (nameIsEmpty)
+    if (sequence.name.length == 0)
     {
         return NO;
     }
