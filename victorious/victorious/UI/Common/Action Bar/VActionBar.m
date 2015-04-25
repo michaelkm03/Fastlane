@@ -28,7 +28,7 @@
 
 static const CGFloat kDefaultActionItemWidth = 44.0f;
 
-static NSString *kConstraintIdentifier = @"com.getVictorious.vActionBarConstraints";
+static NSString *kConstraintIdentifier = @"VActionBarConstraints";
 
 @implementation VActionBar
 
