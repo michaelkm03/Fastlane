@@ -8,8 +8,6 @@
 
 #import "VContentPollQuestionCell.h"
 
-#import "VThemeManager.h"
-
 #if CGFLOAT_IS_DOUBLE
 #define roundCGFloat(x) round(x)
 #define floorCGFloat(x) floor(x)
@@ -69,12 +67,6 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
     [[self sizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
                            forKey:keyForQuestionBoundsAndAttribute];
     return sizedPoll;
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    self.questionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
 - (void)setQuestion:(NSAttributedString *)question
