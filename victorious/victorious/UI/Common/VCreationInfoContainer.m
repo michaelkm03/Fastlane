@@ -232,7 +232,7 @@ static const CGFloat kDefaultHeight = 44.0f;
 - (void)updateParentUserLabelWithSequence:(VSequence *)sequence
 {
     // Format repost / remix string
-    NSString *parentUserString = sequence.user.name ?: @"";
+    NSString *parentUserString = sequence.realParentUser.name ?: @"";
     NSString *formattedString = nil;
     
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
@@ -287,6 +287,11 @@ static const CGFloat kDefaultHeight = 44.0f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
+    if (_dependencyManager == dependencyManager)
+    {
+        return;
+    }
+    
     _dependencyManager = dependencyManager;
 
     self.creatorLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
