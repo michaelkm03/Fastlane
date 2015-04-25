@@ -81,7 +81,7 @@
 
 - (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController
 {
-    if ( !viewController || !viewController.navigationController || user == nil )
+    if ( viewController == nil || viewController.navigationController == nil || user == nil )
     {
         return NO;
     }
