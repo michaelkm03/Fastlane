@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  VSlantView draws a slanted view from either left to right 
+ *  VSlantView draws a slanted view from left to right 
  *  as follows:
  *
  *  *
