@@ -414,7 +414,7 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
 
 - (void)updateCommentsForSequence:(VSequence *)sequence
 {
-    NSString *commentCount = self.sequence.commentCount.integerValue ? [self.numberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
+    NSString *commentCount = (self.sequence.commentCount.integerValue != 0) ? [self.numberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
 }
 
