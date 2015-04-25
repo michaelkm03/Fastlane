@@ -12,8 +12,8 @@
 @import AVFoundation;
 
 static const CGFloat kTrimHeadHeight = 44.0f;
-static const CGFloat kTrimHeadInset = 0.0f;
-static const CGFloat kTrimHeadWidth = 44.0f;
+static const CGFloat kTrimHeadInset = 4.0f;
+static const CGFloat kTrimHeadWidth = 56.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
 
 @interface VTrimControl () <UICollisionBehaviorDelegate, UIDynamicAnimatorDelegate>
