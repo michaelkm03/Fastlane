@@ -8,6 +8,9 @@
 
 #import "VHermesActionView.h"
 
+// Dependencies
+#import "VDependencyManager.h"
+
 // Stream Support
 #import "VSequence+Fetcher.h"
 
@@ -120,8 +123,16 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    // configure
+
+    if (_dependencyManager == dependencyManager)
+    {
+        return;
+    }
     
+    self.shareButton.tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.gifButton.tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.memeButton.tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.repostButton.tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }
 
 #pragma mark - Button Factory
