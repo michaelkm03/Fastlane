@@ -26,7 +26,7 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         [self sharedInit];
     }
@@ -36,7 +36,7 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if (self)
+    if (self != nil)
     {
         [self sharedInit];
     }
@@ -46,7 +46,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if (self != nil)
     {
         [self sharedInit];
     }
