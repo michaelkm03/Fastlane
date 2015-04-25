@@ -66,6 +66,15 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
     return [NSString stringWithString:identifier];
 }
 
+#pragma mark - VAbstractActionView
+
+- (void)setReposting:(BOOL)reposting
+{
+    [super setReposting:reposting];
+    
+    self.repostButtonController.reposting = reposting;
+}
+
 #pragma mark - Property Accessors
 
 - (UIButton *)shareButton
@@ -185,7 +194,7 @@ static const CGFloat kInterActionButtonSpacing = 11.0f;
     [self.repostButtonController invalidate];
     self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
                                                                        repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"B_stream_repost-success"]
+                                                                      repostedImage:[UIImage imageNamed:@"B_stream_reposted"]
                                                                     unRepostedImage:[UIImage imageNamed:@"B_stream_repost"]];
 
 }

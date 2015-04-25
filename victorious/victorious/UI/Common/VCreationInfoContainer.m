@@ -22,6 +22,7 @@
 
 // Formatters
 #import "VLargeNumberFormatter.h"
+#import "NSDate+timeSince.h"
 
 // Views + Helpers
 #import "UIView+Autolayout.h"
@@ -225,7 +226,7 @@ static const CGFloat kDefaultHeight = 44.0f;
     self.creatorLabel.text = [sequence originalPoster].name;
     [self updateParentUserLabelWithSequence:sequence];
 #warning Update timeAgo label
-    self.timeSinceLabel.text = @"5h";
+    self.timeSinceLabel.text = [sequence.releasedAt timeSince];
     [self setNeedsUpdateConstraints];
 }
 
