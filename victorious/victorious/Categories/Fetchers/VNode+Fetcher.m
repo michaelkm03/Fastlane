@@ -34,7 +34,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
     {
         return nil;
     }
-    VAnswer *answerB;
+    VAnswer *answerB = nil;
     if ([self firstAnswers].count > 1)
     {
         answerB = [self firstAnswers][1];

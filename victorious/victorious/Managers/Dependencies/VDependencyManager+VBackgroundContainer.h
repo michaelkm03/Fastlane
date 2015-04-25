@@ -24,7 +24,8 @@
 
 /**
  *  Adds a loading background to background hosts that provide a loading backgroundContainer. 
- *  Only adds the background if the viewForBackground has not VBackground subviews.
+ *  Only adds the background if the viewForBackground has no VBackground subviews. Will send 
+ *  the background view to the bottom of the subviews stack.
  *
  *  @param backgroundHost An object that conforms to <VBackgroundContainer>
  */
