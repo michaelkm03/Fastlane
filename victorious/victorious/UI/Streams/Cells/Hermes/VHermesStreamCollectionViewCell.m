@@ -165,9 +165,10 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
 {
     [super setSequence:sequence];
     
+    [self updateCaptionViewWithSequence:sequence];
     [self updateProfileButtonWithSequence:sequence];
     [self updateCreationInfoContainerWithSequence:sequence];
-    [self updateCaptionViewWithSequence:sequence];
+    [self updateCommentsForSequence:self.sequence];
     
     self.actionBar.sequence = sequence;
     self.commentButton.hidden = ![sequence canComment];
