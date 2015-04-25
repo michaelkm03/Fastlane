@@ -3,44 +3,44 @@
 <plist version="1.0">
 <array>
 	<dict>
-		<key>name</key>
-		<string>Local</string>
 		<key>appID</key>
 		<integer>1</integer>
 		<key>baseURL</key>
 		<string>http://local.getvictorious.com</string>
+		<key>name</key>
+		<string>Local</string>
 	</dict>
 	<dict>
-		<key>name</key>
-		<string>Dev</string>
 		<key>appID</key>
 		<integer>1</integer>
 		<key>baseURL</key>
 		<string>http://dev.getvictorious.com</string>
+		<key>name</key>
+		<string>Dev</string>
 	</dict>
 	<dict>
-		<key>name</key>
-		<string>QA</string>
 		<key>appID</key>
 		<integer>1</integer>
 		<key>baseURL</key>
 		<string>http://qa.getvictorious.com</string>
+		<key>name</key>
+		<string>QA</string>
 	</dict>
 	<dict>
-		<key>name</key>
-		<string>Staging</string>
 		<key>appID</key>
 		<integer>1</integer>
 		<key>baseURL</key>
 		<string>https://staging.getvictorious.com</string>
+		<key>name</key>
+		<string>Staging</string>
 	</dict>
 	<dict>
-		<key>name</key>
-		<string>Production</string>
 		<key>appID</key>
 		<integer>1</integer>
 		<key>baseURL</key>
 		<string>https://api.getvictorious.com</string>
+		<key>name</key>
+		<string>Production</string>
 	</dict>
 </array>
 </plist>
