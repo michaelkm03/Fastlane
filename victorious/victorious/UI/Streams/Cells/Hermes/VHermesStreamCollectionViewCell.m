@@ -22,7 +22,6 @@
 #import "VActionBarFixedWidthItem.h"
 #import "VCreationInfoContainer.h"
 #import "VDefaultProfileButton.h"
-#import "VRoundedCommentButton.h"
 #import "VLargeNumberFormatter.h"
 #import "VSlantView.h"
 #import "VHermesActionView.h"
@@ -55,7 +54,7 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) UIImageView *gradientView;
 @property (nonatomic, strong) VSlantView *slantView;
-@property (nonatomic, strong) VRoundedCommentButton *commentButton;
+@property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 
@@ -171,6 +170,7 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
     [self updateCaptionViewWithSequence:sequence];
     
     self.actionBar.sequence = sequence;
+    self.commentButton.hidden = ![sequence canComment];
 }
 
 - (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)delegate
@@ -180,6 +180,22 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
 }
 
 #pragma mark - Property Accessors
+
+- (UIButton *)commentButton
+{
+    if (_commentButton == nil)
+    {
+        _commentButton = [[UIButton alloc] initWithFrame:CGRectZero];
+        _commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        _commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+        [_commentButton setImage:[[UIImage imageNamed:@"StreamComments"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        [_commentButton addTarget:self action:@selector(comment) forControlEvents:UIControlEventTouchUpInside];
+        _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_commentButton v_addWidthConstraint:kCreationInfoContainerHeight];
+        [_commentButton v_addHeightConstraint:kCreationInfoContainerHeight];
+    }
+    return _commentButton;
+}
 
 - (VHashTagTextView *)captionTextView
 {
@@ -282,20 +298,11 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
         [creationContainer v_addHeightConstraint:kCreationInfoContainerHeight];
         self.creationInfoContainer = creationContainer;
         
-        VRoundedCommentButton *commentButton = [[VRoundedCommentButton alloc] initWithFrame:CGRectZero];
-        [commentButton addTarget:self action:@selector(comment) forControlEvents:UIControlEventTouchUpInside];
-        commentButton.translatesAutoresizingMaskIntoConstraints = NO;
-        self.commentButton = commentButton;
-        if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
-        {
-            [self.commentButton setDependencyManager:self.dependencyManager];
-        }
-        
         headerBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
                                   button,
                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
                                   creationContainer,
-                                  commentButton,
+                                  self.commentButton,
                                   [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
     }
     
@@ -323,7 +330,8 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
     }
     if ([self.commentButton respondsToSelector:@selector(setDependencyManager:)])
     {
-        [self.commentButton setDependencyManager:dependencyManager];
+        self.commentButton.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+        self.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     }
     VBackground *slantBackground = [dependencyManager background];
     if ([slantBackground isKindOfClass:[VSolidColorBackground class]])
