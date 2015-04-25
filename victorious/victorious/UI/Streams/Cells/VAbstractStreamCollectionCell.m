@@ -31,6 +31,8 @@
 #import "VNode+Fetcher.h"
 #import "VAnswer+Fetcher.h"
 
+static NSString *kOrIconKey = @"orIcon";
+
 @interface VAbstractStreamCollectionCell ()
 
 @property (nonatomic, strong, readwrite) UIView *previewView;
@@ -99,13 +101,6 @@
     
     if ([sequence isText])
     {
-        if (self.textPostViewController == nil)
-        {
-            self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-            [self.previewView addSubview:self.textPostViewController.view];
-            [self.previewView v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-        }
-        
         VAsset *textAsset = [self.sequence.firstNode textAsset];
         if ( textAsset.data != nil )
         {
@@ -117,17 +112,11 @@
     }
     else if ([sequence isPoll])
     {
-        if (self.pollView == nil)
-        {
-            self.pollView = [[VPollView alloc] initWithFrame:CGRectZero];
-            [self.previewView addSubview:self.pollView];
-            [self.previewView v_addFitToParentConstraintsToSubview:self.pollView];
-        }
         [self.pollView setImageURL:[[[sequence firstNode] answerA] previewMediaURL]
                      forPollAnswer:VPollAnswerA];
         [self.pollView setImageURL:[[[sequence firstNode] answerB] previewMediaURL]
                      forPollAnswer:VPollAnswerB];
-        self.pollView.pollIcon = [self.dependencyManager imageForKey:@"orIcon"];
+        self.pollView.pollIcon = [self.dependencyManager imageForKey:kOrIconKey];
     }
     else if ([sequence isVideo])
     {
@@ -148,6 +137,28 @@
     }
     
     [self updateCommentsForSequence:_sequence];
+}
+
+- (VTextPostViewController *)textPostViewController
+{
+    if (_textPostViewController == nil)
+    {
+        _textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+        [self.previewView addSubview:_textPostViewController.view];
+        [self.previewView v_addFitToParentConstraintsToSubview:_textPostViewController.view];
+    }
+    return _textPostViewController;
+}
+
+- (VPollView *)pollView
+{
+    if (_pollView == nil)
+    {
+        _pollView = [[VPollView alloc] initWithFrame:CGRectZero];
+        [self.previewView addSubview:_pollView];
+        [self.previewView v_addFitToParentConstraintsToSubview:_pollView];
+    }
+    return _pollView;
 }
 
 - (UIImageView *)playCircleImageView
