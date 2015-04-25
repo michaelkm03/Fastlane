@@ -36,11 +36,10 @@ static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 3.0f;
 static const CGFloat kHeaderHeight = 62.0f;
 static const CGFloat kSlantHeight = 58.0f;
-static const CGFloat kTopSpaceActionBarToTopOfSlant = 25.0f;
 static const CGFloat kMinimumCaptionContainerHeight = 15.0f;
 static const CGFloat kActionBarHeight = 30.0f;
 static const CGFloat kCreationInfoContainerHeight = 44.0f;
-static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
+static const UIEdgeInsets kTextInsets = {10.0f, 15.0f, 15.0f, 15.0f};
 
 @interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate>
 
@@ -143,12 +142,12 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
         [self.contentView v_addPinToLeadingTrailingToSubview:self.actionBar];
         [self.actionBar v_addHeightConstraint:kActionBarHeight];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.actionBar
-                                                                     attribute:NSLayoutAttributeTop
+                                                                     attribute:NSLayoutAttributeBottom
                                                                      relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.slantView
+                                                                        toItem:self.captionContainerView
                                                                      attribute:NSLayoutAttributeTop
                                                                     multiplier:1.0f
-                                                                      constant:kTopSpaceActionBarToTopOfSlant]];
+                                                                      constant:0.0f]];
         self.hasLayedOutViews = YES;
     }
     
@@ -393,7 +392,7 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
                                     sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    CGSize size = CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) + kMinimumCaptionContainerHeight);
+    CGSize size = CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
     
     if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
     {
@@ -402,6 +401,10 @@ static const UIEdgeInsets kTextInsets = {0.0f, 15.0f, 25.0f, 15.0f};
         CGSize textSize = [sequence.name frameSizeForWidth:insetWidth
                                              andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
         size.height += textSize.height + kTextInsets.top + kTextInsets.bottom;
+    }
+    else
+    {
+        size.height += kMinimumCaptionContainerHeight;
     }
     
     return size;
