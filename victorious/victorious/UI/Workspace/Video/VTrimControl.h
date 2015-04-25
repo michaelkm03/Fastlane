@@ -11,9 +11,6 @@
 #import <CoreMedia/CMTime.h>
 #import <CoreMedia/CMTimeRange.h>
 
-extern const CGFloat VTrimHeadHeight;
-extern const CGFloat VTrimHeadInset;
-
 // Sends UIControlEventValueChanged on new selection
 
 /**
@@ -35,5 +32,10 @@ extern const CGFloat VTrimHeadInset;
  *  The current time duration selected by the trim control.
  */
 @property (nonatomic, readonly) CMTime selectedDuration;
+
+/**
+ *  The height of the trimmer body plus the vertical inset of the body
+ */
++ (CGFloat)topPadding;
 
 @end

@@ -381,7 +381,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
     NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollectionView,
                               @"titleLabel": self.titleLabel};
-    CGFloat topPadding = VTrimHeadHeight + VTrimHeadInset;
+    CGFloat topPadding = [VTrimControl topPadding];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
