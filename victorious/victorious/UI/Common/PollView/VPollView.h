@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
       forPollAnswer:(VPollAnswer)pollAnswer;
 
 /**
- *  The poll icon to use. Defaults to nil.
+ *  The poll icon to use. Defaults to D_pollOr.
  */
 @property (nonatomic, strong) UIImage *pollIcon;
 

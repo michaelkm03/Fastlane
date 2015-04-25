@@ -63,7 +63,7 @@
     self.answerBImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.answerBImageView];
     
-#warning Make this template driven
+    // D_pollOr is the default 
     self.pollIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"D_pollOr"]];
     self.pollIconImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.pollIconImageView];
