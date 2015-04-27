@@ -129,10 +129,13 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     UIColor *contentTextColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *secondaryLinkColor = [dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
     
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = secondaryLinkColor.CGColor;
+    self.profileImageView.tintColor = linkColor;
+    self.profileImageView.backgroundColor = secondaryLinkColor;
     
     self.primaryActionButton.primaryColor = secondaryLinkColor;
     self.primaryActionButton.secondaryColor = secondaryLinkColor;
