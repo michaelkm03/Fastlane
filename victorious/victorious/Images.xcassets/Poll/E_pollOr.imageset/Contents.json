@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "D_orIcon.png"
+      "filename" : "A_orIcon.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "D_orIcon@2x.png"
+      "filename" : "A_orIcon@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "D_pollOr@3x.png"
+      "filename" : "A_pollOr@3x.png"
     }
   ],
   "info" : {
