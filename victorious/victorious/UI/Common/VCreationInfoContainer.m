@@ -141,6 +141,13 @@ static const CGFloat kDefaultHeight = 44.0f;
                                                          attribute:NSLayoutAttributeCenterY
                                                         multiplier:1.0f
                                                           constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.timeSinceLabel
+                                                         attribute:NSLayoutAttributeRight
+                                                         relatedBy:NSLayoutRelationLessThanOrEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeRight
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[parentUserLabel]|"
                                                                      options:kNilOptions
                                                                      metrics:nil
