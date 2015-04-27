@@ -232,7 +232,7 @@ static const CGFloat kDefaultHeight = 44.0f;
 - (void)updateParentUserLabelWithSequence:(VSequence *)sequence
 {
     // Format repost / remix string
-    NSString *parentUserString = sequence.realParentUser.name ?: @"";
+    NSString *parentUserString = sequence.displayParentUser.name ?: @"";
     NSString *formattedString = nil;
     
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
