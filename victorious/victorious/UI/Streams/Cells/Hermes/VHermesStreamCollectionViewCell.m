@@ -365,7 +365,7 @@ static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
 
 - (void)updateProfileButtonWithSequence:(VSequence *)sequence
 {
-    [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
+    [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.displayOriginalPoster.pictureUrl]
                                   forState:UIControlStateNormal];
 }
 
