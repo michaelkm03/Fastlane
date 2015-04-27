@@ -21,6 +21,7 @@
 @interface VHermesStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) NSMutableSet *registeredIdentifiers;
 
 @end
 
@@ -32,6 +33,7 @@
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
+        _registeredIdentifiers = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -54,17 +56,21 @@
         NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
         
         VSequence *sequence = (VSequence *)streamItem;
-        
+
+        NSString *reuseIdentifier = nil;
         if ([sequence isPreviewWebContent])
         {
+            reuseIdentifier = [VStreamCollectionCellWebContent suggestedReuseIdentifier];
             [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
-             forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
+             forCellWithReuseIdentifier:reuseIdentifier];
         }
         else
         {
+            reuseIdentifier = [VHermesStreamCollectionViewCell reuseIdentifierForSequence:sequence];
             [collectionView registerClass:[VHermesStreamCollectionViewCell class]
-               forCellWithReuseIdentifier:[VHermesStreamCollectionViewCell reuseIdentifierForSequence:sequence]];
+               forCellWithReuseIdentifier:reuseIdentifier];
         }
+        [self.registeredIdentifiers addObject:reuseIdentifier];
     }
 }
 
@@ -86,6 +92,11 @@
     }
     else
     {
+        if (![self.registeredIdentifiers containsObject:[VHermesStreamCollectionViewCell reuseIdentifierForSequence:sequence]])
+        {
+            [self registerCellsWithCollectionView:collectionView
+                                  withStreamItems:@[sequence]];
+        }
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHermesStreamCollectionViewCell reuseIdentifierForSequence:sequence]
                                                          forIndexPath:indexPath];
     }

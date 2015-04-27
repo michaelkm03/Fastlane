@@ -177,9 +177,9 @@
                     "background": {
                         "color": {
                             "alpha": 255,
-                            "blue": 255,
-                            "green": 255,
-                            "red": 255
+                            "blue": 190,
+                            "green": 237,
+                            "red": 59
                         },
                         "name": "solidColor.background"
                     },
@@ -253,9 +253,9 @@
                 "background": {
                     "color": {
                         "alpha": 255,
-                        "blue": 255,
-                        "green": 255,
-                        "red": 255
+                        "blue": 190,
+                        "green": 237,
+                        "red": 59
                     },
                     "name": "solidColor.background"
                 },
@@ -349,9 +349,9 @@
                                         "background": {
                                             "color": {
                                                 "alpha": 255,
-                                                "blue": 255,
-                                                "green": 255,
-                                                "red": 255
+                                                "blue": 190,
+                                                "green": 237,
+                                                "red": 59
                                             },
                                             "name": "solidColor.background"
                                         },
@@ -401,9 +401,9 @@
                                     "background": {
                                         "color": {
                                             "alpha": 255,
-                                            "blue": 255,
-                                            "green": 255,
-                                            "red": 255
+                                            "blue": 190,
+                                            "green": 237,
+                                            "red": 59
                                         },
                                         "name": "solidColor.background"
                                     },
@@ -467,9 +467,9 @@
                                         "background": {
                                             "color": {
                                                 "alpha": 255,
-                                                "blue": 255,
-                                                "green": 255,
-                                                "red": 255
+                                                "blue": 190,
+                                                "green": 237,
+                                                "red": 59
                                             },
                                             "name": "solidColor.background"
                                         },
@@ -822,9 +822,9 @@
                 "background": {
                     "color": {
                         "alpha": 255,
-                        "blue": 255,
-                        "green": 255,
-                        "red": 255
+                        "blue": 190,
+                        "green": 237,
+                        "red": 59
                     },
                     "name": "solidColor.background"
                 },

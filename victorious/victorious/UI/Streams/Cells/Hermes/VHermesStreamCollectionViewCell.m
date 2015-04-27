@@ -206,6 +206,7 @@ static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
         _captionTextView.translatesAutoresizingMaskIntoConstraints = NO;
         _captionTextView.backgroundColor = [UIColor clearColor];
         _captionTextView.textContainerInset = kTextInsets;
+        _captionTextView.scrollEnabled = NO;
     }
     return _captionTextView;
 }
