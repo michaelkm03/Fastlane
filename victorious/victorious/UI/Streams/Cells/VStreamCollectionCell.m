@@ -42,7 +42,7 @@
 #import "UIColor+VHex.h"
 #import "VTextPostViewController.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
+@interface VStreamCollectionCell() <CCHLinkTextViewDelegate, VVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 
@@ -87,7 +87,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
                                                                    views:views]];
     self.captionTextView.textContainer.lineFragmentPadding = VStreamCollectionCellTextViewLineFragmentPadding;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
-    self.streamCellHeaderView.delegate = self;
 }
 
 - (NSString *)headerViewNibName
@@ -329,24 +328,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
-}
-
-#pragma mark - VSequenceActionsDelegate
-
-- (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
-    }
-}
-
-- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate selectedUserOnSequence:self.sequence fromView:self];
-    }
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods
