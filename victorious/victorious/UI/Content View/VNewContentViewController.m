@@ -517,9 +517,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if (self.viewModel.sequence.isImage)
     {
-        [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
-                                               placeholderImage:nil
-                                                      tintColor:nil];
+        [self.blurredBackgroundImageView applyTintAndBlurToImageWithURL:self.viewModel.imageURLRequest.URL
+                                                          withTintColor:nil];
     }
     else
     {
@@ -634,6 +633,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         [self.videoCell pause];
     }
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 - (BOOL)v_prefersNavigationBarHidden
@@ -1047,6 +1051,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
                 self.ballotCell.answerA = [[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
                 self.ballotCell.answerB = [[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}];
+                self.ballotCell.orImageView.image = [self.dependencyManager imageForKey:kPollBallotIconKey];
                 
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)

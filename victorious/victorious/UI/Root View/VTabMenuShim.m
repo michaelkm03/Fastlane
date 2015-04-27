@@ -30,6 +30,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong, readwrite) VBackground *background;
 @property (nonatomic, strong) NSArray *badgeProviders;
+@property (nonatomic, strong) NSArray *menuItems;
 @property (nonatomic, retain) UIColor *unselectedIconColor;
 
 @end
@@ -45,6 +46,7 @@
         _background = [dependencyManager templateValueOfType:[VBackground class] forKey:@"background"];
         _selectedIconColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         _unselectedIconColor = [dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
+        _menuItems = [dependencyManager menuItems];
     }
     return self;
 }
@@ -53,8 +55,7 @@
 {
     NSMutableArray *wrappedMenuItems = [[NSMutableArray alloc] init];
     NSMutableArray *badgeProviders = [[NSMutableArray alloc] init];
-    NSArray *menuItems = [self.dependencyManager menuItems];
-    for (VNavigationMenuItem *menuItem in menuItems)
+    for (VNavigationMenuItem *menuItem in self.menuItems)
     {
         if ( menuItem.destination == nil )
         {
@@ -73,16 +74,17 @@
             {
                 id <VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
                 __weak typeof(self) welf = self;
+                __weak VNavigationDestinationContainerViewController *weakShim = shimViewController;
                 [badgeProvider setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
                 {
                     [welf updateApplicationBadge];
                     if (badgeNumber > 0)
                     {
-                        shimViewController.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+                        weakShim.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
                     }
                     else
                     {
-                        shimViewController.tabBarItem.badgeValue = nil;
+                        weakShim.tabBarItem.badgeValue = nil;
                     }
                 }];
                 [badgeProviders addObject:badgeProvider];
@@ -112,7 +114,7 @@
 - (void)willNavigateToIndex:(NSInteger)index
 {
     // Track selection of main menu item
-    VNavigationMenuItem *menuItem = [[self.dependencyManager menuItems] objectAtIndex:index];
+    VNavigationMenuItem *menuItem = self.menuItems[index];
     NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueTabBar, VTrackingKeySection : menuItem.title };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
     

@@ -47,7 +47,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
 @property (nonatomic, strong) UIPushBehavior *pushBehavior;
 @property (nonatomic, strong) UISnapBehavior *snapBehavior;
-@property (nonatomic, strong) UICollisionBehavior *collisionBehavior;
 @property (nonatomic, copy, readwrite) void (^animateInBlock)(void);
 
 @property (nonatomic, assign) BOOL publishing;
@@ -137,16 +136,14 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     self.previewImageView.image = self.publishParameters.previewImage;
 }
 
-- (void)viewDidLayoutSubviews
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidLayoutSubviews];
-    
+    [super viewDidAppear:animated];
+    /*
+     Setup behaviors in view did appear instead of viewDidLayoutSubviews to avoid issues with
+        restoring the rotation of the prompt (managed by the animateInBlock)
+     */
     [self setupBehaviors];
-    
-    CGRect referenceBounds = self.publishPrompt.bounds;
-    CGFloat inset = -hypot(CGRectGetWidth(referenceBounds), CGRectGetHeight(referenceBounds)); // hypot will ensure we are fully offscreen
-    UIEdgeInsets edgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
-    [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:edgeInsets];
 }
 
 #pragma mark - Property Accessors
@@ -433,7 +430,12 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     // This will be used for determining when the publish prompt has gone offscreen
     UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[self.publishPrompt]];
     collision.collisionDelegate = self;
-    self.collisionBehavior = collision;
+    
+    CGRect referenceBounds = self.publishPrompt.bounds;
+    CGFloat inset = -hypot(CGRectGetWidth(referenceBounds), CGRectGetHeight(referenceBounds)); // hypot will ensure we are fully offscreen
+    UIEdgeInsets edgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
+    [collision setTranslatesReferenceBoundsIntoBoundaryWithInsets:edgeInsets];
+    
     [self.animator addBehavior:collision];
 }
 

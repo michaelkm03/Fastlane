@@ -49,11 +49,17 @@ static NSString * const kPickerKey = @"picker";
     return self;
 }
 
-- (void)setShouldShowNoColorOption:(BOOL)shouldShowNoColorOption
+- (void)setShouldShowNoColorOption:(BOOL)shouldShowNoColorOption completion:(void(^)())completion
 {
-    _shouldShowNoColorOption = shouldShowNoColorOption;
-    _colorPickerDataSource.showNoColor = shouldShowNoColorOption;
-    [_colorPickerDataSource reloadWithCompletion:nil];
+    self.colorPickerDataSource.showNoColor = shouldShowNoColorOption;
+    [self.colorPickerDataSource reloadWithCompletion:^(NSArray *tools)
+    {
+        [self.toolPicker reloadData];
+        if ( completion != nil )
+        {
+            completion();
+        }
+    }];
 }
 
 - (void)setSharedCanvasToolViewController:(UIViewController *)viewController

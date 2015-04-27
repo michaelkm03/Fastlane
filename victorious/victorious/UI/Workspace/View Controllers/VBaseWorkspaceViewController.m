@@ -149,6 +149,7 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
     [super viewWillAppear:animated];
     
     [self.toolController setupDefaultTool];
+    
     [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *toolButton, NSUInteger idx, BOOL *stop)
      {
          if (self.toolController.selectedTool == toolButton.associatedObjectForButton)
@@ -209,6 +210,7 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
 }
 - (IBAction)publish:(id)sender
 {
+    self.keyboardManager.stopCallingHandlerBlocks = YES;
     [self publishContent];
 }
 

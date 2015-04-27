@@ -76,10 +76,6 @@ static NSString * const   kVictoriousAppIDKey      = @"VictoriousAppID";
 static NSString * const   kStagingAppIDKey         = @"StagingAppID";
 static NSString * const   kQAAppIDKey              = @"QAAppID";
 
-static NSString * const   kTestflightQAToken       = @"TestflightQAAppToken";
-static NSString * const   kTestflightStagingToken  = @"TestflightStagingAppToken";
-static NSString * const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
-
 static NSString * const   kGAID                    = @"GAID";
 
 #pragma mark - API Payload keys
@@ -114,6 +110,7 @@ static NSString * const VConstantAppStoreURL = @"com.getvictorious.appstoreurl";
 //NOTE: If you add categories, add them all to the necessary C functions in this section
 static NSString * const   kVOwnerPollCategory          = @"owner_poll";
 static NSString * const   kVOwnerTextCategory          = @"owner_text";
+static NSString * const   kVOwnerTextRepostCategory    = @"owner_text_repost";
 static NSString * const   kVOwnerImageCategory         = @"owner_image";
 static NSString * const   kVOwnerImageRepostCategory   = @"owner_image_repost";
 static NSString * const   kVOwnerImageQuoteCategory    = @"owner_image_secret";
@@ -127,6 +124,7 @@ static NSString * const   kVOwnerAnnouncementCategory  = @"owner_announcement";
 
 static NSString * const   kVUGCPollCategory            = @"ugc_poll";
 static NSString * const   kVUGCTextCategory            = @"ugc_text";
+static NSString * const   kVUGCTextRepostCategory      = @"ugc_text_repost";
 static NSString * const   kVUGCImageCategory           = @"ugc_image";
 static NSString * const   kVUGCImageRepostCategory     = @"ugc_image_repost";
 static NSString * const   kVUGCImageQuoteCategory      = @"ugc_image_secret";

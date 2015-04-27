@@ -40,7 +40,8 @@
 {
     for ( VHashtagType<VWorkspaceTool> *tool in self.tools )
     {
-        if ( [tool isKindOfClass:[VHashtagType class]] && [tool.hashtagText isEqualToString:hashtagText] )
+        NSString *textWithoutHashmark = [tool.hashtagText stringByReplacingOccurrencesOfString:@"#" withString:@""];
+        if ( [tool isKindOfClass:[VHashtagType class]] && [textWithoutHashmark isEqualToString:hashtagText] )
         {
             return tool;
         }

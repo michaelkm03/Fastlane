@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <KVOController/FBKVOController.h>
-
 #import "VStreamCollectionCell.h"
 
 #import "VStreamCellHeaderView.h"
@@ -27,8 +25,6 @@
 #import "VConstants.h"
 
 #import "VCommentCell.h"
-#import "VStreamCellActionView.h"
-#import "VSleekStreamCellActionView.h"
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
@@ -46,7 +42,7 @@
 #import "UIColor+VHex.h"
 #import "VTextPostViewController.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
+@interface VStreamCollectionCell() <CCHLinkTextViewDelegate, VVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 
@@ -91,7 +87,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
                                                                    views:views]];
     self.captionTextView.textContainer.lineFragmentPadding = VStreamCollectionCellTextViewLineFragmentPadding;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
-    self.streamCellHeaderView.delegate = self;
 }
 
 - (NSString *)headerViewNibName
@@ -210,27 +205,12 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
             UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
             VAsset *imageAsset = [self.sequence.firstNode imageAsset];
             NSURL *imageUrl = [NSURL URLWithString:imageAsset.data];
-            [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl];
+            [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:self.sequence.remoteId];
         }
     }
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(hasReposted))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         NSNumber *oldValue = change[NSKeyValueChangeOldKey];
-         NSNumber *newValue = change[NSKeyValueChangeNewKey];
-         if ([newValue boolValue] == [oldValue boolValue])
-         {
-             return;
-         }
-         [welf.actionView updateRepostButtonAnimated:YES];
-     }];
 }
 
-- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL
+- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL cacheKey:(NSString *)cacheKey
 {
     static NSCache *textViewCache;
     if ( textViewCache == nil )
@@ -238,7 +218,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         textViewCache = [[NSCache alloc] init];
     }
     
-    VTextPostViewController *existing = [textViewCache objectForKey:text];
+    VTextPostViewController *existing = [textViewCache objectForKey:cacheKey];
     if ( existing == nil && self.textPostViewController == nil )
     {
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
@@ -247,7 +227,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         self.textPostViewController.text = text;
         self.textPostViewController.color = color;
         self.textPostViewController.imageURL = backgroundImageURL;
-        [textViewCache setObject:self.textPostViewController forKey:text];
+        [textViewCache setObject:self.textPostViewController forKey:cacheKey];
     }
     else if ( existing != nil )
     {
@@ -348,30 +328,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
-}
-
-- (VStreamCellActionView *)actionView
-{
-    // Override in subclasses
-    return nil;
-}
-
-#pragma mark - VSequenceActionsDelegate
-
-- (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
-    }
-}
-
-- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate selectedUserOnSequence:self.sequence fromView:self];
-    }
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods

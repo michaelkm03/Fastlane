@@ -17,12 +17,14 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VHashtagPickerDataSource.h"
 #import "VEditableTextPostViewController.h"
+#import "VTextPostImageHelper.h"
 
 @interface VTextToolController() <VMultipleToolPickerDelegate, VEditableTextPostViewControllerDelegate>
 
 @property (nonatomic, weak) VTextColorTool<VWorkspaceTool> *textColorTool;
 @property (nonatomic, weak) VHashtagTool<VWorkspaceTool> *hashtagTool;
 @property (nonatomic, readonly, weak) VEditableTextPostViewController *textPostViewController;
+@property (nonatomic, strong) VTextPostImageHelper *imageHelper;
 
 @property (nonatomic, strong) UIImage *previewImage;
 
@@ -51,7 +53,10 @@
         NSAssert( NO, @"Cannot set up default tool because there are no tools." );
     }
     
-    [self setSelectedTool:self.tools.firstObject];
+    if ( self.selectedTool == nil )
+    {
+        [self setSelectedTool:self.tools.firstObject];
+    }
     
     [self.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
@@ -77,9 +82,33 @@
 {
     self.textPostViewController.isEditing = NO;
     
+    // If there is no background image selector or there is no color, then skip ahead to publish
+    if ( self.mediaURL == nil || [self currentColorSelection] == nil )
+    {
+        [self publishWithRenderedAssetURL:self.mediaURL Completion:completion];
+        return;
+    }
+    
+    // If there is a background image and color, they must be rendered together into the final tinted output image
+    self.imageHelper = [[VTextPostImageHelper alloc] init];
+    [self.imageHelper exportWithAssetAtURL:self.mediaURL color:[self currentColorSelection] completion:^(NSURL *renderedAssetURL, NSError *error )
+    {
+        if ( renderedAssetURL != nil )
+        {
+            [self publishWithRenderedAssetURL:renderedAssetURL Completion:completion];
+        }
+        else
+        {
+            completion( NO, nil, nil, error );
+        }
+    }];
+}
+
+- (void)publishWithRenderedAssetURL:(NSURL *)renderedAssetURL Completion:(void (^)(BOOL, NSURL *, UIImage *, NSError *))completion
+{
     [[VObjectManager sharedManager] createTextPostWithText:[self currentText]
                                            backgroundColor:[self currentColorSelection]
-                                                  mediaURL:self.mediaURL
+                                                  mediaURL:renderedAssetURL
                                               previewImage:[self textPostPreviewImage]
                                                 completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
@@ -96,7 +125,7 @@
 
 - (NSString *)currentText
 {
-    return self.textPostViewController.text;
+    return self.textPostViewController.textOutput;
 }
 
 - (UIImage *)textPostPreviewImage
@@ -196,8 +225,11 @@
 {
     self.previewImage = previewImage;
     self.mediaURL = newMediaURL;
-    [self.textPostViewController setBackgroundImage:previewImage animated:YES];
-    self.textColorTool.shouldShowNoColorOption = previewImage != nil;
+    [self.textColorTool setShouldShowNoColorOption:(previewImage != nil) completion:^
+    {
+        [self.textPostViewController setBackgroundImage:previewImage animated:YES];
+    }];
+    
 }
 
 @end

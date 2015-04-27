@@ -41,8 +41,10 @@
  */
 @property (nonatomic, weak) id<VTextCanvasToolDelegate> delegate;
 
+/**
+ Tells this view controller that it should show some UI to allow the user to remove
+ the added background image, subsequently calling `textCanvasToolDidClearImage:` on its delegate.
+ */
 @property (nonatomic, assign) BOOL shouldProvideClearOption;
-
-- (void)setShouldProvideClearOption:(BOOL)shouldProvideClearOption;
 
 @end

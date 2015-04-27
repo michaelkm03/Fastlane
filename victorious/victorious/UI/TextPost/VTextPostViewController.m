@@ -12,11 +12,7 @@
 #import "VTextPostViewModel.h"
 #import "VHashTags.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
-#import "UIImage+VTint.h"
 #import <SDWebImageManager.h>
-
-static const CGFloat kTintedBackgroundImageAlpha            = 0.375f;
-static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLuminosity;
 
 @interface VTextPostViewController ()
 
@@ -101,14 +97,14 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
 {
     _color = color;
     
-    [self updateBackground];
+    self.view.backgroundColor = _color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
     _backgroundImage = backgroundImage;
     
-    [self updateBackground];
+    self.backgroundImageView.image = backgroundImage;
 }
 
 - (void)setImageURL:(NSURL *)imageURL
@@ -117,6 +113,8 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     {
         return;
     }
+    
+    _imageURL = imageURL;
     
     [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
                           options:0
@@ -140,25 +138,6 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     _isTextSelectable = isTextSelectable;
     
     [self updateTextIsSelectable];
-}
-
-#pragma mark - Drawing and layout
-
-- (void)updateBackground
-{
-    if ( self.backgroundImage != nil && self.color != nil )
-    {
-        self.view.backgroundColor = [UIColor blackColor];
-        self.backgroundImageView.image = [self.backgroundImage v_tintedImageWithColor:self.color
-                                                                                alpha:kTintedBackgroundImageAlpha
-                                                                            blendMode:kTintedBackgroundImageBlendMode];
-    }
-    else
-    {
-        self.backgroundImageView.image = self.backgroundImage;
-    }
-    
-    self.view.backgroundColor = self.color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }
 
 - (void)updateTextIsSelectable

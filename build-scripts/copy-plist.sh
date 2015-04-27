@@ -40,9 +40,7 @@ copyPListValue(){
     else
         local VAL=$(/usr/libexec/PlistBuddy -c "Print $1" "$SOURCE" 2> /dev/null)
     fi
-    if [ "$VAL" != "" ]; then
-        /usr/libexec/PlistBuddy -c "Set $1 $VAL" "$DESTINATION"
-    fi
+    /usr/libexec/PlistBuddy -c "Set $1 $VAL" "$DESTINATION"
 }
 
 copyPListValue 'CFBundleDisplayName'
@@ -50,9 +48,6 @@ copyPListValue 'CFBundleIdentifier'
 copyPListValue 'FacebookAppID'
 copyPListValue 'TWITTER_CONSUMER_KEY'
 copyPListValue 'TWITTER_CONSUMER_SECRET'
-copyPListValue 'TestflightReleaseAppToken'
-copyPListValue 'TestflightQAAppToken'
-copyPListValue 'TestflightStagingAppToken'
 copyPListValue 'VictoriousAppID'
 copyPListValue 'StagingAppID'
 copyPListValue 'QAAppID'

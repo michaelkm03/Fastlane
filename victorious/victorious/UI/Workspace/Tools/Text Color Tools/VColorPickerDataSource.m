@@ -52,7 +52,7 @@ static NSString * const kTitleKey = @"title";
                                    return nil;
                                }];
     UIColor *accentColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    if ( accentColor )
+    if ( accentColor != nil )
     {
         VColorType *defaultColorOption = [[VColorType alloc] initWithColor:accentColor title:NSLocalizedString( @"Standard", nil)];
         suppliedColors = [@[ defaultColorOption ] arrayByAddingObjectsFromArray:suppliedColors];
@@ -61,7 +61,7 @@ static NSString * const kTitleKey = @"title";
     if ( self.showNoColor )
     {
         VColorType *noColorOption = [[VColorType alloc] initWithColor:nil title:NSLocalizedString( @"No Color", nil)];
-        suppliedColors = [@[ noColorOption ] arrayByAddingObjectsFromArray:suppliedColors];
+        suppliedColors = [suppliedColors arrayByAddingObject:noColorOption];
     }
     
     self.tools = suppliedColors;

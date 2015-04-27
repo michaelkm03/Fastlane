@@ -91,8 +91,14 @@ static const CGFloat kBaselineOffset = 0.5f;
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.notification.user];
-    [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+    VUser *user = self.notification.user;
+    
+    //Check for nil user to avoid trying to navigate to create a profile with a nil user
+    if ( user != nil )
+    {
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
+        [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+    }
 }
 
 - (void)prepareForReuse
