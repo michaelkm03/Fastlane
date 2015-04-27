@@ -10,12 +10,6 @@
 #import "UIView+MotionEffects.h"
 #import "UIColor+VBrightness.h"
 
-#if CGFLOAT_IS_DOUBLE
-#define CEIL ceil
-#else
-#define CEIL ceilf
-#endif
-
 static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 
 @interface VTilePatternBackgroundView ()
