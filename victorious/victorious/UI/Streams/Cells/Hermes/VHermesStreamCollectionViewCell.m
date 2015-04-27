@@ -41,7 +41,7 @@ static const CGFloat kActionBarHeight = 30.0f;
 static const CGFloat kCreationInfoContainerHeight = 44.0f;
 static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
 
-@interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate>
+@interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate, VCreationInfoContainerDelegate>
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
 
@@ -295,6 +295,7 @@ static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
         }
         [creationContainer v_addHeightConstraint:kCreationInfoContainerHeight];
         self.creationInfoContainer = creationContainer;
+        self.creationInfoContainer.delegate = self;
         
         headerBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
                                   button,
@@ -345,6 +346,14 @@ static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
     [self selectedHashTag:value];
+}
+
+#pragma mark - VCreationInfoContainerDelegate
+
+- (void)creationInfoContainer:(VCreationInfoContainer *)container
+       selectedUserOnSequence:(VSequence *)sequence
+{
+    [self selectedUser];
 }
 
 #pragma mark - Internal Methods

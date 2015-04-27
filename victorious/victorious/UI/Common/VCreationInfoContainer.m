@@ -88,6 +88,7 @@ static const CGFloat kDefaultHeight = 44.0f;
     self.parentUserLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.parentUserLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.parentUserLabel.textAlignment = NSTextAlignmentLeft;
+    self.parentUserLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     [self addSubview:self.parentUserLabel];
     
     UIImage *clockImage = [[UIImage imageNamed:@"StreamDate"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -102,6 +103,10 @@ static const CGFloat kDefaultHeight = 44.0f;
     self.timeSinceLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
+    
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                           action:@selector(selectedUser:)];
+    [self addGestureRecognizer:tapGestureRecognizer];
 }
 
 #pragma mark - UIView
@@ -217,6 +222,14 @@ static const CGFloat kDefaultHeight = 44.0f;
              [welf updateWithSequence:_sequence];
          }];
     }
+}
+
+#pragma mark - Target/Action
+
+- (void)selectedUser:(UITapGestureRecognizer *)gestureRecognizer
+{
+    [self.delegate creationInfoContainer:self
+                  selectedUserOnSequence:self.sequence];
 }
 
 #pragma mark - Update UI

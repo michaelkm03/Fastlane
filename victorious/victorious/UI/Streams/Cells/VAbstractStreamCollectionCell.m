@@ -269,6 +269,15 @@ static NSString *kOrIconKey = @"orIcon";
     }
 }
 
+- (void)selectedUser
+{
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
+    {
+        [self.sequenceActionsDelegate selectedUserOnSequence:self.sequence
+                                                    fromView:self];
+    }
+}
+
 @end
 
 @implementation VAbstractStreamCollectionCell (UpdateHooks)

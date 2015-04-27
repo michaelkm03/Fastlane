@@ -14,6 +14,7 @@
 #import "VSequenceActionsSender.h"
 
 @class VSequence;
+@class VUser;
 
 @interface VAbstractStreamCollectionCell : VBaseCollectionViewCell <VBackgroundContainer, VHasManagedDependencies, VSequenceActionsSender>
 
@@ -90,6 +91,12 @@
  *  delegate method and sends that message.
  */
 - (void)comment;
+
+/**
+ *  Base implementation checks conformance on sequenceActionsDelegate for the approrpiate
+ *  delegate method and sends that message.
+ */
+- (void)selectedUser;
 
 @end
 
