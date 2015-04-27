@@ -74,7 +74,7 @@ static NSString * const kJSONType = @"json";
     return [NSDictionary dictionaryWithDictionary:self.workingTemplate];
 }
 
-- (BOOL)concatonateTemplateWithFilename:(NSString *)filename
+- (BOOL)concatenateTemplateWithFilename:(NSString *)filename
 {
     NSDictionary *templateAddition = [VTemplateDecorator dictionaryFromJSONFile:filename];
     

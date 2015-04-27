@@ -89,7 +89,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
         
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
-        [templateDecorator concatonateTemplateWithFilename:kWorkspaceTemplateName];
+        [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
                 
 #warning This should be removed before merging:
         NSAssert( [templateDecorator setComponentWithFilename:@"floatingProfileHeader"

@@ -31,15 +31,15 @@
 + (NSDictionary *)dictionaryFromJSONFile:(NSString *)filename;
 
 /**
- Add the provided component to the top level of the template, thereby concatonating it.
+ Add the provided component to the top level of the template, thereby concatenating it.
  Any keys used at the top level of the component will overwite those already
  in present on the templste.
  
  @param filename The name of the file (without its json extension) in the bundle that contains
  a component to be parsed in a dictionary and added to the template.
- @return Boolean that indicates whether the component was successfully concatonated.
+ @return Boolean that indicates whether the component was successfully concatenated.
  */
-- (BOOL)concatonateTemplateWithFilename:(NSString *)filename;
+- (BOOL)concatenateTemplateWithFilename:(NSString *)filename;
 
 /**
  Loads a JSON file from the app bundle with the specified filename, parses it into a dictionary
