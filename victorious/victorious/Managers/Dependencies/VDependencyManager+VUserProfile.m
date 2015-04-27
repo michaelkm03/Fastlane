@@ -10,12 +10,6 @@
 #import "VUserProfileHeader.h"
 #import "VUserProfileViewController.h"
 
-@interface VDependencyManager()
-
-@property (nonatomic, strong) NSDictionary *configuration;
-
-@end
-
 NSString * const VDependencyManagerUserProfileViewComponentKey = @"userProfileView";
 NSString * const VDependencyManagerUserProfileHeaderComponentKey = @"userProfileHeader";
 NSString * const VDependencyManagerUserKey = @"user";
@@ -24,7 +18,7 @@ NSString * const VDependencyManagerFindFriendsIconKey = @"findFriendsIcon";
 NSString * const VDependencyManagerProfileEditButtonStyleKey = @"editButtonStyle";
 NSString * const VDependencyManagerProfileEditButtonStylePill = @"rounded";
 
-@implementation VDependencyManager (VUserProfileViewController)
+@implementation VDependencyManager (VUserProfile)
 
 - (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
 {

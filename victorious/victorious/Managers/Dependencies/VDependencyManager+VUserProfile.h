@@ -20,7 +20,7 @@ extern NSString * const VDependencyManagerFindFriendsIconKey;
 extern NSString * const VDependencyManagerProfileEditButtonStyleKey;
 extern NSString * const VDependencyManagerProfileEditButtonStylePill;
 
-@interface VDependencyManager (VUserProfileViewController)
+@interface VDependencyManager (VUserProfile)
 
 /**
  Returns a new VUserProfileViewController instance according to the
