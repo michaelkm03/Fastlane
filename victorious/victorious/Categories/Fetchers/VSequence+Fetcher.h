@@ -41,8 +41,12 @@
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
 
-- (VUser *)originalPoster;
-- (VUser *)realParentUser;
+/**
+ *  displayOriginalPoster and displayParentUser can be used to show the creator and parent
+ *  user with respect to reposted state.
+ */
+- (VUser *)displayOriginalPoster;
+- (VUser *)displayParentUser;
 
 - (NSURL *)inStreamPreviewImageURL;
 

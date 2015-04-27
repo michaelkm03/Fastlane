@@ -223,7 +223,7 @@ static const CGFloat kDefaultHeight = 44.0f;
 
 - (void)updateWithSequence:(VSequence *)sequence
 {
-    self.creatorLabel.text = [sequence originalPoster].name;
+    self.creatorLabel.text = [sequence displayOriginalPoster].name;
     [self updateParentUserLabelWithSequence:sequence];
     self.timeSinceLabel.text = [sequence.releasedAt timeSince];
     [self setNeedsUpdateConstraints];
