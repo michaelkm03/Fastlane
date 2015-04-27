@@ -3454,14 +3454,7 @@
 				A734A04A1A98018800C3E86F /* VMultipleContainer.h */,
 				037FCF221A8DAF5400E8ABFC /* VMultipleContainerViewController.h */,
 				037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */,
-				037FCF201A8DAF5400E8ABFC /* VSegmentedSelectorView.h */,
-				037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */,
-				037FCF241A8DAF5400E8ABFC /* VSelectorViewBase.h */,
-				037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */,
-				F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */,
-				F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */,
-				F0140BC51AAA37EC00B95642 /* VRoundedSegmentedSelectorView.h */,
-				F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */,
+				F01234CD1AE6C8DB001F1D5B /* MultiScreenSelectors */,
 			);
 			path = VMultipleContainerViewController;
 			sourceTree = "<group>";
@@ -5564,6 +5557,21 @@
 				DBDDB8881A3F5A3900696071 /* VFollowHashtagControl.m */,
 			);
 			path = FollowHashtagControl;
+			sourceTree = "<group>";
+		};
+		F01234CD1AE6C8DB001F1D5B /* MultiScreenSelectors */ = {
+			isa = PBXGroup;
+			children = (
+				037FCF241A8DAF5400E8ABFC /* VSelectorViewBase.h */,
+				037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */,
+				037FCF201A8DAF5400E8ABFC /* VSegmentedSelectorView.h */,
+				037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */,
+				F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */,
+				F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */,
+				F0140BC51AAA37EC00B95642 /* VRoundedSegmentedSelectorView.h */,
+				F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */,
+			);
+			name = MultiScreenSelectors;
 			sourceTree = "<group>";
 		};
 		F0140BC21AA9463600B95642 /* TimerManager */ = {
