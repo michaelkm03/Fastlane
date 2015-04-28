@@ -7,164 +7,121 @@
 //
 
 #import "VFollowerTableViewCell.h"
+
+// Models + Helpers
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
+
+// Dependencies
 #import "VDependencyManager.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+
+// Views + Helpers
+#import "VDefaultProfileButton.h"
+#import "VFollowUserControl.h"
+#import "UIImageView+VLoadingAnimations.h"
+#import <KVOController/FBKVOController.h>
+
+static const CGFloat kFollowerCellHeight = 50.0f;
 
 @interface VFollowerTableViewCell ()
 
-@property (nonatomic, weak) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *profileName;
 @property (nonatomic, weak) IBOutlet UILabel *profileLocation;
+@property (nonatomic, weak) IBOutlet VFollowUserControl *followControl;
 
-@property (nonatomic, strong) UIImage *followImage;
-@property (nonatomic, strong) UIImage *unfollowImage;
-
-@property (nonatomic, strong) UIColor *tintColorForRelationship;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VFollowerTableViewCell
 
+#pragma mark - VSharedCollectionReusableViewMethods
+
++ (UINib *)nibForCell
+{
+    return [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
+}
+
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass(self);
+}
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), kFollowerCellHeight);
+}
+
+#pragma mark - NSObject
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.profileImageView.layer.cornerRadius = CGRectGetWidth(self.profileImageView.bounds) / 2;
+    self.profileImageView.clipsToBounds = YES;
+    self.profileImageView.layer.borderWidth = 1.0;
+    self.profileImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.contentView.backgroundColor = [UIColor colorWithWhite:0.97
+                                                         alpha:1.0];
+}
+
+#pragma mark - Public
+
 - (void)setProfile:(VUser *)profile
 {
+    if (_profile == profile)
+    {
+        return;
+    }
+    
+    [self.KVOController unobserve:_profile
+                          keyPath:NSStringFromSelector(@selector(followers))];
+    
     _profile = profile;
 
-    //UIImage *sImg = [[UIImage imageNamed:@"buttonFollow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.followImage   = [[UIImage imageNamed:@"buttonFollow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.unfollowImage = [UIImage imageNamed:@"buttonFollowed"];
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:profile
+                       keyPaths:@[NSStringFromSelector(@selector(followers))]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateFollowing];
+     }];
     
-    [self.profileImage sd_setImageWithURL:[NSURL URLWithString: profile.pictureUrl]
-                         placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
-    self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
-    self.profileImage.layer.borderWidth = 1.0;
-    self.profileImage.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.profileImage.clipsToBounds = YES;
-    
+    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    [self.profileImageView fadeInImageAtURL:[NSURL URLWithString:profile.pictureUrl]
+                           placeholderImage:defaultImage];
+    self.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
-    
-    self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
 
-    // If this is the currently logged in user, then hide the follow button
-    VUser *me = [[VObjectManager sharedManager] mainUser];
-    if (_profile == me)
-    {
-        self.followButton.hidden = YES;
-    }
-    
-    if ([self respondsToSelector:@selector(setLayoutMargins:)])
-    {
-        [self setLayoutMargins:UIEdgeInsetsZero];
-    }
+    [self updateFollowing];
 }
 
-- (void)setHaveRelationship:(BOOL)haveRelationship
-{
-    _haveRelationship = haveRelationship;
-    
-    [self updateRelationshipDependencies];
-}
-
-- (void)updateRelationshipDependencies
-{
-    if ( self.haveRelationship )
-    {
-        self.followButton.imageView.image = self.unfollowImage;
-    }
-    else
-    {
-        self.followButton.imageView.tintColor = self.tintColorForRelationship;
-        self.followButton.imageView.image = self.followImage;
-    }
-}
+#pragma mark - VHasManagedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
     
-    self.profileImage.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.profileName.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    self.profileLocation.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    self.tintColorForRelationship = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    
-    [self updateRelationshipDependencies];
+    self.profileName.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    self.profileLocation.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    self.followControl.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.profileImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
-- (IBAction)follow:(id)sender
-{
-    // Check for existance of follow block
-    if (self.followButtonAction)
-    {
-        self.followButtonAction();
-    }
-    
-    if ([VObjectManager sharedManager].authorized)
-    {
-        [self disableFollowIcon:nil];
-    }
-}
+#pragma mark - Private Methods
 
-#pragma mark - Button Actions
-
-- (void)flipFollowIconAction:(id)sender
+- (void)updateFollowing
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL relationship = [mainUser.following containsObject:self.profile];
-    void (^animations)() = ^(void)
-    {
-        if (relationship)
-        {
-            [self.followButton setImage:self.unfollowImage forState:UIControlStateNormal];
-        }
-        else
-        {
-            [self.followButton setImage:self.followImage forState:UIControlStateNormal];
-        }
-        
-        self.followButton.alpha = 1.0f;
-        self.followButton.userInteractionEnabled = YES;
-    };
-    [UIView transitionWithView:self.followButton
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionFlipFromTop
-                    animations:animations
-                    completion:^(BOOL finished)
-     {
-         [self enableFollowIcon:nil];
-     }];
-}
-
-- (void)disableFollowIcon:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
-        self.followButton.alpha = 0.3f;
-        self.followButton.userInteractionEnabled = NO;
-    };
-    
-    [UIView transitionWithView:self.followButton
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:animations
-                    completion:nil];
-}
-
-- (void)enableFollowIcon:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
-        self.followButton.alpha = 1.0f;
-        self.followButton.userInteractionEnabled = YES;
-    };
-    
-    [UIView transitionWithView:self.followButton
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:animations
-                    completion:nil];
+    // If this is the currently logged in user, then hide the follow button
+    VUser *me = [[VObjectManager sharedManager] mainUser];
+    self.followControl.hidden = (self.profile == me);
+    self.followControl.following = [me.following containsObject:self.profile];
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "VThemeManager.h"
 
 #import <SDWebImage/UIButton+WebCache.h>
+#import "UIImageView+VLoadingAnimations.h"
 #import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
@@ -55,10 +56,11 @@
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
     [self sd_setImageWithURL:url
-                    forState:controlState
-            placeholderImage:defaultImage];
+                    forState:UIControlStateNormal
+            placeholderImage:defaultImage
+                     options:SDWebImageRetryFailed
+                   completed:nil];
     
     self.imageView.tintColor = self.tintColor;
 }

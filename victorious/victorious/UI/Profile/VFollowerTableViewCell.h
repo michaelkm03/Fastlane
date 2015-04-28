@@ -6,21 +6,16 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VSharedCollectionReusableViewMethods.h"
+#import "VHasManagedDependencies.h"
+
 @class VUser, VDependencyManager;
 
-@interface VFollowerTableViewCell : UITableViewCell
+@interface VFollowerTableViewCell : UITableViewCell <VSharedCollectionReusableViewMethods, VHasManagedDependencies>
 
+/**
+ *  The user that this follower cell represents. This cell will KVO the following status on this user.
+ */
 @property (nonatomic, strong) VUser *profile;
-@property (nonatomic, strong) VUser *owner;
-@property (nonatomic) BOOL showButton;
-@property (nonatomic) BOOL haveRelationship;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-@property (nonatomic, weak) IBOutlet UIButton *followButton;
-
-@property (nonatomic, copy) void (^followButtonAction)(void);
-
-- (void)disableFollowIcon:(id)sender;
-- (void)flipFollowIconAction:(id)sender;
 
 @end

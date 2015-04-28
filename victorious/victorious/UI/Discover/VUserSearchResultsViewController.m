@@ -171,37 +171,38 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     BOOL haveRelationship = [mainUser.following containsObject:profile];
     
     cell.profile = profile;
-    cell.haveRelationship = haveRelationship;
+#warning FIXME
+//    cell.haveRelationship = haveRelationship;
     cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
-    cell.followButtonAction = ^(void)
-    {
-        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                    dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-         {
-             if (!authorized)
-             {
-                 return;
-             }
-             
-             if ([mainUser.following containsObject:profile])
-             {
-                 [self unfollowFriendAction:profile];
-             }
-             else
-             {
-                 [self followFriendAction:profile];
-             }
-         }];
-    };
+//    cell.followButtonAction = ^(void)
+//    {
+//        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+//                                                                    dependencyManager:self.dependencyManager];
+//        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
+//         {
+//             if (!authorized)
+//             {
+//                 return;
+//             }
+//             
+//             if ([mainUser.following containsObject:profile])
+//             {
+//                 [self unfollowFriendAction:profile];
+//             }
+//             else
+//             {
+//                 [self followFriendAction:profile];
+//             }
+//         }];
+//    };
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50.0f;
+    return [VFollowerTableViewCell desiredSizeWithCollectionViewBounds:tableView.bounds].height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -224,16 +225,17 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
         [mainUser addFollowingObject:user];
         [moc saveToPersistentStore:nil];
         
-        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
-        {
-            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            if (cell.profile == user)
-            {
-                [cell flipFollowIconAction:nil];
-                return;
-            }
-        }
+#warning FIXME
+//        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//        for (NSIndexPath *indexPath in indexPaths)
+//        {
+//            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//            if (cell.profile == user)
+//            {
+//                [cell flipFollowIconAction:nil];
+//                return;
+//            }
+//        }
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -247,17 +249,18 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
             [mainUser addFollowingObject:user];
             [moc saveToPersistentStore:nil];
             
-            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in indexPaths)
-            {
-                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.profile == user)
-                {
-                    [cell flipFollowIconAction:nil];
-                    return;
-                }
-            }
-            return;
+#warning FIXME
+//            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//            for (NSIndexPath *indexPath in indexPaths)
+//            {
+//                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//                if (cell.profile == user)
+//                {
+//                    [cell flipFollowIconAction:nil];
+//                    return;
+//                }
+//            }
+//            return;
         }
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
@@ -282,26 +285,27 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
         [mainUser removeFollowingObject:user];
         [moc saveToPersistentStore:nil];
         
-        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
-        {
-            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            if (cell.profile == user)
-            {
-                void (^animations)() = ^(void)
-                {
-                    cell.haveRelationship = NO;
-                };
-                [UIView transitionWithView:cell.followButton
-                                  duration:0.3
-                                   options:UIViewAnimationOptionTransitionFlipFromTop
-                                animations:animations
-                                completion:nil];
-                
-                [cell flipFollowIconAction:nil];
-                return;
-            }
-        }
+#warning FIXME
+//        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//        for (NSIndexPath *indexPath in indexPaths)
+//        {
+//            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//            if (cell.profile == user)
+//            {
+//                void (^animations)() = ^(void)
+//                {
+//                    cell.haveRelationship = NO;
+//                };
+//                [UIView transitionWithView:cell.followButton
+//                                  duration:0.3
+//                                   options:UIViewAnimationOptionTransitionFlipFromTop
+//                                animations:animations
+//                                completion:nil];
+//                
+//                [cell flipFollowIconAction:nil];
+//                return;
+//            }
+//        }
         
     };
     
@@ -315,16 +319,18 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
             
             [mainUser removeFollowingObject:user];
             [moc saveToPersistentStore:nil];
-            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in indexPaths)
-            {
-                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.profile == user)
-                {
-                    [cell flipFollowIconAction:nil];
-                    return;
-                }
-            }
+            
+#warning FIXME
+//            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//            for (NSIndexPath *indexPath in indexPaths)
+//            {
+//                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//                if (cell.profile == user)
+//                {
+//                    [cell flipFollowIconAction:nil];
+//                    return;
+//                }
+//            }
         }
         
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")

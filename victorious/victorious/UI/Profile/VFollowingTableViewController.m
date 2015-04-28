@@ -20,8 +20,6 @@
 #import "MBProgressHUD.h"
 #import "VDependencyManager.h"
 
-static NSString * const kVFollowerCellName = @"followerCell";
-
 @interface VFollowingTableViewController ()
 
 @property (nonatomic, strong)   NSArray    *following;
@@ -45,7 +43,8 @@ static NSString * const kVFollowerCellName = @"followerCell";
 {
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    [self.tableView registerNib:[UINib nibWithNibName:kVFollowerCellName bundle:nil] forCellReuseIdentifier:kVFollowerCellName];
+    [self.tableView registerNib:[VFollowerTableViewCell nibForCell]
+         forCellReuseIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -111,16 +110,17 @@ static NSString * const kVFollowerCellName = @"followerCell";
         [mainUser addFollowingObject:user];
         [moc saveToPersistentStore:nil];
         
-        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
-        {
-            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            if (cell.profile == user)
-            {
-                [cell flipFollowIconAction:nil];
-                return;
-            }
-        }
+#warning FIXME
+//        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//        for (NSIndexPath *indexPath in indexPaths)
+//        {
+//            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//            if (cell.profile == user)
+//            {
+//                [cell flipFollowIconAction:nil];
+//                return;
+//            }
+//        }
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -134,17 +134,18 @@ static NSString * const kVFollowerCellName = @"followerCell";
             [mainUser addFollowingObject:user];
             [moc saveToPersistentStore:nil];
             
-            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in indexPaths)
-            {
-                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.profile == user)
-                {
-                    [cell flipFollowIconAction:nil];
-                    return;
-                }
-            }
-            return;
+#warning FIXME
+//            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//            for (NSIndexPath *indexPath in indexPaths)
+//            {
+//                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//                if (cell.profile == user)
+//                {
+//                    [cell flipFollowIconAction:nil];
+//                    return;
+//                }
+//            }
+//            return;
         }
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
@@ -169,16 +170,17 @@ static NSString * const kVFollowerCellName = @"followerCell";
         [mainUser removeFollowingObject:user];
         [moc saveToPersistentStore:nil];
         
-        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
-        {
-            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            if (cell.profile == user)
-            {
-                [cell flipFollowIconAction:nil];
-                return;
-            }
-        }
+#warning FIXME
+//        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//        for (NSIndexPath *indexPath in indexPaths)
+//        {
+//            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//            if (cell.profile == user)
+//            {
+//                [cell flipFollowIconAction:nil];
+//                return;
+//            }
+//        }
         
     };
     
@@ -192,16 +194,18 @@ static NSString * const kVFollowerCellName = @"followerCell";
             
             [mainUser removeFollowingObject:user];
             [moc saveToPersistentStore:nil];
-            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in indexPaths)
-            {
-                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.profile == user)
-                {
-                    [cell flipFollowIconAction:nil];
-                    return;
-                }
-            }
+            
+#warning FIXME
+//            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//            for (NSIndexPath *indexPath in indexPaths)
+//            {
+//                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+//                if (cell.profile == user)
+//                {
+//                    [cell flipFollowIconAction:nil];
+//                    return;
+//                }
+//            }
             
         }
         
@@ -225,41 +229,46 @@ static NSString * const kVFollowerCellName = @"followerCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser *profile = self.following[indexPath.row];
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL haveRelationship = [mainUser.following containsObject:profile];
+//    VUser *profile = self.following[indexPath.row];
+//    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+//    BOOL haveRelationship = [mainUser.following containsObject:profile];
 
-    VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:kVFollowerCellName forIndexPath:indexPath];
+    VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]
+                                                                      forIndexPath:indexPath];
     cell.profile = self.following[indexPath.row];
-    cell.showButton = NO;
-    cell.haveRelationship = haveRelationship;
     cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
-    cell.followButtonAction = ^(void)
-    {
-        // Check for authorization first
-        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                    dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-         {
-             if (!authorized)
-             {
-                 return;
-             }
-             
-             if ([mainUser.following containsObject:profile])
-             {
-                 [self unfollowFriendAction:profile];
-             }
-             else
-             {
-                 [self followFriendAction:profile];
-             }
-         }];
-
-    };
+//    cell.followButtonAction = ^(void)
+//    {
+#warning RESTORE FOLLOW ACTION
+//        // Check for authorization first
+//        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+//                                                                    dependencyManager:self.dependencyManager];
+//        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
+//         {
+//             if (!authorized)
+//             {
+//                 return;
+//             }
+//             
+//             if ([mainUser.following containsObject:profile])
+//             {
+//                 [self unfollowFriendAction:profile];
+//             }
+//             else
+//             {
+//                 [self followFriendAction:profile];
+//             }
+//         }];
+//
+//    };
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [VFollowerTableViewCell desiredSizeWithCollectionViewBounds:tableView.bounds].height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
