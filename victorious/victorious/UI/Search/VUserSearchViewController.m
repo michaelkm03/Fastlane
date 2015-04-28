@@ -209,7 +209,7 @@ static const NSInteger kSearchResultLimit = 100;
 - (void)composeMessageToUser:(VUser *)profile
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectUserFromSearchRecipient];
-    [self.messageSearchDelegate userSelectedFromMessageSearch:profile];
+    [self.messageSearchDelegate didSelectUser:profile inUserSearchViewController:self];
 }
 
 - (void)runUserSearch:(id)sender

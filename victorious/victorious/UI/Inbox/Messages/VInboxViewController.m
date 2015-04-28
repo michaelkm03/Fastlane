@@ -131,6 +131,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     }
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
 #pragma mark - Properties
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
@@ -406,7 +411,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
                                                         successBlock:nil failBlock:nil];
 }
 
-#pragma mark - Content Creation
+#pragma mark - Search
 
 - (IBAction)userSearchAction:(id)sender
 {
@@ -424,14 +429,17 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)userSelectedFromMessageSearch:(VUser *)user
+- (void)didSelectUser:(VUser *)user inUserSearchViewController:(VUserSearchViewController *)userSearchViewController
 {
-    [self displayConversationForUser:user animated:YES];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return NO;
+    [self displayConversationForUser:user animated:NO];
+    
+    /*
+     Call this to update the top bar before dismissing since UINavigationDelegate methods will not fire
+     from a navigation controller that is not in the foreground and thus not update the top bar appearance
+     */
+    [[self v_navigationController] updateSupplementaryHeaderViewForViewController:self];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIScrollViewDelegate
