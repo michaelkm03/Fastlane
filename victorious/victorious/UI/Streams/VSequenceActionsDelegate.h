@@ -26,7 +26,7 @@
 
 - (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view;
 
-- (void)selectedUser:(VUser*)user onSequence:(VSequence *)sequence fromView:(UIView *)view;
+- (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)view;
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit;
 
