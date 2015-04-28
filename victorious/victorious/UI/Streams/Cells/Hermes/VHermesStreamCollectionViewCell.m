@@ -35,11 +35,11 @@ static const CGFloat kLeadingTrailingHeaderSpace = 15.0f;
 static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 3.0f;
 static const CGFloat kHeaderHeight = 62.0f;
-static const CGFloat kSlantHeight = 58.0f;
-static const CGFloat kMinimumCaptionContainerHeight = 15.0f;
+static const CGFloat kSlantHeight = 50.0f;
+static const CGFloat kMinimumCaptionContainerHeight = 30.0f;
 static const CGFloat kActionBarHeight = 30.0f;
 static const CGFloat kCreationInfoContainerHeight = 44.0f;
-static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
+static const UIEdgeInsets kTextInsets = {25.0f, 10.0f, 15.0f, 15.0f};
 
 @interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate, VCreationInfoContainerDelegate>
 
@@ -142,7 +142,7 @@ static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
         [self.contentView v_addPinToLeadingTrailingToSubview:self.actionBar];
         [self.actionBar v_addHeightConstraint:kActionBarHeight];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.actionBar
-                                                                     attribute:NSLayoutAttributeBottom
+                                                                     attribute:NSLayoutAttributeCenterY
                                                                      relatedBy:NSLayoutRelationEqual
                                                                         toItem:self.captionContainerView
                                                                      attribute:NSLayoutAttributeTop
@@ -207,6 +207,7 @@ static const UIEdgeInsets kTextInsets = {10.0f, 10.0f, 15.0f, 15.0f};
         _captionTextView.backgroundColor = [UIColor clearColor];
         _captionTextView.textContainerInset = kTextInsets;
         _captionTextView.scrollEnabled = NO;
+        _captionTextView.linkTextTouchAttributes = @{NSForegroundColorAttributeName: [UIColor blackColor]};
     }
     return _captionTextView;
 }
