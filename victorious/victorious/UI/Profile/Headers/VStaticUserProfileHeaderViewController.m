@@ -32,6 +32,8 @@
     
     self.primaryActionButton.alpha = 0.0f;
     
+    self.view.backgroundColor = [UIColor clearColor];
+    
     if ( self.state != VUserProfileHeaderStateUndefined )
     {
         self.state = self.state; // Trigger a state refresh
@@ -125,7 +127,7 @@
     
     UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    UIColor *accentColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = linkColor.CGColor;
@@ -156,7 +158,7 @@
     self.followingHeader.font = [self.dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followingHeader.textColor = textColor;
     
-    self.userStatsBar.backgroundColor = backgroundColor;
+    self.userStatsBar.backgroundColor = accentColor;
 }
 
 @end
