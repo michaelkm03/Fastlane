@@ -88,7 +88,7 @@ static const CGFloat kFollowerCellHeight = 50.0f;
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         [welf updateFollowing];
+         [welf updateFollowingAnimated:YES];
      }];
     
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -99,7 +99,7 @@ static const CGFloat kFollowerCellHeight = 50.0f;
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
 
-    [self updateFollowing];
+    [self updateFollowingAnimated:NO];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -114,14 +114,25 @@ static const CGFloat kFollowerCellHeight = 50.0f;
     self.profileImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
+#pragma mark - Target/Action
+
+- (IBAction)tappedFollowControl:(VFollowUserControl *)sender
+{
+    if (self.followAction != nil)
+    {
+        self.followAction(!sender.following, self.profile);
+    }
+}
+
 #pragma mark - Private Methods
 
-- (void)updateFollowing
+- (void)updateFollowingAnimated:(BOOL)animated
 {
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followControl.hidden = (self.profile == me);
-    self.followControl.following = [me.following containsObject:self.profile];
+    [self.followControl setFollowing:[me.following containsObject:self.profile]
+                            animated:animated];
 }
 
 @end

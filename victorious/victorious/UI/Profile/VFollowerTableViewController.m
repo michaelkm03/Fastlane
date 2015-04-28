@@ -95,17 +95,6 @@
         
         [mainUser addFollowingObject:user];
         [moc saveToPersistentStore:nil];
-#warning FIXME
-//        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-//        for (NSIndexPath *indexPath in indexPaths)
-//        {
-//            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-//            if (cell.profile == user)
-//            {
-//                [cell flipFollowIconAction:nil];
-//                return;
-//            }
-//        }
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -118,17 +107,6 @@
             
             [mainUser addFollowingObject:user];
             [moc saveToPersistentStore:nil];
-#warning FIXME
-//            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-//            for (NSIndexPath *indexPath in indexPaths)
-//            {
-//                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-//                if (cell.profile == user)
-//                {
-//                    [cell flipFollowIconAction:nil];
-//                    return;
-//                }
-//            }
             return;
         }
         
@@ -153,28 +131,6 @@
         
         [mainUser removeFollowingObject:user];
         [moc saveToPersistentStore:nil];
-#warning FIXME
-//        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-//        for (NSIndexPath *indexPath in indexPaths)
-//        {
-//            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-//            if (cell.profile == user)
-//            {
-//                void (^animations)() = ^(void)
-//                {
-//                    cell.haveRelationship = NO;
-//                };
-//                [UIView transitionWithView:cell.followButton
-//                                  duration:0.3
-//                                   options:UIViewAnimationOptionTransitionFlipFromTop
-//                                animations:animations
-//                                completion:nil];
-//
-//                [cell flipFollowIconAction:nil];
-//                return;
-//            }
-//        }
-
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -187,17 +143,6 @@
             
             [mainUser removeFollowingObject:user];
             [moc saveToPersistentStore:nil];
-#warning FIXME
-//            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-//            for (NSIndexPath *indexPath in indexPaths)
-//            {
-//                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-//                if (cell.profile == user)
-//                {
-//                    [cell flipFollowIconAction:nil];
-//                    return;
-//                }
-//            }
         }
         
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
@@ -220,36 +165,30 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    VUser *profile = self.followers[indexPath.row];
-    
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = self.followers[indexPath.row];
     cell.dependencyManager = self.dependencyManager;
-    
-    // Tell the button what to do when it's tapped
-#warning Restore Follow Action
-//    cell.followButtonAction = ^(void)
-//    {
-//        // Check for authorization first
-//        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-//                                                                    dependencyManager:self.dependencyManager];
-//        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-//         {
-//             if (!authorized)
-//             {
-//                 return;
-//             }
-//             
-//             if ([mainUser.following containsObject:profile])
-//             {
-//                 [self unfollowFriendAction:profile];
-//             }
-//             else
-//             {
-//                 [self followFriendAction:profile];
-//             }
-//         }];
-//    };
+    cell.followAction = ^(BOOL wantsFollow, VUser *onUser)
+    {
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                          dependencyManager:self.dependencyManager];
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
+         {
+             if (!authorized)
+             {
+                 return;
+             }
+             
+             if ([[[VObjectManager sharedManager] mainUser].following containsObject:onUser])
+             {
+                 [self unfollowFriendAction:onUser];
+             }
+             else
+             {
+                 [self followFriendAction:onUser];
+             }
+         }];
+    };
     return cell;
 }
 
