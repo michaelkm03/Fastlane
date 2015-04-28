@@ -806,7 +806,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 }
 
 - (void)stopRecording
-{    
+{
     self.captureController.videoEncoder.recording = NO;
     self.switchCameraButton.enabled = YES;
     [self updateOrientation];
