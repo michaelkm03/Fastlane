@@ -237,9 +237,18 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
      
 - (void)reloadSection:(NSInteger)section
 {
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView endUpdates];
+    if ( [self.tableView numberOfRowsInSection:section] == [self tableView:self.tableView numberOfRowsInSection:section] )
+    {
+        //We can safely perform a reload section call because the number of rows has not changed
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView endUpdates];
+    }
+    else
+    {
+        //We have to reload the whole table to avoid crashing because the number of rows have changed
+        [self.tableView reloadData];
+    }
 }
 
 - (UIViewController *)componentRootViewController
