@@ -31,7 +31,10 @@
 
 - (void)setup
 {
-    self.image = [self defaultImage];
+    self.image = [self placeholderImage];
+    
+    self.backgroundColor = [UIColor whiteColor];
+    self.tintColor = [UIColor darkGrayColor];
     
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
     self.clipsToBounds = YES;
@@ -39,7 +42,9 @@
 
 - (void)setProfileImageURL:(NSURL *)url
 {
-    [self sd_setImageWithURL:url placeholderImage:[self defaultImage]];
+    return;
+    
+    [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -47,7 +52,7 @@
     super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
 }
 
-- (UIImage *)defaultImage
+- (UIImage *)placeholderImage
 {
     UIImage *image = [UIImage imageNamed:@"profile_thumb"];
     if (CGRectGetHeight(self.bounds) > image.size.height)

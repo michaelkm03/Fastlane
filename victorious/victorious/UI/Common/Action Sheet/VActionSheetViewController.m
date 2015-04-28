@@ -101,6 +101,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.userCaptionLabel.font = [[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] fontWithSize:9];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    self.profileImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     [self reloadData];
 }

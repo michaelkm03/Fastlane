@@ -87,6 +87,7 @@ static const CGFloat kBaselineOffset = 0.5f;
     {
         self.messageLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         [self.messageLabel sizeToFit];
+        self.notificationWho.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 

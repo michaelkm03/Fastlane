@@ -43,6 +43,7 @@ static const CGFloat kBaselineOffset = 0.5f;
         self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         self.usernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 

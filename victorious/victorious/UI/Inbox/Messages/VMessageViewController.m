@@ -167,6 +167,7 @@
     
     cell.timeLabel.text = [message.postedAt timeSince];
     cell.commentTextView.text = message.text;
+    cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     if ([message.sender isEqualToUser:[[VObjectManager sharedManager] mainUser]])
     {
