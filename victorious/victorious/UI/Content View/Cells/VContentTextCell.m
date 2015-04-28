@@ -32,12 +32,12 @@
     if ( self.textPostViewController == nil )
     {
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-        self.textPostViewController.isTextSelectable = YES;
         [self.contentContainer addSubview:self.textPostViewController.view];
         self.textPostViewController.view.frame = self.contentContainer.bounds;
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
         self.shrinkingContentView = self.contentContainer;
     }
+    self.textPostViewController.isTextSelectable = NO;
 }
 
 - (void)setTextContent:(NSString *)text

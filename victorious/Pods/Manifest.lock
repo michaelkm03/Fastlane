@@ -1,6 +1,6 @@
 PODS:
   - AFNetworking (1.3.4)
-  - CCHLinkTextView (1.1.0)
+  - CCHLinkTextView (1.1.1)
   - FlurrySDK (5.4.0):
     - FlurrySDK/FlurrySDK (= 5.4.0)
   - FlurrySDK/FlurrySDK (5.4.0)
@@ -37,7 +37,8 @@ PODS:
   - TTTAttributedLabel (1.8.1)
 
 DEPENDENCIES:
-  - CCHLinkTextView
+  - CCHLinkTextView (from `https://github.com/TouchFrame/CCHLinkTextView.git`, branch
+    `editable`)
   - FlurrySDK (~> 5.4)
   - IGDigest (~> 1.1.0)
   - KVOController
@@ -48,29 +49,35 @@ DEPENDENCIES:
   - TTTAttributedLabel (~> 1.8.1)
 
 EXTERNAL SOURCES:
+  CCHLinkTextView:
+    :branch: editable
+    :git: https://github.com/TouchFrame/CCHLinkTextView.git
   Nocilla:
     :branch: block-response
     :git: https://github.com/TouchFrame/Nocilla.git
 
 CHECKOUT OPTIONS:
+  CCHLinkTextView:
+    :commit: 12b7f34f5626f68548bee7911bc4555a992fe2e6
+    :git: https://github.com/TouchFrame/CCHLinkTextView.git
   Nocilla:
     :commit: 7223801397388bf0d05ec6d25657468453245af1
     :git: https://github.com/TouchFrame/Nocilla.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
-  CCHLinkTextView: 3edc4e5679d786a1fc8a28fc221ce2014439cc5f
-  FlurrySDK: bed9e5598353f867508d164795a451e3ada92cb6
-  IGDigest: b9ff1800bf1f0bdc3714fb4f0f63904464b2ddb4
-  ISO8601DateFormatterValueTransformer: a7e1ecf4380d0b561306ced1a3f01bd5f65d2213
-  KVOController: b1139ef1fc373b6757e4b69493fedd7b56eb1272
-  MBProgressHUD: f3747dcbd45a9e855a6b0674550651e0b7ed250c
+  AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  CCHLinkTextView: c51e40d285f61af7451c01e30e8cf364f5b36548
+  FlurrySDK: 7f929b68dea38ce735979fb039229f62c0b697b5
+  IGDigest: 066753c10f3f1b593b00037b9ee93dc96b9e7762
+  ISO8601DateFormatterValueTransformer: a48b7632ae5c07b2f0ff1ffae11938733d62c8b9
+  KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   Nocilla: 76a45b3103ac986bedd189eb8773f23995d9851d
-  RestKit: 6b82f862848cbe026ddc297985aa9a766b7e1a38
-  RKValueTransformers: 994503e34bffdbe0159ff6b497290dd1f8d5657f
+  RestKit: 148fe32e4b1474cbfcf9074c793977d5e9fdc8fa
+  RKValueTransformers: 127d6267755844f48eaf4fc560208ca19d336641
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
-  SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
-  TransitionKit: 7877021649a734f3239ed176b7967de29321dcf3
-  TTTAttributedLabel: 2be49e23f10fc87130272e03160bdb938835c51c
+  SOCKit: c7376ac262bea9115b8f749358f762522a47d392
+  TransitionKit: c150629869b0eab9d270f914aad2d1a088a8c19d
+  TTTAttributedLabel: 6bad1e0ffc7e9cb0484968395eff10852e626a2a
 
-COCOAPODS: 0.36.0
+COCOAPODS: 0.36.4
