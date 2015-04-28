@@ -20,7 +20,6 @@
 #import "UIView+Autolayout.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
-#import "VThemeManager.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -69,8 +68,6 @@ static NSString * const kVOrIconKey = @"orIcon";
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
                            placeholderImage:nil];
-    
-    self.detailsBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
     BOOL populateProfileImage = [streamItem isKindOfClass:[VSequence class]] && !self.hideMarqueePosterImage;
     
