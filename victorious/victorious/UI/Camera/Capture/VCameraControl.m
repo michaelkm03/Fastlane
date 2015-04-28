@@ -236,6 +236,10 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     {
         [self sendActionsForControlEvents:VCameraControlEventEndRecordingVideo];
     }
+    if ((self.cameraControlState == VCameraControlStateDefault) && !(self.captureMode & VCameraControlCaptureModeImage))
+    {
+        [self sendActionsForControlEvents:VCameraControlEventFailedRecordingVideo];
+    }
 
     BOOL shouldRecognizeImage = self.captureMode | VCameraControlCaptureModeImage;
     BOOL requiresElapsedTimeToRecognizeImage = (self.captureMode & VCameraControlCaptureModeVideo);
