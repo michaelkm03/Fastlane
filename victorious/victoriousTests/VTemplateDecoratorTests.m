@@ -69,7 +69,7 @@
     
     VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
     
-    NSDictionary *component = [templateDecorator dictionaryFromJSONFile:@"component"];
+    NSDictionary *component = [VTemplateDecorator dictionaryFromJSONFile:@"component"];
     
     BOOL didSucceed = [templateDecorator setComponentWithFilename:@"component" forKeyPath:@"key2/subkey0/subkey1"];
     XCTAssert( didSucceed, @"Failed to set component value" );
@@ -91,7 +91,7 @@
     
     VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
     
-    NSDictionary *component = [templateDecorator dictionaryFromJSONFile:@"component"];
+    NSDictionary *component = [VTemplateDecorator dictionaryFromJSONFile:@"component"];
     
     BOOL didSucceed = [templateDecorator setComponentWithFilename:@"component" forKeyPath:@"key2/subkey0/subkey5"];
     XCTAssert( didSucceed, @"Failed to set component value" );
@@ -111,7 +111,7 @@
     
     VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
     
-    NSDictionary *component = [templateDecorator dictionaryFromJSONFile:@"component"];
+    NSDictionary *component = [VTemplateDecorator dictionaryFromJSONFile:@"component"];
     
     BOOL didSucceed = [templateDecorator setComponentWithFilename:@"component" forKeyPath:@"key2/1"];
     XCTAssert( didSucceed, @"Failed to set component value" );
