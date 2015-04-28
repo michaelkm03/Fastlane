@@ -27,7 +27,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 
 @implementation VFloatingUserProfileHeaderViewController
 
-@synthesize loading = _isLoading;
+@synthesize loading = _loading;
 
 - (void)loadView
 {
@@ -112,9 +112,9 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 
 - (void)setLoading:(BOOL)loading
 {
-    _isLoading = loading;
+    _loading = loading;
     
-    if ( _isLoading )
+    if ( _loading )
     {
         [self.secondaryActionButton showActivityIndicator];
         self.secondaryActionButton.enabled = NO;

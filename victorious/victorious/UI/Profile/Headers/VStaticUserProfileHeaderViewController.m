@@ -24,7 +24,7 @@
 
 @implementation VStaticUserProfileHeaderViewController
 
-@synthesize loading = _isLoading;
+@synthesize loading = _loading;
 
 - (void)viewDidLoad
 {
@@ -85,9 +85,9 @@
 
 - (void)setLoading:(BOOL)loading
 {
-     _isLoading = loading;
+     _loading = loading;
     
-    if ( _isLoading )
+    if ( _loading )
     {
         [self.primaryActionButton showActivityIndicator];
         self.primaryActionButton.enabled = NO;
