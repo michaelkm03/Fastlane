@@ -165,7 +165,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
+    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]
+                                                                   forIndexPath:indexPath];
     cell.profile = self.followers[indexPath.row];
     cell.dependencyManager = self.dependencyManager;
     cell.followAction = ^(BOOL wantsFollow, VUser *onUser)
