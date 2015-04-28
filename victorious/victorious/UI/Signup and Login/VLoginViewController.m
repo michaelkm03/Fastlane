@@ -255,7 +255,7 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-    if (error.code != kVUserBannedError )
+    if ( error.code != kVUserBannedError )
     {
         NSString *message = NSLocalizedString(@"TwitterTroubleshooting", @"");
         if ( error.code == NSURLErrorNetworkConnectionLost )
