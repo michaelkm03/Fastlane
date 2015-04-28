@@ -167,7 +167,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         // Animate follow button
         self.followingSelectedHashtag = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
         
         self.navigationItem.rightBarButtonItem.enabled = YES;
     };
@@ -195,7 +194,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         self.followingSelectedHashtag = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
         
         self.navigationItem.rightBarButtonItem.enabled = YES;
     };
