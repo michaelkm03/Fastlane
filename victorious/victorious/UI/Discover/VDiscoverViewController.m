@@ -380,7 +380,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     VDiscoverHeaderView *headerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:kVHeaderIdentifier];
-    headerView.title = [self.sectionHeaderTitles[section] uppercaseString];
+    headerView.title = [self.sectionHeaderTitles[section] uppercaseStringWithLocale:[NSLocale currentLocale]];
     headerView.dependencyManager = self.dependencyManager;
     return headerView;
 }
@@ -490,7 +490,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             if ( [trendingCell.hashtag.tag isEqualToString:hashtag.tag] )
             {
                 trendingCell.shouldCellRespond = respond;
-                [trendingCell setNeedsDisplay];
                 [trendingCell updateSubscribeStatusAnimated:YES];
                 return;
             }

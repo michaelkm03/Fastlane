@@ -260,12 +260,12 @@
         __block BOOL needsUpdate = NO;
         [userHashtags enumerateObjectsUsingBlock:^(VHashtag *followedHashtag, NSUInteger idx, BOOL *stop)
         {
-            NSInteger foundIndex = [hashtags indexOfObjectPassingTest:^BOOL(VHashtag *hashtag, NSUInteger idx, BOOL *stop)
+            NSInteger foundIndex = [hashtags indexOfObjectPassingTest:^BOOL(VHashtag *hashtag, NSUInteger idx, BOOL *innerStop)
             {
                 BOOL found = [hashtag.tag isEqualToString:followedHashtag.tag];
                 if ( found )
                 {
-                    *stop = YES;
+                    *innerStop = YES;
                 }
                 return found;
             }];

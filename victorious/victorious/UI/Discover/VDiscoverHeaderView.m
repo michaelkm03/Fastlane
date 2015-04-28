@@ -38,7 +38,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(320.0f, [[self class] desiredHeight]);
+    return CGSizeMake(UIViewNoIntrinsicMetric, [[self class] desiredHeight]);
 }
 
 + (CGFloat)desiredHeight
