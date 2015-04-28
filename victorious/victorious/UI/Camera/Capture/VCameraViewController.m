@@ -87,7 +87,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong) dispatch_queue_t captureAnimationQueue;
 @property (nonatomic, assign) BOOL animationCompleted;
 
-@property (nonatomic, strong) VCameraCoachMarkAnimator *coachMarkHelper;
+@property (nonatomic, strong) VCameraCoachMarkAnimator *coachMarkAnimator;
 
 @end
 
@@ -214,7 +214,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     
     if (self.allowVideo && self.videoEnabled)
     {
-        self.coachMarkHelper = [[VCameraCoachMarkAnimator alloc] initWithCoachView:self.coachView];
+        self.coachMarkAnimator = [[VCameraCoachMarkAnimator alloc] initWithCoachView:self.coachView];
         self.coachView.text = NSLocalizedString(@"VideoCoachMessage", @"Video coach message");
     }
     else
@@ -310,7 +310,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
-    [self.coachMarkHelper fadeIn];
+    [self.coachMarkAnimator fadeIn];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -777,7 +777,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 - (void)failedRecording
 {
-    [self.coachMarkHelper flash];
+    [self.coachMarkAnimator flash];
 }
 
 - (void)startRecording
@@ -802,7 +802,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         self.captureController.videoEncoder.recording = YES;
     }
     self.state = VCameraViewControllerStateRecording;
-    [self.coachMarkHelper fadeOut];
+    [self.coachMarkAnimator fadeOut];
 }
 
 - (void)stopRecording
