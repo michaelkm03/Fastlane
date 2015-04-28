@@ -12,7 +12,7 @@
 #import "VSuggestedPeopleCell.h"
 #import "VStream+Fetcher.h"
 #import "VTrendingTagCell.h"
-#import "VDiscoverTableHeaderViewController.h"
+#import "VDiscoverHeaderView.h"
 #import "VSuggestedPeopleCollectionViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Discover.h"
@@ -31,13 +31,14 @@
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
+static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 @interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate>
 
 @property (nonatomic, strong) VSuggestedPeopleCollectionViewController *suggestedPeopleViewController;
 
 @property (nonatomic, strong) NSArray *trendingTags;
-@property (nonatomic, strong) NSArray *sectionHeaders;
+@property (nonatomic, strong) NSArray *sectionHeaderTitles;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL loadedUserFollowing;
 
@@ -63,7 +64,7 @@ static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
     [self.suggestedPeopleViewController didMoveToParentViewController:self];
     
     // Call this here to ensure that header views are ready by the time the tableview asks for them
-    [self createSectionHeaderViews];
+    self.sectionHeaderTitles = @[NSLocalizedString( @"Suggested People", @"" ), NSLocalizedString( @"Trending Tags", @"" )];
 }
 
 - (void)viewDidLoad
@@ -217,19 +218,9 @@ static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
 {
     [self.tableView registerNib:[UINib nibWithNibName:kVTrendingTagIdentifier bundle:nil] forCellReuseIdentifier:kVTrendingTagIdentifier];
     [self.tableView registerClass:[VSuggestedPeopleCell class] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
+    [self.tableView registerNib:[VDiscoverHeaderView nibForHeader] forHeaderFooterViewReuseIdentifier:kVHeaderIdentifier];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
-}
-
-- (void)createSectionHeaderViews
-{
-    NSString *title0 = NSLocalizedString( @"Suggested People", @"" );
-    VDiscoverTableHeaderViewController *section0Header = [[VDiscoverTableHeaderViewController alloc] initWithSectionTitle:title0];
-    
-    NSString *title1 = NSLocalizedString( @"Trending Tags", @"" );
-    VDiscoverTableHeaderViewController *section1Header = [[VDiscoverTableHeaderViewController alloc] initWithSectionTitle:title1];
-    
-    self.sectionHeaders = @[ section0Header.view, section1Header.view ];
 }
 
 #pragma mark - VSuggestedPeopleCollectionViewControllerDelegate
@@ -246,7 +237,9 @@ static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
      
 - (void)reloadSection:(NSInteger)section
 {
+    [self.tableView beginUpdates];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
 }
 
 - (UIViewController *)componentRootViewController
@@ -379,15 +372,16 @@ static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
 {
     if ( section >= 0 && section < VDiscoverViewControllerSectionsCount )
     {
-        UIView *headerView = self.sectionHeaders[ section ];
-        return CGRectGetHeight( headerView.frame );
+        return [VDiscoverHeaderView preferredSize].height;
     }
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headerView = self.sectionHeaders[ section ];
+    VDiscoverHeaderView *headerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:kVHeaderIdentifier];
+    headerView.title = [self.sectionHeaderTitles[section] uppercaseString];
+    headerView.dependencyManager = self.dependencyManager;
     return headerView;
 }
 

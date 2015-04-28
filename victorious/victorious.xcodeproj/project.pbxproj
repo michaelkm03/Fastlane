@@ -445,8 +445,6 @@
 		A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */; };
 		A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF0A19E8AC1E00EB87C1 /* VTrendingTagCell.xib */; };
 		A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */; };
-		A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m */; };
-		A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF1119E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib */; };
 		A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */; };
 		A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */; };
 		A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */; };
@@ -848,6 +846,8 @@
 		F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */; };
 		F06F10D41AC3B4E60062E1D1 /* VAbstractMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */; };
 		F07228261AD8846A00085653 /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F07228251AD8846A00085653 /* VNotification.m */; };
+		F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */; };
+		F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */; };
 		F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */; };
 		F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
 		F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F089E3551AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m */; };
@@ -1647,9 +1647,6 @@
 		A75FAF0C19E8AC1E00EB87C1 /* VDiscoverConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverConstants.h; sourceTree = "<group>"; };
 		A75FAF0D19E8AC1E00EB87C1 /* VDiscoverContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverContainerViewController.h; sourceTree = "<group>"; };
 		A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverContainerViewController.m; sourceTree = "<group>"; };
-		A75FAF0F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverTableHeaderViewController.h; sourceTree = "<group>"; };
-		A75FAF1019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverTableHeaderViewController.m; sourceTree = "<group>"; };
-		A75FAF1119E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDiscoverTableHeaderViewController.xib; sourceTree = "<group>"; };
 		A75FAF1219E8AC1E00EB87C1 /* VDiscoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewController.h; sourceTree = "<group>"; };
 		A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewController.m; sourceTree = "<group>"; };
 		A75FAF1419E8AC1E00EB87C1 /* VDiscoverViewControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewControllerProtocol.h; sourceTree = "<group>"; };
@@ -2414,6 +2411,9 @@
 		F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMarqueeController.m; sourceTree = "<group>"; };
 		F07228241AD8846A00085653 /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
 		F07228251AD8846A00085653 /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
+		F07E825B1AEF35BE00821CEA /* VDiscoverHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverHeaderView.h; sourceTree = "<group>"; };
+		F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverHeaderView.m; sourceTree = "<group>"; };
+		F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDiscoverHeaderView.xib; sourceTree = "<group>"; };
 		F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionaryTests.m; sourceTree = "<group>"; };
 		F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatterTests.m; sourceTree = "<group>"; };
 		F089E3541AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeStreamItemCell.h; sourceTree = "<group>"; };
@@ -4101,9 +4101,9 @@
 				A75FAF0C19E8AC1E00EB87C1 /* VDiscoverConstants.h */,
 				A75FAF0D19E8AC1E00EB87C1 /* VDiscoverContainerViewController.h */,
 				A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */,
-				A75FAF0F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.h */,
-				A75FAF1019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m */,
-				A75FAF1119E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib */,
+				F07E825B1AEF35BE00821CEA /* VDiscoverHeaderView.h */,
+				F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */,
+				F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */,
 				A75FAF1219E8AC1E00EB87C1 /* VDiscoverViewController.h */,
 				A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */,
 				A75FAF1419E8AC1E00EB87C1 /* VDiscoverViewControllerProtocol.h */,
@@ -5656,6 +5656,7 @@
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */,
+				F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */,
 				036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */,
 				036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */,
 				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
@@ -5722,7 +5723,6 @@
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
 				036F38951A0C4DEA0014DF66 /* Ubuntu-Medium.ttf in Resources */,
 				036F38841A0C4DEA0014DF66 /* PlayfairDisplay-Bold.ttf in Resources */,
-				A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */,
 				036F386E1A0C4DEA0014DF66 /* JosefinSans-SemiBold.ttf in Resources */,
 				A75C64981AD78DCA00245125 /* VTextPostViewController.xib in Resources */,
 				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
@@ -5967,6 +5967,7 @@
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
 				0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */,
+				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
@@ -6484,7 +6485,6 @@
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
 				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
-				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				A74C87FA1ABA5859004D2E16 /* VCreatorInfoHelper.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
 				A761C9D41A48B1E500F0D0F9 /* UIView+AutoLayout.m in Sources */,
