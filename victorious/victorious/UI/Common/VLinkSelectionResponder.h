@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 /**
- A protocol that view controllers can implement in order to receive this event
- from pass up the responder chain.
+ A protocol that any UIResponder subclass can implement in order to receive respond to
+ events that occur and are passed up along the responder chain.
  */
 @protocol VLinkSelectionResponder <NSObject>
 
