@@ -15,18 +15,18 @@
 @end
 
 /**
- Protoocl for an implementaiton of a controller object that controls the initialization,
- apparance, scroll position tracking and animation associated with floating navigation views.
+ Protocol for an implementation of a controller object that controls the initialization,
+ appearance, scroll position tracking and animation associated with floating navigation views.
  The floating view itself is provided from calling code and is designed to be a subview of
  a navigation controller which allows the child view to overlap onto the navigation view
- controller's top view controller.  Implementors can selectivelty hide or show the child view
+ controller's top view controller.  Implementors can selectively hide or show the child view
  with animation based on scroll position of some arbitary scroll view in context of calling code.
  */
 @protocol VNavigationViewFloatingController <NSObject>
 
 /**
  To drive the animated apperance and disappearance, call this from a scroll view delegate's
- `scrollViewDidScroll:` method, supplyin the current content offset of the scroll view.
+ `scrollViewDidScroll:` method, supplying the current content offset of the scroll view.
  */
 - (void)updateContentOffsetOnScroll:(CGPoint)contentOffset;
 

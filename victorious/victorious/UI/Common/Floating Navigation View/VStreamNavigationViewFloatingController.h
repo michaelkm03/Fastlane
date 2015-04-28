@@ -12,7 +12,7 @@
 @interface VStreamNavigationViewFloatingController : NSObject <VNavigationViewFloatingController>
 
 /**
- Designated initialized that takes required parameters.
+ Designated initializer that takes required parameters.
  */
 - (instancetype)initWithFloatingView:(UIView *)floatingView
         floatingParentViewController:(UIViewController *)floatingParentViewController

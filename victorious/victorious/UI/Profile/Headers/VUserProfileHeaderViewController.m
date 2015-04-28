@@ -28,9 +28,9 @@
 
 @synthesize user = _user;
 @synthesize state = _state;
-@synthesize isLoading = _isLoading;
-@synthesize preferredHeight;
-@synthesize delegate;
+@synthesize loading = _isLoading;
+@synthesize preferredHeight = _preferredHeight;
+@synthesize delegate = _delegate;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -69,10 +69,10 @@
 {
     [super viewWillAppear:animated];
     
-    [self applyStyleWithDependencyManager:self.dependencyManager];
+    [self applyStyle];
 }
 
-- (void)loadBackgroundImage:(NSURL *)imageURL
+- (void)loadBackgroundImageFromURL:(NSURL *)imageURL
 {
     [self.backgroundImageView sd_setImageWithURL:imageURL placeholderImage:nil completed:nil];
 }
@@ -107,14 +107,14 @@
 
 - (void)updateUser
 {
-    [self loadBackgroundImage:[NSURL URLWithString:self.user.pictureUrl]];
+    [self loadBackgroundImageFromURL:[NSURL URLWithString:self.user.pictureUrl]];
     
     if ( self.user != nil )
     {
         [self cleanupKVOControllerWithUser:self.user];
     }
     
-    [self applyStyleWithDependencyManager:self.dependencyManager];
+    [self applyStyle];
     [self setupKVOControllerWithUser:self.user];
 }
 
@@ -159,7 +159,7 @@
     }
 }
 
-- (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
+- (void)applyStyle
 {
     NSString *editButtonStyle = [self.dependencyManager stringForKey:VDependencyManagerProfileEditButtonStyleKey];
     const BOOL isRounded = [editButtonStyle isEqualToString:VDependencyManagerProfileEditButtonStylePill];

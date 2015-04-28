@@ -33,7 +33,7 @@ static CGFloat easeInSine( CGFloat t )
 @property (nonatomic, weak) UIView *floatingView;
 @property (nonatomic, weak) UIViewController *floatingParentViewController;
 
-@property (nonatomic, strong) NSTimer *animationTimer;
+@property (nonatomic, strong) CADisplayLink *displayLink;
 @property (nonatomic, assign) CGFloat targetVisibility;
 @property (nonatomic, assign) CGFloat visibility;
 
@@ -44,7 +44,7 @@ static CGFloat easeInSine( CGFloat t )
 
 @implementation VStreamNavigationViewFloatingController
 
-@synthesize delegate;
+@synthesize delegate = _delegate;
 @synthesize animationEnabled = _animationEnabled;
 
 - (instancetype)initWithFloatingView:(UIView *)floatingView
@@ -53,7 +53,7 @@ static CGFloat easeInSine( CGFloat t )
           verticalScrollThresholdEnd:(CGFloat)verticalScrollThresholdEnd
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         NSParameterAssert( floatingView != nil );
         NSParameterAssert( floatingParentViewController != nil );
@@ -85,18 +85,14 @@ static CGFloat easeInSine( CGFloat t )
     
     if ( _animationEnabled )
     {
-        self.animationTimer = [NSTimer timerWithTimeInterval:1.0f/60.0f //< 60 FPS
-                                                      target:self
-                                                    selector:@selector(updateAnimation)
-                                                    userInfo:nil
-                                                     repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:self.animationTimer forMode:NSRunLoopCommonModes];
+        self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateAnimation)];
+        [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
         self.floatingView.hidden = NO;
     }
     else
     {
-        [self.animationTimer invalidate];
-        self.animationTimer = nil;
+        [self.displayLink invalidate];
+        self.displayLink = nil;
     }
     
     const CGFloat targetAlpha = animationEnabled ? 1.0f : 0.0f;

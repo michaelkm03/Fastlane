@@ -31,6 +31,6 @@
 @property (nonatomic, weak) IBOutlet UIButton *followingButton;
 @property (nonatomic, weak) IBOutlet UIView *userStatsBar;
 
-- (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager;
+- (void)applyStyle;
 
 @end

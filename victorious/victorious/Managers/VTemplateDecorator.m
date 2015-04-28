@@ -52,7 +52,7 @@ static NSString * const kJSONType = @"json";
     NSParameterAssert( templateDictionary != nil );
     
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _originalTemplate = [templateDictionary copy];
         _workingTemplate = [NSMutableDictionary dictionaryWithDictionary:_originalTemplate];

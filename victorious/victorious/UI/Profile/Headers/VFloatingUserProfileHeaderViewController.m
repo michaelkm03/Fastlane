@@ -27,6 +27,8 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 
 @implementation VFloatingUserProfileHeaderViewController
 
+@synthesize loading = _isLoading;
+
 - (void)loadView
 {
     CGRect profileFrame = CGRectMake( 0, 0, kFloatProfileImageSize, kFloatProfileImageSize );
@@ -76,7 +78,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     [self.delegate primaryActionHandler];
 }
 
-#pragma mark - VUserProfileHeaderViewController overrides- (void)setState:(VUserProfileHeaderState)state
+#pragma mark - VUserProfileHeaderViewController overrides
 
 - (void)setState:(VUserProfileHeaderState)state
 {
@@ -108,9 +110,11 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     [self.primaryActionButton layoutIfNeeded];
 }
 
-- (void)setIsLoading:(BOOL)isLoading
+- (void)setLoading:(BOOL)loading
 {
-    if ( isLoading )
+    _isLoading = loading;
+    
+    if ( _isLoading )
     {
         [self.secondaryActionButton showActivityIndicator];
         self.secondaryActionButton.enabled = NO;
@@ -122,15 +126,15 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     }
 }
 
-- (void)applyStyleWithDependencyManager:(VDependencyManager *)dependencyManager
+- (void)applyStyle
 {
-    [super applyStyleWithDependencyManager:dependencyManager];
+    [super applyStyle];
     
-    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    UIColor *contentTextColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    UIColor *accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    UIColor *secondaryLinkColor = [dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *contentTextColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    UIColor *accentColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    UIColor *secondaryLinkColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
     
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = secondaryLinkColor.CGColor;
@@ -139,32 +143,32 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     
     self.primaryActionButton.primaryColor = secondaryLinkColor;
     self.primaryActionButton.secondaryColor = secondaryLinkColor;
-    self.primaryActionButton.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.primaryActionButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     [self.primaryActionButton setStyle:VButtonStyleSecondary];
     
     self.secondaryActionButton.layer.borderWidth = 2.0f;
     self.secondaryActionButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.secondaryActionButton.layer.cornerRadius = CGRectGetHeight( self.secondaryActionButton.bounds ) / 2.0f;
     
-    self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    self.nameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.nameLabel.textColor = textColor;
     
-    self.locationLabel.font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    self.locationLabel.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     self.locationLabel.textColor = contentTextColor;
     
-    self.taglineLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    self.taglineLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.taglineLabel.textColor = textColor;
     
-    self.followersLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    self.followersLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.followersLabel.textColor = textColor;
     
-    self.followersHeader.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    self.followersHeader.font = [self.dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followersHeader.textColor = textColor;
     
-    self.followingLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    self.followingLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.followingLabel.textColor = textColor;
     
-    self.followingHeader.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    self.followingHeader.font = [self.dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followingHeader.textColor = textColor;
     
     self.userStatsBar.backgroundColor = accentColor;

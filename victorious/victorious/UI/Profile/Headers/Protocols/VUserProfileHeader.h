@@ -69,9 +69,10 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
 @property (nonatomic, strong) VUser *user;
 
 /**
- Show 
+ Setting to YES should show the component in a loading state, such as showing an activity
+ indicator and disabling any elements that should be inactive while required data is loading.
  */
-@property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, assign, getter=isLoading) BOOL loading;
 
 /**
  The height to which a containing stream cell must be sized in order to properly

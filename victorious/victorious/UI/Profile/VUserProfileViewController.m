@@ -1,4 +1,4 @@
- //
+//
 //  VUserProfileViewController.m
 //  victorious
 //
@@ -373,18 +373,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ([VObjectManager sharedManager].mainUser)
     {
-        header.isLoading = YES;
+        header.loading = YES;
         [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
                                      following:self.user
                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
-             header.isLoading = NO;
+             header.loading = NO;
              const BOOL isFollowingUser = [resultObjects.firstObject boolValue];
              header.state = isFollowingUser ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
          }
                                      failBlock:^(NSOperation *operation, NSError *error)
          {
-             header.isLoading = NO;
+             header.loading = NO;
          }];
     }
     else
@@ -511,7 +511,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
-        self.profileHeaderViewController.isLoading = NO;
+        self.profileHeaderViewController.loading = NO;
         [[[UIAlertView alloc] initWithTitle:nil
                                     message:NSLocalizedString(@"UnfollowError", @"")
                                    delegate:nil
@@ -521,11 +521,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( self.profileHeaderViewController.state == VUserProfileHeaderStateFollowingUser )
     {
-        self.profileHeaderViewController.isLoading = YES;
+        self.profileHeaderViewController.loading = YES;
         [[VObjectManager sharedManager] unfollowUser:self.user
                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             self.profileHeaderViewController.isLoading = NO;
+             self.profileHeaderViewController.loading = NO;
              self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
          }
                                            failBlock:fail];
@@ -533,11 +533,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     else if ( self.profileHeaderViewController.state == VUserProfileHeaderStateNotFollowingUser )
     {
         [self stopObservingUserProfile];
-        self.profileHeaderViewController.isLoading = YES;
+        self.profileHeaderViewController.loading = YES;
         [[VObjectManager sharedManager] followUser:self.user
                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             self.profileHeaderViewController.isLoading = NO;
+             self.profileHeaderViewController.loading = NO;
              self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
          }
                                          failBlock:fail];
