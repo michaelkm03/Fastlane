@@ -81,7 +81,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                                                object:nil];
     
     [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
-                        keyPath:@"hashtag"
+                        keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedTags)];
 }

@@ -256,15 +256,21 @@
     NSOrderedSet *userHashtags = self.mainUser.hashtags;
     if ( userHashtags.count == hashtags.count )
     {
-        for ( NSUInteger i = 0; i<hashtags.count; i++ )
+        //We have the same count of hashtags, check each hashtag inside to make sure we have the
+        //same hashtags in the same order
+        __block BOOL needsUpdate = NO;
+        [userHashtags enumerateObjectsUsingBlock:^(VHashtag *followedHashtag, NSUInteger idx, BOOL *stop)
         {
-            if ( ![((VHashtag *)userHashtags[i]).tag isEqualToString:((VHashtag *)hashtags[i]).tag] )
+            if ( ![followedHashtag.tag isEqualToString:((VHashtag *)hashtags[idx]).tag] )
             {
-                return YES;
+                //Found a discrepancy, need to update
+                needsUpdate = YES;
+                *stop = YES;
             }
-        }
-        return NO;
+        }];
+        return needsUpdate;
     }
+    //Different count of hashtags, need to update
     return YES;
 }
 

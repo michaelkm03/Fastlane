@@ -55,8 +55,8 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     [self configureTableView];
     
-    [self.KVOController observe:[self mainUser]
-                        keyPath:@"hashtags"
+    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+                        keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updateFollowingHashtags)];
 }
@@ -64,7 +64,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self updateUserHashtags:[[[self mainUser].hashtags array] copy]];
+    [self updateUserHashtags:[[[[VObjectManager sharedManager] mainUser].hashtags array] copy]];
     [self retrieveHashtagsForLoggedInUser];
 }
 
@@ -120,7 +120,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)updateFollowingHashtags
 {
-    self.followingTagSet = [[NSMutableOrderedSet alloc] initWithOrderedSet:[[self mainUser].hashtags copy]];
+    self.followingTagSet = [[NSMutableOrderedSet alloc] initWithOrderedSet:[[[VObjectManager sharedManager] mainUser].hashtags copy]];
 }
 
 - (void)updateUserHashtags:(NSArray *)hashtags
@@ -293,7 +293,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
             if ( [trendingCell.hashtag.tag isEqualToString:hashtag.tag] )
             {
                 trendingCell.shouldCellRespond = respond;
-                [trendingCell setNeedsDisplay];
                 [trendingCell updateSubscribeStatusAnimated:YES];
                 return;
             }
@@ -303,11 +302,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
             return;
         }
     }
-}
-
-- (VUser *)mainUser
-{
-    return [[VObjectManager sharedManager] mainUser];
 }
 
 @end
