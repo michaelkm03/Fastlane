@@ -39,6 +39,7 @@
 @property (nonatomic, weak) id<VSelectorViewDelegate> delegate; ///< A delegate object to be notified when the selection changes
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The views from which we are selecting
 @property (nonatomic) NSUInteger activeViewControllerIndex; ///< The index of the currently selected view controller in the viewControllers array
+@property (nonatomic, readonly) UIColor *foregroundColor; ///< The foreground color of the selector
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 

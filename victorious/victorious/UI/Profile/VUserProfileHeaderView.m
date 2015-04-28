@@ -215,7 +215,7 @@ static NSString * const kEditButtonStylePill = @"rounded";
         linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     }
     
-    UIColor *accentColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    UIColor *barTextColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     
     self.profileImageView.layer.borderColor = linkColor.CGColor;
     
@@ -228,16 +228,16 @@ static NSString * const kEditButtonStylePill = @"rounded";
     self.taglineLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         
     self.followersLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-    self.followersLabel.textColor = accentColor;
+    self.followersLabel.textColor = barTextColor;
     
     self.followersHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
-    self.followersHeader.textColor = accentColor;
+    self.followersHeader.textColor = barTextColor;
 
     self.followingLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-    self.followingLabel.textColor = accentColor;
+    self.followingLabel.textColor = barTextColor;
 
     self.followingHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
-    self.followingHeader.textColor = accentColor;
+    self.followingHeader.textColor = barTextColor;
 
     UIColor *backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.userStatsBar.backgroundColor = backgroundColor;

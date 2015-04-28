@@ -24,7 +24,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self setup];
     }
@@ -33,9 +33,13 @@
 
 - (void)setup
 {
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self setImage:[self placeholderImage] forState:UIControlStateNormal];
     
-    [self setImage:defaultImage forState:UIControlStateNormal];
+    //Setting vertical and horizontal alignment to fill causes the image set by "setImage"
+    //to completely fill the bounds of button
+    self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    self.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+    
     //Was previously accent color for A and D
     NSString *colorKey = kVLinkColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
@@ -54,7 +58,7 @@
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *defaultImage = [self placeholderImage];
     
     [self sd_setImageWithURL:url
                     forState:controlState
@@ -67,6 +71,16 @@
 {
     [super layoutSubviews];
     [self updateCornerRadius];
+}
+
+- (UIImage *)placeholderImage
+{
+    UIImage *image = [UIImage imageNamed:@"profile_thumb"];
+    if (CGRectGetHeight(self.bounds) > image.size.height)
+    {
+        image = [UIImage imageNamed:@"profile_full"];
+    }
+    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 @end

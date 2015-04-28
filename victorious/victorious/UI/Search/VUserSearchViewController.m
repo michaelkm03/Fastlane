@@ -31,6 +31,7 @@
 
 #import "VLoginViewController.h"
 #import "VMessageContainerViewController.h"
+#import "VMessageViewController.h"
 
 #import "VThemeManager.h"
 
@@ -208,8 +209,7 @@ static const NSInteger kSearchResultLimit = 100;
 - (void)composeMessageToUser:(VUser *)profile
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectUserFromSearchRecipient];
-    
-    [self.messageSearchDelegate userSelectedFromMessageSearch:profile];
+    [self.messageSearchDelegate didSelectUser:profile inUserSearchViewController:self];
 }
 
 - (void)runUserSearch:(id)sender
