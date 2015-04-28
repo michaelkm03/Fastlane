@@ -36,24 +36,18 @@
          
          __strong UIImageView *strongSelf = weakSelf;
          //Check if image was loaded from cache
-         if ( cacheType != SDImageCacheTypeNone || ![self isValidURL:imageURL] )
+         if ( cacheType != SDImageCacheTypeNone || ![self isValidURL:imageURL] || image == nil)
          {
-             if (image != nil)
+             //Set image without fade animation
+             strongSelf.alpha = 1.0f;
+             if ( image != nil )
              {
-                 //Set image without fade animation
                  strongSelf.image = image;
-                 return;
              }
+             return;
          }
          
-         if (image != nil)
-         {
-             [strongSelf fadeInImage:image];
-         }
-         else
-         {
-             strongSelf.image = placeholderImage;
-         }
+         [strongSelf fadeInImage:image];
      }];
 }
 

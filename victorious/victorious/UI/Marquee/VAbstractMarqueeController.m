@@ -199,8 +199,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     VAbstractMarqueeStreamItemCell *cell;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[self cellSuggestedReuseIdentifier] forIndexPath:indexPath];
-    cell.streamItem = item;
     cell.dependencyManager = self.dependencyManager;
+    cell.streamItem = item;
     
     return cell;
 }

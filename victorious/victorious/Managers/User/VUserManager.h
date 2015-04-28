@@ -9,7 +9,7 @@
 @class VUser;
 
 typedef void (^VUserManagerLoginCompletionBlock)(VUser *user, BOOL created);
-typedef void (^VUserManagerLoginErrorBlock)(NSError *error);
+typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFailure);
 
 @interface VUserManager : NSObject
 
