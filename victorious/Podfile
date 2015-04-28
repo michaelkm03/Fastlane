@@ -10,12 +10,12 @@ target :victorious do
     pod 'TTTAttributedLabel', '~>1.8.1'
     pod 'MBProgressHUD', '~> 0.8'
     pod 'FlurrySDK', '~> 5.4'
-    pod 'CCHLinkTextView'
     pod 'KVOController'
     pod 'SDWebImage'
     link_with 'victorious'
 
-    target :test do
+target :test do
+        pod 'CCHLinkTextView', :git => 'https://github.com/TouchFrame/CCHLinkTextView.git', :branch => 'options'
         pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git', :branch => 'block-response'
         link_with 'victoriousTests'
     end
