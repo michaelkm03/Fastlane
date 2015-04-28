@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VSharedCollectionReusableViewMethods.h"
+#import "VBaseCollectionViewCell.h"
 
 @class VStreamItem, VUser, VAbstractMarqueeStreamItemCell, VDependencyManager;
 
 /**
     A collection view cell that displays stream item content in a marquee
  */
-@interface VAbstractMarqueeStreamItemCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
+@interface VAbstractMarqueeStreamItemCell : VBaseCollectionViewCell
 
 @property (nonatomic, strong) VStreamItem *streamItem; ///< Stream item to display
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView; ///< The primary imageView containing a previewImage of the content this cell is representing

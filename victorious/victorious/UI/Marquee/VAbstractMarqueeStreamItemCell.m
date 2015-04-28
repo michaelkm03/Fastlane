@@ -24,17 +24,6 @@ static NSString * const kOrIconKey = @"orIcon";
 
 @implementation VAbstractMarqueeStreamItemCell
 
-+ (NSString *)suggestedReuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
-+ (UINib *)nibForCell
-{
-    return [UINib nibWithNibName:NSStringFromClass([self class])
-                          bundle:nil];
-}
-
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     NSAssert(false, @"desiredSizeWithCollectionViewBounds: must be overridden by subclasses of VAbstractMarqueeStreamItemCell");
@@ -61,6 +50,8 @@ static NSString * const kOrIconKey = @"orIcon";
         {
             [self cleanupWebView];
         }
+        
+        self.pollOrImageView.hidden = ![sequence isPoll];
     }
 }
 
