@@ -92,9 +92,12 @@
                                            otherButtonTitles:NSLocalizedString(@"ResetButton", @""), nil];
     
     resetAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [resetAlert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
-    [resetAlert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
-    [resetAlert textFieldAtIndex:0].returnKeyType = UIReturnKeyDone;
+    UITextField *textField = [resetAlert textFieldAtIndex:0];
+    textField.placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
+    textField.keyboardType = UIKeyboardTypeEmailAddress;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
     [resetAlert show];
 }
 
