@@ -249,7 +249,7 @@
      {
          [self didSignUpWithUser:user];
      }
-                                              onError:^(NSError *error)
+                                              onError:^(NSError *error, BOOL thirdPartyAPIFailed)
      {
          [self didFailWithError:error];
      }];

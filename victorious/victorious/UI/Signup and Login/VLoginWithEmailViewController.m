@@ -260,7 +260,7 @@
                             [self didLoginWithUser:user];
                         });
      }
-                                         onError:^(NSError *error)
+                                         onError:^(NSError *error, BOOL thirdPartyAPIFailed)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {

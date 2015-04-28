@@ -52,7 +52,7 @@ static NSString * const kMarqueeKey = @"marqueeCell";
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     VStream *stream = [VStream streamForPath:[[dependencyManager stringForKey:kStreamURLKey] v_pathComponent] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    stream.name = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
 
