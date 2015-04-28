@@ -141,7 +141,11 @@
     }
     
     [self addMenuViewControllerMotionEffects];
+}
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
     if (initialVC != nil)
     {

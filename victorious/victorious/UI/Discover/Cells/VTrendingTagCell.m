@@ -77,10 +77,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
     [self.hashTagLabel setText:text];
 
-    if (self.isSubscribedToTag)
-    {
-        self.followHashtagControl.subscribed = YES;
-    }
     [self updateSubscribeStatusAnimated:NO];
 }
 
@@ -104,24 +100,8 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 - (void)updateSubscribeStatusAnimated:(BOOL)animated
 {
-    //If we get into a weird state and the relaionships are the same don't do anything
-    if (self.followHashtagControl.subscribed == self.isSubscribedToTag)
-    {
-        return;
-    }
-    if (!self.shouldAnimateSubscription)
-    {
-        self.followHashtagControl.subscribed = self.isSubscribedToTag;
-        return;
-    }
-
-    // Animate it
     [self.followHashtagControl setSubscribed:self.isSubscribedToTag
                                     animated:animated];
-
-    // Re-enable the control
-    self.followHashtagControl.userInteractionEnabled = YES;
-    [self enableSubscriptionIcon:nil];
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
@@ -132,7 +112,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     }
     else
     {
-        self.shouldAnimateSubscription = YES;
         if (self.subscribeToTagAction != nil)
         {
             self.subscribeToTagAction();
@@ -155,36 +134,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     self.hashTagLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.hashTagLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     self.followHashtagControl.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-}
-
-#pragma mark - Disable / Enable Tag Subscription Button
-
-- (void)disableSubscriptionIcon:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
-        self.followHashtagControl.alpha = 0.3f;
-    };
-
-    [UIView transitionWithView:self.followHashtagControl
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:animations
-                    completion:nil];
-}
-
-- (void)enableSubscriptionIcon:(id)sender
-{
-    void (^animations)() = ^(void)
-    {
-        self.followHashtagControl.alpha = 1.0f;
-    };
-
-    [UIView transitionWithView:self.followHashtagControl
-                      duration:0.3
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:animations
-                    completion:nil];
 }
 
 @end
