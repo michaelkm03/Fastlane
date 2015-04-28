@@ -162,7 +162,7 @@ static const NSUInteger kRetryAttempts = 5;
         {
             [self onDoneLoadingWithDependencyManager:resultObject];
         }
-                                                                 onError:^(NSError *error)
+                                                                 onError:^(NSError *error, BOOL thirdPartyAPIFailed)
         {
             [self onDoneLoadingWithDependencyManager:resultObject];
         }];
