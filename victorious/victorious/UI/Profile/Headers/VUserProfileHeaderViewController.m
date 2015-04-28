@@ -218,7 +218,7 @@
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         //[welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+         [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
      }];
     
     [self.KVOController observe:user

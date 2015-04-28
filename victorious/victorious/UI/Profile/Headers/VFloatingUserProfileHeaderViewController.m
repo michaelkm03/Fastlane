@@ -135,7 +135,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = secondaryLinkColor.CGColor;
     self.profileImageView.tintColor = linkColor;
-    self.profileImageView.backgroundColor = secondaryLinkColor;
+    self.profileImageView.backgroundColor = [UIColor whiteColor];
     
     self.primaryActionButton.primaryColor = secondaryLinkColor;
     self.primaryActionButton.secondaryColor = secondaryLinkColor;
