@@ -58,6 +58,8 @@
     self.enterCodeLabel.font = [self.dependencyManager fontForKey:@"font.header"];
 
     self.codeField.tintColor = [UIColor blueColor];
+    self.codeField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.codeField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
     NSString *text = NSLocalizedString( @"Resend Email", @"" );
     [self.linkTextHelper setupLinkTextView:self.resendEmailTextView withText:text range:[text rangeOfString:text]];
