@@ -30,6 +30,7 @@
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager.h"
 #import "VCreatorInfoHelper.h"
+#import "UIAlertView+VBlocks.h"
 
 @import Accounts;
 @import Social;
@@ -176,7 +177,8 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return [self.navigationController.presentingViewController prefersStatusBarHidden];
+    //Simply don't change the hidden state of the status bar
+    return [[UIApplication sharedApplication] isStatusBarHidden];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -254,10 +256,16 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-    if (error.code != kVUserBannedError)
+    if ( error.code != kVUserBannedError )
     {
+        NSString *message = NSLocalizedString(@"TwitterTroubleshooting", @"");
+        if ( error.code == NSURLErrorNetworkConnectionLost )
+        {
+            //We've encountered a network error, show the localized description instead of the twitter troubleshooting tips
+            message = error.localizedDescription;
+        }
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                               message:error.localizedDescription
+                                                               message:message
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                      otherButtonTitles:nil];

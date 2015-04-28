@@ -31,10 +31,13 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "NSURL+VPathHelper.h"
 #import "VInboxDeeplinkHandler.h"
+#import "VNavigationController.h"
+#import "VAuthorizedAction.h"
+#import "VNavigationController.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
-@interface VInboxViewController ()
+@interface VInboxViewController () <VUserSearchViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
@@ -411,12 +414,24 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
-    if ( self.messageViewControllers == nil )
-    {
-        self.messageViewControllers = [[NSMutableDictionary alloc] init];
-    }
-    userSearch.messageViewControllers = self.messageViewControllers;
-    [self.navigationController pushViewController:userSearch animated:YES];
+    userSearch.messageSearchDelegate = self;
+    
+    //Create a navigation controller that will hold the user search view controller
+    VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+    navigationController.innerNavigationController.viewControllers = @[userSearch];
+    navigationController.innerNavigationController.navigationBarHidden = YES;
+    
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)userSelectedFromMessageSearch:(VUser *)user
+{
+    [self displayConversationForUser:user animated:YES];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 #pragma mark - UIScrollViewDelegate

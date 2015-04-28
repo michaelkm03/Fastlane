@@ -193,7 +193,7 @@
     NSURL *pictureURL = [NSURL URLWithString:message.sender.pictureUrl];
     if (pictureURL)
     {
-        [cell.profileImageView sd_setImageWithURL:pictureURL];
+        [cell.profileImageView setProfileImageURL:pictureURL];
     }
     cell.onProfileImageTapped = ^(void)
     {

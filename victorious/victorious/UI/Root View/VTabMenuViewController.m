@@ -79,6 +79,16 @@ NSString * const kMenuKey = @"menu";
     self.internalTabBarViewController.viewControllers = [self.tabShim wrappedNavigationDesinations];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
+    if (initialVC != nil)
+    {
+        [self displayResultOfNavigation:initialVC];
+    }
+}
+
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;

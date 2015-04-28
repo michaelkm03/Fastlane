@@ -19,6 +19,7 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
+        _foregroundColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     }
     return self;
 }

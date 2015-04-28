@@ -167,6 +167,7 @@
 
 "TwitterDeniedTitle" = "Zugriff auf dein Twitter-Konto fehlgeschlagen";
 "TwitterDenied" = "Bitte erlaube Zugriff auf dein Twitter-Konto unter Einstellungen -> Datenschutz -> Twitter";
+"TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
 
 "CameraRollDeniedTitle" = "Zugriff auf deine Fotos fehlgeschlagen";
 "CameraRollDenied" = "Bitte erlaube Zugriff auf deine Fotos unter Einstellungen -> Datenschutz.";

@@ -267,12 +267,6 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
 
 - (void)loadBackgroundImage
 {
-    UIImage *placeholderImage = self.backgroundImageView.image;
-    if ( placeholderImage == nil )
-    {
-        placeholderImage = [[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]] applyLightEffect];
-    }
-    
     if ( self.backgroundImageView == nil )
     {
         self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -283,9 +277,8 @@ static NSString * const kFindFriendsIconKey = @"findFriendsIcon";
     NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
     if ( ![self.backgroundImageView.sd_imageURL isEqual:pictureURL] )
     {
-        [self.backgroundImageView setBlurredImageWithURL:pictureURL
-                                        placeholderImage:placeholderImage
-                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+        [self.backgroundImageView applyTintAndBlurToImageWithURL:pictureURL
+                                                   withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     }
 }
 

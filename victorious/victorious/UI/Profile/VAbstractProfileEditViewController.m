@@ -134,9 +134,8 @@
     NSURL *profileImageURL = [NSURL URLWithString:profile.pictureUrl];
     if ( profileImageURL != nil && profile.pictureUrl.length > 0 )
     {
-        [backgroundImageView setBlurredImageWithURL:profileImageURL
-                                   placeholderImage:[UIImage imageNamed:@"profileGenericUser"]
-                                          tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
+        [backgroundImageView applyTintAndBlurToImageWithURL:profileImageURL
+                                              withTintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
         [self.profileImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
     }
     else

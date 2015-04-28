@@ -495,9 +495,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
 }
 
-- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(VStreamCollectionCell *)streamCollectionCell
+- (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(VStreamCollectionCell *)streamCollectionCell
 {
-    [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
+    [self.sequenceActionController showProfile:user fromViewController:self];
 }
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
@@ -567,10 +567,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {    
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
     
-    UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
-    [newBackgroundView setBlurredImageWithURL:url
-                             placeholderImage:placeholderImage
-                                    tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    [newBackgroundView applyTintAndBlurToImageWithURL:url
+                                        withTintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     
     self.collectionView.backgroundView = newBackgroundView;
 }

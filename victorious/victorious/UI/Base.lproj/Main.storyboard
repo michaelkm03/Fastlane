@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -141,10 +141,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u6b-Ys-rsf" userLabel="Back Button">
-                                <rect key="frame" x="20" y="20" width="33" height="33"/>
+                                <rect key="frame" x="0.0" y="0.0" width="49" height="49"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="33" id="E2U-1I-a7J"/>
-                                    <constraint firstAttribute="height" constant="33" id="ci2-zL-inf"/>
+                                    <constraint firstAttribute="width" constant="49" id="E2U-1I-a7J"/>
+                                    <constraint firstAttribute="height" constant="49" id="ci2-zL-inf"/>
                                 </constraints>
                                 <state key="normal" image="Close">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -154,7 +154,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="COMMENTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYy-hF-Nue">
-                                <rect key="frame" x="70" y="17" width="180" height="40"/>
+                                <rect key="frame" x="70" y="5" width="180" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="AMb-Pg-jfS"/>
                                     <constraint firstAttribute="width" constant="180" id="zN1-SI-4Ek"/>
@@ -165,10 +165,10 @@
                             </label>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="u6b-Ys-rsf" firstAttribute="top" secondItem="oyc-js-kud" secondAttribute="bottom" constant="20" id="L35-mg-pFw"/>
-                            <constraint firstItem="u6b-Ys-rsf" firstAttribute="leading" secondItem="ONv-MK-ctL" secondAttribute="leadingMargin" constant="4" id="aQo-6P-c2P"/>
+                            <constraint firstItem="kYy-hF-Nue" firstAttribute="centerY" secondItem="u6b-Ys-rsf" secondAttribute="centerY" id="3Nk-Yo-3Mx"/>
+                            <constraint firstItem="u6b-Ys-rsf" firstAttribute="top" secondItem="oyc-js-kud" secondAttribute="bottom" id="L35-mg-pFw"/>
+                            <constraint firstItem="u6b-Ys-rsf" firstAttribute="leading" secondItem="ONv-MK-ctL" secondAttribute="leading" id="aQo-6P-c2P"/>
                             <constraint firstAttribute="centerX" secondItem="kYy-hF-Nue" secondAttribute="centerX" id="tyC-RN-1rT"/>
-                            <constraint firstItem="kYy-hF-Nue" firstAttribute="top" secondItem="oyc-js-kud" secondAttribute="bottom" constant="17" id="yj7-Xe-noZ"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -1200,11 +1200,11 @@
                             <constraint firstAttribute="trailing" secondItem="8OA-Ea-FRh" secondAttribute="trailing" id="ilT-xn-3z9"/>
                             <constraint firstItem="Pf7-EC-k9e" firstAttribute="top" secondItem="Xi3-H1-J9H" secondAttribute="top" constant="4" id="nf1-xF-cFh"/>
                             <constraint firstItem="Pf7-EC-k9e" firstAttribute="right" secondItem="Xi3-H1-J9H" secondAttribute="right" constant="-1" id="syA-oV-LOf"/>
-                            <constraint firstItem="Xi3-H1-J9H" firstAttribute="top" secondItem="l7B-Qc-5jj" secondAttribute="bottom" id="tWY-RL-JVj"/>
                             <constraint firstItem="Vh8-1q-gMV" firstAttribute="leading" secondItem="BXj-uF-ln6" secondAttribute="leading" id="ttZ-5h-Rzs"/>
                             <constraint firstAttribute="bottom" secondItem="Vh8-1q-gMV" secondAttribute="bottom" id="uUK-Ck-8pB"/>
                             <constraint firstAttribute="trailing" secondItem="Xi3-H1-J9H" secondAttribute="trailing" id="wpr-IK-POa"/>
                             <constraint firstAttribute="centerY" secondItem="j3n-Uc-zOp" secondAttribute="centerY" multiplier="1.618" id="yJm-zN-bm2"/>
+                            <constraint firstItem="Xi3-H1-J9H" firstAttribute="top" secondItem="l7B-Qc-5jj" secondAttribute="top" id="z7N-B8-dQi"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>

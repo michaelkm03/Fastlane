@@ -58,6 +58,8 @@
     self.enterCodeLabel.font = [self.dependencyManager fontForKey:@"font.header"];
 
     self.codeField.tintColor = [UIColor blueColor];
+    self.codeField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.codeField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
     NSString *text = NSLocalizedString( @"Resend Email", @"" );
     [self.linkTextHelper setupLinkTextView:self.resendEmailTextView withText:text range:[text rangeOfString:text]];
@@ -92,9 +94,12 @@
                                            otherButtonTitles:NSLocalizedString(@"ResetButton", @""), nil];
     
     resetAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [resetAlert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
-    [resetAlert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
-    [resetAlert textFieldAtIndex:0].returnKeyType = UIReturnKeyDone;
+    UITextField *textField = [resetAlert textFieldAtIndex:0];
+    textField.placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
+    textField.keyboardType = UIKeyboardTypeEmailAddress;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
     [resetAlert show];
 }
 

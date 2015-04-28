@@ -167,6 +167,7 @@
 
 "TwitterDeniedTitle" = "No pudimos acceder a tu cuenta de Twitter";
 "TwitterDenied" = "Por favor, permite el acceso a tu cuenta de Twitter en Configuración -> Privacidad -> Twitter";
+"TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
 
 "CameraRollDeniedTitle" = "No se pudo acceder a las fotos";
 "CameraRollDenied" = "Por favor, permite el acceso a tus fotos en Configuración -> Privacidad.";
@@ -408,7 +409,7 @@
 
 "RTCUserPostedAtSyntax" = "%@ a %@";//e.g. "Username at 0:04"
 
-"Report/Flag" = "Reporar/señalar";
+"Report/Flag" = "Reportar/Señalar";
 "CreatedBy" = "CREADO POR";
 "remixes" = "remixes";
 "Remix" = "Remix";
@@ -482,10 +483,10 @@
 
 "Always" = "Siempre";
 "Never" = "Nunca";
-"Only on Wifi" = "Solo en Wifi";
+"Only on Wifi" = "Sólo en Wifi";
 "NotificationSettingSectionFeeds" = "Alimentación";
 "NotificationSettingSectionPeople" = "Persona";
-"Open Settings" = "Abrir configuraciónPersonas";
+"Open Settings" = "Abrir configuración";
 
 "ErrorPushNotificationsNotEnabled" = "Las notificaciones de empuje no están habilitadas para su dispositivo.\n";
 "ErrorPushNotificationsUnknown" = "Error al cargar las notificaciones .\nPor favor, intentar más tarde.";

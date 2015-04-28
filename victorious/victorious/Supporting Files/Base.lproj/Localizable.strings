@@ -167,6 +167,7 @@
 
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Privacy -> Twitter";
+"TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
 
 "CameraRollDeniedTitle" =   "Could Not Access Your Photos";
 "CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
