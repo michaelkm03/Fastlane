@@ -12,22 +12,8 @@
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    for ( UIView *subview in self.subviews )
-    {
-        if ( !subview.userInteractionEnabled )
-        {
-            continue;
-        }
-        
-        CGPoint subPoint = [subview convertPoint:point fromView:self];
-        UIView *result = [subview hitTest:subPoint withEvent:event];
-        
-        if ( result != nil )
-        {
-            return result;
-        }
-    }
-    return nil;
+    UIView *result = [super hitTest:point withEvent:event];
+    return result == self ? nil : result;
 }
 
 @end

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 /**
- A generic delegate that multiple view controllers can implement to pass
- this event up the chain.
+ A protocol that view controllers can implement in order to receive this event
+ from pass up the responder chain.
  */
 @protocol VLinkSelectionResponder <NSObject>
 

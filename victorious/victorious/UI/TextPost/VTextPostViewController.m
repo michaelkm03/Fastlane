@@ -197,14 +197,16 @@
 {
     NSString *calloutText = (NSString *)value;
     calloutText = [VHashTags stringByRemovingPrependingHashmarkFromString:calloutText];
-    if ( calloutText != nil && calloutText.length > 0 )
+    if ( calloutText == nil || calloutText.length == 0 )
     {
-        id target = [self targetForAction:@selector(linkWithTextSelected:) withSender:self];
-        if ( target != nil && [target conformsToProtocol:@protocol(VLinkSelectionResponder)] )
-        {
-            id<VLinkSelectionResponder> responder = (id<VLinkSelectionResponder>)target;
-            [responder linkWithTextSelected:calloutText];
-        }
+        return;
+    }
+    
+    id target = [self targetForAction:@selector(linkWithTextSelected:) withSender:self];
+    if ( [target conformsToProtocol:@protocol(VLinkSelectionResponder)] )
+    {
+        id<VLinkSelectionResponder> responder = (id<VLinkSelectionResponder>)target;
+        [responder linkWithTextSelected:calloutText];
     }
 }
 
