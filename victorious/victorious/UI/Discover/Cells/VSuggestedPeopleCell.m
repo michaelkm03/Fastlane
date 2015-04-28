@@ -7,12 +7,13 @@
 //
 
 #import "VSuggestedPeopleCell.h"
+#import "VSuggestedPersonCollectionViewCell.h"
 
 @implementation VSuggestedPeopleCell
 
 + (NSInteger)cellHeight
 {
-    return 190.0f;
+    return [VSuggestedPersonCollectionViewCell cellHeight];
 }
 
 @end

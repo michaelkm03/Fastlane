@@ -48,6 +48,11 @@
     return followImage;
 }
 
++ (CGFloat)cellHeight
+{
+    return 155.0f;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
