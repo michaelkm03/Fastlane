@@ -254,7 +254,7 @@
     [alert show];
 }
 
-- (void)didFailWithError:(NSError *)error
+- (void)twitterLoginFailedWithError:(NSError *)error
 {
     if ( error.code != kVUserBannedError )
     {
@@ -264,13 +264,27 @@
             //We've encountered a network error, show the localized description instead of the twitter troubleshooting tips
             message = error.localizedDescription;
         }
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                               message:message
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
+        [self showLoginFailureAlertWithMessage:message];
     }
+}
+
+- (void)facebookLoginFailedWithError:(NSError *)error
+{
+    if ( error.code != kVUserBannedError )
+    {
+        NSString *message = error.localizedDescription;
+        [self showLoginFailureAlertWithMessage:message];
+    }
+}
+
+- (void)showLoginFailureAlertWithMessage:(NSString *)message
+{
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                           message:message
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Actions
@@ -301,7 +315,7 @@
                            NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:params];
                            
-                           [self didFailWithError:error];
+                           [self facebookLoginFailedWithError:error];
                            [self hideLoginProgress];
                        });
     }];
@@ -489,7 +503,7 @@
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown parameters:params];
          
          [self hideLoginProgress];
-         [self didFailWithError:error];
+         [self twitterLoginFailedWithError:error];
      }];
 }
 
