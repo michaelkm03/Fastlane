@@ -64,7 +64,7 @@
     [self addSubview:self.answerBImageView];
     
     // D_pollOr is the default 
-    self.pollIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"D_pollOr"]];
+    self.pollIconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.pollIconImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.pollIconImageView];
 }

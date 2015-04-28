@@ -223,7 +223,7 @@ static NSString *kOrIconKey = @"orIcon";
 {
     _dependencyManager = dependencyManager;
     
-    self.pollView.pollIcon = [dependencyManager imageForKey:@"orIcon"];
+    self.pollView.pollIcon = [dependencyManager imageForKey:kOrIconKey];
 }
 
 #pragma mark - VBackgroundContainer
