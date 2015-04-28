@@ -15,7 +15,9 @@ target :victorious do
     link_with 'victorious'
 
 target :test do
-        pod 'CCHLinkTextView', :git => 'https://github.com/TouchFrame/CCHLinkTextView.git', :branch => 'options'
+        pod 'CCHLinkTextView', :git => 'https://github.com/TouchFrame/CCHLinkTextView.git', :branch => 'editable'
+        link_with 'victorious'
+        
         pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git', :branch => 'block-response'
         link_with 'victoriousTests'
     end
