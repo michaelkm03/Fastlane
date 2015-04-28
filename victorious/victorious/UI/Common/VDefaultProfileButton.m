@@ -56,8 +56,6 @@
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
-    return;
-    
     [self sd_setImageWithURL:url
                     forState:controlState
             placeholderImage:[self placeholderImage]];

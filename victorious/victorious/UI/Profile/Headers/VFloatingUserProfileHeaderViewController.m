@@ -45,7 +45,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     
     self.gradientView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
     self.gradientView.colors = @[ [UIColor clearColor], [UIColor blackColor] ];
-    self.gradientView.locations = @[ @0.3f, @0.75f ];
+    self.gradientView.locations = @[ @0.3f, @1.0f ];
     
     self.primaryActionButtonStartTop = self.primaryActionButtonTopConstraint.constant;
     self.primaryActionButtonStartHeight = self.primaryActionButtonHeightConstraint.constant;
@@ -100,6 +100,10 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
         case VUserProfileHeaderStateFollowingUser:
             [self.secondaryActionButton setImage:[UIImage imageNamed:@"profile_followed_icon"] forState:UIControlStateNormal];
             self.secondaryActionButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+            if ( self.secondaryActionButton.hidden )
+            {
+                [self animateTransitionInWithButton:self.secondaryActionButton];
+            }
             self.secondaryActionButton.hidden = NO;
             [self setPrimaryActionButtonHidden:YES];
             break;
@@ -112,6 +116,21 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
         default:
             break;
     }
+}
+
+- (void)animateTransitionInWithButton:(UIButton *)button
+{
+    self.secondaryActionButton.alpha = 0.0f;
+    self.secondaryActionButton.transform = CGAffineTransformMakeScale( 0.1f, 0.1f );
+    [UIView animateWithDuration:0.5f
+                          delay:0.4f
+         usingSpringWithDamping:0.65f
+          initialSpringVelocity:0.5f
+                        options:kNilOptions animations:^
+     {
+         self.secondaryActionButton.transform = CGAffineTransformMakeScale( 1.0f, 1.0f );
+         self.secondaryActionButton.alpha = 1.0f;
+     } completion:nil];
 }
 
 - (void)setPrimaryActionButtonHidden:(BOOL)hidden
@@ -143,7 +162,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     UIColor *contentTextColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    UIColor *accentColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    UIColor *secondaryAccentColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *secondaryLinkColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
     
@@ -182,7 +201,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     self.followingHeader.font = [self.dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followingHeader.textColor = textColor;
     
-    self.userStatsBar.backgroundColor = accentColor;
+    self.userStatsBar.backgroundColor = secondaryAccentColor;
 }
 
 @end

@@ -91,6 +91,16 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+#warning This should be removed before merging:
+        NSAssert( [templateDecorator setComponentWithFilename:@"floatingProfileHeader"
+                                                   forKeyPath:@"scaffold/userProfileView/userProfileHeader"],
+                 @"Failed to set floatingProfileHeader in VObjectManager." );
+        
+#warning This should be removed before merging:
+        NSAssert( [templateDecorator setComponentWithFilename:@"floatingProfileHeader"
+                                                   forKeyPath:@"scaffold/menu/items/3/destination/userProfileHeader"],
+                 @"Failed to set floatingProfileHeader in VObjectManager." );
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

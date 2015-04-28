@@ -42,8 +42,6 @@
 
 - (void)setProfileImageURL:(NSURL *)url
 {
-    return;
-    
     [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
 }
 

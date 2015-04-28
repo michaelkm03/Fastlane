@@ -19,9 +19,9 @@
         "alpha": 255
     },
     "color.accent.secondary": {
-        "red": 128,
-        "green": 128,
-        "blue": 128,
+        "red": 137,
+        "green": 112,
+        "blue": 97,
         "alpha": 255
     }
 }
