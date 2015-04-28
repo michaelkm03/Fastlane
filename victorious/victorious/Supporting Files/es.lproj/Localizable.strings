@@ -486,7 +486,7 @@
 "Only on Wifi" = "Solo en Wifi";
 "NotificationSettingSectionFeeds" = "Alimentación";
 "NotificationSettingSectionPeople" = "Persona";
-"Open Settings" = "Abrir configuraciónPersonas";
+"Open Settings" = "Abrir configuración";
 
 "ErrorPushNotificationsNotEnabled" = "Las notificaciones de empuje no están habilitadas para su dispositivo.\n";
 "ErrorPushNotificationsUnknown" = "Error al cargar las notificaciones .\nPor favor, intentar más tarde.";
