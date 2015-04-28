@@ -12,10 +12,10 @@
  A block that will be called when the
  template finishes downloading.
  
- @param templateConfiguration A template dictionary suitable for initializing a new VDependencyManager
+ @param templateData Raw data that can be deserialized into a template dictionary.
  @param error If the download fails, this parameter describes the error
  */
-typedef void (^VTemplateDownloaderCompletion)(NSDictionary *templateConfiguration, NSError *error);
+typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *error);
 
 @protocol VTemplateDownloader <NSObject>
 

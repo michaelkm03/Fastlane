@@ -14,9 +14,12 @@
 
 @property (nonatomic, strong) dispatch_queue_t privateQueue;
 @property (nonatomic, strong) NSUUID *currentDownloadID;
+@property (nonatomic) NSTimeInterval retryInterval;
 @property (nonatomic, copy) VTemplateLoadCompletion completion;
 
 @end
+
+static const NSTimeInterval kDefaultTimeout = 5.0;
 
 @implementation VTemplateDownloadManager
 
@@ -28,6 +31,7 @@
     {
         _privateQueue = dispatch_queue_create("com.getvictorious.VTemplateDownloadManager", DISPATCH_QUEUE_SERIAL);
         _downloader = downloader;
+        _timeout = kDefaultTimeout;
     }
     return self;
 }
@@ -38,6 +42,7 @@
     dispatch_async(self.privateQueue, ^(void)
     {
         self.completion = completion;
+        self.retryInterval = self.timeout;
         
         __weak typeof(self) weakSelf = self;
         NSUUID *downloadID = [[NSUUID alloc] init];
@@ -56,9 +61,16 @@
             }
         });
         
-        [self.downloader downloadTemplateWithCompletion:^(NSDictionary *templateConfiguration, NSError *error)
+        [self.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
         {
-            [weakSelf downloadDidFinishWithConfiguration:templateConfiguration];
+            if ( error != nil )
+            {
+                [weakSelf downloadDidFinishWithData:nil];
+            }
+            else
+            {
+                [weakSelf downloadDidFinishWithData:templateData];
+            }
         }];
     });
 }
@@ -68,17 +80,40 @@
     [self loadTemplateFromCache];
 }
 
-- (void)downloadDidFinishWithConfiguration:(NSDictionary *)configuration
+- (void)downloadDidFinishWithData:(NSData *)data
 {
     dispatch_async(self.privateQueue, ^(void)
     {
         self.currentDownloadID = nil;
+        
+        NSDictionary *configuration = nil;
+        if ( data != nil )
+        {
+            configuration = [VTemplateSerialization templateConfigurationDictionaryWithData:data];
+        }
         if ( configuration == nil )
         {
-            [self loadTemplateFromCache];
+            if ( self.completion != nil )
+            {
+                [self loadTemplateFromCache];
+            }
+            [self retryTemplateDownload];
+            return;
         }
-        [self executeCallbackWithTemplateConfiguration:configuration];
+        else
+        {
+            [self saveTemplateToCache:data];
+            [self executeCallbackWithTemplateConfiguration:configuration];
+        }
     });
+}
+
+- (void)saveTemplateToCache:(NSData *)templateData
+{
+    if ( self.templateCacheFileLocation != nil )
+    {
+        [templateData writeToURL:self.templateCacheFileLocation atomically:YES];
+    }
 }
 
 - (void)loadTemplateFromCache
@@ -111,6 +146,19 @@
         self.completion(configuration);
         self.completion = nil;
     }
+}
+
+- (void)retryTemplateDownload
+{
+    __weak typeof(self) weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.retryInterval * NSEC_PER_SEC)), self.privateQueue, ^(void)
+    {
+        self.retryInterval *= 2.0;
+        [weakSelf.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
+        {
+            [self downloadDidFinishWithData:templateData];
+        }];
+    });
 }
 
 @end
