@@ -197,7 +197,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             self.streamDataSource.hasHeaderCell = YES;
             self.profileHeaderViewController.delegate = self;
-            [self reloadUserFollowCounts];
         }
     }
 }
