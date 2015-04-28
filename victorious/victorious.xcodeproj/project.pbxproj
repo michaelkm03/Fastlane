@@ -260,6 +260,9 @@
 		039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */; };
 		03A058BA1AED7FB600CF39D1 /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
 		03A058BC1AED802400CF39D1 /* VTemplateSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */; };
+		03A058BF1AEF44D600CF39D1 /* VTemplateDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */; };
+		03A058C11AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */; };
+		03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03AC453A19BA1F1000CE4351 /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453919BA1F1000CE4351 /* NSString+VCrypto.m */; };
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
@@ -1357,6 +1360,10 @@
 		03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateSerialization.h; sourceTree = "<group>"; };
 		03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateSerialization.m; sourceTree = "<group>"; };
 		03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateSerializationTests.m; sourceTree = "<group>"; };
+		03A058BD1AEF44D600CF39D1 /* VTemplateDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDownloadManager.h; sourceTree = "<group>"; };
+		03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDownloadManager.m; sourceTree = "<group>"; };
+		03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDownloadManagerTests.m; sourceTree = "<group>"; };
+		03A058C21AEF59E600CF39D1 /* templateCache.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = templateCache.json; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		03AC453819BA1F1000CE4351 /* NSString+VCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VCrypto.h"; sourceTree = "<group>"; };
@@ -3551,6 +3558,7 @@
 				037CB73419CFE02C0084BBED /* sampleImage.jpg */,
 				A72004FA1A02FEC000285A9C /* sampleImage.png */,
 				039D02B01A10443200DB9236 /* template.json */,
+				03A058C21AEF59E600CF39D1 /* templateCache.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -3576,6 +3584,8 @@
 		03A058B21AECAD0A00CF39D1 /* Template Downloader */ = {
 			isa = PBXGroup;
 			children = (
+				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadManager.h */,
+				03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */,
 				03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */,
 				03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */,
 			);
@@ -4776,6 +4786,7 @@
 				F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */,
 				F0B390BC1A8535E300EE70C7 /* VTagTests.m */,
 				A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */,
+				03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */,
 				03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */,
 				F0140BC31AA9468500B95642 /* VTimerManagerTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
@@ -5985,6 +5996,7 @@
 				A7CFC1C919FEE24300726772 /* front_landscape_left.m4v in Resources */,
 				035FA77A1AE1890D0002EE63 /* menuSectionsTemplate.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
+				03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				039420481AB88A450087ADFA /* image-template.json in Resources */,
 				039D02B11A10443200DB9236 /* template.json in Resources */,
@@ -6443,6 +6455,7 @@
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
+				03A058BF1AEF44D600CF39D1 /* VTemplateDownloadManager.m in Sources */,
 				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				D8E5A4FA1AAA76460019F231 /* VBlurOverTransitioner.m in Sources */,
@@ -6728,6 +6741,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03A058C11AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m in Sources */,
 				D80BAB571A688673003A3068 /* VNodeFetcherTests.m in Sources */,
 				A77AD4FB1A1FF33100142F24 /* VAlertControllerAdvancedTests.m in Sources */,
 				A70417631A365EE80042CABD /* VPurchaseRecordTests.m in Sources */,

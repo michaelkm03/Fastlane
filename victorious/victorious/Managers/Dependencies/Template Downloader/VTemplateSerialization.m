@@ -13,6 +13,8 @@
 
 + (NSDictionary *)templateConfigurationDictionaryWithData:(NSData *)data
 {
+    NSParameterAssert( data != nil );
+    
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
     if ( [json isKindOfClass:[NSDictionary class]] )
     {
