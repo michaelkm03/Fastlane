@@ -372,7 +372,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     if ( section >= 0 && section < VDiscoverViewControllerSectionsCount )
     {
-        return [VDiscoverHeaderView preferredSize].height;
+        return [VDiscoverHeaderView desiredHeight];
     }
     return 0;
 }
@@ -418,7 +418,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (BOOL)isUserSubscribedToHashtag:(NSString *)tag
 {
-    for ( VHashtag *hashtag in [self userTags] )
+    for ( VHashtag *hashtag in [[VObjectManager sharedManager] mainUser].hashtags )
     {
         if ( [hashtag.tag isEqualToString:tag] )
         {
@@ -500,11 +500,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             return;
         }
     }
-}
-
-- (NSOrderedSet *)userTags
-{
-    return [[VObjectManager sharedManager] mainUser].hashtags;
 }
 
 @end

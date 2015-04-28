@@ -19,8 +19,12 @@
 
 - (void)setTitle:(NSString *)title
 {
-    _title = title;
     self.titleLabel.text = title;
+}
+
+- (NSString *)title
+{
+    return self.titleLabel.text;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -34,12 +38,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return [[self class] preferredSize];
+    return CGSizeMake(320.0f, [[self class] desiredHeight]);
 }
 
-+ (CGSize)preferredSize
++ (CGFloat)desiredHeight
 {
-    return CGSizeMake(320.0f, 37.0f);
+    return 37.0f;
 }
 
 + (UINib *)nibForHeader

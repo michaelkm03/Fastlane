@@ -10,12 +10,22 @@
 
 @class VDependencyManager;
 
+/**
+    A simple header view with a 1-line title
+ */
 @interface VDiscoverHeaderView : UITableViewHeaderFooterView
 
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) NSString *title; ///< The title to display in the header
+@property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependency manager used to style the header
 
-+ (CGSize)preferredSize;
+/**
+    The desired height for the header
+ */
++ (CGFloat)desiredHeight;
+
+/**
+    The nib to load the header from
+ */
 + (UINib *)nibForHeader;
 
 @end
