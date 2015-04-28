@@ -84,8 +84,8 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)isText
 {
-    return [self.category isEqualToString:kVUGCTextCategory] ||
-           [self.category isEqualToString:kVOwnerTextCategory];
+    NSArray *textCategories = @[ kVUGCTextCategory, kVUGCTextRepostCategory, kVOwnerTextCategory, kVOwnerTextRepostCategory];
+    return [textCategories containsObject:self.category];
 }
 
 - (BOOL)isOwnerContent

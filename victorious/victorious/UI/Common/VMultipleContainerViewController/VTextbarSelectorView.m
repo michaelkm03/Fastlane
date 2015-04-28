@@ -134,7 +134,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     
     __weak VTextbarSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
-    UIColor *buttonTextColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *buttonTextColor = self.foregroundColor;
     UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
         

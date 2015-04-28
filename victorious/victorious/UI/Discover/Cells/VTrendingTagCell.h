@@ -23,11 +23,6 @@
 @property (nonatomic, readonly) BOOL isSubscribedToTag;
 
 /**
- Flag for the view controller to specify if the subscribe / unsubscribe button should be animated when tapped
- */
-@property (nonatomic, assign) BOOL shouldAnimateSubscription;
-
-/**
  The control for the subscribe / unsubscribe button
  */
 @property (nonatomic, weak) IBOutlet VFollowHashtagControl *followHashtagControl;
