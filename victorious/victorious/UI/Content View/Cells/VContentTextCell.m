@@ -37,8 +37,7 @@
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
         self.shrinkingContentView = self.contentContainer;
     }
-    
-    self.textPostViewController.isTextSelectable = YES;
+    self.textPostViewController.isTextSelectable = NO;
 }
 
 - (void)setTextContent:(NSString *)text
