@@ -104,5 +104,7 @@
 	<string>VFullscreenMarqueeController</string>
 	<key>blurred.marqueeCell</key>
 	<string>VBlurredMarqueeController</string>
+	<key>inset.marqueeCell</key>
+	<string>VInsetMarqueeController</string>
 </dict>
 </plist>

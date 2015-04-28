@@ -20,7 +20,6 @@
 #import "UIView+Autolayout.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
-#import "VThemeManager.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -70,21 +69,17 @@ static NSString * const kVOrIconKey = @"orIcon";
     [self.previewImageView fadeInImageAtURL:previewImageUrl
                            placeholderImage:nil];
     
-    self.detailsBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    BOOL populateProfileImage = [streamItem isKindOfClass:[VSequence class]] && !self.hideMarqueePosterImage;
     
-    if ( [streamItem isKindOfClass:[VSequence class]] )
+    if ( populateProfileImage )
     {
         VSequence *sequence = (VSequence *)streamItem;
-        
-        self.pollOrImageView.hidden = ![sequence isPoll];
         
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
     }
-    else
-    {
-        self.profileImageButton.hidden = YES;
-    }
+    
+    self.profileImageButton.hidden = !populateProfileImage;
     
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];

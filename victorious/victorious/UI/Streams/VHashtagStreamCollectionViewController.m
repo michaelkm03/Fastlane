@@ -117,7 +117,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)dataSourceDidRefresh
 {
-    if ( self.streamDataSource.count == 0 )
+    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
         if ( self.noContentView == nil )
         {

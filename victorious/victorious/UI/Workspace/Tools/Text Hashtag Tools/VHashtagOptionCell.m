@@ -8,8 +8,11 @@
 
 #import "VHashtagOptionCell.h"
 
+static NSString * const kCheckImageName = @"hashtag_option_check";
+
 @interface VHashtagOptionCell()
 
+@property (strong, nonatomic) UIImage *checkImage;
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
 @property (weak, nonatomic) IBOutlet UIButton *checkBox; //< This is a button, but it is never enabled, just for show
 
@@ -22,6 +25,8 @@
     [super awakeFromNib];
     
     self.checkBox.layer.cornerRadius = CGRectGetMidX( self.checkBox.bounds );
+    
+    self.checkImage = [UIImage imageNamed:kCheckImageName];
     
     self.selected = NO;
 }
@@ -61,14 +66,14 @@
         self.checkBox.layer.borderWidth = 0.0f;
         self.checkBox.layer.borderColor = [UIColor clearColor].CGColor;
         self.checkBox.backgroundColor = self.selectedColor;
-        self.checkBox.imageView.hidden = NO;
+        [self.checkBox setImage:self.checkImage forState:UIControlStateNormal];
     }
     else
     {
         self.checkBox.layer.borderWidth = 1.0f;
         self.checkBox.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor;
         self.checkBox.backgroundColor = [UIColor clearColor];
-        self.checkBox.imageView.hidden = YES;
+        [self.checkBox setImage:nil forState:UIControlStateNormal];
     }
     
     [self setNeedsDisplay];
