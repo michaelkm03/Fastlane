@@ -20,9 +20,8 @@
 
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
-static const CGFloat kTimelineTopPadding = 48.0f;
 static const CGFloat kTimelineDarkeningAlpha = 0.5f;
-static const CGFloat kTimelineLabelPadding = 20.0f;
+static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for the thumbnail preview collection view
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
@@ -333,7 +332,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     NSString *title = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%.2f", CMTimeGetSeconds(time)]];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
-                                                                       attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
+                                                                       attributes:@{NSFontAttributeName: [[_dependencyManager fontForKey:VDependencyManagerLabel3FontKey] fontWithSize:16.0f]}];
 }
 
 - (CGFloat)timelineWidthPerSecond
@@ -356,9 +355,10 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 - (void)prepareThumbnailCollectionViewAndTitleLabel
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(CGRectGetHeight(self.view.frame), CGRectGetHeight(self.view.frame));
+    CGRect bounds = self.view.bounds;
+    layout.itemSize = CGSizeMake(CGRectGetHeight(bounds), CGRectGetHeight(bounds));
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    self.thumbnailCollectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
+    self.thumbnailCollectionView = [[UICollectionView alloc] initWithFrame:bounds
                                                       collectionViewLayout:layout];
     [self.thumbnailCollectionView registerNib:[VThumbnailCell nibForCell]
                    forCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]];
@@ -380,9 +380,11 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.titleLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:self.titleLabel];
 
-    NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollectionView,
-                              @"titleLabel": self.titleLabel};
-    
+    NSDictionary *viewMap = @{
+                              @"collectionView": self.thumbnailCollectionView,
+                              @"titleLabel": self.titleLabel
+                              };
+    CGFloat topPadding = [VTrimControl topPadding];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
@@ -391,10 +393,13 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView]-kTimelineLabelPadding-[titleLabel]-kTimelineLabelPadding-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView(kMinimumThumbnailHeight@748,>=kMinimumThumbnailHeight@749)][titleLabel(<=kMaximumLabelHeight)]|"
                                                                       options:kNilOptions
-                                                                      metrics:@{@"kTimelineTopPadding":@(kTimelineTopPadding),
-                                                                                @"kTimelineLabelPadding":@(kTimelineLabelPadding)}
+                                                                      metrics:@{
+                                                                                @"kTimelineTopPadding":@(topPadding),
+                                                                                @"kMinimumThumbnailHeight":@(kMinimumThumbnailHeight),
+                                                                                @"kMaximumLabelHeight":@(topPadding)
+                                                                                }
                                                                         views:viewMap]];
 }
 
@@ -445,8 +450,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.trimControl];
     
-    NSDictionary *viewMap = @{@"trimControl": self.trimControl,
-                              @"titleLabel": self.titleLabel};
+    NSDictionary *viewMap = @{@"trimControl": self.trimControl};
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[trimControl]|"
                                                                       options:kNilOptions
