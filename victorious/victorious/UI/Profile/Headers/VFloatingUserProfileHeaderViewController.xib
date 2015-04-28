@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -19,6 +19,7 @@
                 <outlet property="nameLabel" destination="Xdy-I6-0YY" id="qFx-xT-hCf"/>
                 <outlet property="primaryActionButton" destination="qUS-eN-tgK" id="np6-al-e8A"/>
                 <outlet property="primaryActionButtonHeightConstraint" destination="kRu-mV-T1U" id="TFb-xg-xEs"/>
+                <outlet property="primaryActionButtonTopConstraint" destination="4dh-Gm-6NJ" id="CxH-wh-ntR"/>
                 <outlet property="secondaryActionButton" destination="reE-xi-zdS" id="y1Y-C1-Cg4"/>
                 <outlet property="taglineLabel" destination="eWJ-1h-9hk" id="Rw1-7l-1vz"/>
                 <outlet property="userStatsBar" destination="bHl-Un-gmi" id="98Q-eM-ey7"/>
@@ -76,7 +77,9 @@
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="eWJ-1h-9hk" userLabel="Tagline Label">
                     <rect key="frame" x="22" y="376" width="503" height="100"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="height" priority="1" constant="100" id="CTk-E6-aaJ"/>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="100" id="DOe-Si-h9Y"/>
                     </constraints>
                     <string key="text">Bacon ipsum dolor sit amet capicola fatback tongue tail pig sausage ribeye, bacon pancetta rump t-bone hamburger flank pork loin beef. Pork chop bacon t-bone pork loin ground round leberkas. Sirloin sausage doner, turducken pork belly capicola brisket. Cow ground round swine t-bone, ball tip meatball pastrami sausage strip steak. Bresaola doner venison, short ribs tail meatloaf pork ribeye.  Bacon ipsum dolor sit amet capicola fatback tongue tail pig sausage ribeye, bacon pancetta rump t-bone hamburger flank pork loin beef. Pork chop bacon t-bone pork loin ground round leberkas. Sirloin sausage doner, turducken pork belly capicola brisket. Cow ground round swine t-bone, ball tip meatball pastrami sausage strip steak. Bresaola doner venison, short ribs tail meatloaf pork ribeye.  Bacon ipsum dolor sit amet capicola fatback tongue tail pig sausage ribeye, bacon pancetta rump t-bone hamburger flank pork loin beef. Pork chop bacon t-bone pork loin ground round leberkas. Sirloin sausage doner, turducken pork belly capicola brisket. Cow ground round swine t-bone, ball tip meatball pastrami sausage strip steak. Bresaola doner venison, short ribs tail meatloaf pork ribeye.</string>

@@ -345,11 +345,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
     }
-    else
-    {
-        self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
-        [self reloadUserFollowCounts];
-    }
+    
+    [self reloadUserFollowCounts];
 }
 
 - (void)reloadUserFollowingRelationship

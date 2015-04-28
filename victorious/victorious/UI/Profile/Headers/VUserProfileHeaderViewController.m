@@ -236,15 +236,7 @@
 {
     self.nameLabel.text = self.user.name != nil ? self.user.name : @"";
     self.locationLabel.text = self.user.location;
-    
-    if ( self.user.tagline != nil && self.user.tagline.length > 0 )
-    {
-        self.taglineLabel.text = self.user.tagline;
-    }
-    else
-    {
-        self.taglineLabel.text = @"";
-    }
+    self.taglineLabel.text = self.user.tagline;
 }
 
 @end

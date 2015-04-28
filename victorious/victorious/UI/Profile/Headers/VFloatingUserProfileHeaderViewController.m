@@ -21,6 +21,8 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 @property (nonatomic, weak) IBOutlet VButton *secondaryActionButton;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *primaryActionButtonHeightConstraint;
 @property (nonatomic, assign) CGFloat primaryActionButtonStartHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *primaryActionButtonTopConstraint;
+@property (nonatomic, assign) CGFloat primaryActionButtonStartTop;
 @property (nonatomic, strong) VDefaultProfileImageView *floatingProfileImageView;
 
 @end
@@ -45,13 +47,17 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     self.gradientView.colors = @[ [UIColor clearColor], [UIColor blackColor] ];
     self.gradientView.locations = @[ @0.3f, @0.75f ];
     
+    self.primaryActionButtonStartTop = self.primaryActionButtonTopConstraint.constant;
     self.primaryActionButtonStartHeight = self.primaryActionButtonHeightConstraint.constant;
-    self.primaryActionButtonHeightConstraint.constant = 0;
-    [self.primaryActionButton layoutIfNeeded];
+    
+    [self setPrimaryActionButtonHidden:YES];
     
     self.secondaryActionButton.hidden = YES;
     
-    self.state = self.state;
+    if ( self.state != VUserProfileHeaderStateUndefined )
+    {
+        self.state = self.state; // Trigger a state refresh
+    }
 }
 
 #pragma mark - VUserProfileHeader
@@ -89,24 +95,29 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
         case VUserProfileHeaderStateCurrentUser:
             self.secondaryActionButton.hidden = YES;
             [self.primaryActionButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-            self.primaryActionButtonHeightConstraint.constant = self.primaryActionButtonStartHeight;
+            [self setPrimaryActionButtonHidden:NO];
             break;
         case VUserProfileHeaderStateFollowingUser:
             [self.secondaryActionButton setImage:[UIImage imageNamed:@"profile_followed_icon"] forState:UIControlStateNormal];
             self.secondaryActionButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
             self.secondaryActionButton.hidden = NO;
-            self.primaryActionButtonHeightConstraint.constant = 0;
+            [self setPrimaryActionButtonHidden:YES];
             break;
         case VUserProfileHeaderStateNotFollowingUser:
             [self.secondaryActionButton setImage:[UIImage imageNamed:@"profile_follow_icon"] forState:UIControlStateNormal];
             self.secondaryActionButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
             self.secondaryActionButton.hidden = NO;
-            self.primaryActionButtonHeightConstraint.constant = 0;
+            [self setPrimaryActionButtonHidden:YES];
             break;
         default:
             break;
     }
-    
+}
+
+- (void)setPrimaryActionButtonHidden:(BOOL)hidden
+{
+    self.primaryActionButtonHeightConstraint.constant = hidden ? 0 : self.primaryActionButtonStartHeight;
+    self.primaryActionButtonTopConstraint.constant = hidden ? 0 : self.primaryActionButtonStartTop;
     [self.primaryActionButton layoutIfNeeded];
 }
 

@@ -13,6 +13,10 @@
 typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
 {
     /**
+     The state before any specific state is set, intended to represent an uninitialized state that must be defined.
+     */
+    VUserProfileHeaderStateUndefined,
+    /**
      If the user is viewing their own profile, requiring extra utilty buttons for
      editing functionality.
      */

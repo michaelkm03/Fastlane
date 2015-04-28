@@ -29,6 +29,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.primaryActionButton.alpha = 0.0f;
+    
+    if ( self.state != VUserProfileHeaderStateUndefined )
+    {
+        self.state = self.state; // Trigger a state refresh
+    }
 }
 
 #pragma mark - VUserProfileHeader
@@ -79,8 +86,21 @@
             [self.primaryActionButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
             break;
         default:
-            break;
+            return;
     }
+    
+    [self revealStatefulUIElements];
+}
+
+- (void)revealStatefulUIElements
+{
+    // `primaryActionButton` is invisible when this view first loads so that it doesnt not display
+    // until an accurate state is set in this `setState:` method.  Once that's done above, now we can show it
+    self.primaryActionButton.hidden = NO;
+    [UIView animateWithDuration:0.35f animations:^
+     {
+         self.primaryActionButton.alpha = 1.0f;
+     }];
 }
 
 - (void)setLoading:(BOOL)loading
