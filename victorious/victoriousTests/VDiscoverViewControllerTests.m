@@ -50,7 +50,6 @@
 @property (nonatomic, assign) IMP originalDiscoverRefresh;
 @property (nonatomic, assign) IMP originalSuggestedPeopleRefresh;
 @property (nonatomic, assign) IMP originalShowHashtagStream;
-@property (nonatomic, assign) IMP originalUpdatedFollowedTags;
 @property (nonatomic, strong) VDiscoverViewController *viewController;
 @property (nonatomic, strong) UITableView *tableView;
 
