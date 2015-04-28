@@ -111,7 +111,7 @@ static NSString * const kJSONType = @"json";
                                            forKeyPathKeys:keyPathKeys
                                                    didSet:&didSetTemplateValue];
     
-    return YES;
+    return didSetTemplateValue;
 }
 
 - (id)collectionFromCollection:(id)source
@@ -119,6 +119,11 @@ static NSString * const kJSONType = @"json";
                 forKeyPathKeys:(NSMutableArray *)keyPathKeys
                         didSet:(BOOL *)didSetTemplateValue
 {
+    if ( keyPathKeys.count == 0 )
+    {
+        return nil;
+    }
+    
     NSString *currentKey = keyPathKeys.firstObject;
     [keyPathKeys removeObjectAtIndex:0];
     
@@ -181,7 +186,6 @@ static NSString * const kJSONType = @"json";
             }
             else
             {
-                // TODO: Test to make sure existing values are transfered
                 destination[ key ] = source[ key ];
             }
         }
@@ -205,6 +209,11 @@ static NSString * const kJSONType = @"json";
 
 - (id)valueInCollection:(id)source forKeyPathKeys:(NSMutableArray *)keyPathKeys
 {
+    if ( keyPathKeys.count == 0 )
+    {
+        return nil;
+    }
+    
     NSString *currentKey = keyPathKeys.firstObject;
     [keyPathKeys removeObjectAtIndex:0];
     
