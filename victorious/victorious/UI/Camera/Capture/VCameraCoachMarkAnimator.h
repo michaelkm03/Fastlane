@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VCameraCoachMarkHelper : NSObject
+@interface VCameraCoachMarkAnimator : NSObject
 
 /**
  *  Initializes a VCameraCoachMarkHelper with the given coach view. The coachView's 

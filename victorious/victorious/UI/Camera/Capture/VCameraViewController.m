@@ -23,7 +23,7 @@
 #import "VThemeManager.h"
 #import "VRadialGradientView.h"
 #import "VRadialGradientLayer.h"
-#import "VCameraCoachMarkHelper.h"
+#import "VCameraCoachMarkAnimator.h"
 #import <FBKVOController.h>
 
 static const NSTimeInterval kAnimationDuration = 0.4;
@@ -87,7 +87,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong) dispatch_queue_t captureAnimationQueue;
 @property (nonatomic, assign) BOOL animationCompleted;
 
-@property (nonatomic, strong) VCameraCoachMarkHelper *coachMarkHelper;
+@property (nonatomic, strong) VCameraCoachMarkAnimator *coachMarkHelper;
 
 @end
 
@@ -214,7 +214,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     
     if (self.allowVideo && self.videoEnabled)
     {
-        self.coachMarkHelper = [[VCameraCoachMarkHelper alloc] initWithCoachView:self.coachView];
+        self.coachMarkHelper = [[VCameraCoachMarkAnimator alloc] initWithCoachView:self.coachView];
         self.coachView.text = NSLocalizedString(@"VideoCoachMessage", @"Video coach message");
     }
     else

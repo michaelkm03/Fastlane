@@ -6,16 +6,16 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VCameraCoachMarkHelper.h"
+#import "VCameraCoachMarkAnimator.h"
 
-@interface VCameraCoachMarkHelper ()
+@interface VCameraCoachMarkAnimator ()
 
 @property (nonatomic, strong) UIView *coachView;
 @property (nonatomic, assign) BOOL hasReceivedFadeOutMessage;
 
 @end
 
-@implementation VCameraCoachMarkHelper
+@implementation VCameraCoachMarkAnimator
 
 - (instancetype)initWithCoachView:(UIView *)coachView
 {
