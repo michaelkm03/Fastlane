@@ -125,16 +125,18 @@ static NSString * const kInitialKey = @"initial";
     if ( !self.didShowInitial )
     {
         UIViewController *initialViewController = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:kInitialKey];
+        NSUInteger index = 0;
         if ( initialViewController != nil )
         {
-            NSUInteger index = [self.viewControllers indexOfObject:initialViewController];
+            index = [self.viewControllers indexOfObject:initialViewController];
             if ( index == NSNotFound )
             {
                 index = 0;
             }
-            [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
-            [self.selector setActiveViewControllerIndex:index];
+            [initialViewController viewWillAppear:NO];
         }
+        [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
+        [self.selector setActiveViewControllerIndex:index];
         self.didShowInitial = YES;
     }
 }
