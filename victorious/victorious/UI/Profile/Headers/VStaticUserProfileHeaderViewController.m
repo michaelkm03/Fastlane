@@ -127,7 +127,6 @@
     
     UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    UIColor *accentColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = linkColor.CGColor;
@@ -157,8 +156,6 @@
     
     self.followingHeader.font = [self.dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.followingHeader.textColor = textColor;
-    
-    self.userStatsBar.backgroundColor = accentColor;
 }
 
 @end

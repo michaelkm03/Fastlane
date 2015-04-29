@@ -14,11 +14,13 @@
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VImageAsset+Fetcher.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 #import <KVOController/FBKVOController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface VUserProfileHeaderViewController()
+@interface VUserProfileHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
@@ -89,6 +91,13 @@
     return nil;
 }
 
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.userStatsBarBackgroundContainer;
+}
+
 #pragma mark - Setters
 
 - (void)setUser:(VUser *)user
@@ -107,7 +116,9 @@
 
 - (void)updateUser
 {
-    [self loadBackgroundImageFromURL:[NSURL URLWithString:self.user.pictureUrl]];
+    CGSize minSize = self.view.bounds.size;
+    VImageAsset *imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.user.previewAssets ];
+    [self loadBackgroundImageFromURL:[NSURL URLWithString:imageAsset.imageURL]];
     
     if ( self.user != nil )
     {
@@ -166,6 +177,8 @@
     [self.primaryActionButton layoutIfNeeded];
     const CGFloat roundedCornerRadius = CGRectGetHeight( self.primaryActionButton.bounds ) / 2.0f;
     self.primaryActionButton.cornerRadius = isRounded ? roundedCornerRadius : 0.0f;
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 #pragma mark - Actions
