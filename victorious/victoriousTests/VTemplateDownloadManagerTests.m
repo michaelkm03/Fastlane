@@ -221,4 +221,23 @@
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
+- (void)testDownloaderKeepsTryingToDownloadIfItHasNothingToFallBackOn
+{
+    VFailingTemplateDownloaderMock *downloader = [[VFailingTemplateDownloaderMock alloc] init];
+    downloader.mockTemplateDictionary = @{ @"hello": @"world" };
+    downloader.failCount = 3;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
+    
+    VTemplateDownloadManager *manager = [[VTemplateDownloadManager alloc] initWithDownloader:downloader];
+    manager.timeout = 0.01;
+    [manager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
+    {
+        NSDictionary *expected = downloader.mockTemplateDictionary;
+        XCTAssertEqualObjects(templateConfiguration, expected);
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
 @end

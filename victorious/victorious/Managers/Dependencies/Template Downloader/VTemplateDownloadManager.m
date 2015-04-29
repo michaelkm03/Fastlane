@@ -153,11 +153,15 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
     __weak typeof(self) weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.retryInterval * NSEC_PER_SEC)), self.privateQueue, ^(void)
     {
-        self.retryInterval *= 2.0;
-        [weakSelf.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
+        typeof(self) strongSelf = weakSelf;
+        if ( strongSelf != nil )
         {
-            [self downloadDidFinishWithData:templateData];
-        }];
+            weakSelf.retryInterval *= 2.0;
+            [weakSelf.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
+            {
+                [self downloadDidFinishWithData:templateData];
+            }];
+        }
     });
 }
 
