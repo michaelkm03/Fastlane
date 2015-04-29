@@ -363,7 +363,7 @@ static const NSInteger kSearchResultLimit = 100;
                                                                    forIndexPath:indexPath];
     cell.profile = profile;
     cell.dependencyManager = self.dependencyManager;
-    cell.followAction = ^(BOOL wantsFollow, VUser *onUser)
+    cell.followActionHandler = ^(BOOL wantsFollow, VUser *onUser)
     {
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                           dependencyManager:self.dependencyManager];

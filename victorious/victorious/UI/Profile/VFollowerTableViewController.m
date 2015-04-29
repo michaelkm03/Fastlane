@@ -169,7 +169,7 @@
                                                                    forIndexPath:indexPath];
     cell.profile = self.followers[indexPath.row];
     cell.dependencyManager = self.dependencyManager;
-    cell.followAction = ^(BOOL wantsFollow, VUser *onUser)
+    cell.followActionHandler = ^(BOOL wantsFollow, VUser *onUser)
     {
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                           dependencyManager:self.dependencyManager];

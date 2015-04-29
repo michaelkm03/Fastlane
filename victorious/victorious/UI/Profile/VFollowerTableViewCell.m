@@ -118,9 +118,9 @@ static const CGFloat kFollowerCellHeight = 50.0f;
 
 - (IBAction)tappedFollowControl:(VFollowUserControl *)sender
 {
-    if (self.followAction != nil)
+    if (self.followActionHandler!= nil)
     {
-        self.followAction(!sender.following, self.profile);
+        self.followActionHandler(!sender.following, self.profile);
     }
 }
 
