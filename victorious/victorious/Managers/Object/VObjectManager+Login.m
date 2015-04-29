@@ -32,46 +32,17 @@
 
 NSString * const kLoggedInChangedNotification   = @"com.getvictorious.LoggedInChangedNotification";
 
-static NSString * const kWorkspaceTemplateName  = @"workspaceTemplate";
-
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
 static NSString * const kVVideoQualityKey       = @"video_quality";
 static NSString * const kVAppTrackingKey        = @"video_quality";
 
-- (RKManagedObjectRequestOperation *)templateWithDependencyManager:(VDependencyManager *)parentDependencyManager
-                                                      successBlock:(VTemplateSuccessBlock)success
-                                                         failBlock:(VFailBlock)failed
+- (RKManagedObjectRequestOperation *)templateWithSuccessBlock:(VSuccessBlock)success failBlock:(VFailBlock)failed
 {
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        if ( success == nil )
-        {
-            return;
-        }
-        if ( ![fullResponse isKindOfClass:[NSDictionary class]] )
-        {
-            if ( failed != nil )
-            {
-                failed(operation, nil);
-            }
-        }
-        
-        NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
-        
-        VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
-        [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
-        
-        VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
-                                                                                    configuration:templateDecorator.decoratedTemplate
-                                                                dictionaryOfClassesByTemplateName:nil];
-        success(operation, fullResponse, dependencyManager);
-    };
-    
     return [self GET:@"/api/template"
               object:nil
           parameters:nil
-        successBlock:fullSuccess
+        successBlock:success
            failBlock:failed];
 }
 
