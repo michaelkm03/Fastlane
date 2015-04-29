@@ -121,7 +121,7 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
     NSData *templateData = [NSData dataWithContentsOfURL:self.templateCacheFileLocation];
     if ( templateData == nil )
     {
-        [self loadtemplateFromBundle];
+        [self loadTemplateFromBundle];
         return;
     }
     
@@ -129,7 +129,7 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
     [self executeCallbackWithTemplateConfiguration:template];
 }
 
-- (void)loadtemplateFromBundle
+- (void)loadTemplateFromBundle
 {
     NSData *templateData = [NSData dataWithContentsOfURL:self.templateLocationInBundle];
     if ( templateData != nil )
