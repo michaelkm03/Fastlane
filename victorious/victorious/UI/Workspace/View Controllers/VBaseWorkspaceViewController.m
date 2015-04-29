@@ -374,6 +374,10 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
     self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
      {
+         if (![((UIView *)constraint.firstItem) isDescendantOfView:self.view] || ![((UIView *)constraint.secondItem) isDescendantOfView:self.view])
+         {
+             return;
+         }
          [self.view addConstraint:constraint];
      }];
     
