@@ -24,6 +24,9 @@
     
     RKEntityMapping *mapping = [RKEntityMapping mappingForEntityForName:[self entityName]
                                                    inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    mapping.identificationAttributes = @[ VSelectorName(imageURL) ];
+    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     return mapping;
 }
