@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#define LOG_API_RESPONSES 0
-
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -28,8 +26,6 @@
 #import "VUserManager.h"
 #import "VTemplateDecorator.h"
 
-//Imported to log out the payload from the database and the payload we would have gotten from the (deprecated) api/init and the VTemplateGenerator
-#import "VTemplateGenerator.h"
 #import "NSDictionary+VJSONLogging.h"
 
 @implementation VObjectManager (Login)
@@ -42,25 +38,6 @@ static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
 static NSString * const kVVideoQualityKey       = @"video_quality";
 static NSString * const kVAppTrackingKey        = @"video_quality";
-
-#pragma mark - Init
-- (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)failed
-{
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    return [self GET:@"/api/init"
-              object:nil
-          parameters:nil
-        successBlock:fullSuccess
-           failBlock:failed];
-}
 
 - (RKManagedObjectRequestOperation *)templateWithDependencyManager:(VDependencyManager *)parentDependencyManager
                                                       successBlock:(VTemplateSuccessBlock)success
@@ -79,12 +56,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
                 failed(operation, nil);
             }
         }
-        
-#if LOG_API_RESPONSES
-#warning API LOGGING IS ENABLED!
-        [(NSDictionary *)fullResponse[@"payload"] logJSONStringWithTitle:@"FROM DB"];
-        [VTemplateGenerator logExampleTemplate];
-#endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
         

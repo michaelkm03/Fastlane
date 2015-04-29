@@ -11,7 +11,6 @@
 #import "VDependencyManager.h"
 #import "VSequence+Fetcher.h"
 #import "VCVideoPlayerViewController.h"
-#import "VTemplateGenerator.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Sequence.h"
 #import "VAsset+Fetcher.h"

@@ -23,7 +23,6 @@
 #import "VTracking.h"
 #import "TremorVideoAd.h"
 #import "VConstants.h"
-#import "VTemplateGenerator.h"
 #import "VLocationManager.h"
 #import "VVoteSettings.h"
 #import "VVoteType.h"
