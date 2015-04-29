@@ -23,14 +23,16 @@
     if (self)
     {
         _coachView = coachView;
+        self.coachView.alpha = 0.0f;
     }
     return self;
 }
 
 - (void)fadeIn
 {
+    self.coachView.alpha = 0.0f;
     [UIView animateWithDuration:0.5f
-                          delay:0.0f
+                          delay:0.5f
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^
      {
