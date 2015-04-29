@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+    DO NOT ADD ANYTHING TO OR USE THIS CLASS, it's a bandaid until we rewrite our
+        VMultipleContainerViewController implementation to properly cause
+        viewWillAppear to fire on it's child view controllers.
+ */
 @protocol VInitialViewController <NSObject>
 
 - (void)setIsInitialViewController:(BOOL)isInitialViewController;
