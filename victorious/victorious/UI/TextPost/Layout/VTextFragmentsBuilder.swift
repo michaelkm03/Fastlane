@@ -9,30 +9,6 @@
 import UIKit
 
 /**
-Represents a line, part of a line or a single word of text
-*/
-class VTextFragment
-{
-    static let topInsetMultiplier: CGFloat = 0.42
-    static let bottomInsetMultipler: CGFloat = 0.09
-    
-    let text: String
-    var rect: CGRect
-    let range: NSRange
-    let isCallout: Bool ///< Is this fragment a callout as indicated by a callout delimeter prefix ("#" or "@")
-    let isNewLine: Bool ///< Is the fragment the star to of a new line
-    
-    init( text: String, rect: CGRect, range: NSRange, isCallout: Bool, isNewLine: Bool )
-    {
-        self.text = text
-        self.rect = rect
-        self.range = range
-        self.isCallout = isCallout
-        self.isNewLine = isNewLine
-    }
-}
-
-/**
 Primary reponsiblity is to break apart attributed text from a text view into a group of
 VTextFragments so that the `rect` properties of those fragments can be rendered in the background
 of a text view for text posts.
@@ -48,7 +24,6 @@ class VTextFragmentsBuilder: NSObject
         var output = [VTextFragment]()
         
         let text: NSString = count(textView.attributedText.string) == 0 ? " " : textView.attributedText.string
-        textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
         
         var currentFragmentRect = CGRectZero
         var lastFragmentRect = CGRectZero

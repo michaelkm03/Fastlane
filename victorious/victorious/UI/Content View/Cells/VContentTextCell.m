@@ -32,8 +32,8 @@
     if ( self.textPostViewController == nil )
     {
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-        [self.contentContainer addSubview:self.textPostViewController.view];
         self.textPostViewController.view.frame = self.contentContainer.bounds;
+        [self.contentContainer addSubview:self.textPostViewController.view];
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
         self.shrinkingContentView = self.contentContainer;
     }

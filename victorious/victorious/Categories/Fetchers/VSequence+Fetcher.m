@@ -236,6 +236,16 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return NO;
 }
 
+- (BOOL)canMeme
+{
+    if (self.permissions)
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsDelete);
+    }
+    return NO;
+}
+
 - (BOOL)canRemix
 {
     if ( [self isPoll] )
