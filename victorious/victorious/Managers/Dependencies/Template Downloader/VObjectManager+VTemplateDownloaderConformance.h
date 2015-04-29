@@ -9,6 +9,9 @@
 #import "VObjectManager.h"
 #import "VTemplateDownloadManager.h"
 
+/**
+ Adds VTemplateDownloader protocol conformance to VObjectManager
+ */
 @interface VObjectManager (VTemplateDownloaderConformance) <VTemplateDownloader>
 
 @end
