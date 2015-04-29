@@ -3537,7 +3537,6 @@
 		039D2FD4197D93C600DFBE60 /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
-				A7D3784F1AF0682B007FF197 /* component.json */,
 				039D2FD5197D93C600DFBE60 /* filters.xml */,
 				A7CFC1C519FEE17B00726772 /* front_landscape_left.m4v */,
 				A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */,
@@ -5727,6 +5726,7 @@
 				3FF8C50618A5A06A00812968 /* Set Build Number */,
 				03CE66F819B50C340011BB9E /* Objective Clean */,
 				22C3ACF4C6878DDD064D31BF /* Copy Pods Resources */,
+				03A058CA1AF09C4500CF39D1 /* Download Template */,
 				032948A81970BDA700208FBA /* Crashlytics */,
 			);
 			buildRules = (
@@ -6000,7 +6000,6 @@
 				A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */,
 				A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
-				A7D378501AF0682B007FF197 /* component.json in Resources */,
 				A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6036,6 +6035,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n\nSOURCE=\"$PROJECT_DIR/$EnvironmentsConfigurationFile\"\n\nif [ -e \"$SOURCE\" ]; then\n    cp \"$SOURCE\" \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/environments.plist\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		03A058CA1AF09C4500CF39D1 /* Download Template */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Download Template";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "INFOPLIST=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\nBUILDNUM=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$INFOPLIST\")\n../build-scripts/download-template.sh \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/environments.plist\" \"$BUILDNUM\" \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH\"\n";
 			showEnvVarsInLog = 0;
 		};
 		03CE66F819B50C340011BB9E /* Objective Clean */ = {
