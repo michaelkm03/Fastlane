@@ -24,6 +24,7 @@
 #import "MBProgressHUD.h"
 
 #import "VUserManager.h"
+#import "VTemplateDecorator.h"
 
 #import "NSDictionary+VJSONLogging.h"
 
@@ -32,7 +33,6 @@
 NSString * const kLoggedInChangedNotification   = @"com.getvictorious.LoggedInChangedNotification";
 
 static NSString * const kWorkspaceTemplateName  = @"workspaceTemplate";
-static NSString * const kJSONType               = @"json";
 
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
@@ -58,10 +58,12 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
-        template = [self templateByConcatenatingWorkspaceTemplateWithTemplate:template];
+        
+        VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+        [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
-                                                                                    configuration:template
+                                                                                    configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
         success(operation, fullResponse, dependencyManager);
     };
@@ -71,29 +73,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
           parameters:nil
         successBlock:fullSuccess
            failBlock:failed];
-}
-
-- (NSDictionary *)templateByConcatenatingWorkspaceTemplateWithTemplate:(NSDictionary *)originalTemplate
-{
-    NSString *workspaceTemplatePath = [[NSBundle bundleForClass:[self class]] pathForResource:kWorkspaceTemplateName ofType:kJSONType];
-    NSError *error = nil;
-    NSData *defaultTemplateData = [NSData dataWithContentsOfFile:workspaceTemplatePath options:kNilOptions error:&error];
-    if (defaultTemplateData == nil)
-    {
-        return originalTemplate;
-    }
-    NSDictionary *workspaceTemplate = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
-    if (workspaceTemplate == nil)
-    {
-        return originalTemplate;
-    }
-    
-    // Combine templates
-    NSMutableDictionary *combinedDictionary = [[NSMutableDictionary alloc] init];
-    [combinedDictionary addEntriesFromDictionary:workspaceTemplate];
-    [combinedDictionary addEntriesFromDictionary:originalTemplate];
-    
-    return [NSDictionary dictionaryWithDictionary:combinedDictionary];
 }
 
 #pragma mark - Login and status

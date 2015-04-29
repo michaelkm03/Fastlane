@@ -9,7 +9,6 @@
 #import "UIImage+ImageCreation.h"
 #import "VCommentTextAndMediaView.h"
 #import "VMessageCell.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
 

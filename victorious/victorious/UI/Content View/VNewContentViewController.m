@@ -101,6 +101,7 @@
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
 #import "VNode+Fetcher.h"
+#import "VDependencyManager+VUserProfile.h"
 #import "VLinkSelectionResponder.h"
 
 #define HANDOFFENABLED 0
