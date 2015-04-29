@@ -11,7 +11,7 @@
 
 @implementation VSuggestedPeopleCell
 
-+ (NSInteger)cellHeight
++ (CGFloat)cellHeight
 {
     return [VSuggestedPersonCollectionViewCell cellHeight];
 }

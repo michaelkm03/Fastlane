@@ -18,7 +18,7 @@
 
 static NSString * const kSuggestedPersonCellIdentifier          = @"VSuggestedPersonCollectionViewCell";
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
-static const UIEdgeInsets collectionViewEdgeInsets = {0, 0, 0, 0};
+static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
 @interface VSuggestedPeopleCollectionViewController () <VSuggestedPersonCollectionViewCellDelegate>
 
@@ -44,7 +44,7 @@ static const UIEdgeInsets collectionViewEdgeInsets = {0, 0, 0, 0};
     self.error = nil;
     
     [self.collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
-    ((UICollectionViewFlowLayout *)self.collectionViewLayout).sectionInset = collectionViewEdgeInsets;
+    ((UICollectionViewFlowLayout *)self.collectionViewLayout).sectionInset = kCollectionViewEdgeInsets;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(followingDidUpdate:) name:VMainUserDidChangeFollowingUserNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
