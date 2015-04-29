@@ -27,8 +27,6 @@
 
 #import "VUserManager.h"
 
-//Imported to log out the payload from the database and the payload we would have gotten from the (deprecated) api/init and the VTemplateGenerator
-#import "VTemplateGenerator.h"
 #import "NSDictionary+VJSONLogging.h"
 
 @implementation VObjectManager (Login)
@@ -42,25 +40,6 @@ static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
 static NSString * const kVVideoQualityKey       = @"video_quality";
 static NSString * const kVAppTrackingKey        = @"video_quality";
-
-#pragma mark - Init
-- (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)failed
-{
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    return [self GET:@"/api/init"
-              object:nil
-          parameters:nil
-        successBlock:fullSuccess
-           failBlock:failed];
-}
 
 - (RKManagedObjectRequestOperation *)templateWithDependencyManager:(VDependencyManager *)parentDependencyManager
                                                       successBlock:(VTemplateSuccessBlock)success

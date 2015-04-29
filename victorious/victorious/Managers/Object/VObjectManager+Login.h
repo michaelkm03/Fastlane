@@ -20,10 +20,6 @@ extern NSString * const kLoggedInChangedNotification;
 @property (nonatomic, readonly) BOOL mainUserLoggedIn;
 @property (nonatomic, readonly) BOOL authorized;
 
-
-- (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)failed;
-
 /**
  Retrieves the template from the server
  
