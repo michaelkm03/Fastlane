@@ -553,7 +553,6 @@
 		A7D378441AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D3783D1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib */; };
 		A7D378451AEF4ED5007FF197 /* VUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3783F1AEF4ED5007FF197 /* VUserProfileHeaderViewController.m */; };
 		A7D378501AF0682B007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
-		A7D378511AF06879007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
 		A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7077E1A7AFD8200D9993F /* VEndCard.m */; };
@@ -5924,7 +5923,6 @@
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
 				A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */,
-				A7D378511AF06879007FF197 /* component.json in Resources */,
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
 				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
 				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
