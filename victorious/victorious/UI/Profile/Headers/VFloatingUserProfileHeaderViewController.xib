@@ -68,18 +68,18 @@
                     </constraints>
                 </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Some really long user name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdy-I6-0YY" userLabel="Username Label">
-                    <rect key="frame" x="21" y="326" width="503" height="21"/>
+                    <rect key="frame" x="21" y="318" width="503" height="35"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="NKF-Y1-sqV"/>
+                        <constraint firstAttribute="height" constant="35" id="NKF-Y1-sqV"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnb-2H-Iq8" userLabel="Location Label">
-                    <rect key="frame" x="22" y="347" width="502" height="25"/>
+                    <rect key="frame" x="22" y="340" width="502" height="39"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="25" id="2al-bi-NqB"/>
+                        <constraint firstAttribute="height" constant="39" id="2al-bi-NqB"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -215,7 +215,7 @@
                 <constraint firstAttribute="bottom" secondItem="Z4U-aK-xHH" secondAttribute="bottom" constant="2" id="3ys-Jb-LiJ"/>
                 <constraint firstItem="qUS-eN-tgK" firstAttribute="top" secondItem="eWJ-1h-9hk" secondAttribute="bottom" priority="999" constant="12" id="4dh-Gm-6NJ"/>
                 <constraint firstItem="Nua-VV-KOT" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="ARt-dL-cBb"/>
-                <constraint firstItem="hnb-2H-Iq8" firstAttribute="top" secondItem="Xdy-I6-0YY" secondAttribute="bottom" id="Ais-sh-gwn"/>
+                <constraint firstItem="hnb-2H-Iq8" firstAttribute="top" secondItem="Xdy-I6-0YY" secondAttribute="bottom" constant="-13" id="Ais-sh-gwn"/>
                 <constraint firstItem="Nua-VV-KOT" firstAttribute="top" secondItem="HNG-L2-8S5" secondAttribute="top" id="CjM-et-q0D"/>
                 <constraint firstItem="Re0-my-vzT" firstAttribute="centerX" secondItem="Nua-VV-KOT" secondAttribute="centerX" id="Dab-q8-09O"/>
                 <constraint firstItem="Re0-my-vzT" firstAttribute="height" secondItem="Nua-VV-KOT" secondAttribute="height" id="LbV-NH-U5h"/>
@@ -236,7 +236,7 @@
                 <constraint firstItem="hnb-2H-Iq8" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="22" id="hGr-pV-hCU"/>
                 <constraint firstItem="SeW-rn-JyV" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" id="hmQ-ko-s7X"/>
                 <constraint firstItem="eWJ-1h-9hk" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="22" id="pi8-93-zwX"/>
-                <constraint firstItem="eWJ-1h-9hk" firstAttribute="top" secondItem="hnb-2H-Iq8" secondAttribute="bottom" constant="4" id="pwP-Ny-pqR"/>
+                <constraint firstItem="eWJ-1h-9hk" firstAttribute="top" secondItem="hnb-2H-Iq8" secondAttribute="bottom" constant="-3" id="pwP-Ny-pqR"/>
                 <constraint firstAttribute="trailing" secondItem="Z4U-aK-xHH" secondAttribute="trailing" id="t84-OD-GHe"/>
                 <constraint firstAttribute="trailing" secondItem="hnb-2H-Iq8" secondAttribute="trailing" constant="76" id="tz6-Ey-ELB"/>
                 <constraint firstAttribute="bottom" secondItem="reE-xi-zdS" secondAttribute="bottom" constant="40" id="vqK-F9-x8I"/>
