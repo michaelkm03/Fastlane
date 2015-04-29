@@ -258,6 +258,12 @@
 		039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29419C908F400305987 /* VCVideoPlayerViewController.m */; };
 		039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29619C908F400305987 /* VElapsedTimeFormatter.m */; };
 		039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */; };
+		03A058BA1AED7FB600CF39D1 /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
+		03A058BC1AED802400CF39D1 /* VTemplateSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */; };
+		03A058BF1AEF44D600CF39D1 /* VTemplateDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */; };
+		03A058C11AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */; };
+		03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
+		03A058C91AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03AC453A19BA1F1000CE4351 /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453919BA1F1000CE4351 /* NSString+VCrypto.m */; };
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
@@ -554,8 +560,8 @@
 		A7D378481AF0578A007FF197 /* VImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378471AF0578A007FF197 /* VImageAsset.m */; };
 		A7D3784B1AF057FF007FF197 /* VImageAsset+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3784A1AF057FF007FF197 /* VImageAsset+RestKit.m */; };
 		A7D3784E1AF060AD007FF197 /* VImageAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3784D1AF060AD007FF197 /* VImageAsset+Fetcher.m */; };
-		A7D378531AF06C65007FF197 /* VImageAssetFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */; };
 		A7D378501AF0682B007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
+		A7D378531AF06C65007FF197 /* VImageAssetFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
 		A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7077E1A7AFD8200D9993F /* VEndCard.m */; };
@@ -1355,6 +1361,17 @@
 		039ED29619C908F400305987 /* VElapsedTimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatter.m; sourceTree = "<group>"; };
 		039ED29719C908F400305987 /* VVideoDownloadProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoDownloadProgressIndicatorView.h; sourceTree = "<group>"; };
 		039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
+		03A00E5C1AE882D200A2B733 /* environments.all.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = environments.all.plist; sourceTree = "<group>"; };
+		03A00E5E1AE8885900A2B733 /* environments.prod.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = environments.prod.plist; sourceTree = "<group>"; };
+		03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateSerialization.h; sourceTree = "<group>"; };
+		03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateSerialization.m; sourceTree = "<group>"; };
+		03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateSerializationTests.m; sourceTree = "<group>"; };
+		03A058BD1AEF44D600CF39D1 /* VTemplateDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDownloadManager.h; sourceTree = "<group>"; };
+		03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDownloadManager.m; sourceTree = "<group>"; };
+		03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDownloadManagerTests.m; sourceTree = "<group>"; };
+		03A058C21AEF59E600CF39D1 /* templateCache.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = templateCache.json; sourceTree = "<group>"; };
+		03A058C71AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+VTemplateDownloaderConformance.h"; sourceTree = "<group>"; };
+		03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+VTemplateDownloaderConformance.m"; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		03AC453819BA1F1000CE4351 /* NSString+VCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VCrypto.h"; sourceTree = "<group>"; };
@@ -1868,8 +1885,8 @@
 		A7D3784A1AF057FF007FF197 /* VImageAsset+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VImageAsset+RestKit.m"; sourceTree = "<group>"; };
 		A7D3784C1AF060AD007FF197 /* VImageAsset+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VImageAsset+Fetcher.h"; sourceTree = "<group>"; };
 		A7D3784D1AF060AD007FF197 /* VImageAsset+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VImageAsset+Fetcher.m"; sourceTree = "<group>"; };
-		A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAssetFetcherTests.m; sourceTree = "<group>"; };
 		A7D3784F1AF0682B007FF197 /* component.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = component.json; sourceTree = "<group>"; };
+		A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAssetFetcherTests.m; sourceTree = "<group>"; };
 		A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutoplaySettingsViewController.h; sourceTree = "<group>"; };
 		A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutoplaySettingsViewController.m; sourceTree = "<group>"; };
 		A7D707711A797B8A00D9993F /* VVideoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSettings.h; sourceTree = "<group>"; };
@@ -3514,6 +3531,7 @@
 			isa = PBXGroup;
 			children = (
 				035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */,
+				03A058B21AECAD0A00CF39D1 /* Template Downloader */,
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
 				039D02A91A1043D300DB9236 /* VDependencyManager.h */,
 				039D02AA1A1043D300DB9236 /* VDependencyManager.m */,
@@ -3533,10 +3551,10 @@
 				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */,
 				039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */,
 				039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */,
-				D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */,
-				D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */,
 				A7F711D61AE1B8540086F729 /* VDependencyManager+VUserProfile.h */,
 				A7F711D71AE1B8540086F729 /* VDependencyManager+VUserProfile.m */,
+				D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */,
+				D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
 			);
@@ -3562,6 +3580,7 @@
 				037CB73419CFE02C0084BBED /* sampleImage.jpg */,
 				A72004FA1A02FEC000285A9C /* sampleImage.png */,
 				039D02B01A10443200DB9236 /* template.json */,
+				03A058C21AEF59E600CF39D1 /* templateCache.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -3582,6 +3601,19 @@
 				039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */,
 			);
 			path = Player;
+			sourceTree = "<group>";
+		};
+		03A058B21AECAD0A00CF39D1 /* Template Downloader */ = {
+			isa = PBXGroup;
+			children = (
+				03A058C71AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.h */,
+				03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */,
+				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadManager.h */,
+				03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */,
+				03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */,
+				03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */,
+			);
+			path = "Template Downloader";
 			sourceTree = "<group>";
 		};
 		03B83B5819E0988200DC04E4 /* Upload Progress View */ = {
@@ -4780,6 +4812,8 @@
 				F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */,
 				F0B390BC1A8535E300EE70C7 /* VTagTests.m */,
 				A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */,
+				03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */,
+				03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */,
 				F0140BC31AA9468500B95642 /* VTimerManagerTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
 				BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */,
@@ -5092,6 +5126,8 @@
 			children = (
 				A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */,
 				A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */,
+				03A00E5C1AE882D200A2B733 /* environments.all.plist */,
+				03A00E5E1AE8885900A2B733 /* environments.prod.plist */,
 				D811BBBD19B92F75007398BF /* homeHeaderImage.png */,
 				D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */,
 				0314D07E19B4688E00FA363C /* Icon-29@2x.png */,
@@ -5734,10 +5770,12 @@
 				BE171D721868BE64004E5202 /* Sources */,
 				BE171D731868BE64004E5202 /* Frameworks */,
 				BE171D741868BE64004E5202 /* Resources */,
+				03A00E601AE889BA00A2B733 /* Copy Environments Configuration */,
 				3FF8C50618A5A06A00812968 /* Set Build Number */,
 				03CE66F819B50C340011BB9E /* Objective Clean */,
-				032948A81970BDA700208FBA /* Crashlytics */,
 				22C3ACF4C6878DDD064D31BF /* Copy Pods Resources */,
+				03A058CA1AF09C4500CF39D1 /* Download Template */,
+				032948A81970BDA700208FBA /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -6001,6 +6039,7 @@
 				A7CFC1C919FEE24300726772 /* front_landscape_left.m4v in Resources */,
 				035FA77A1AE1890D0002EE63 /* menuSectionsTemplate.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
+				03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				039420481AB88A450087ADFA /* image-template.json in Resources */,
 				039D02B11A10443200DB9236 /* template.json in Resources */,
@@ -6030,6 +6069,37 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./3rd\\ Party\\ SDKs/Crashlytics.framework/run 58f61748f3d33b03387e43014fdfff29c5a1da73 1f6107cc26a24ef5594a23046bc37d904f8a2f33ef5c68c4b0a22309236c4f1d\n";
+			showEnvVarsInLog = 0;
+		};
+		03A00E601AE889BA00A2B733 /* Copy Environments Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Environments Configuration";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nSOURCE=\"$PROJECT_DIR/$EnvironmentsConfigurationFile\"\n\nif [ -e \"$SOURCE\" ]; then\n    cp \"$SOURCE\" \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/environments.plist\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		03A058CA1AF09C4500CF39D1 /* Download Template */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Download Template";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "INFOPLIST=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\nBUILDNUM=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$INFOPLIST\")\n../build-scripts/download-template.sh \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/environments.plist\" \"$BUILDNUM\" \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH\"\n";
+			showEnvVarsInLog = 0;
 		};
 		03CE66F819B50C340011BB9E /* Objective Clean */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6044,6 +6114,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ -d \"${LOCAL_APPS_DIR}/Objective-Clean.app\" ]]; then\n\"${LOCAL_APPS_DIR}\"/Objective-Clean.app/Contents/Resources/ObjClean.app/Contents/MacOS/ObjClean \"${SRCROOT}\"?!Pods,!3rd\\ Party\\ SDKs,!ManagedObjectModels,!SCAudioVideoRecorder\nelse\necho \"warning: Please install Objective-Clean to check for style issues in the code!\"\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 		22C3ACF4C6878DDD064D31BF /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6073,6 +6144,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
+			showEnvVarsInLog = 0;
 		};
 		589F0499A2CD6F9EB3A82CC5 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6396,7 +6468,6 @@
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */,
 				A7D3784E1AF060AD007FF197 /* VImageAsset+Fetcher.m in Sources */,
-				036F4E781A1302E600F9E721 /* VTemplateGenerator.m in Sources */,
 				A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */,
@@ -6443,9 +6514,9 @@
 				A7AEF9B61A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m in Sources */,
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
-				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
+				03A058BF1AEF44D600CF39D1 /* VTemplateDownloadManager.m in Sources */,
 				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				D8E5A4FA1AAA76460019F231 /* VBlurOverTransitioner.m in Sources */,
@@ -6596,6 +6667,7 @@
 				A75C64931AD78DCA00245125 /* VEditableTextPostHashtagHelper.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,
 				A7738B101A4B4A0D008EA973 /* VCommentCellUtilitesController.m in Sources */,
+				03A058BA1AED7FB600CF39D1 /* VTemplateSerialization.m in Sources */,
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				D8E39BDC19CB7C80007FD86A /* VContentPollCell.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
@@ -6629,6 +6701,7 @@
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
 				03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */,
+				03A058C91AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A7F711FA1AE1D5A00086F729 /* VFollowerTableViewCell.m in Sources */,
 				A7299E901AA5331000B6BC1F /* VDirectoryGroupCell.m in Sources */,
@@ -6733,12 +6806,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03A058C11AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m in Sources */,
 				D80BAB571A688673003A3068 /* VNodeFetcherTests.m in Sources */,
 				A77AD4FB1A1FF33100142F24 /* VAlertControllerAdvancedTests.m in Sources */,
 				A70417631A365EE80042CABD /* VPurchaseRecordTests.m in Sources */,
 				A720052E1A03073B00285A9C /* VPhotoFilterSerializationTests.m in Sources */,
 				A720052C1A03073B00285A9C /* VMultipartFormDataWriterTests.m in Sources */,
 				A72005331A03073B00285A9C /* VUploadManagerURLSessionTests.m in Sources */,
+				03A058BC1AED802400CF39D1 /* VTemplateSerializationTests.m in Sources */,
 				A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */,
 				032954A71A9FFD9100698119 /* VURLMacroReplacementTests.m in Sources */,
 				A720052A1A03073B00285A9C /* VLargeNumberFormatterTests.m in Sources */,
@@ -7026,6 +7101,7 @@
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Production;
 				ENABLE_NS_ASSERTIONS = NO;
+				EnvironmentsConfigurationFile = AppSpecific/environments.prod.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -7141,6 +7217,7 @@
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Staging;
 				ENABLE_NS_ASSERTIONS = NO;
+				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
@@ -7257,6 +7334,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				DefaultEnvironment = Dev;
+				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -7318,6 +7396,7 @@
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Production;
 				ENABLE_NS_ASSERTIONS = NO;
+				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -7499,6 +7578,7 @@
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = QA;
 				ENABLE_NS_ASSERTIONS = YES;
+				EnvironmentsConfigurationFile = AppSpecific/environments.all.plist;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
