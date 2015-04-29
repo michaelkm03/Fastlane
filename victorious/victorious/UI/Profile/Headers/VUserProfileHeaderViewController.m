@@ -15,11 +15,12 @@
 #import "VThemeManager.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VImageAsset+Fetcher.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 #import <KVOController/FBKVOController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface VUserProfileHeaderViewController()
+@interface VUserProfileHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
@@ -88,6 +89,13 @@
 - (UIView *)floatingProfileImage
 {
     return nil;
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.userStatsBarBackgroundContainer;
 }
 
 #pragma mark - Setters
@@ -169,6 +177,8 @@
     [self.primaryActionButton layoutIfNeeded];
     const CGFloat roundedCornerRadius = CGRectGetHeight( self.primaryActionButton.bounds ) / 2.0f;
     self.primaryActionButton.cornerRadius = isRounded ? roundedCornerRadius : 0.0f;
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 #pragma mark - Actions
