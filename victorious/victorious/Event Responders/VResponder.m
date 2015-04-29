@@ -6,15 +6,15 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VCommandHandler.h"
+#import "VResponder.h"
 
-@interface VCommandHandler ()
+@interface VResponder ()
 
 @property (nonatomic, weak) UIResponder *internalNextResponder;
 
 @end
 
-@implementation VCommandHandler
+@implementation VResponder
 
 #pragma mark - Init
 

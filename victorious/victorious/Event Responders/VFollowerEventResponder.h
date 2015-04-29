@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VCommandHandler.h"
-#import "VFollowCommand.h"
+#import "VResponder.h"
+#import "VFollowEvent.h"
 
 @class VDependencyManager;
 
 /**
  *  VFollowerCommandHandler executes requests from the responder chain to follow a particular user.
  */
-@interface VFollowerCommandHandler : VCommandHandler <VFollowCommand>
+@interface VFollowerEventResponder : VResponder <VFollowEvent>
 
 /**
  *  Will present authorization on this viewController must not be nil 

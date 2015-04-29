@@ -18,7 +18,7 @@
 #import "VFollowerTableViewCell.h"
 #import "VNoContentView.h"
 #import "UIVIew+AutoLayout.h"
-#import "VFollowerCommandHandler.h"
+#import "VFollowerEventResponder.h"
 #import "VDependencyManager+VUserProfile.h"
 
 static NSString * const kVUserResultIdentifier = @"followerCell";
@@ -27,7 +27,7 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIView *dismissTapView;
-@property (nonatomic, strong) VFollowerCommandHandler *followCommandHandler;
+@property (nonatomic, strong) VFollowerEventResponder *followCommandHandler;
 
 @end
 
@@ -46,7 +46,7 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 
 - (UIResponder *)nextResponder
 {
-    self.followCommandHandler = [[VFollowerCommandHandler alloc] initWithNextResponder:[super nextResponder]];
+    self.followCommandHandler = [[VFollowerEventResponder alloc] initWithNextResponder:[super nextResponder]];
     self.followCommandHandler.viewControllerToPresentAuthorizationOn = self;
     self.followCommandHandler.dependencyManager = self.dependencyManager;
     

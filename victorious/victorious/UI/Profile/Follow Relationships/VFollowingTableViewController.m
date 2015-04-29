@@ -19,14 +19,14 @@
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 #import "VDependencyManager.h"
-#import "VFollowerCommandHandler.h"
+#import "VFollowerEventResponder.h"
 #import "VDependencyManager+VUserProfile.h"
 
 @interface VFollowingTableViewController ()
 
 @property (nonatomic, strong)   NSArray    *following;
 @property (nonatomic) BOOL isMe;
-@property (nonatomic, strong) VFollowerCommandHandler *followCommandHandler;
+@property (nonatomic, strong) VFollowerEventResponder *followCommandHandler;
 
 @end
 
@@ -46,7 +46,7 @@
 
 - (UIResponder *)nextResponder
 {
-    self.followCommandHandler = [[VFollowerCommandHandler alloc] initWithNextResponder:[super nextResponder]];
+    self.followCommandHandler = [[VFollowerEventResponder alloc] initWithNextResponder:[super nextResponder]];
     self.followCommandHandler.viewControllerToPresentAuthorizationOn = self;
     self.followCommandHandler.dependencyManager = self.dependencyManager;
     

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VFollowerCommandHandler.h"
+#import "VFollowerEventResponder.h"
 
 // Authorization
 #import "VAuthorizedAction.h"
@@ -16,7 +16,7 @@
 #import "VUser.h"
 #import "VObjectManager+Users.h"
 
-@implementation VFollowerCommandHandler
+@implementation VFollowerEventResponder
 
 - (void)followUser:(VUser *)user
     withCompletion:(VFollowCommandCompletion)completion

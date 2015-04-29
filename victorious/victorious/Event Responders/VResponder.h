@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VCommandHandler : UIResponder
+@interface VResponder : UIResponder
 
 /**
  *  Designated initializer for VCommandHandlers. 
