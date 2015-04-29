@@ -31,8 +31,8 @@
 - (void)fadeIn
 {
     self.coachView.alpha = 0.0f;
-    [UIView animateWithDuration:0.5f
-                          delay:0.5f
+    [UIView animateWithDuration:1.0f
+                          delay:1.0f
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^
      {
