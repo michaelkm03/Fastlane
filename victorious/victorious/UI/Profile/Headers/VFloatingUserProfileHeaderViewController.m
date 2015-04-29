@@ -12,6 +12,8 @@
 #import "VLinearGradientView.h"
 #import "VButton.h"
 #import "UIView+AutoLayout.h"
+#import "VImageAsset+Fetcher.h"
+#import "VUser.h"
 
 static const CGFloat kFloatProfileImageSize = 57.0f;
 
@@ -116,6 +118,18 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
             break;
         default:
             break;
+    }
+}
+
+- (void)updateProfileImage
+{
+    CGSize minSize = self.view.bounds.size;
+    VImageAsset *imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.user.previewAssets ];
+    NSURL *imageURL = [NSURL URLWithString:imageAsset.imageURL];
+    
+    if ( imageURL == nil )
+    {
+        
     }
 }
 

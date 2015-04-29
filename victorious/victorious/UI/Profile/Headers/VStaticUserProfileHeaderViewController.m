@@ -54,8 +54,9 @@
     return self.staticProfileImageView;
 }
 
-- (void)loadBackgroundImageFromURL:(NSURL *)imageURL
+- (void)updateProfileImage
 {
+    NSURL *imageURL = nil;
     if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
     {
         [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
