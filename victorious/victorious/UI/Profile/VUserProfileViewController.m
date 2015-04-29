@@ -162,20 +162,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                                              selector:@selector(loginStateDidChange:)
                                                  name:kLoggedInChangedNotification object:nil];
 
+    [self updateProfileHeader];
+    
     [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
                                  pushAccessoryMenuItemsOn:self.navigationController];
-    
-    [self createProfileHeader];
-    
-    if ( self.profileHeaderViewController != nil )
-    {
-        self.streamDataSource.hasHeaderCell = YES;
-        self.collectionView.alwaysBounceVertical = YES;
-        
-        [self.collectionView registerClass:[VProfileHeaderCell class]
-                forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
-
-    }
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
@@ -187,17 +177,28 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self updateCollectionViewDataSource];
 }
 
-- (void)createProfileHeader
+- (void)updateProfileHeader
 {
     if ( self.user != nil )
     {
-        self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
-        self.profileHeaderViewController.delegate = self;
-        if ( self.profileHeaderViewController != nil )
+        if ( self.profileHeaderViewController == nil )
         {
-            self.streamDataSource.hasHeaderCell = YES;
-            self.profileHeaderViewController.delegate = self;
+            self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
+            if ( self.profileHeaderViewController != nil )
+            {
+                self.profileHeaderViewController.delegate = self;
+            }
         }
+        
+        BOOL hasHeader = self.profileHeaderViewController != nil;
+        if ( hasHeader )
+        {
+            [self.collectionView registerClass:[VProfileHeaderCell class]
+                    forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
+        }
+        self.streamDataSource.hasHeaderCell = hasHeader;
+        self.profileHeaderViewController.user = self.user;
+        self.collectionView.alwaysBounceVertical = YES;
     }
 }
 
@@ -609,8 +610,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     _user = user;
     
-    self.profileHeaderViewController.user = user;
-
+    [self updateProfileHeader];
+    
     NSString *profileName = user.name ?: @"Profile";
     
     self.title = self.isCurrentUser ? NSLocalizedString(@"me", "") : profileName;
