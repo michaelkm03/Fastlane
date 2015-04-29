@@ -24,6 +24,7 @@ class VTextFragmentsBuilder: NSObject
         var output = [VTextFragment]()
         
         let text: NSString = count(textView.attributedText.string) == 0 ? " " : textView.attributedText.string
+        textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
         
         var currentFragmentRect = CGRectZero
         var lastFragmentRect = CGRectZero
