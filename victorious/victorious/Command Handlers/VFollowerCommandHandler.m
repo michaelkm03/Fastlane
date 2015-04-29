@@ -107,6 +107,7 @@
 - (void)withAuthorizationDo:(void (^)(void))authorizationAction
 {
     NSParameterAssert(authorizationAction != nil);
+    NSParameterAssert(self.viewControllerToPresentAuthorizationOn != nil);
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
