@@ -113,7 +113,7 @@ setAppIDs(){
     done
 }
 
-PLIST_FILES=$(find victorious/AppSpecific -name environments\*.plist)
+PLIST_FILES=$(find "$DEST_PATH" -name environments\*.plist)
 IFS=$'\n'
 
 for PLIST_FILE in $PLIST_FILES
