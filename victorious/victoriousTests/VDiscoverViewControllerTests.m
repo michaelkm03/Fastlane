@@ -16,6 +16,7 @@
 #import "VSuggestedPeopleCollectionViewController.h"
 #import "VDummyModels.h"
 #import "VTestHelpers.h"
+#import "VDiscoverHeaderView.h"
 
 @interface VDiscoverViewController (UnitTest)
 
@@ -23,7 +24,7 @@
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL hasLoadedOnce;
-@property (nonatomic, strong) NSArray *sectionHeaders;
+@property (nonatomic, strong) NSArray *sectionHeaderTitles;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 - (void)registerCells;
@@ -34,6 +35,7 @@
 - (void)showStreamWithHashtag:(VHashtag *)hashtag;
 - (void)reload;
 - (void)refresh:(BOOL)shouldClearCurrentContent;
+- (void)updatedFollowedTags;
 
 @end
 
@@ -94,13 +96,14 @@
 {
     XCTAssertNotNil( [self.viewController tableView:self.tableView viewForHeaderInSection:VDiscoverViewControllerSectionSuggestedPeople] );
     XCTAssertNotNil( [self.viewController tableView:self.tableView viewForHeaderInSection:VDiscoverViewControllerSectionTrendingTags] );
-    XCTAssertEqual( self.viewController.sectionHeaders.count, (NSUInteger)2 );
+    XCTAssertEqual( self.viewController.sectionHeaderTitles.count, (NSUInteger)2 );
     
     for ( NSInteger section = 0; section < VDiscoverViewControllerSectionsCount; section++ )
     {
-        UIView *headerView = self.viewController.sectionHeaders[ section ];
         CGFloat height = [self.viewController tableView:self.tableView heightForHeaderInSection:section];
-        XCTAssertEqual( height, CGRectGetHeight( headerView.frame ) );
+        XCTAssertEqual( height, [VDiscoverHeaderView desiredHeight] );
+        UIView *headerView = [self.viewController tableView:self.tableView viewForHeaderInSection:section];
+        XCTAssert( [headerView isKindOfClass:[VDiscoverHeaderView class]] );
     }
     
     // These are invalid sections (too low/high) and should return 0
@@ -120,6 +123,7 @@
     XCTAssertEqual( [self.viewController tableView:self.tableView numberOfRowsInSection:VDiscoverViewControllerSectionsCount], (NSInteger)0,
                    @"Should return 0 since there are only 2 sections." );
     
+    [self.viewController updatedFollowedTags];
     for ( NSInteger i = 1; i < 10; i++ )
     {
         self.viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:i];
@@ -158,6 +162,7 @@
     
     // Add some data
     self.viewController.trendingTags = [VDummyModels createHashtags:5];
+    [self.viewController updatedFollowedTags];
     [self.viewController.tableView reloadData];
     
     [self.viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
@@ -217,6 +222,7 @@
                                   }];
     
     // Simulate selection of each cell
+    [self.viewController updatedFollowedTags];
     [self.viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop)
      {
          [self.viewController tableView:self.tableView didSelectRowAtIndexPath:VIndexPathMake(idx, VDiscoverViewControllerSectionTrendingTags)];

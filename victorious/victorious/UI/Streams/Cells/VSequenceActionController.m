@@ -49,6 +49,7 @@
 #import "VAuthorizedAction.h"
 
 #import "VAppInfo.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -87,7 +88,7 @@
     }
     
     if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
-        [((VUserProfileViewController *)viewController).profile isEqual:user] )
+        [((VUserProfileViewController *)viewController).user isEqual:user] )
     {
         return NO;
     }

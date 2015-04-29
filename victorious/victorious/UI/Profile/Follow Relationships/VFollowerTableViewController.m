@@ -19,6 +19,7 @@
 #import "VConstants.h"
 #import "MBProgressHUD.h"
 #import "VFollowerCommandHandler.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @interface VFollowerTableViewController ()
 
@@ -65,7 +66,7 @@
             if ([obj isKindOfClass:[VUserProfileViewController class]])
             {
                 VUserProfileViewController *userProfile = obj;
-                self.profile = userProfile.profile;
+                self.profile = userProfile.user;
                 *stop = YES;
             }
         }];

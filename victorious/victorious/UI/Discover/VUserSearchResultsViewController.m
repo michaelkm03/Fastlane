@@ -19,6 +19,7 @@
 #import "VNoContentView.h"
 #import "UIVIew+AutoLayout.h"
 #import "VFollowerCommandHandler.h"
+#import "VDependencyManager+VUserProfile.h"
 
 static NSString * const kVUserResultIdentifier = @"followerCell";
 
