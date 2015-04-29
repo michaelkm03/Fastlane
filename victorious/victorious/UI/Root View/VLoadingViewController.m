@@ -159,6 +159,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     
     self.templateDownloadManager = [[VTemplateDownloadManager alloc] initWithDownloader:[VObjectManager sharedManager]];
     self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[VObjectManager currentEnvironment]];
+    self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[VObjectManager currentEnvironment]];
+    
     __weak typeof(self) weakSelf = self;
     [self.templateDownloadManager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
     {
@@ -193,6 +195,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         [[NSFileManager defaultManager] createDirectoryAtURL:cachePath withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return [cachePath URLByAppendingPathComponent:environment.name];
+}
+
+- (NSURL *)urlForTemplateInBundleForEnvironment:(VEnvironment *)environment
+{
+    static NSString * const templateFileFormat = @"%@.template";
+    static NSString * const templateFileExtension = @"json";
+    return [[NSBundle bundleForClass:[self class]] URLForResource:[NSString stringWithFormat:templateFileFormat, environment.name] withExtension:templateFileExtension];
 }
 
 - (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
