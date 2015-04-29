@@ -156,10 +156,10 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
         typeof(self) strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
-            weakSelf.retryInterval *= 2.0;
-            [weakSelf.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
+            strongSelf.retryInterval *= 2.0;
+            [strongSelf.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
             {
-                [self downloadDidFinishWithData:templateData];
+                [weakSelf downloadDidFinishWithData:templateData];
             }];
         }
     });
