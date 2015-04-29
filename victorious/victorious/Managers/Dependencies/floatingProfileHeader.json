@@ -4,6 +4,12 @@
         "red": 255,
         "green": 255,
         "blue": 255,
+        "alpha": 255
+    },
+    "color.text.secondary": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
         "alpha": 128
     },
     "color.text": {

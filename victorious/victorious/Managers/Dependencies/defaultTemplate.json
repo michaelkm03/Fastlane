@@ -20,6 +20,12 @@
         "blue": 0,
         "alpha": 255
     },
+    "color.text.secondary": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "alpha": 128
+    },
     "color.accent": {
         "red": 161,
         "green": 132,

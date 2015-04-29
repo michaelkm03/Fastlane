@@ -30,6 +30,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *followingHeader;
 @property (nonatomic, weak) IBOutlet UIButton *followingButton;
 @property (nonatomic, weak) IBOutlet UIView *userStatsBar;
+@property (nonatomic, weak) IBOutlet UIView *userStatsBarBackgroundContainer;
 
 - (void)applyStyle;
 
