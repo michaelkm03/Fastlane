@@ -2423,6 +2423,7 @@
 		F07E825B1AEF35BE00821CEA /* VDiscoverHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverHeaderView.h; sourceTree = "<group>"; };
 		F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverHeaderView.m; sourceTree = "<group>"; };
 		F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDiscoverHeaderView.xib; sourceTree = "<group>"; };
+		F07E82641AF07D9600821CEA /* VInitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInitialViewController.h; sourceTree = "<group>"; };
 		F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionaryTests.m; sourceTree = "<group>"; };
 		F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatterTests.m; sourceTree = "<group>"; };
 		F089E3541AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMarqueeStreamItemCell.h; sourceTree = "<group>"; };
@@ -3464,6 +3465,7 @@
 			isa = PBXGroup;
 			children = (
 				A734A04A1A98018800C3E86F /* VMultipleContainer.h */,
+				F07E82641AF07D9600821CEA /* VInitialViewController.h */,
 				037FCF221A8DAF5400E8ABFC /* VMultipleContainerViewController.h */,
 				037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */,
 				F01234CD1AE6C8DB001F1D5B /* MultiScreenSelectors */,

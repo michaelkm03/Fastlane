@@ -133,11 +133,9 @@ static NSString * const kInitialKey = @"initial";
             {
                 index = 0;
             }
-            [initialViewController viewWillAppear:NO];
         }
         [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
         [self.selector setActiveViewControllerIndex:index];
-        self.didShowInitial = YES;
     }
 }
 
@@ -161,6 +159,15 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if ( !self.didShowInitial )
+    {
+        if ( !self.isInitialViewController )
+        {
+            [self.collectionView reloadData];
+        }
+        self.didShowInitial = YES;
+    }
     
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];
