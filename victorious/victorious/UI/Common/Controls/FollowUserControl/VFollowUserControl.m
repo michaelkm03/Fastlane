@@ -139,6 +139,11 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 - (void)setFollowing:(BOOL)following
             animated:(BOOL)animated
 {
+    if (self.following == following)
+    {
+        return;
+    }
+    
     void (^animations)() = ^(void)
     {
         self.following = following;
