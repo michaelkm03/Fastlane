@@ -10,6 +10,6 @@
 
 @interface VSuggestedPeopleCell : UITableViewCell
 
-+ (NSInteger)cellHeight;
++ (CGFloat)cellHeight;
 
 @end
