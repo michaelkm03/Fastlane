@@ -152,11 +152,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 
 - (void)loadTemplate
 {
-    if ( self.templateDownloadManager != nil )
-    {
-        return; // there is already a template being loaded...
-    }
-    
     self.templateDownloadManager = [[VTemplateDownloadManager alloc] initWithDownloader:[VObjectManager sharedManager]];
     self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[VObjectManager currentEnvironment]];
     self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[VObjectManager currentEnvironment]];

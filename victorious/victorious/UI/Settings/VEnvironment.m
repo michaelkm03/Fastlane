@@ -17,7 +17,7 @@ static NSString * const kBaseURLKey = @"baseURL";
 - (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _name = [name copy];
         _baseURL = [baseURL copy];
