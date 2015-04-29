@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#define LOG_API_RESPONSES 0
-
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -58,12 +56,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
                 failed(operation, nil);
             }
         }
-        
-#if LOG_API_RESPONSES
-#warning API LOGGING IS ENABLED!
-        [(NSDictionary *)fullResponse[@"payload"] logJSONStringWithTitle:@"FROM DB"];
-        [VTemplateGenerator logExampleTemplate];
-#endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
         template = [self templateByConcatenatingWorkspaceTemplateWithTemplate:template];
