@@ -27,7 +27,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VDefaultProfileImageView.h"
 #import "UIStoryboard+VMainStoryboard.h"
-
+#import "VDependencyManager+VUserProfile.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VMessageViewController () <VMessageTableDataDelegate>
@@ -167,6 +167,7 @@
     
     cell.timeLabel.text = [message.postedAt timeSince];
     cell.commentTextView.text = message.text;
+    cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     if ([message.sender isEqualToUser:[[VObjectManager sharedManager] mainUser]])
     {

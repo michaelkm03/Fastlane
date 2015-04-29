@@ -19,6 +19,7 @@
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VUserProfile.h"
 
 static NSString * const kVFollowerCellName = @"followerCell";
 
@@ -60,7 +61,7 @@ static NSString * const kVFollowerCellName = @"followerCell";
              if ([obj isKindOfClass:[VUserProfileViewController class]])
              {
                  VUserProfileViewController *userProfile = obj;
-                 self.profile = userProfile.profile;
+                 self.profile = userProfile.user;
                  *stop = YES;
              }
          }];

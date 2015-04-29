@@ -1,49 +1,36 @@
 //
-//  VUserProfileHeaderView.h
+//  VUserProfileHeaderViewController.h
 //  victorious
 //
-//  Created by Will Long on 6/18/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Patrick Lynch on 4/20/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "VHasManagedDependencies.h"
+#import "VUserProfileHeader.h"
 #import "VButton.h"
 
 @class VUser, VDefaultProfileImageView, VDependencyManager;
 
-@protocol VUserProfileHeaderDelegate <NSObject>
+@interface VUserProfileHeaderViewController : UIViewController <VUserProfileHeader, VHasManagedDependencies>
 
-@required
-- (void)editProfileHandler;
-- (void)followerHandler;
-- (void)followingHandler;
-
-@end
-
-@interface VUserProfileHeaderView : UIView
-
-@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readonly) VDefaultProfileImageView *profileImageView;
+@property (nonatomic, assign, readonly) BOOL isCurrentUser;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, weak) IBOutlet VButton *primaryActionButton;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
 @property (nonatomic, weak) IBOutlet UILabel *taglineLabel;
-
 @property (nonatomic, weak) IBOutlet UILabel *followersLabel;
 @property (nonatomic, weak) IBOutlet UILabel *followersHeader;
 @property (nonatomic, weak) IBOutlet UIButton *followersButton;
 @property (nonatomic, weak) IBOutlet UILabel *followingLabel;
 @property (nonatomic, weak) IBOutlet UILabel *followingHeader;
 @property (nonatomic, weak) IBOutlet UIButton *followingButton;
-
-@property (nonatomic, weak) IBOutlet VButton *editProfileButton;
 @property (nonatomic, weak) IBOutlet UIView *userStatsBar;
 
-@property (nonatomic, strong) VUser *user;
-@property (nonatomic, weak) id<VUserProfileHeaderDelegate> delegate;
-
-@property (nonatomic, assign) BOOL isFollowingUser;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-+ (instancetype)newView;
+- (void)applyStyle;
 
 @end

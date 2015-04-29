@@ -19,6 +19,7 @@
 
 // Dependency Manager
 #import "VDependencyManager.h"
+#import "VDependencyManager+VUserProfile.h"
 
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
