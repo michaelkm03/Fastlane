@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="51" id="Jx2-x8-qpN" customClass="VFollowerTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jx2-x8-qpN" id="XFX-TR-P0J">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="koc-52-Nbs">
+                        <rect key="frame" x="20" y="9" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="u07-KR-J4W"/>
+                            <constraint firstAttribute="width" secondItem="koc-52-Nbs" secondAttribute="height" multiplier="1:1" id="xvB-eS-Mqa"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0T-5c-hKD" userLabel="Profile Name">
+                        <rect key="frame" x="67" y="3" width="183" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="8D1-ci-tjG"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9r7-aL-0Ib" userLabel="Profile Location">
+                        <rect key="frame" x="66" y="25" width="184" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="21" id="f1X-dL-T6U"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="lSw-9r-hN1" customClass="VFollowUserControl">
+                        <rect key="frame" x="258" y="12" width="42" height="26"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="42" id="0lF-x6-hSI"/>
+                        </constraints>
+                        <connections>
+                            <action selector="tappedFollowControl:" destination="Jx2-x8-qpN" eventType="touchUpInside" id="Pgv-tw-TRA"/>
+                        </connections>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="K0T-5c-hKD" firstAttribute="top" secondItem="XFX-TR-P0J" secondAttribute="top" constant="3" id="AgV-xE-wvM"/>
+                    <constraint firstAttribute="trailing" secondItem="lSw-9r-hN1" secondAttribute="trailing" constant="20" id="H39-sK-iDf"/>
+                    <constraint firstAttribute="bottom" secondItem="lSw-9r-hN1" secondAttribute="bottom" constant="12" id="HJo-Lz-S3K"/>
+                    <constraint firstItem="koc-52-Nbs" firstAttribute="leading" secondItem="XFX-TR-P0J" secondAttribute="leadingMargin" constant="12" id="MgN-LI-T63"/>
+                    <constraint firstItem="K0T-5c-hKD" firstAttribute="leading" secondItem="koc-52-Nbs" secondAttribute="trailing" constant="15" id="Sc9-ii-eeE"/>
+                    <constraint firstItem="9r7-aL-0Ib" firstAttribute="leading" secondItem="koc-52-Nbs" secondAttribute="trailing" constant="14" id="Ube-ml-YO1"/>
+                    <constraint firstItem="lSw-9r-hN1" firstAttribute="leading" secondItem="K0T-5c-hKD" secondAttribute="trailing" constant="8" id="VTh-MI-3oI"/>
+                    <constraint firstItem="koc-52-Nbs" firstAttribute="top" secondItem="XFX-TR-P0J" secondAttribute="topMargin" constant="1" id="cv2-p8-VcY"/>
+                    <constraint firstItem="lSw-9r-hN1" firstAttribute="leading" secondItem="9r7-aL-0Ib" secondAttribute="trailing" constant="8" id="dYM-dx-2DO"/>
+                    <constraint firstItem="9r7-aL-0Ib" firstAttribute="top" secondItem="K0T-5c-hKD" secondAttribute="bottom" constant="1" id="djY-Dm-Vf9"/>
+                    <constraint firstAttribute="bottom" secondItem="9r7-aL-0Ib" secondAttribute="bottom" constant="4" id="doG-Rf-i06"/>
+                    <constraint firstItem="lSw-9r-hN1" firstAttribute="top" secondItem="XFX-TR-P0J" secondAttribute="top" constant="12" id="wIx-Vb-5KA"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="followControl" destination="lSw-9r-hN1" id="TfG-gx-78q"/>
+                <outlet property="profileImageView" destination="koc-52-Nbs" id="dIw-1R-0Yq"/>
+                <outlet property="profileLocation" destination="9r7-aL-0Ib" id="tmR-xw-GJl"/>
+                <outlet property="profileName" destination="K0T-5c-hKD" id="Ozy-na-U7C"/>
+            </connections>
+            <point key="canvasLocation" x="190" y="154.5"/>
+        </tableViewCell>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
