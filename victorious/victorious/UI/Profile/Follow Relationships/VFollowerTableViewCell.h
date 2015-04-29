@@ -16,7 +16,7 @@
  *  location, and the current follow state.
  *
  *  VFollowerTableViewCell will send commands up the responder chain by looking 
- *  for responders that implement the VFollowCommand protocol.
+ *  for responders that implement the VFollowing protocol.
  */
 @interface VFollowerTableViewCell : UITableViewCell <VSharedCollectionReusableViewMethods, VHasManagedDependencies>
 

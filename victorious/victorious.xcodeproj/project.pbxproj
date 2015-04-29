@@ -2173,7 +2173,7 @@
 		D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationDestinationContainerViewController.m; sourceTree = "<group>"; };
 		D87DE6C61AF08EDE00069824 /* VFollowerEventResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowerEventResponder.h; sourceTree = "<group>"; };
 		D87DE6C71AF08EDE00069824 /* VFollowerEventResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowerEventResponder.m; sourceTree = "<group>"; };
-		D87DE6C81AF08EDE00069824 /* VFollowEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowEvent.h; sourceTree = "<group>"; };
+		D87DE6C81AF08EDE00069824 /* VFollowing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowing.h; sourceTree = "<group>"; };
 		D87DE6C91AF08EDE00069824 /* VResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VResponder.h; sourceTree = "<group>"; };
 		D87DE6CA1AF08EDE00069824 /* VResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VResponder.m; sourceTree = "<group>"; };
 		D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractActionView.h; sourceTree = "<group>"; };
@@ -5261,7 +5261,7 @@
 			children = (
 				D87DE6C61AF08EDE00069824 /* VFollowerEventResponder.h */,
 				D87DE6C71AF08EDE00069824 /* VFollowerEventResponder.m */,
-				D87DE6C81AF08EDE00069824 /* VFollowEvent.h */,
+				D87DE6C81AF08EDE00069824 /* VFollowing.h */,
 				D87DE6C91AF08EDE00069824 /* VResponder.h */,
 				D87DE6CA1AF08EDE00069824 /* VResponder.m */,
 			);

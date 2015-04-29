@@ -19,7 +19,7 @@
 @implementation VFollowerEventResponder
 
 - (void)followUser:(VUser *)user
-    withCompletion:(VFollowCommandCompletion)completion
+    withCompletion:(VFollowEventCompletion)completion
 {
     NSParameterAssert(completion != nil);
     
@@ -63,7 +63,7 @@
 }
 
 - (void)unfollowUser:(VUser *)user
-      withCompletion:(VFollowCommandCompletion)completion
+      withCompletion:(VFollowEventCompletion)completion
 {
     NSParameterAssert(completion != nil);
     

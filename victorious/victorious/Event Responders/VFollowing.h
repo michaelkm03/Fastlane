@@ -1,5 +1,5 @@
 //
-//  VFollowEvent.h
+//  VFollowing.h
 //  victorious
 //
 //  Created by Michael Sena on 4/28/15.
@@ -15,9 +15,9 @@
  *
  *  @param userActedOn the user that this command was initially executed with
  */
-typedef void (^VFollowCommandCompletion)(VUser *userActedOn);
+typedef void (^VFollowEventCompletion)(VUser *userActedOn);
 
-@protocol VFollowEvent <NSObject>
+@protocol VFollowing <NSObject>
 
 /**
  *  A command for the current user to follow a specific user.
@@ -26,7 +26,7 @@ typedef void (^VFollowCommandCompletion)(VUser *userActedOn);
  *  @param completion Required completion block.
  */
 - (void)followUser:(VUser *)user
-    withCompletion:(VFollowCommandCompletion)completion;
+    withCompletion:(VFollowEventCompletion)completion;
 
 /**
  *  A command for the current user to unfollow a specific user.
@@ -35,6 +35,6 @@ typedef void (^VFollowCommandCompletion)(VUser *userActedOn);
  *  @param completion Required completion block.
  */
 - (void)unfollowUser:(VUser *)user
-      withCompletion:(VFollowCommandCompletion)completion;
+      withCompletion:(VFollowEventCompletion)completion;
 
 @end
