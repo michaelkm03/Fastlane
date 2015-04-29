@@ -72,6 +72,7 @@
 #import <FBKVOController.h>
 
 #import "VDirectoryCollectionViewController.h"
+#import "VLinkSelectionResponder.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -89,7 +90,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VLinkSelectionResponder>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -273,6 +274,24 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - Navigation
+
+- (void)showHashtagStreamWithHashtag:(NSString *)hashtag
+{
+    // Prevent another stream view for the current tag from being pushed
+    if ( self.currentStream.hashtag && self.currentStream.hashtag.length )
+    {
+        if ( [[self.currentStream.hashtag lowercaseString] isEqualToString:[hashtag lowercaseString]] )
+        {
+            return;
+        }
+    }
+    
+    // Instantiate and push to stack
+    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Properties
@@ -549,19 +568,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         return;
     }
-    
-    // Prevent another stream view for the current tag from being pushed
-    if ( self.currentStream.hashtag && self.currentStream.hashtag.length )
-    {
-        if ( [[self.currentStream.hashtag lowercaseString] isEqualToString:[hashtag lowercaseString]] )
-        {
-            return;
-        }
-    }
-    
-    // Instantiate and push to stack
-    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self showHashtagStreamWithHashtag:hashtag];
 }
 
 #pragma mark - Actions
@@ -814,6 +821,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream sequence:cell.sequence];
     }
+}
+
+#pragma mark - VLinkSelectionResponder
+
+- (void)linkWithTextSelected:(NSString *)text
+{
+    [self showHashtagStreamWithHashtag:text];
 }
 
 @end

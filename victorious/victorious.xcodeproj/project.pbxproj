@@ -547,6 +547,7 @@
 		A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C819FEE17B00726772 /* front_portrait.m4v */; };
 		A7D288141A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D288131A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m */; };
 		A7D288201A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */; };
+		A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
 		A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7077E1A7AFD8200D9993F /* VEndCard.m */; };
@@ -1847,6 +1848,9 @@
 		A7D288121A23F6CF006CF0EC /* VNotificationSettings+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotificationSettings+Fetcher.h"; sourceTree = "<group>"; };
 		A7D288131A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotificationSettings+Fetcher.m"; sourceTree = "<group>"; };
 		A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsViewControllerTests.m; sourceTree = "<group>"; };
+		A7D3782D1AEF39FC007FF197 /* VLinkSelectionResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLinkSelectionResponder.h; sourceTree = "<group>"; };
+		A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPassthroughContainerView.h; sourceTree = "<group>"; };
+		A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPassthroughContainerView.m; sourceTree = "<group>"; };
 		A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutoplaySettingsViewController.h; sourceTree = "<group>"; };
 		A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutoplaySettingsViewController.m; sourceTree = "<group>"; };
 		A7D707711A797B8A00D9993F /* VVideoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSettings.h; sourceTree = "<group>"; };
@@ -2773,9 +2777,12 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
+				A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */,
+				A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */,
 				F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */,
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
+				A7D3782D1AEF39FC007FF197 /* VLinkSelectionResponder.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -6089,6 +6096,7 @@
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */,
+				A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */,
 				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */,

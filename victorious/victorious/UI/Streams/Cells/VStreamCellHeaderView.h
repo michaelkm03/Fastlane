@@ -10,10 +10,11 @@
 
 #import "VSequenceActionsDelegate.h"
 #import "VStreamCollectionCell.h"
+#import "VPassthroughContainerView.h"
 
 @class VSequence, VDefaultProfileButton, VDependencyManager;
 
-@interface VStreamCellHeaderView : UIView
+@interface VStreamCellHeaderView : VPassthroughContainerView
 
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
