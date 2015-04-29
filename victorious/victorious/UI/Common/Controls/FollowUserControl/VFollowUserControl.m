@@ -170,6 +170,13 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 #pragma mark - UIControl
 
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    
+    self.imageView.alpha = enabled ? 1.0f : 0.5f;
+}
+
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];

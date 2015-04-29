@@ -8,6 +8,9 @@
 
 #import "VFollowerTableViewCell.h"
 
+// Commands
+#import "VFollowCommand.h"
+
 // Models + Helpers
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
@@ -98,7 +101,8 @@ static const CGFloat kFollowerCellHeight = 50.0f;
     self.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
-
+    self.followControl.enabled = YES;
+    
     [self updateFollowingAnimated:NO];
 }
 
@@ -118,9 +122,25 @@ static const CGFloat kFollowerCellHeight = 50.0f;
 
 - (IBAction)tappedFollowControl:(VFollowUserControl *)sender
 {
-    if (self.followActionHandler!= nil)
+    id<VFollowCommand> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                         withSender:nil];
+    sender.enabled = NO;
+    if (sender.following)
     {
-        self.followActionHandler(!sender.following, self.profile);
+        
+        [followCommandHandler unfollowUser:self.profile
+                            withCompletion:^(VUser *userActedOn)
+        {
+            sender.enabled = YES;
+        }];
+    }
+    else
+    {
+        [followCommandHandler followUser:self.profile
+                          withCompletion:^(VUser *userActedOn)
+         {
+             sender.enabled = YES;
+         }];
     }
 }
 

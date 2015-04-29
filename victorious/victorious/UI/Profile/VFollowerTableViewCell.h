@@ -11,19 +11,14 @@
 
 @class VUser, VDependencyManager;
 
-typedef void (^VFollowActionHandler)(BOOL wantsFollow, VUser *onUser);
-
 /**
  *  A VFollowerTableViewCell presents UI for previewing a user's avatar, name, 
  *  location, and the current follow state.
+ *
+ *  VFollowerTableViewCell will send commands up the responder chain by looking 
+ *  for responders that implement the VFollowCommand protocol.
  */
 @interface VFollowerTableViewCell : UITableViewCell <VSharedCollectionReusableViewMethods, VHasManagedDependencies>
-
-/**
- *  This block will be called when the user requests a follow/unfollow for the 
- *  given user.
- */
-@property (nonatomic, copy) VFollowActionHandler followActionHandler;
 
 /**
  *  The user that this follower cell represents. This cell will KVO the following 
