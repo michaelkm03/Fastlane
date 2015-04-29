@@ -107,6 +107,9 @@
 
 - (void)updateUser
 {
+    NSArray *previewAssets = [self.user.previewAssets allObjects];
+    VImageAsset *imageAsset = previewAssets.firstObject;
+    
     [self loadBackgroundImageFromURL:[NSURL URLWithString:self.user.pictureUrl]];
     
     if ( self.user != nil )
