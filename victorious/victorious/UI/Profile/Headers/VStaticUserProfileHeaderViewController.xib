@@ -19,6 +19,7 @@
                 <outlet property="staticProfileImageView" destination="HHC-1V-OAe" id="zhR-h4-cgc"/>
                 <outlet property="taglineLabel" destination="eWJ-1h-9hk" id="Rw1-7l-1vz"/>
                 <outlet property="userStatsBar" destination="bHl-Un-gmi" id="98Q-eM-ey7"/>
+                <outlet property="userStatsBarBackgroundContainer" destination="u9S-Sj-DNg" id="6tq-yI-BS5"/>
                 <outlet property="view" destination="HNG-L2-8S5" id="Lfl-UU-LZu"/>
             </connections>
         </placeholder>
@@ -58,6 +59,10 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bHl-Un-gmi" userLabel="User Stats Bar">
                     <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u9S-Sj-DNg">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
                         <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="deh-3g-hYk" userLabel="Followers Count Label">
                             <rect key="frame" x="0.0" y="13" width="235" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -133,6 +138,7 @@
                         <constraint firstItem="Ezs-M5-j6u" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" id="1kS-ML-EZ9"/>
                         <constraint firstItem="vjG-ri-5ts" firstAttribute="leading" secondItem="reE-xi-zdS" secondAttribute="trailing" constant="5" id="7Xa-6Q-H14"/>
                         <constraint firstAttribute="centerY" secondItem="reE-xi-zdS" secondAttribute="centerY" id="BYM-8l-fGx"/>
+                        <constraint firstItem="u9S-Sj-DNg" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" id="Fur-fd-aK5"/>
                         <constraint firstAttribute="centerX" secondItem="reE-xi-zdS" secondAttribute="centerX" id="I8m-IB-ixb"/>
                         <constraint firstItem="vjG-ri-5ts" firstAttribute="top" secondItem="vy6-BJ-bJh" secondAttribute="bottom" constant="-3" id="LIC-Tq-aI1"/>
                         <constraint firstItem="Mu0-ll-MRk" firstAttribute="leading" secondItem="bHl-Un-gmi" secondAttribute="leading" id="MTx-ww-vBX"/>
@@ -143,13 +149,16 @@
                         <constraint firstAttribute="trailing" secondItem="PdG-wg-hxI" secondAttribute="trailing" id="USd-y9-z9b"/>
                         <constraint firstAttribute="bottom" secondItem="PdG-wg-hxI" secondAttribute="bottom" id="aSo-fb-EJJ"/>
                         <constraint firstAttribute="trailing" secondItem="vjG-ri-5ts" secondAttribute="trailing" id="bZo-Kh-9mH"/>
+                        <constraint firstAttribute="trailing" secondItem="u9S-Sj-DNg" secondAttribute="trailing" id="dOG-eX-hbb"/>
                         <constraint firstItem="Ezs-M5-j6u" firstAttribute="leading" secondItem="bHl-Un-gmi" secondAttribute="leading" id="dSL-gR-YD9"/>
                         <constraint firstItem="deh-3g-hYk" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" constant="13" id="dZz-X0-JT1"/>
                         <constraint firstAttribute="trailing" secondItem="vy6-BJ-bJh" secondAttribute="trailing" id="eI3-d6-mWu"/>
                         <constraint firstItem="PdG-wg-hxI" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" id="eWt-La-mnL"/>
                         <constraint firstItem="vy6-BJ-bJh" firstAttribute="leading" secondItem="reE-xi-zdS" secondAttribute="trailing" constant="5" id="hJ2-sN-IMv"/>
                         <constraint firstItem="reE-xi-zdS" firstAttribute="leading" secondItem="Ezs-M5-j6u" secondAttribute="trailing" id="j9R-MV-YOE"/>
+                        <constraint firstAttribute="bottom" secondItem="u9S-Sj-DNg" secondAttribute="bottom" id="k06-eD-6lL"/>
                         <constraint firstItem="Mu0-ll-MRk" firstAttribute="top" secondItem="deh-3g-hYk" secondAttribute="bottom" constant="-3" id="lGe-aJ-yHf"/>
+                        <constraint firstItem="u9S-Sj-DNg" firstAttribute="leading" secondItem="bHl-Un-gmi" secondAttribute="leading" id="t6I-bE-X3g"/>
                         <constraint firstItem="reE-xi-zdS" firstAttribute="leading" secondItem="deh-3g-hYk" secondAttribute="trailing" constant="5" id="vqq-x9-JfZ"/>
                         <constraint firstAttribute="bottom" secondItem="Ezs-M5-j6u" secondAttribute="bottom" id="wFV-iv-0Ua"/>
                     </constraints>

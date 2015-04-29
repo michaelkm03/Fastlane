@@ -23,6 +23,8 @@
                 <outlet property="secondaryActionButton" destination="reE-xi-zdS" id="y1Y-C1-Cg4"/>
                 <outlet property="taglineLabel" destination="eWJ-1h-9hk" id="Rw1-7l-1vz"/>
                 <outlet property="userStatsBar" destination="bHl-Un-gmi" id="98Q-eM-ey7"/>
+                <outlet property="userStatsBarBackgroundContainer" destination="Unj-au-knY" id="0xY-tR-51m"/>
+                <outlet property="usersStatusDivider" destination="Zpd-xs-0XE" id="WTG-pD-UoU"/>
                 <outlet property="view" destination="HNG-L2-8S5" id="Lfl-UU-LZu"/>
             </connections>
         </placeholder>
@@ -41,6 +43,10 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bHl-Un-gmi" userLabel="User Stats Bar">
                     <rect key="frame" x="0.0" y="546" width="600" height="54"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Unj-au-knY">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zpd-xs-0XE" userLabel="Divider">
                             <rect key="frame" x="300" y="4" width="1" height="45"/>
                             <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
@@ -52,9 +58,13 @@
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="54" id="EWM-IL-3LV"/>
+                        <constraint firstAttribute="bottom" secondItem="Unj-au-knY" secondAttribute="bottom" id="dD6-lz-Kyb"/>
+                        <constraint firstItem="Unj-au-knY" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" id="im1-Je-HbR"/>
                         <constraint firstAttribute="centerX" secondItem="Zpd-xs-0XE" secondAttribute="centerX" constant="-0.5" id="qE2-15-I9T"/>
+                        <constraint firstAttribute="trailing" secondItem="Unj-au-knY" secondAttribute="trailing" id="qEy-sf-21w"/>
                         <constraint firstAttribute="bottom" secondItem="Zpd-xs-0XE" secondAttribute="bottom" constant="5" id="swD-lJ-y5Z"/>
                         <constraint firstItem="Zpd-xs-0XE" firstAttribute="top" secondItem="bHl-Un-gmi" secondAttribute="top" constant="4" id="ycb-xi-qlq"/>
+                        <constraint firstItem="Unj-au-knY" firstAttribute="leading" secondItem="bHl-Un-gmi" secondAttribute="leading" id="ylf-Xd-xXt"/>
                     </constraints>
                 </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Some really long user name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdy-I6-0YY" userLabel="Username Label">
