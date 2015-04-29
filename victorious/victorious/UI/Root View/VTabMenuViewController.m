@@ -25,6 +25,8 @@
 // Categories
 #import "NSArray+VMap.h"
 
+#import "VInitialViewController.h"
+
 NSString * const kMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
@@ -85,6 +87,10 @@ NSString * const kMenuKey = @"menu";
     UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
     if (initialVC != nil)
     {
+        if ( [initialVC conformsToProtocol:@protocol(VInitialViewController)] )
+        {
+            [(UIViewController <VInitialViewController> *)initialVC setIsInitialViewController:YES];
+        }
         [self displayResultOfNavigation:initialVC];
     }
 }
