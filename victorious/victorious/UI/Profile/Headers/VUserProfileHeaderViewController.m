@@ -14,6 +14,7 @@
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VImageAsset+Fetcher.h"
 
 #import <KVOController/FBKVOController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -107,10 +108,9 @@
 
 - (void)updateUser
 {
-    NSArray *previewAssets = [self.user.previewAssets allObjects];
-    VImageAsset *imageAsset = previewAssets.firstObject;
-    
-    [self loadBackgroundImageFromURL:[NSURL URLWithString:self.user.pictureUrl]];
+    CGSize minSize = self.view.bounds.size;
+    VImageAsset *imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.user.previewAssets ];
+    [self loadBackgroundImageFromURL:[NSURL URLWithString:imageAsset.imageURL]];
     
     if ( self.user != nil )
     {

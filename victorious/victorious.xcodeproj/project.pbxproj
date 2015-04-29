@@ -556,6 +556,7 @@
 		A7D378481AF0578A007FF197 /* VImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378471AF0578A007FF197 /* VImageAsset.m */; };
 		A7D3784B1AF057FF007FF197 /* VImageAsset+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3784A1AF057FF007FF197 /* VImageAsset+RestKit.m */; };
 		A7D3784E1AF060AD007FF197 /* VImageAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3784D1AF060AD007FF197 /* VImageAsset+Fetcher.m */; };
+		A7D378531AF06C65007FF197 /* VImageAssetFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
 		A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7077E1A7AFD8200D9993F /* VEndCard.m */; };
@@ -1869,6 +1870,7 @@
 		A7D3784A1AF057FF007FF197 /* VImageAsset+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VImageAsset+RestKit.m"; sourceTree = "<group>"; };
 		A7D3784C1AF060AD007FF197 /* VImageAsset+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VImageAsset+Fetcher.h"; sourceTree = "<group>"; };
 		A7D3784D1AF060AD007FF197 /* VImageAsset+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VImageAsset+Fetcher.m"; sourceTree = "<group>"; };
+		A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAssetFetcherTests.m; sourceTree = "<group>"; };
 		A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutoplaySettingsViewController.h; sourceTree = "<group>"; };
 		A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutoplaySettingsViewController.m; sourceTree = "<group>"; };
 		A7D707711A797B8A00D9993F /* VVideoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSettings.h; sourceTree = "<group>"; };
@@ -4754,6 +4756,7 @@
 				A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */,
 				D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */,
 				D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */,
+				A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */,
 				0306F7A71ADDF990009FE3AA /* VJSONHelperTests.m */,
 				A75C649D1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m */,
 				F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */,
@@ -6749,6 +6752,7 @@
 				0394204A1AB88A9A0087ADFA /* VDependencyManagerImageTests.m in Sources */,
 				A72005271A03073B00285A9C /* VElapsedTimeFormatterTests.m in Sources */,
 				A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */,
+				A7D378531AF06C65007FF197 /* VImageAssetFetcherTests.m in Sources */,
 				A720053A1A03073B00285A9C /* VVoteTypeFetcherTests.m in Sources */,
 				A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */,
 				A7D288201A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m in Sources */,
