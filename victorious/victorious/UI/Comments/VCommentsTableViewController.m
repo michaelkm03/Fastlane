@@ -47,6 +47,7 @@
 #import "VHashtagStreamCollectionViewController.h"
 
 #import "UIStoryboard+VMainStoryboard.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @import Social;
 
@@ -288,7 +289,7 @@
         cell.commentTextView.mediaThumbnailView.hidden = YES;
         cell.commentTextView.hasMedia = NO;
     }
-    
+    cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {

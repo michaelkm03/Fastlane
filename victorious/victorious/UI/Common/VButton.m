@@ -128,6 +128,9 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
             self.activityIndicator.color = self.titleLabel.textColor;
             self.backgroundColor = [UIColor clearColor];
             break;
+            
+        default:
+            break;
     }
     
     self.titleLabel.minimumScaleFactor = 0.5;
@@ -214,6 +217,8 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
             [self setTitleColor:color forState:UIControlStateNormal];
             break;
         }
+        default:
+            break;
     }
     
     if ( highlighted )

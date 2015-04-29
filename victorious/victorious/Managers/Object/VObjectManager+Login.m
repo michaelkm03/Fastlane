@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#define LOG_API_RESPONSES 0
-
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -26,9 +24,8 @@
 #import "MBProgressHUD.h"
 
 #import "VUserManager.h"
+#import "VTemplateDecorator.h"
 
-//Imported to log out the payload from the database and the payload we would have gotten from the (deprecated) api/init and the VTemplateGenerator
-#import "VTemplateGenerator.h"
 #import "NSDictionary+VJSONLogging.h"
 
 @implementation VObjectManager (Login)
@@ -36,31 +33,11 @@
 NSString * const kLoggedInChangedNotification   = @"com.getvictorious.LoggedInChangedNotification";
 
 static NSString * const kWorkspaceTemplateName  = @"workspaceTemplate";
-static NSString * const kJSONType               = @"json";
 
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
 static NSString * const kVVideoQualityKey       = @"video_quality";
 static NSString * const kVAppTrackingKey        = @"video_quality";
-
-#pragma mark - Init
-- (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)failed
-{
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    return [self GET:@"/api/init"
-              object:nil
-          parameters:nil
-        successBlock:fullSuccess
-           failBlock:failed];
-}
 
 - (RKManagedObjectRequestOperation *)templateWithDependencyManager:(VDependencyManager *)parentDependencyManager
                                                       successBlock:(VTemplateSuccessBlock)success
@@ -80,17 +57,13 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
             }
         }
         
-#if LOG_API_RESPONSES
-#warning API LOGGING IS ENABLED!
-        [(NSDictionary *)fullResponse[@"payload"] logJSONStringWithTitle:@"FROM DB"];
-        [VTemplateGenerator logExampleTemplate];
-#endif
-        
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
-        template = [self templateByConcatenatingWorkspaceTemplateWithTemplate:template];
+        
+        VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+        [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
-                                                                                    configuration:template
+                                                                                    configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
         success(operation, fullResponse, dependencyManager);
     };
@@ -100,29 +73,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
           parameters:nil
         successBlock:fullSuccess
            failBlock:failed];
-}
-
-- (NSDictionary *)templateByConcatenatingWorkspaceTemplateWithTemplate:(NSDictionary *)originalTemplate
-{
-    NSString *workspaceTemplatePath = [[NSBundle bundleForClass:[self class]] pathForResource:kWorkspaceTemplateName ofType:kJSONType];
-    NSError *error = nil;
-    NSData *defaultTemplateData = [NSData dataWithContentsOfFile:workspaceTemplatePath options:kNilOptions error:&error];
-    if (defaultTemplateData == nil)
-    {
-        return originalTemplate;
-    }
-    NSDictionary *workspaceTemplate = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
-    if (workspaceTemplate == nil)
-    {
-        return originalTemplate;
-    }
-    
-    // Combine templates
-    NSMutableDictionary *combinedDictionary = [[NSMutableDictionary alloc] init];
-    [combinedDictionary addEntriesFromDictionary:workspaceTemplate];
-    [combinedDictionary addEntriesFromDictionary:originalTemplate];
-    
-    return [NSDictionary dictionaryWithDictionary:combinedDictionary];
 }
 
 #pragma mark - Login and status

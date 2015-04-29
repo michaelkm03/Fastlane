@@ -82,6 +82,10 @@
 	<string>VNotificationsViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
+	<key>staticProfile.streamHeader</key>
+	<string>VStaticUserProfileHeaderViewController</string>
+	<key>floatingProfile.streamHeader</key>
+	<string>VFloatingUserProfileHeaderViewController</string>
 	<key>userProfile.screen</key>
 	<string>VUserProfileViewController</string>
 	<key>settings.screen</key>
@@ -100,5 +104,7 @@
 	<string>VFullscreenMarqueeController</string>
 	<key>blurred.marqueeCell</key>
 	<string>VBlurredMarqueeController</string>
+	<key>inset.marqueeCell</key>
+	<string>VInsetMarqueeController</string>
 </dict>
 </plist>
