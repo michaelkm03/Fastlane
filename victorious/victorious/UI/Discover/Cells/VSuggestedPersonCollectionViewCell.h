@@ -28,6 +28,7 @@
 
 + (UIImage *)followedImage;
 + (UIImage *)followImage;
++ (CGFloat)cellHeight;
 
 @property (nonatomic, weak) id<VSuggestedPersonCollectionViewCellDelegate> delegate;
 
