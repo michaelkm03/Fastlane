@@ -17,6 +17,9 @@
 #import "VInlineValidationTextField.h"
 #import "VDependencyManager.h"
 
+static const CGFloat kPlaceholderTextWhiteValue = 0.14f;
+static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
+
 @interface VChangePasswordViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet VInlineValidationTextField *oldPasswordTextField;
@@ -63,17 +66,17 @@
     }
     
     self.signupButton.style = VButtonStylePrimary;
-    self.signupButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
-    self.signupButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
+    self.signupButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.signupButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
-    NSDictionary *placeholderAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0] };
-    UIColor *activePlaceholderColor = [UIColor colorWithRed:102/255.0f green:102/255.0f blue:102/255.0f alpha:1.0f];
-    NSDictionary *activePlaceholderAttributes = @{ NSForegroundColorAttributeName : activePlaceholderColor };
+    NSDictionary *placeholderAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithWhite:kPlaceholderTextWhiteValue alpha:1.0f] };
+    NSDictionary *activePlaceholderAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithWhite:kPlaceholderActiveTextWhiteValue alpha:1.0f] };
     
     NSArray *textFields = @[ self.oldPasswordTextField, self.changedPasswordTextField, self.confirmPasswordTextField ];
     for ( VInlineValidationTextField *textField in textFields )
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:)
+                                                     name:UITextFieldTextDidChangeNotification object:textField];
         
         [textField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
         textField.delegate = self;
