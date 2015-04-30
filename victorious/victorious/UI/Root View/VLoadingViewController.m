@@ -165,19 +165,25 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
             if ( strongSelf != nil )
             {
                 strongSelf.templateDownloadManager = nil;
-                [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
                 
-                [[VObjectManager sharedManager] loginWithExistingToken];
-                
-#warning REMOVE:
-                /*[[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+                // First try to log in with stored user (token from keychain)
+                const BOOL loginWithStoredUserDidSucceed = [[VObjectManager sharedManager] loginWithExistingToken];
+                if ( loginWithStoredUserDidSucceed )
                 {
                     [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
                 }
-                                                                           onError:^(NSError *error, BOOL thirdPartyAPIFailed)
+                else
                 {
-                    [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
-                }];*/
+                    // Log in through server using saved password
+                    [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+                     {
+                         [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
+                     }
+                                                                                onError:^(NSError *error, BOOL thirdPartyAPIFailed)
+                     {
+                         [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
+                     }];
+                }
             }
         });
     }];

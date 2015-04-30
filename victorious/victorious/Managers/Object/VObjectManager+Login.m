@@ -28,6 +28,7 @@
 #import "VTemplateDecorator.h"
 
 #import "NSDictionary+VJSONLogging.h"
+#import "VStoredUser.h"
 
 @implementation VObjectManager (Login)
 
@@ -339,9 +340,9 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 }
 
 
-- (void)loginWithExistingToken
+- (BOOL)loginWithExistingToken
 {
-    VUser *user = [[VUserManager sharedInstance] loadLastLoggedInUserFromDisk];
+    VUser *user = [[[VStoredUser alloc] init] loadLastLoggedInUserFromDisk];
     [self loggedInWithUser:user];
     if ( self.mainUser != nil )
     {
@@ -349,7 +350,10 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
                                       forceReload:YES
                                  withSuccessBlock:nil
                                         failBlock:nil];
+        return YES;
     }
+    
+    return NO;
 }
 
 #pragma mark - LoggedIn
@@ -362,7 +366,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         [[VTrackingManager sharedInstance] setValue:@(YES) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
         
-        [[VUserManager sharedInstance] saveLoggedInUserToDisk:self.mainUser];
+        [[[VStoredUser alloc] init] saveLoggedInUserToDisk:self.mainUser];
         
         [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
         [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
@@ -389,6 +393,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         return nil;
     }
+    
+    [[[VStoredUser alloc] init] clearLoggedInUserFromDisk];
 
     RKManagedObjectRequestOperation *operation = [self GET:@"/api/logout"
               object:nil

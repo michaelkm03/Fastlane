@@ -83,6 +83,6 @@ extern NSString * const kLoggedInChangedNotification;
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
 
-- (void)loginWithExistingToken;
+- (BOOL)loginWithExistingToken;
 
 @end
