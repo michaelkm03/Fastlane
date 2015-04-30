@@ -589,7 +589,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             }
             else
             {
-                [self.player seekToTime:CMTimeMake(0, 1)];
+                [self.player seekToTime:kCMTimeZero];
             }
         }
         else
@@ -809,7 +809,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             }
             else
             {
-                [self.player seekToTime:CMTimeMake(0, 1)];
+                [self.player seekToTime:kCMTimeZero];
             }
         }
         else
@@ -895,7 +895,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                         }
                         else
                         {
-                            [self.player seekToTime:CMTimeMake(0, 1)];
+                            [self.player seekToTime:kCMTimeZero];
                         }
                     }
                 }
