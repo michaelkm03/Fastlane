@@ -77,9 +77,15 @@
  */
 - (id)templateValueForKeyPath:(NSString *)keyPath;
 
+/**
+ Recursively finds all keys that match the specified key and replaces the
+ existing value with the specified value.
+ 
+ @param key The key for which to search and replace all corresponding values.
+ @param templateValue The new value to set, generam should be an NSNumber, NSString,
+ NSDictinoary or NSArray, and must not be nil.
+ */
 - (void)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key;
-
-- (NSString *)keyPathsForKey:(NSString *)key;
 
 /**
  Returns output as an NSDictionary instance which contains all modifications

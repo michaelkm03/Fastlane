@@ -255,6 +255,8 @@ static NSString * const kKetPathDelimeter = @"/";
 
 - (void)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key
 {
+    NSParameterAssert( templateValue != nil );
+    
     self.workingTemplate = [self setValue:templateValue forAllOccurencesOfKey:key inCollection:self.workingTemplate];
 }
 
@@ -306,11 +308,6 @@ static NSString * const kKetPathDelimeter = @"/";
         return destination;
     }
     
-    return nil;
-}
-
-- (NSString *)keyPathsForKey:(NSString *)key
-{
     return nil;
 }
 

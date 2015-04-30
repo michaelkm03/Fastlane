@@ -157,6 +157,8 @@
     
     NSString *newStringValue = @"templateValue";
     
+    XCTAssertThrows(  [templateDecorator setValue:nil forAllOccurencesOfKey:@"key1"] );
+    
     [templateDecorator setValue:newStringValue forAllOccurencesOfKey:@"key1"];
     
     NSDictionary *output = templateDecorator.decoratedTemplate;
