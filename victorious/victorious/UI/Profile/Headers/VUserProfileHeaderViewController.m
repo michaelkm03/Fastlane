@@ -123,7 +123,7 @@
 
 - (void)updateProfileImage
 {
-    
+    NSAssert( NO, @"Must be overridden by subclasses." );
 }
 
 - (void)setState:(VUserProfileHeaderState)state
