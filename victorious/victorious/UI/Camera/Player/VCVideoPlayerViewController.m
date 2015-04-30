@@ -692,7 +692,19 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
     else
     {
-        [self.player play];
+        // If we are at the end we need to seek to the begginning
+        if (self.didPlayToEnd && CMTIME_COMPARE_INLINE(self.player.currentItem.currentTime, >=, self.player.currentItem.duration))
+        {
+            [self.player seekToTime:kCMTimeZero
+                  completionHandler:^(BOOL finished)
+            {
+                [self.player play];
+            }];
+        }
+        else
+        {
+            [self.player play];
+        }
     }
 }
 
