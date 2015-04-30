@@ -152,10 +152,24 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
 {
     NSError *validationError;
     
+    if (textField == self.oldPasswordTextField)
+    {
+        [self.passwordValidator setConfirmationObject:nil withKeyPath:nil];
+        if ( ![self.passwordValidator validateString:textField.text andError:&validationError] &&
+            validationError.code != VErrorCodeInvalidPasswordsNewEqualsCurrent )
+        {
+            [textField showInvalidText:validationError.localizedDescription animated:NO shake:NO forced:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+        }
+    }
     if (textField == self.changedPasswordTextField)
     {
         [self.passwordValidator setConfirmationObject:nil withKeyPath:nil];
-        if ( ![self.passwordValidator validateString:textField.text andError:&validationError] )
+        if ( ![self.passwordValidator validateString:textField.text andError:&validationError] &&
+            validationError.code != VErrorCodeInvalidPasswordsNewEqualsCurrent )
         {
             [textField showInvalidText:validationError.localizedDescription animated:NO shake:NO forced:NO];
         }
@@ -167,7 +181,8 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
     if (textField == self.confirmPasswordTextField)
     {
         [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField withKeyPath:NSStringFromSelector(@selector(text))];
-        if ( ![self.passwordValidator validateString:self.changedPasswordTextField.text andError:&validationError] )
+        if ( ![self.passwordValidator validateString:self.changedPasswordTextField.text andError:&validationError] &&
+            validationError.code != VErrorCodeInvalidPasswordsNewEqualsCurrent )
         {
             [textField showInvalidText:validationError.localizedDescription animated:NO shake:NO forced:NO];
         }
@@ -188,7 +203,21 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
     id newResponder = nil;
     
     [self.passwordValidator setConfirmationObject:nil withKeyPath:nil];
-    if (![self.passwordValidator validateString:self.changedPasswordTextField.text andError:&validationError])
+    if (![self.passwordValidator validateString:self.oldPasswordTextField.text andError:&validationError] &&
+        validationError.code != VErrorCodeInvalidPasswordsNewEqualsCurrent )
+    {
+        [self.oldPasswordTextField showInvalidText:validationError.localizedDescription animated:YES shake:YES forced:YES];
+        
+        shouldSignup = NO;
+        if (newResponder == nil)
+        {
+            [self.oldPasswordTextField becomeFirstResponder];
+            newResponder = self.oldPasswordTextField;
+        }
+    }
+    [self.passwordValidator setConfirmationObject:nil withKeyPath:nil];
+    if (![self.passwordValidator validateString:self.changedPasswordTextField.text andError:&validationError] &&
+        validationError.code != VErrorCodeInvalidPasswordsNewEqualsCurrent )
     {
         [self.changedPasswordTextField showInvalidText:validationError.localizedDescription animated:YES shake:YES forced:YES];
         
@@ -199,9 +228,9 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
             newResponder = self.changedPasswordTextField;
         }
     }
-    
     [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField withKeyPath:NSStringFromSelector(@selector(text))];
-    if (![self.passwordValidator validateString:self.changedPasswordTextField.text andError:&validationError])
+    if (![self.passwordValidator validateString:self.changedPasswordTextField.text andError:&validationError] &&
+        validationError.code != VErrorCodeInvalidPasswordsNewEqualsCurrent )
     {
         [self.confirmPasswordTextField showInvalidText:validationError.localizedDescription animated:YES shake:YES forced:YES];
         
