@@ -136,7 +136,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
         [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
          {
              actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-             actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+             actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
          }];
     }
 }
