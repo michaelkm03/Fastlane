@@ -32,9 +32,10 @@ static NSString * const kTwitterAccountCreated          = @"com.getvictorious.VU
 
 + (VUserManager *)sharedInstance
 {
-    static  VUserManager       *sharedInstance;
-    static  dispatch_once_t     onceToken;
-    dispatch_once(&onceToken, ^{
+    static VUserManager *sharedInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
         sharedInstance = [[self alloc] init];
     });
                   
@@ -43,9 +44,9 @@ static NSString * const kTwitterAccountCreated          = @"com.getvictorious.VU
 
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    NSInteger  loginType  = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
-    NSString  *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-    switch (loginType)
+    NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
+    NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
+    switch ( loginType )
     {
         case kVLastLoginTypeFacebook:
         {
@@ -70,9 +71,9 @@ static NSString * const kTwitterAccountCreated          = @"com.getvictorious.VU
         case kVLastLoginTypeNone:
         default:
         {
-            if (errorBlock)
+            if ( errorBlock != nil )
             {
-                errorBlock(nil, NO);
+                errorBlock( nil, NO );
             }
             break;
         }

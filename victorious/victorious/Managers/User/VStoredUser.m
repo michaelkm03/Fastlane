@@ -10,7 +10,9 @@
 #import "VUser+RestKit.h"
 #import "VObjectManager.h"
 
-static NSString * const kUserDefaultStoredUserIdKey     = @"com.getvictorious.VUserManager.StoredUser";
+static const NSTimeInterval kTokenExpirationDuration    = (60 * 60) * 24 * 30 - (60 * 60); ///< 30 days minus one hour (value in seconds)
+
+static NSString * const kUserDefaultStoredUserIdKey     = @"com.getvictorious.VUserManager.StoredUserId";
 static NSString * const kKeychainTokenService           = @"com.getvictorious.VUserManager.Token";
 
 @implementation VStoredUser
@@ -24,15 +26,24 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
     }
     
     NSString *token = [self savedTokenForUserId:storedUserId];
-    if ( token != nil )
+    if ( token == nil )
+    {
+        return nil;
+    }
+    
+    NSDate *creationDate = [self savedTokenCreationDateForUserId:storedUserId];
+    if ( [self isTokenCreatedOnDateExpired:creationDate] )
+    {
+        [self clearSavedToken];
+        return nil;
+    }
+    else
     {
         VUser *user = [[VObjectManager sharedManager] objectWithEntityName:[VUser entityName] subclass:[VUser class]];
         user.remoteId = storedUserId;
         user.token = token;
         return user;
     }
-    
-    return nil;
 }
 
 - (BOOL)saveLoggedInUserToDisk:(VUser *)user
@@ -42,12 +53,16 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
         return NO;
     }
     
-    [[NSUserDefaults standardUserDefaults] setValue:user.remoteId forKey:kUserDefaultStoredUserIdKey];
-    if ( [self savedTokenForUserId:user.remoteId] )
+    NSString *existingToken = [self savedTokenForUserId:user.remoteId];
+    const BOOL isNewToken = existingToken == nil || ![existingToken isEqualToString:user.token];
+    if ( isNewToken ) //< We don't want to save the same token again otherwise we'll reset the creation date
     {
+        [[NSUserDefaults standardUserDefaults] setValue:user.remoteId forKey:kUserDefaultStoredUserIdKey];
         [self clearSavedToken];
+        return [self saveToken:user.token withUserId:user.remoteId];
     }
-    return [self saveToken:user.token withUserId:user.remoteId];
+    
+    return NO;
 }
 
 - (BOOL)clearLoggedInUserFromDisk
@@ -56,12 +71,21 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
     return [self clearSavedToken];
 }
 
-- (NSString *)savedTokenForUserId:(NSNumber *)userId
+#pragma mark - Private
+
+- (BOOL)isTokenCreatedOnDateExpired:(NSDate *)creationDate
+{
+    NSTimeInterval tokenLifetime = ABS( [creationDate timeIntervalSinceNow] );
+    return tokenLifetime >= kTokenExpirationDuration;
+}
+
+- (NSDictionary *)tokenKeychainItemForUserId:(NSNumber *)userId
 {
     CFTypeRef result;
     NSDictionary *dictionary = @{ (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                                   (__bridge id)kSecAttrService: kKeychainTokenService,
                                   (__bridge id)kSecAttrAccount: userId.stringValue,
+                                  (__bridge id)kSecClass: (__bridge id)kSecAttrCreationDate,
                                   (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitOne,
                                   (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue,
                                   (__bridge id)kSecReturnAttributes: (__bridge id)kCFBooleanTrue };
@@ -70,10 +94,30 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
     if ( status == errSecSuccess )
     {
         NSDictionary *keychainItem = (__bridge_transfer NSDictionary *)result;
+        return keychainItem;
+    }
+    
+    return nil;
+}
+
+- (NSString *)savedTokenForUserId:(NSNumber *)userId
+{
+    NSDictionary *keychainItem = [self tokenKeychainItemForUserId:userId];
+    if ( keychainItem != nil )
+    {
         NSData *keychainData = (NSData *)keychainItem[(__bridge id)(kSecValueData)];
         return [[NSString alloc] initWithData:keychainData encoding:NSUTF8StringEncoding];
     }
-    
+    return nil;
+}
+
+- (NSDate *)savedTokenCreationDateForUserId:(NSNumber *)userId
+{
+    NSDictionary *keychainItem = [self tokenKeychainItemForUserId:userId];
+    if ( keychainItem != nil )
+    {
+        return (NSDate *)keychainItem[(__bridge id)(kSecAttrCreationDate)];
+    }
     return nil;
 }
 
