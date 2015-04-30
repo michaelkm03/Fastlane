@@ -75,8 +75,10 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
     NSArray *textFields = @[ self.oldPasswordTextField, self.changedPasswordTextField, self.confirmPasswordTextField ];
     for ( VInlineValidationTextField *textField in textFields )
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:)
-                                                     name:UITextFieldTextDidChangeNotification object:textField];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(textFieldDidChange:)
+                                                     name:UITextFieldTextDidChangeNotification
+                                                   object:textField];
         
         [textField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
         textField.delegate = self;
