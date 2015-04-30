@@ -89,6 +89,7 @@
 "Profile load failed!" = "Error al cargar el perfil";
 
 "User already exists" = "El usuario ya existe";
+"No such user" = "No hay tal usuario";
 "Sorry, I can't display that right now" = "Lo sentimos, no podemos mostrar eso ahora";
 
 "WereSorry" = "Lo sentimos";
@@ -167,7 +168,7 @@
 
 "TwitterDeniedTitle" = "No pudimos acceder a tu cuenta de Twitter";
 "TwitterDenied" = "Por favor, permite el acceso a tu cuenta de Twitter en Configuración -> Privacidad -> Twitter";
-"TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
+"TwitterTroubleshooting" = "Trata de quitar y volver a añadir tu cuenta de twitter en configuración";
 
 "CameraRollDeniedTitle" = "No se pudo acceder a las fotos";
 "CameraRollDenied" = "Por favor, permite el acceso a tus fotos en Configuración -> Privacidad.";
@@ -176,6 +177,7 @@
 "StillCaptureFailed" = "No se pudo tomar la foto";
 "VideoCaptureFailed" = "No se pudo grabar el video";
 "VideoSaveFailed" = "No se pudo guardar el video";
+"VideoCoachMessage" = "Para grabar, presiona y mantén";
 
 "NoTwitterTitle" = "¡No se pudo encontrar una cuenta de Twitter";
 "NoTwitterMessage" = "Por favor, abre tu configuración y añade una nueva cuenta de Twitter";
