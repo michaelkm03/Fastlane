@@ -8,7 +8,9 @@
 
 #import "VTextPostImageHelper.h"
 #import "UIImage+VTint.h"
+#import "UIImage+Resize.h"
 
+static const CGFloat kMaxRenderSize = 640.0f;
 static const CGFloat kTintedBackgroundImageAlpha            = 0.375f;
 static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLuminosity;
 
@@ -77,7 +79,14 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
     
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        UIImage *tintentImage = [self tintedImageWithImage:image color:color];
+        UIImage *imageToRender = image;
+        if (image.size.width > kMaxRenderSize || image.size.height > kMaxRenderSize)
+        {
+            imageToRender = [image thumbnailImage:kMaxRenderSize
+                             interpolationQuality:kCGInterpolationDefault];
+        }
+        
+        UIImage *tintentImage = [self tintedImageWithImage:imageToRender color:color];
         dispatch_async( dispatch_get_main_queue(), ^
                        {
                            [self.cache setObject:tintentImage forKey:color];
