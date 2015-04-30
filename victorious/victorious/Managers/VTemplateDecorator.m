@@ -337,7 +337,10 @@ static NSString * const kKetPathDelimeter = @"/";
     return [[NSArray alloc] initWithArray:output];
 }
 
-- (void)searchCollection:(id)collection forKey:(NSString *)key workingKeyPath:(NSMutableArray **)workingKeyPath completedKeyPaths:(NSMutableArray **)completedKeyPaths
+- (void)searchCollection:(id)collection
+                  forKey:(NSString *)key
+          workingKeyPath:(NSMutableArray **)workingKeyPath
+       completedKeyPaths:(NSMutableArray **)completedKeyPaths
 {
     if ( [collection isKindOfClass:[NSArray class]] )
     {
