@@ -77,6 +77,10 @@
  */
 - (id)templateValueForKeyPath:(NSString *)keyPath;
 
+- (void)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key;
+
+- (NSString *)keyPathsForKey:(NSString *)key;
+
 /**
  Returns output as an NSDictionary instance which contains all modifications
  that have yet been made to the template using any of the methods available on this class.

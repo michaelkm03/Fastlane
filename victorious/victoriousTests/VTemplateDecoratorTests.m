@@ -146,4 +146,24 @@
     XCTAssertNil( [templateDecorator templateValueForKeyPath:@"key2/1/UNDEFINED_KEY"] );
 }
 
+- (void)testReplaceAllOccurrences
+{
+    NSDictionary *template = @{ @"key1" : @"value1",
+                                @"key2" : @{ @"subkey0" : @{ @"key1" : @"subvalue1",
+                                                             @"key2" : @"subvalue2" } },
+                                @"key3" : @[ @{ @"key1" : @"subarrayvalue1" } ] };
+    
+    VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+    
+    NSString *newStringValue = @"templateValue";
+    
+    [templateDecorator setValue:newStringValue forAllOccurencesOfKey:@"key1"];
+    
+    NSDictionary *output = templateDecorator.decoratedTemplate;
+    
+    XCTAssertEqualObjects( output[ @"key1" ], newStringValue );
+    XCTAssertEqualObjects( output[ @"key2" ][ @"subkey0" ][ @"key1" ], newStringValue );
+    XCTAssertEqualObjects( output[ @"key3" ][ 0 ][ @"key1" ], newStringValue );
+}
+
 @end

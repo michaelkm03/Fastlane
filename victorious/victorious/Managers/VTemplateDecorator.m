@@ -9,6 +9,7 @@
 #import "VTemplateDecorator.h"
 
 static NSString * const kJSONType = @"json";
+static NSString * const kKetPathDelimeter = @"/";
 
 @interface VTemplateDecorator()
 
@@ -104,7 +105,7 @@ static NSString * const kJSONType = @"json";
 
 - (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath
 {
-    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:@"/"]];
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKetPathDelimeter]];
     BOOL didSetTemplateValue = NO;
     self.workingTemplate = [self collectionFromCollection:self.workingTemplate
                                    bySettingTemplateValue:templateValue
@@ -202,7 +203,7 @@ static NSString * const kJSONType = @"json";
 
 - (id)templateValueForKeyPath:(NSString *)keyPath
 {
-    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:@"/"]];
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKetPathDelimeter]];
     NSDictionary *source = [NSDictionary dictionaryWithDictionary:self.workingTemplate];
     return [self valueInCollection:source forKeyPathKeys:keyPathKeys];
 }
@@ -249,6 +250,67 @@ static NSString * const kJSONType = @"json";
             }
         }
     }
+    return nil;
+}
+
+- (void)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key
+{
+    self.workingTemplate = [self setValue:templateValue forAllOccurencesOfKey:key inCollection:self.workingTemplate];
+}
+
+- (id)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key inCollection:(id)source
+{
+    NSParameterAssert( [source isKindOfClass:[NSArray class]] || [source isKindOfClass:[NSDictionary class]] );
+    
+    if ( [source isKindOfClass:[NSArray class]] )
+    {
+        NSMutableArray *destination = [[NSMutableArray alloc] init];
+        NSMutableArray *sourceArray = (NSMutableArray *)source;
+        for ( NSInteger i = 0; i < (NSInteger)sourceArray.count; i++ )
+        {
+            id value = sourceArray[ i ];
+            if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+            {
+                destination[ i ] = [self setValue:templateValue forAllOccurencesOfKey:key inCollection:value];
+            }
+            else
+            {
+                destination[ i ] = value;
+            }
+        }
+        return destination;
+    }
+    else if ( [source isKindOfClass:[NSDictionary class]] )
+    {
+        NSMutableDictionary *destination = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *sourceDictionary = (NSMutableDictionary *)source;
+        for ( NSString *templateKey in sourceDictionary.allKeys )
+        {
+            id value = ((NSDictionary *)source)[ templateKey ];
+            if ( [templateKey isEqualToString:key] )
+            {
+                destination[ templateKey ] = templateValue;
+            }
+            else
+            {
+                if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+                {
+                    destination[ templateKey ] = [self setValue:templateValue forAllOccurencesOfKey:key inCollection:value];
+                }
+                else
+                {
+                    destination[ templateKey ] = source[ templateKey ];
+                }
+            }
+        }
+        return destination;
+    }
+    
+    return nil;
+}
+
+- (NSString *)keyPathsForKey:(NSString *)key
+{
     return nil;
 }
 
