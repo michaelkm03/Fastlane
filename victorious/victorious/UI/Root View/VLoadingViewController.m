@@ -165,14 +165,19 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
             if ( strongSelf != nil )
             {
                 strongSelf.templateDownloadManager = nil;
-                [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+                [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
+                
+                [[VObjectManager sharedManager] loginWithExistingToken];
+                
+#warning REMOVE:
+                /*[[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
                 {
                     [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
                 }
                                                                            onError:^(NSError *error, BOOL thirdPartyAPIFailed)
                 {
                     [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
-                }];
+                }];*/
             }
         });
     }];

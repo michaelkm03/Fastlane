@@ -11,6 +11,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+Users.h"
 
 #import "VUser+RestKit.h"
 
@@ -337,6 +338,20 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
                   failBlock:fail];
 }
 
+
+- (void)loginWithExistingToken
+{
+    VUser *user = [[VUserManager sharedInstance] loadLastLoggedInUserFromDisk];
+    [self loggedInWithUser:user];
+    if ( self.mainUser != nil )
+    {
+        [[VObjectManager sharedManager] fetchUser:self.mainUser.remoteId
+                                      forceReload:YES
+                                 withSuccessBlock:nil
+                                        failBlock:nil];
+    }
+}
+
 #pragma mark - LoggedIn
 
 - (void)loggedInWithUser:(VUser *)user
@@ -347,8 +362,10 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         [[VTrackingManager sharedInstance] setValue:@(YES) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
         
+        [[VUserManager sharedInstance] saveLoggedInUserToDisk:self.mainUser];
+        
         [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
-        [self pollResultsForUser:user successBlock:nil failBlock:nil];
+        [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
         
         // Add followers and following to main user object
         [[VObjectManager sharedManager] loadFollowersForUser:user

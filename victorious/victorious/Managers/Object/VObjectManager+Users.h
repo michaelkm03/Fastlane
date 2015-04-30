@@ -32,6 +32,11 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
+                                   forceReload:(BOOL)forceReload
+                              withSuccessBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString *)accessToken
                                                    forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success
