@@ -89,6 +89,7 @@
 "Profile load failed!" = "Laden des Profils fehlgeschlagen!";
 
 "User already exists" = "Nutzer bereits existiert";
+"No such user" = "Diesen Benutzer gibt es nicht";
 "Sorry, I can't display that right now" = "Leider kann dies gerade nicht angezeigt werden";
 
 "WereSorry" = "Entschuldige";
@@ -167,7 +168,7 @@
 
 "TwitterDeniedTitle" = "Zugriff auf dein Twitter-Konto fehlgeschlagen";
 "TwitterDenied" = "Bitte erlaube Zugriff auf dein Twitter-Konto unter Einstellungen -> Datenschutz -> Twitter";
-"TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
+"TwitterTroubleshooting" = "Twitter-Konto in den Einstellungen entfernen und erneut eintragen.";
 
 "CameraRollDeniedTitle" = "Zugriff auf deine Fotos fehlgeschlagen";
 "CameraRollDenied" = "Bitte erlaube Zugriff auf deine Fotos unter Einstellungen -> Datenschutz.";
@@ -176,6 +177,7 @@
 "StillCaptureFailed" = "Bild konnte nicht aufgenommen werden";
 "VideoCaptureFailed" = "Video kann nicht aufgenommen werden";
 "VideoSaveFailed" = "Video kann nicht gespeichert werden";
+"VideoCoachMessage" = "Für Aufnahme drücken und gedrückt halten.";
 
 "NoTwitterTitle" = "Es kann kein Twitter-Konto gefunden werden!";
 "NoTwitterMessage" = "Bitte öffne deine Geräteeinstellungen und füge ein neues Twitter-Konto hinzu";
