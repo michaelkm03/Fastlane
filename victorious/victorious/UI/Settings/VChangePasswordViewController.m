@@ -25,8 +25,9 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
 @property (weak, nonatomic) IBOutlet VInlineValidationTextField *oldPasswordTextField;
 @property (weak, nonatomic) IBOutlet VInlineValidationTextField *changedPasswordTextField;
 @property (weak, nonatomic) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
+@property (weak, nonatomic) IBOutlet VButton *signupButton;
+
 @property (strong, nonatomic) VPasswordValidator *passwordValidator;
-@property (nonatomic, weak) IBOutlet VButton *signupButton;
 
 @end
 
