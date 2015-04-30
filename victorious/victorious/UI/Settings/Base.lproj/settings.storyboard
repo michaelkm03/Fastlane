@@ -553,7 +553,7 @@
                         <outlet property="changedPasswordTextField" destination="FC0-A4-y0n" id="bRX-pZ-UYH"/>
                         <outlet property="confirmPasswordTextField" destination="Hdx-TS-3uZ" id="dZ7-Pj-c77"/>
                         <outlet property="oldPasswordTextField" destination="LgC-0q-Axl" id="kdD-un-enr"/>
-                        <outlet property="signupButton" destination="jLQ-YW-sES" id="g48-3p-EPm"/>
+                        <outlet property="saveButton" destination="jLQ-YW-sES" id="Fw4-VG-2B6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IwE-mi-tse" userLabel="First Responder" sceneMemberID="firstResponder"/>

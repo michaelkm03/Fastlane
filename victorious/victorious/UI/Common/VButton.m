@@ -133,11 +133,20 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
             break;
     }
     
+    self.alpha = self.enabled ? 1.0f : 0.75f;
+    
     self.titleLabel.minimumScaleFactor = 0.5;
     
     self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     
     [self setNeedsDisplay];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    
+    [self updateAppearance];
 }
 
 - (void)setPrimaryColor:(UIColor *)primaryColor

@@ -25,7 +25,7 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
 @property (weak, nonatomic) IBOutlet VInlineValidationTextField *oldPasswordTextField;
 @property (weak, nonatomic) IBOutlet VInlineValidationTextField *changedPasswordTextField;
 @property (weak, nonatomic) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
-@property (weak, nonatomic) IBOutlet VButton *signupButton;
+@property (weak, nonatomic) IBOutlet VButton *saveButton;
 
 @property (strong, nonatomic) VPasswordValidator *passwordValidator;
 
@@ -66,9 +66,9 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
         return;
     }
     
-    self.signupButton.style = VButtonStylePrimary;
-    self.signupButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.signupButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.saveButton.style = VButtonStylePrimary;
+    self.saveButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.saveButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
     NSDictionary *placeholderAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithWhite:kPlaceholderTextWhiteValue alpha:1.0f] };
     NSDictionary *activePlaceholderAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithWhite:kPlaceholderActiveTextWhiteValue alpha:1.0f] };
@@ -130,13 +130,22 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
     if ([self.passwordValidator validateString:self.changedPasswordTextField.text
                                       andError:&validationError])
     {
+        self.saveButton.enabled = NO;
+        [self.saveButton showActivityIndicator];
+        
         VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
+            self.saveButton.enabled = YES;
+            [self.saveButton hideActivityIndicator];
+            
             [self.navigationController popViewControllerAnimated:YES];
         };
         
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
         {
+            self.saveButton.enabled = YES;
+            [self.saveButton hideActivityIndicator];
+            
             [self.passwordValidator showAlertInViewController:self withError:error];
         };
         
