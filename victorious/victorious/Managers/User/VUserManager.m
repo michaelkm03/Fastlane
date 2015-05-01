@@ -13,6 +13,8 @@
 #import "VUserManager.h"
 #import "VConstants.h"
 #import "VUser+RestKit.h"
+#import "VConversation.h"
+#import "VPollResult+RestKit.h"
 
 typedef NS_ENUM(NSInteger, VLastLoginType)
 {
@@ -373,7 +375,39 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAccountIdentifierDefaultsKey];
+    
     [self clearSavedPassword];
+    
+    //Delete all conversations / pollresults for the user!
+    NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    [context performBlockAndWait:^(void)
+     {
+         [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
+         
+         NSFetchRequest *allConversations = [[NSFetchRequest alloc] init];
+         [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
+         [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+         
+         NSArray *conversations = [context executeFetchRequest:allConversations error:nil];
+         for (NSManagedObject *conversation in conversations)
+         {
+             [context deleteObject:conversation];
+         }
+         
+         NSFetchRequest *allPollResults = [[NSFetchRequest alloc] init];
+         [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
+         [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+         
+         NSArray *pollResults = [context executeFetchRequest:allPollResults error:nil];
+         for (NSManagedObject *pollResult in pollResults)
+         {
+             [context deleteObject:pollResult];
+         }
+         
+         [context save:nil];
+     }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
 
 #pragma mark - Keychain

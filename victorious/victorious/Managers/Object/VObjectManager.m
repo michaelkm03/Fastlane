@@ -177,27 +177,39 @@
             }
         }
         
-#warning TESTING ONLY:  Allows some successful requests by then simulates failures due to bad tokens
+        NSArray *localizedErrorMessages = [error.errorMessages v_map:^id(NSString *message)
+                                           {
+                                               return NSLocalizedString(message, @"");
+                                           }];
+        
+#warning TESTING ONLY:  Allows some successful requests, but then simulates 1 failure due a bad token, the resumes success
         static int successfulReqestsRemaining = 15;
-        if ( --successfulReqestsRemaining <= 0 )
+        if ( --successfulReqestsRemaining == 0 && self.mainUser  )
         {
             error.errorCode = kVUnauthoizedError;
             NSLog( @" >>>>> Simulating bad token" );
         }
-        else
+        if (successfulReqestsRemaining > 0  )
         {
             NSLog( @" >>>>> Will simulate bad token after %@ more requests.", @(successfulReqestsRemaining) );
         }
         
-        if (error.errorCode == kVUnauthoizedError && self.mainUser)
+        if ( error.errorCode == kVUnauthoizedError && self.mainUser )
         {
-            [self logout];
-            [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+            [self logoutLocally];
+            NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
+                                               userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
+            if ( failBlock != nil )
+            {
+                failBlock( operation, nsError );
+            }
         }
         else if (!error.errorCode && successBlock)
         {
             //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
-            NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
+            NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData
+                                                                         options:0
+                                                                           error:nil] mutableCopy];
             id payload = JSON[kVPayloadKey];
             if (payload && ![payload isKindOfClass:[NSDictionary class]])
             {
@@ -207,10 +219,6 @@
         }
         else if (error.errorCode)
         {
-            NSArray *localizedErrorMessages = [error.errorMessages v_map:^id(NSString *message)
-                                               {
-                                                   return NSLocalizedString(message, @"");
-                                               }];
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                              userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
@@ -225,10 +233,9 @@
     VFailBlock rkFailBlock = ^(NSOperation *operation, NSError *error)
     {
         RKErrorMessage *rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
-        if (rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError && self.mainUser)
+        if ( rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError )
         {
-            [self logout];
-            [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+            [self logoutLocally];
         }
         else
         {
@@ -254,7 +261,7 @@
     }
     else if( errorCode == kVUserBannedError )
     {
-        [self logout];
+        [self logoutLocally];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
                                                         message:NSLocalizedString(@"UserBannedMessage", @"")
                                                        delegate:nil
