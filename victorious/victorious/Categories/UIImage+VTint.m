@@ -19,7 +19,7 @@
         [tintColor setFill];
         CGRect bounds = CGRectMake(0, 0, self.size.width, self.size.height);
         UIRectFill( bounds );
-        CGContextConcatCTM(UIGraphicsGetCurrentContext(), [self transformForOrientation:self.size]);
+        CGContextConcatCTM(UIGraphicsGetCurrentContext(), [self transformForCurrentOrientationWithSize:self.size]);
         [self drawInRect:bounds blendMode:blendMode alpha:alpha];
         tintedImage = UIGraphicsGetImageFromCurrentImageContext();
     }
