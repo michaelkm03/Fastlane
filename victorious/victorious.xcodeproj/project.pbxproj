@@ -563,6 +563,7 @@
 		A7D378501AF0682B007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
 		A7D378531AF06C65007FF197 /* VImageAssetFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */; };
 		A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D378541AF15EDB007FF197 /* VTextFragment.swift */; };
+		A7D378641AF308B3007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
 		A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7077E1A7AFD8200D9993F /* VEndCard.m */; };
@@ -5935,6 +5936,7 @@
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
 				DB2A494719DF44EE00CB687B /* login.storyboard in Resources */,
 				034D1A891AAFF00200EB7B2D /* VPublishViewController.xib in Resources */,
+				A7D378641AF308B3007FF197 /* component.json in Resources */,
 				F0E0F1B81AE8C28300143CBF /* VInsetMarqueeCollectionViewCell.xib in Resources */,
 				036F38821A0C4DEA0014DF66 /* Oswald-Light.ttf in Resources */,
 				A7F712041AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib in Resources */,
