@@ -791,7 +791,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateCollectionViewDataSource
 {
-    if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
+    if ( ![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser )
     {
         self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
         self.notLoggedInDataSource.delegate = self;
