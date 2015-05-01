@@ -9,7 +9,7 @@
 #import "VTemplateDecorator.h"
 
 static NSString * const kJSONType = @"json";
-static NSString * const kKetPathDelimeter = @"/";
+static NSString * const kKeyPathDelimeter = @"/";
 
 @interface VTemplateDecorator()
 
@@ -105,7 +105,7 @@ static NSString * const kKetPathDelimeter = @"/";
 
 - (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath
 {
-    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKetPathDelimeter]];
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimeter]];
     BOOL didSetTemplateValue = NO;
     self.workingTemplate = [self collectionFromCollection:self.workingTemplate
                                    bySettingTemplateValue:templateValue
@@ -203,7 +203,7 @@ static NSString * const kKetPathDelimeter = @"/";
 
 - (id)templateValueForKeyPath:(NSString *)keyPath
 {
-    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKetPathDelimeter]];
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimeter]];
     NSDictionary *source = [NSDictionary dictionaryWithDictionary:self.workingTemplate];
     return [self valueInCollection:source forKeyPathKeys:keyPathKeys];
 }
@@ -327,7 +327,7 @@ static NSString * const kKetPathDelimeter = @"/";
         {
             if ( ![mutableKeyPath isEqualToString:@""] )
             {
-                [mutableKeyPath appendString:kKetPathDelimeter];
+                [mutableKeyPath appendString:kKeyPathDelimeter];
             }
             [mutableKeyPath appendString:key];
         }
