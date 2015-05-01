@@ -48,12 +48,12 @@ NSString * const VVideoFrameRateCompositionErrorDomain = @"VVideoFrameRateCompos
          {
              if (!self.asset.isReadable)
              {
-                 if (self.playerItemReady != nil)
+                 if (self.onPlayerItemReady != nil)
                  {
                      NSError *error = [NSError errorWithDomain:VVideoFrameRateCompositionErrorDomain
                                                           code:0
                                                       userInfo:nil];
-                     self.playerItemReady(error, nil);
+                     self.onPlayerItemReady(error, nil);
                  }
                  return;
              }
@@ -72,9 +72,9 @@ NSString * const VVideoFrameRateCompositionErrorDomain = @"VVideoFrameRateCompos
              playerItem.seekingWaitsForVideoCompositionRendering = YES;
              playerItem.videoComposition = [self videoComposition];
              
-             if (self.playerItemReady != nil)
+             if (self.onPlayerItemReady != nil)
              {
-                 self.playerItemReady(nil, playerItem);
+                 self.onPlayerItemReady(nil, playerItem);
              }
          }];
     }

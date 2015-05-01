@@ -113,13 +113,13 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     self.trimViewController.maximumTrimDuration = CMTimeMake(maxTime * timeScale, timeScale);
 
     __weak typeof(self) welf = self;
-    self.frameRateComposition.playerItemReady = ^(NSError *error, AVPlayerItem *playerItem)
+    self.frameRateComposition.onPlayerItemReady = ^(NSError *error, AVPlayerItem *playerItem)
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
             if (error)
             {
-                [self.delegate trimVideoToolFailed];
+                [welf.delegate trimVideoToolFailed:welf];
                 return;
             }
             welf.playerItem = playerItem;

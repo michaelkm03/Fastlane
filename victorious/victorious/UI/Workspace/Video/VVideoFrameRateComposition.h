@@ -40,7 +40,7 @@ extern NSString * const VVideoFrameRateCompositionErrorDomain; ///< Errors gener
 /**
  *  A completion block for when the video is ready to be played.
  */
-@property (nonatomic, copy) void (^playerItemReady)(NSError *error, AVPlayerItem *playerItem);
+@property (nonatomic, copy) void (^onPlayerItemReady)(NSError *error, AVPlayerItem *playerItem);
 
 /**
  *  An export session for rendering.

@@ -141,11 +141,9 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
 
 #pragma mark - VTrimVideoToolDelegate
 
-- (void)trimVideoToolFailed
+- (void)trimVideoToolFailed:(VTrimVideoTool *)trimVideoTool
 {
     [self.videoToolControllerDelegate videoToolControllerDidFail:self];
 }
-
-#pragma mark -
 
 @end
