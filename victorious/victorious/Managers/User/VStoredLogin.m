@@ -27,8 +27,8 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
         return nil;
     }
     
-    NSNumber *expirationDate = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredExpirationDateKey];
-    if ( expirationDate )
+    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredExpirationDateKey];
+    if ( expirationDate == nil )
     {
         return nil;
     }
