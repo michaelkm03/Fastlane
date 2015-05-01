@@ -1,5 +1,5 @@
 //
-//  VNoContentCollectionViewCellProvider.h
+//  VNoContentCollectionViewCellFactory.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 4/30/15.
@@ -11,7 +11,7 @@
 /**
     A convenience object for checking for the ability to handle population from a model object and providing an error cell when appropriate
  */
-@interface VNoContentCollectionViewCellProvider : NSObject
+@interface VNoContentCollectionViewCellFactory : NSObject
 
 /**
     Creates a new no content collection view cell provider.

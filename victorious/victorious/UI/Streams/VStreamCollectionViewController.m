@@ -74,7 +74,7 @@
 #import "VAbstractDirectoryCollectionViewController.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VLinkSelectionResponder.h"
-#import "VNoContentCollectionViewCellProvider.h"
+#import "VNoContentCollectionViewCellFactory.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -430,7 +430,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    if ( [VNoContentCollectionViewCellProvider isNoContentCell:cell] )
+    if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
     {
         return;
     }

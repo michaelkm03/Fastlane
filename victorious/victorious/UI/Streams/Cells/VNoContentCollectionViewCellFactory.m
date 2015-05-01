@@ -1,21 +1,21 @@
 //
-//  VNoContentCollectionViewCellProvider.m
+//  VNoContentCollectionViewCellFactory.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 4/30/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VNoContentCollectionViewCellProvider.h"
+#import "VNoContentCollectionViewCellFactory.h"
 #import "VNoContentCollectionViewCell.h"
 
-@interface VNoContentCollectionViewCellProvider ()
+@interface VNoContentCollectionViewCellFactory ()
 
 @property (nonatomic, strong) NSArray *acceptableClasses;
 
 @end
 
-@implementation VNoContentCollectionViewCellProvider
+@implementation VNoContentCollectionViewCellFactory
 
 - (instancetype)initWithAcceptableContentClasses:(NSArray *)acceptableClasses
 {

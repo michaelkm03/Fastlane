@@ -12,12 +12,12 @@
 #import "VSequence+Fetcher.h"
 #import "VStreamCollectionCellWebContent.h"
 #import "VDependencyManager+VBackgroundContainer.h"
-#import "VNoContentCollectionViewCellProvider.h"
+#import "VNoContentCollectionViewCellFactory.h"
 
 @interface VSleekStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VNoContentCollectionViewCellProvider *noContentCollectionViewCellProvider;
+@property (nonatomic, strong) VNoContentCollectionViewCellFactory *noContentCollectionViewCellFactory;
 
 @end
 
@@ -29,7 +29,7 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _noContentCollectionViewCellProvider = [[VNoContentCollectionViewCellProvider alloc] initWithAcceptableContentClasses:@[[VSequence class]]];
+        _noContentCollectionViewCellFactory = [[VNoContentCollectionViewCellFactory alloc] initWithAcceptableContentClasses:@[[VSequence class]]];
     }
     return self;
 }
@@ -39,14 +39,14 @@
     [collectionView registerNib:[VSleekStreamCollectionCell nibForCell] forCellWithReuseIdentifier:[VSleekStreamCollectionCell suggestedReuseIdentifier]];
     [collectionView registerNib:[VSleekStreamCollectionCellPoll nibForCell] forCellWithReuseIdentifier:[VSleekStreamCollectionCellPoll suggestedReuseIdentifier]];
     [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
-    [self.noContentCollectionViewCellProvider registerNoContentCellWithCollectionView:collectionView];
+    [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [self.noContentCollectionViewCellProvider shouldDisplayNoContentCellForContentClass:[streamItem class]] )
+    if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
     {
-        return [self.noContentCollectionViewCellProvider noContentCellForCollectionView:collectionView atIndexPath:indexPath];
+        return [self.noContentCollectionViewCellFactory noContentCellForCollectionView:collectionView atIndexPath:indexPath];
     }
     
     VSequence *sequence = (VSequence *)streamItem;
@@ -80,9 +80,9 @@
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
-    if ( [self.noContentCollectionViewCellProvider shouldDisplayNoContentCellForContentClass:[streamItem class]] )
+    if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
     {
-        return [self.noContentCollectionViewCellProvider cellSizeForCollectionViewBounds:bounds];
+        return [self.noContentCollectionViewCellFactory cellSizeForCollectionViewBounds:bounds];
     }
     
     VSequence *sequence = (VSequence *)streamItem;
