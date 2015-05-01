@@ -133,7 +133,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     }
 }
 
-#warning This is a hack until the `previewAssets` array is more fully supported on the backend
+// This is a half measure until the `previewAssets` array is more fully supported on the backend
 - (NSURL *)getBestAvailableImage
 {
     NSURL *imageURL = nil;
