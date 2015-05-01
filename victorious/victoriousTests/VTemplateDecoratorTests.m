@@ -198,7 +198,7 @@
     keyPaths = [templateDecorator keyPathsForKey:@"key6"];
     XCTAssertEqual( keyPaths.count, 2u );
     XCTAssert( [keyPaths containsObject:@"key3/0/key6"] );
-    XCTAssert( [keyPaths cgit add -ontainsObject:@"key7/key8/key6"] );
+    XCTAssert( [keyPaths containsObject:@"key7/key8/key6"] );
     
     keyPaths = [templateDecorator keyPathsForKey:@"keyXXX"];
     XCTAssertEqual( keyPaths.count, 0u );
