@@ -558,8 +558,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (void)videoToolControllerDidFail:(VVideoToolController *)videoToolController
 {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Unable to GIF", @"")
-                                                                             message:NSLocalizedString(@"We encountered an error trying to GIF your video.", @"")
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Video failed to load", @"")
+                                                                             message:NSLocalizedString(@"We encountered an error trying to edit this video.", @"")
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
                                                         style:UIAlertActionStyleCancel
