@@ -21,24 +21,26 @@
  (i.e. to set current, authorized user) without having to contact the server.
  
  @see saveUserToDisk:
- @return A valid user that can be set to the main user or nil if the operation failed.
  
+ @return A valid user that can be set to the main user.  Returns nil if there is
+ isn't any last logged in user or if the authorization data of the last
+ logged in user is invalid.
  */
 - (VUser *)lastLoggedInUserFromDisk;
 
 /**
- Save only releveant data necessary to disk in order to to log in at a later time
- without having to contact the server.
+ Save an abbreviated user object to disk to be retreived later when logging in
+ during app load.
  
  @see userFromDisk
  
- @param user The currently-logged in user to save.
- @return Whether or not the write to disk operation was successful.
+ @param user The currently logged in user to save.
+ @return Whether or not the write operation was successful.
  */
 - (BOOL)saveLoggedInUserToDisk:(VUser *)user;
 
 /**
- Removes any data stored on the device about the last logged in user.  This is
+ Removes any data stored on the device about the last logged in user.  This
  should be called anytime the user is logged out.
  */
 - (BOOL)clearLoggedInUserFromDisk;

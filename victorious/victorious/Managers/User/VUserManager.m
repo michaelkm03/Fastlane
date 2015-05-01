@@ -22,11 +22,10 @@ typedef NS_ENUM(NSInteger, VLastLoginType)
     kVLastLoginTypeTwitter
 };
 
-static NSString * const kUserDefaultStoredUserIdKey     = @"com.getvictorious.VUserManager.StoredUser";
-static NSString * const kLastLoginTypeUserDefaultsKey   = @"com.getvictorious.VUserManager.LoginType";
-static NSString * const kAccountIdentifierDefaultsKey   = @"com.getvictorious.VUserManager.AccountIdentifier";
-static NSString * const kKeychainLoginPaswordService    = @"com.getvictorious.VUserManager.LoginPassword";
-static NSString * const kTwitterAccountCreated          = @"com.getvictorious.VUserManager.TwitterAccountCreated";
+static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUserManager.LoginType";
+static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUserManager.AccountIdentifier";
+static NSString * const kKeychainServiceName          = @"com.getvictorious.VUserManager.LoginPassword";
+static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
 
 @implementation VUserManager
 
@@ -396,7 +395,7 @@ static NSString * const kTwitterAccountCreated          = @"com.getvictorious.VU
     OSStatus err = SecItemAdd((__bridge CFDictionaryRef)(@{
                                                            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                                                            (__bridge id)kSecAttrAccount: email,
-                                                           (__bridge id)kSecAttrService: kKeychainLoginPaswordService,
+                                                           (__bridge id)kSecAttrService: kKeychainServiceName,
                                                            (__bridge id)kSecValueData: [password dataUsingEncoding:NSUTF8StringEncoding]
                                                            }), &result);
     return err == errSecSuccess;
@@ -412,7 +411,7 @@ static NSString * const kTwitterAccountCreated          = @"com.getvictorious.VU
     CFTypeRef result;
     OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)(@{
                                                                     (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                                    (__bridge id)kSecAttrService: kKeychainLoginPaswordService,
+                                                                    (__bridge id)kSecAttrService: kKeychainServiceName,
                                                                     (__bridge id)kSecAttrAccount: email,
                                                                     (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitOne,
                                                                     (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue,
@@ -435,7 +434,7 @@ static NSString * const kTwitterAccountCreated          = @"com.getvictorious.VU
 {
     OSStatus err = SecItemDelete((__bridge CFDictionaryRef)(@{
                                                               (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                              (__bridge id)kSecAttrService: kKeychainLoginPaswordService,
+                                                              (__bridge id)kSecAttrService: kKeychainServiceName,
                                                               }));
     return err == errSecSuccess;
 }
