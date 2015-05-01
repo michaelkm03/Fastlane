@@ -884,6 +884,9 @@
 		F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
+		F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */; };
+		F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216D1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m */; };
+		F0AD21731AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21721AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m */; };
 		F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ADB0671AD367970069DF0D /* VImageViewContainer.m */; };
 		F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390B81A852C7E00EE70C7 /* VTag.m */; };
 		F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
@@ -2506,6 +2509,11 @@
 		F098D81C1A9E4A890003B6D4 /* VUserTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTag.m; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
+		F0AD21691AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentCollectionViewCellFactory.h; sourceTree = "<group>"; };
+		F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentCollectionViewCellFactory.m; sourceTree = "<group>"; };
+		F0AD216C1AF318FC001BDCC6 /* VNoContentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentCollectionViewCell.h; sourceTree = "<group>"; };
+		F0AD216D1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentCollectionViewCell.m; sourceTree = "<group>"; };
+		F0AD21721AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentCollectionViewControllerFactoryTests.m; sourceTree = "<group>"; };
 		F0ADB0661AD367970069DF0D /* VImageViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageViewContainer.h; sourceTree = "<group>"; };
 		F0ADB0671AD367970069DF0D /* VImageViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageViewContainer.m; sourceTree = "<group>"; };
 		F0B390B71A852C7E00EE70C7 /* VTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTag.h; sourceTree = "<group>"; };
@@ -4430,6 +4438,7 @@
 				A7AEF9851A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.xib */,
 				0308B1131AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.h */,
 				0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */,
+				F0AD21711AF32359001BDCC6 /* NoContentCollectionViewCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4800,6 +4809,7 @@
 				BE9674F919E335060072E87A /* VMarqueeControllerTests.m */,
 				0309318F1A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m */,
 				BE9674FA19E335060072E87A /* VMultipartFormDataWriterTests.m */,
+				F0AD21721AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m */,
 				D80BAB561A688673003A3068 /* VNodeFetcherTests.m */,
 				A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */,
 				A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */,
@@ -5748,6 +5758,17 @@
 			name = Blurred;
 			sourceTree = "<group>";
 		};
+		F0AD21711AF32359001BDCC6 /* NoContentCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				F0AD21691AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.h */,
+				F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */,
+				F0AD216C1AF318FC001BDCC6 /* VNoContentCollectionViewCell.h */,
+				F0AD216D1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m */,
+			);
+			name = NoContentCollectionViewCell;
+			sourceTree = "<group>";
+		};
 		F0E0F1B01AE8BFAE00143CBF /* Inset */ = {
 			isa = PBXGroup;
 			children = (
@@ -6549,6 +6570,7 @@
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */,
 				A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */,
+				F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */,
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
@@ -6714,6 +6736,7 @@
 				D8C5CFE81A68835100EC819F /* VAsset+Fetcher.m in Sources */,
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */,
+				F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */,
 				D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */,
 				A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */,
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
@@ -6875,6 +6898,7 @@
 				F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */,
 				DB61811C1AB206D700DED29F /* VFirstTimeInstallHelperTests.m in Sources */,
 				F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */,
+				F0AD21731AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */,
 				039D02AF1A10441500DB9236 /* VDependencyManagerTests.m in Sources */,
 				A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */,
 				035FA7781AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */,
