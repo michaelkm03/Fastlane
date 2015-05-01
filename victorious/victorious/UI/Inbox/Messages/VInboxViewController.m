@@ -36,7 +36,6 @@
 #import "VNavigationController.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
-static const CGFloat kConversationCellHeight = 72;
 
 @interface VInboxViewController () <VUserSearchViewControllerDelegate>
 
@@ -105,7 +104,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = kConversationCellHeight;
+    self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
