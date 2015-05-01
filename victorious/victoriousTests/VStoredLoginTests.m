@@ -107,8 +107,6 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     loggedInUser.token = kTestToken;
     [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
     
-    VUser *lastLoggedInUser = [self.storedLogin lastLoggedInUserFromDisk];
-    
     [VStoredLogin v_swizzleMethod:@selector(isTokenCreatedOnDateExpired:) withBlock:^BOOL(NSDate *date)
      {
          return NO;
@@ -127,6 +125,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
      }
                      executeBlock:^
      {
+         VUser *lastLoggedInUser = [self.storedLogin lastLoggedInUserFromDisk];
          XCTAssertNil( lastLoggedInUser  );
      }];
 }
