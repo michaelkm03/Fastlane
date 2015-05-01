@@ -18,7 +18,7 @@
 
 NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolControllerInitalVideoEditStateKey";
 
-@interface VVideoToolController ()
+@interface VVideoToolController () <VTrimVideoToolDelegate>
 
 @property (nonatomic, assign) BOOL hasSetupDefaultTool;
 
@@ -47,6 +47,11 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
                                        selectedSnapshotForEditing:previewImage
                                               renderedSnapshotURL:capturedMediaURL];
         };
+    }
+    else if ([selectedTool isKindOfClass:[VTrimVideoTool class]])
+    {
+        VTrimVideoTool *trimTool = (VTrimVideoTool *)selectedTool;
+        trimTool.delegate = self;
     }
 }
 
@@ -103,6 +108,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
                  if ([obj isKindOfClass:[VTrimVideoTool class]])
                  {
                      VTrimVideoTool *trimTool = (VTrimVideoTool *)obj;
+                     trimTool.delegate = self;
                      if (!trimTool.isGIF)
                      {
                          [self setSelectedTool:obj];
@@ -114,6 +120,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
                  if ([obj isKindOfClass:[VTrimVideoTool class]])
                  {
                      VTrimVideoTool *trimTool = (VTrimVideoTool *)obj;
+                     trimTool.delegate = self;
                      if (trimTool.isGIF)
                      {
                          [self setSelectedTool:obj];
@@ -131,5 +138,14 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
          }
      }];
 }
+
+#pragma mark - VTrimVideoToolDelegate
+
+- (void)trimVideoToolFailed
+{
+    [self.videoToolControllerDelegate videoToolControllerDidFail:self];
+}
+
+#pragma mark -
 
 @end

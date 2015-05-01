@@ -556,4 +556,21 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     [self.flowNavigationController pushViewController:imageWorkspaceViewController animated:YES];
 }
 
+- (void)videoToolControllerDidFail:(VVideoToolController *)videoToolController
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Unable to GIF", @"")
+                                                                             message:NSLocalizedString(@"We encountered an error trying to GIF your video.", @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    [self notifyDelegateOfCancel];
+                                }]];
+    [self.flowRootViewController presentViewController:alertController
+                                              animated:YES
+                                            completion:nil];
+
+}
+
 @end

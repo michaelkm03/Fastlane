@@ -10,6 +10,8 @@
 
 #import <KVOController/FBKVOController.h>
 
+NSString * const VVideoFrameRateCompositionErrorDomain = @"VVideoFrameRateCompositionErrorDomain";
+
 @interface VVideoFrameRateComposition ()
 
 @property (nonatomic, strong, readwrite) NSURL *videoURL;
@@ -40,9 +42,22 @@
         _mutableComposition = [AVMutableComposition composition];
         
         [_asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration)),
-                                                  NSStringFromSelector(@selector(tracks))]
+                                                  NSStringFromSelector(@selector(tracks)),
+                                                  NSStringFromSelector(@selector(naturalSize))]
                               completionHandler:^
          {
+             if (!self.asset.isReadable)
+             {
+                 if (self.playerItemReady != nil)
+                 {
+                     NSError *error = [NSError errorWithDomain:VVideoFrameRateCompositionErrorDomain
+                                                          code:0
+                                                      userInfo:nil];
+                     self.playerItemReady(error, nil);
+                 }
+                 return;
+             }
+             
              [self.mutableComposition insertTimeRange:CMTimeRangeMake(kCMTimeZero, [self.asset duration])
                                               ofAsset:self.asset
                                                atTime:kCMTimeZero
@@ -57,9 +72,9 @@
              playerItem.seekingWaitsForVideoCompositionRendering = YES;
              playerItem.videoComposition = [self videoComposition];
              
-             if (self.playerItemReady)
+             if (self.playerItemReady != nil)
              {
-                 self.playerItemReady(playerItem);
+                 self.playerItemReady(nil, playerItem);
              }
          }];
     }

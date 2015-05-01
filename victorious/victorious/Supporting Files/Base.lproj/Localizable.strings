@@ -546,6 +546,8 @@
 
 "This will discard any content from the camera" = "This will discard any content from the camera";
 "Discard" = "Discard";
+"Unable to GIF" = "Unable to GIF";
+"We encountered an error trying to GIF your video." = "We encountered an error trying to GIF your video.";
 
 "#nofilter" = "#nofilter";
 "create a meme" = "create a meme";
