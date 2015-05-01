@@ -3,35 +3,35 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}Boyce Avenue</string>
+	<string>${ProductPrefix}Jenna Marbles</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}BoyceAvenue</string>
+	<string>com.getvictorious.${ProductPrefix}jennamarbles</string>
 	<key>CFBundleName</key>
-	<string>${ProductPrefix}BoyceAvenue</string>
+	<string>${ProductPrefix}JennaMarbles</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1831698747056092</string>
+				<string>fb916848365002414</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1831698747056092</string>
+	<string>916848365002414</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>VvnORwDKxiODn0UKxnCKZRRQm</string>
+	<string>XYmdFV6HYk3ZKXu1anVHwOXCM</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>vqnCcTSRKEKLKzXSudkTDVyUZS2fgRlEYOh87LjT5wurqkafnh</string>
+	<string>X5xoGP6AFgdGhROgTra1P8baNqjckNL3gFEMtjv5CuOmKH1c1y</string>
 	<key>VictoriousAppID</key>
-	<integer>47</integer>
+	<integer>48</integer>
 	<key>StagingAppID</key>
-	<integer>14</integer>
+	<integer>62</integer>
 	<key>QAAppID</key>
-	<integer>44</integer>
+	<integer>45</integer>
 	<key>CreatorSalutation</key>
-	<string>Boyce Avenue</string>
+	<string>Jenna Marbles</string>
 	<key>FlurryAPIKey</key>
-	<string>4Y3HQVHMCNGVH8Z5DQRT</string>
+	<string>3QB9TPXFNSYQ8CJG68B8</string>
 </dict>
 </plist>
