@@ -192,13 +192,13 @@
     
     keyPaths = [templateDecorator keyPathsForKey:@"key5"];
     XCTAssertEqual( keyPaths.count, 2u );
-    XCTAssertEqualObjects( keyPaths[0], @"key2/subkey0/key5" );
-    XCTAssertEqualObjects( keyPaths[1], @"key2/subkey0/key5/key5" );
+    XCTAssert( [keyPaths containsObject:@"key2/subkey0/key5"] );
+    XCTAssert( [keyPaths containsObject:@"key2/subkey0/key5/key5"] );
     
     keyPaths = [templateDecorator keyPathsForKey:@"key6"];
     XCTAssertEqual( keyPaths.count, 2u );
-    XCTAssertEqualObjects( keyPaths[0], @"key3/0/key6" );
-    XCTAssertEqualObjects( keyPaths[1], @"key7/key8/key6" );
+    XCTAssert( [keyPaths containsObject:@"key3/0/key6"] );
+    XCTAssert( [keyPaths cgit add -ontainsObject:@"key7/key8/key6"] );
     
     keyPaths = [templateDecorator keyPathsForKey:@"keyXXX"];
     XCTAssertEqual( keyPaths.count, 0u );
