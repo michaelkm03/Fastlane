@@ -104,16 +104,6 @@
      }];
 }
 
-- (void)testDelegateFired
-{
-    self.textView.linkDelegate = self;
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"#hashy"];
-    self.expectedValue = @"hashy";
-    [self.textView didTapAtLocation:CGPointMake(CGRectGetMidX(self.textView.bounds), CGRectGetMidY(self.textView.bounds))];
-    
-    XCTAssertEqualObjects(self.expectedValue, self.delegateValue);
-}
-
 #pragma mark - CCHLinkTextViewDelegate
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value

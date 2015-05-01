@@ -49,6 +49,7 @@
 #import "VAuthorizedAction.h"
 
 #import "VAppInfo.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -71,18 +72,28 @@
 
 - (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    if ( !viewController || !viewController.navigationController || !sequence )
+    if ( sequence == nil )
+    {
+        return NO;
+    }
+    
+    return [self showProfile:sequence.user fromViewController:viewController];
+}
+
+- (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController
+{
+    if ( viewController == nil || viewController.navigationController == nil || user == nil )
     {
         return NO;
     }
     
     if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
-        [((VUserProfileViewController *)viewController).profile isEqual:sequence.user] )
+        [((VUserProfileViewController *)viewController).user isEqual:user] )
     {
         return NO;
     }
     
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:sequence.user];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
     return YES;

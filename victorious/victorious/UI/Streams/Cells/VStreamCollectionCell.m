@@ -42,7 +42,7 @@
 #import "UIColor+VHex.h"
 #import "VTextPostViewController.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
+@interface VStreamCollectionCell() <CCHLinkTextViewDelegate, VVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 
@@ -87,7 +87,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
                                                                    views:views]];
     self.captionTextView.textContainer.lineFragmentPadding = VStreamCollectionCellTextViewLineFragmentPadding;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
-    self.streamCellHeaderView.delegate = self;
 }
 
 - (NSString *)headerViewNibName
@@ -213,34 +212,17 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 - (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL cacheKey:(NSString *)cacheKey
 {
-    static NSCache *textViewCache;
-    if ( textViewCache == nil )
-    {
-        textViewCache = [[NSCache alloc] init];
-    }
-    
-    VTextPostViewController *existing = [textViewCache objectForKey:cacheKey];
-    if ( existing == nil && self.textPostViewController == nil )
+    if ( self.textPostViewController == nil )
     {
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-        [self.contentContainer addSubview:self.textPostViewController.view];
-        [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-        self.textPostViewController.text = text;
-        self.textPostViewController.color = color;
-        self.textPostViewController.imageURL = backgroundImageURL;
-        [textViewCache setObject:self.textPostViewController forKey:cacheKey];
-    }
-    else if ( existing != nil )
-    {
-        if ( self.textPostViewController != nil )
-        {
-            [self.textPostViewController.view removeFromSuperview];
-            [self.textPostViewController.view removeConstraints:self.textPostViewController.view.constraints];
-        }
-        self.textPostViewController = existing;
+        self.textPostViewController.view.frame = self.contentContainer.bounds;
         [self.contentContainer addSubview:self.textPostViewController.view];
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
     }
+    
+    self.textPostViewController.text = text;
+    self.textPostViewController.color = color;
+    self.textPostViewController.imageURL = backgroundImageURL;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -329,24 +311,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
-}
-
-#pragma mark - VSequenceActionsDelegate
-
-- (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
-    }
-}
-
-- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate selectedUserOnSequence:self.sequence fromView:self];
-    }
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods

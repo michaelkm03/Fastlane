@@ -85,3 +85,38 @@ if [ "$A_FLAG" == "-a" ]; then
 else
     ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID
 fi
+
+
+### Set App IDs
+
+QA_APP_ID=$(./build-scripts/get-app-id.sh `basename $FOLDER` "QA" 2> /dev/null)
+STAGING_APP_ID=$(./build-scripts/get-app-id.sh `basename $FOLDER` "Staging" 2> /dev/null)
+PRODUCTION_APP_ID=$(./build-scripts/get-app-id.sh `basename $FOLDER` "Production" 2> /dev/null)
+
+setAppIDs(){
+    ENVIRONMENTS_PLIST="$1"
+    N=0
+    while [ 1 ]
+    do
+        NAME=$(/usr/libexec/PlistBuddy -c "Print :$N:name" "$ENVIRONMENTS_PLIST" 2> /dev/null)
+        if [ "$NAME" == "" ]; then
+            break
+        elif [ "$NAME" == "QA" ]; then
+            /usr/libexec/PlistBuddy -c "Set :$N:appID $QA_APP_ID" "$ENVIRONMENTS_PLIST"
+        elif [ "$NAME" == "Staging" ]; then
+            /usr/libexec/PlistBuddy -c "Set :$N:appID $STAGING_APP_ID" "$ENVIRONMENTS_PLIST"
+        elif [ "$NAME" == "Production" ]; then
+            /usr/libexec/PlistBuddy -c "Set :$N:appID $PRODUCTION_APP_ID" "$ENVIRONMENTS_PLIST"
+        fi
+
+        let N=$N+1
+    done
+}
+
+PLIST_FILES=$(find "$DEST_PATH" -name environments\*.plist)
+IFS=$'\n'
+
+for PLIST_FILE in $PLIST_FILES
+do
+    setAppIDs "$PLIST_FILE"
+done

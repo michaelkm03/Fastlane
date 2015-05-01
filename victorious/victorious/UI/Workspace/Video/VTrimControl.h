@@ -33,4 +33,9 @@
  */
 @property (nonatomic, readonly) CMTime selectedDuration;
 
+/**
+ *  The height of the trimmer body plus the vertical inset of the body
+ */
++ (CGFloat)topPadding;
+
 @end

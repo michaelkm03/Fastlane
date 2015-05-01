@@ -61,7 +61,7 @@ static NSString * const kInitialKey = @"initial";
     {
         _dependencyManager = dependencyManager;
         self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
-        _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey withAddedDependencies:[dependencyManager styleDictionaryForNavigationBar]];
+        _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
@@ -125,17 +125,17 @@ static NSString * const kInitialKey = @"initial";
     if ( !self.didShowInitial )
     {
         UIViewController *initialViewController = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:kInitialKey];
+        NSUInteger index = 0;
         if ( initialViewController != nil )
         {
-            NSUInteger index = [self.viewControllers indexOfObject:initialViewController];
+            index = [self.viewControllers indexOfObject:initialViewController];
             if ( index == NSNotFound )
             {
                 index = 0;
             }
-            [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
-            [self.selector setActiveViewControllerIndex:index];
         }
-        self.didShowInitial = YES;
+        [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
+        [self.selector setActiveViewControllerIndex:index];
     }
 }
 
@@ -159,6 +159,15 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if ( !self.didShowInitial )
+    {
+        if ( !self.isInitialViewController )
+        {
+            [self.collectionView reloadData];
+        }
+        self.didShowInitial = YES;
+    }
     
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];

@@ -45,5 +45,6 @@
 @dynamic postedSequences;
 @dynamic remixedSequences;
 @dynamic repostedSequences;
+@dynamic previewAssets;
 
 @end

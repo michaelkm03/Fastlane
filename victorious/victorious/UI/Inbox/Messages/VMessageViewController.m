@@ -27,7 +27,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VDefaultProfileImageView.h"
 #import "UIStoryboard+VMainStoryboard.h"
-
+#import "VDependencyManager+VUserProfile.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VMessageViewController () <VMessageTableDataDelegate>
@@ -80,11 +80,14 @@
 {
     [super viewWillAppear:animated];
     
-    self.tableDataSource = [[VMessageTableDataSource alloc] initWithObjectManager:[VObjectManager sharedManager]];
-    self.tableDataSource.otherUser = self.otherUser;
-    self.tableDataSource.tableView = self.tableView;
-    self.tableDataSource.delegate = self;
-    self.tableDataSource.messageCountCoordinator = self.messageCountCoordinator;
+    if (!self.tableDataSource)
+    {
+        self.tableDataSource = [[VMessageTableDataSource alloc] initWithObjectManager:[VObjectManager sharedManager]];
+        self.tableDataSource.otherUser = self.otherUser;
+        self.tableDataSource.tableView = self.tableView;
+        self.tableDataSource.delegate = self;
+        self.tableDataSource.messageCountCoordinator = self.messageCountCoordinator;
+    }
     self.tableView.dataSource = self.tableDataSource;
 
     if (self.shouldRefreshOnAppearance)
@@ -164,6 +167,7 @@
     
     cell.timeLabel.text = [message.postedAt timeSince];
     cell.commentTextView.text = message.text;
+    cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     if ([message.sender isEqualToUser:[[VObjectManager sharedManager] mainUser]])
     {
@@ -190,7 +194,7 @@
     NSURL *pictureURL = [NSURL URLWithString:message.sender.pictureUrl];
     if (pictureURL)
     {
-        [cell.profileImageView sd_setImageWithURL:pictureURL];
+        [cell.profileImageView setProfileImageURL:pictureURL];
     }
     cell.onProfileImageTapped = ^(void)
     {

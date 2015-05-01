@@ -8,10 +8,6 @@
 
 #import "VDefaultProfileImageView.h"
 
-// Utilities
-#import "VThemeManager.h"
-#import "VSettingManager.h"
-
 // Categories
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -26,7 +22,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self setup];
     }
@@ -35,25 +31,26 @@
 
 - (void)setup
 {
-    self.image = [self defaultImage];
+    self.image = [self placeholderImage];
     
-    //Was previously accent color on A and D
-    NSString *colorKey = kVLinkColor;
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
+    self.backgroundColor = [UIColor whiteColor];
+    self.tintColor = [UIColor darkGrayColor];
     
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
     self.clipsToBounds = YES;
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 }
 
 - (void)setProfileImageURL:(NSURL *)url
 {
-    [self sd_setImageWithURL:url
-            placeholderImage:[self defaultImage]];
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
+    [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
 }
 
-- (UIImage *)defaultImage
+- (void)setTintColor:(UIColor *)tintColor
+{
+    super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
+}
+
+- (UIImage *)placeholderImage
 {
     UIImage *image = [UIImage imageNamed:@"profile_thumb"];
     if (CGRectGetHeight(self.bounds) > image.size.height)

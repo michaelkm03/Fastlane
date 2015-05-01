@@ -11,11 +11,16 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
+#import "VEnvironment.h"
+#import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+VTemplateDownloaderConformance.h"
 #import "VUser.h"
 #import "VReachability.h"
+#import "VTemplateDecorator.h"
+#import "VTemplateDownloadManager.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"
 #import "VLaunchScreenProvider.h"
@@ -23,8 +28,7 @@
 
 #import "MBProgressHUD.h"
 
-static const NSTimeInterval kTimeBetweenRetries = 1.0;
-static const NSUInteger kRetryAttempts = 5;
+static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 
 @interface VLoadingViewController()
 
@@ -32,8 +36,7 @@ static const NSUInteger kRetryAttempts = 5;
 @property (nonatomic, weak) IBOutlet UILabel *reachabilityLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
-@property (nonatomic) NSUInteger failCount;
-@property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, strong) VTemplateDownloadManager *templateDownloadManager;
 
 @end
 
@@ -64,12 +67,6 @@ static const NSUInteger kRetryAttempts = 5;
     [self.backgroundContainer v_addFitToParentConstraintsToSubview:launchScreen];
         
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kVReachabilityChangedNotification object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.failCount = 0;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -155,61 +152,64 @@ static const NSUInteger kRetryAttempts = 5;
 
 - (void)loadTemplate
 {
-    [[VObjectManager sharedManager] templateWithDependencyManager:self.parentDependencyManager
-                                                     successBlock:^(NSOperation *operation, id result, VDependencyManager *resultObject)
+    self.templateDownloadManager = [[VTemplateDownloadManager alloc] initWithDownloader:[VObjectManager sharedManager]];
+    self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[VObjectManager currentEnvironment]];
+    self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[VObjectManager currentEnvironment]];
+    
+    __weak typeof(self) weakSelf = self;
+    [self.templateDownloadManager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
     {
-        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+        dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            [self onDoneLoadingWithDependencyManager:resultObject];
-        }
-                                                                 onError:^(NSError *error)
-        {
-            [self onDoneLoadingWithDependencyManager:resultObject];
-        }];
-    }
-                                                        failBlock:^(NSOperation *operation, NSError *error)
-    {
-        self.failCount++;
-        [self scheduleRetry];
+            typeof(weakSelf) strongSelf = weakSelf;
+            if ( strongSelf != nil )
+            {
+                strongSelf.templateDownloadManager = nil;
+                [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+                {
+                    [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
+                }
+                                                                           onError:^(NSError *error, BOOL thirdPartyAPIFailed)
+                {
+                    [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
+                }];
+            }
+        });
     }];
 }
 
-- (void)onDoneLoadingWithDependencyManager:(VDependencyManager *)dependencyManager
+- (NSURL *)urlForTemplateCacheForEnvironment:(VEnvironment *)environment
+{
+    static NSString * const templateCacheFolderName = @"templates";
+    
+    NSArray *paths = [[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask];
+    NSURL *cachePath = [paths firstObject];
+    if ( cachePath != nil )
+    {
+        cachePath = [cachePath URLByAppendingPathComponent:templateCacheFolderName];
+        [[NSFileManager defaultManager] createDirectoryAtURL:cachePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return [cachePath URLByAppendingPathComponent:environment.name];
+}
+
+- (NSURL *)urlForTemplateInBundleForEnvironment:(VEnvironment *)environment
+{
+    static NSString * const templateFileFormat = @"%@.template";
+    static NSString * const templateFileExtension = @"json";
+    return [[NSBundle bundleForClass:[self class]] URLForResource:[NSString stringWithFormat:templateFileFormat, environment.name] withExtension:templateFileExtension];
+}
+
+- (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
 {
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
+        VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
+        [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
+        
+        VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
+                                                                                    configuration:templateDecorator.decoratedTemplate
+                                                                dictionaryOfClassesByTemplateName:nil];
         [self.delegate loadingViewController:self didFinishLoadingWithDependencyManager:dependencyManager];
-    }
-}
-
-- (void)scheduleRetry
-{
-    if ([_retryTimer isValid])
-    {
-        [_retryTimer invalidate];
-        _retryTimer = nil;
-    }
-    
-    if (self.failCount > kRetryAttempts)
-    {
-        self.progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        self.progressHUD.mode = MBProgressHUDModeText;
-        self.progressHUD.labelText = NSLocalizedString(@"WereSorry", @"");
-        self.progressHUD.detailsLabelText = NSLocalizedString(@"ErrorOccured", @"");
-        return;
-    }
-
-    _retryTimer = [NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRetries * self.failCount
-                                                   target:self selector:@selector(retryTimerFired) userInfo:nil repeats:NO];
-}
-
-- (void)retryTimerFired
-{
-    _retryTimer = nil;
-    
-    if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] != VNetworkStatusNotReachable)
-    {
-        [self loadTemplate];
     }
 }
 

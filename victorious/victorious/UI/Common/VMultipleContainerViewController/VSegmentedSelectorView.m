@@ -56,9 +56,9 @@
     }
     
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:[self.viewControllers v_map:^(UIViewController *viewController)
-    {
-        return viewController.title;
-    }]];
+                                                                                      {
+                                                                                          return viewController.title;
+                                                                                      }]];
     segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
     [segmentedControl setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
@@ -70,35 +70,25 @@
         self.segmentedControl.selectedSegmentIndex = 0;
     }
     
-    segmentedControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    segmentedControl.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    UIColor *foregroundColor = self.foregroundColor;
+    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    
+    segmentedControl.tintColor = foregroundColor;
+    segmentedControl.backgroundColor = backgroundColor;
     segmentedControl.layer.cornerRadius = 4;
     segmentedControl.clipsToBounds = YES;
     
-    [segmentedControl setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorLeftUnselected"]
-                  forLeftSegmentState:UIControlStateNormal
-                    rightSegmentState:UIControlStateSelected
-                           barMetrics:UIBarMetricsDefault];
-    [segmentedControl setDividerImage:[UIImage imageNamed:@"segmentedControlSeperatorRightUnselected"]
-                  forLeftSegmentState:UIControlStateSelected
-                    rightSegmentState:UIControlStateNormal
-                           barMetrics:UIBarMetricsDefault];
-    [segmentedControl setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderUnselected"]
-                                forState:UIControlStateNormal
-                              barMetrics:UIBarMetricsDefault];
-    [segmentedControl setBackgroundImage:[UIImage imageNamed:@"segmentedControlBorderSelected"]
-                                forState:UIControlStateSelected
-                              barMetrics:UIBarMetricsDefault];
-    [segmentedControl setTitleTextAttributes:@{ NSFontAttributeName: [UIFont boldSystemFontOfSize:12] }
+    [segmentedControl setTitleTextAttributes:@{
+                                               NSFontAttributeName: [UIFont boldSystemFontOfSize:12],
+                                               NSForegroundColorAttributeName: foregroundColor
+                                               }
                                     forState:UIControlStateNormal];
-    UIColor *secondaryAccentColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    [segmentedControl setTitleTextAttributes:@{
+                                               NSFontAttributeName: [UIFont boldSystemFontOfSize:12],
+                                               NSForegroundColorAttributeName: backgroundColor
+                                               }
+                                    forState:UIControlStateSelected];
     
-    if ( secondaryAccentColor != nil )
-    {
-        [segmentedControl setTitleTextAttributes:@{ NSFontAttributeName: [UIFont boldSystemFontOfSize:12],
-                                                    NSForegroundColorAttributeName: secondaryAccentColor }
-                                        forState:UIControlStateSelected];
-    }
     
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[segmentedControl]-12-|"
                                                                  options:0

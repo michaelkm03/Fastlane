@@ -10,8 +10,6 @@
 
 @class VDependencyManager;
 
-typedef void (^VTemplateSuccessBlock)(NSOperation *operation, id result, VDependencyManager *resultObject);
-
 extern NSString * const kLoggedInChangedNotification;
 
 @interface VObjectManager (Login)
@@ -20,18 +18,13 @@ extern NSString * const kLoggedInChangedNotification;
 @property (nonatomic, readonly) BOOL mainUserLoggedIn;
 @property (nonatomic, readonly) BOOL authorized;
 
-
-- (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)failed;
-
 /**
  Retrieves the template from the server
  
  @param dependencyManager A dependency manager containing defaults for any keys not provided by the server
  */
-- (RKManagedObjectRequestOperation *)templateWithDependencyManager:(VDependencyManager *)dependencyManager
-                                                      successBlock:(VTemplateSuccessBlock)success
-                                                         failBlock:(VFailBlock)failed;
+- (RKManagedObjectRequestOperation *)templateWithSuccessBlock:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)failed;
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString *)accessToken
                                                  SuccessBlock:(VSuccessBlock)success
