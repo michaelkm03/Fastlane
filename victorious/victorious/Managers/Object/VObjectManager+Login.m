@@ -389,7 +389,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
 - (RKManagedObjectRequestOperation *)logout
 {
-    if ( !self.mainUserLoggedIn ) //foolish mortal you need to log in to log out...
+    if ( !self.mainUserLoggedIn )
     {
         return nil;
     }
