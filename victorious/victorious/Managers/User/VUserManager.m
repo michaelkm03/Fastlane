@@ -369,9 +369,8 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
                                                      failBlock:fail];
 }
 
-- (void)logout
+- (void)userDidLogout
 {
-    [[VObjectManager sharedManager] logout];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAccountIdentifierDefaultsKey];
     [self clearSavedPassword];

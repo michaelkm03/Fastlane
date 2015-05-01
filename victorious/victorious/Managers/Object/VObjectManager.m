@@ -13,6 +13,7 @@
 #import "VObjectManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Private.h"
+#import "VObjectManager+Login.h"
 #import "VPaginationManager.h"
 #import "VUploadManager.h"
 #import "VRootViewController.h"
@@ -176,9 +177,21 @@
             }
         }
         
+#warning TESTING ONLY:  Allows some successful requests by then simulates failures due to bad tokens
+        static int successfulReqestsRemaining = 15;
+        if ( --successfulReqestsRemaining <= 0 )
+        {
+            error.errorCode = kVUnauthoizedError;
+            NSLog( @" >>>>> Simulating bad token" );
+        }
+        else
+        {
+            NSLog( @" >>>>> Will simulate bad token after %@ more requests.", @(successfulReqestsRemaining) );
+        }
+        
         if (error.errorCode == kVUnauthoizedError && self.mainUser)
         {
-            self.mainUser = nil;
+            [self logout];
             [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
         }
         else if (!error.errorCode && successBlock)
@@ -195,17 +208,16 @@
         else if (error.errorCode)
         {
             NSArray *localizedErrorMessages = [error.errorMessages v_map:^id(NSString *message)
-            {
-                return NSLocalizedString(message, @"");
-            }];
-            
+                                               {
+                                                   return NSLocalizedString(message, @"");
+                                               }];
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                              userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
             
-            if (failBlock)
+            if ( failBlock != nil )
             {
-                failBlock(operation, nsError);
+                failBlock( operation, nsError );
             }
         }
     };
@@ -215,16 +227,16 @@
         RKErrorMessage *rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
         if (rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError && self.mainUser)
         {
-            self.mainUser = nil;
+            [self logout];
             [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
         }
         else
         {
             [self defaultErrorHandlingForCode:rkErrorMessage.errorMessage.integerValue];
             
-            if (failBlock)
+            if ( failBlock != nil )
             {
-                failBlock(operation, error);
+                failBlock( operation, error );
             }
         }
     };
@@ -236,18 +248,18 @@
 
 - (void)defaultErrorHandlingForCode:(NSInteger)errorCode
 {
-    if (errorCode == kVUpgradeRequiredError)
+    if ( errorCode == kVUpgradeRequiredError )
     {
         [[VRootViewController rootViewController] presentForceUpgradeScreen];
     }
-    else if(errorCode == kVUserBannedError)
+    else if( errorCode == kVUserBannedError )
     {
-        self.mainUser = nil;
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
-                                                               message:NSLocalizedString(@"UserBannedMessage", @"")
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                     otherButtonTitles:nil];
+        [self logout];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+                                                        message:NSLocalizedString(@"UserBannedMessage", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                              otherButtonTitles:nil];
         [alert show];
     }
 }

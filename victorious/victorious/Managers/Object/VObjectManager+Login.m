@@ -393,14 +393,15 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         return nil;
     }
-    
-    [[[VStoredLogin alloc] init] clearLoggedInUserFromDisk];
 
     RKManagedObjectRequestOperation *operation = [self GET:@"/api/logout"
-              object:nil
-           parameters:nil
-         successBlock:nil
-            failBlock:nil];
+                                                    object:nil
+                                                parameters:nil
+                                              successBlock:nil
+                                                 failBlock:nil];
+    
+    [[[VStoredLogin alloc] init] clearLoggedInUserFromDisk];
+    [[VUserManager sharedInstance] userDidLogout];
     
     //Delete all conversations / pollresults for the user!
     NSManagedObjectContext *context = self.managedObjectStore.persistentStoreManagedObjectContext;
@@ -431,10 +432,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         [context save:nil];
     }];
     
-    self.mainUser.token = nil;
-    
-    //Log out no matter what
     self.mainUser = nil;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
     
     return operation;
