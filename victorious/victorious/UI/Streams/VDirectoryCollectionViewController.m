@@ -21,6 +21,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VURLMacroReplacement.h"
 #import "VDirectoryCollectionFlowLayout.h"
+#import "VDependencyManager+VUserProfile.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";

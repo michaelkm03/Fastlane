@@ -212,34 +212,17 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 - (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL cacheKey:(NSString *)cacheKey
 {
-    static NSCache *textViewCache;
-    if ( textViewCache == nil )
-    {
-        textViewCache = [[NSCache alloc] init];
-    }
-    
-    VTextPostViewController *existing = [textViewCache objectForKey:cacheKey];
-    if ( existing == nil && self.textPostViewController == nil )
+    if ( self.textPostViewController == nil )
     {
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
-        [self.contentContainer addSubview:self.textPostViewController.view];
-        [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-        self.textPostViewController.text = text;
-        self.textPostViewController.color = color;
-        self.textPostViewController.imageURL = backgroundImageURL;
-        [textViewCache setObject:self.textPostViewController forKey:cacheKey];
-    }
-    else if ( existing != nil )
-    {
-        if ( self.textPostViewController != nil )
-        {
-            [self.textPostViewController.view removeFromSuperview];
-            [self.textPostViewController.view removeConstraints:self.textPostViewController.view.constraints];
-        }
-        self.textPostViewController = existing;
+        self.textPostViewController.view.frame = self.contentContainer.bounds;
         [self.contentContainer addSubview:self.textPostViewController.view];
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
     }
+    
+    self.textPostViewController.text = text;
+    self.textPostViewController.color = color;
+    self.textPostViewController.imageURL = backgroundImageURL;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

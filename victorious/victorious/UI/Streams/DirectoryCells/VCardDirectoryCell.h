@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 #import "VBaseCollectionViewCell.h"
 
 extern const CGFloat VDirectoryItemBaseHeight;

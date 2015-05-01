@@ -10,7 +10,6 @@
 #import "VCollectionsDirectoryCell.h"
 #import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager.h"
-#import "VShowcaseDirectoryCellFactory.h"
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager.h"

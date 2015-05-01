@@ -7,10 +7,9 @@
 //
 
 #import "VBaseCollectionViewCell.h"
-#import "VDependencyManager.h"
 #import "VDirectoryCellFactory.h"
 
-@class VStreamItem, VShowcaseDirectoryCell, VStream, VSequence;
+@class VStreamItem, VShowcaseDirectoryCell, VStream, VSequence, VDependencyManager;
 
 @protocol VShowcaseDirectoryCellDelegate <NSObject>
 

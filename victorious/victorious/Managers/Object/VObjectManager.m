@@ -473,12 +473,15 @@
     [request addValue:appVersion forHTTPHeaderField:@"X-Client-App-Version"];
     
     // Add location data to request if we have permission to collect it
-    VLocationManager *locationManager = [VLocationManager sharedInstance];
-    NSString *locationString = [locationManager httpFormattedLocationString];
-    if ([locationManager permissionGranted] && ![locationString isEqualToString:@""])
+    dispatch_async(dispatch_get_main_queue(), ^
     {
-        [request addValue:locationString forHTTPHeaderField:@"X-Geo-Location"];
-    }
+        VLocationManager *locationManager = [VLocationManager sharedInstance];
+        NSString *locationString = [locationManager httpFormattedLocationString];
+        if ([locationManager permissionGranted] && ![locationString isEqualToString:@""])
+        {
+            [request addValue:locationString forHTTPHeaderField:@"X-Geo-Location"];
+        }
+    });
 }
 
 - (NSString *)rFC2822DateTimeString

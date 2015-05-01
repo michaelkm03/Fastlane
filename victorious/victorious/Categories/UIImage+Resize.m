@@ -12,7 +12,7 @@
                 transform:(CGAffineTransform)transform
            drawTransposed:(BOOL)transpose
      interpolationQuality:(CGInterpolationQuality)quality;
-- (CGAffineTransform)transformForOrientation:(CGSize)newSize;
+- (CGAffineTransform)transformForCurrentOrientationWithSize:(CGSize)newSize;
 
 @end
 
@@ -166,7 +166,7 @@
     }
     
     return [self resizedImage:newSize
-                    transform:[self transformForOrientation:newSize]
+                    transform:[self transformForCurrentOrientationWithSize:newSize]
                drawTransposed:drawTransposed
          interpolationQuality:quality];
 }
@@ -263,7 +263,7 @@
 }
 
 // Returns an affine transform that takes into account the image orientation when drawing a scaled image
-- (CGAffineTransform)transformForOrientation:(CGSize)newSize
+- (CGAffineTransform)transformForCurrentOrientationWithSize:(CGSize)newSize
 {
     CGAffineTransform transform = CGAffineTransformIdentity;
     

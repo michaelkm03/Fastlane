@@ -8,9 +8,8 @@
 
 #import "VDefaultProfileButton.h"
 
-#import "VThemeManager.h"
-
 #import <SDWebImage/UIButton+WebCache.h>
+#import "UIImageView+VLoadingAnimations.h"
 #import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
@@ -40,14 +39,15 @@
     self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     
-    //Was previously accent color for A and D
-    NSString *colorKey = kVLinkColor;
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
+    self.backgroundColor = [UIColor whiteColor];
+    self.tintColor = [UIColor darkGrayColor];
     
     self.clipsToBounds = YES;
-    
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+}
 
+- (void)setTintColor:(UIColor *)tintColor
+{
+    super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
 }
 
 - (void)updateCornerRadius
@@ -59,10 +59,12 @@
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
     UIImage *defaultImage = [self placeholderImage];
-    
+
     [self sd_setImageWithURL:url
-                    forState:controlState
-            placeholderImage:defaultImage];
+                    forState:UIControlStateNormal
+            placeholderImage:defaultImage
+                     options:SDWebImageRetryFailed
+                   completed:nil];
     
     self.imageView.tintColor = self.tintColor;
 }

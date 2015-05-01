@@ -17,8 +17,9 @@
 #import "VUserProfileViewController.h"
 
 #import "VDefaultProfileButton.h"
+#import "VDependencyManager+VUserProfile.h"
 
-const CGFloat VConversationCellHeight = 64.0f;
+const CGFloat VConversationCellHeight = 72.0f;
 static const CGFloat kLineSpacing = 3.0f;
 static const CGFloat kMinimumLineHeight = 15.0f;
 static const CGFloat kBaselineOffset = 0.5f;
@@ -42,6 +43,7 @@ static const CGFloat kBaselineOffset = 0.5f;
         self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         self.usernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 

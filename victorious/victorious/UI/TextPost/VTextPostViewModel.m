@@ -15,8 +15,6 @@ static NSString * const kCalloutTextFontColor = @"color.link";
 
 @interface VTextPostViewModel()
 
-@property (nonatomic, strong) NSDictionary *textAttributes;
-@property (nonatomic, strong) NSDictionary *calloutAttributes;
 @property (nonatomic, strong) NSDictionary *placeholderAttributes;
 
 @end
@@ -40,26 +38,18 @@ static NSString * const kCalloutTextFontColor = @"color.link";
 
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ( _textAttributes == nil )
-    {
-        UIFont *font = [dependencyManager fontForKey:kFontNameKey];
-        _textAttributes = @{ NSFontAttributeName: font ?: @"",
-                             NSForegroundColorAttributeName: [dependencyManager colorForKey:kNormalTextFontColor],
-                             NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
-    }
-    return _textAttributes;
+    UIFont *font = [dependencyManager fontForKey:kFontNameKey];
+    return @{ NSFontAttributeName: font ?: @"",
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:kNormalTextFontColor],
+              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
 }
 
 - (NSDictionary *)calloutAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ( _calloutAttributes == nil )
-    {
-        UIFont *font = [dependencyManager fontForKey:kFontNameKey];
-        _calloutAttributes = @{ NSFontAttributeName: font ?: @"",
-                                NSForegroundColorAttributeName: [dependencyManager colorForKey:kCalloutTextFontColor],
-                                NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
-    }
-    return _calloutAttributes;
+    UIFont *font = [dependencyManager fontForKey:kFontNameKey];
+    return @{ NSFontAttributeName: font ?: @"",
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:kCalloutTextFontColor],
+              NSParagraphStyleAttributeName: [self paragraphStyleWithFont:font] };
 }
 
 - (NSParagraphStyle *)paragraphStyleWithFont:(UIFont *)font

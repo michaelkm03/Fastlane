@@ -59,10 +59,6 @@
 	<string>We use your location to serve you relevent info such as events in your area.</string>
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
-	<key>QAAppID</key>
-	<integer>1</integer>
-	<key>StagingAppID</key>
-	<integer>1</integer>
 	<key>TWITTER_CONSUMER_KEY</key>
 	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
@@ -151,8 +147,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>VictoriousAppID</key>
-	<integer>1</integer>
 	<key>VictoriousGenericURLScheme</key>
 	<string>vthisapp</string>
 	<key>VictoriousServerEnvironment</key>

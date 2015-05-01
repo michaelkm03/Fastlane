@@ -262,7 +262,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     self.parentLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     [self.commentButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
     self.dateLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    
+    self.profileImageButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.dateImageView.tintColor = self.dateLabel.textColor;
     self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }

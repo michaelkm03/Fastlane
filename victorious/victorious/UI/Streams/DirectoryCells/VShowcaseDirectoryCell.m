@@ -10,6 +10,7 @@
 #import "VCardDirectoryCell.h"
 #import "VCardSeeMoreDirectoryCell.h"
 #import "VCardDirectoryCellDecorator.h"
+#import "VDependencyManager.h"
 
 // Models
 #import "VStream+Fetcher.h"

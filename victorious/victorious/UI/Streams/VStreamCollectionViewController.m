@@ -72,7 +72,9 @@
 #import <FBKVOController.h>
 
 #import "VDirectoryCollectionViewController.h"
+#import "VDependencyManager+VUserProfile.h"
 #import "VLinkSelectionResponder.h"
+#import "VNoContentCollectionViewCellFactory.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -430,11 +432,16 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         return;
     }
     
+    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
+    {
+        return;
+    }
+    
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     UIImage *previewImage = nil;
-    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
         previewImage = ((VStreamCollectionCell *)cell).previewImageView.image;
@@ -505,8 +512,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     if ([dataSource count] > (NSUInteger)indexPath.row + 2u)
     {
         NSIndexPath *preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
-        VSequence *preloadSequence = (VSequence *)[dataSource itemAtIndexPath:preloadPath];
-        [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[preloadSequence initialImageURLs]];
+        VStreamItem *streamItem = [dataSource itemAtIndexPath:preloadPath];
+        if ( [streamItem isKindOfClass:[VSequence class]] )
+        {
+            [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[(VSequence *)streamItem initialImageURLs]];
+        }
     }
 }
 

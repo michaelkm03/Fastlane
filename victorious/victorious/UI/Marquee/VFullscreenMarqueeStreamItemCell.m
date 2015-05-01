@@ -112,9 +112,11 @@ static NSString * const kVOrIconKey = @"orIcon";
         self.detailsBackgroundView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.profileImageButton.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
+        self.profileImageButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
         UIImage *orIcon = [dependencyManager imageForKey:kVOrIconKey];
         self.pollOrImageView.image = orIcon;
+        
     }
 }
 

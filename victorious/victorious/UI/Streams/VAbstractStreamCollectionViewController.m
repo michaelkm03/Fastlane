@@ -413,6 +413,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [self.scrollPaginator scrollViewDidScroll:scrollView];
     [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
+    
+    [self.navigationViewfloatingController updateContentOffsetOnScroll:scrollView.contentOffset];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

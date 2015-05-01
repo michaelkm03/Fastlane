@@ -27,11 +27,34 @@
 @property (nonatomic, strong) VTextCalloutFormatter *textCalloutFormatter;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *backgroundImageView;
 
+@property (nonatomic, strong) NSDictionary *calloutAttributes;
+@property (nonatomic, strong) NSDictionary *attributes;
+
 @end
 
 @implementation VTextPostViewController
 
 #pragma mark - Initializations
+
++ (NSCache *)backgroundFramesCache
+{
+    static NSCache *backgroundFramesCache;
+    if ( backgroundFramesCache == nil )
+    {
+        backgroundFramesCache = [[NSCache alloc] init];
+    }
+    return backgroundFramesCache;
+}
+
++ (NSCache *)calloutRangesCache
+{
+    static NSCache *calloutRangesCache;
+    if ( calloutRangesCache == nil )
+    {
+        calloutRangesCache = [[NSCache alloc] init];
+    }
+    return calloutRangesCache;
+}
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -46,6 +69,8 @@
 {
     [super viewDidLoad];
     
+    [self updateCachedTextAttributes];
+    
     self.textBackgroundFrameMaker = [[VTextBackgroundFrameMaker alloc] init];
     self.textCalloutFormatter = [[VTextCalloutFormatter alloc] init];
     
@@ -53,9 +78,8 @@
     self.textView.text = @"";
     self.textView.selectable = NO;
     
-    [self updateTextView];
-    
     [self updateTextIsSelectable];
+    [self updateTextView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -64,9 +88,22 @@
     
     if ( !self.hasBeenDisplayed )
     {
-        [self updateTextView];
         self.hasBeenDisplayed = YES;
+        [self updateTextView];
     }
+}
+
+- (void)updateCachedTextAttributes
+{
+    self.attributes = [self.viewModel textAttributesWithDependencyManager:_dependencyManager];
+    self.calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:_dependencyManager];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    [self updateCachedTextAttributes];
 }
 
 - (void)overlayButtonTapped:(UIButton *)sender
@@ -92,10 +129,19 @@
         return;
     }
     
-    NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
-    NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
-    NSArray *calloutRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
-    [self updateTextView:self.textPostTextView withText:self.text calloutRanges:calloutRanges textAttributes:attributes calloutAttributes:calloutAttributes];
+    NSCache *cache = [[self class] calloutRangesCache];
+    NSArray *calloutRanges = [cache objectForKey:self.text];
+    if ( calloutRanges == nil )
+    {
+        calloutRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+        [cache setObject:calloutRanges forKey:self.text];
+    }
+    
+    [self updateTextView:self.textPostTextView
+                withText:self.text
+           calloutRanges:calloutRanges
+          textAttributes:self.attributes
+       calloutAttributes:self.calloutAttributes];
 }
 
 #pragma mark - public
@@ -182,11 +228,18 @@
     [self.textCalloutFormatter setKerning:self.viewModel.calloutWordKerning toText:attributedText withCalloutRanges:calloutRanges];
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
     
-    NSArray *backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:self.textView
-                                                                                  characterWidth:characterBounds.size.width
-                                                                             calloutRangeObjects:calloutRanges];
-    self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
+    NSCache *cache = [[self class] backgroundFramesCache];
+    NSString *cacheKey = [NSString stringWithFormat:@"%@ %@", text, NSStringFromCGRect( textPostTextView.frame )];
+    NSArray *backgroundFrames = [cache objectForKey:cacheKey];
+    if ( backgroundFrames == nil || text.length == 0 )
+    {
+        backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:textPostTextView
+                                                                             characterWidth:characterBounds.size.width
+                                                                        calloutRangeObjects:calloutRanges];
+        [cache setObject:backgroundFrames forKey:cacheKey];
+    }
     self.textView.backgroundFrames = backgroundFrames;
+    self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
     
     textPostTextView.selectable = wasSelected;
 }

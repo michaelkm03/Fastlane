@@ -95,7 +95,6 @@
     VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
                                                                                                                                                  VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
                                                                                                                                                  VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
-    workspaceFlowController.videoEnabled = YES;
     workspaceFlowController.delegate = self;
     
     [self.viewControllerToPresentOn presentViewController:workspaceFlowController.flowRootViewController
