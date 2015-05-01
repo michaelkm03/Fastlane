@@ -24,6 +24,6 @@
 /**
  *  Provides a transform to use when rendering this image to a bitmap.
  */
-- (CGAffineTransform)transformForOrientation:(CGSize)newSize;
+- (CGAffineTransform)transformForCurrentOrientationWithSize:(CGSize)newSize;
 
 @end
