@@ -82,11 +82,15 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
         UIImage *imageToRender = image;
         if (image.size.width > kMaxRenderSize || image.size.height > kMaxRenderSize)
         {
-            imageToRender = [image thumbnailImage:kMaxRenderSize
-                             interpolationQuality:kCGInterpolationDefault];
+            UIImage *resizedImage = [image thumbnailImage:kMaxRenderSize
+                                     interpolationQuality:kCGInterpolationDefault];
+            imageToRender = [UIImage imageWithCGImage:resizedImage.CGImage
+                                                scale:1.0f
+                                          orientation:UIImageOrientationUp];
         }
         
-        UIImage *tintentImage = [self tintedImageWithImage:imageToRender color:color];
+        UIImage *tintentImage = [self tintedImageWithImage:imageToRender
+                                                     color:color];
         dispatch_async( dispatch_get_main_queue(), ^
                        {
                            [self.cache setObject:tintentImage forKey:color];
