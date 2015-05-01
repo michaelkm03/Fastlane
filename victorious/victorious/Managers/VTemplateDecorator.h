@@ -78,6 +78,29 @@
 - (id)templateValueForKeyPath:(NSString *)keyPath;
 
 /**
+ Recursively finds all keys that match the specified key and replaces the
+ existing value with the specified value.
+ 
+ @param key The key for which to search and replace all corresponding values.
+ @param templateValue The new value to set, generam should be an NSNumber, NSString,
+ NSDictinoary or NSArray, and must not be nil.
+ */
+- (void)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key;
+
+/**
+ Searches recursively for all instances of the specified key and returns the complete key paths
+ for each one.  These key paths are in the format that this class accepts in the
+ `setTemplateValue:forKeyPath:` and `setComponentWithFilename:forKeyPath:` methods.  The idea
+ is that during development you might use `keyPathsForKey:` to quickly search for the key paths
+ of the template values that you are interested in modifying or replacing.  Otherwise, you'd have
+ to manually search through the template and construct the key paths yourself, which is time-consuming.
+ 
+ @param key The last path component of one or more complete key path that will be returned, if found.
+ @return An array of strings representing key paths.  Returns an empty array if none are found.
+ */
+- (NSArray *)keyPathsForKey:(NSString *)key;
+
+/**
  Returns output as an NSDictionary instance which contains all modifications
  that have yet been made to the template using any of the methods available on this class.
  */
