@@ -17,10 +17,12 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VBackground.h"
 #import "UIView+AutoLayout.h"
+#import "VNoContentCollectionViewCellProvider.h"
 
 @interface VInsetStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VNoContentCollectionViewCellProvider *noContentCollectionViewCellProvider;
 
 @end
 
@@ -32,6 +34,7 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _noContentCollectionViewCellProvider = [[VNoContentCollectionViewCellProvider alloc] initWithAcceptableContentClasses:@[[VSequence class]]];
     }
     return self;
 }
@@ -41,12 +44,16 @@
     [collectionView registerNib:[VInsetStreamCollectionCell nibForCell] forCellWithReuseIdentifier:[VInsetStreamCollectionCell suggestedReuseIdentifier]];
     [collectionView registerNib:[VInsetStreamCollectionCellPoll nibForCell] forCellWithReuseIdentifier:[VInsetStreamCollectionCellPoll suggestedReuseIdentifier]];
     [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
+    [self.noContentCollectionViewCellProvider registerNoContentCellWithCollectionView:collectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
-    NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
-
+    if ( [self.noContentCollectionViewCellProvider shouldDisplayNoContentCellForContentClass:[streamItem class]] )
+    {
+        return [self.noContentCollectionViewCellProvider noContentCellForCollectionView:collectionView atIndexPath:indexPath];
+    }
+    
     VSequence *sequence = (VSequence *)streamItem;
     VStreamCollectionCell *cell;
     
@@ -79,7 +86,11 @@
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
-    NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
+    if ( [self.noContentCollectionViewCellProvider shouldDisplayNoContentCellForContentClass:[streamItem class]] )
+    {
+        return [self.noContentCollectionViewCellProvider cellSizeForCollectionViewBounds:bounds];
+    }
+    
     VSequence *sequence = (VSequence *)streamItem;
 
     if ( [sequence isPoll] )
