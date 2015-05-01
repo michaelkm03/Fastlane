@@ -561,7 +561,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Video failed to load", @"")
                                                                              message:NSLocalizedString(@"We encountered an error trying to edit this video.", @"")
                                                                       preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"CancelButton", @"")
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                         style:UIAlertActionStyleCancel
                                                       handler:^(UIAlertAction *action)
                                 {
