@@ -115,12 +115,25 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
         {
-            if (errorBlock)
+            if (error.code == kVAccountAlreadyExistsError)
+            {
+                created = NO;
+                [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                            SuccessBlock:success
+                                                               failBlock:^(NSOperation *operation, NSError *error)
+                 {
+                     if (errorBlock)
+                     {
+                         errorBlock(error, NO);
+                     }
+                 }];
+            }
+            else if (errorBlock)
             {
                 errorBlock(error, NO);
             }
         };
-        [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+        [[VObjectManager sharedManager] createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                    SuccessBlock:success
                                                       failBlock:failed];
     };
