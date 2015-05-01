@@ -383,17 +383,19 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
 - (RKManagedObjectRequestOperation *)logout
 {
-    if ( self.mainUserLoggedIn )
+    if ( !self.mainUserLoggedIn )
     {
         return nil;
     }
-    return [self GET:@"/api/logout"
-              object:nil
-          parameters:nil
-        successBlock:nil
-           failBlock:nil];
-    
+
+    RKManagedObjectRequestOperation *operation = [self GET:@"/api/logout"
+                                                    object:nil
+                                                parameters:nil
+                                              successBlock:nil
+                                                 failBlock:nil];
     [self logoutLocally];
+    
+    return operation;
 }
 
 - (void)logoutLocally

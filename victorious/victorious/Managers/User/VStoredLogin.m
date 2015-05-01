@@ -10,10 +10,12 @@
 #import "VUser+RestKit.h"
 #import "VObjectManager.h"
 
-static const NSTimeInterval kTokenExpirationDuration    = (60 * 60) * 24 * 30 - (60 * 60); ///< 30 days minus one hour (value in seconds)
+static const NSTimeInterval kTokenExpirationTotalDuration           = 30; //60 * 60 * 24 * 30; ///< 30 days in seconds
+static const NSTimeInterval kTokenExpirationAnticipationDuration    = 10; //60 * 60; ///< 1 hour in seconds
 
-static NSString * const kUserDefaultStoredUserIdKey     = @"com.getvictorious.VUserManager.StoredUserId";
-static NSString * const kKeychainTokenService           = @"com.getvictorious.VUserManager.Token";
+static NSString * const kUserDefaultStoredUserIdKey             = @"com.getvictorious.VUserManager.StoredUserId";
+static NSString * const kUserDefaultStoredExpirationDateKey     = @"com.getvictorious.VUserManager.StoredExpirationDate";
+static NSString * const kKeychainTokenService                   = @"com.getvictorious.VUserManager.Token";
 
 @implementation VStoredLogin
 
@@ -25,6 +27,12 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
         return nil;
     }
     
+    NSNumber *expirationDate = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredExpirationDateKey];
+    if ( expirationDate )
+    {
+        return nil;
+    }
+    
     NSString *token = [self savedTokenForUserId:storedUserId];
     if ( token == nil )
     {
@@ -32,7 +40,7 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
     }
     
     NSDate *creationDate = [self savedTokenCreationDateForUserId:storedUserId];
-    if ( [self isTokenCreatedOnDateExpired:creationDate] )
+    if ( [self isTokenExpirationDateExpired:creationDate] )
     {
         [self clearSavedToken];
         return nil;
@@ -56,6 +64,7 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
     if ( isNewToken ) //< We don't want to save the same token again otherwise we'll reset the creation date
     {
         [[NSUserDefaults standardUserDefaults] setValue:user.remoteId forKey:kUserDefaultStoredUserIdKey];
+        [[NSUserDefaults standardUserDefaults] setValue:[self defaultExpirationDate] forKey:kUserDefaultStoredExpirationDateKey];
         [self clearSavedToken];
         return [self saveToken:user.token withUserId:user.remoteId];
     }
@@ -63,18 +72,24 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
     return NO;
 }
 
+- (NSDate *)defaultExpirationDate
+{
+    return nil;
+}
+
 - (BOOL)clearLoggedInUserFromDisk
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultStoredUserIdKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultStoredExpirationDateKey];
     return [self clearSavedToken];
 }
 
 #pragma mark - Private
 
-- (BOOL)isTokenCreatedOnDateExpired:(NSDate *)creationDate
+- (BOOL)isTokenExpirationDateExpired:(NSDate *)expirationDate
 {
-    NSTimeInterval tokenLifetime = ABS( [creationDate timeIntervalSinceNow] );
-    return tokenLifetime >= kTokenExpirationDuration;
+    NSTimeInterval tokenLifetime = ABS( [[NSDate date] timeIntervalSinceDate:expirationDate] );
+    return tokenLifetime >= kTokenExpirationTotalDuration - kTokenExpirationAnticipationDuration;
 }
 
 - (NSDictionary *)tokenKeychainItemForUserId:(NSNumber *)userId

@@ -17,7 +17,7 @@
 @interface VStoredLogin()
 
 - (VUser *)createNewUserWithRemoteId:(NSNumber *)remoteId token:(NSString *)token;
-- (BOOL)isTokenCreatedOnDateExpired:(NSDate *)creationDate;
+- (BOOL)isTokenExpirationDateExpired:(NSDate *)creationDate;
 
 @end
 
@@ -107,7 +107,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     loggedInUser.token = kTestToken;
     [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
     
-    [VStoredLogin v_swizzleMethod:@selector(isTokenCreatedOnDateExpired:) withBlock:^BOOL(NSDate *date)
+    [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
      {
          return NO;
      }
@@ -119,7 +119,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
          XCTAssertEqualObjects( loggedInUser.token, lastLoggedInUser.token );
      }];
     
-    [VStoredLogin v_swizzleMethod:@selector(isTokenCreatedOnDateExpired:) withBlock:^BOOL(NSDate *date)
+    [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
      {
          return YES;
      }
@@ -133,13 +133,13 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
 - (void)testTokenExpiration
 {
     NSTimeInterval thirtyDaysMinusOneHour = (60 * 60) * 24 * 30 - (60 * 60);
-    NSDate *creationDate;
+    NSDate *expirationDate;
     
-    creationDate = [NSDate dateWithTimeIntervalSinceNow:-thirtyDaysMinusOneHour];
-    XCTAssert( [self.storedLogin isTokenCreatedOnDateExpired:creationDate] );
+    expirationDate = [NSDate dateWithTimeIntervalSinceNow:-thirtyDaysMinusOneHour];
+    XCTAssert( [self.storedLogin isTokenExpirationDateExpired:expirationDate] );
     
-    creationDate = [NSDate dateWithTimeIntervalSinceNow:-thirtyDaysMinusOneHour + 1];
-    XCTAssertFalse( [self.storedLogin isTokenCreatedOnDateExpired:creationDate] );
+    expirationDate = [NSDate dateWithTimeIntervalSinceNow:-thirtyDaysMinusOneHour + 1];
+    XCTAssertFalse( [self.storedLogin isTokenExpirationDateExpired:expirationDate] );
 }
 
 @end
