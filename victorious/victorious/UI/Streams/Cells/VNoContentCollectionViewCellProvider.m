@@ -30,7 +30,7 @@
 
 - (void)registerNoContentCellWithCollectionView:(UICollectionView *)collectionView
 {
-    NSParameterAssert([collectionView isKindOfClass:[UICollectionView class]]);
+    NSParameterAssert( [collectionView isKindOfClass:[UICollectionView class]] );
     [collectionView registerClass:[VNoContentCollectionViewCell class] forCellWithReuseIdentifier:[VNoContentCollectionViewCell suggestedReuseIdentifier]];
 }
 
@@ -41,8 +41,8 @@
 
 - (UICollectionViewCell *)noContentCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
-    NSParameterAssert(collectionView);
-    NSParameterAssert(indexPath);
+    NSParameterAssert( collectionView != nil );
+    NSParameterAssert( indexPath != nil );
     return [collectionView dequeueReusableCellWithReuseIdentifier:[VNoContentCollectionViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
 }
 
