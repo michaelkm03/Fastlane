@@ -182,18 +182,6 @@
                                                return NSLocalizedString(message, @"");
                                            }];
         
-#warning TESTING ONLY:  Allows some successful requests, but then simulates 1 failure due a bad token, the resumes success
-        static int successfulReqestsRemaining = 15;
-        if ( --successfulReqestsRemaining == 0 && self.mainUser  )
-        {
-            error.errorCode = kVUnauthoizedError;
-            NSLog( @" >>>>> Simulating bad token" );
-        }
-        if (successfulReqestsRemaining > 0  )
-        {
-            NSLog( @" >>>>> Will simulate bad token after %@ more requests.", @(successfulReqestsRemaining) );
-        }
-        
         if ( error.errorCode == kVUnauthoizedError && self.mainUser )
         {
             [self logoutLocally];
@@ -219,6 +207,7 @@
         }
         else if (error.errorCode)
         {
+            NSString *thePath = path;
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                              userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
@@ -259,7 +248,7 @@
     {
         [[VRootViewController rootViewController] presentForceUpgradeScreen];
     }
-    else if( errorCode == kVUserBannedError )
+    else if( errorCode == kVUserBannedError && self.mainUser )
     {
         [self logoutLocally];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
