@@ -1,12 +1,12 @@
 //
-//  VStoredUser.m
+//  VStoredLogin.m
 //  victorious
 //
 //  Created by Patrick Lynch on 4/30/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStoredUser.h"
+#import "VStoredLogin.h"
 #import "VUser+RestKit.h"
 #import "VObjectManager.h"
 
@@ -15,9 +15,9 @@ static const NSTimeInterval kTokenExpirationDuration    = (60 * 60) * 24 * 30 - 
 static NSString * const kUserDefaultStoredUserIdKey     = @"com.getvictorious.VUserManager.StoredUserId";
 static NSString * const kKeychainTokenService           = @"com.getvictorious.VUserManager.Token";
 
-@implementation VStoredUser
+@implementation VStoredLogin
 
-- (VUser *)loadLastLoggedInUserFromDisk
+- (VUser *)lastLoggedInUserFromDisk
 {
     NSNumber *storedUserId = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredUserIdKey];
     if ( storedUserId == nil || storedUserId.integerValue == 0 )
@@ -39,16 +39,14 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
     }
     else
     {
-        VUser *user = [[VObjectManager sharedManager] objectWithEntityName:[VUser entityName] subclass:[VUser class]];
-        user.remoteId = storedUserId;
-        user.token = token;
-        return user;
+        return [self createNewUserWithRemoteId:storedUserId token:token];
     }
 }
 
 - (BOOL)saveLoggedInUserToDisk:(VUser *)user
 {
-    if ( user.remoteId == nil || user.remoteId.integerValue == 0 )
+    if ( user.remoteId == nil || user.remoteId.integerValue == 0 ||
+         user.token == nil || user.token.length == 0 )
     {
         return NO;
     }
@@ -138,6 +136,14 @@ static NSString * const kKeychainTokenService           = @"com.getvictorious.VU
                                   (__bridge id)kSecAttrService: kKeychainTokenService };
     OSStatus status = SecItemDelete( (__bridge CFDictionaryRef)dictionary );
     return status == errSecSuccess;
+}
+
+- (VUser *)createNewUserWithRemoteId:(NSNumber *)remoteId token:(NSString *)token
+{
+    VUser *user = [[VObjectManager sharedManager] objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    user.remoteId = remoteId;
+    user.token = token;
+    return user;
 }
 
 @end

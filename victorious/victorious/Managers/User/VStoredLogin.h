@@ -1,5 +1,5 @@
 //
-//  VStoredUser.h
+//  VStoredLogin.h
 //  victorious
 //
 //  Created by Patrick Lynch on 4/30/15.
@@ -14,7 +14,7 @@
  A class that manages storing user info to disk so that the application can log
  in quickly after loading without having to contact the server.
  */
-@interface VStoredUser : NSObject
+@interface VStoredLogin : NSObject
 
 /**
  Retrives an abbreviated user object read from disk that can be used to log in
@@ -24,7 +24,7 @@
  @return A valid user that can be set to the main user or nil if the operation failed.
  
  */
-- (VUser *)loadLastLoggedInUserFromDisk;
+- (VUser *)lastLoggedInUserFromDisk;
 
 /**
  Save only releveant data necessary to disk in order to to log in at a later time
