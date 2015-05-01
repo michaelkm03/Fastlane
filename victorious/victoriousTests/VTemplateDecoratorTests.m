@@ -146,4 +146,64 @@
     XCTAssertNil( [templateDecorator templateValueForKeyPath:@"key2/1/UNDEFINED_KEY"] );
 }
 
+- (void)testReplaceAllOccurrences
+{
+    NSDictionary *template = @{ @"key1" : @"value1",
+                                @"key2" : @{ @"subkey0" : @{ @"key1" : @"subvalue1",
+                                                             @"key2" : @"subvalue2" } },
+                                @"key3" : @[ @{ @"key1" : @"subarrayvalue1" } ] };
+    
+    VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+    
+    NSString *newStringValue = @"templateValue";
+    
+    XCTAssertThrows(  [templateDecorator setValue:nil forAllOccurencesOfKey:@"key1"] );
+    
+    [templateDecorator setValue:newStringValue forAllOccurencesOfKey:@"key1"];
+    
+    NSDictionary *output = templateDecorator.decoratedTemplate;
+    
+    XCTAssertEqualObjects( output[ @"key1" ], newStringValue );
+    XCTAssertEqualObjects( output[ @"key2" ][ @"subkey0" ][ @"key1" ], newStringValue );
+    XCTAssertEqualObjects( output[ @"key3" ][ 0 ][ @"key1" ], newStringValue );
+}
+
+- (void)testKeyPaths
+{
+    NSDictionary *template = @{ @"key1" : @"value1",
+                                @"key2" : @{ @"subkey0" : @{ @"key4" : @"subvalue1",
+                                                             @"key5" : @{ @"key4" : @"subvalue1",
+                                                                          @"key5" : @"subvalue2" } } },
+                                @"key3" : @[ @{ @"key6" : @"subarrayvalue1" } ],
+                                @"key3" : @[ @{ @"key6" : @"subarrayvalue2" } ],
+                                @"key7" : @{ @"key8" : @{ @"key6" : @"subvalue1" } } };
+    
+    VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+    
+    NSArray *keyPaths;
+    
+    keyPaths = [templateDecorator keyPathsForKey:@"key1"];
+    XCTAssertEqual( keyPaths.count, 1u );
+    XCTAssertEqualObjects( keyPaths[0], @"key1" );
+    
+    keyPaths = [templateDecorator keyPathsForKey:@"subkey0"];
+    XCTAssertEqual( keyPaths.count, 1u );
+    XCTAssertEqualObjects( keyPaths[0], @"key2/subkey0" );
+    
+    keyPaths = [templateDecorator keyPathsForKey:@"key5"];
+    XCTAssertEqual( keyPaths.count, 2u );
+    XCTAssert( [keyPaths containsObject:@"key2/subkey0/key5"] );
+    XCTAssert( [keyPaths containsObject:@"key2/subkey0/key5/key5"] );
+    
+    keyPaths = [templateDecorator keyPathsForKey:@"key6"];
+    XCTAssertEqual( keyPaths.count, 2u );
+    XCTAssert( [keyPaths containsObject:@"key3/0/key6"] );
+    XCTAssert( [keyPaths containsObject:@"key7/key8/key6"] );
+    
+    keyPaths = [templateDecorator keyPathsForKey:@"keyXXX"];
+    XCTAssertEqual( keyPaths.count, 0u );
+    
+    XCTAssertThrows( [templateDecorator keyPathsForKey:nil] );
+}
+
 @end

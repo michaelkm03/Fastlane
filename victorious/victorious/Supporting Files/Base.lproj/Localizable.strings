@@ -546,6 +546,8 @@
 
 "This will discard any content from the camera" = "This will discard any content from the camera";
 "Discard" = "Discard";
+"Video failed to load" = "Video failed to load";
+"We encountered an error trying to edit this video." = "We encountered an error trying to edit this video.";
 
 "#nofilter" = "#nofilter";
 "create a meme" = "create a meme";

@@ -17,6 +17,9 @@ static const CGFloat kStartScale                    = 1.0f;
 static const CGFloat kEndScale                      = 0.98f;
 static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 
+static const CGFloat kDisabledAlpha                 = 0.75f;
+static const CGFloat kMinimumTitleLabelScaleFactor  = 0.5f;
+
 static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
 
 @interface VButton ()
@@ -133,11 +136,20 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
             break;
     }
     
-    self.titleLabel.minimumScaleFactor = 0.5;
+    self.alpha = self.enabled ? 1.0f : kDisabledAlpha;
+    
+    self.titleLabel.minimumScaleFactor = kMinimumTitleLabelScaleFactor;
     
     self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     
     [self setNeedsDisplay];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    
+    [self updateAppearance];
 }
 
 - (void)setPrimaryColor:(UIColor *)primaryColor

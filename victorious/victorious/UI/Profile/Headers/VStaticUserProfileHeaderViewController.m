@@ -54,8 +54,10 @@
     return self.staticProfileImageView;
 }
 
-- (void)loadBackgroundImageFromURL:(NSURL *)imageURL
+- (void)updateProfileImage
 {
+    // For the blurred background we will use the low-res version
+    NSURL *imageURL = [NSURL URLWithString:self.user.pictureUrl];
     if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
     {
         [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];

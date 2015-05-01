@@ -19,7 +19,7 @@
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager+VUserProfile.h"
 
-const CGFloat VConversationCellHeight = 64.0f;
+const CGFloat VConversationCellHeight = 72.0f;
 static const CGFloat kLineSpacing = 3.0f;
 static const CGFloat kMinimumLineHeight = 15.0f;
 static const CGFloat kBaselineOffset = 0.5f;

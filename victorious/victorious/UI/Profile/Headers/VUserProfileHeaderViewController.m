@@ -14,7 +14,6 @@
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VImageAsset+Fetcher.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 
 #import <KVOController/FBKVOController.h>
@@ -74,11 +73,6 @@
     [self applyStyle];
 }
 
-- (void)loadBackgroundImageFromURL:(NSURL *)imageURL
-{
-    [self.backgroundImageView sd_setImageWithURL:imageURL placeholderImage:nil completed:nil];
-}
-
 - (void)clearBackgroundImage
 {
     [self.backgroundImageView setImage:nil];
@@ -116,9 +110,7 @@
 
 - (void)updateUser
 {
-    CGSize minSize = self.view.bounds.size;
-    VImageAsset *imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.user.previewAssets ];
-    [self loadBackgroundImageFromURL:[NSURL URLWithString:imageAsset.imageURL]];
+    [self updateProfileImage];
     
     if ( self.user != nil )
     {
@@ -127,6 +119,11 @@
     
     [self applyStyle];
     [self setupKVOControllerWithUser:self.user];
+}
+
+- (void)updateProfileImage
+{
+    NSAssert( NO, @"Must be overridden by subclasses." );
 }
 
 - (void)setState:(VUserProfileHeaderState)state
