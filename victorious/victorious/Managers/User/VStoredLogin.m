@@ -88,7 +88,6 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
 - (BOOL)isTokenExpirationDateExpired:(NSDate *)expirationDate
 {
     NSTimeInterval lifetimeRemaining = [expirationDate timeIntervalSinceNow];
-    NSLog( @">>>>>> %@", @(lifetimeRemaining - kTokenExpirationAnticipationDuration) );
     return lifetimeRemaining - kTokenExpirationAnticipationDuration <= 0;
 }
 
