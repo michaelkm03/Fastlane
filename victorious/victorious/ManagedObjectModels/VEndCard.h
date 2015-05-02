@@ -20,5 +20,6 @@
 @property (nonatomic, retain) VSequence *parentSequence;
 @property (nonatomic, retain) VSequence *nextSequence;
 @property (nonatomic, retain) NSString *streamName;
+@property (nonatomic, retain) NSNumber *permissionsMask;
 
 @end

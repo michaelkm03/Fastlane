@@ -8,6 +8,7 @@
 
 #import "VSequence.h"
 #import "VStreamItem+Fetcher.h"
+#import "VPermissions.h"
 
 @class VAsset;
 
@@ -21,11 +22,7 @@
 - (BOOL)isWebContent;
 - (BOOL)isPreviewWebContent;
 - (BOOL)isAnnouncement;
-- (BOOL)canDelete;
-- (BOOL)canRemix;
-- (BOOL)canComment;
-- (BOOL)canRepost;
-- (BOOL)isVoteCountVisible;
+- (BOOL)isRemixableType;
 - (BOOL)isGIFVideo;
 - (BOOL)isText;
 
@@ -39,5 +36,6 @@
 
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
+@property (nonatomic, readonly) VPermissions *permissions;
 
 @end

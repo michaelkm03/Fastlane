@@ -19,11 +19,12 @@
 
 + (RKEntityMapping *)entityMapping
 {
-    NSDictionary *propertyMap = @{ @"remix"     : VSelectorName(canRemix),
-                                   @"repost"    : VSelectorName(canRepost),
-                                   @"share"     : VSelectorName(canShare),
-                                   @"autoplay.timer_ms"  : VSelectorName(countdownDuration),
-                                   @"autoplay.stream_name"  : VSelectorName(streamName) };
+    NSDictionary *propertyMap = @{ @"remix"                 : VSelectorName(canRemix),
+                                   @"repost"                : VSelectorName(canRepost),
+                                   @"share"                 : VSelectorName(canShare),
+                                   @"autoplay.timer_ms"     : VSelectorName(countdownDuration),
+                                   @"autoplay.stream_name"  : VSelectorName(streamName),
+                                   @"permissions"           : VSelectorName(permissionsMask), };
 
     RKEntityMapping *mapping = [RKEntityMapping mappingForEntityForName:[self entityName]
                                                    inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
@@ -39,13 +40,11 @@
 
 + (RKEntityMapping *)childSequenceEntityMapping
 {
-    NSDictionary *propertyMap = @{
-                                  @"id"             :   VSelectorName(remoteId),
-                                  @"preview_image"  :   VSelectorName(previewImagesObject),
-                                  @"description"    :   VSelectorName(sequenceDescription),
-                                  @"category"       :   VSelectorName(category),
-                                  @"status"         :   VSelectorName(status),
-                                  };
+    NSDictionary *propertyMap = @{ @"id"             : VSelectorName(remoteId),
+                                   @"preview_image"  : VSelectorName(previewImagesObject),
+                                   @"description"    : VSelectorName(sequenceDescription),
+                                   @"category"       : VSelectorName(category),
+                                   @"status"         : VSelectorName(status) };
     
     RKEntityMapping *mapping = [RKEntityMapping mappingForEntityForName:[VSequence entityName]
                                                    inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];

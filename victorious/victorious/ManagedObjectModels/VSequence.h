@@ -24,7 +24,7 @@
 @property (nonatomic, retain) NSNumber * isRepost;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
-@property (nonatomic, retain) NSNumber * permissions;
+@property (nonatomic, retain) NSNumber * permissionsMask;
 @property (nonatomic, retain) NSDate * releasedAt;
 @property (nonatomic, retain) NSNumber * remixCount;
 @property (nonatomic, retain) NSNumber * repostCount;

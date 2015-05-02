@@ -155,7 +155,7 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
     
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
     
-    if ([sequence canComment])
+    if ( sequence.permissions.canComment )
     {
         [actionItems addObject:self.commentButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions]];
@@ -163,17 +163,17 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
     
     [actionItems addObject:self.shareButton];
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
-    if ([sequence canRepost])
+    if ( sequence.permissions.canRepost )
     {
         [actionItems addObject:self.repostButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     }
-    if ([sequence canRemix])
+    if ( sequence.permissions.canRemix )
     {
         [actionItems addObject:self.memeButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     }
-    if ([sequence canRemix] && [sequence isVideo])
+    if ( sequence.permissions.canRemix && [sequence isVideo])
     {
         [actionItems addObject:self.gifButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];

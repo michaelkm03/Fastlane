@@ -108,15 +108,15 @@ static const CGFloat kActionButtonWidth = 44.0f;
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
     [justActionItems addObject:self.shareButton];
-    if ([sequence canRemix] && [sequence isVideo])
+    if ( sequence.permissions.canRemix && [sequence isVideo])
     {
         [justActionItems addObject:self.gifButton];
     }
-    if ([sequence canRemix])
+    if ( sequence.permissions.canRemix )
     {
         [justActionItems addObject:self.memeButton];
     }
-    if ([sequence canRepost])
+    if ( sequence.permissions.canRemix )
     {
         [justActionItems addObject:self.repostButton];
     }

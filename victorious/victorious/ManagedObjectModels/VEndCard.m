@@ -19,5 +19,6 @@
 @dynamic nextSequence;
 @dynamic parentSequence;
 @dynamic streamName;
+@dynamic permissionsMask;
 
 @end

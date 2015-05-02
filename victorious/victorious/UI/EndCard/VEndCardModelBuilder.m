@@ -1,31 +1,31 @@
 //
-//  VEndCardModelFactory.m
+//  VEndCardModelBuilder.m
 //  victorious
 //
 //  Created by Patrick Lynch on 4/7/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VEndCardModelFactory.h"
+#import "VEndCardModelBuilder.h"
 #import "VSequence+Fetcher.h"
-#import "VEndCard.h"
+#import "VEndCard+Fetcher.h"
 #import "VEndCardModel.h"
 #import "VUser.h"
 #import "VEndCardActionModel.h"
 
 #define FORCE_SHOW_DEBUG_END_CARD 0
 
-@interface VEndCardModelFactory()
+@interface VEndCardModelBuilder()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VEndCardModelFactory
+@implementation VEndCardModelBuilder
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [[VEndCardModelFactory alloc] initWithDependencyManager:dependencyManager];
+    return [[VEndCardModelBuilder alloc] initWithDependencyManager:dependencyManager];
 }
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -83,19 +83,22 @@
 
 - (NSArray *)createActionsWithSequence:(VSequence *)sequence
 {
-    // Set up actions
     NSMutableArray *actions = [[NSMutableArray alloc] init];
-    if ( sequence.endCard.canRemix.boolValue )
+    if ( sequence.endCard.permissions.canRemix )
     {
         [actions addObject:[self actionForGIF]];
     }
-    if ( sequence.endCard.canRepost.boolValue )
+    if ( sequence.endCard.permissions.canRepost )
     {
         [actions addObject:[self actionForRespost]];
     }
-    if ( sequence.endCard.canShare.boolValue )
+    if ( sequence.endCard.permissions.canShare )
     {
         [actions addObject:[self actionForShare]];
+    }
+    if ( sequence.endCard.permissions.canMeme )
+    {
+        [actions addObject:[self actionForMeme]];
     }
     return [NSArray arrayWithArray:actions];
 }
@@ -126,6 +129,15 @@
     action.identifier = VEndCardActionIdentifierShare;
     action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
     action.iconImageNameDefault = @"action_share";
+    return action;
+}
+
+- (VEndCardActionModel *)actionForMeme
+{
+    VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
+    action.identifier = VEndCardActionIdentifierMeme;
+    action.textLabelDefault = NSLocalizedString( @"Meme", @"Meme this video" );
+    action.iconImageNameDefault = @"action_meme";
     return action;
 }
 

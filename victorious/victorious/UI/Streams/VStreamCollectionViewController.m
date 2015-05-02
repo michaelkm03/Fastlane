@@ -551,7 +551,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (BOOL)canRepostSequence:(VSequence *)sequence
 {
-    if (sequence.canRepost && ([VObjectManager sharedManager].mainUser != nil))
+    if ( sequence.permissions.canRepost && ([VObjectManager sharedManager].mainUser != nil) )
     {
         return YES;
     }

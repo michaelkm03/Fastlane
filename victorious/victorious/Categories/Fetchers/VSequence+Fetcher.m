@@ -15,16 +15,7 @@
 #import "VUser.h"
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
-
-typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
-{
-    VSequencePermissionOptionsNone        = 0,
-    VSequencePermissionOptionsDelete      = 1 << 0,
-    VSequencePermissionOptionsRemix       = 1 << 1,
-    VSequencePermissionOptionsVoteCount   = 1 << 2,
-    VSequencePermissionOptionsCanComment  = 1 << 3,
-    VSequencePermissionOptionsCanRepost   = 1 << 4,
-};
+#import "VPermissions.h"
 
 @implementation VSequence (Fetcher)
 
@@ -226,17 +217,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return @(0);
 }
 
-- (BOOL)canDelete
-{
-    if (self.permissions)
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsDelete);
-    }
-    return NO;
-}
-
-- (BOOL)canRemix
+- (BOOL)isRemixableType
 {
     if ( [self isPoll] )
     {
@@ -257,45 +238,12 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
         return NO;
     }
     
-    if (self.permissions)
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsRemix);
-    }
-    
     return YES;
 }
 
-- (BOOL)canComment
+- (VPermissions *)permissions
 {
-    if (self.permissions)
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsCanComment);
-    }
-    
-    return YES;
-}
-
-- (BOOL)canRepost
-{
-    if (self.permissions)
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsCanRepost);
-    }
-    
-    return YES;
-}
-
-- (BOOL)isVoteCountVisible
-{
-    if (self.permissions)
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsVoteCount);
-    }
-    return NO;
+    return [VPermissions permissionsWithNumber:self.permissionsMask];
 }
 
 @end

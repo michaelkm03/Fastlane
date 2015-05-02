@@ -1,5 +1,5 @@
 //
-//  VEndCardModelFactory.h
+//  VEndCardModelBuilder.h
 //  victorious
 //
 //  Created by Patrick Lynch on 4/7/15.
@@ -11,7 +11,7 @@
 
 @class VSequence, VEndCardModel;
 
-@interface VEndCardModelFactory : NSObject <VHasManagedDependencies>
+@interface VEndCardModelBuilder : NSObject <VHasManagedDependencies>
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 

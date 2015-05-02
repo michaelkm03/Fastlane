@@ -28,7 +28,7 @@
 @dynamic isRepost;
 @dynamic nameEmbeddedInContent;
 @dynamic parentUserId;
-@dynamic permissions;
+@dynamic permissionsMask;
 @dynamic releasedAt;
 @dynamic remixCount;
 @dynamic repostCount;

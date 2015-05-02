@@ -53,7 +53,7 @@
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
 #import "UIColor+VHex.h"
-#import "VEndCardModelFactory.h"
+#import "VEndCardModelBuilder.h"
 
 @interface VContentViewViewModel ()
 
@@ -310,7 +310,7 @@
                                                                         withLoop:[self loop]];
     }
     
-    VEndCardModelFactory *endCardBuilder = [[VEndCardModelFactory alloc] initWithDependencyManager:self.dependencyManager];
+    VEndCardModelBuilder *endCardBuilder = [[VEndCardModelBuilder alloc] initWithDependencyManager:self.dependencyManager];
     self.videoViewModel.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
 }
 
@@ -902,7 +902,7 @@
 
 - (NSString *)numberOfVotersText
 {
-    if (![self.sequence isVoteCountVisible])
+    if ( self.sequence.permissions.canShowVoteCount )
     {
         return nil;
     }
