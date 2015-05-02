@@ -189,7 +189,12 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
     self.doneButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.doneButton.style = VButtonStylePrimary;
     
-    self.agreeSwitch.onTintColor = [self.dependencyManager colorForKey:@"color.link"];
+    self.agreeSwitch.onTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+
+    self.profileImageView.layer.borderWidth = 2.0;
+    self.profileImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
+    self.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.profileImageView.backgroundColor = [UIColor whiteColor];
     
     // Accessibility IDs
     self.doneButton.accessibilityIdentifier = VAutomationIdentifierProfileDone;
@@ -601,10 +606,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 
 - (BOOL)shouldCreateProfile
 {
-    const BOOL isProfileImageRequired = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage];
-    
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
@@ -618,11 +620,6 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     if (!self.usernameTextField.text.length > 0)
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
-    }
-    
-    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && isProfileImageRequired)
-    {
-        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
 
     if (![self.agreeSwitch isOn])
