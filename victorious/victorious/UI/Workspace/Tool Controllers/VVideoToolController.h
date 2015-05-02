@@ -31,6 +31,12 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
  selectedSnapshotForEditing:(UIImage *)previewImage
         renderedSnapshotURL:(NSURL *)renderedMediaURL;
 
+/**
+ *  Informs the delegate that the video tool controller had a catastrophic failure and 
+ *  can no longer continue to function.
+ */
+- (void)videoToolControllerDidFail:(VVideoToolController *)videoToolController;
+
 @end
 
 /**

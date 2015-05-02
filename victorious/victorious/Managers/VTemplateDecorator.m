@@ -9,6 +9,7 @@
 #import "VTemplateDecorator.h"
 
 static NSString * const kJSONType = @"json";
+static NSString * const kKeyPathDelimiter = @"/";
 
 @interface VTemplateDecorator()
 
@@ -104,7 +105,7 @@ static NSString * const kJSONType = @"json";
 
 - (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath
 {
-    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:@"/"]];
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimiter]];
     BOOL didSetTemplateValue = NO;
     self.workingTemplate = [self collectionFromCollection:self.workingTemplate
                                    bySettingTemplateValue:templateValue
@@ -202,7 +203,7 @@ static NSString * const kJSONType = @"json";
 
 - (id)templateValueForKeyPath:(NSString *)keyPath
 {
-    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:@"/"]];
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimiter]];
     NSDictionary *source = [NSDictionary dictionaryWithDictionary:self.workingTemplate];
     return [self valueInCollection:source forKeyPathKeys:keyPathKeys];
 }
@@ -250,6 +251,132 @@ static NSString * const kJSONType = @"json";
         }
     }
     return nil;
+}
+
+- (void)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key
+{
+    NSParameterAssert( templateValue != nil );
+    
+    self.workingTemplate = [self setValue:templateValue forAllOccurencesOfKey:key inCollection:self.workingTemplate];
+}
+
+- (id)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key inCollection:(id)source
+{
+    NSParameterAssert( [source isKindOfClass:[NSArray class]] || [source isKindOfClass:[NSDictionary class]] );
+    
+    if ( [source isKindOfClass:[NSArray class]] )
+    {
+        NSMutableArray *destination = [[NSMutableArray alloc] init];
+        NSMutableArray *sourceArray = (NSMutableArray *)source;
+        for ( NSInteger i = 0; i < (NSInteger)sourceArray.count; i++ )
+        {
+            id value = sourceArray[ i ];
+            if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+            {
+                destination[ i ] = [self setValue:templateValue forAllOccurencesOfKey:key inCollection:value];
+            }
+            else
+            {
+                destination[ i ] = value;
+            }
+        }
+        return destination;
+    }
+    else if ( [source isKindOfClass:[NSDictionary class]] )
+    {
+        NSMutableDictionary *destination = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *sourceDictionary = (NSMutableDictionary *)source;
+        for ( NSString *templateKey in sourceDictionary.allKeys )
+        {
+            id value = ((NSDictionary *)source)[ templateKey ];
+            if ( [templateKey isEqualToString:key] )
+            {
+                destination[ templateKey ] = templateValue;
+            }
+            else
+            {
+                if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+                {
+                    destination[ templateKey ] = [self setValue:templateValue forAllOccurencesOfKey:key inCollection:value];
+                }
+                else
+                {
+                    destination[ templateKey ] = source[ templateKey ];
+                }
+            }
+        }
+        return destination;
+    }
+    
+    return nil;
+}
+
+- (NSArray *)keyPathsForKey:(NSString *)key
+{
+    NSParameterAssert( key != nil );
+    
+    NSMutableArray *completedKeyPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *workingKeyPath = [[NSMutableArray alloc] init];
+    [self searchCollection:self.workingTemplate forKey:key workingKeyPath:&workingKeyPath completedKeyPaths:&completedKeyPaths];
+    
+    NSMutableArray *output = [[NSMutableArray alloc] init];
+    for ( NSArray *keyPathArray in completedKeyPaths )
+    {
+        NSMutableString *mutableKeyPath = [[NSMutableString alloc] init];
+        for ( NSString *key in keyPathArray )
+        {
+            if ( ![mutableKeyPath isEqualToString:@""] )
+            {
+                [mutableKeyPath appendString:kKeyPathDelimiter];
+            }
+            [mutableKeyPath appendString:key];
+        }
+        [output addObject:[[NSString alloc] initWithString:mutableKeyPath]];
+    }
+    
+    return [[NSArray alloc] initWithArray:output];
+}
+
+- (void)searchCollection:(id)collection
+                  forKey:(NSString *)key
+          workingKeyPath:(NSMutableArray **)workingKeyPath
+       completedKeyPaths:(NSMutableArray **)completedKeyPaths
+{
+    if ( [collection isKindOfClass:[NSArray class]] )
+    {
+        NSArray *collectionArray = (NSArray *)collection;
+        for ( NSInteger i = 0; i < (NSInteger)collectionArray.count; i++ )
+        {
+            id value = collectionArray[ i ];
+            if ( [value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]] )
+            {
+                [*workingKeyPath addObject:@(i).stringValue];
+                [self searchCollection:value forKey:key workingKeyPath:workingKeyPath completedKeyPaths:completedKeyPaths];
+                [*workingKeyPath removeLastObject];
+            }
+        }
+    }
+    else if ( [collection isKindOfClass:[NSDictionary class]] )
+    {
+        NSDictionary *collectionDictionary = (NSDictionary *)collection;
+        for ( NSString *templateKey in collectionDictionary.allKeys )
+        {
+            id value = collectionDictionary[ templateKey ];
+            if ( [templateKey isEqualToString:key] )
+            {
+                [*workingKeyPath addObject:templateKey];
+                [*completedKeyPaths addObject:[NSArray arrayWithArray:*workingKeyPath]];
+                [*workingKeyPath removeLastObject];
+            }
+            
+            if ( [value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]] )
+            {
+                [*workingKeyPath addObject:templateKey];
+                [self searchCollection:value forKey:key workingKeyPath:workingKeyPath completedKeyPaths:completedKeyPaths];
+                [*workingKeyPath removeLastObject];
+            }
+        }
+    }
 }
 
 @end
