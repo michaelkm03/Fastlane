@@ -225,13 +225,17 @@
     
     if (error.code != kVUserBannedError)
     {
-        NSString       *message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
-                                            : NSLocalizedString(@"LoginFailMessage", @"");
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                               message:message
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                     otherButtonTitles:nil];
+        NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
+        
+        if ( error.code == kVUserOrPasswordInvalidError )
+        {
+            message = NSLocalizedString(@"Invalid email address or password", @"");
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                              otherButtonTitles:nil];
         [alert show];
     }
 }

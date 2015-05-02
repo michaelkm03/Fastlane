@@ -70,7 +70,7 @@
 "PasswordNotMatching" = "La contraseña no coincide";
 "PollAlreadyAnswered" = "El resultado de la encuesta ya fue dado";
 "LoginFail" = "Error al ingresar";
-"LoginFailMessage" = "¡Ups! Algo salió mal.";
+"GenericFailMessage" = "¡Ups! Algo salió mal.";
 "NotLoggedInMessage" = "¡Ups! parece que no has ingresado";
 "SignupFail" = "Error al crear la cuenta";
 "AccountUpdateFail" = "Error al actualizar la cuenta";
@@ -89,7 +89,6 @@
 "Profile load failed!" = "Error al cargar el perfil";
 
 "User already exists" = "El usuario ya existe";
-"No such user" = "No hay tal usuario";
 "Sorry, I can't display that right now" = "Lo sentimos, no podemos mostrar eso ahora";
 
 "WereSorry" = "Lo sentimos";

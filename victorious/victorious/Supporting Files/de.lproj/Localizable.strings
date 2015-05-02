@@ -70,7 +70,7 @@
 "PasswordNotMatching" = "Passwörter stimmen nicht überein";
 "PollAlreadyAnswered" = "Umfrageergebnis wurde bereits beantwortet";
 "LoginFail" = "Anmeldung fehlgeschlagen";
-"LoginFailMessage" = "Ups! Etwas ist schief gegangen.";
+"GenericFailMessage" = "Ups! Etwas ist schief gegangen.";
 "NotLoggedInMessage" = "Ups! Du scheinst nicht angemeldet zu sein.";
 "SignupFail" = "Kontoerstellung fehlgeschlagen";
 "AccountUpdateFail" = "Kontoaktualisierung fehlgeschlagen";
@@ -89,7 +89,6 @@
 "Profile load failed!" = "Laden des Profils fehlgeschlagen!";
 
 "User already exists" = "Nutzer bereits existiert";
-"No such user" = "Diesen Benutzer gibt es nicht";
 "Sorry, I can't display that right now" = "Leider kann dies gerade nicht angezeigt werden";
 
 "WereSorry" = "Entschuldige";

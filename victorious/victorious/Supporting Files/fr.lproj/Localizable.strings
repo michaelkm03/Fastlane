@@ -70,7 +70,7 @@
 "PasswordNotMatching" = "Les mots de passe ne correspondent pas";
 "PollAlreadyAnswered" = "Vous avez déjà répondu à ce sondage";
 "LoginFail" = "Échec de la connexion";
-"LoginFailMessage" = "Oups ! Une erreur s'est produite.";
+"GenericFailMessage" = "Oups ! Une erreur s'est produite.";
 "NotLoggedInMessage" = "Oups ! Il semblerait que vous ne soyez pas connecté(e).";
 "SignupFail" = "Échec de création du compte";
 "AccountUpdateFail" = "Échec de la mise à jour du compte";
@@ -89,7 +89,6 @@
 "Profile load failed!" = "Échec de chargement du profil !";
 
 "User already exists" = "L'utilisateur existe déjà";
-"No such user" = "Utilisateur inconnu";
 "Sorry, I can't display that right now" = "Désolé, je ne peux pas afficher cela pour le moment";
 
 "WereSorry" = "Nous sommes désolés";
