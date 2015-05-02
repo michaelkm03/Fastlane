@@ -54,6 +54,7 @@
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
+        self.noContentView.dependencyManager = self.dependencyManager;
         self.noContentView.iconImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.loginButton.primaryColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.loginButton.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading2FontKey];

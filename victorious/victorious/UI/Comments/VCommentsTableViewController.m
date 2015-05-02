@@ -153,6 +153,7 @@
     if (!hasComments)
     {
         VNoContentView *noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        noCommentsView.dependencyManager = self.dependencyManager;
         self.tableView.backgroundView = noCommentsView;
         noCommentsView.titleLabel.text = NSLocalizedString(@"NoCommentsTitle", @"");
         noCommentsView.messageLabel.text = NSLocalizedString(@"NoCommentsMessage", @"");

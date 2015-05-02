@@ -82,6 +82,7 @@
         if ( self.noContentView == nil )
         {
             VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
+            noContentView.dependencyManager = self.dependencyManager;
             noContentView.titleLabel.text = NSLocalizedString( @"NotFollowingTitle", @"" );
             noContentView.messageLabel.text = NSLocalizedString( @"NotFollowingMessage", @"" );
             noContentView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];

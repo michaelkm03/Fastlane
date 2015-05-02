@@ -261,10 +261,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+        noMessageView.dependencyManager = self.dependencyManager;
         noMessageView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
-        noMessageView.titleLabel.textColor = [UIColor whiteColor];
         noMessageView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
-        noMessageView.messageLabel.textColor = [UIColor whiteColor];
         noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
         self.tableView.backgroundView = noMessageView;
     }
