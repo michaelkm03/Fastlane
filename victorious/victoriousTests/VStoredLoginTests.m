@@ -132,14 +132,17 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
 
 - (void)testTokenExpiration
 {
-    NSTimeInterval thirtyDaysMinusOneHour = (60 * 60) * 24 * 30 - (60 * 60);
+    NSTimeInterval anticipationDuration = 60 * 60; ///< 1 hour in seconds
     NSDate *expirationDate;
     
-    expirationDate = [NSDate dateWithTimeIntervalSinceNow:-thirtyDaysMinusOneHour];
+    expirationDate = [NSDate dateWithTimeIntervalSinceNow:anticipationDuration + 5];  // Just before expiration date
+    XCTAssertFalse( [self.storedLogin isTokenExpirationDateExpired:expirationDate] );
+    
+    expirationDate = [NSDate dateWithTimeIntervalSinceNow:anticipationDuration]; // Exactly on expiration date
     XCTAssert( [self.storedLogin isTokenExpirationDateExpired:expirationDate] );
     
-    expirationDate = [NSDate dateWithTimeIntervalSinceNow:-thirtyDaysMinusOneHour + 1];
-    XCTAssertFalse( [self.storedLogin isTokenExpirationDateExpired:expirationDate] );
+    expirationDate = [NSDate dateWithTimeIntervalSinceNow:anticipationDuration - 5]; // Just after expiration date
+    XCTAssert( [self.storedLogin isTokenExpirationDateExpired:expirationDate] );
 }
 
 @end
