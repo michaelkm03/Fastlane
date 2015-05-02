@@ -57,7 +57,7 @@
     
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:[self.viewControllers v_map:^(UIViewController *viewController)
                                                                                       {
-                                                                                          return viewController.title;
+                                                                                          return viewController.navigationItem.title ?: @"";
                                                                                       }]];
     segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
     [segmentedControl setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
