@@ -164,10 +164,8 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="dwh-pj-t1S" firstAttribute="top" secondItem="r9d-Zd-uU3" secondAttribute="topMargin" constant="-8" id="CLa-0S-9ov"/>
-                                                <constraint firstItem="dwh-pj-t1S" firstAttribute="leading" secondItem="r9d-Zd-uU3" secondAttribute="leadingMargin" constant="7" id="ZQK-um-hVu"/>
                                                 <constraint firstAttribute="trailing" secondItem="dwh-pj-t1S" secondAttribute="trailing" constant="25" id="bhf-XU-XFh"/>
                                                 <constraint firstItem="dwh-pj-t1S" firstAttribute="top" secondItem="r9d-Zd-uU3" secondAttribute="top" id="f42-wt-BzE"/>
-                                                <constraint firstAttribute="bottom" secondItem="dwh-pj-t1S" secondAttribute="bottom" constant="1" id="lQg-Vd-rsR"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="dwh-pj-t1S" secondAttribute="bottom" constant="-7" id="mZ0-F7-ilt"/>
                                                 <constraint firstItem="dwh-pj-t1S" firstAttribute="leading" secondItem="r9d-Zd-uU3" secondAttribute="leading" constant="15" id="na7-0v-n65"/>
                                             </constraints>
