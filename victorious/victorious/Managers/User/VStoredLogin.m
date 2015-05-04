@@ -22,7 +22,7 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
 
 - (VUser *)lastLoggedInUserFromDisk
 {
-    NSNumber *storedUserId = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredUserIdKey];
+    NSNumber *storedUserId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultStoredUserIdKey];
     if ( storedUserId == nil || storedUserId.integerValue == 0 )
     {
         return nil;
@@ -34,7 +34,7 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
         return nil;
     }
     
-    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredExpirationDateKey];
+    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultStoredExpirationDateKey];
     if ( [self isTokenExpirationDateExpired:expirationDate] )
     {
         [self clearSavedToken];
@@ -48,13 +48,13 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
 
 - (VLoginType)lastLoginType
 {
-    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredExpirationDateKey];
+    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultStoredExpirationDateKey];
     if ( [self isTokenExpirationDateExpired:expirationDate] )
     {
         return VLoginTypeNone;
     }
     
-    NSNumber *loginTypeNumber = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultLoginTypeKey];
+    NSNumber *loginTypeNumber = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultLoginTypeKey];
     if ( loginTypeNumber == nil )
     {
         return VLoginTypeNone;
@@ -75,9 +75,9 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     const BOOL isNewToken = existingToken == nil || ![existingToken isEqualToString:user.token];
     if ( isNewToken ) //< We don't want to save the same token again otherwise we'll reset the creation date
     {
-        [[NSUserDefaults standardUserDefaults] setValue:user.remoteId forKey:kUserDefaultStoredUserIdKey];
-        [[NSUserDefaults standardUserDefaults] setValue:[self defaultExpirationDate] forKey:kUserDefaultStoredExpirationDateKey];
-        [[NSUserDefaults standardUserDefaults] setValue:@(loginType) forKey:kUserDefaultLoginTypeKey];
+        [[NSUserDefaults standardUserDefaults] setObject:user.remoteId forKey:kUserDefaultStoredUserIdKey];
+        [[NSUserDefaults standardUserDefaults] setObject:[self defaultExpirationDate] forKey:kUserDefaultStoredExpirationDateKey];
+        [[NSUserDefaults standardUserDefaults] setObject:@(loginType) forKey:kUserDefaultLoginTypeKey];
         [self clearSavedToken];
         return [self saveToken:user.token withUserId:user.remoteId];
     }
