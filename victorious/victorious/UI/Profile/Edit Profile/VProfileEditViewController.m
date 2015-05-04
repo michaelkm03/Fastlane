@@ -30,10 +30,7 @@
     [super viewDidLoad];
 
     [self.nameLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
-}
 
-- (void)viewWillAppear:(BOOL)animated
-{
     if (!self.profile)
     {
         [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse
@@ -47,7 +44,10 @@
              }
          }];
     }
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     self.nameLabel.text = self.profile.name;

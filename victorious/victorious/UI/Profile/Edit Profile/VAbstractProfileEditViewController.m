@@ -17,6 +17,7 @@
 #import "VNavigationController.h"
 #import "VDependencyManager.h"
 #import "VTemplateBackgroundView.h"
+#import "UIImageView+VLoadingAnimations.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 static const CGFloat kTextColor = 0.355f;
@@ -181,7 +182,8 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     {
         [backgroundImageView applyTintAndBlurToImageWithURL:profileImageURL
                                               withTintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
-        [self.profileImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
+        [self.profileImageView fadeInImageAtURL:profileImageURL
+                               placeholderImage:self.profileImageView.image];
     }
     else
     {

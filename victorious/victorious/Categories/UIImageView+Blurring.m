@@ -58,7 +58,7 @@ static const char kAssociatedBlurredOriginalImageKey;
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
-         [weakSelf blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:kDefaultAnimationDuration];
+         [weakSelf blurAndAnimateImageToVisible:image imageURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration];
      }];
 }
 
@@ -204,6 +204,27 @@ static const char kAssociatedBlurredOriginalImageKey;
 
 - (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration
 {
+    [self blurAndAnimateImageToVisible:image
+                              imageURL:nil
+                         withTintColor:tintColor
+                           andDuration:duration];
+}
+
+- (void)blurAndAnimateImageToVisible:(UIImage *)image
+                            imageURL:(NSURL *)urlForImage
+                       withTintColor:(UIColor *)tintColor
+                         andDuration:(NSTimeInterval)duration
+{
+    NSURL *blurredURL = [urlForImage URLByAppendingPathComponent:@"blurred"];
+    NSString *blurredKey = [blurredURL absoluteString];
+    UIImage *cachedBlurredImage = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:blurredKey];
+    if (cachedBlurredImage !=  nil)
+    {
+        self.image = cachedBlurredImage;
+        self.alpha = 1.0f;
+        return;
+    }
+    
     __weak UIImageView *weakSelf = self;
     self.alpha = 0.0f;
     objc_setAssociatedObject(weakSelf, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -225,8 +246,13 @@ static const char kAssociatedBlurredOriginalImageKey;
           {
               weakSelf.alpha = 1.0f;
           }
-                          completion:nil];
+                          completion:^(BOOL finished)
+          {
+              [[[SDWebImageManager sharedManager] imageCache] storeImage:blurredImage
+                                                                  forKey:blurredKey];
+          }];
      }];
+    
 }
 
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock
