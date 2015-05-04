@@ -16,6 +16,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Login.h"
 #import "VRootViewController.h"
+#import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
@@ -49,8 +50,8 @@ static int const kNotificationFetchBatchSize = 50;
     if (viewController)
     {
         viewController.dependencyManager = dependencyManager;
-        viewController.title = @"Notifications";
         viewController.navigationItem.rightBarButtonItem = nil;
+        [dependencyManager addPropertiesToNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
