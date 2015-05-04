@@ -160,14 +160,27 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
          }
                          executeBlock:^
          {
-             XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:loginType] );
+             [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:loginType];
              VLoginType lastLoginType = [self.storedLogin lastLoginType];
              XCTAssertEqual( lastLoginType, loginType );
              [self.storedLogin clearLoggedInUserFromDisk];
          }];
     }
     
-    
+    for ( NSInteger i = 0; i < VLoginTypeCount; i++ )
+    {
+        VLoginType loginType = (VLoginType)i;
+        [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
+         {
+             return YES;
+         }
+                         executeBlock:^
+         {
+             [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:loginType];
+             VLoginType lastLoginType = [self.storedLogin lastLoginType];
+             XCTAssertEqual( lastLoginType, VLoginTypeNone );
+         }];
+    }
 }
 
 @end
