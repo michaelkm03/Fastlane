@@ -197,7 +197,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     RKObjectManager *manager = [RKObjectManager sharedManager];
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(postedAt)) ascending:NO];
 
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
@@ -402,13 +402,15 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     };
 
     self.refreshRequest = [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
-                                                                              successBlock:success failBlock:fail];
+                                                                              successBlock:success
+                                                                                 failBlock:fail];
 }
 
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeNext
-                                                        successBlock:nil failBlock:nil];
+                                                        successBlock:nil
+                                                           failBlock:nil];
 }
 
 #pragma mark - Search

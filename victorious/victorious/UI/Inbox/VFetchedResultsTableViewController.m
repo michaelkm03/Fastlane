@@ -69,6 +69,31 @@
     [self performFetch];
 }
 
+- (void)clearFetchControllerWithSuccess:(void (^)(void))successBlock andFailure:(void (^)(NSError *))failureBlock
+{
+    for ( NSManagedObject *managedObject in self.fetchedResultsController.fetchedObjects )
+    {
+        [self.fetchedResultsController.managedObjectContext deleteObject:managedObject];
+    }
+    NSError *error;
+    BOOL success = [self.fetchedResultsController.managedObjectContext saveToPersistentStore:&error];
+    if ( success )
+    {
+        if ( successBlock != nil )
+        {
+            successBlock();
+        }
+    }
+    else
+    {
+        //The save has failed, call the failure block if one has been provided
+        if ( failureBlock != nil )
+        {
+            failureBlock(error);
+        }
+    }
+}
+
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self performFetch];

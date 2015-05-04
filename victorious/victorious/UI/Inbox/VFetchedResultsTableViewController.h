@@ -20,6 +20,8 @@
 - (NSFetchedResultsController *)makeFetchedResultsController;
 - (void)refreshFetchController;
 
+- (void)clearFetchControllerWithSuccess:(void (^)(void))successBlock andFailure:(void (^)(NSError *))failureBlock;
+
 - (void)registerCells;
 - (IBAction)refresh:(UIRefreshControl *)sender;
 

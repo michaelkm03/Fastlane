@@ -15,6 +15,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Login.h"
+#import "VPaginationManager.h"
 #import "VRootViewController.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
@@ -129,7 +130,7 @@ static int const kNotificationFetchBatchSize = 50;
     NSFetchRequest *fetchRequest = nil;
     
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(displayOrder)) ascending:YES];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(createdAt)) ascending:NO];
     
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:kNotificationFetchBatchSize];
@@ -208,6 +209,18 @@ static int const kNotificationFetchBatchSize = 50;
     }
 }
 
+- (void)markAllNotificationsRead
+{
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+    };
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [self.tableView reloadData];
+    };
+    [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
+}
+
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     if (self.refreshRequest != nil)
@@ -237,32 +250,36 @@ static int const kNotificationFetchBatchSize = 50;
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [self.refreshControl endRefreshing];
         if (self.refreshRequest == nil)
         {
-            [self.refreshControl endRefreshing];
             return;
         }
         self.refreshRequest = nil;
-        [self.refreshControl endRefreshing];
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
-        VFailBlock fail = ^(NSOperation *operation, NSError *error)
-        {
-        };
-        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-        {
-            [self.tableView reloadData];
-        };
-        [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
+        [self markAllNotificationsRead];
     };
     
-    self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-                                                                               successBlock:success failBlock:fail];
+    [self clearFetchControllerWithSuccess:^
+     {
+         self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
+                                                                                    successBlock:success
+                                                                                       failBlock:fail];
+     }
+                               andFailure:^(NSError *error)
+     {
+         [self.refreshControl endRefreshing];
+     }];
 }
 
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeNext
-                                                        successBlock:nil failBlock:nil];
+                                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self markAllNotificationsRead];
+     }
+                                                            failBlock:nil];
 }
 
 #pragma mark - NSNotification handlers
@@ -314,6 +331,29 @@ static int const kNotificationFetchBatchSize = 50;
     else
     {
         self.badgeNumber = 0;
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+    VAbstractFilter *filter = [[VObjectManager sharedManager] notificationFilterForCurrentUserFromManagedObjectContext:context];
+    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
+    
+    if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&
+        [[self.fetchedResultsController sections][0] numberOfObjects] &&
+        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] &&
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
+    {
+        [self loadNextPageAction];
+    }
+    
+    //Notify the container about the scroll so it can handle the header
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate scrollViewDidScroll:scrollView];
     }
 }
 
