@@ -89,13 +89,12 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
     self.registrationModel = [[VRegistrationModel alloc] init];
     
     self.agreementText.delegate = self;
-    self.agreementText.font = [self.dependencyManager fontForKey:@"font.label2"];
+    self.agreementText.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     [self.agreementText setText:NSLocalizedString(@"ToSAgreement", @"")];
     NSRange linkRange = [self.agreementText.text rangeOfString:NSLocalizedString(@"ToSText", @"")];
     if (linkRange.length > 0)
     {
-        self.agreementText.linkAttributes = @{(NSString *)
-                                              kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
+        self.agreementText.linkAttributes = @{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
         NSURL *url = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
