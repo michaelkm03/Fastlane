@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
-@class VDependencyManager;
-
 @interface VNoContentView : UIView <VHasManagedDependencies>
 
 @property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
