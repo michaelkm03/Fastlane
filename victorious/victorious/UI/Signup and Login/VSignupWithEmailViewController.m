@@ -18,9 +18,13 @@
 #import "MBProgressHUD.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
+#import "VSettingManager.h"
 #import "VAutomation.h"
 #import "VButton.h"
 #import "VInlineValidationTextField.h"
+#import "VTOSViewController.h"
+
+static NSString * const kVTermsOfServiceURL = @"tosURL";
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
@@ -28,6 +32,10 @@
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
 @property (nonatomic, weak) IBOutlet VButton *cancelButton;
 @property (nonatomic, weak) IBOutlet VButton *signupButton;
+
+@property (nonatomic, weak) IBOutlet UISwitch *agreeSwitch;
+@property (nonatomic, weak) IBOutlet TTTAttributedLabel *agreementText;
+
 @property (nonatomic, strong) VUser *profile;
 @property (nonatomic, strong) VRegistrationModel *registrationModel;
 
@@ -80,11 +88,26 @@
     
     self.registrationModel = [[VRegistrationModel alloc] init];
     
+    self.agreementText.delegate = self;
+    self.agreementText.font = [self.dependencyManager fontForKey:@"font.label2"];
+    [self.agreementText setText:NSLocalizedString(@"ToSAgreement", @"")];
+    NSRange linkRange = [self.agreementText.text rangeOfString:NSLocalizedString(@"ToSText", @"")];
+    if (linkRange.length > 0)
+    {
+        self.agreementText.linkAttributes = @{(NSString *)
+                                              kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
+        NSURL *url = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL];
+        [self.agreementText addLinkToURL:url withRange:linkRange];
+    }
+    
+    self.agreeSwitch.onTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    
     // Accessibility IDs
     self.cancelButton.accessibilityIdentifier = VAutomationIdentifierSignupCancel;
     self.signupButton.accessibilityIdentifier = VAutomationIdentifierSignupSubmit;
     self.emailTextField.accessibilityIdentifier = VAutomationIdentifierSignupUsernameField;
     self.passwordTextField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordField;
+    self.agreeSwitch.accessibilityIdentifier = VAutomationIdentifierProfileAgeAgreeSwitch;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -140,7 +163,7 @@
     
     [self.passwordValidator setConfirmationObject:nil
                                       withKeyPath:nil];
-    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
+    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError] && shouldSignup)
     {
         [self.passwordTextField showInvalidText:validationError.localizedDescription
                                        animated:YES
@@ -154,6 +177,23 @@
         [self.passwordTextField becomeFirstResponder];
     }
 
+    if (!self.agreeSwitch.isOn && shouldSignup)
+    {
+        shouldSignup = NO;
+        
+        NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredToS", @"")];
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileValidationDidFail parameters:params];
+        
+        // Show Error Message
+        UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                           message:errorMsg
+                                                          delegate:nil
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+        [alert show];
+    }
     
     return shouldSignup;
 }
@@ -266,7 +306,17 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    [[UIApplication sharedApplication] openURL:url];
+    VTOSViewController *termsOfServiceVC = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
+    termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
+    if ( self.navigationController != nil )
+    {
+        [self showViewController:termsOfServiceVC sender:nil];
+    }
+    else
+    {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:termsOfServiceVC];
+        [self presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Navigation

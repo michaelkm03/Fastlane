@@ -98,7 +98,7 @@
                                                          name:self.usernameTextField.text
                                               profileImageURL:self.updatedProfileImage
                                                      location:self.locationTextField.text
-                                                      tagline:self.taglineTextView.text
+                                                      tagline:nil
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];
