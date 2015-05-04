@@ -209,8 +209,14 @@
     NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidFail parameters:params];
     
+    NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
+    
+    if ( error.code == kVAccountAlreadyExistsError)
+    {
+        message = NSLocalizedString(@"User already exists", @"");
+    }
     UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
-                                                           message:error.localizedDescription
+                                                           message:message
                                                           delegate:nil
                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                  otherButtonTitles:nil];

@@ -10,8 +10,8 @@
 #import "VUser+RestKit.h"
 #import "VObjectManager.h"
 
-static const NSTimeInterval kTokenExpirationTotalDuration           = 30; //60 * 60 * 24 * 30; ///< 30 days in seconds
-static const NSTimeInterval kTokenExpirationAnticipationDuration    = 10; //60 * 60; ///< 1 hour in seconds
+static const NSTimeInterval kTokenExpirationTotalDuration           = 60 * 60 * 24 * 30; ///< 30 days in seconds
+static const NSTimeInterval kTokenExpirationAnticipationDuration    = 60 * 60; ///< 1 hour in seconds
 
 static NSString * const kUserDefaultStoredUserIdKey             = @"com.getvictorious.VUserManager.StoredUserId";
 static NSString * const kUserDefaultStoredExpirationDateKey     = @"com.getvictorious.VUserManager.StoredExpirationDate";
@@ -39,8 +39,7 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
         return nil;
     }
     
-    NSDate *creationDate = [self savedTokenCreationDateForUserId:storedUserId];
-    if ( [self isTokenExpirationDateExpired:creationDate] )
+    if ( [self isTokenExpirationDateExpired:expirationDate] )
     {
         [self clearSavedToken];
         return nil;
@@ -72,11 +71,6 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     return NO;
 }
 
-- (NSDate *)defaultExpirationDate
-{
-    return nil;
-}
-
 - (BOOL)clearLoggedInUserFromDisk
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultStoredUserIdKey];
@@ -86,10 +80,15 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
 
 #pragma mark - Private
 
+- (NSDate *)defaultExpirationDate
+{
+    return [NSDate dateWithTimeIntervalSinceNow:kTokenExpirationTotalDuration];
+}
+
 - (BOOL)isTokenExpirationDateExpired:(NSDate *)expirationDate
 {
-    NSTimeInterval tokenLifetime = ABS( [[NSDate date] timeIntervalSinceDate:expirationDate] );
-    return tokenLifetime >= kTokenExpirationTotalDuration - kTokenExpirationAnticipationDuration;
+    NSTimeInterval lifetimeRemaining = [expirationDate timeIntervalSinceNow];
+    return lifetimeRemaining - kTokenExpirationAnticipationDuration <= 0;
 }
 
 - (NSDictionary *)tokenKeychainItemForUserId:(NSNumber *)userId
@@ -120,16 +119,6 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     {
         NSData *keychainData = (NSData *)keychainItem[(__bridge id)(kSecValueData)];
         return [[NSString alloc] initWithData:keychainData encoding:NSUTF8StringEncoding];
-    }
-    return nil;
-}
-
-- (NSDate *)savedTokenCreationDateForUserId:(NSNumber *)userId
-{
-    NSDictionary *keychainItem = [self tokenKeychainItemForUserId:userId];
-    if ( keychainItem != nil )
-    {
-        return (NSDate *)keychainItem[(__bridge id)(kSecAttrCreationDate)];
     }
     return nil;
 }

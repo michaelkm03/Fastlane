@@ -1,6 +1,6 @@
 PODS:
   - AFNetworking (1.3.4)
-  - CCHLinkTextView (1.1.1)
+  - CCHLinkTextView (1.2.0)
   - FlurrySDK (5.4.0):
     - FlurrySDK/FlurrySDK (= 5.4.0)
   - FlurrySDK/FlurrySDK (5.4.0)
@@ -37,8 +37,7 @@ PODS:
   - TTTAttributedLabel (1.8.1)
 
 DEPENDENCIES:
-  - CCHLinkTextView (from `https://github.com/TouchFrame/CCHLinkTextView.git`, branch
-    `editable`)
+  - CCHLinkTextView
   - FlurrySDK (~> 5.4)
   - IGDigest (~> 1.1.0)
   - KVOController
@@ -49,24 +48,18 @@ DEPENDENCIES:
   - TTTAttributedLabel (~> 1.8.1)
 
 EXTERNAL SOURCES:
-  CCHLinkTextView:
-    :branch: editable
-    :git: https://github.com/TouchFrame/CCHLinkTextView.git
   Nocilla:
     :branch: block-response
     :git: https://github.com/TouchFrame/Nocilla.git
 
 CHECKOUT OPTIONS:
-  CCHLinkTextView:
-    :commit: 12b7f34f5626f68548bee7911bc4555a992fe2e6
-    :git: https://github.com/TouchFrame/CCHLinkTextView.git
   Nocilla:
     :commit: 7223801397388bf0d05ec6d25657468453245af1
     :git: https://github.com/TouchFrame/Nocilla.git
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
-  CCHLinkTextView: c51e40d285f61af7451c01e30e8cf364f5b36548
+  CCHLinkTextView: bfe688e0b7d34088375a466524158765832f7657
   FlurrySDK: 7f929b68dea38ce735979fb039229f62c0b697b5
   IGDigest: 066753c10f3f1b593b00037b9ee93dc96b9e7762
   ISO8601DateFormatterValueTransformer: a48b7632ae5c07b2f0ff1ffae11938733d62c8b9
