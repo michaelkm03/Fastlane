@@ -336,7 +336,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
-    if ( !self.didZoomFromDoubleTap && self.didCropZoom )
+    if ( !self.didZoomFromDoubleTap && !self.didCropZoom )
     {
         self.didCropZoom = YES;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithZoom];
