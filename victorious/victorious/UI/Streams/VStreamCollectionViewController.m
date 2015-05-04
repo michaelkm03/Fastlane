@@ -854,6 +854,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     remixStream.currentStream.name = NSLocalizedString(@"Remixes", nil);
     
     VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:remixStream.view.bounds];
+    if ( [noRemixView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        noRemixView.dependencyManager = self;
+    }
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
     noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
     noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];

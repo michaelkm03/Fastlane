@@ -7,19 +7,33 @@
 //
 
 #import "VNoContentView.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
+
+@interface VNoContentView ()
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@end
 
 @implementation VNoContentView
 
 + (instancetype)noContentViewWithFrame:(CGRect)frame
 {
-    VNoContentView *noContentView = [[[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:self options:nil] objectAtIndex:0];
+    VNoContentView *noContentView = [[[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:nil options:nil] objectAtIndex:0];
     
     noContentView.frame = frame;
-    noContentView.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    noContentView.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
 
     return noContentView;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+        self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+    }
 }
 
 @end
