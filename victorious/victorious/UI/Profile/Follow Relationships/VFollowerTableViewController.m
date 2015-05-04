@@ -210,7 +210,10 @@
         }
         
         VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
-        noFollowersView.dependencyManager = self.dependencyManager;
+        if ( [noFollowersView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noFollowersView.dependencyManager = self.dependencyManager;
+        }
         self.tableView.backgroundView = noFollowersView;
         noFollowersView.titleLabel.text = title;
         noFollowersView.messageLabel.text = msg;

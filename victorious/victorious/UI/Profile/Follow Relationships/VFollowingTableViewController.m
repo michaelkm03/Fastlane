@@ -238,7 +238,10 @@
         }
         
         VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
-        notFollowingView.dependencyManager = self.dependencyManager;
+        if ( [notFollowingView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            notFollowingView.dependencyManager = self.dependencyManager;
+        }
         self.tableView.backgroundView = notFollowingView;
         notFollowingView.titleLabel.text = title;
         notFollowingView.messageLabel.text = msg;

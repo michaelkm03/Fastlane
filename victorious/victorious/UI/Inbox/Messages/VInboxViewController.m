@@ -261,7 +261,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
-        noMessageView.dependencyManager = self.dependencyManager;
+        if ( [noMessageView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noMessageView.dependencyManager = self.dependencyManager;
+        }
         noMessageView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
         noMessageView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
         noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessagesIcon"];

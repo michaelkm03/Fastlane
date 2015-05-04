@@ -388,7 +388,10 @@ static NSInteger const kVMaxSearchResults = 1000;
     UIImage *messageIcon;
     
     VNoContentView *noResultsFoundView = [VNoContentView noContentViewWithFrame:self.searchResultsContainerView.frame];
-    noResultsFoundView.dependencyManager = self.dependencyManager;
+    if ( [noResultsFoundView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        noResultsFoundView.dependencyManager = self.dependencyManager;
+    }
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
         messageTitle = NSLocalizedString(@"No People Found In Search Title", @"");

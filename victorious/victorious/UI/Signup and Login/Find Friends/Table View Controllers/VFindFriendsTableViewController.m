@@ -244,7 +244,10 @@
     if (toShow)
     {
         VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.tableView.frame];
-        noFollowersView.dependencyManager = self.dependencyManager;
+        if ( [noFollowersView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noFollowersView.dependencyManager = self.dependencyManager;
+        }
         self.tableView.tableView.backgroundView = noFollowersView;
         noFollowersView.titleLabel.text = [NSLocalizedString(@"NoFriends", @"") uppercaseString];
         noFollowersView.messageLabel.text = NSLocalizedString(@"NoFriendsDetail", @"");

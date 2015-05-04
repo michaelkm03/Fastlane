@@ -9,6 +9,12 @@
 #import "VNoContentView.h"
 #import "VDependencyManager.h"
 
+@interface VNoContentView ()
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@end
+
 @implementation VNoContentView
 
 + (instancetype)noContentViewWithFrame:(CGRect)frame

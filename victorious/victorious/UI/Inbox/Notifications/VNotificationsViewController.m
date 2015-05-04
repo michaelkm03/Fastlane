@@ -160,7 +160,10 @@ static int const kNotificationFetchBatchSize = 50;
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         VNoContentView *noNotificationsView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
-        noNotificationsView.dependencyManager = self.dependencyManager;
+        if ( [noNotificationsView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noNotificationsView.dependencyManager = self.dependencyManager;
+        }
         noNotificationsView.titleLabel.text = NSLocalizedString(@"NoNotificationsTitle", @"");
         noNotificationsView.messageLabel.text = NSLocalizedString(@"NoNotificationsMessage", @"");
         noNotificationsView.iconImageView.image = [UIImage imageNamed:@"noNotificationsIcon"];

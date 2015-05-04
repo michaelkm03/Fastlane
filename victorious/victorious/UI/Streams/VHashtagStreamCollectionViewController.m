@@ -122,7 +122,10 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         if ( self.noContentView == nil )
         {
             VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
-            noContentView.dependencyManager = self.dependencyManager;
+            if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
+            {
+                noContentView.dependencyManager = self.dependencyManager;
+            }
             noContentView.titleLabel.text = NSLocalizedString( @"NoHashtagsTitle", @"" );
             noContentView.messageLabel.text = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
             noContentView.iconImageView.image = [UIImage imageNamed:@"tabIconHashtag"];
