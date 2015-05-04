@@ -400,10 +400,10 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
 - (void)logoutLocally
 {
+    self.mainUser = nil;
+    
     [[[VStoredLogin alloc] init] clearLoggedInUserFromDisk];
     [[VUserManager sharedInstance] userDidLogout];
-    
-    self.mainUser = nil;
 }
 
 #pragma mark - Password reset
