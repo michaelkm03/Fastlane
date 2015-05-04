@@ -18,6 +18,7 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+static const CGFloat kBlurredWhiteAlpha = 0.5f;
 static const CGFloat kFloatProfileImageSize = 57.0f;
 
 @interface VFloatingUserProfileHeaderViewController ()
@@ -132,7 +133,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
         
         [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
                                                placeholderImage:nil
-                                                      tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+                                                      tintColor:[UIColor colorWithWhite:0.0 alpha:kBlurredWhiteAlpha]];
         return;
     }
     if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
