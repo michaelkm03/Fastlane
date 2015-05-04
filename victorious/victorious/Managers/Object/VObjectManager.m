@@ -43,6 +43,7 @@
 
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
 @property (nonatomic, strong, readwrite) VUploadManager *uploadManager;
+@property (nonatomic, strong) NSString *sessionID;
 
 @end
 
@@ -478,6 +479,10 @@
     [request addValue:@"iOS" forHTTPHeaderField:@"X-Client-Platform"];
     [request addValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"X-Client-OS-Version"];
     [request addValue:appVersion forHTTPHeaderField:@"X-Client-App-Version"];
+    if ( self.sessionID != nil )
+    {
+        [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
+    }
     
     // Add location data to request if we have permission to collect it
     dispatch_async(dispatch_get_main_queue(), ^
@@ -522,6 +527,11 @@
     {
         return [object description];
     }
+}
+
+- (void)resetSessionID
+{
+    self.sessionID = [[NSUUID UUID] UUIDString];
 }
 
 @end
