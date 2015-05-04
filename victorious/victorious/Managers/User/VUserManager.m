@@ -121,12 +121,12 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
                 [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                             SuccessBlock:success
                                                                failBlock:^(NSOperation *operation, NSError *error)
-                {
-                    if (errorBlock)
-                    {
-                        errorBlock(error, NO);
-                    }
-                }];
+                 {
+                     if (errorBlock)
+                     {
+                         errorBlock(error, NO);
+                     }
+                 }];
             }
             else if (errorBlock)
             {

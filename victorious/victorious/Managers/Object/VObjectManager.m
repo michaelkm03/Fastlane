@@ -208,6 +208,7 @@
         }
         else if (error.errorCode)
         {
+            NSString *thePath = path;
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                              userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
@@ -248,7 +249,7 @@
     {
         [[VRootViewController rootViewController] presentForceUpgradeScreen];
     }
-    else if( errorCode == kVUserBannedError )
+    else if( errorCode == kVUserBannedError && self.mainUser )
     {
         [self logoutLocally];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
