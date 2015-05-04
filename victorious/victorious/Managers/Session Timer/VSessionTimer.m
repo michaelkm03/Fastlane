@@ -135,7 +135,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     // Tracking init (cold start)
     NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingInitKey] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-    [[VObjectManager sharedManager] resetSessionID];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
     
     // Set a default until the user logs in, either manually or automatically from saved info
