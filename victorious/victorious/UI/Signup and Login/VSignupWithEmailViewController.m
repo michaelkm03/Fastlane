@@ -185,7 +185,6 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
         NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileValidationDidFail parameters:params];
         
-        // Show Error Message
         UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
                                                            message:errorMsg
                                                           delegate:nil
@@ -193,7 +192,7 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
                                                  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
         [alert show];
     }
-    
+
     return shouldSignup;
 }
 
