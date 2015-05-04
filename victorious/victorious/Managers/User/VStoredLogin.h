@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VLoginType.h"
 
 @class VUser;
 
@@ -29,15 +30,21 @@
 - (VUser *)lastLoggedInUserFromDisk;
 
 /**
+ Returns the login type associated with the last logged in user that is saved to disk.
+ */
+- (VLoginType)lastLoginType;
+
+/**
  Save an abbreviated user object to disk to be retreived later when logging in
  during app load.
  
  @see userFromDisk
  
  @param user The currently logged in user to save.
+ @param loginType The method the user used to login in.
  @return Whether or not the write operation was successful.
  */
-- (BOOL)saveLoggedInUserToDisk:(VUser *)user;
+- (BOOL)saveLoggedInUserToDisk:(VUser *)user loginType:(VLoginType)loginType;
 
 /**
  Removes any data stored on the device about the last logged in user.  This

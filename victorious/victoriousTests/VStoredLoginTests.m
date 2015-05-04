@@ -66,12 +66,12 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
-    XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
+    XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
     
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser], @"Should NOT save the same token again." );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail], @"Should NOT save the same token again." );
     
     loggedInUser.token = @"adifferenttokendasoidsapd78ash0kd7as80das";
-    XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser], @"Should save the a different token." );
+    XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail], @"Should save the a different token." );
     
     XCTAssert( [self.storedLogin clearLoggedInUserFromDisk] );
     XCTAssertNil( lastLoggedInUser, @"Should return nil after a call to `clearLoggedInUserFromDisk`" );
@@ -85,19 +85,19 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     
     loggedInUser.remoteId = @(0);
     loggedInUser.token = kTestToken;
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
     
     loggedInUser.remoteId = nil;
     loggedInUser.token = kTestToken;
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
     
     loggedInUser.remoteId = @(32);
     loggedInUser.token = nil;
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
     
     loggedInUser.remoteId = @(32);
     loggedInUser.token = @"";
-    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
+    XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail] );
 }
 
 - (void)testLoadLastLoggedInUser
@@ -105,7 +105,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
     loggedInUser.remoteId = @(202);
     loggedInUser.token = kTestToken;
-    [self.storedLogin saveLoggedInUserToDisk:loggedInUser];
+    [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:VLoginTypeEmail];
     
     [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
      {
@@ -143,6 +143,31 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     
     expirationDate = [NSDate dateWithTimeIntervalSinceNow:anticipationDuration - 5]; // Just after expiration date
     XCTAssert( [self.storedLogin isTokenExpirationDateExpired:expirationDate] );
+}
+
+- (void)testLoginType
+{
+    VUser *loggedInUser = [VDummyModels objectWithEntityName:[VUser entityName] subclass:[VUser class]];
+    loggedInUser.remoteId = @(202);
+    loggedInUser.token = kTestToken;
+    
+    for ( NSInteger i = 0; i < VLoginTypeCount; i++ )
+    {
+        VLoginType loginType = (VLoginType)i;
+        [VStoredLogin v_swizzleMethod:@selector(isTokenExpirationDateExpired:) withBlock:^BOOL(NSDate *date)
+         {
+             return NO;
+         }
+                         executeBlock:^
+         {
+             XCTAssert( [self.storedLogin saveLoggedInUserToDisk:loggedInUser loginType:loginType] );
+             VLoginType lastLoginType = [self.storedLogin lastLoginType];
+             XCTAssertEqual( lastLoginType, loginType );
+             [self.storedLogin clearLoggedInUserFromDisk];
+         }];
+    }
+    
+    
 }
 
 @end

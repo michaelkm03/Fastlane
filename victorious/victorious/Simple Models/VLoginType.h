@@ -8,10 +8,11 @@
 
 @import Foundation;
 
-typedef NS_ENUM( NSUInteger, VLoginType )
+typedef NS_ENUM( NSInteger, VLoginType )
 {
     VLoginTypeNone,
     VLoginTypeEmail,
     VLoginTypeFaceBook,
     VLoginTypeTwitter,
+    VLoginTypeCount,
 };

@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager.h"
+#import "VLoginType.h"
 
 @class VDependencyManager;
 
@@ -17,6 +18,7 @@ extern NSString * const kLoggedInChangedNotification;
 @property (nonatomic, readonly) BOOL mainUserProfileComplete;
 @property (nonatomic, readonly) BOOL mainUserLoggedIn;
 @property (nonatomic, readonly) BOOL authorized;
+@property (nonatomic, readonly) BOOL mainUserLoggedInWithSocial;
 
 /**
  Retrieves the template from the server

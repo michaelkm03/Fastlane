@@ -41,6 +41,7 @@
 
 @interface VObjectManager ()
 
+@property (nonatomic, readwrite) VLoginType mainUserLoginType;
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
 @property (nonatomic, strong, readwrite) VUploadManager *uploadManager;
 

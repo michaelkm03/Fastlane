@@ -15,6 +15,7 @@ static const NSTimeInterval kTokenExpirationAnticipationDuration    = 60 * 60; /
 
 static NSString * const kUserDefaultStoredUserIdKey             = @"com.getvictorious.VUserManager.StoredUserId";
 static NSString * const kUserDefaultStoredExpirationDateKey     = @"com.getvictorious.VUserManager.StoredExpirationDate";
+static NSString * const kUserDefaultLoginTypeKey                = @"com.getvictorious.VUserManager.LoginType";
 static NSString * const kKeychainTokenService                   = @"com.getvictorious.VUserManager.Token";
 
 @implementation VStoredLogin
@@ -27,18 +28,13 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
         return nil;
     }
     
-    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredExpirationDateKey];
-    if ( expirationDate == nil )
-    {
-        return nil;
-    }
-    
     NSString *token = [self savedTokenForUserId:storedUserId];
     if ( token == nil )
     {
         return nil;
     }
     
+    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredExpirationDateKey];
     if ( [self isTokenExpirationDateExpired:expirationDate] )
     {
         [self clearSavedToken];
@@ -50,7 +46,24 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     }
 }
 
-- (BOOL)saveLoggedInUserToDisk:(VUser *)user
+- (VLoginType)lastLoginType
+{
+    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultStoredExpirationDateKey];
+    if ( [self isTokenExpirationDateExpired:expirationDate] )
+    {
+        return VLoginTypeNone;
+    }
+    
+    NSNumber *loginTypeNumber = [[NSUserDefaults standardUserDefaults] valueForKey:kUserDefaultLoginTypeKey];
+    if ( loginTypeNumber == nil )
+    {
+        return VLoginTypeNone;
+    }
+    
+    return (VLoginType)loginTypeNumber.integerValue;
+}
+
+- (BOOL)saveLoggedInUserToDisk:(VUser *)user loginType:(VLoginType)loginType
 {
     if ( user.remoteId == nil || user.remoteId.integerValue == 0 ||
          user.token == nil || user.token.length == 0 )
@@ -64,6 +77,7 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     {
         [[NSUserDefaults standardUserDefaults] setValue:user.remoteId forKey:kUserDefaultStoredUserIdKey];
         [[NSUserDefaults standardUserDefaults] setValue:[self defaultExpirationDate] forKey:kUserDefaultStoredExpirationDateKey];
+        [[NSUserDefaults standardUserDefaults] setValue:@(loginType) forKey:kUserDefaultLoginTypeKey];
         [self clearSavedToken];
         return [self saveToken:user.token withUserId:user.remoteId];
     }
@@ -75,6 +89,7 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultStoredUserIdKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultStoredExpirationDateKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultLoginTypeKey];
     return [self clearSavedToken];
 }
 
@@ -87,6 +102,10 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
 
 - (BOOL)isTokenExpirationDateExpired:(NSDate *)expirationDate
 {
+    if ( expirationDate == nil )
+    {
+        return YES;
+    }
     NSTimeInterval lifetimeRemaining = [expirationDate timeIntervalSinceNow];
     return lifetimeRemaining - kTokenExpirationAnticipationDuration <= 0;
 }
