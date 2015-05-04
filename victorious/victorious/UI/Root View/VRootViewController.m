@@ -86,6 +86,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     
+    [[VObjectManager sharedManager] resetSessionID];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
