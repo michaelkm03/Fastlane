@@ -218,9 +218,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
-        
-        [[VUserManager sharedInstance] logout];
-        
+        [[VObjectManager sharedManager] logout];
         [self updateLogoutButtonState];
     }
     else

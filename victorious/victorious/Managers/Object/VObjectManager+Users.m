@@ -47,6 +47,14 @@ static NSString * const kVAPIParamContext = @"context";
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
+    return [self fetchUser:userId forceReload:NO withSuccessBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
+                                   forceReload:(BOOL)forceReload
+                              withSuccessBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail
+{
     __block VUser *user = nil;
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     [context performBlockAndWait:^(void)
@@ -56,16 +64,15 @@ static NSString * const kVAPIParamContext = @"context";
                                 entityName:[VUser entityName]
                       managedObjectContext:context];
      }];
-    if (user)
+    if ( user != nil && !forceReload )
     {
-        if (success)
+        if ( success != nil )
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
                            {
-                               success(nil, nil, @[user]);
+                               success( nil, nil, @[user] );
                            });
         }
-        
         return nil;
     }
     
