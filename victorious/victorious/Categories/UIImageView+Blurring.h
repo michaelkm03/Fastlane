@@ -23,7 +23,27 @@
 - (void)applyLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url;
 - (void)setExtraLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage;
 - (void)applyExtraLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url;
+
+/**
+ *  Sets a blurred image to the receiving UIIMageView applying any tint color and animating the image from 0.0f alpha to 1.0f over the duration parameter.
+ *  If the image has already been blurred it will be cached and this method will first check the cache.
+ *  Passing nil to imageURL will circumvent any cacheing and force the animation to occur.
+ *
+ *  @param image The image to blur.
+ *  @param urlForImage A URL for the image that will be used to key off for the cache.
+ *  @param tintColor A color to tint the image with during bluring.
+ *  @param duration The duration for the fade-in animation.
+ */
+- (void)blurAndAnimateImageToVisible:(UIImage *)image
+                            imageURL:(NSURL *)urlForImage
+                       withTintColor:(UIColor *)tintColor
+                         andDuration:(NSTimeInterval)duration;
+
+/**
+ *  Internally calls "blurAndAnimateImageToVisible:imageURL:withTintColor:andDuration:" with a nil imageURL.
+ */
 - (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration;
+
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock;
 
 @end

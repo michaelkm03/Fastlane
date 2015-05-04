@@ -12,8 +12,7 @@
 #import "MBProgressHUD.h"
 
 #import "VObjectManager+Login.h"
-#import "VThemeManager.h"
-
+#import "VDependencyManager.h"
 #import "VUserProfileViewController.h"
 
 @interface VProfileEditViewController ()
@@ -28,9 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.nameLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
-
+    
     if (!self.profile)
     {
         [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse
@@ -73,6 +70,15 @@
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+#pragma mark - VHasManagedDependencies
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    
+    [self.nameLabel setTextColor:[dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
 }
 
 #pragma mark - Actions
