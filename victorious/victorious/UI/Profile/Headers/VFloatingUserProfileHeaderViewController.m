@@ -127,6 +127,14 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 - (void)updateProfileImage
 {
     NSURL *imageURL = [self getBestAvailableImage];
+    if ((imageURL == nil) || (imageURL.absoluteString.length == 0) )
+    {
+        
+        [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
+                                               placeholderImage:nil
+                                                      tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+        return;
+    }
     if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
     {
         [self.backgroundImageView sd_setImageWithURL:imageURL placeholderImage:nil completed:nil];

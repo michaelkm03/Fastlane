@@ -20,16 +20,24 @@ static const NSTimeInterval kDefaultAnimationDuration = 0.5f;
 
 static const char kAssociatedImageKey;
 static const char kAssociatedURLKey;
+static const char kAssociatedBlurredOriginaImageKey;
 
 @implementation UIImageView (Blurring)
 
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
+    if ([image isEqual:objc_getAssociatedObject(self, &kAssociatedBlurredOriginaImageKey)])
+    {
+        return;
+    }
+    
     __weak typeof(self) weakSelf = self;
+    objc_setAssociatedObject(self, &kAssociatedBlurredOriginaImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.image = placeholderImage;
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
-         weakSelf.image = blurredImage;
+         weakSelf.alpha = 0.0f;
+         [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
      }];
 }
 

@@ -42,6 +42,8 @@
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 
+static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
+
 // According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
@@ -677,7 +679,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          
          if ( self.isCurrentUser )
          {
-             [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+             [self performSegueWithIdentifier:kEditProfileSegueIdentifier sender:self];
          }
          else
          {

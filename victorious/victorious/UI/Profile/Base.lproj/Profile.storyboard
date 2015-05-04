@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="phZ-Da-bnR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="phZ-Da-bnR">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -37,7 +37,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="editProfile" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VKu-9O-01w" customClass="VProfileEditViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" id="o05-aU-osi">
-                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -52,16 +52,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="153"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fro-PP-RcJ">
-                                                    <rect key="frame" x="110" y="12" width="100" height="100"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fro-PP-RcJ" customClass="VDefaultProfileImageView">
+                                                    <rect key="frame" x="120" y="22" width="80" height="80"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="100" id="Gnw-PR-QDM"/>
-                                                        <constraint firstAttribute="height" constant="100" id="S79-jF-f0V"/>
+                                                        <constraint firstAttribute="width" constant="80" id="Gnw-PR-QDM"/>
+                                                        <constraint firstAttribute="height" constant="80" id="S79-jF-f0V"/>
                                                     </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UJd-2d-MK1">
-                                                    <rect key="frame" x="110" y="12" width="100" height="100"/>
-                                                    <state key="normal" image="PostCamera">
+                                                    <rect key="frame" x="120" y="22" width="80" height="80"/>
+                                                    <state key="normal">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -101,6 +101,7 @@
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lvT-v5-J29">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="50"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                                 </textField>
@@ -124,6 +125,7 @@
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bcg-p6-c76">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="50"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                                 </textField>
@@ -153,6 +155,7 @@
                                                 </textView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tell us about yourself..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Trt-Yx-Qae">
                                                     <rect key="frame" x="21" y="7" width="251" height="17"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -165,7 +168,6 @@
                                                 <constraint firstAttribute="trailing" secondItem="dwh-pj-t1S" secondAttribute="trailing" constant="25" id="bhf-XU-XFh"/>
                                                 <constraint firstItem="dwh-pj-t1S" firstAttribute="top" secondItem="r9d-Zd-uU3" secondAttribute="top" id="f42-wt-BzE"/>
                                                 <constraint firstAttribute="bottom" secondItem="dwh-pj-t1S" secondAttribute="bottom" constant="1" id="lQg-Vd-rsR"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="dwh-pj-t1S" secondAttribute="trailing" constant="17" id="mB7-bU-L4A"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="dwh-pj-t1S" secondAttribute="bottom" constant="-7" id="mZ0-F7-ilt"/>
                                                 <constraint firstItem="dwh-pj-t1S" firstAttribute="leading" secondItem="r9d-Zd-uU3" secondAttribute="leading" constant="15" id="na7-0v-n65"/>
                                             </constraints>
@@ -180,6 +182,7 @@
                             <outlet property="delegate" destination="VKu-9O-01w" id="FKi-gs-pOM"/>
                         </connections>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Edit Profile" id="AIv-0V-2Ca">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="MzP-qA-JLJ">
                             <connections>
@@ -316,9 +319,6 @@
             <point key="canvasLocation" x="323" y="816"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="PostCamera" width="34" height="26"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
