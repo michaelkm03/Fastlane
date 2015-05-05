@@ -20,6 +20,7 @@
 // Dependency Manager
 #import "VDependencyManager.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
@@ -29,10 +30,12 @@
 #import "VTransitionDelegate.h"
 #import "VDiscoverDeepLinkHandler.h"
 
-@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild>
+@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *horizontalRules;
+@property (weak, nonatomic) IBOutlet UIImageView *searchIconImageView;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
@@ -78,6 +81,14 @@
 
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.edgesForExtendedLayout = UIRectEdgeAll;
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
+    [self.horizontalRules enumerateObjectsUsingBlock:^(UIView *horizontalRule, NSUInteger idx, BOOL *stop)
+    {
+        horizontalRule.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    }];
+    self.searchIconImageView.image = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.searchIconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -229,5 +240,13 @@
                                         toViewController:toVC];
 }
 #endif
+
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
+}
 
 @end

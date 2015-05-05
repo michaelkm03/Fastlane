@@ -98,7 +98,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.tableView.backgroundColor = [UIColor clearColor];
     self.suggestedPeopleViewController.dependencyManager = dependencyManager;
     for ( UITableViewCell *cell in self.tableView.visibleCells )
     {
@@ -108,7 +107,8 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
         }
         else if ( [cell isKindOfClass:[VSuggestedPeopleCell class]] )
         {
-            [cell.contentView setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
+            UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+            [cell.contentView setBackgroundColor:backgroundColor];
         }
     }
 }
@@ -296,7 +296,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
             }
             
-            cell.contentView.backgroundColor = [UIColor clearColor];
+            customCell.backgroundColor = [UIColor clearColor];
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }

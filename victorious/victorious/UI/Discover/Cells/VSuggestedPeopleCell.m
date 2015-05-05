@@ -16,4 +16,12 @@
     return [VSuggestedPersonCollectionViewCell cellHeight];
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+
+    self.backgroundColor = [UIColor clearColor];
+    self.contentView.backgroundColor = [UIColor clearColor];
+}
+
 @end
