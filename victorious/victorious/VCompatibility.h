@@ -10,9 +10,27 @@
 #define victorious_VCompatibility_h
 
 #ifdef __LP64__
-#define CEIL(a) ceil(a)
+#define VCEIL(a) ceil(a)
 #else
-#define CEIL(a) ceilf(a)
+#define VCEIL(a) ceilf(a)
+#endif
+
+#ifdef __LP64__
+#define VFLOOR(a) floor(a)
+#else
+#define VFLOOR(B) floorf(B)
+#endif
+
+#if __LP64__
+#define VROUND(x) round(x)
+#else
+#define VROUND(x) roundf(x)
+#endif
+
+#if CGFLOAT_IS_DOUBLE
+#define VCGFLOAT_VALUE doubleValue
+#else
+#define VCGFLOAT_VALUE floatValue
 #endif
 
 #endif

@@ -20,7 +20,7 @@
                                           attributes:attributes
                                              context:nil];
     
-    return CGSizeMake(CEIL((boundingRect.size.width)), CEIL(boundingRect.size.height));
+    return CGSizeMake(VCEIL((boundingRect.size.width)), VCEIL(boundingRect.size.height));
 }
 
 - (NSURL *)mp4UrlFromM3U8
