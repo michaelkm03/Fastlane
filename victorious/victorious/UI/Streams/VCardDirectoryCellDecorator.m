@@ -1,23 +1,23 @@
 //
-//  VDirectoryCellDecorator.m
+//  VCardDirectoryCellDecorator.m
 //  victorious
 //
 //  Created by Patrick Lynch on 3/4/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VDirectoryCellDecorator.h"
-#import "VDirectoryItemCell.h"
+#import "VCardDirectoryCellDecorator.h"
+#import "VCardDirectoryCell.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VDependencyManager.h"
-#import "VDirectorySeeMoreItemCell.h"
+#import "VCardSeeMoreDirectoryCell.h"
 #import "VTagStringFormatter.h"
 
-@implementation VDirectoryCellDecorator
+@implementation VCardDirectoryCellDecorator
 
-- (void)populateCell:(VDirectoryItemCell *)cell withStreamItem:(VStreamItem *)streamItem
+- (void)populateCell:(VCardDirectoryCell *)cell withStreamItem:(VStreamItem *)streamItem
 {
     // Common data
     cell.nameLabel.text = streamItem.name;
@@ -28,7 +28,7 @@
     if ( [streamItem isKindOfClass:[VStream class]] )
     {
         VStream *stream = (VStream *)streamItem;
-        if ( stream.isStreamOfStreams )
+        if ( [VCardDirectoryCell wantsToShowStackedBackgroundForStreamItem:streamItem] )
         {
             cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NumStreams", @""), stream.count];
             cell.showStackedBackground = YES;
@@ -38,7 +38,6 @@
             cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NumItems", @""), stream.count];
             cell.showStackedBackground = NO;
         }
-        cell.nameLabel.textAlignment = NSTextAlignmentCenter;
     }
     else if ( [streamItem isKindOfClass:[VSequence class]] )
     {
@@ -46,12 +45,12 @@
         cell.showVideo = [sequence isVideo];
         cell.showStackedBackground = NO;
         cell.nameLabel.text = sequence.name;
-        cell.nameLabel.textAlignment = NSTextAlignmentLeft;
         cell.countLabel.text = @"";
     }
+    cell.nameLabel.textAlignment = NSTextAlignmentCenter;
 }
 
-- (void)applyStyleToCell:(VDirectoryItemCell *)cell withDependencyManager:(VDependencyManager *)dependencyManager
+- (void)applyStyleToCell:(VCardDirectoryCell *)cell withDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     UIColor *borderColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
@@ -68,16 +67,16 @@
     cell.countLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
 }
 
-- (void)applyStyleToSeeMoreCell:(VDirectorySeeMoreItemCell *)cell withDependencyManager:(VDependencyManager *)dependencyManager
+- (void)applyStyleToSeeMoreCell:(VCardSeeMoreDirectoryCell *)cell withDependencyManager:(VDependencyManager *)dependencyManager
 {
     cell.borderColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     cell.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
-    cell.imageColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    cell.imageColor = cell.seeMoreLabel.textColor;
     cell.seeMoreLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
-- (void)highlightTagsInCell:(VDirectoryItemCell *)cell withTagColor:(UIColor *)tagColor
+- (void)highlightTagsInCell:(VCardDirectoryCell *)cell withTagColor:(UIColor *)tagColor
 {
     NSAssert(tagColor != nil, @"To highlight tags, tag color must not be nil");
     

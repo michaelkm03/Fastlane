@@ -58,9 +58,18 @@
 {
     // For the blurred background we will use the low-res version
     NSURL *imageURL = [NSURL URLWithString:self.user.pictureUrl];
+    if ((imageURL == nil) || (imageURL.absoluteString.length == 0) )
+    {
+        
+        [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
+                                               placeholderImage:nil
+                                                      tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+        return;
+    }
     if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
     {
-        [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+        [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL
+                                                   withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  VDirectorySeeMoreItemCell.h
+//  VCardSeeMoreDirectoryCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/23/15.
@@ -8,7 +8,7 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@interface VDirectorySeeMoreItemCell : VBaseCollectionViewCell
+@interface VCardSeeMoreDirectoryCell : VBaseCollectionViewCell
 
 /**
  The border color of the cell, which should match the other cells in this row

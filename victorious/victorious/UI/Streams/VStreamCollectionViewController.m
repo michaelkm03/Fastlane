@@ -71,7 +71,7 @@
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <FBKVOController.h>
 
-#import "VAbstractDirectoryCollectionViewController.h"
+#import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VLinkSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
@@ -255,6 +255,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
             [(VStreamCollectionCell *)cell reloadCommentsCount];
         }
     }
+    
+    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
+    [self updateUserPostAllowed];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -402,7 +405,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     else if ( [streamItem isStreamOfStreams] )
     {
-        VAbstractDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VAbstractDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
+        VDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
         
         //Set the selected stream as the current stream in the directory
         directory.currentStream = (VStream *)streamItem;
@@ -531,6 +534,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
     [self.sequenceActionController showRemixOnViewController:self
                                                 withSequence:sequence
                                         andDependencyManager:self.dependencyManager

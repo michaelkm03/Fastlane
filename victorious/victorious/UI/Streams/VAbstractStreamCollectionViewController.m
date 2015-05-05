@@ -9,7 +9,7 @@
 #import "VAbstractStreamCollectionViewController.h"
 
 #import "VStreamCollectionViewDataSource.h"
-#import "VDirectoryItemCell.h"
+#import "VCardDirectoryCell.h"
 
 #import "MBProgressHUD.h"
 
