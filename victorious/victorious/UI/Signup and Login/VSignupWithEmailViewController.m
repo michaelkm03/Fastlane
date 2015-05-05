@@ -333,7 +333,7 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
-        profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.loginType = VLoginTypeEmail;
         profileViewController.registrationModel = self.registrationModel;
     }
 }

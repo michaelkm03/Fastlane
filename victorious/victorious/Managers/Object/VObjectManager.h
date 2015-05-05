@@ -7,6 +7,7 @@
 //
 
 #import "RKObjectManager.h"
+#import "VLoginType.h"
 
 @class VUploadManager, VPaginationManager, VUser;
 
@@ -17,9 +18,13 @@ typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
 
 @interface VObjectManager : RKObjectManager
 
-@property (nonatomic, readonly) VUser              *mainUser;
+@property (nonatomic, readonly) VUser *mainUser; ///< The user the is currently logged in.
+
+@property (nonatomic, readonly) VLoginType mainUserLoginType; ///< The type of login for the current user's current session.
+
 @property (nonatomic, readonly) VPaginationManager *paginationManager; ///< An object responsible for tracking paginated responses
-@property (nonatomic, readonly) VUploadManager     *uploadManager; ///< An object responsible for uploading files
+
+@property (nonatomic, readonly) VUploadManager *uploadManager; ///< An object responsible for uploading files
 
 + (void)setupObjectManager;
 

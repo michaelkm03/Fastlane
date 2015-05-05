@@ -410,7 +410,7 @@
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
-        profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.loginType = VLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.registrationStepDelegate = self;
