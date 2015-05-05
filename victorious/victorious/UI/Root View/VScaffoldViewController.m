@@ -140,6 +140,22 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     }
 }
 
+#pragma mark - Web content
+
+- (void)showWebContentWithURL:(NSURL *)url sequence:(VSequence *)sequence
+{
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:url sequence:sequence];
+    if ( contentView != nil )
+    {
+        if ( self.presentedViewController )
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
+        [self presentViewController:contentView animated:YES completion:nil];
+    }
+}
+
 #pragma mark - VLightweightContentViewControllerDelegate
 
 - (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController

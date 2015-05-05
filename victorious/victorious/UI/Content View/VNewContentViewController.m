@@ -1819,7 +1819,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 #pragma mark - VLinkSelectionResponder
 
-- (void)linkWithTextSelected:(NSString *)text
+- (void)urlSelected:(NSString *)text
+{
+    
+}
+
+- (void)hashtagSelected:(NSString *)text
 {
     //Tapped a hashtag, show a hashtag view controller
     VHashtagStreamCollectionViewController *hashtagViewController = [self.dependencyManager hashtagStreamWithHashtag:text];

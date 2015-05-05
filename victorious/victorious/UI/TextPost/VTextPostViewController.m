@@ -16,6 +16,7 @@
 #import "CCHLinkTextViewDelegate.h"
 #import "VLinkSelectionResponder.h"
 #import "UIColor+VBrightness.h"
+#import "VURLDetector.h"
 
 @interface VTextPostViewController () <CCHLinkTextViewDelegate>
 
@@ -29,6 +30,10 @@
 
 @property (nonatomic, strong) NSDictionary *calloutAttributes;
 @property (nonatomic, strong) NSDictionary *attributes;
+
+@property (nonatomic, strong) VURLDetector *urlDetector;
+@property (nonatomic, strong) NSArray *urlRanges;
+@property (nonatomic, strong) NSArray *hashtagRanges;
 
 @end
 
@@ -133,7 +138,15 @@
     NSArray *calloutRanges = [cache objectForKey:self.text];
     if ( calloutRanges == nil )
     {
-        calloutRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+        NSMutableArray *allRanges = [[NSMutableArray alloc] init];
+        
+        self.hashtagRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
+        [allRanges addObjectsFromArray:self.hashtagRanges];
+        
+        self.urlRanges = [self.urlDetector detectFromString:self.text];
+        [allRanges addObjectsFromArray:self.urlRanges];
+        
+        calloutRanges = [allRanges copy];
         [cache setObject:calloutRanges forKey:self.text];
     }
     
@@ -142,6 +155,15 @@
            calloutRanges:calloutRanges
           textAttributes:self.attributes
        calloutAttributes:self.calloutAttributes];
+}
+
+- (VURLDetector *)urlDetector
+{
+    if ( _urlDetector == nil )
+    {
+        _urlDetector = [[VURLDetector alloc] init];
+    }
+    return _urlDetector;
 }
 
 #pragma mark - public
@@ -249,17 +271,42 @@
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
     NSString *calloutText = (NSString *)value;
-    calloutText = [VHashTags stringByRemovingPrependingHashmarkFromString:calloutText];
     if ( calloutText == nil || calloutText.length == 0 )
     {
         return;
     }
     
-    id target = [self targetForAction:@selector(linkWithTextSelected:) withSender:self];
+    NSRange calloutRange = [self.text rangeOfString:calloutText];
+    if ( [self.hashtagRanges containsObject:[NSValue valueWithRange:calloutRange]] )
+    {
+        [self hashtagSelected:calloutText];
+    }
+    else if ( [self.urlRanges containsObject:[NSValue valueWithRange:calloutRange]] )
+    {
+        [self urlSelected:calloutText];
+    }
+}
+
+#pragma mark - Handling tapped callouts
+
+- (void)hashtagSelected:(NSString *)hashtag
+{
+    hashtag = [VHashTags stringByRemovingPrependingHashmarkFromString:hashtag];
+    id target = [self targetForAction:@selector(hashtagSelected:) withSender:self];
     if ( [target conformsToProtocol:@protocol(VLinkSelectionResponder)] )
     {
         id<VLinkSelectionResponder> responder = (id<VLinkSelectionResponder>)target;
-        [responder linkWithTextSelected:calloutText];
+        [responder hashtagSelected:hashtag];
+    }
+}
+
+- (void)urlSelected:(NSString *)urlString
+{
+    id target = [[self nextResponder] targetForAction:@selector(urlSelected:) withSender:self];
+    if ( [target conformsToProtocol:@protocol(VLinkSelectionResponder)] )
+    {
+        id<VLinkSelectionResponder> responder = (id<VLinkSelectionResponder>)target;
+        [responder urlSelected:urlString];
     }
 }
 

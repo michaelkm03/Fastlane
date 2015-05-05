@@ -93,11 +93,14 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewDidAppear:animated];
     
-    // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.sequence.remoteId,
-                              VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    if ( self.sequence != nil )
+    {
+        // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                  VTrackingKeySequenceId : self.sequence.remoteId,
+                                  VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

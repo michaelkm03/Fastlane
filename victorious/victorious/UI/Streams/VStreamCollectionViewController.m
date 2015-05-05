@@ -832,7 +832,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 #pragma mark - VLinkSelectionResponder
 
-- (void)linkWithTextSelected:(NSString *)text
+- (void)urlSelected:(NSString *)text
+{
+    NSURL *url = [NSURL URLWithString:text];
+    [[self.dependencyManager scaffoldViewController] showWebContentWithURL:url sequence:nil];
+}
+
+- (void)hashtagSelected:(NSString *)text
 {
     [self showHashtagStreamWithHashtag:text];
 }

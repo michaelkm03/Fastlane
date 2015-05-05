@@ -15,8 +15,13 @@
 @protocol VLinkSelectionResponder <NSObject>
 
 /**
- Called when a user taps the displayed callout text.
+ Called when a user taps a hashtag in some text.
  */
-- (void)linkWithTextSelected:(NSString *)text;
+- (void)hashtagSelected:(NSString *)text;
+
+/**
+ Called when a user taps a URL in some text.
+ */
+- (void)urlSelected:(NSString *)text;
 
 @end
