@@ -119,7 +119,7 @@
     {
         attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     }
-    attributes[ NSForegroundColorAttributeName ] = [UIColor whiteColor];
+    attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey] ?: [UIColor whiteColor];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
     attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;

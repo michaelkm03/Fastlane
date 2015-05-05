@@ -75,7 +75,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
     {
         _commentButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectZero];
         [_commentButton addTarget:self action:@selector(comment:) forControlEvents:UIControlEventTouchUpInside];
-        [_commentButton setImage:[UIImage imageNamed:@"D_commentIcon"] forState:UIControlStateNormal];
+        [_commentButton setImage:[[UIImage imageNamed:@"D_commentIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                        forState:UIControlStateNormal];
         [_commentButton v_addWidthConstraint:kCommentWidth];
         [_commentButton v_addHeightConstraint:kActionButtonHeight];
         _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -128,7 +129,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     if (_dependencyManager != nil)
     {
         //Override the default tint color to always have white text in the comment label
-        [self.commentButton setTintColor:[UIColor whiteColor]];
+        [self.commentButton setTintColor:[_dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey]];
         [[self.commentButton titleLabel] setFont:[_dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
         self.commentButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
