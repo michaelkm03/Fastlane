@@ -27,27 +27,13 @@
     {
         VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
-            // Add user relationship to local persistent store
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser addFollowingObject:user];
-            [moc saveToPersistentStore:nil];
+
             completion(user);
         };
         
         VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
         {
-            if (error.code == kVFollowsRelationshipAlreadyExistsError)
-            {
-                // Add user relationship to local persistent store
-                VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-                NSManagedObjectContext *moc = mainUser.managedObjectContext;
-                
-                [mainUser addFollowingObject:user];
-                [moc saveToPersistentStore:nil];
-            }
-            
+                        
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
                                                             message:error.localizedDescription
                                                            delegate:nil

@@ -124,10 +124,10 @@ static const CGFloat kFollowerCellHeight = 50.0f;
 {
     id<VFollowing> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                        withSender:nil];
+    NSAssert(followCommandHandler != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
     sender.enabled = NO;
     if (sender.following)
     {
-        
         [followCommandHandler unfollowUser:self.profile
                             withCompletion:^(VUser *userActedOn)
         {
