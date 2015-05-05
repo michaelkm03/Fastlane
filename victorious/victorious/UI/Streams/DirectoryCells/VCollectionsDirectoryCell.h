@@ -1,5 +1,5 @@
 //
-//  VDirectoryPlaylistCell.h
+//  VCollectionsDirectoryCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/24/15.
@@ -10,7 +10,7 @@
 
 @class VStreamItem, VDependencyManager;
 
-@interface VDirectoryCollectionsCell : VBaseCollectionViewCell
+@interface VCollectionsDirectoryCell : VBaseCollectionViewCell
 
 /**
  *  Animates the opacity and size of the cell to or from the "visible" state. A cell in the invisible state is slightly smaller and completely transparent.

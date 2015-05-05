@@ -1,12 +1,12 @@
 //
-//  VDirectoryPlaylistCell.m
+//  VCollectionsDirectoryCell.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 3/24/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VDirectoryCollectionsCell.h"
+#import "VCollectionsDirectoryCell.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStream+Fetcher.h"
@@ -24,7 +24,7 @@ static const CGFloat kInitialSpringVelocity = 0.4f;
 static const CGFloat kStartAnimationScale = 0.8f;
 
 
-@interface VDirectoryCollectionsCell ()
+@interface VCollectionsDirectoryCell ()
 
 /**
  The label that will hold the streamItem name
@@ -43,7 +43,7 @@ static const CGFloat kStartAnimationScale = 0.8f;
 
 @end
 
-@implementation VDirectoryCollectionsCell
+@implementation VCollectionsDirectoryCell
 
 - (void)awakeFromNib
 {
