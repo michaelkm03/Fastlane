@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VStreamCellFactory.h"
 
-@class VDependencyManager, VDirectoryCollectionFlowLayout;
+@class VDirectoryCollectionFlowLayout;
 
 @protocol VDirectoryCellFactory <NSObject, VStreamCellFactory>
 

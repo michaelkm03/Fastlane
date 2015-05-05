@@ -17,6 +17,7 @@
 #import "VStreamItem+Fetcher.h"
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
+#import "VCompatibility.h"
 
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
 static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
@@ -57,12 +58,12 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 + (CGFloat)directoryCellHeightForWidth:(CGFloat)width
 {
     CGFloat multiplicant = width / kStreamDirectoryGroupCellBaseWidth;
-    return floor( ( kStreamSubdirectoryItemCellBaseHeight * multiplicant ) );
+    return VFLOOR( ( kStreamSubdirectoryItemCellBaseHeight * multiplicant ) );
 }
 
 + (CGFloat)desiredCellWidthForBoundsWidth:(CGFloat)width
 {
-    return floor( ( width / kStreamDirectoryGroupCellBaseWidth ) * kStreamSubdirectoryItemCellBaseWidth );
+    return VFLOOR( ( width / kStreamDirectoryGroupCellBaseWidth ) * kStreamSubdirectoryItemCellBaseWidth );
 }
 
 #pragma mark - View Model
