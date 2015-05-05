@@ -7,11 +7,12 @@
 //
 
 #import "VAbstractStreamCollectionViewController.h"
+#import "VHasManagedDependencies.h"
 
 /**
-    A collectionViewController
+    A collection view controller that displays content in a format determined its "directoryCell" component
  */
-@interface VDirectoryCollectionViewController : VAbstractStreamCollectionViewController
+@interface VDirectoryCollectionViewController : VAbstractStreamCollectionViewController <VHasManagedDependencies>
 
 /**
     Navigates to a view controller that can appropriately display the provided stream item.
