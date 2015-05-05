@@ -35,8 +35,8 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
-@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *horizontalRules;
-@property (weak, nonatomic) IBOutlet UIImageView *searchIconImageView;
+@property (nonatomic, strong) IBOutletCollection(UIView) NSArray *horizontalRules;
+@property (nonatomic, weak) IBOutlet UIImageView *searchIconImageView;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
