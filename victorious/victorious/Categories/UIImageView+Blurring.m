@@ -20,16 +20,24 @@ static const NSTimeInterval kDefaultAnimationDuration = 0.5f;
 
 static const char kAssociatedImageKey;
 static const char kAssociatedURLKey;
+static const char kAssociatedBlurredOriginalImageKey;
 
 @implementation UIImageView (Blurring)
 
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
+    if ([image isEqual:objc_getAssociatedObject(self, &kAssociatedBlurredOriginalImageKey)])
+    {
+        return;
+    }
+    
     __weak typeof(self) weakSelf = self;
+    objc_setAssociatedObject(self, &kAssociatedBlurredOriginalImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.image = placeholderImage;
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
-         weakSelf.image = blurredImage;
+         weakSelf.alpha = 0.0f;
+         [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
      }];
 }
 
@@ -50,7 +58,7 @@ static const char kAssociatedURLKey;
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
-         [weakSelf blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:kDefaultAnimationDuration];
+         [weakSelf blurAndAnimateImageToVisible:image imageURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration];
      }];
 }
 
@@ -196,6 +204,27 @@ static const char kAssociatedURLKey;
 
 - (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration
 {
+    [self blurAndAnimateImageToVisible:image
+                              imageURL:nil
+                         withTintColor:tintColor
+                           andDuration:duration];
+}
+
+- (void)blurAndAnimateImageToVisible:(UIImage *)image
+                            imageURL:(NSURL *)urlForImage
+                       withTintColor:(UIColor *)tintColor
+                         andDuration:(NSTimeInterval)duration
+{
+    NSURL *blurredURL = [urlForImage URLByAppendingPathComponent:@"blurred"];
+    NSString *blurredKey = [blurredURL absoluteString];
+    UIImage *cachedBlurredImage = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:blurredKey];
+    if (cachedBlurredImage !=  nil)
+    {
+        self.image = cachedBlurredImage;
+        self.alpha = 1.0f;
+        return;
+    }
+    
     __weak UIImageView *weakSelf = self;
     self.alpha = 0.0f;
     objc_setAssociatedObject(weakSelf, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -217,8 +246,13 @@ static const char kAssociatedURLKey;
           {
               weakSelf.alpha = 1.0f;
           }
-                          completion:nil];
+                          completion:^(BOOL finished)
+          {
+              [[[SDWebImageManager sharedManager] imageCache] storeImage:blurredImage
+                                                                  forKey:blurredKey];
+          }];
      }];
+    
 }
 
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock

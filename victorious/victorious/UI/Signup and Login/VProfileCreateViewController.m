@@ -13,7 +13,6 @@
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VDependencyManager.h"
-#import "VSettingManager.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -25,8 +24,6 @@
 #import "VConstants.h"
 #import "UIImageView+WebCache.h"
 
-#import "VTOSViewController.h"
-
 #import "UIAlertView+VBlocks.h"
 #import "VAutomation.h"
 #import "VButton.h"
@@ -36,29 +33,20 @@
 @import CoreLocation;
 @import AddressBookUI;
 
-static NSString * const kVTermsOfServiceURL = @"tosURL";
-
-@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationManagerDelegate>
+@interface VProfileCreateViewController () <UITextFieldDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *locationTextField;
-@property (nonatomic, weak) IBOutlet UITextView *taglineTextView;
-@property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
-
 @property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VButton *doneButton;
 
 @property (nonatomic, strong) VLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geoCoder;
-
-@property (nonatomic, weak) IBOutlet UISwitch *agreeSwitch;
-@property (nonatomic, weak) IBOutlet TTTAttributedLabel *agreementText;
-@property (nonatomic, weak) IBOutlet VButton *doneButton;
 
 @property (nonatomic, strong) UIBarButtonItem *countDownLabel;
 @property (nonatomic, strong) UIBarButtonItem *usernameCountDownLabel;
 
 @property (nonatomic, assign) BOOL addedAccessoryView;
-
 @property (nonatomic, assign) CGFloat previousKeyboardHeight;
 
 @end
@@ -154,49 +142,20 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
         [self.locationManager.locationManager requestWhenInUseAuthorization];
     }
     
-    self.tagLinePlaceholderLabel.font = [self.dependencyManager fontForKey:@"font.header"];
-    [self.tagLinePlaceholderLabel setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
-
-    self.taglineTextView.tintColor = [self.dependencyManager colorForKey:@"color.link"];
-    self.taglineTextView.delegate = self;
-    self.taglineTextView.font = [self.dependencyManager fontForKey:@"font.header"];
-    if (self.profile.tagline)
-    {
-        self.taglineTextView.text = self.profile.tagline;
-    }
-    if ([self respondsToSelector:@selector(textViewDidChange:)])
-    {
-        [self textViewDidChange:self.taglineTextView];
-    }
-    
-    // Create Accessory Views
-    [self createInputAccessoryView];
-    
-    self.agreementText.delegate = self;
-    self.agreementText.font = [self.dependencyManager fontForKey:@"font.label2"];
-    [self.agreementText setText:NSLocalizedString(@"ToSAgreement", @"")];
-    NSRange linkRange = [self.agreementText.text rangeOfString:NSLocalizedString(@"ToSText", @"")];
-    if (linkRange.length > 0)
-    {
-        self.agreementText.linkAttributes = @{(NSString *)
-                                              kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
-        NSURL *url = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL];
-        [self.agreementText addLinkToURL:url withRange:linkRange];
-    }
-    
     self.doneButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.doneButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.doneButton.style = VButtonStylePrimary;
-    
-    self.agreeSwitch.onTintColor = [self.dependencyManager colorForKey:@"color.link"];
+
+    self.profileImageView.layer.borderWidth = 2.0;
+    self.profileImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
+    self.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.profileImageView.backgroundColor = [UIColor whiteColor];
     
     // Accessibility IDs
     self.doneButton.accessibilityIdentifier = VAutomationIdentifierProfileDone;
     self.usernameTextField.accessibilityIdentifier = VAutomationIdentifierProfileUsernameField;
     self.locationTextField.accessibilityIdentifier = VAutomationIdentifierProfileLocationField;
-    self.taglineTextView.accessibilityIdentifier = VAutomationIdentifierProfileTaglineField;
-    self.agreeSwitch.accessibilityIdentifier = VAutomationIdentifierProfileAgeAgreeSwitch;
     self.profileImageView.accessibilityIdentifier = VAutomationIdentifierProfilSelectImage;
 }
 
@@ -232,20 +191,6 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
     {
         [self.usernameTextField becomeFirstResponder];
     }
-    else if (!self.registrationModel.taglineText)
-    {
-        [self.taglineTextView becomeFirstResponder];
-    }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillChangeFrameNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -303,7 +248,7 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
     }
     else if ([textField isEqual:self.locationTextField])
     {
-        [self.taglineTextView becomeFirstResponder];
+        [self done:nil];
     }
     
     return NO;
@@ -329,145 +274,6 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
 {
     self.usernameCountDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsUsernameMaxLength - self.usernameTextField.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
-}
-
-#pragma mark - UITextViewDelegate
-
-- (void)textViewDidChange:(UITextView *)textView
-{
-    self.registrationModel.taglineText = self.taglineTextView.text;
-    self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
-    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.taglineTextView.text.length)
-                                                                 numberStyle:NSNumberFormatterDecimalStyle];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if ([text isEqualToString:@"\n"])
-    {
-        [textView resignFirstResponder];
-        return NO;
-    }
-    
-    return YES;
-}
-
-#pragma mark - Notification Handlers
-
-static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCurve curve)
-{
-    if ( curve > UIViewAnimationCurveLinear )
-    {
-        return UIViewAnimationOptionCurveEaseInOut;
-    }
-    /*
-     Can't find a better way, this little hack converts UIViewAnimationCurve to a UIViewAnimationOptions which is useful
-     for matching up the animation with the keyboard
-     */
-    return curve << 16;
-}
-
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    CGRect endKeyboardFrame;
-    [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&endKeyboardFrame];
-    
-    if ( self.previousKeyboardHeight == 0 )
-    {
-        self.previousKeyboardHeight = CGRectGetHeight(endKeyboardFrame);
-    }
-    
-    if ( [self.taglineTextView isFirstResponder] )
-    {
-        CGRect startKeyboardFrame;
-        [userInfo[UIKeyboardFrameBeginUserInfoKey] getValue:&startKeyboardFrame];
-
-        CGFloat heightDifference = endKeyboardFrame.size.height - self.previousKeyboardHeight;
-        
-        if ( heightDifference >= CGRectGetHeight(self.taglineTextView.inputAccessoryView.frame) && CGRectGetMinY(startKeyboardFrame) != CGRectGetHeight(self.view.bounds) )
-        {
-            //The tagTextView is active and just added it's accessoryView (which happens last) so set ready for animation
-            self.addedAccessoryView = YES;
-        }
-        
-        if ( self.addedAccessoryView && ( heightDifference != 0 || CGRectGetMinY(startKeyboardFrame) == CGRectGetHeight(self.view.bounds) ) )
-        {
-            [self updateContentOffsetForKeyboardNotification:notification];
-        }
-    }
-    else
-    {
-        //The tagTextView is not active so we'll see the accessoryView re-added before we need to animate again
-        self.addedAccessoryView = NO;
-    }
-    
-    self.previousKeyboardHeight = CGRectGetHeight(endKeyboardFrame);
-}
-
-- (void)updateContentOffsetForKeyboardNotification:(NSNotification *)notification
-{
-    NSTimeInterval animationDuration;
-    UIViewAnimationCurve animationCurve;
-    NSDictionary *userInfo = [notification userInfo];
-    CGRect endKeyboardFrame;
-    
-    [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&endKeyboardFrame];
-    
-    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    CGFloat yOffset = MAX( - (CGRectGetMinY(self.taglineTextView.frame) + CGRectGetHeight(self.taglineTextView.bounds) - CGRectGetHeight(self.view.bounds) + CGRectGetHeight(endKeyboardFrame) ), - self.taglineTextView.frame.origin.y );
-    animationDuration = animationDuration == 0 ? 0.25f : animationDuration;
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0f
-                        options:animationOptionsWithCurve(animationCurve)
-                     animations:^
-     {
-         //Animate the textview to just above the keyboard or, at worst, pinned to top of screen
-         self.view.frame = CGRectOffset(self.view.bounds, 0, yOffset);
-     }
-                     completion:nil];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    NSTimeInterval animationDuration;
-    UIViewAnimationCurve animationCurve;
-    NSDictionary *userInfo = [notification userInfo];
-    
-    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
-    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-    
-    [UIView animateWithDuration:animationDuration delay:0
-                        options:animationOptionsWithCurve(animationCurve)
-                     animations:^
-     {
-         self.view.frame = self.view.bounds;
-     }
-                     completion:nil];
-}
-
-#pragma mark - TTTAttributedLabelDelegate
-
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    VTOSViewController *termsOfServiceVC = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
-    termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
-    if ( self.navigationController != nil )
-    {
-        [self showViewController:termsOfServiceVC sender:nil];
-    }
-    else
-    {
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:termsOfServiceVC];
-        [self presentViewController:navigationController animated:YES completion:nil];
-    }
 }
 
 #pragma mark - VLocationManagerDelegate
@@ -540,8 +346,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     {
         if (!self.registrationModel.username.length &&
             !self.registrationModel.profileImageURL &&
-            !self.registrationModel.locationText.length &&
-            !self.registrationModel.taglineText.length)
+            !self.registrationModel.locationText.length)
         {
             [self didCreateProfile];
             return;
@@ -558,7 +363,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
                                                          name:registrationModel.username
                                               profileImageURL:registrationModel.profileImageURL
                                                      location:registrationModel.locationText
-                                                      tagline:registrationModel.taglineText
+                                                      tagline:nil
                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self didCreateProfile];
@@ -601,11 +406,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 
 - (BOOL)shouldCreateProfile
 {
-    const BOOL isProfileImageRequired = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage];
-    
-    BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired) &&
-                         ([self.agreeSwitch isOn]));
+    BOOL    isValid =   (self.usernameTextField.text.length > 0);
     
     if (isValid)
     {
@@ -618,16 +419,6 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     if (!self.usernameTextField.text.length > 0)
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
-    }
-    
-    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && isProfileImageRequired)
-    {
-        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
-    }
-
-    if (![self.agreeSwitch isOn])
-    {
-        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredToS", @"")];
     }
     
     NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
@@ -665,19 +456,10 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     [[self view] endEditing:YES];
 }
 
-- (void)createInputAccessoryView
-{
-    VContentInputAccessoryView *taglineInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
-    taglineInputAccessory.textInputView = self.taglineTextView;
-    taglineInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
-    self.taglineTextView.inputAccessoryView = taglineInputAccessory;
-}
-
 - (void)updateWithRegistrationModel
 {
     self.usernameTextField.text = self.registrationModel.username;
     self.locationTextField.text = self.registrationModel.locationText;
-    self.taglineTextView.text = self.registrationModel.taglineText;
     if (self.registrationModel.selectedImage)
     {
         self.profileImageView.image = self.registrationModel.selectedImage;

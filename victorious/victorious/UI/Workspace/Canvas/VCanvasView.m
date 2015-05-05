@@ -24,6 +24,8 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *canvasScrollView;
 @property (nonatomic, assign) BOOL didZoomFromDoubleTap;
+@property (nonatomic, assign) BOOL didCropZoom;
+@property (nonatomic, assign) BOOL didCropPan;
 @property (nonatomic, strong) NSCache *renderedImageCache;
 @property (nonatomic, strong) dispatch_queue_t renderingQueue;
 @property (nonatomic, strong) NSMutableArray *rendertimes;
@@ -334,8 +336,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
-    if ( !self.didZoomFromDoubleTap )
+    if ( !self.didZoomFromDoubleTap && !self.didCropZoom )
     {
+        self.didCropZoom = YES;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithZoom];
     }
     self.didZoomFromDoubleTap = NO;
@@ -343,8 +346,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if ( !scrollView.isZooming )
+    if ( !scrollView.isZooming && !self.didCropPan )
     {
+        self.didCropPan = YES;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithPan];
     }
 }
