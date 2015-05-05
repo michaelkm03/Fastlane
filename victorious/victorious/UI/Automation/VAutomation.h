@@ -40,7 +40,6 @@ static NSString * const VAutomationIdentifierSignupCancel               = @"Sign
 
 static NSString * const VAutomationIdentifierProfileUsernameField       = @"Profile Username Field";
 static NSString * const VAutomationIdentifierProfileLocationField       = @"Profile Location Field";
-static NSString * const VAutomationIdentifierProfileTaglineField        = @"Profile Tagline Field";
 static NSString * const VAutomationIdentifierProfileDone                = @"Profile Done";
 static NSString * const VAutomationIdentifierProfileAgeAgreeSwitch      = @"Profile Age Switch";
 static NSString * const VAutomationIdentifierProfilSelectImage          = @"Profile Select Image";
