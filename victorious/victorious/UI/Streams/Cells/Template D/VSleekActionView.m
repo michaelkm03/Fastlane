@@ -30,7 +30,6 @@ static CGFloat const kCommentSpaceToActions = 22.0f;
 static CGFloat const kInterActionSpace = 25.0f;
 static CGFloat const kCommentWidth = 68.0f;
 static CGFloat const kActionButtonHeight = 31.0f;
-static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 
 @interface VSleekActionView ()
 
@@ -137,6 +136,7 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
         [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
          {
              actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+             actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
          }];
     }
 }
@@ -212,10 +212,8 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 {
     VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    CGFloat colorVal = kActionBackgroundColorConstant;
-    actionButton.unselectedColor = [UIColor colorWithRed:colorVal green:colorVal blue:colorVal alpha:1.0f];
     actionButton.selected = NO;
-    actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    actionButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                   forState:UIControlStateNormal];
     [actionButton v_addWidthConstraint:kActionButtonHeight];
