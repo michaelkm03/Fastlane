@@ -18,17 +18,24 @@
 #import "MBProgressHUD.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
+#import "VSettingManager.h"
 #import "VAutomation.h"
 #import "VButton.h"
 #import "VInlineValidationTextField.h"
+#import "VTOSViewController.h"
+
+static NSString * const kVTermsOfServiceURL = @"tosURL";
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailTextField;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
 @property (nonatomic, weak) IBOutlet VButton *cancelButton;
 @property (nonatomic, weak) IBOutlet VButton *signupButton;
+
+@property (nonatomic, weak) IBOutlet UISwitch *agreeSwitch;
+@property (nonatomic, weak) IBOutlet TTTAttributedLabel *agreementText;
+
 @property (nonatomic, strong) VUser *profile;
 @property (nonatomic, strong) VRegistrationModel *registrationModel;
 
@@ -45,11 +52,9 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.emailTextField];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.confirmPasswordTextField];
     
     self.emailTextField.delegate = nil;
     self.passwordTextField.delegate = nil;
-    self.confirmPasswordTextField.delegate = nil;
 }
 
 - (void)viewDidLoad
@@ -58,7 +63,6 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.emailTextField];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.confirmPasswordTextField];
 
     self.cancelButton.style = VButtonStyleSecondary;
     self.cancelButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
@@ -82,19 +86,27 @@
     self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"") attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     self.passwordTextField.delegate = self;
     
-    [self.confirmPasswordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
-    self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-    self.confirmPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"") attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
-    self.confirmPasswordTextField.delegate = self;
-    
     self.registrationModel = [[VRegistrationModel alloc] init];
+    
+    self.agreementText.delegate = self;
+    self.agreementText.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+    [self.agreementText setText:NSLocalizedString(@"ToSAgreement", @"")];
+    NSRange linkRange = [self.agreementText.text rangeOfString:NSLocalizedString(@"ToSText", @"")];
+    if (linkRange.length > 0)
+    {
+        self.agreementText.linkAttributes = @{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
+        NSURL *url = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL];
+        [self.agreementText addLinkToURL:url withRange:linkRange];
+    }
+    
+    self.agreeSwitch.onTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     // Accessibility IDs
     self.cancelButton.accessibilityIdentifier = VAutomationIdentifierSignupCancel;
     self.signupButton.accessibilityIdentifier = VAutomationIdentifierSignupSubmit;
     self.emailTextField.accessibilityIdentifier = VAutomationIdentifierSignupUsernameField;
     self.passwordTextField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordField;
-    self.confirmPasswordTextField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordConfirmField;
+    self.agreeSwitch.accessibilityIdentifier = VAutomationIdentifierProfileAgeAgreeSwitch;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -133,7 +145,6 @@
 {
     NSError *validationError;
     BOOL shouldSignup = YES;
-    id newResponder = nil;
     
     if (![self.emailValidator validateString:self.emailTextField.text andError:&validationError])
     {
@@ -147,12 +158,11 @@
         
         shouldSignup = NO;
         [self.emailTextField becomeFirstResponder];
-        newResponder = self.emailTextField;
     }
     
     [self.passwordValidator setConfirmationObject:nil
                                       withKeyPath:nil];
-    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
+    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError] && shouldSignup)
     {
         [self.passwordTextField showInvalidText:validationError.localizedDescription
                                        animated:YES
@@ -163,30 +173,24 @@
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
         
         shouldSignup = NO;
-        if (newResponder == nil)
-        {
-            [self.passwordTextField becomeFirstResponder];
-            newResponder = self.passwordTextField;
-        }
+        [self.passwordTextField becomeFirstResponder];
     }
-    
-    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
-                                      withKeyPath:NSStringFromSelector(@selector(text))];
-    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
+
+    if (!self.agreeSwitch.isOn && shouldSignup)
     {
-        [self.confirmPasswordTextField showInvalidText:validationError.localizedDescription
-                                              animated:YES
-                                                 shake:YES
-                                                forced:YES];
-        
-        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
-        
         shouldSignup = NO;
-        if (newResponder == nil)
-        {
-            [self.confirmPasswordTextField becomeFirstResponder];
-        }
+        
+        NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredToS", @"")];
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileValidationDidFail parameters:params];
+        
+        UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                           message:errorMsg
+                                                          delegate:nil
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+        [alert show];
     }
 
     return shouldSignup;
@@ -209,8 +213,14 @@
     NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidFail parameters:params];
     
+    NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
+    
+    if ( error.code == kVAccountAlreadyExistsError)
+    {
+        message = NSLocalizedString(@"User already exists", @"");
+    }
     UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
-                                                           message:error.localizedDescription
+                                                           message:message
                                                           delegate:nil
                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                  otherButtonTitles:nil];
@@ -289,12 +299,8 @@
     }
     else if ([textField isEqual:self.passwordTextField])
     {
-        [self.confirmPasswordTextField becomeFirstResponder];
-    }
-    else
-    {
         [self signup:textField];
-        [self.confirmPasswordTextField resignFirstResponder];
+        [self.passwordTextField resignFirstResponder];
     }
     
     return YES;
@@ -304,7 +310,17 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    [[UIApplication sharedApplication] openURL:url];
+    VTOSViewController *termsOfServiceVC = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
+    termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
+    if ( self.navigationController != nil )
+    {
+        [self showViewController:termsOfServiceVC sender:nil];
+    }
+    else
+    {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:termsOfServiceVC];
+        [self presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Navigation
@@ -317,7 +333,7 @@
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
-        profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.loginType = VLoginTypeEmail;
         profileViewController.registrationModel = self.registrationModel;
     }
 }
@@ -360,25 +376,6 @@
         else
         {
             [textField hideInvalidText];
-        }
-    }
-    if (textField == self.confirmPasswordTextField)
-    {
-        [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
-                                          withKeyPath:NSStringFromSelector(@selector(text))];
-        BOOL validConfimration = [self.passwordValidator validateString:self.passwordTextField.text
-                                                               andError:&validationError];
-        if (!validConfimration)
-        {
-            [textField showInvalidText:validationError.localizedDescription
-                              animated:NO
-                                 shake:NO
-                                forced:NO];
-        }
-        else
-        {
-            [textField hideInvalidText];
-            [self.passwordTextField hideInvalidText];
         }
     }
 }

@@ -70,7 +70,7 @@
 "PasswordNotMatching" = "Les mots de passe ne correspondent pas";
 "PollAlreadyAnswered" = "Vous avez déjà répondu à ce sondage";
 "LoginFail" = "Échec de la connexion";
-"LoginFailMessage" = "Oups ! Une erreur s'est produite.";
+"GenericFailMessage" = "Oups ! Une erreur s'est produite.";
 "NotLoggedInMessage" = "Oups ! Il semblerait que vous ne soyez pas connecté(e).";
 "SignupFail" = "Échec de création du compte";
 "AccountUpdateFail" = "Échec de la mise à jour du compte";
@@ -167,7 +167,7 @@
 
 "TwitterDeniedTitle" = "Échec de l'accès à votre compte Twitter";
 "TwitterDenied" = "Veuillez accorder l'accès à votre compte Twitter depuis Paramètres → Confidentialité → Twitter";
-"TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
+"TwitterTroubleshooting" = "Veuillez essayer de supprimer et d'ajouter à nouveau votre compte twitter dans paramètres";
 
 "CameraRollDeniedTitle" = "Impossible d'accéder à vos photos";
 "CameraRollDenied" = "Veuillez accorder l'accès à vos photos depuis Paramètres → Confidentialité.";
@@ -176,6 +176,7 @@
 "StillCaptureFailed" = "Échec de la prise de photo";
 "VideoCaptureFailed" = "Échec de l'enregistrement de la vidéo";
 "VideoSaveFailed" = "Échec de la sauvegarde de la vidéo";
+"VideoCoachMessage" = "Appuyez et maintenez enfoncé pour enregistrer";
 
 "NoTwitterTitle" = "Aucun compte Twitter trouvé !";
 "NoTwitterMessage" = "Veuillez ouvrir les paramètres de votre appareil et ajouter un nouveau compte Twitter";

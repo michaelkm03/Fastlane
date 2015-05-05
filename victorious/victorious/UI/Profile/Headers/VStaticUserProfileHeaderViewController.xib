@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
@@ -39,18 +39,18 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Some really long user name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xdy-I6-0YY" userLabel="Username Label">
-                    <rect key="frame" x="20" y="146" width="560" height="21"/>
+                    <rect key="frame" x="20" y="136" width="560" height="41"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="DCF-ai-hzw"/>
+                        <constraint firstAttribute="height" constant="41" id="DCF-ai-hzw"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnb-2H-Iq8" userLabel="Location Label">
-                    <rect key="frame" x="20" y="169" width="560" height="25"/>
+                    <rect key="frame" x="20" y="162" width="560" height="41"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="25" id="g3Q-Zx-hhc"/>
+                        <constraint firstAttribute="height" constant="41" id="g3Q-Zx-hhc"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -164,7 +164,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="eWJ-1h-9hk" userLabel="Tagline Label">
-                    <rect key="frame" x="20" y="202" width="560" height="142"/>
+                    <rect key="frame" x="20" y="201" width="560" height="142"/>
                     <string key="text">Bacon ipsum dolor sit amet capicola fatback tongue tail pig sausage ribeye, bacon pancetta rump t-bone hamburger flank pork loin beef. Pork chop bacon t-bone pork loin ground round leberkas.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
@@ -177,9 +177,9 @@
                 <constraint firstItem="bHl-Un-gmi" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eWJ-1h-9hk" secondAttribute="bottom" constant="15" id="1nr-65-wGL"/>
                 <constraint firstAttribute="bottom" secondItem="bHl-Un-gmi" secondAttribute="bottom" id="AIm-qH-UOa"/>
                 <constraint firstItem="Xdy-I6-0YY" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="20" id="CF0-Ts-gn9"/>
-                <constraint firstItem="hnb-2H-Iq8" firstAttribute="top" secondItem="Xdy-I6-0YY" secondAttribute="bottom" constant="2" id="En6-uP-cI9"/>
-                <constraint firstItem="eWJ-1h-9hk" firstAttribute="top" secondItem="hnb-2H-Iq8" secondAttribute="bottom" constant="8" id="G4e-z5-Gfc"/>
-                <constraint firstItem="Xdy-I6-0YY" firstAttribute="top" secondItem="HHC-1V-OAe" secondAttribute="bottom" constant="17" id="IDX-TY-k9A"/>
+                <constraint firstItem="hnb-2H-Iq8" firstAttribute="top" secondItem="Xdy-I6-0YY" secondAttribute="bottom" constant="-15" id="En6-uP-cI9"/>
+                <constraint firstItem="eWJ-1h-9hk" firstAttribute="top" secondItem="hnb-2H-Iq8" secondAttribute="bottom" constant="-2" id="G4e-z5-Gfc"/>
+                <constraint firstItem="Xdy-I6-0YY" firstAttribute="top" secondItem="HHC-1V-OAe" secondAttribute="bottom" constant="7" id="IDX-TY-k9A"/>
                 <constraint firstItem="Nua-VV-KOT" firstAttribute="top" secondItem="HNG-L2-8S5" secondAttribute="top" id="WI5-T2-asj"/>
                 <constraint firstAttribute="bottom" secondItem="Nua-VV-KOT" secondAttribute="bottom" id="Y5d-Ys-eBR"/>
                 <constraint firstItem="eWJ-1h-9hk" firstAttribute="leading" secondItem="HNG-L2-8S5" secondAttribute="leading" constant="20" id="YQ3-gq-fUH"/>

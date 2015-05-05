@@ -17,19 +17,13 @@
 	</array>
 	<key>FacebookAppID</key>
 	<string>1374328719478033</string>
-	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
-	<key>TestflightReleaseAppToken</key>
-	<string>0081f0c5-880d-424a-8bde-32bf669e52c7</string>
-	<key>TestflightQAAppToken</key>
-	<string>241c11eb-6d64-4b2a-a1f0-1b51d74c42cc</string>
-	<key>TestflightStagingAppToken</key>
-	<string>91ddbb4b-759a-4029-96c6-fc51653eb638</string>
 	<key>VictoriousAppID</key>
 	<integer>6</integer>
 	<key>StagingAppID</key>
 	<integer>6</integer>
 	<key>QAAppID</key>
 	<integer>6</integer>
+	<key>FlurryAPIKey</key>
+	<string>5VDQV2TBRSQ7KY7JCPJX</string>
 </dict>
 </plist>

@@ -21,8 +21,6 @@
 #import "VFollowerEventResponder.h"
 #import "VDependencyManager+VUserProfile.h"
 
-static NSString * const kVUserResultIdentifier = @"followerCell";
-
 @interface VUserSearchResultsViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -109,8 +107,8 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kVUserResultIdentifier bundle:nil]
-         forCellReuseIdentifier:kVUserResultIdentifier];
+    [self.tableView registerNib:[VFollowerTableViewCell nibForCell]
+         forCellReuseIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [self.tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 }
@@ -179,7 +177,8 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
+    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]
+                                                                   forIndexPath:indexPath];
     VUser *profile = self.searchResults[indexPath.row];
     
     cell.profile = profile;

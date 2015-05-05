@@ -42,6 +42,8 @@
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 
+static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
+
 // According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
@@ -101,17 +103,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     viewController.user = aUser;
     
-    VUser *mainUser = [VObjectManager sharedManager].mainUser;
-    const BOOL isCurrentUser = (mainUser != nil && [aUser.remoteId isEqualToNumber:mainUser.remoteId]);
-    if ( isCurrentUser )
-    {
-        viewController.title = NSLocalizedString(@"me", "");
-    }
-    else
-    {
-        viewController.title = aUser.name ?: @"Profile";
-    }
-    
     return viewController;
 }
 
@@ -161,21 +152,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStateDidChange:)
                                                  name:kLoggedInChangedNotification object:nil];
-
+    
     [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
                                  pushAccessoryMenuItemsOn:self.navigationController];
     
-    [self createProfileHeader];
-    
-    if ( self.profileHeaderViewController != nil )
-    {
-        self.streamDataSource.hasHeaderCell = YES;
-        self.collectionView.alwaysBounceVertical = YES;
-        
-        [self.collectionView registerClass:[VProfileHeaderCell class]
-                forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
-
-    }
+    [self updateProfileHeader];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
@@ -187,17 +168,29 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self updateCollectionViewDataSource];
 }
 
-- (void)createProfileHeader
+- (void)updateProfileHeader
 {
     if ( self.user != nil )
     {
-        self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
-        self.profileHeaderViewController.delegate = self;
-        if ( self.profileHeaderViewController != nil )
+        if ( self.profileHeaderViewController == nil )
         {
-            self.streamDataSource.hasHeaderCell = YES;
-            self.profileHeaderViewController.delegate = self;
+            self.profileHeaderViewController = [self.dependencyManager userProfileHeaderWithUser:self.user];
+            if ( self.profileHeaderViewController != nil )
+            {
+                self.profileHeaderViewController.delegate = self;
+            }
         }
+        
+        BOOL hasHeader = self.profileHeaderViewController != nil;
+        if ( hasHeader )
+        {
+            [self.collectionView registerClass:[VProfileHeaderCell class]
+                    forCellWithReuseIdentifier:[VProfileHeaderCell preferredReuseIdentifier]];
+        }
+        
+        self.streamDataSource.hasHeaderCell = hasHeader;
+        self.profileHeaderViewController.user = self.user;
+        self.collectionView.alwaysBounceVertical = YES;
     }
 }
 
@@ -249,6 +242,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self attemptToRefreshProfileUI];
     
     self.navigationViewfloatingController.animationEnabled = YES;
+    
+    self.navigationItem.title = self.title;
 }
 
 - (void)viewDidLayoutSubviews
@@ -290,20 +285,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)setupFloatingView
 {
-    UIView *floatingView = self.profileHeaderViewController.floatingProfileImage;
     UIViewController *parent = [self v_navigationController];
-    if ( parent != nil && floatingView != nil && self.navigationViewfloatingController == nil )
+    if ( parent != nil && [self isDisplayingFloatingProfileHeader] && self.navigationViewfloatingController == nil )
     {
+        UIView *floatingView = self.profileHeaderViewController.floatingProfileImage;
         const CGFloat middle = CGRectGetMidY(self.profileHeaderViewController.view.bounds);
         const CGFloat thresholdStart = middle - kScrollAnimationThreshholdHeight * 0.5f;
         const CGFloat thresholdEnd = middle + kScrollAnimationThreshholdHeight * 0.5f;
         self.navigationViewfloatingController = [[VStreamNavigationViewFloatingController alloc] initWithFloatingView:floatingView
                                                                                          floatingParentViewController:parent
-                                                                                         verticalScrollThresholdStart:thresholdStart verticalScrollThresholdEnd:thresholdEnd];
+                                                                                         verticalScrollThresholdStart:thresholdStart
+                                                                                           verticalScrollThresholdEnd:thresholdEnd];
         self.navigationViewfloatingController.delegate = self;
         self.navigationViewfloatingController.animationEnabled = YES;
         self.navigationBarShouldAutoHide = NO;
-        self.title = nil;
+        self.navigationItem.title = self.title;
     }
 }
 
@@ -569,13 +565,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                                                                              action:@selector(findFriendsAction:)];
 }
 
-#pragma mark - Accessors
-
-- (NSString *)viewName
-{
-    return @"Profile";
-}
-
 #pragma mark - Actions
 
 - (IBAction)findFriendsAction:(id)sender
@@ -609,12 +598,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     _user = user;
     
-    self.profileHeaderViewController.user = user;
-
-    NSString *profileName = user.name ?: @"Profile";
-    
-    self.title = self.isCurrentUser ? NSLocalizedString(@"me", "") : profileName;
-    
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
@@ -622,22 +605,30 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.currentStream = [VStream streamForUser:self.user];
     
+    NSString *profileName = user.name ?: @"Profile";
+    
     //Update title AFTER updating current stream as that update resets the title to nil (because there is nil name in the stream)
-    self.navigationItem.title = profileName;
-
+    self.title = self.isCurrentUser ? NSLocalizedString(@"me", "") : profileName;
+    
+    [self updateProfileHeader];
+    
     [self attemptToRefreshProfileUI];
+    
+    [self setupFloatingView];
 }
 
-- (void)setTitle:(NSString *)title
+- (NSString *)title
 {
-    if ( self.profileHeaderViewController.floatingProfileImage != nil )
+    if ( [self isDisplayingFloatingProfileHeader] )
     {
-        [super setTitle:nil];
+        return nil;
     }
-    else
-    {
-        [super setTitle:title];
-    }
+    return [super title];
+}
+
+- (BOOL)isDisplayingFloatingProfileHeader
+{
+    return self.profileHeaderViewController.floatingProfileImage != nil;
 }
 
 - (IBAction)composeMessage:(id)sender
@@ -688,7 +679,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          
          if ( self.isCurrentUser )
          {
-             [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+             [self performSegueWithIdentifier:kEditProfileSegueIdentifier sender:self];
          }
          else
          {
@@ -802,7 +793,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateCollectionViewDataSource
 {
-    if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
+    if ( ![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser )
     {
         self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
         self.notLoggedInDataSource.delegate = self;

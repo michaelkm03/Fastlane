@@ -427,7 +427,7 @@
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;
-        profileViewController.loginType = kVLoginTypeFaceBook;
+        profileViewController.loginType = VLoginTypeFaceBook;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
@@ -436,7 +436,7 @@
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;
-        profileViewController.loginType = kVLoginTypeTwitter;
+        profileViewController.loginType = VLoginTypeTwitter;
         profileViewController.profile = self.profile;
         profileViewController.registrationStepDelegate = self;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
@@ -445,7 +445,7 @@
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;
-        profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.loginType = VLoginTypeEmail;
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
     }

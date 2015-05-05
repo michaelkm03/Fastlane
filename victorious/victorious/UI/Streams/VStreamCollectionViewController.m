@@ -74,6 +74,7 @@
 #import "VAbstractDirectoryCollectionViewController.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VLinkSelectionResponder.h"
+#import "VNoContentCollectionViewCellFactory.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -428,11 +429,16 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         return;
     }
     
+    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
+    {
+        return;
+    }
+    
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     UIImage *previewImage = nil;
-    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
         previewImage = ((VStreamCollectionCell *)cell).previewImageView.image;
@@ -503,8 +509,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     if ([dataSource count] > (NSUInteger)indexPath.row + 2u)
     {
         NSIndexPath *preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
-        VSequence *preloadSequence = (VSequence *)[dataSource itemAtIndexPath:preloadPath];
-        [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[preloadSequence initialImageURLs]];
+        VStreamItem *streamItem = [dataSource itemAtIndexPath:preloadPath];
+        if ( [streamItem isKindOfClass:[VSequence class]] )
+        {
+            [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[(VSequence *)streamItem initialImageURLs]];
+        }
     }
 }
 
@@ -522,6 +531,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
     [self.sequenceActionController showRemixOnViewController:self
                                                 withSequence:sequence
                                         andDependencyManager:self.dependencyManager
@@ -845,6 +856,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     remixStream.currentStream.name = NSLocalizedString(@"Remixes", nil);
     
     VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:remixStream.view.bounds];
+    if ( [noRemixView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        noRemixView.dependencyManager = self;
+    }
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
     noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
     noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];

@@ -12,7 +12,13 @@
 #import "VLinearGradientView.h"
 #import "VButton.h"
 #import "UIView+AutoLayout.h"
+#import "VImageAsset+Fetcher.h"
+#import "VUser.h"
+#import "UIImageView+Blurring.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
+static const CGFloat kBlurredWhiteAlpha = 0.5f;
 static const CGFloat kFloatProfileImageSize = 57.0f;
 
 @interface VFloatingUserProfileHeaderViewController ()
@@ -117,6 +123,48 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
         default:
             break;
     }
+}
+
+- (void)updateProfileImage
+{
+    NSURL *imageURL = [self getBestAvailableImage];
+    if ((imageURL == nil) || (imageURL.absoluteString.length == 0) )
+    {
+        
+        [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
+                                               placeholderImage:nil
+                                                      tintColor:[UIColor colorWithWhite:0.0 alpha:kBlurredWhiteAlpha]];
+        return;
+    }
+    if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
+    {
+        [self.backgroundImageView sd_setImageWithURL:imageURL placeholderImage:nil completed:nil];
+    }
+}
+
+// This is a half measure until the `previewAssets` array is more fully supported on the backend
+- (NSURL *)getBestAvailableImage
+{
+    NSURL *imageURL = nil;
+    BOOL canUseHighResAsset = YES; // Until proven otherwise
+    
+    // Try to load high-res from server and make sure it's valid and large enough to display
+    if ( self.user.previewAssets.count > 0 )
+    {
+        CGSize minSize = self.view.bounds.size;
+        VImageAsset *imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.user.previewAssets];
+        imageURL = [NSURL URLWithString:imageAsset.imageURL];
+        const BOOL isURLValid = imageURL != nil && imageURL.absoluteString.length > 0;
+        canUseHighResAsset = isURLValid && [imageAsset encompassesSize:minSize];
+    }
+    
+    if ( !canUseHighResAsset )
+    {
+        // Otherwise fall back on local or low-res
+        imageURL = [NSURL URLWithString:self.user.pictureUrl];
+    }
+    
+    return imageURL;
 }
 
 - (void)animateTransitionInWithButton:(UIButton *)button

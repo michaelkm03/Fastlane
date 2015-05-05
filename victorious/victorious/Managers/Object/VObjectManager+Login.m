@@ -11,22 +11,19 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
-
+#import "VObjectManager+Users.h"
 #import "VUser+RestKit.h"
-
-#import "VConversation.h"
-#import "VPollResult+RestKit.h"
 #import "VDependencyManager.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VVoteType.h"
 #import "VTracking.h"
 #import "MBProgressHUD.h"
-
 #import "VUserManager.h"
 #import "VTemplateDecorator.h"
-
 #import "NSDictionary+VJSONLogging.h"
+#import "VStoredLogin.h"
+#import "VLoginType.h"
 
 @implementation VObjectManager (Login)
 
@@ -63,6 +60,11 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     return self.mainUserLoggedIn && self.mainUserProfileComplete;
 }
 
+- (BOOL)mainUserLoggedInWithSocial
+{
+    return self.loginType == VLoginTypeTwitter || self.loginType == VLoginTypeFaceBook;
+}
+
 #pragma mark - Facebook
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString *)accessToken
@@ -74,7 +76,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self loggedInWithUser:[resultObjects firstObject]];
+        [self loggedInWithUser:[resultObjects firstObject] loginType:VLoginTypeFaceBook];
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -96,7 +98,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self loggedInWithUser:[resultObjects firstObject]];
+        [self loggedInWithUser:[resultObjects firstObject] loginType:VLoginTypeFaceBook];
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -125,7 +127,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self loggedInWithUser:[resultObjects firstObject]];
+        [self loggedInWithUser:[resultObjects firstObject] loginType:VLoginTypeTwitter];
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -151,7 +153,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self loggedInWithUser:[resultObjects firstObject]];
+        [self loggedInWithUser:[resultObjects firstObject] loginType:VLoginTypeTwitter];
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -176,7 +178,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self loggedInWithUser:[resultObjects firstObject]];
+        [self loggedInWithUser:[resultObjects firstObject] loginType:VLoginTypeEmail];
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -202,7 +204,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self loggedInWithUser:[resultObjects firstObject]];
+        [self loggedInWithUser:[resultObjects firstObject] loginType:VLoginTypeEmail];
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -337,25 +339,47 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
                   failBlock:fail];
 }
 
+
+- (BOOL)loginWithExistingToken
+{
+    VStoredLogin *storedLogin = [[VStoredLogin alloc] init];
+    VUser *user = [storedLogin lastLoggedInUserFromDisk];
+    VLoginType loginType = [storedLogin lastLoginType];
+    [self loggedInWithUser:user loginType:loginType];
+    if ( self.mainUser != nil )
+    {
+        [[VObjectManager sharedManager] fetchUser:self.mainUser.remoteId
+                                      forceReload:YES
+                                 withSuccessBlock:nil
+                                        failBlock:nil];
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - LoggedIn
 
-- (void)loggedInWithUser:(VUser *)user
+- (void)loggedInWithUser:(VUser *)user loginType:(VLoginType)loginType
 {
-    self.mainUser = user;
-
-    if (self.mainUser != nil)
+    if ( user != nil )
     {
+        self.mainUser = user;
+        self.loginType = loginType;
+
         [[VTrackingManager sharedInstance] setValue:@(YES) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
         
+        [[[VStoredLogin alloc] init] saveLoggedInUserToDisk:self.mainUser loginType:loginType];
+        
         [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
-        [self pollResultsForUser:user successBlock:nil failBlock:nil];
+        [self pollResultsForUser:self.mainUser successBlock:nil failBlock:nil];
         
         // Add followers and following to main user object
-        [[VObjectManager sharedManager] loadFollowersForUser:user
+        [[VObjectManager sharedManager] loadFollowersForUser:self.mainUser
                                                     pageType:VPageTypeFirst
                                                 successBlock:nil
                                                    failBlock:nil];
-        [[VObjectManager sharedManager] loadFollowingsForUser:user
+        [[VObjectManager sharedManager] loadFollowingsForUser:self.mainUser
                                                      pageType:VPageTypeFirst
                                                  successBlock:nil
                                                     failBlock:nil];
@@ -368,53 +392,28 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
 - (RKManagedObjectRequestOperation *)logout
 {
-    if ( !self.mainUserLoggedIn ) //foolish mortal you need to log in to log out...
+    if ( !self.mainUserLoggedIn )
     {
         return nil;
     }
 
     RKManagedObjectRequestOperation *operation = [self GET:@"/api/logout"
-              object:nil
-           parameters:nil
-         successBlock:nil
-            failBlock:nil];
-    
-    //Delete all conversations / pollresults for the user!
-    NSManagedObjectContext *context = self.managedObjectStore.persistentStoreManagedObjectContext;
-    [context performBlockAndWait:^(void)
-    {
-        [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
-        
-        NSFetchRequest *allConversations = [[NSFetchRequest alloc] init];
-        [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
-        [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        
-        NSArray *conversations = [context executeFetchRequest:allConversations error:nil];
-        for (NSManagedObject *conversation in conversations)
-        {
-            [context deleteObject:conversation];
-        }
-        
-        NSFetchRequest *allPollResults = [[NSFetchRequest alloc] init];
-        [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
-        [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        
-        NSArray *pollResults = [context executeFetchRequest:allPollResults error:nil];
-        for (NSManagedObject *pollResult in pollResults)
-        {
-            [context deleteObject:pollResult];
-        }
-        
-        [context save:nil];
-    }];
-    
-    self.mainUser.token = nil;
-    
-    //Log out no matter what
-    self.mainUser = nil;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
+                                                    object:nil
+                                                parameters:nil
+                                              successBlock:nil
+                                                 failBlock:nil];
+    [self logoutLocally];
     
     return operation;
+}
+
+- (void)logoutLocally
+{
+    self.mainUser = nil;
+    self.loginType = VLoginTypeNone;
+    
+    [[[VStoredLogin alloc] init] clearLoggedInUserFromDisk];
+    [[VUserManager sharedInstance] userDidLogout];
 }
 
 #pragma mark - Password reset

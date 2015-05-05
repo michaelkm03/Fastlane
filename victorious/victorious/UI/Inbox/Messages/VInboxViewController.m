@@ -103,6 +103,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
@@ -259,11 +261,13 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+        if ( [noMessageView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noMessageView.dependencyManager = self.dependencyManager;
+        }
         noMessageView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
-        noMessageView.titleLabel.textColor = [UIColor whiteColor];
         noMessageView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
-        noMessageView.messageLabel.textColor = [UIColor whiteColor];
-        noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
+        noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessagesIcon"];
         self.tableView.backgroundView = noMessageView;
     }
     else
@@ -289,11 +293,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return VConversationCellHeight;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
