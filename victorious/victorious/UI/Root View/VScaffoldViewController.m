@@ -55,22 +55,16 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 {
     [super viewDidAppear:animated];
     
+    BOOL didShowFirstTimeUserExperience = NO;
     if ( !self.hasBeenShown )
     {
         self.hasBeenShown = YES;
-        [self viewDidAppearFirstTime];
+        didShowFirstTimeUserExperience = [self showFirstTimeUserExperience];
     }
-}
-
-#pragma mark - First appearance (i.e. when app loads and first presents views from template)
-
-- (void)viewDidAppearFirstTime
-{
-    BOOL didShow = [self showFirstTimeUserExperience];
-    if ( !self.pushNotificationsRegistered && !didShow )
+    
+    if ( !didShowFirstTimeUserExperience && ![[VPushNotificationManager sharedPushNotificationManager] started] )
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-        self.pushNotificationsRegistered = YES;
     }
 }
 

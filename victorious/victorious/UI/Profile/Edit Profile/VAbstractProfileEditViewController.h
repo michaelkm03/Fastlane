@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 @class VUser;
 
-@interface VAbstractProfileEditViewController : UITableViewController   <UITextFieldDelegate, UITextViewDelegate, UINavigationControllerDelegate>
+@interface VAbstractProfileEditViewController : UITableViewController   <UITextFieldDelegate, UITextViewDelegate, UINavigationControllerDelegate, VHasManagedDependencies>
 
 @property (nonatomic, strong)   VUser          *profile;
 

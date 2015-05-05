@@ -12,8 +12,7 @@
 #import "MBProgressHUD.h"
 
 #import "VObjectManager+Login.h"
-#import "VThemeManager.h"
-
+#import "VDependencyManager.h"
 #import "VUserProfileViewController.h"
 
 @interface VProfileEditViewController ()
@@ -28,12 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.nameLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
+    
     if (!self.profile)
     {
         [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse
@@ -47,7 +41,10 @@
              }
          }];
     }
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     self.nameLabel.text = self.profile.name;
@@ -75,6 +72,15 @@
     return NO;
 }
 
+#pragma mark - VHasManagedDependencies
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    
+    [self.nameLabel setTextColor:[dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
+}
+
 #pragma mark - Actions
 
 - (IBAction)done:(UIBarButtonItem *)sender
@@ -98,7 +104,7 @@
                                                          name:self.usernameTextField.text
                                               profileImageURL:self.updatedProfileImage
                                                      location:self.locationTextField.text
-                                                      tagline:self.taglineTextView.text
+                                                      tagline:nil
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];

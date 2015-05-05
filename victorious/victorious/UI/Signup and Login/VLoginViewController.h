@@ -10,14 +10,7 @@
 #import "VTransitionDelegate.h"
 #import "VPresentWithBlurTransition.h"
 #import "VAuthorizationContextHelper.h"
-
-typedef NS_ENUM(NSUInteger, VLoginType)
-{
-    kVLoginTypeNone,
-    kVLoginTypeEmail,
-    kVLoginTypeFaceBook,
-    kVLoginTypeTwitter,
-};
+#import "VLoginType.h"
 
 @class VDependencyManager;
 

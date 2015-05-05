@@ -10,12 +10,6 @@
 #import "UIView+MotionEffects.h"
 #import "UIColor+VBrightness.h"
 
-#if CGFLOAT_IS_DOUBLE
-#define CEIL ceil
-#else
-#define CEIL ceilf
-#endif
-
 static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 
 @interface VTilePatternBackgroundView ()
@@ -211,8 +205,8 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 - (void)updateReplicantCount
 {
     // Add 2 since we start with the original layer completely offscreen
-    self.xReplicatorLayer.instanceCount = CEIL(CGRectGetWidth(self.bounds)/self.image.size.width) + 2;
-    self.yReplicatorLayer.instanceCount = CEIL(CGRectGetHeight(self.bounds)/self.image.size.height) + 2;
+    self.xReplicatorLayer.instanceCount = VCEIL(CGRectGetWidth(self.bounds)/self.image.size.width) + 2;
+    self.yReplicatorLayer.instanceCount = VCEIL(CGRectGetHeight(self.bounds)/self.image.size.height) + 2;
 }
 
 - (UIImage *)patternImage

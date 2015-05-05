@@ -13,16 +13,6 @@
 // Layout Helpers
 #import "UIView+Autolayout.h"
 
-#if CGFLOAT_IS_DOUBLE
-#define roundCGFloat(x) round(x)
-#define floorCGFloat(x) floor(x)
-#define ceilCGFloat(x) ceil(x)
-#else
-#define roundCGFloat(x) roundf(x)
-#define floorCGFloat(x) floor(x)
-#define ceilCGFloat(x) ceil(x)
-#endif
-
 static const CGFloat kDefaultActionItemWidth = 44.0f;
 
 @implementation VActionBar
@@ -246,7 +236,7 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
                                  widthToDistribute:(CGFloat)width
 {
     CGFloat flexibleSpaceWidth = (CGFloat)(width / numberOfFlexibleItems);
-    return floorCGFloat(flexibleSpaceWidth);
+    return VFLOOR(flexibleSpaceWidth);
 }
 
 @end

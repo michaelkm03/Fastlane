@@ -12,10 +12,17 @@
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
-#import "VThemeManager.h"
 #import "VContentInputAccessoryView.h"
 #import "VConstants.h"
+#import "VNavigationController.h"
+#import "VDependencyManager.h"
+#import "VTemplateBackgroundView.h"
+#import "UIImageView+VLoadingAnimations.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+
+static const CGFloat kTextColor = 0.355f;
+static const CGFloat kPlaceholderAlpha = 0.3f;
+static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate, VWorkspaceFlowControllerDelegate>
 
@@ -27,7 +34,8 @@
 @property (nonatomic, assign) NSInteger numberOfLines;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewTopToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewBottomToContainer;
-@property (nonatomic, weak) UIImageView *backgroundImageView;
+@property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -40,10 +48,6 @@
     self.usernameTextField.delegate = self;
     self.locationTextField.delegate = self;
     self.taglineTextView.delegate = self;
-    
-    self.profileImageView.layer.masksToBounds = YES;
-    self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
-    self.profileImageView.clipsToBounds = YES;
     
     self.cameraButton.layer.masksToBounds = YES;
     self.cameraButton.layer.cornerRadius = CGRectGetHeight(self.cameraButton.bounds)/2;
@@ -63,11 +67,9 @@
 {
     [super viewWillAppear:animated];
     
-    [self restoreInsets];
+    [self applySyle];
     
-    self.usernameTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.locationTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.taglineTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -75,6 +77,12 @@
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.usernameTextField becomeFirstResponder];
 }
 
 - (BOOL)shouldAutorotate
@@ -87,9 +95,14 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)v_prefersNavigationBarHidden
+{
+    return NO;
+}
+
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -107,6 +120,39 @@
     }
     return [super tableView:tableView
     heightForRowAtIndexPath:indexPath];
+}
+
+#pragma mark - VHasManagedDependencies
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self applySyle];
+}
+
+#pragma mark - Private Methods
+
+- (void)applySyle
+{
+    self.profileImageView.layer.masksToBounds = YES;
+    self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
+    self.profileImageView.clipsToBounds = YES;
+    self.profileImageView.layer.borderWidth = 2.0;
+    self.profileImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
+    self.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.profileImageView.backgroundColor = [UIColor whiteColor];
+    
+    self.usernameTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.usernameTextField.textColor = [UIColor colorWithWhite:kTextColor alpha:1.0f];
+    self.usernameTextField.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.locationTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.locationTextField.textColor = [UIColor colorWithWhite:kTextColor alpha:1.0f];
+    self.locationTextField.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.taglineTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.taglineTextView.textColor = [UIColor colorWithWhite:kTextColor alpha:1.0f];
+    self.taglineTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.tagLinePlaceholderLabel.textColor = [UIColor colorWithWhite:kTextColor alpha:kPlaceholderAlpha];
+    self.tagLinePlaceholderLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
 #pragma mark - Property Accessors
@@ -135,15 +181,14 @@
     if ( profileImageURL != nil && profile.pictureUrl.length > 0 )
     {
         [backgroundImageView applyTintAndBlurToImageWithURL:profileImageURL
-                                              withTintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
-        [self.profileImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
+                                              withTintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
+        [self.profileImageView fadeInImageAtURL:profileImageURL
+                               placeholderImage:self.profileImageView.image];
     }
     else
     {
-        backgroundImageView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4f];
-        self.profileImageView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f];
+        self.tableView.backgroundView = [[VTemplateBackgroundView alloc] initWithFrame:self.tableView.bounds];
     }
-    
 }
 
 #pragma mark - Actions
@@ -203,16 +248,6 @@
     return NO;
 }
 
-#pragma mark - Private Methods
-
-- (void)restoreInsets
-{
-    UIEdgeInsets insets = UIEdgeInsetsMake(CGRectGetHeight(self.navigationController.navigationBar.bounds) +
-                                           CGRectGetHeight([UIApplication sharedApplication].statusBarFrame), 0, 0, 0);
-    self.tableView.contentInset = insets;
-    self.tableView.scrollIndicatorInsets = insets;
-}
-
 #pragma mark - VWorkspaceFlowControllerDelegate
 
 - (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
@@ -229,7 +264,11 @@
     
     self.profileImageView.image = previewImage;
     self.updatedProfileImage = capturedMediaURL;
-    [self.backgroundImageView setBlurredImageWithClearImage:previewImage placeholderImage:self.backgroundImageView.image tintColor:nil];
+
+    [self.backgroundImageView setBlurredImageWithClearImage:previewImage
+                                           placeholderImage:nil
+                                                  tintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
+    self.tableView.backgroundView = self.backgroundImageView;
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }

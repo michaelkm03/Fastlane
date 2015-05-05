@@ -12,12 +12,6 @@
 #import "VSolidColorBackground.h"
 #import "VURLMacroReplacement.h"
 
-#if CGFLOAT_IS_DOUBLE
-#define CGFLOAT_VALUE doubleValue
-#else
-#define CGFLOAT_VALUE floatValue
-#endif
-
 typedef BOOL (^TypeTest)(Class);
 
 static NSString * const kTemplateClassesFilename = @"TemplateClasses";
@@ -193,10 +187,10 @@ static NSString * const kMacroReplacement = @"XXXXX";
         return nil;
     }
     
-    UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] / 255.0f
-                                     green:[green CGFLOAT_VALUE] / 255.0f
-                                      blue:[blue CGFLOAT_VALUE] / 255.0f
-                                     alpha:[alpha CGFLOAT_VALUE] / 255.0f];
+    UIColor *color = [UIColor colorWithRed:[red VCGFLOAT_VALUE] / 255.0f
+                                     green:[green VCGFLOAT_VALUE] / 255.0f
+                                      blue:[blue VCGFLOAT_VALUE] / 255.0f
+                                     alpha:[alpha VCGFLOAT_VALUE] / 255.0f];
     return color;
 }
 
@@ -214,7 +208,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
         return [self.parentManager fontForKey:key];
     }
     
-    UIFont *font = [UIFont fontWithName:fontName size:[fontSize CGFLOAT_VALUE]];
+    UIFont *font = [UIFont fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
     return font;
 }
 
