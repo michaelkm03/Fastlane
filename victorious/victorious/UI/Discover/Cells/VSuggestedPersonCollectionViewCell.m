@@ -11,7 +11,10 @@
 #import "VDefaultProfileImageView.h"
 #import "VFollowUserControl.h"
 #import "VFollowersTextFormatter.h"
+#import "VObjectManager+Users.h"
 #import "VDependencyManager.h"
+#import "VFollowing.h"
+#import <KVOController/FBKVOController.h>
 
 @interface VSuggestedPersonCollectionViewCell()
 
@@ -19,8 +22,6 @@
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
-
-- (IBAction)onFollow:(id)sender;
 
 @end
 
@@ -77,10 +78,31 @@
 
 - (void)setUser:(VUser *)user
 {
+    if (_user == user)
+    {
+        return;
+    }
+    
+    [self.KVOController unobserve:_user
+                          keyPath:NSStringFromSelector(@selector(followers))];
+    
     _user = user;
+    
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:user
+                       keyPaths:@[NSStringFromSelector(@selector(followers))]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateFollowingAnimated:YES];
+     }];
+    
+    self.followButton.enabled = YES;
+    
     [self populateData];
     [self updateFollowingAnimated:NO];
 }
+
 
 - (void)setUser:(VUser *)user
        animated:(BOOL)animated
@@ -90,7 +112,7 @@
         self.user = user;
         return;
     }
-    _user = user;
+    self.user = user;
     [self populateData];
     [self updateFollowingAnimated:animated];
 }
@@ -110,24 +132,34 @@
 
 - (void)updateFollowingAnimated:(BOOL)animated
 {
-    [self.followButton setFollowing:self.user.isFollowing.boolValue
+    // If this is the currently logged in user, then hide the follow button
+    VUser *me = [[VObjectManager sharedManager] mainUser];
+    self.followButton.hidden = (self.user == me);
+    [self.followButton setFollowing:[me.following containsObject:self.user]
                            animated:animated];
 }
 
-- (IBAction)onFollow:(id)sender
+- (IBAction)onFollow:(VFollowUserControl *)sender
 {
-    if ( self.delegate == nil )
+    id<VFollowing> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                     withSender:nil];
+    NSAssert(followCommandHandler != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+    sender.enabled = NO;
+    if (sender.following)
     {
-        return;
-    }
-    
-    if ( self.user.isFollowing.boolValue )
-    {
-        [self.delegate unfollowPerson:self.user];
+        [followCommandHandler unfollowUser:self.user
+                            withCompletion:^(VUser *userActedOn)
+         {
+             sender.enabled = YES;
+         }];
     }
     else
     {
-        [self.delegate followPerson:self.user];
+        [followCommandHandler followUser:self.user
+                          withCompletion:^(VUser *userActedOn)
+         {
+             sender.enabled = YES;
+         }];
     }
 }
 

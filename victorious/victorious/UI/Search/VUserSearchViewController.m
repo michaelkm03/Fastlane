@@ -44,8 +44,6 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager.h"
 
-#import "VFollowerEventResponder.h"
-
 @interface VUserSearchViewController () <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
@@ -69,8 +67,6 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
-
-@property (nonatomic, strong) VFollowerEventResponder *followCommandHandler;
 
 - (IBAction)closeButtonAction:(id)sender;
 - (void)runUserSearch:(id)sender;
@@ -115,16 +111,7 @@ static const NSInteger kSearchResultLimit = 100;
     _searchContext = VObjectManagerSearchContextDiscover;
 }
 
-#pragma mark - UIResponder
-
-- (UIResponder *)nextResponder
-{
-    self.followCommandHandler = [[VFollowerEventResponder alloc] initWithNextResponder:[super nextResponder]];
-    self.followCommandHandler.viewControllerToPresentAuthorizationOn = self;
-    self.followCommandHandler.dependencyManager = self.dependencyManager;
-    
-    return self.followCommandHandler;
-}
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {

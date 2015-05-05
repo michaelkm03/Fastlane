@@ -57,25 +57,12 @@
     {
         VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser removeFollowingObject:user];
-            [moc saveToPersistentStore:nil];
             completion(user);
         };
         
         VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
         {
-            NSInteger errorCode = error.code;
-            if (errorCode == kVFollowsRelationshipDoesNotExistError)
-            {
-                VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-                NSManagedObjectContext *moc = mainUser.managedObjectContext;
-                
-                [mainUser removeFollowingObject:user];
-                [moc saveToPersistentStore:nil];
-            }
+            
             
             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
                                                                    message:error.localizedDescription

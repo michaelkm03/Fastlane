@@ -18,29 +18,16 @@
 #import "VUserProfileViewController.h"
 #import "VConstants.h"
 #import "MBProgressHUD.h"
-#import "VFollowerEventResponder.h"
 #import "VDependencyManager+VUserProfile.h"
 
 @interface VFollowerTableViewController ()
 
 @property (nonatomic, strong)   NSArray    *followers;
 @property (nonatomic) BOOL isMe;
-@property (nonatomic, strong) VFollowerEventResponder *followCommandHandler;
 
 @end
 
 @implementation VFollowerTableViewController
-
-#pragma mark - UIResponder
-
-- (UIResponder *)nextResponder
-{
-    self.followCommandHandler = [[VFollowerEventResponder alloc] initWithNextResponder:[super nextResponder]];
-    self.followCommandHandler.viewControllerToPresentAuthorizationOn = self;
-    self.followCommandHandler.dependencyManager = self.dependencyManager;
-    
-    return self.followCommandHandler;
-}
 
 #pragma mark - View lifecycle
 

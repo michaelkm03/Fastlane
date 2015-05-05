@@ -26,6 +26,7 @@
 #import "VLaunchScreenProvider.h"
 #import "UIView+AutoLayout.h"
 
+
 #import "MBProgressHUD.h"
 
 static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
@@ -56,6 +57,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 - (void)viewDidLoad
 {

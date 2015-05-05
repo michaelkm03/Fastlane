@@ -25,6 +25,7 @@
 #import "VPushNotificationManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "VMultipleContainer.h"
+#import "VFollowerEventResponder.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -34,6 +35,8 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
+
+@property (nonatomic, strong) VFollowerEventResponder *followCommandHandler;
 
 @end
 
@@ -47,6 +50,23 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+#pragma mark - UIResponder
+
+- (UIResponder *)nextResponder
+{
+    if ([super nextResponder] == nil)
+    {
+        // We're not in the responder chain yet bail!
+        return nil;
+    }
+    
+    self.followCommandHandler = [[VFollowerEventResponder alloc] initWithNextResponder:[super nextResponder]];
+    self.followCommandHandler.viewControllerToPresentAuthorizationOn = self;
+    self.followCommandHandler.dependencyManager = self.dependencyManager;
+    
+    return self.followCommandHandler;
 }
 
 #pragma mark - Lifecyle Methods
