@@ -9,11 +9,11 @@
 #import "VBaseCollectionViewCell.h"
 #import "VDirectoryCellFactory.h"
 
-@class VStreamItem, VShowcaseDirectoryCell, VStream, VSequence, VDependencyManager;
+@class VStreamItem, VStream, VSequence, VDependencyManager, VShowcaseDirectoryCell;
 
-@protocol VShowcaseDirectoryCellDelegate <NSObject>
+@protocol VShowcaseDirectorySelection <NSObject>
 
-- (void)showcaseDirectoryCell:(VShowcaseDirectoryCell *)showcaseDirectoryCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)showcaseDirectoryCell:(VShowcaseDirectoryCell *)showcaseDirectoryCell didSelectStreamItem:(VStreamItem *)streamItem;
 
 @end
 
@@ -22,18 +22,8 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
-    The item cell delegate that will respond to selections made within the collectionView contained in this cell
- */
-@property (nonatomic, weak) id <VShowcaseDirectoryCellDelegate> delegate;
-
-/**
  *  The VStream used to populate fields on the cell.
  */
 @property (nonatomic, strong) VStream *stream;
-
-/**
- *  The directoryCellFactory that will dictate what and how cells are displayed within the collectionView in this cell
- */
-@property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
 
 @end

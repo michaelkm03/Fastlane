@@ -22,6 +22,7 @@
 #import "VURLMacroReplacement.h"
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VShowcaseDirectoryCell.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -63,10 +64,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     streamDirectory.title = stream.name;
     streamDirectory.dependencyManager = dependencyManager;
     streamDirectory.directoryCellFactory = directoryCellFactory;
-    if ( [streamDirectory.directoryCellFactory respondsToSelector:@selector(setDelegate:)] )
-    {
-        streamDirectory.directoryCellFactory.delegate = streamDirectory;
-    }
     VDirectoryCollectionFlowLayout *flowLayout = streamDirectory.directoryCellFactory.collectionViewFlowLayout;
     flowLayout.delegate = streamDirectory;
     streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
@@ -208,7 +205,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return [self.marqueeController desiredSizeWithCollectionViewBounds:localCollectionView.bounds];
     }
     
-    return [self.directoryCellFactory desiredSizeForCollectionViewBounds:localCollectionView.bounds andStreamItem:[self.currentStream.streamItems objectAtIndex:indexPath.row]];
+    return [self.directoryCellFactory sizeWithCollectionViewBounds:localCollectionView.bounds ofCellForStreamItem:[self.currentStream.streamItems objectAtIndex:indexPath.row]];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -225,7 +222,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     if ( ![self isMarqueeSection:section] )
     {
         //We're dealing with a directory section, add the edge insets from the factory
-        UIEdgeInsets factoryInsets = self.directoryCellFactory.sectionEdgeInsets;
+        UIEdgeInsets factoryInsets = self.directoryCellFactory.sectionInsets;
         edgeInsets.top += factoryInsets.top;
         edgeInsets.right += factoryInsets.right;
         edgeInsets.bottom += factoryInsets.bottom;
@@ -287,7 +284,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return (UICollectionViewCell *)[self.marqueeController marqueeCellForCollectionView:self.collectionView atIndexPath:indexPath];
     }
     
-    return [self.directoryCellFactory collectionView:self.collectionView cellForIndexPath:indexPath withStreamItem:[self.currentStream.streamItems objectAtIndex:indexPath.row]];
+    return [self.directoryCellFactory collectionView:self.collectionView cellForStreamItem:[self.currentStream.streamItems objectAtIndex:indexPath.row] atIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)localCollectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath

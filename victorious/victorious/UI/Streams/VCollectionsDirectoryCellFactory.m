@@ -30,19 +30,18 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
 @interface VCollectionsDirectoryCellFactory ()
 
 @property (nonatomic, assign) BOOL shouldAnimateCells;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VCollectionsDirectoryCellFactory
 
-@synthesize dependencyManager;
-
-- (instancetype)initWithDependencyManager:(VDependencyManager *)localDependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if ( self != nil )
     {
-        dependencyManager = localDependencyManager;
+        _dependencyManager = dependencyManager;
         _shouldAnimateCells = YES;
     }
     return self;
@@ -53,7 +52,7 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     return [[VDirectoryCollectionFlowLayout alloc] init];
 }
 
-- (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem
+- (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
     return [VCollectionsDirectoryCell desiredSizeWithCollectionViewBounds:bounds];
 }
@@ -63,7 +62,7 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     [collectionView registerNib:[VCollectionsDirectoryCell nibForCell] forCellWithReuseIdentifier:[VCollectionsDirectoryCell suggestedReuseIdentifier]];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForIndexPath:(NSIndexPath *)indexPath withStreamItem:(VStreamItem *)streamItem
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
     NSString *identifier = [VCollectionsDirectoryCell suggestedReuseIdentifier];
     VCollectionsDirectoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
@@ -87,7 +86,7 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
     return 1.0f;
 }
 
-- (UIEdgeInsets)sectionEdgeInsets
+- (UIEdgeInsets)sectionInsets
 {
     return UIEdgeInsetsZero;
 }

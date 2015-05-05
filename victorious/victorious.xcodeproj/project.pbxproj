@@ -885,7 +885,7 @@
 		F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216D1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m */; };
 		F0AD21731AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21721AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m */; };
 		F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21751AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m */; };
-		F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21781AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m */; };
+		F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21781AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m */; };
 		F0AD217D1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD217B1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m */; };
 		F0AD217E1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0AD217C1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.xib */; };
 		F0AD21811AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21801AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.m */; };
@@ -2517,8 +2517,8 @@
 		F0AD21721AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentCollectionViewControllerFactoryTests.m; sourceTree = "<group>"; };
 		F0AD21741AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionsDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F0AD21751AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionsDirectoryCellFactory.m; sourceTree = "<group>"; };
-		F0AD21771AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.h"; sourceTree = "<group>"; };
-		F0AD21781AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m"; sourceTree = "<group>"; };
+		F0AD21771AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDirectoryCollectionViewController+VShowcaseDirectorySelection.h"; sourceTree = "<group>"; };
+		F0AD21781AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDirectoryCollectionViewController+VShowcaseDirectorySelection.m"; sourceTree = "<group>"; };
 		F0AD217A1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShowcaseDirectoryCell.h; sourceTree = "<group>"; };
 		F0AD217B1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShowcaseDirectoryCell.m; sourceTree = "<group>"; };
 		F0AD217C1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VShowcaseDirectoryCell.xib; sourceTree = "<group>"; };
@@ -5746,8 +5746,8 @@
 			children = (
 				F06F10C41AC2024A0062E1D1 /* VDirectoryCollectionViewController.h */,
 				F06F10C51AC2024A0062E1D1 /* VDirectoryCollectionViewController.m */,
-				F0AD21771AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.h */,
-				F0AD21781AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m */,
+				F0AD21771AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.h */,
+				F0AD21781AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m */,
 				F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */,
 				F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */,
 				F04C2E5E1AE17DCD00FF74B7 /* DirectoryCellFactories */,
@@ -6218,7 +6218,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
+			shellScript = "#!/bin/bash\n\n#BUILD_NUMBER=$(git rev-list HEAD --count)\n#TARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n#/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
 			showEnvVarsInLog = 0;
 		};
 		589F0499A2CD6F9EB3A82CC5 /* Check Pods Manifest.lock */ = {
@@ -6529,7 +6529,7 @@
 				A75C64971AD78DCA00245125 /* VTextPostViewController.m in Sources */,
 				A7AEF9A81A83F1C300A3D3A0 /* VStreamCollectionCell.m in Sources */,
 				A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */,
-				F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectoryCellDelegate.m in Sources */,
+				F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m in Sources */,
 				0314D4DF19B46B5E00FA363C /* VFindFacebookFriendsTableViewController.m in Sources */,
 				D8CC902B1ABA6C3F00A4B38C /* VTabMenuShim.m in Sources */,
 				A7D378451AEF4ED5007FF197 /* VUserProfileHeaderViewController.m in Sources */,

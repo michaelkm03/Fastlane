@@ -19,19 +19,18 @@ static CGFloat const kDirectoryInset = 10.0f;
 @interface VCardDirectoryCellFactory ()
 
 @property (nonatomic, strong) VCardDirectoryCellDecorator *cellDecorator;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VCardDirectoryCellFactory
 
-@synthesize dependencyManager;
-
-- (instancetype)initWithDependencyManager:(VDependencyManager *)localDependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if ( self != nil )
     {
-        dependencyManager = localDependencyManager;
+        _dependencyManager = dependencyManager;
         _cellDecorator = [[VCardDirectoryCellDecorator alloc] init];
     }
     return self;
@@ -42,10 +41,10 @@ static CGFloat const kDirectoryInset = 10.0f;
     return [[VCardDirectoryCollectionViewFlowLayout alloc] init];
 }
 
-- (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem
+- (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
     CGFloat width = CGRectGetWidth(bounds);
-    UIEdgeInsets sectionEdgeInsets = [self sectionEdgeInsets];
+    UIEdgeInsets sectionEdgeInsets = [self sectionInsets];
     width -= sectionEdgeInsets.left + sectionEdgeInsets.right + [self minimumInterItemSpacing];
     width = floorf(width * 0.5f);
     
@@ -61,7 +60,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     [collectionView registerNib:[VCardDirectoryCell nibForCell] forCellWithReuseIdentifier:[VCardDirectoryCell suggestedReuseIdentifier]];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForIndexPath:(NSIndexPath *)indexPath withStreamItem:(VStreamItem *)streamItem
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
     if ( streamItem == nil )
     {
@@ -89,7 +88,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     return kDirectoryInset;
 }
 
-- (UIEdgeInsets)sectionEdgeInsets
+- (UIEdgeInsets)sectionInsets
 {
     return UIEdgeInsetsMake(kDirectoryInset, kDirectoryInset, kDirectoryInset, kDirectoryInset);
 }

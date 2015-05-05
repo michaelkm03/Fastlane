@@ -7,25 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VHasManagedDependencies.h"
+#import "VStreamCellFactory.h"
 
 @class VStreamItem, VStream, VDependencyManager, VDirectoryCollectionFlowLayout;
 
-@protocol VDirectoryCellFactory <NSObject, VHasManagedDependencies>
+@protocol VDirectoryCellFactory <NSObject, VStreamCellFactory>
 
 @required
 
-- (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem;
-
-- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForIndexPath:(NSIndexPath *)indexPath withStreamItem:(VStreamItem *)streamItem;
-
 - (CGFloat)minimumInterItemSpacing;
-
-- (CGFloat)minimumLineSpacing;
-
-- (UIEdgeInsets)sectionEdgeInsets;
 
 - (VDirectoryCollectionFlowLayout *)collectionViewFlowLayout;
 
@@ -34,8 +24,5 @@
 - (void)prepareCell:(UICollectionViewCell *)cell forDisplayInCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
 
 - (void)collectionViewDidScroll:(UICollectionView *)collectionView;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, weak) id delegate;
 
 @end

@@ -14,4 +14,6 @@
  */
 @interface VShowcaseDirectoryCellFactory : NSObject <VDirectoryCellFactory>
 
+@property (nonatomic, weak) id delegate;
+
 @end

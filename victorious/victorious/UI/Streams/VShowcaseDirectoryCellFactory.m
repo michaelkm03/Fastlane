@@ -14,27 +14,24 @@
 #import "VDirectoryCollectionFlowLayout.h"
 
 static CGFloat const kDirectoryInset = 5.0f;
-static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 
 @interface VShowcaseDirectoryCellFactory ()
 
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *groupedDirectoryCellFactory;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VShowcaseDirectoryCellFactory
 
-@synthesize dependencyManager;
 @synthesize delegate;
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)localDependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if ( self != nil )
     {
-        dependencyManager = localDependencyManager;
-        _groupedDirectoryCellFactory = [dependencyManager templateValueConformingToProtocol:@protocol(VDirectoryCellFactory) forKey:kGroupedDirectoryCellFactoryKey];
-        NSAssert(_groupedDirectoryCellFactory != nil, @"VShowcaseDirectoryCellFactory requires that a valid directory cell factory be returned from the groupedCell of the dependency manager used to create it");
+        _dependencyManager = dependencyManager;
     }
     return self;
 }
@@ -44,7 +41,7 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     return [[VDirectoryCollectionFlowLayout alloc] init];
 }
 
-- (CGSize)desiredSizeForCollectionViewBounds:(CGRect)bounds andStreamItem:(VStreamItem *)streamItem
+- (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
     CGFloat width = CGRectGetWidth(bounds);
     CGFloat cellHeight = [VShowcaseDirectoryCell desiredSizeWithCollectionViewBounds:bounds].height;
@@ -56,14 +53,12 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     [collectionView registerNib:[VShowcaseDirectoryCell nibForCell] forCellWithReuseIdentifier:[VShowcaseDirectoryCell suggestedReuseIdentifier]];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForIndexPath:(NSIndexPath *)indexPath withStreamItem:(VStreamItem *)streamItem
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
     NSString *identifier = [VShowcaseDirectoryCell suggestedReuseIdentifier];
     VShowcaseDirectoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.stream = (VStream *)streamItem;
     cell.dependencyManager = self.dependencyManager;
-    cell.directoryCellFactory = self.groupedDirectoryCellFactory;
-    cell.delegate = self.delegate;
     return cell;
 }
 
@@ -77,9 +72,9 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     return 1.0f;
 }
 
-- (UIEdgeInsets)sectionEdgeInsets
+- (UIEdgeInsets)sectionInsets
 {
-    return UIEdgeInsetsMake(self.groupedDirectoryCellFactory.sectionEdgeInsets.top, 0.0f, kDirectoryInset, 0.0f);
+    return UIEdgeInsetsMake(self.groupedDirectoryCellFactory.sectionInsets.top, 0.0f, kDirectoryInset, 0.0f);
 }
 
 @end

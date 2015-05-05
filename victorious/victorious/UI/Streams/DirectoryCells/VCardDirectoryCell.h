@@ -29,12 +29,31 @@ extern const CGFloat VDirectoryItemBaseWidth;
  */
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
+/**
+ Updates the preview image by loading it from the provided path
+ 
+ @param previewImagePath A string that will be used to create a URL and then loaded into this cell's image view
+ @param placeholderImage A UIImage that will be shown while the image at the previewImagePath is loaded
+ */
 - (void)setPreviewImagePath:(NSString *)previewImagePath placeholderImage:(UIImage *)placeholderImage;
 
+/**
+ Returns whether or not a stack background is expected to display behind a stream item
+ 
+ @param streamItem The stream item that could cause a stack to display on the cell
+ 
+ @return YES when a stack is expected to be shown for the provided streamItem, NO otherwise
+ */
 + (BOOL)wantsToShowStackedBackgroundForStreamItem:(VStreamItem *)streamItem;
 
+/**
+ Setting to YES will cause the video play icon to display on top of the content
+ */
 @property (nonatomic, assign) BOOL showVideo;
 
+/**
+ Setting to YES will cause the stacked background to show 
+ */
 @property (nonatomic, assign) BOOL showStackedBackground;
 
 /**

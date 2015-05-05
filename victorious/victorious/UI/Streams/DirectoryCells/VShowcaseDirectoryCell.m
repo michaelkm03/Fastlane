@@ -23,12 +23,14 @@ static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseWidth = 140.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
+static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 
 @interface VShowcaseDirectoryCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, strong) VCardDirectoryCellDecorator *cellDecorator;
+@property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
 
 @end
 
@@ -73,6 +75,8 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
     {
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+        self.directoryCellFactory = [dependencyManager templateValueConformingToProtocol:@protocol(VDirectoryCellFactory) forKey:kGroupedDirectoryCellFactoryKey];
+        NSAssert(self.directoryCellFactory != nil, @"VShowcaseDirectoryCellFactory requires that a valid directory cell factory be returned from the groupedCell of the dependency manager used to create it");
     }
     
     [self.collectionView reloadData];
@@ -136,7 +140,7 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.directoryCellFactory collectionView:collectionView cellForIndexPath:indexPath withStreamItem:[self streamItemAtIndexPath:indexPath]];
+    return [self.directoryCellFactory collectionView:collectionView cellForStreamItem:[self streamItemAtIndexPath:indexPath] atIndexPath:indexPath];
 }
 
 - (BOOL)hasSequenceStream
@@ -176,7 +180,7 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
     VStreamItem *streamItem = nil;
     if ( [self.stream isKindOfClass:[VSequence class]] )
     {
-        return self.stream;
+        streamItem = self.stream;
     }
     else if ( [self.stream isKindOfClass:[VStream class]] )
     {
@@ -184,7 +188,7 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
         if ( (NSUInteger)indexPath.row < streamItems.count )
         {
             streamItem = streamItems[indexPath.row];
-        }   
+        }
     }
     return streamItem;
 }
@@ -193,7 +197,17 @@ static CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.delegate showcaseDirectoryCell:self didSelectItemAtIndexPath:indexPath];
+    id <VShowcaseDirectorySelection> responder = [self targetForAction:@selector(showcaseDirectoryCell:didSelectStreamItem:)
+                                                            withSender:nil];
+    if ( responder != nil )
+    {
+        VStreamItem *streamItem = [self streamItemAtIndexPath:indexPath];
+        if ( streamItem == nil )
+        {
+            streamItem = self.stream;
+        }
+        [responder showcaseDirectoryCell:self didSelectStreamItem:streamItem];
+    }
 }
 
 #pragma mark - UICollectionViewFlowLayout
