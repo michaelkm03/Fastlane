@@ -20,6 +20,7 @@
 // Dependency Manager
 #import "VDependencyManager.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
@@ -61,7 +62,7 @@
 {
     VDiscoverContainerViewController *discoverContainer = [self instantiateFromStoryboard:@"Discover"];
     discoverContainer.dependencyManager = dependencyManager;
-    discoverContainer.title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    [dependencyManager addPropertiesToNavigationItem:discoverContainer.navigationItem];
     return discoverContainer;
 }
 
