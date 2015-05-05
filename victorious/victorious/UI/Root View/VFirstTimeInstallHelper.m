@@ -21,7 +21,9 @@ static NSString * const VDidPlayFirstTimeUserVideo = @"com.getvictorious.setting
 
 - (BOOL)hasBeenShown
 {
-    return [[[NSUserDefaults standardUserDefaults] valueForKey:VDidPlayFirstTimeUserVideo] boolValue];
+#warning uncomment this
+//    return [[[NSUserDefaults standardUserDefaults] valueForKey:VDidPlayFirstTimeUserVideo] boolValue];
+    return NO;
 }
 
 #pragma mark - Save to NSUserDefaults

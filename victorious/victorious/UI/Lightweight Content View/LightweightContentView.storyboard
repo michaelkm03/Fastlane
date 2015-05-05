@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -38,9 +37,9 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sOS-ge-ov7" userLabel="Container">
                                 <rect key="frame" x="0.0" y="80" width="600" height="600"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="sOS-ge-ov7" secondAttribute="height" multiplier="1:1" id="gYB-VG-Vw4" userLabel="Portrait"/>
+                                    <constraint firstAttribute="height" priority="999" constant="600" id="bzh-hg-L6q"/>
                                 </constraints>
                             </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rg4-dB-97K">
@@ -49,24 +48,28 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="sOS-ge-ov7" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leading" id="2Da-7F-rzq"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="iGR-lx-Wig" secondAttribute="bottom" id="5kV-KG-xb9"/>
+                            <constraint firstAttribute="centerX" secondItem="rg4-dB-97K" secondAttribute="centerX" constant="-0.5" id="Oik-1C-Gap"/>
+                            <constraint firstItem="sOS-ge-ov7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="RlJ-HE-p9L" secondAttribute="bottom" constant="47" id="Xju-Ai-8St"/>
+                            <constraint firstAttribute="trailing" secondItem="sOS-ge-ov7" secondAttribute="trailing" id="YuT-r0-esF"/>
                             <constraint firstItem="sOS-ge-ov7" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="bBQ-lG-8io"/>
+                            <constraint firstItem="sOS-ge-ov7" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leading" id="bCJ-ks-GyK"/>
+                            <constraint firstItem="oJA-97-ssS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sOS-ge-ov7" secondAttribute="bottom" constant="23" id="bps-mh-5y6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="iGR-lx-Wig" secondAttribute="trailing" constant="-16" id="gGI-Sh-LZ7"/>
-                            <constraint firstItem="rg4-dB-97K" firstAttribute="centerX" secondItem="sOS-ge-ov7" secondAttribute="centerX" constant="0.5" id="ga8-u4-oSI"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="sOS-ge-ov7" secondAttribute="bottom" id="hZe-nW-RQ9"/>
                             <constraint firstItem="iGR-lx-Wig" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="jWp-Si-n7c"/>
                             <constraint firstItem="iGR-lx-Wig" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leadingMargin" constant="-16" id="jo2-pd-K8Y"/>
-                            <constraint firstAttribute="trailing" secondItem="sOS-ge-ov7" secondAttribute="trailing" id="lfe-YK-gPa"/>
-                            <constraint firstItem="rg4-dB-97K" firstAttribute="centerY" secondItem="sOS-ge-ov7" secondAttribute="centerY" constant="19.5" id="rP8-rf-Q6t"/>
+                            <constraint firstAttribute="centerY" secondItem="rg4-dB-97K" secondAttribute="centerY" constant="0.5" id="oUX-yg-d8c"/>
+                            <constraint firstAttribute="centerY" secondItem="sOS-ge-ov7" secondAttribute="centerY" constant="20" id="pVm-7f-yvF"/>
                             <constraint firstAttribute="centerX" secondItem="oJA-97-ssS" secondAttribute="centerX" id="rR4-0J-01m"/>
-                            <constraint firstAttribute="centerY" secondItem="sOS-ge-ov7" secondAttribute="centerY" constant="20" id="wx3-hg-d0N"/>
+                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="sOS-ge-ov7" secondAttribute="bottom" constant="120" id="xMn-ze-2XP"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="oJA-97-ssS" secondAttribute="bottom" constant="47" id="z6C-Re-3Mg"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="bBQ-lG-8io"/>
                                 <exclude reference="hZe-nW-RQ9"/>
+                                <exclude reference="xMn-ze-2XP"/>
                             </mask>
                         </variation>
                     </view>
@@ -76,10 +79,9 @@
                     <connections>
                         <outlet property="activityIndicator" destination="rg4-dB-97K" id="ycB-mN-5m9"/>
                         <outlet property="backgroundBlurredView" destination="iGR-lx-Wig" id="80U-OM-88f"/>
+                        <outlet property="containerHeightConstraint" destination="bzh-hg-L6q" id="852-iI-Mia"/>
                         <outlet property="containerView" destination="sOS-ge-ov7" id="8sQ-1B-Yf2"/>
                         <outlet property="getStartedButton" destination="oJA-97-ssS" id="LuA-yp-Snk"/>
-                        <outletCollection property="portraitConstraints" destination="gYB-VG-Vw4" id="Bog-BO-9Rf"/>
-                        <outletCollection property="portraitConstraints" destination="wx3-hg-d0N" id="S2N-E9-nZa"/>
                         <outletCollection property="landscapeConstraints" destination="bBQ-lG-8io" id="nX0-ms-mdt"/>
                         <outletCollection property="landscapeConstraints" destination="hZe-nW-RQ9" id="bNd-Hn-2Np"/>
                     </connections>

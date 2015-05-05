@@ -9,6 +9,7 @@
 #import "VTracking.h"
 #import "VSettingManager.h"
 #import "VVideoUtils.h"
+#import "VCVideoPlayerView.h"
 
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
@@ -27,7 +28,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, strong) VElapsedTimeFormatter *timeFormatter;
 @property (nonatomic) BOOL toolbarAnimating;
 @property (nonatomic) BOOL sliderTouchActive;
-@property (nonatomic, strong) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong, readonly) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong) id timeObserver;
 @property (nonatomic, strong) AVPlayerItem *playerItemBeingObserved;
 @property (nonatomic) BOOL delegateNotifiedOfReadinessToPlay;
@@ -130,14 +131,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)loadView
 {
-    self.view = [[UIView alloc] init];
+    self.view = [[VCVideoPlayerView alloc] init];
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [UIColor clearColor];
-    
-    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    self.playerLayer.backgroundColor = [UIColor clearColor].CGColor;
-    [self.view.layer addSublayer:self.playerLayer];
     
     if (self.shouldShowToolbar)
     {
@@ -168,20 +164,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.overlayView = [[UIView alloc] init];
     
     [self updateViewForShowToolbarValue];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [CATransaction begin];
-    CAAnimation *boundsAnimation = [self.view.layer animationForKey:NSStringFromSelector(@selector(bounds))];
-    if (boundsAnimation)
-    {
-        [CATransaction setAnimationDuration:boundsAnimation.duration];
-        [CATransaction setAnimationTimingFunction:boundsAnimation.timingFunction];
-    }
-    
-    self.playerLayer.frame = self.view.layer.bounds;
-    [CATransaction commit];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -368,6 +350,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (NSString *)videoPlayerLayerVideoGravity
 {
     return self.playerLayer.videoGravity;
+}
+
+- (AVPlayerLayer *)playerLayer
+{
+    // Custom getter for our view's player layer
+    return (AVPlayerLayer *)[self.view layer];
 }
 
 #pragma mark - Toolbar
@@ -675,6 +663,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                                 }
                                 weakSelf.naturalSize = assetTrack.naturalSize;
                                 weakSelf.hasCalculatedItemSize = YES;
+                                [(VCVideoPlayerView *)weakSelf.view setPlayer:self.player];
                                 [self notifyDelegateReadyToPlayIfReallyReady];
                             }
                         });

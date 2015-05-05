@@ -18,6 +18,7 @@
 #import "VScaffoldViewController.h"
 #import "VTrackingConstants.h"
 #import "VTracking.h"
+#import "UIView+AutoLayout.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
@@ -30,6 +31,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, weak) IBOutlet UIView *backgroundBlurredView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerHeightConstraint;
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -78,6 +80,10 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     self.getStartedButton.style = VButtonStyleSecondary;
     
     self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    
+    // Hide container view before it's properly sized
+    self.containerView.hidden = YES;
+    
     [self setupVideoUI];
 }
 
@@ -148,20 +154,9 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
-    
-    self.videoPlayerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;;
-    
+
     [self.containerView addSubview:self.videoPlayerViewController.view];
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[videoPlayerView]|"
-                                                                               options:kNilOptions
-                                                                               metrics:nil
-                                                                                 views:@{@"videoPlayerView":self.videoPlayerViewController.view}]];
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPlayerView]|"
-                                                                               options:kNilOptions
-                                                                               metrics:nil
-                                                                                 views:@{@"videoPlayerView":self.videoPlayerViewController.view}]];
-    
-    self.videoPlayerViewController.view.hidden = NO;
+    [self.containerView v_addFitToParentConstraintsToSubview:self.videoPlayerViewController.view];
 }
 
 #pragma mark - Select media sequence
@@ -226,6 +221,18 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
     [self trackSequenceViewStart];
+    
+    // Adjust height of container view to match aspect ratio of video
+    CGSize naturalSize = videoPlayer.naturalSize;
+    CGFloat aspectRatio = naturalSize.width / naturalSize.height;
+    CGFloat newHeight = CGRectGetWidth(self.containerView.frame) / aspectRatio;
+    
+    self.containerHeightConstraint.constant = newHeight;
+    
+    [self.containerView layoutIfNeeded];
+    
+    // Reveal container view
+    self.containerView.hidden = NO;
 }
 
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
