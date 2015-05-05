@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -47,26 +46,11 @@
                                     <constraint firstItem="9uF-IU-Ue1" firstAttribute="top" secondItem="gwI-zs-1vj" secondAttribute="top" constant="20" id="hGT-qv-10z"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOr-V2-P1Q" customClass="VDefaultProfileButton">
-                                <rect key="frame" x="161" y="0.0" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="E98-lV-A5J"/>
-                                    <constraint firstAttribute="width" secondItem="fOr-V2-P1Q" secondAttribute="height" multiplier="1:1" id="xm4-Zf-Ilb"/>
-                                </constraints>
-                                <state key="normal" image="profile_full">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="userSelected:" destination="tdJ-QP-9ol" eventType="touchUpInside" id="Z4c-Pi-mQk"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fOr-V2-P1Q" firstAttribute="top" secondItem="7bg-N6-FzQ" secondAttribute="top" id="Ih9-8d-gW6"/>
                             <constraint firstAttribute="bottom" secondItem="gwI-zs-1vj" secondAttribute="bottom" id="LBV-UK-Qf0"/>
                             <constraint firstItem="gwI-zs-1vj" firstAttribute="top" secondItem="7bg-N6-FzQ" secondAttribute="top" constant="25" id="Mph-oo-0BZ"/>
-                            <constraint firstAttribute="centerX" secondItem="fOr-V2-P1Q" secondAttribute="centerX" id="PoR-7G-b48"/>
                             <constraint firstItem="gwI-zs-1vj" firstAttribute="leading" secondItem="7bg-N6-FzQ" secondAttribute="leading" id="bUo-OB-trb"/>
                             <constraint firstAttribute="trailing" secondItem="gwI-zs-1vj" secondAttribute="trailing" id="cTT-7U-Uh2"/>
                         </constraints>
@@ -112,7 +96,6 @@
                 <outlet property="nameLabel" destination="9uF-IU-Ue1" id="7S4-Fr-41h"/>
                 <outlet property="pollOrImageView" destination="83k-OL-pLv" id="FQG-Gj-orE"/>
                 <outlet property="previewImageView" destination="ODe-uo-H79" id="Piw-D9-iUM"/>
-                <outlet property="profileImageButton" destination="fOr-V2-P1Q" id="2D2-oV-qja"/>
                 <outlet property="webViewContainer" destination="8ks-bN-miQ" id="fg7-XW-DKz"/>
             </connections>
             <point key="canvasLocation" x="275" y="341.5"/>
@@ -120,7 +103,6 @@
     </objects>
     <resources>
         <image name="C_pollOr" width="65" height="72"/>
-        <image name="profile_full" width="80" height="80"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

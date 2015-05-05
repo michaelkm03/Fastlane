@@ -44,20 +44,11 @@ static NSString * const kVOrIconKey = @"orIcon";
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
 
-@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
-
 @property (nonatomic, strong) NSTimer *hideTimer;
 
 @end
 
 @implementation VFullscreenMarqueeStreamItemCell
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.profileImageButton.layer.borderWidth = CGRectGetHeight(self.profileImageButton.bounds) / 2;
-}
 
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
@@ -68,19 +59,7 @@ static NSString * const kVOrIconKey = @"orIcon";
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
                            placeholderImage:nil];
-    
-    BOOL populateProfileImage = [streamItem isKindOfClass:[VSequence class]] && !self.hideMarqueePosterImage;
-    
-    if ( populateProfileImage )
-    {
-        VSequence *sequence = (VSequence *)streamItem;
-        
-        [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
-                                           forState:UIControlStateNormal];
-    }
-    
-    self.profileImageButton.hidden = !populateProfileImage;
-    
+
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];
     [self restartHideTimer];
@@ -94,7 +73,7 @@ static NSString * const kVOrIconKey = @"orIcon";
     }
     
     _hideMarqueePosterImage = hideMarqueePosterImage;
-    self.profileImageButton.hidden = self.hideMarqueePosterImage;
+
     if ( self.hideMarqueePosterImage )
     {
         self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
@@ -110,9 +89,7 @@ static NSString * const kVOrIconKey = @"orIcon";
     if ( dependencyManager != nil )
     {
         self.detailsBackgroundView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileImageButton.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
-        self.profileImageButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
         UIImage *orIcon = [dependencyManager imageForKey:kVOrIconKey];
         self.pollOrImageView.image = orIcon;
