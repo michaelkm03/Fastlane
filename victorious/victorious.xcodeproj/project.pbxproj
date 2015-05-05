@@ -559,6 +559,8 @@
 		A7D378501AF0682B007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
 		A7D378531AF06C65007FF197 /* VImageAssetFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */; };
 		A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D378541AF15EDB007FF197 /* VTextFragment.swift */; };
+		A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3785D1AF2D830007FF197 /* VStoredLogin.m */; };
+		A7D378631AF2F369007FF197 /* VStoredLoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378621AF2F368007FF197 /* VStoredLoginTests.m */; };
 		A7D378641AF308B3007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
@@ -1891,6 +1893,9 @@
 		A7D3784F1AF0682B007FF197 /* component.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = component.json; sourceTree = "<group>"; };
 		A7D378521AF06C65007FF197 /* VImageAssetFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAssetFetcherTests.m; sourceTree = "<group>"; };
 		A7D378541AF15EDB007FF197 /* VTextFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTextFragment.swift; sourceTree = "<group>"; };
+		A7D3785C1AF2D830007FF197 /* VStoredLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStoredLogin.h; sourceTree = "<group>"; };
+		A7D3785D1AF2D830007FF197 /* VStoredLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStoredLogin.m; sourceTree = "<group>"; };
+		A7D378621AF2F368007FF197 /* VStoredLoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStoredLoginTests.m; sourceTree = "<group>"; };
 		A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutoplaySettingsViewController.h; sourceTree = "<group>"; };
 		A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutoplaySettingsViewController.m; sourceTree = "<group>"; };
 		A7D707711A797B8A00D9993F /* VVideoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSettings.h; sourceTree = "<group>"; };
@@ -2718,6 +2723,8 @@
 			children = (
 				0314D2E019B46AF300FA363C /* VUserManager.h */,
 				0314D2E119B46AF300FA363C /* VUserManager.m */,
+				A7D3785C1AF2D830007FF197 /* VStoredLogin.h */,
+				A7D3785D1AF2D830007FF197 /* VStoredLogin.m */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -4827,6 +4834,7 @@
 				A70417621A365EE80042CABD /* VPurchaseRecordTests.m */,
 				A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */,
 				A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */,
+				A7D378621AF2F368007FF197 /* VStoredLoginTests.m */,
 				A75ED0E81AB8CC0A00C35063 /* VStreamContentPermissionsTests.m */,
 				A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */,
 				F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */,
@@ -6822,6 +6830,7 @@
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
+				A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
@@ -6948,6 +6957,7 @@
 				A72005431A03073B00285A9C /* VVideoTrackingTests.m in Sources */,
 				A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */,
 				F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */,
+				A7D378631AF2F369007FF197 /* VStoredLoginTests.m in Sources */,
 				DB61811C1AB206D700DED29F /* VFirstTimeInstallHelperTests.m in Sources */,
 				F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */,
 				F0AD21731AF32761001BDCC6 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */,

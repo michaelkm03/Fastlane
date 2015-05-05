@@ -12,7 +12,7 @@ target :victorious do
     pod 'FlurrySDK', '~> 5.4'
     pod 'KVOController'
     pod 'SDWebImage'
-    pod 'CCHLinkTextView', :git => 'https://github.com/TouchFrame/CCHLinkTextView.git', :branch => 'editable'
+    pod 'CCHLinkTextView'
     link_with 'victorious'
 
     target :test do

@@ -16,6 +16,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Login.h"
 #import "VRootViewController.h"
+#import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
@@ -49,8 +50,8 @@ static int const kNotificationFetchBatchSize = 50;
     if (viewController)
     {
         viewController.dependencyManager = dependencyManager;
-        viewController.title = @"Notifications";
         viewController.navigationItem.rightBarButtonItem = nil;
+        [dependencyManager addPropertiesToNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
@@ -154,18 +155,20 @@ static int const kNotificationFetchBatchSize = 50;
     [super controllerDidChangeContent:controller];
 }
 
-- (void)setHasNotifications:(BOOL)hasMessages
+- (void)setHasNotifications:(BOOL)hasNotifications
 {
-    if (!hasMessages)
+    if (!hasNotifications)
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
-        noMessageView.titleLabel.text = NSLocalizedString(@"NoNotificationsTitle", @"");
-        noMessageView.titleLabel.textColor = [UIColor whiteColor];
-        noMessageView.messageLabel.text = NSLocalizedString(@"NoNotificationsMessage", @"");
-        noMessageView.messageLabel.textColor = [UIColor whiteColor];
-        noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
-        self.tableView.backgroundView = noMessageView;
+        VNoContentView *noNotificationsView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
+        if ( [noNotificationsView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noNotificationsView.dependencyManager = self.dependencyManager;
+        }
+        noNotificationsView.titleLabel.text = NSLocalizedString(@"NoNotificationsTitle", @"");
+        noNotificationsView.messageLabel.text = NSLocalizedString(@"NoNotificationsMessage", @"");
+        noNotificationsView.iconImageView.image = [UIImage imageNamed:@"noNotificationsIcon"];
+        self.tableView.backgroundView = noNotificationsView;
     }
     else
     {

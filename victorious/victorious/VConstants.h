@@ -60,6 +60,7 @@ static NSUInteger const kVHashTagSubscriptionAlreadyExistsError = 1001;
 
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
 static NSUInteger const kVUserBannedError               = 1007;
+static NSUInteger const kVUserOrPasswordInvalidError    = 1010;
 
 static NSUInteger const kVMediaAlreadyCreatedError      = 1005;
 static NSUInteger const kVCommentAlreadyFlaggedError    = 1005;

@@ -25,4 +25,6 @@ typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass;
 
+- (void)resetSessionID;
+
 @end
