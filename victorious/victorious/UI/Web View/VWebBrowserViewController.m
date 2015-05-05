@@ -191,7 +191,13 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.currentURL = url;
     if ( self.webView != nil )
     {
-        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+        if ( url.scheme == nil ) //< WKWebView won't load a URL without a scheme
+        {
+            NSString *defaultScheme = @"http://";
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", defaultScheme, url.absoluteString]];
+        }
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [self.webView loadRequest:request];
     }
 }
 

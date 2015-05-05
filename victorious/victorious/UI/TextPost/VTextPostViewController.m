@@ -10,13 +10,13 @@
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
-#import "VHashTags.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
 #import <SDWebImageManager.h>
 #import "CCHLinkTextViewDelegate.h"
 #import "VLinkSelectionResponder.h"
 #import "UIColor+VBrightness.h"
 #import "VURLDetector.h"
+#import "VTextPostCalloutHelper.h"
 
 @interface VTextPostViewController () <CCHLinkTextViewDelegate>
 
@@ -31,15 +31,13 @@
 @property (nonatomic, strong) NSDictionary *calloutAttributes;
 @property (nonatomic, strong) NSDictionary *attributes;
 
-@property (nonatomic, strong) VURLDetector *urlDetector;
-@property (nonatomic, strong) NSArray *urlRanges;
-@property (nonatomic, strong) NSArray *hashtagRanges;
+@property (nonatomic, strong) VTextPostCalloutHelper *calloutHelper;
 
 @end
 
 @implementation VTextPostViewController
 
-#pragma mark - Initializations
+#pragma mark - Caches
 
 + (NSCache *)backgroundFramesCache
 {
@@ -51,15 +49,13 @@
     return backgroundFramesCache;
 }
 
-+ (NSCache *)calloutRangesCache
+- (void)updateCachedTextAttributes
 {
-    static NSCache *calloutRangesCache;
-    if ( calloutRangesCache == nil )
-    {
-        calloutRangesCache = [[NSCache alloc] init];
-    }
-    return calloutRangesCache;
+    self.attributes = [self.viewModel textAttributesWithDependencyManager:_dependencyManager];
+    self.calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:_dependencyManager];
 }
+
+#pragma mark - Dependencies and initializations
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -69,6 +65,15 @@
     viewController.dependencyManager = dependencyManager;
     return viewController;
 }
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    [self updateCachedTextAttributes];
+}
+
+#pragma mark - View controller life cycle
 
 - (void)viewDidLoad
 {
@@ -98,23 +103,7 @@
     }
 }
 
-- (void)updateCachedTextAttributes
-{
-    self.attributes = [self.viewModel textAttributesWithDependencyManager:_dependencyManager];
-    self.calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:_dependencyManager];
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    
-    [self updateCachedTextAttributes];
-}
-
-- (void)overlayButtonTapped:(UIButton *)sender
-{
-    self.textView.selectedRange = NSMakeRange(0, 0);
-}
+#pragma mark - public
 
 - (void)setText:(NSString *)text
 {
@@ -126,47 +115,6 @@
     _text = text;
     [self updateTextView];
 }
-
-- (void)updateTextView
-{
-    if ( self.text == nil )
-    {
-        return;
-    }
-    
-    NSCache *cache = [[self class] calloutRangesCache];
-    NSArray *calloutRanges = [cache objectForKey:self.text];
-    if ( calloutRanges == nil )
-    {
-        NSMutableArray *allRanges = [[NSMutableArray alloc] init];
-        
-        self.hashtagRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
-        [allRanges addObjectsFromArray:self.hashtagRanges];
-        
-        self.urlRanges = [self.urlDetector detectFromString:self.text];
-        [allRanges addObjectsFromArray:self.urlRanges];
-        
-        calloutRanges = [allRanges copy];
-        [cache setObject:calloutRanges forKey:self.text];
-    }
-    
-    [self updateTextView:self.textPostTextView
-                withText:self.text
-           calloutRanges:calloutRanges
-          textAttributes:self.attributes
-       calloutAttributes:self.calloutAttributes];
-}
-
-- (VURLDetector *)urlDetector
-{
-    if ( _urlDetector == nil )
-    {
-        _urlDetector = [[VURLDetector alloc] init];
-    }
-    return _urlDetector;
-}
-
-#pragma mark - public
 
 - (void)setColor:(UIColor *)color
 {
@@ -213,6 +161,34 @@
     _isTextSelectable = isTextSelectable;
     
     [self updateTextIsSelectable];
+}
+
+#pragma mark -
+
+- (VTextPostCalloutHelper *)calloutHelper
+{
+    if ( _calloutHelper == nil )
+    {
+        _calloutHelper = [[VTextPostCalloutHelper alloc] init];
+    }
+    return _calloutHelper;
+}
+
+- (void)updateTextView
+{
+    if ( self.text != nil )
+    {
+        [self updateTextView:self.textPostTextView
+                    withText:self.text
+               calloutRanges:[self.calloutHelper calloutRangesForText:self.text]
+              textAttributes:self.attributes
+           calloutAttributes:self.calloutAttributes];
+    }
+}
+
+- (void)overlayButtonTapped:(UIButton *)sender
+{
+    self.textView.selectedRange = NSMakeRange(0, 0);
 }
 
 - (void)updateTextIsSelectable
@@ -276,12 +252,13 @@
         return;
     }
     
-    NSRange calloutRange = [self.text rangeOfString:calloutText];
-    if ( [self.hashtagRanges containsObject:[NSValue valueWithRange:calloutRange]] )
+    NSDictionary *callouts = [self.calloutHelper calloutsForText:self.text];
+    VTextPostCallout *callout = callouts[ calloutText ];
+    if ( [callout.type isEqualToString:VCalloutTypeHashtag] )
     {
         [self hashtagSelected:calloutText];
     }
-    else if ( [self.urlRanges containsObject:[NSValue valueWithRange:calloutRange]] )
+    else if ( [callout.type isEqualToString:VCalloutTypeURL] )
     {
         [self urlSelected:calloutText];
     }
@@ -291,12 +268,11 @@
 
 - (void)hashtagSelected:(NSString *)hashtag
 {
-    hashtag = [VHashTags stringByRemovingPrependingHashmarkFromString:hashtag];
-    id target = [self targetForAction:@selector(hashtagSelected:) withSender:self];
+    id target = [[self nextResponder] targetForAction:@selector(hashtagSelected:) withSender:self];
     if ( [target conformsToProtocol:@protocol(VLinkSelectionResponder)] )
     {
         id<VLinkSelectionResponder> responder = (id<VLinkSelectionResponder>)target;
-        [responder hashtagSelected:hashtag];
+        [responder hashtagSelected:[hashtag substringFromIndex:1]];
     }
 }
 
