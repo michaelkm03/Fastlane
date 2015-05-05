@@ -103,6 +103,8 @@
 #import "VNode+Fetcher.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VLinkSelectionResponder.h"
+#import "VDependencyManager+VScaffoldViewController.h"
+#import "VContentViewFactory.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -1821,7 +1823,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)urlSelected:(NSString *)text
 {
-    
+    NSURL *url = [NSURL URLWithString:text];
+    VContentViewFactory *contentViewFactory = [[VContentViewFactory alloc] initWithDependencyManager:self.dependencyManager];
+    UIViewController *viewController = [contentViewFactory webContentViewControllerWithURL:url sequence:nil];
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)hashtagSelected:(NSString *)text
