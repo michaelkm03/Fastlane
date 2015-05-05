@@ -8,6 +8,7 @@
 
 #import "VFetchedResultsTableViewController.h"
 #import "NSString+VParseHelp.h"
+#import "VPaginationManager.h"
 
 @implementation VFetchedResultsTableViewController
 
@@ -67,31 +68,6 @@
     [self.tableView reloadData];
     
     [self performFetch];
-}
-
-- (void)clearFetchControllerWithSuccess:(void (^)(void))successBlock andFailure:(void (^)(NSError *))failureBlock
-{
-    for ( NSManagedObject *managedObject in self.fetchedResultsController.fetchedObjects )
-    {
-        [self.fetchedResultsController.managedObjectContext deleteObject:managedObject];
-    }
-    NSError *error;
-    BOOL success = [self.fetchedResultsController.managedObjectContext saveToPersistentStore:&error];
-    if ( success )
-    {
-        if ( successBlock != nil )
-        {
-            successBlock();
-        }
-    }
-    else
-    {
-        //The save has failed, call the failure block if one has been provided
-        if ( failureBlock != nil )
-        {
-            failureBlock(error);
-        }
-    }
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender
@@ -213,6 +189,14 @@
     }
 
     [self.tableView endUpdates];
+}
+
+- (BOOL)scrollView:(UIScrollView *)scrollView shouldLoadNextPageOfFilter:(VAbstractFilter *)filter forScrollThreshold:(CGFloat)threshold
+{
+    BOOL canLoadFilter = ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] && filter.currentPageNumber.intValue < filter.maxPageNumber.intValue;
+    BOOL offsetTriggersLoad = scrollView.contentSize.height != 0 && scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > threshold;
+    BOOL fetchedFirstPage = [[self.fetchedResultsController sections][0] numberOfObjects] != 0;
+    return canLoadFilter && offsetTriggersLoad && fetchedFirstPage;
 }
 
 #pragma mark - Overrides

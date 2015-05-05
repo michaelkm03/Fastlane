@@ -254,6 +254,17 @@ static int const kNotificationFetchBatchSize = 50;
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self.refreshControl endRefreshing];
+        
+        NSManagedObjectContext *managedObjectContext = self.fetchedResultsController.managedObjectContext;
+        for (NSManagedObject *managedObject in self.fetchedResultsController.fetchedObjects)
+        {
+            if ( ![resultObjects containsObject:managedObject] )
+            {
+                [managedObjectContext deleteObject:managedObject];
+            }
+        }
+        [managedObjectContext save:NULL];
+        
         if (self.refreshRequest == nil)
         {
             return;
@@ -263,16 +274,10 @@ static int const kNotificationFetchBatchSize = 50;
         [self markAllNotificationsRead];
     };
     
-    [self clearFetchControllerWithSuccess:^
-     {
-         self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-                                                                                    successBlock:success
-                                                                                       failBlock:fail];
-     }
-                               andFailure:^(NSError *error)
-     {
-         [self.refreshControl endRefreshing];
-     }];
+    self.clearOnUpdate = YES;
+    self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
+                                                                               successBlock:success
+                                                                                  failBlock:fail];
 }
 
 - (void)loadNextPageAction
@@ -345,10 +350,7 @@ static int const kNotificationFetchBatchSize = 50;
     VAbstractFilter *filter = [[VObjectManager sharedManager] notificationFilterForCurrentUserFromManagedObjectContext:context];
     CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
     
-    if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&
-        [[self.fetchedResultsController sections][0] numberOfObjects] &&
-        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
+    if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter forScrollThreshold:scrollThreshold] )
     {
         [self loadNextPageAction];
     }

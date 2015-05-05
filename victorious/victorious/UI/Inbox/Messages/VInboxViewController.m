@@ -449,12 +449,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
     VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:context];
-                               CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
+    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
     
-    if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&
-        [[self.fetchedResultsController sections][0] numberOfObjects] &&
-        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
+    if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter forScrollThreshold:scrollThreshold] )
     {
         [self loadNextPageAction];
     }
