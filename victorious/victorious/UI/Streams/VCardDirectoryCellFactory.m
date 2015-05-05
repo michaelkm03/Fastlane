@@ -13,6 +13,7 @@
 #import "VCardDirectoryCellDecorator.h"
 #import "VStream.h"
 #import "VCardDirectoryCollectionViewFlowLayout.h"
+#import "VCompatibility.h"
 
 static CGFloat const kDirectoryInset = 10.0f;
 
@@ -46,7 +47,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     CGFloat width = CGRectGetWidth(bounds);
     UIEdgeInsets sectionEdgeInsets = [self sectionInsets];
     width -= sectionEdgeInsets.left + sectionEdgeInsets.right + [self minimumInterItemSpacing];
-    width = floorf(width * 0.5f);
+    width = VFLOOR(width * 0.5f);
     
     BOOL isStreamOfStreamsRow = [VCardDirectoryCell wantsToShowStackedBackgroundForStreamItem:streamItem];
     CGFloat height = isStreamOfStreamsRow ? [VCardDirectoryCell desiredStreamOfStreamsHeightForWidth:width] : [VCardDirectoryCell desiredStreamOfContentHeightForWidth:width];
