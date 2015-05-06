@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}BoyceAvenue</string>
+	<string>${ProductPrefix}Boyce Avenue</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}BoyceAvenue</string>
+	<string>com.getvictorious.${ProductPrefix}boyceavenue</string>
 	<key>CFBundleName</key>
 	<string>${ProductPrefix}BoyceAvenue</string>
 	<key>CFBundleURLTypes</key>
@@ -13,29 +13,25 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1374328719478033</string>
+				<string>fb1831698747056092</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
-	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
+	<string>1831698747056092</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
+	<string>VvnORwDKxiODn0UKxnCKZRRQm</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
-	<key>TestflightReleaseAppToken</key>
-	<string>c11f70e8-3b0b-4da9-b817-b29cb011c443</string>
-	<key>TestflightQAAppToken</key>
-	<string>a730bc55-8a4e-41eb-b3a7-e058bc0580b4</string>
-	<key>TestflightStagingAppToken</key>
-	<string>6bc391d5-d4c7-4965-b34c-42efefeef9ed</string>
+	<string>vqnCcTSRKEKLKzXSudkTDVyUZS2fgRlEYOh87LjT5wurqkafnh</string>
 	<key>VictoriousAppID</key>
-	<integer>0</integer>
+	<integer>47</integer>
 	<key>StagingAppID</key>
 	<integer>14</integer>
 	<key>QAAppID</key>
-	<integer>0</integer>
+	<integer>44</integer>
+	<key>CreatorSalutation</key>
+	<string>Boyce Avenue</string>
+	<key>FlurryAPIKey</key>
+	<string>4Y3HQVHMCNGVH8Z5DQRT</string>
 </dict>
 </plist>
