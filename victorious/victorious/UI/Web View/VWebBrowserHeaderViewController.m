@@ -76,7 +76,7 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.labelTitle.textColor = tintColor;
     
-    self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
 }
 
 - (void)updateStateAnimated:(BOOL)animated

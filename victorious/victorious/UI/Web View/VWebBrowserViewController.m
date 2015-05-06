@@ -90,7 +90,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     if ( tempalteTitle != nil )
     {
         self.headerViewController.layoutMode = VWebBrowserHeaderLayoutModeMenuItem;
-        self.title = tempalteTitle;
+        super.title = tempalteTitle;
     }
     
     if ( self.currentURL != nil )
@@ -135,11 +135,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
         case VColorLuminanceDark:
             return UIStatusBarStyleLightContent;
     }
-}
-
-- (BOOL)v_prefersNavigationBarHidden
-{
-    return YES;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

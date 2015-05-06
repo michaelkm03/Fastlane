@@ -32,20 +32,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Idt-30-NjI" firstAttribute="top" secondItem="sfn-Rc-JjZ" secondAttribute="bottom" constant="-20" id="5BU-ly-Pf2"/>
+                            <constraint firstItem="Idt-30-NjI" firstAttribute="top" secondItem="sfn-Rc-JjZ" secondAttribute="bottom" id="5BU-ly-Pf2"/>
+                            <constraint firstItem="VfO-NC-MFs" firstAttribute="top" secondItem="Idt-30-NjI" secondAttribute="bottom" id="GaM-yP-i0Y"/>
                             <constraint firstAttribute="trailing" secondItem="VfO-NC-MFs" secondAttribute="trailing" id="efP-d5-hpP"/>
                             <constraint firstItem="Cq7-9N-HqV" firstAttribute="top" secondItem="VfO-NC-MFs" secondAttribute="bottom" id="hhT-8B-p5k"/>
                             <constraint firstItem="Idt-30-NjI" firstAttribute="leading" secondItem="KzY-xN-OP6" secondAttribute="leading" id="nQk-Mi-kJD"/>
-                            <constraint firstItem="VfO-NC-MFs" firstAttribute="top" secondItem="Idt-30-NjI" secondAttribute="bottom" id="qAO-ZV-zGF"/>
                             <constraint firstItem="VfO-NC-MFs" firstAttribute="leading" secondItem="KzY-xN-OP6" secondAttribute="leading" id="rVZ-4d-rY5"/>
                             <constraint firstAttribute="trailing" secondItem="Idt-30-NjI" secondAttribute="trailing" id="xE5-4l-18B"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="containerView" destination="VfO-NC-MFs" id="9iH-IV-QYs"/>
+                        <outlet property="headerHeightConstraint" destination="x4L-r2-Ovs" id="5RB-yp-iim"/>
+                        <outlet property="headerTopConstraint" destination="5BU-ly-Pf2" id="wWp-R4-j2j"/>
+                        <outlet property="webViewBottomConstraint" destination="hhT-8B-p5k" id="gYL-eA-dFn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oTy-6p-Mi7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -61,18 +64,18 @@
                         <viewControllerLayoutGuide type="bottom" id="xd6-ZA-jPh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Hl5-ah-vB3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
-                                <rect key="frame" x="0.0" y="64" width="320" height="2"/>
+                                <rect key="frame" x="0.0" y="50" width="320" height="2"/>
                                 <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="tJ6-5s-lwx"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n7-et-juQ" userLabel="Back Button">
-                                <rect key="frame" x="2" y="17" width="30" height="45"/>
+                                <rect key="frame" x="2" y="17" width="30" height="31"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="qQ4-OK-Ra3"/>
@@ -86,13 +89,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6my-03-sbB" userLabel="Page Title Label">
-                                <rect key="frame" x="35" y="16" width="212" height="46"/>
+                                <rect key="frame" x="35" y="16" width="212" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cNG-U0-zNK" userLabel="Export Button">
-                                <rect key="frame" x="250" y="15" width="32" height="46"/>
+                                <rect key="frame" x="250" y="15" width="32" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="Rab-ah-Rby"/>
                                 </constraints>
@@ -106,7 +109,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-ew-6sW" userLabel="Exit Button">
-                                <rect key="frame" x="283" y="15" width="32" height="49"/>
+                                <rect key="frame" x="283" y="15" width="32" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="mWz-d4-er6"/>
                                 </constraints>
@@ -157,10 +160,61 @@
             </objects>
             <point key="canvasLocation" x="686" y="334"/>
         </scene>
+        <!--Side Menu Web Browser View Controller-->
+        <scene sceneID="yi7-TN-mv6">
+            <objects>
+                <viewController storyboardIdentifier="VWebBrowserViewController2" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ktY-hC-1Q8" customClass="VSideMenuWebBrowserViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Y8d-IS-c1y"/>
+                        <viewControllerLayoutGuide type="bottom" id="gvX-He-are"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="CPc-0g-6Vc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g9h-qL-JRW" userLabel="Web View Container">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rVR-cl-QW9">
+                                <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="5Up-SZ-kEg"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="XJq-6Z-G52" kind="embed" id="CWe-y5-CdX"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rVR-cl-QW9" firstAttribute="leading" secondItem="CPc-0g-6Vc" secondAttribute="leading" id="2J9-F0-B2c"/>
+                            <constraint firstItem="gvX-He-are" firstAttribute="top" secondItem="rVR-cl-QW9" secondAttribute="bottom" id="42B-dw-BX4"/>
+                            <constraint firstAttribute="trailing" secondItem="rVR-cl-QW9" secondAttribute="trailing" id="5kK-T2-kPi"/>
+                            <constraint firstItem="rVR-cl-QW9" firstAttribute="top" secondItem="g9h-qL-JRW" secondAttribute="bottom" constant="-1" id="b1a-ZG-7Lq"/>
+                            <constraint firstAttribute="trailing" secondItem="g9h-qL-JRW" secondAttribute="trailing" id="rt0-nk-57Z"/>
+                            <constraint firstItem="g9h-qL-JRW" firstAttribute="leading" secondItem="CPc-0g-6Vc" secondAttribute="leading" id="vGM-Bb-yKr"/>
+                            <constraint firstItem="g9h-qL-JRW" firstAttribute="top" secondItem="Y8d-IS-c1y" secondAttribute="bottom" id="xbk-no-3fY"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="containerView" destination="g9h-qL-JRW" id="w4r-oY-iYh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GgH-7C-oTD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1099" y="-125"/>
+        </scene>
     </scenes>
     <resources>
         <image name="browser-back" width="13" height="24"/>
         <image name="browser-close" width="17" height="17"/>
         <image name="browser-share" width="14" height="21"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="CWe-y5-CdX"/>
+    </inferredMetricsTieBreakers>
 </document>
