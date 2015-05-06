@@ -703,6 +703,13 @@
 		D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */; };
 		D84C338C1AEB3231006F0F3B /* hermesCells.json in Resources */ = {isa = PBXBuildFile; fileRef = D84C338B1AEB3231006F0F3B /* hermesCells.json */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
+		D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */; };
+		D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */; };
+		D85E42841AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42831AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m */; };
+		D85E42871AFA9A2F00A13BD3 /* VPollSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */; };
+		D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */; };
+		D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */; };
+		D85E42901AFAA92600A13BD3 /* VStreamHeaderBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E428F1AFAA92600A13BD3 /* VStreamHeaderBar.m */; };
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86528EF1AE80628003832AC /* VAbstractStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */; };
 		D86528F31AE82ABF003832AC /* VPollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528F21AE82ABF003832AC /* VPollView.m */; };
@@ -2195,6 +2202,20 @@
 		D84C338B1AEB3231006F0F3B /* hermesCells.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = hermesCells.json; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
+		D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewView.h; sourceTree = "<group>"; };
+		D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequencePreviewView.m; sourceTree = "<group>"; };
+		D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSequencePreviewView.h; sourceTree = "<group>"; };
+		D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSequencePreviewView.m; sourceTree = "<group>"; };
+		D85E42821AFA9A1F00A13BD3 /* VVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSequencePreviewView.h; sourceTree = "<group>"; };
+		D85E42831AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoSequencePreviewView.m; sourceTree = "<group>"; };
+		D85E42851AFA9A2F00A13BD3 /* VPollSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollSequencePreviewView.h; sourceTree = "<group>"; };
+		D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollSequencePreviewView.m; sourceTree = "<group>"; };
+		D85E42881AFA9A3C00A13BD3 /* VTextSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextSequencePreviewView.h; sourceTree = "<group>"; };
+		D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextSequencePreviewView.m; sourceTree = "<group>"; };
+		D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHTMLSequncePreviewView.h; sourceTree = "<group>"; };
+		D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHTMLSequncePreviewView.m; sourceTree = "<group>"; };
+		D85E428E1AFAA92600A13BD3 /* VStreamHeaderBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamHeaderBar.h; sourceTree = "<group>"; };
+		D85E428F1AFAA92600A13BD3 /* VStreamHeaderBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamHeaderBar.m; sourceTree = "<group>"; };
 		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
 		D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceToWorkspaceAnimator.m; sourceTree = "<group>"; };
 		D86528ED1AE80628003832AC /* VAbstractStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamCollectionCell.h; sourceTree = "<group>"; };
@@ -2836,6 +2857,7 @@
 				F05AA97D1A83F6E3002F8917 /* Inline Search */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				D86528F01AE82AAC003832AC /* PollView */,
+				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				A7B5144A1A4517A80074282F /* SwipeCell */,
 				A7738AFE1A4A35DF008EA973 /* Transitions */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
@@ -2864,10 +2886,11 @@
 				D8B70FE91A805CC800090C5E /* VInlineValidationView.m */,
 				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
 				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
-				A7F712191AE5A3B10086F729 /* VLinearGradientView.h */,
-				A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */,
 				F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */,
 				F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */,
+				A7F712191AE5A3B10086F729 /* VLinearGradientView.h */,
+				A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */,
+				A7D3782D1AEF39FC007FF197 /* VLinkSelectionResponder.h */,
 				037FCF1F1A8DAF5400E8ABFC /* VMultipleContainerViewController */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
@@ -2875,6 +2898,8 @@
 				0314D35419B46B5E00FA363C /* VNoContentView.h */,
 				0314D35519B46B5E00FA363C /* VNoContentView.m */,
 				DB2A491D19DF437D00CB687B /* VNoContentView.xib */,
+				A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */,
+				A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */,
 				D8FC09051A51DBC100E5FBE4 /* VPlaceholderTextView.h */,
 				D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */,
 				D80C615919D0F692006AE41A /* VProgressBarView.h */,
@@ -2887,16 +2912,13 @@
 				A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */,
 				0314D35719B46B5E00FA363C /* VSelectorViewController.h */,
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
+				D8DD450E1AE99EBE00C0039A /* VSlantView.h */,
+				D8DD450F1AE99EBE00C0039A /* VSlantView.m */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
-				A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */,
-				A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */,
 				F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */,
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
-				D8DD450E1AE99EBE00C0039A /* VSlantView.h */,
-				D8DD450F1AE99EBE00C0039A /* VSlantView.m */,
-				A7D3782D1AEF39FC007FF197 /* VLinkSelectionResponder.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -4466,6 +4488,7 @@
 			isa = PBXGroup;
 			children = (
 				D8DD45051AE9948B00C0039A /* Hermes */,
+				F0AD21711AF32359001BDCC6 /* NoContentCollectionViewCell */,
 				0308B1161AB2AE9700144E53 /* Template C */,
 				D8B44CC51ADCB3A3006340E8 /* Template D */,
 				D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */,
@@ -4490,9 +4513,10 @@
 				A7AEF9831A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.h */,
 				A7AEF9841A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.m */,
 				A7AEF9851A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.xib */,
+				D85E428E1AFAA92600A13BD3 /* VStreamHeaderBar.h */,
+				D85E428F1AFAA92600A13BD3 /* VStreamHeaderBar.m */,
 				0308B1131AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.h */,
 				0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */,
-				F0AD21711AF32359001BDCC6 /* NoContentCollectionViewCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -5326,6 +5350,25 @@
 				D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */,
 			);
 			path = UICollectionView;
+			sourceTree = "<group>";
+		};
+		D85E427B1AFA982000A13BD3 /* SequencePreviewView */ = {
+			isa = PBXGroup;
+			children = (
+				D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */,
+				D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */,
+				D85E42851AFA9A2F00A13BD3 /* VPollSequencePreviewView.h */,
+				D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */,
+				D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */,
+				D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */,
+				D85E42881AFA9A3C00A13BD3 /* VTextSequencePreviewView.h */,
+				D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */,
+				D85E42821AFA9A1F00A13BD3 /* VVideoSequencePreviewView.h */,
+				D85E42831AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m */,
+				D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */,
+				D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */,
+			);
+			path = SequencePreviewView;
 			sourceTree = "<group>";
 		};
 		D86528F01AE82AAC003832AC /* PollView */ = {
@@ -6383,6 +6426,7 @@
 				DB531B591A42709700B4ADC8 /* VUser.m in Sources */,
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */,
+				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
 				F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */,
 				A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */,
 				A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */,
@@ -6415,6 +6459,7 @@
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */,
 				0314D07019B4670A00FA363C /* UIImage+ImageCreation.m in Sources */,
+				D85E42841AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m in Sources */,
 				A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */,
 				A7D378431AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m in Sources */,
 				D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */,
@@ -6674,6 +6719,7 @@
 				0314D0AD19B4698800FA363C /* VObjectManager+Analytics.m in Sources */,
 				A7AEF9B61A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m in Sources */,
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
+				D85E42871AFA9A2F00A13BD3 /* VPollSequencePreviewView.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
@@ -6848,6 +6894,7 @@
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */,
 				A776EF1C1ACC99C20093992F /* VMultiplePickerViewController.m in Sources */,
+				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
 				A7ECC1BE1AD601040003E00A /* UIImage+VTint.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
@@ -6878,6 +6925,7 @@
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
 				D87DE6CC1AF08EDE00069824 /* VResponder.m in Sources */,
 				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
+				D85E42901AFAA92600A13BD3 /* VStreamHeaderBar.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				D8332DC01A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m in Sources */,
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
@@ -6909,6 +6957,7 @@
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
 				A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
+				D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
@@ -6943,6 +6992,7 @@
 				A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */,
 				BE2C071219D5E842002AB82A /* VFullscreenMarqueeTabIndicatorView.m in Sources */,
 				F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */,
+				D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */,
 				0314D47F19B46B5E00FA363C /* VCameraViewController.m in Sources */,
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
