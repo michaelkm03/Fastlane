@@ -1,0 +1,15 @@
+{
+    "destination": {
+        "name": "webViewBottom.screen",
+        "webURL" : "http://www.eatyourkimchi.com/shop",
+        "title": "Store"
+    },
+    "icon": {
+        "imageURL": "A_Inbox"
+    },
+    "selectedIcon": {
+        "imageURL": "A_Inbox_selected"
+    },
+    "identifier": "Menu Store",
+    "title": "Store"
+}

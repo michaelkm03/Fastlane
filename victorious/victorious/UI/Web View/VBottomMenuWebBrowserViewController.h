@@ -1,5 +1,5 @@
 //
-//  VSideMenuWebBrowserViewController.h
+//  VBottomMenuWebBrowserViewController.h
 //  victorious
 //
 //  Created by Patrick Lynch on 5/6/15.
@@ -8,6 +8,6 @@
 
 #import "VWebBrowserViewController.h"
 
-@interface VSideMenuWebBrowserViewController : VWebBrowserViewController 
+@interface VBottomMenuWebBrowserViewController : VWebBrowserViewController
 
 @end

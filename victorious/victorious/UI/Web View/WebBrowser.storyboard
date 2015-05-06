@@ -26,7 +26,7 @@
                                     <constraint firstAttribute="height" constant="64" id="x4L-r2-Ovs"/>
                                 </constraints>
                                 <connections>
-                                    <segue destination="XJq-6Z-G52" kind="embed" identifier="embedHeader" id="3rD-5f-0tG"/>
+                                    <segue destination="XJq-6Z-G52" kind="embed" identifier="" id="3rD-5f-0tG"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -46,9 +46,6 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="containerView" destination="VfO-NC-MFs" id="9iH-IV-QYs"/>
-                        <outlet property="headerHeightConstraint" destination="x4L-r2-Ovs" id="5RB-yp-iim"/>
-                        <outlet property="headerTopConstraint" destination="5BU-ly-Pf2" id="wWp-R4-j2j"/>
-                        <outlet property="webViewBottomConstraint" destination="hhT-8B-p5k" id="gYL-eA-dFn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oTy-6p-Mi7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -64,18 +61,18 @@
                         <viewControllerLayoutGuide type="bottom" id="xd6-ZA-jPh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Hl5-ah-vB3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
-                                <rect key="frame" x="0.0" y="50" width="320" height="2"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="2"/>
                                 <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="tJ6-5s-lwx"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n7-et-juQ" userLabel="Back Button">
-                                <rect key="frame" x="2" y="17" width="30" height="31"/>
+                                <rect key="frame" x="2" y="17" width="30" height="45"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="qQ4-OK-Ra3"/>
@@ -89,13 +86,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6my-03-sbB" userLabel="Page Title Label">
-                                <rect key="frame" x="35" y="16" width="212" height="32"/>
+                                <rect key="frame" x="35" y="16" width="212" height="46"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cNG-U0-zNK" userLabel="Export Button">
-                                <rect key="frame" x="250" y="15" width="32" height="32"/>
+                                <rect key="frame" x="250" y="15" width="32" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="Rab-ah-Rby"/>
                                 </constraints>
@@ -109,7 +106,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-ew-6sW" userLabel="Exit Button">
-                                <rect key="frame" x="283" y="15" width="32" height="35"/>
+                                <rect key="frame" x="283" y="15" width="32" height="49"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="mWz-d4-er6"/>
                                 </constraints>
@@ -163,7 +160,7 @@
         <!--Side Menu Web Browser View Controller-->
         <scene sceneID="yi7-TN-mv6">
             <objects>
-                <viewController storyboardIdentifier="VWebBrowserViewController2" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ktY-hC-1Q8" customClass="VSideMenuWebBrowserViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VSideMenuWebBrowserViewController" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ktY-hC-1Q8" customClass="VSideMenuWebBrowserViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Y8d-IS-c1y"/>
                         <viewControllerLayoutGuide type="bottom" id="gvX-He-are"/>
@@ -208,6 +205,54 @@
             </objects>
             <point key="canvasLocation" x="1099" y="-125"/>
         </scene>
+        <!--Bottom Menu Web Browser View Controller-->
+        <scene sceneID="xp2-cH-8uy">
+            <objects>
+                <viewController storyboardIdentifier="VBottomMenuWebBrowserViewController" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vo4-Mk-GQg" customClass="VBottomMenuWebBrowserViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KqA-Xh-xY9"/>
+                        <viewControllerLayoutGuide type="bottom" id="XNQ-Q5-OcP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0GP-f8-4BO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XKO-5n-eTx" userLabel="Web View Container">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6K0-Mw-1gF">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="djY-w3-xHr"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="XJq-6Z-G52" kind="embed" identifier="embedHeader" id="tmo-gI-SHE"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="XKO-5n-eTx" secondAttribute="trailing" id="74S-wp-gEH"/>
+                            <constraint firstItem="XNQ-Q5-OcP" firstAttribute="top" secondItem="XKO-5n-eTx" secondAttribute="bottom" id="Em3-6a-t2v"/>
+                            <constraint firstAttribute="trailing" secondItem="6K0-Mw-1gF" secondAttribute="trailing" id="MDL-IS-ahW"/>
+                            <constraint firstItem="XKO-5n-eTx" firstAttribute="top" secondItem="6K0-Mw-1gF" secondAttribute="bottom" id="O8t-eU-PAN"/>
+                            <constraint firstItem="6K0-Mw-1gF" firstAttribute="leading" secondItem="0GP-f8-4BO" secondAttribute="leading" id="gKl-Nr-0Fg"/>
+                            <constraint firstItem="6K0-Mw-1gF" firstAttribute="top" secondItem="KqA-Xh-xY9" secondAttribute="bottom" id="iPk-1Z-RJi"/>
+                            <constraint firstItem="XKO-5n-eTx" firstAttribute="leading" secondItem="0GP-f8-4BO" secondAttribute="leading" id="nMi-mC-Fxs"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="containerView" destination="XKO-5n-eTx" id="I3h-sf-HmH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gUP-mP-dbd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1099" y="610"/>
+        </scene>
     </scenes>
     <resources>
         <image name="browser-back" width="13" height="24"/>
@@ -215,6 +260,6 @@
         <image name="browser-share" width="14" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="CWe-y5-CdX"/>
+        <segue reference="3rD-5f-0tG"/>
     </inferredMetricsTieBreakers>
 </document>

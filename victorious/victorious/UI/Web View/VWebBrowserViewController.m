@@ -34,7 +34,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
 @property (nonatomic, strong) VWebBrowserActions *actions;
-@property (nonatomic, weak, readwrite) VWebBrowserHeaderViewController *headerViewController;
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIView *containerView;
@@ -50,13 +49,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:[NSBundle mainBundle]];
     VWebBrowserViewController *webBrowserViewController = (VWebBrowserViewController *)[storyboard instantiateInitialViewController];
     webBrowserViewController.dependencyManager = dependencyManager;
-    
-    NSString *templateUrlString = [dependencyManager stringForKey:VDependencyManagerWebURLKey];
-    if ( templateUrlString != nil )
-    {
-        [webBrowserViewController loadUrlString:templateUrlString];
-    }
-    
     return webBrowserViewController;
 }
 
@@ -71,7 +63,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.actions = [[VWebBrowserActions alloc] init];
     
     self.headerViewController.browserDelegate = self;
-    self.headerViewController.layoutMode = VWebBrowserHeaderLayoutModeStandalone;
     
     self.webView = [[WKWebView alloc] init];
     self.webView.navigationDelegate = self;
@@ -85,13 +76,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     
     [self.containerView addSubview:self.webView];
     [self.containerView v_addFitToParentConstraintsToSubview:self.webView];
-    
-    NSString *tempalteTitle = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
-    if ( tempalteTitle != nil )
-    {
-        self.headerViewController.layoutMode = VWebBrowserHeaderLayoutModeMenuItem;
-        super.title = tempalteTitle;
-    }
     
     if ( self.currentURL != nil )
     {
@@ -139,7 +123,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ( [segue.identifier isEqualToString:@"embedHeader"] && [segue.destinationViewController isKindOfClass:[VWebBrowserHeaderViewController class]] )
+    if ( [segue.destinationViewController isKindOfClass:[VWebBrowserHeaderViewController class]] )
     {
         self.headerViewController = (VWebBrowserHeaderViewController *)segue.destinationViewController;
         self.headerViewController.dependencyManager = [self.dependencyManager dependencyManagerForNavigationBar];

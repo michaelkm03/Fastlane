@@ -16,7 +16,9 @@
 
 @property (nonatomic, strong) VSequence *sequence;
 
-@property (nonatomic, weak, readonly) VWebBrowserHeaderViewController *headerViewController;
+@property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController;
+
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

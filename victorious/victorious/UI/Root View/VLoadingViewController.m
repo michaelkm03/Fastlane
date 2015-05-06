@@ -217,15 +217,16 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        
 #warning For testing store component
         if ( [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]] )
         {
-            [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/0/3"];  //< Side nav
+            //Side nav
+            [templateDecorator setComponentWithFilename:@"storeComponent2" forKeyPath:@"scaffold/menu/items/0/3"];
         }
         else
         {
-            [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/4"]; // Bottom nav
+            // Bottom nav
+            [templateDecorator setComponentWithFilename:@"storeComponent1" forKeyPath:@"scaffold/menu/items/4"];
         }
                 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager

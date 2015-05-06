@@ -1,25 +1,26 @@
 //
-//  VSideMenuWebBrowserViewController.m
+//  VBottomMenuWebBrowserViewController.m
 //  victorious
 //
 //  Created by Patrick Lynch on 5/6/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VSideMenuWebBrowserViewController.h"
+#import "VBottomMenuWebBrowserViewController.h"
 #import "VDependencyManager.h"
+#import "VNavigationController.h"
 #import "VWebBrowserHeaderViewController.h"
 
-@interface VSideMenuWebBrowserViewController ()
+@interface VBottomMenuWebBrowserViewController ()
 
 @end
 
-@implementation VSideMenuWebBrowserViewController
+@implementation VBottomMenuWebBrowserViewController
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:[NSBundle mainBundle]];
-    VSideMenuWebBrowserViewController *webBrowserViewController = (VSideMenuWebBrowserViewController *)[storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    VBottomMenuWebBrowserViewController *webBrowserViewController = (VBottomMenuWebBrowserViewController *)[storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     webBrowserViewController.dependencyManager = dependencyManager;
     
     NSString *templateUrlString = [dependencyManager stringForKey:VDependencyManagerWebURLKey];
@@ -31,17 +32,9 @@
     return webBrowserViewController;
 }
 
-- (void)setTitle:(NSString *)title
+- (BOOL)v_prefersNavigationBarHidden
 {
-    NSString *tempalteTitle = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
-    if ( tempalteTitle != nil )
-    {
-        super.title = tempalteTitle;
-    }
-    else
-    {
-        super.title = title;
-    }
+    return YES;
 }
 
 - (void)setHeaderViewController:(VWebBrowserHeaderViewController *)headerViewController
