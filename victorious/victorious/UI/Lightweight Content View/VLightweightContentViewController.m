@@ -140,6 +140,8 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
               constraint.active = UIInterfaceOrientationIsLandscape(currentOrientation);
           }];
          
+         self.getStartedButton.alpha = UIInterfaceOrientationIsPortrait(currentOrientation);
+         
          [self.view layoutIfNeeded];
      }
                                  completion:nil];

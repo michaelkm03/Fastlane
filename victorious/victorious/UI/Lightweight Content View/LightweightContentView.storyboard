@@ -49,27 +49,36 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="iGR-lx-Wig" secondAttribute="bottom" id="5kV-KG-xb9"/>
+                            <constraint firstAttribute="centerY" secondItem="sOS-ge-ov7" secondAttribute="centerY" id="70f-zz-s0p"/>
+                            <constraint firstItem="sOS-ge-ov7" firstAttribute="height" secondItem="lnt-Ok-t9O" secondAttribute="height" id="B1C-Sw-sof"/>
                             <constraint firstAttribute="centerX" secondItem="rg4-dB-97K" secondAttribute="centerX" constant="-0.5" id="Oik-1C-Gap"/>
                             <constraint firstItem="sOS-ge-ov7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="RlJ-HE-p9L" secondAttribute="bottom" constant="47" id="Xju-Ai-8St"/>
                             <constraint firstAttribute="trailing" secondItem="sOS-ge-ov7" secondAttribute="trailing" id="YuT-r0-esF"/>
-                            <constraint firstItem="sOS-ge-ov7" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="bBQ-lG-8io"/>
                             <constraint firstItem="sOS-ge-ov7" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leading" id="bCJ-ks-GyK"/>
                             <constraint firstItem="oJA-97-ssS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sOS-ge-ov7" secondAttribute="bottom" constant="23" id="bps-mh-5y6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="iGR-lx-Wig" secondAttribute="trailing" constant="-16" id="gGI-Sh-LZ7"/>
-                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="sOS-ge-ov7" secondAttribute="bottom" id="hZe-nW-RQ9"/>
                             <constraint firstItem="iGR-lx-Wig" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="jWp-Si-n7c"/>
                             <constraint firstItem="iGR-lx-Wig" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leadingMargin" constant="-16" id="jo2-pd-K8Y"/>
                             <constraint firstAttribute="centerY" secondItem="rg4-dB-97K" secondAttribute="centerY" constant="0.5" id="oUX-yg-d8c"/>
                             <constraint firstAttribute="centerY" secondItem="sOS-ge-ov7" secondAttribute="centerY" constant="20" id="pVm-7f-yvF"/>
                             <constraint firstAttribute="centerX" secondItem="oJA-97-ssS" secondAttribute="centerX" id="rR4-0J-01m"/>
-                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="sOS-ge-ov7" secondAttribute="bottom" constant="120" id="xMn-ze-2XP"/>
+                            <constraint firstItem="sOS-ge-ov7" firstAttribute="width" secondItem="lnt-Ok-t9O" secondAttribute="width" id="td5-o8-3C2"/>
+                            <constraint firstAttribute="centerX" secondItem="sOS-ge-ov7" secondAttribute="centerX" id="v0Q-4B-6YW"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="oJA-97-ssS" secondAttribute="bottom" constant="47" id="z6C-Re-3Mg"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="bBQ-lG-8io"/>
-                                <exclude reference="hZe-nW-RQ9"/>
-                                <exclude reference="xMn-ze-2XP"/>
+                                <exclude reference="70f-zz-s0p"/>
+                                <exclude reference="B1C-Sw-sof"/>
+                                <exclude reference="td5-o8-3C2"/>
+                                <exclude reference="v0Q-4B-6YW"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <exclude reference="B1C-Sw-sof"/>
+                                <exclude reference="td5-o8-3C2"/>
+                                <exclude reference="v0Q-4B-6YW"/>
                             </mask>
                         </variation>
                     </view>
@@ -82,8 +91,16 @@
                         <outlet property="containerHeightConstraint" destination="bzh-hg-L6q" id="852-iI-Mia"/>
                         <outlet property="containerView" destination="sOS-ge-ov7" id="8sQ-1B-Yf2"/>
                         <outlet property="getStartedButton" destination="oJA-97-ssS" id="LuA-yp-Snk"/>
-                        <outletCollection property="landscapeConstraints" destination="bBQ-lG-8io" id="nX0-ms-mdt"/>
-                        <outletCollection property="landscapeConstraints" destination="hZe-nW-RQ9" id="bNd-Hn-2Np"/>
+                        <outletCollection property="portraitConstraints" destination="YuT-r0-esF" id="pzr-aG-0GP"/>
+                        <outletCollection property="portraitConstraints" destination="bCJ-ks-GyK" id="dXI-RJ-fIb"/>
+                        <outletCollection property="portraitConstraints" destination="Xju-Ai-8St" id="gaq-wT-4ok"/>
+                        <outletCollection property="portraitConstraints" destination="bps-mh-5y6" id="ozh-FQ-Uwb"/>
+                        <outletCollection property="landscapeConstraints" destination="B1C-Sw-sof" id="7pm-ky-Wqn"/>
+                        <outletCollection property="landscapeConstraints" destination="td5-o8-3C2" id="eVZ-NP-GCc"/>
+                        <outletCollection property="landscapeConstraints" destination="v0Q-4B-6YW" id="w2k-mQ-o6V"/>
+                        <outletCollection property="portraitConstraints" destination="bzh-hg-L6q" id="HnF-DI-phM"/>
+                        <outletCollection property="portraitConstraints" destination="pVm-7f-yvF" id="IP9-io-OcW"/>
+                        <outletCollection property="landscapeConstraints" destination="70f-zz-s0p" id="9NM-DX-qBQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3LK-5R-GdA" userLabel="First Responder" sceneMemberID="firstResponder"/>
