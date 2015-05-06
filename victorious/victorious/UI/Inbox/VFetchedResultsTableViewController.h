@@ -27,6 +27,7 @@
 - (void)registerCells;
 - (IBAction)refresh:(UIRefreshControl *)sender;
 
+- (BOOL)scrollView:(UIScrollView *)scrollView shouldLoadNextPageOfFilter:(VAbstractFilter *)filter;
 - (BOOL)scrollView:(UIScrollView *)scrollView shouldLoadNextPageOfFilter:(VAbstractFilter *)filter forScrollThreshold:(CGFloat)threshold;
 
 @end

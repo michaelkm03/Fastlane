@@ -9,6 +9,7 @@
 #import "VFetchedResultsTableViewController.h"
 #import "NSString+VParseHelp.h"
 #import "VPaginationManager.h"
+#import "VAbstractFilter.h"
 
 @implementation VFetchedResultsTableViewController
 
@@ -111,7 +112,7 @@
     {
         return;
     }
-
+    
     [self.tableView beginUpdates];
 }
 
@@ -191,11 +192,18 @@
     [self.tableView endUpdates];
 }
 
+- (BOOL)scrollView:(UIScrollView *)scrollView shouldLoadNextPageOfFilter:(VAbstractFilter *)filter
+{
+    CGFloat threshold = scrollView.contentSize.height - CGRectGetHeight(scrollView.bounds);
+    return [self scrollView:scrollView shouldLoadNextPageOfFilter:filter forScrollThreshold:threshold];
+}
+
+//TODO: Stop this method from returning YES when items are being inserted into the table
 - (BOOL)scrollView:(UIScrollView *)scrollView shouldLoadNextPageOfFilter:(VAbstractFilter *)filter forScrollThreshold:(CGFloat)threshold
 {
-    BOOL canLoadFilter = ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] && filter.currentPageNumber.intValue < filter.maxPageNumber.intValue;
-    BOOL offsetTriggersLoad = scrollView.contentSize.height != 0 && scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > threshold;
-    BOOL fetchedFirstPage = [[self.fetchedResultsController sections][0] numberOfObjects] != 0;
+    BOOL canLoadFilter = ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] && [filter.currentPageNumber integerValue] < [filter.maxPageNumber integerValue];
+    BOOL offsetTriggersLoad = scrollView.contentSize.height > CGRectGetHeight(scrollView.bounds) && scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > threshold;
+    BOOL fetchedFirstPage = [[self.fetchedResultsController sections][0] numberOfObjects] >= [filter.perPageNumber unsignedIntegerValue];
     return canLoadFilter && offsetTriggersLoad && fetchedFirstPage;
 }
 

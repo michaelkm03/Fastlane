@@ -151,7 +151,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self setHasNotifications:self.fetchedResultsController.fetchedObjects.count];
+    [self setHasNotifications:self.fetchedResultsController.fetchedObjects.count != 0];
     
     [super controllerDidChangeContent:controller];
 }
@@ -255,6 +255,7 @@ static int const kNotificationFetchBatchSize = 50;
     {
         [self.refreshControl endRefreshing];
         
+        //Clear all notifications from table except for those returned from the first page call
         NSManagedObjectContext *managedObjectContext = self.fetchedResultsController.managedObjectContext;
         for (NSManagedObject *managedObject in self.fetchedResultsController.fetchedObjects)
         {
@@ -348,9 +349,8 @@ static int const kNotificationFetchBatchSize = 50;
 {
     NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
     VAbstractFilter *filter = [[VObjectManager sharedManager] notificationFilterForCurrentUserFromManagedObjectContext:context];
-    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
     
-    if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter forScrollThreshold:scrollThreshold] )
+    if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter] )
     {
         [self loadNextPageAction];
     }
