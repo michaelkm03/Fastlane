@@ -96,6 +96,17 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     {
         [self fetchMediaSequenceObject];
     }
+    
+    // Check orientation and update button state
+    [self updateGetStartedButtonForCurrentOrientation];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Check orientation on first appearance and update constraints
+    [self updateConstraintsForCurrentOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -129,22 +140,33 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-         
-         [self.portraitConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-          {
-              constraint.active = UIInterfaceOrientationIsPortrait(currentOrientation);
-          }];
-         [self.landscapeConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-          {
-              constraint.active = UIInterfaceOrientationIsLandscape(currentOrientation);
-          }];
-         
-         self.getStartedButton.alpha = UIInterfaceOrientationIsPortrait(currentOrientation);
-         
-         [self.view layoutIfNeeded];
+         [self updateConstraintsForCurrentOrientation];
+         [self updateGetStartedButtonForCurrentOrientation];
      }
                                  completion:nil];
+}
+
+- (void)updateConstraintsForCurrentOrientation
+{
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    [self.portraitConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         constraint.active = UIInterfaceOrientationIsPortrait(currentOrientation);
+     }];
+    [self.landscapeConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         constraint.active = UIInterfaceOrientationIsLandscape(currentOrientation);
+     }];
+    
+    [self.view layoutIfNeeded];
+}
+
+- (void)updateGetStartedButtonForCurrentOrientation
+{
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    self.getStartedButton.alpha = UIInterfaceOrientationIsPortrait(currentOrientation);
 }
 
 #pragma mark - Setup Video Playback View
