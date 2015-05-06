@@ -209,7 +209,6 @@
         }
         else if (error.errorCode)
         {
-            NSString *thePath = path;
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                              userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
