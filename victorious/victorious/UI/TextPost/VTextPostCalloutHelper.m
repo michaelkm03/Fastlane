@@ -10,12 +10,9 @@
 #import "VHashtags.h"
 #import "VURLDetector.h"
 
-NSString * const VCalloutTypeURL = @"URL";
-NSString * const VCalloutTypeHashtag = @"hashtag";
-
 @implementation VTextPostCallout
 
-- (instancetype)initWithText:(NSString *)text range:(NSRange)range type:(NSString *)type
+- (instancetype)initWithText:(NSString *)text range:(NSRange)range type:(VTextCalloutType)type
 {
     self = [super init];
     if ( self != nil )
@@ -57,7 +54,7 @@ NSString * const VCalloutTypeHashtag = @"hashtag";
             NSString *calloutText = [text substringWithRange:range];
             if ( calloutText != nil && calloutText.length > 0 )
             {
-                mutableCallouts[ calloutText ] = [[VTextPostCallout alloc] initWithText:calloutText range:range type:VCalloutTypeHashtag];
+                mutableCallouts[ calloutText ] = [[VTextPostCallout alloc] initWithText:calloutText range:range type:VTextCalloutTypeHashtag];
             }
         }
         
@@ -70,7 +67,7 @@ NSString * const VCalloutTypeHashtag = @"hashtag";
             NSString *calloutText = [text substringWithRange:range];
             if ( calloutText != nil && calloutText.length > 0 )
             {
-                mutableCallouts[ calloutText ] = [[VTextPostCallout alloc] initWithText:calloutText range:range type:VCalloutTypeURL];
+                mutableCallouts[ calloutText ] = [[VTextPostCallout alloc] initWithText:calloutText range:range type:VTextCalloutTypeURL];
             }
         }
         

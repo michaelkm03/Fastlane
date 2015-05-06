@@ -8,14 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const VCalloutTypeURL;
-extern NSString * const VCalloutTypeHashtag;
+typedef NS_ENUM( NSInteger, VTextCalloutType )
+{
+    VTextCalloutTypeURL,
+    VTextCalloutTypeHashtag,
+};
 
 @interface VTextPostCallout : NSObject
 
 @property (nonatomic, strong, readonly) NSString *text; ///< The text of the callout
 @property (nonatomic, assign, readonly) NSRange range; ///< The range of the callout in the text from which it came
-@property (nonatomic, strong, readonly) NSString *type; ///< The type of callout, necessary for responding properly when tapped
+@property (nonatomic, assign, readonly) VTextCalloutType type; ///< The type of callout, necessary for responding properly when tapped
 
 @end
 

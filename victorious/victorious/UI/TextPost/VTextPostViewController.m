@@ -254,11 +254,11 @@
     
     NSDictionary *callouts = [self.calloutHelper calloutsForText:self.text];
     VTextPostCallout *callout = callouts[ calloutText ];
-    if ( [callout.type isEqualToString:VCalloutTypeHashtag] )
+    if ( callout.type == VTextCalloutTypeHashtag )
     {
         [self hashtagSelected:calloutText];
     }
-    else if ( [callout.type isEqualToString:VCalloutTypeURL] )
+    else if ( callout.type == VTextCalloutTypeURL )
     {
         [self urlSelected:calloutText];
     }
