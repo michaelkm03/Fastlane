@@ -9,6 +9,12 @@
 #import "VHasManagedDependencies.h"
 #import "VProgressBarView.h"
 
+typedef NS_ENUM( NSInteger, VWebBrowserHeaderLayoutMode )
+{
+    VWebBrowserHeaderLayoutModeStandalone,
+    VWebBrowserHeaderLayoutModeMenuItem
+};
+
 @protocol VWebBrowserHeaderViewDelegate <NSObject>
 
 - (BOOL)canGoBack;
@@ -24,14 +30,14 @@
 
 @interface VWebBrowserHeaderViewController : UIViewController <VHasManagedDependencies>
 
+@property (nonatomic, assign) VWebBrowserHeaderLayoutMode layoutMode;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VWebBrowserHeaderViewDelegate> browserDelegate;
 
-- (void)updateHeaderState;
+- (void)updateStateAnimated:(BOOL)animated;
 - (void)setTitle:(NSString *)title;
 - (void)setLoadingStarted;
 - (void)setLoadingComplete:(BOOL)didFail;
 - (void)setLoadingProgress:(float)loadingProgress;
-- (void)setExitButtonHidden:(BOOL)hidden;
 
 @end

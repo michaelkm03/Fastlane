@@ -14,7 +14,9 @@
 
 static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
 static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
-static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
+static const CGFloat kLayoutChangeAnimationSpringVelocity   = 0.1f;
+
+static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 
 @interface VWebBrowserHeaderViewController()
 
@@ -28,7 +30,6 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleX1Constraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackX1Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitX2Constraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonExitWidthConstraint;
 
@@ -52,26 +53,7 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
     self.startingExitButtonWidth = self.buttonExitWidthConstraint.constant;
     self.startingPageTitleX1 = self.pageTitleX1Constraint.constant;
     
-    [self hideNavigationControls];
-    
-    [self.view layoutIfNeeded];
-}
-
-- (void)hideNavigationControls
-{
-    self.buttonBackWidthConstraint.constant = 0.0f;
-    self.pageTitleX1Constraint.constant = 10.0f;
-}
-
-- (void)showNavigationControls
-{
-    self.buttonBackWidthConstraint.constant = self.startingBackButtonWidth;
-    self.pageTitleX1Constraint.constant = self.startingPageTitleX1;
-}
-
-- (void)setExitButtonHidden:(BOOL)hidden
-{
-    self.buttonExitWidthConstraint.constant = hidden ? 0.0f : self.startingExitButtonWidth;
+    [self updateState];
 }
 
 - (void)applyTheme
@@ -97,27 +79,27 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
     self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
-- (void)updateHeaderState
+- (void)updateStateAnimated:(BOOL)animated
 {
-    [UIView animateWithDuration:kLayoutChangeAnimationDuration
-                          delay:0.0f
-         usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
-          initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
-                        options:kNilOptions
-                     animations:^void
-     {
-         if ( [self.browserDelegate canGoBack] )
-         {
-             [self showNavigationControls];
-         }
-         else
-         {
-             [self hideNavigationControls];
-         }
-         [self.view layoutIfNeeded];
-     } completion:nil];
+    void (^updateBlock)() = ^void ()
+    {
+        [self updateState];
+    };
     
-    self.buttonBack.enabled = [self.browserDelegate canGoBack];
+    if ( animated )
+    {
+        [UIView animateWithDuration:kLayoutChangeAnimationDuration
+                              delay:0.0f
+             usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
+              initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
+                            options:kNilOptions
+                         animations:updateBlock
+                         completion:nil];
+    }
+    else
+    {
+        updateBlock();
+    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -150,8 +132,41 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 - (void)setTitle:(NSString *)title
 {
-    self.labelTitle.textAlignment = NSTextAlignmentCenter;
     [self.labelTitle setText:title];
+}
+
+- (void)setLayoutMode:(VWebBrowserHeaderLayoutMode)layoutMode
+{
+    _layoutMode = layoutMode;
+    
+    if ( self.isViewLoaded )
+    {
+        [self updateState];
+    }
+}
+
+- (void)updateState
+{
+    const BOOL shouldHideNavControls = ![self.browserDelegate canGoBack];
+    self.buttonBack.enabled = [self.browserDelegate canGoBack];
+    self.buttonBackWidthConstraint.constant = shouldHideNavControls ? 0.0f : self.startingBackButtonWidth;
+    
+    switch ( self.layoutMode )
+    {
+        case VWebBrowserHeaderLayoutModeStandalone:
+            self.labelTitle.textAlignment = NSTextAlignmentLeft;
+            self.buttonExitWidthConstraint.constant = self.startingExitButtonWidth;
+            self.pageTitleX1Constraint.constant = self.startingPageTitleX1 + (shouldHideNavControls ? kDefaultLeadingSpace : 0.0f);
+            break;
+            
+        case VWebBrowserHeaderLayoutModeMenuItem:
+            self.labelTitle.textAlignment = NSTextAlignmentCenter;
+            self.buttonExitWidthConstraint.constant = 0.0f;
+            self.pageTitleX1Constraint.constant = self.startingPageTitleX1 + (shouldHideNavControls ? self.startingBackButtonWidth : 0.0f);
+            break;
+    }
+    
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Header Actions
@@ -159,31 +174,31 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 - (IBAction)backSelected:(id)sender
 {
     [self.browserDelegate goBack];
-    [self updateHeaderState];
+    [self updateStateAnimated:YES];
 }
 
 - (IBAction)forwardSelected:(id)sender
 {
     [self.browserDelegate goForward];
-    [self updateHeaderState];
+    [self updateStateAnimated:YES];
 }
 
 - (IBAction)exportSelected:(id)sender
 {
     [self.browserDelegate export];
-    [self updateHeaderState];
+    [self updateStateAnimated:YES];
 }
 
 - (IBAction)exitSelected:(id)sender
 {
     [self.browserDelegate exit];
-    [self updateHeaderState];
+    [self updateStateAnimated:YES];
 }
 
 - (IBAction)refreshSelected:(id)sender
 {
     [self.browserDelegate reload];
-    [self updateHeaderState];
+    [self updateStateAnimated:YES];
 }
 
 @end

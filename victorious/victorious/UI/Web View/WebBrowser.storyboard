@@ -87,7 +87,6 @@
                             </button>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6my-03-sbB" userLabel="Page Title Label">
                                 <rect key="frame" x="35" y="16" width="212" height="46"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -145,7 +144,6 @@
                     <connections>
                         <outlet property="buttonBack" destination="2n7-et-juQ" id="Aqf-rt-BCt"/>
                         <outlet property="buttonBackWidthConstraint" destination="qQ4-OK-Ra3" id="dLM-pG-MR7"/>
-                        <outlet property="buttonBackX1Constraint" destination="qF7-aT-FSL" id="K8R-fa-9hU"/>
                         <outlet property="buttonExit" destination="PTL-ew-6sW" id="LSY-mg-lE0"/>
                         <outlet property="buttonExitWidthConstraint" destination="mWz-d4-er6" id="8hW-rA-9MS"/>
                         <outlet property="buttonExitX2Constraint" destination="9nl-ad-Es7" id="VZI-S4-iU9"/>

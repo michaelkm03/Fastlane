@@ -10,11 +10,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VSequence, VWebBrowserHeaderViewController;
 
 @interface VWebBrowserViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VSequence *sequence;
+
+@property (nonatomic, weak, readonly) VWebBrowserHeaderViewController *headerViewController;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

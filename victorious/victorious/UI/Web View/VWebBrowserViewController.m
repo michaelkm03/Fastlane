@@ -34,8 +34,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
 @property (nonatomic, strong) VWebBrowserActions *actions;
-@property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, weak, readwrite) VWebBrowserHeaderViewController *headerViewController;
+@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 
@@ -50,6 +50,13 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:[NSBundle mainBundle]];
     VWebBrowserViewController *webBrowserViewController = (VWebBrowserViewController *)[storyboard instantiateInitialViewController];
     webBrowserViewController.dependencyManager = dependencyManager;
+    
+    NSString *templateUrlString = [dependencyManager stringForKey:VDependencyManagerWebURLKey];
+    if ( templateUrlString != nil )
+    {
+        [webBrowserViewController loadUrlString:templateUrlString];
+    }
+    
     return webBrowserViewController;
 }
 
@@ -64,6 +71,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.actions = [[VWebBrowserActions alloc] init];
     
     self.headerViewController.browserDelegate = self;
+    self.headerViewController.layoutMode = VWebBrowserHeaderLayoutModeStandalone;
     
     self.webView = [[WKWebView alloc] init];
     self.webView.navigationDelegate = self;
@@ -78,11 +86,12 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [self.containerView addSubview:self.webView];
     [self.containerView v_addFitToParentConstraintsToSubview:self.webView];
     
-    NSString *templateUrlString = [self.dependencyManager stringForKey:VDependencyManagerWebURLKey];
-    self.currentURL = [NSURL URLWithString:templateUrlString];
     NSString *tempalteTitle = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
-    [self.headerViewController setTitle:tempalteTitle];
-    [self.headerViewController setExitButtonHidden:YES];
+    if ( tempalteTitle != nil )
+    {
+        self.headerViewController.layoutMode = VWebBrowserHeaderLayoutModeMenuItem;
+        self.title = tempalteTitle;
+    }
     
     if ( self.currentURL != nil )
     {
@@ -177,15 +186,20 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [self loadUrlString:_sequence.webContentUrl];
 }
 
-#pragma mark - Helpers
+#pragma mark - Title
 
-- (void)updateWebViewPageInfo
+- (void)setTitle:(NSString *)title
+{
+    self.headerViewController.title = title;
+}
+
+- (void)updateTitle
 {
     [self.webView evaluateJavaScript:@"document.title" completionHandler:^(id result, NSError *error)
      {
          if ( !error && [result isKindOfClass:[NSString class]] )
          {
-             //[self.headerViewController setTitle:result];
+             self.title = result;
          }
      }];
 }
@@ -213,8 +227,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     self.state = VWebBrowserViewControllerStateComplete;
-    [self.headerViewController updateHeaderState];
-    [self updateWebViewPageInfo];
+    [self updateTitle];
+    [self.headerViewController updateStateAnimated:YES];
     [self.progressBarAnimationTimer invalidate];
     [self webViewDidUpdateProgress:1.0f];
 }
@@ -224,7 +238,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     self.state = VWebBrowserViewControllerStateFailed;
-    [self updateWebViewPageInfo];
+    [self updateTitle];
     [self.progressBarAnimationTimer invalidate];
     [self webViewDidUpdateProgress:-1.0f];
 }
@@ -233,7 +247,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.state = VWebBrowserViewControllerStateLoading;
-    [self.headerViewController updateHeaderState];
+    [self.headerViewController updateStateAnimated:YES];
     
     [self webViewDidUpdateProgress:0.0f];
     [self.progressBarAnimationTimer invalidate];
