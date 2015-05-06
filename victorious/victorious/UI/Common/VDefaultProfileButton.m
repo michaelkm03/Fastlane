@@ -50,29 +50,38 @@
     super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
 }
 
-- (void)updateCornerRadius
-{
-    CGFloat radius = ( CGRectGetHeight(self.bounds) - self.imageEdgeInsets.top - self.imageEdgeInsets.bottom )/2 ;
-    self.layer.cornerRadius = radius;
-}
-
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
     UIImage *defaultImage = [self placeholderImage];
-
+    
+    __weak typeof(self) weakSelf = self;
     [self sd_setImageWithURL:url
                     forState:UIControlStateNormal
             placeholderImage:defaultImage
                      options:SDWebImageRetryFailed
-                   completed:nil];
+                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                       
+                       if (!image)
+                       {
+                           [weakSelf setImage:[weakSelf placeholderImage] forState:UIControlStateNormal];
+                           return;
+                       }
+                       
+                       // Redraw image with rounded corners
+                       UIGraphicsBeginImageContextWithOptions(weakSelf.bounds.size, NO, [[UIScreen mainScreen] scale]);
+                       
+                       CGFloat radius = ( CGRectGetHeight(weakSelf.bounds) - weakSelf.imageEdgeInsets.top - weakSelf.imageEdgeInsets.bottom )/2 ;
+                       [[UIBezierPath bezierPathWithRoundedRect:weakSelf.bounds cornerRadius:radius] addClip];
+                       
+                       [image drawInRect:weakSelf.bounds];
+                       
+                       UIImage *rounded = UIGraphicsGetImageFromCurrentImageContext();
+                       [weakSelf setImage:rounded forState:UIControlStateNormal];
+                       
+                       UIGraphicsEndImageContext();
+                   }];
     
     self.imageView.tintColor = self.tintColor;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self updateCornerRadius];
 }
 
 - (UIImage *)placeholderImage
