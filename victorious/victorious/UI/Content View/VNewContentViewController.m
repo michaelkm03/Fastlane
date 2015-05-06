@@ -102,7 +102,7 @@
 #import "VAuthorizedAction.h"
 #import "VNode+Fetcher.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VLinkSelectionResponder.h"
+#import "VHashtagSelectionResponder.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VContentViewFactory.h"
 
@@ -111,7 +111,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VLinkSelectionResponder>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -1819,15 +1819,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     return NO;
 }
 
-#pragma mark - VLinkSelectionResponder
-
-- (void)urlSelected:(NSString *)text
-{
-    NSURL *url = [NSURL URLWithString:text];
-    VContentViewFactory *contentViewFactory = [[VContentViewFactory alloc] initWithDependencyManager:self.dependencyManager];
-    UIViewController *viewController = [contentViewFactory webContentViewControllerWithURL:url sequence:nil];
-    [self presentViewController:viewController animated:YES completion:nil];
-}
+#pragma mark - VHashtagSelectionResponder
 
 - (void)hashtagSelected:(NSString *)text
 {

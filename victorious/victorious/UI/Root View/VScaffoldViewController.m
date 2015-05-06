@@ -25,11 +25,12 @@
 #import "VPushNotificationManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "VMultipleContainer.h"
+#import "VURLSelectionResponder.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -148,6 +149,13 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         }
         [self presentViewController:contentView animated:YES completion:nil];
     }
+}
+
+#pragma mark - VURLSelectionResponder
+
+- (void)URLSelected:(NSURL *)URL
+{
+    [self showWebContentWithURL:URL sequence:nil];
 }
 
 #pragma mark - VLightweightContentViewControllerDelegate

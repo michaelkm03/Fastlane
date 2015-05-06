@@ -73,7 +73,7 @@
 
 #import "VAbstractDirectoryCollectionViewController.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VLinkSelectionResponder.h"
+#import "VHashtagSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
@@ -92,7 +92,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VLinkSelectionResponder>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -832,13 +832,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
 }
 
-#pragma mark - VLinkSelectionResponder
-
-- (void)urlSelected:(NSString *)text
-{
-    NSURL *url = [NSURL URLWithString:text];
-    [[self.dependencyManager scaffoldViewController] showWebContentWithURL:url sequence:nil];
-}
+#pragma mark - VHashtagSelectionResponder
 
 - (void)hashtagSelected:(NSString *)text
 {

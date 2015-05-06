@@ -13,7 +13,8 @@
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
 #import <SDWebImageManager.h>
 #import "CCHLinkTextViewDelegate.h"
-#import "VLinkSelectionResponder.h"
+#import "VHashtagSelectionResponder.h"
+#import "VURLSelectionResponder.h"
 #import "UIColor+VBrightness.h"
 #import "VURLDetector.h"
 #import "VTextPostCalloutHelper.h"
@@ -269,20 +270,25 @@
 - (void)hashtagSelected:(NSString *)hashtag
 {
     id target = [[self nextResponder] targetForAction:@selector(hashtagSelected:) withSender:self];
-    if ( [target conformsToProtocol:@protocol(VLinkSelectionResponder)] )
+    if ( [target conformsToProtocol:@protocol(VHashtagSelectionResponder)] )
     {
-        id<VLinkSelectionResponder> responder = (id<VLinkSelectionResponder>)target;
+        id<VHashtagSelectionResponder> responder = (id<VHashtagSelectionResponder>)target;
         [responder hashtagSelected:[hashtag substringFromIndex:1]];
     }
 }
 
 - (void)urlSelected:(NSString *)urlString
 {
-    id target = [[self nextResponder] targetForAction:@selector(urlSelected:) withSender:self];
-    if ( [target conformsToProtocol:@protocol(VLinkSelectionResponder)] )
+    UIResponder *responder = self;
+    while ((responder = [responder nextResponder])) {
+        NSLog(@"%@", responder);
+    }
+    
+    id target = [[self nextResponder] targetForAction:@selector(URLSelected:) withSender:self];
+    if ( [target conformsToProtocol:@protocol(VURLSelectionResponder)] )
     {
-        id<VLinkSelectionResponder> responder = (id<VLinkSelectionResponder>)target;
-        [responder urlSelected:urlString];
+        id<VURLSelectionResponder> responder = (id<VURLSelectionResponder>)target;
+        [responder URLSelected:[NSURL URLWithString:urlString]];
     }
 }
 
