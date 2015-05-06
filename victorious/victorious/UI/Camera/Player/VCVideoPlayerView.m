@@ -25,4 +25,16 @@
     [(AVPlayerLayer *)[self layer] setPlayer:player];
 }
 
+- (void)setVideoGravity:(NSString *)videoGravity
+{
+    AVPlayerLayer *playerLayer = (AVPlayerLayer *)[self layer];
+    playerLayer.videoGravity = videoGravity;
+}
+
+- (NSString *)videoGravity
+{
+    AVPlayerLayer *playerLayer = (AVPlayerLayer *)[self layer];
+    return playerLayer.videoGravity;
+}
+
 @end

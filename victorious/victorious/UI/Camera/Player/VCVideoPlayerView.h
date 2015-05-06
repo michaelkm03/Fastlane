@@ -17,4 +17,14 @@
 
 @property (nonatomic) AVPlayer *player;
 
+/**
+ Sets a particular gravity mode on the player layer
+ */
+- (void)setVideoGravity:(NSString *)videoGravity;
+
+/**
+ Returns the video gravity from the player layer
+ */
+- (NSString *)videoGravity;
+
 @end

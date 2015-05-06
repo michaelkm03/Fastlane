@@ -28,7 +28,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, strong) VElapsedTimeFormatter *timeFormatter;
 @property (nonatomic) BOOL toolbarAnimating;
 @property (nonatomic) BOOL sliderTouchActive;
-@property (nonatomic, strong, readonly) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong) id timeObserver;
 @property (nonatomic, strong) AVPlayerItem *playerItemBeingObserved;
 @property (nonatomic) BOOL delegateNotifiedOfReadinessToPlay;
@@ -344,18 +343,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)setVideoPlayerLayerVideoGravity:(NSString *)videoPlayerLayerVideoGravity
 {
-    self.playerLayer.videoGravity = videoPlayerLayerVideoGravity;
+    [(VCVideoPlayerView *)self.view setVideoGravity:videoPlayerLayerVideoGravity];
 }
 
 - (NSString *)videoPlayerLayerVideoGravity
 {
-    return self.playerLayer.videoGravity;
-}
-
-- (AVPlayerLayer *)playerLayer
-{
-    // Custom getter for our view's player layer
-    return (AVPlayerLayer *)[self.view layer];
+    return [(VCVideoPlayerView *)self.view videoGravity];
 }
 
 #pragma mark - Toolbar
@@ -717,7 +710,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)videoFrameDoubleTapped:(UITapGestureRecognizer *)sender
 {
-    self.playerLayer.videoGravity = ([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
+    NSString *oldVideoGravity = [(VCVideoPlayerView *)self.view videoGravity];
+    NSString *newVideoGravity = [oldVideoGravity isEqualToString:AVLayerVideoGravityResizeAspectFill] ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
+    [(VCVideoPlayerView *)self.view setVideoGravity:newVideoGravity];
 }
 
 - (IBAction)sliderTouchDown:(UISlider *)sender
