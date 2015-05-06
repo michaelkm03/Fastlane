@@ -438,17 +438,6 @@
     return NO;
 }
 
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toInviteFriends"])
-    {
-//        VInviteFriendsViewController   *inviteViewController = (VInviteFriendsViewController *)segue.destinationViewController;
-//        inviteViewController.profile = self.profile;
-    }
-}
-
 #pragma mark - Support
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
