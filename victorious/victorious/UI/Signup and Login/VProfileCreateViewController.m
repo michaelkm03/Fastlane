@@ -49,6 +49,8 @@
 @property (nonatomic, assign) BOOL addedAccessoryView;
 @property (nonatomic, assign) CGFloat previousKeyboardHeight;
 
+@property (nonatomic, assign) BOOL locationAlreadyAutoFilled;
+
 @end
 
 @implementation VProfileCreateViewController
@@ -288,8 +290,14 @@
     {
         return;
     }
-    self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
-    self.registrationModel.locationText = self.locationTextField.text;
+    
+    // Only update location text field if we haven't done it yet, and if user hasn't manually entered anything
+    if (!self.locationAlreadyAutoFilled && !self.locationTextField.text.length)
+    {
+        self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
+        self.registrationModel.locationText = self.locationTextField.text;
+        self.locationAlreadyAutoFilled = YES;
+    }
 }
 
 #pragma mark - State
