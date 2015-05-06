@@ -148,6 +148,15 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
+    if ( sequenceID != nil )
+    {
+        streamCollectionVC.marqueeCellController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey withAddedDependencies:@{ kSequenceIDKey : sequenceID }];
+    }
+    else
+    {
+        streamCollectionVC.marqueeCellController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
+    }
+    
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
     {
@@ -205,7 +214,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
     
-    self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
     self.marqueeCellController.dataDelegate = self;
     self.marqueeCellController.selectionDelegate = self;
     [self.marqueeCellController registerCellsWithCollectionView:self.collectionView];
