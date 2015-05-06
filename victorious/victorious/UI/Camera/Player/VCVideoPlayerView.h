@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 
+@import AVFoundation;
+
+/**
+ A wrapper around AVPlayerLayer
+ */
 @interface VCVideoPlayerView : UIView
 
 @property (nonatomic) AVPlayer *player;
