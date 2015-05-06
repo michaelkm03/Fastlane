@@ -93,6 +93,7 @@ static CGFloat easeInSine( CGFloat t )
     {
         [self.displayLink invalidate];
         self.displayLink = nil;
+        self.floatingView.hidden = YES;
     }
     
     const CGFloat targetAlpha = animationEnabled ? 1.0f : 0.0f;
