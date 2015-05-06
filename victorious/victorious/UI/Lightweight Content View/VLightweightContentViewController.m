@@ -250,6 +250,14 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     [self getStartedButtonAction:nil];
 }
 
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
+{
+    if ( [self.delegate respondsToSelector:@selector(videoHasCompletedInLightweightContentView:)] )
+    {
+        [self.delegate videoHasCompletedInLightweightContentView:self];
+    }
+}
+
 #pragma mark - Video Playback
 
 - (void)showVideo
@@ -270,10 +278,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
         self.videoPlayerViewController = nil;
     }
     
-    if ( [self.delegate respondsToSelector:@selector(videoHasCompletedInLightweightContentView:)] )
-    {
-        [self.delegate videoHasCompletedInLightweightContentView:self];
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
