@@ -146,6 +146,11 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)userWantsToDismissLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Authorized actions
 
 - (VAuthorizedAction *)authorizedAction

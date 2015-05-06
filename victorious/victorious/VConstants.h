@@ -69,15 +69,9 @@ static NSUInteger const kVSequenceAlreadyReposted       = 1005;
 static NSUInteger const kVUpgradeRequiredError          = 426;
 static NSUInteger const kVUnauthoizedError              = 401;
 
-#pragma mark - App ID keys
+#pragma mark - Info.plist keys
 
-static NSUInteger  const   kDevAppID                = 1;
-
-static NSString * const   kVictoriousAppIDKey      = @"VictoriousAppID";
-static NSString * const   kStagingAppIDKey         = @"StagingAppID";
-static NSString * const   kQAAppIDKey              = @"QAAppID";
-
-static NSString * const   kGAID                    = @"GAID";
+static NSString * const kGAID = @"GAID";
 
 #pragma mark - API Payload keys
 

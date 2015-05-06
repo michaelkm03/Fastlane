@@ -3,33 +3,35 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}TeeAndEss</string>
+	<string>${ProductPrefix}Strawburry17</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}eleventhgorgeous</string>
+	<string>com.getvictorious.${ProductPrefix}strawburry17</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}Strawburry17</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1471657219790958</string>
+				<string>fb786590024743304</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1471657219790958</string>
+	<string>786590024743304</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>tjwbhUUF0NEx5748CySYc7vMC</string>
+	<string>yDLvyD9QSBW345eaQtIR1PClL</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>VVq46Gcx9tCWkh4JHBSxcRs7dyU9bRojyQgunPJnaxs1JB3r5R</string>
+	<string>QChWA4Uo4dmBKnKyuZrrCwmMExFsOdIK0CMFjqI9LwKf1HsxKw</string>
 	<key>VictoriousAppID</key>
-	<integer>45</integer>
+	<integer>36</integer>
 	<key>StagingAppID</key>
-	<integer>60</integer>
+	<integer>50</integer>
 	<key>QAAppID</key>
-	<integer>43</integer>
+	<integer>34</integer>
 	<key>CreatorSalutation</key>
-	<string>TeeAndEss</string>
+	<string>Strawburry17</string>
 	<key>FlurryAPIKey</key>
-	<string>Q39XQ747V8N4Y7BBRQSB</string>
+	<string>G6K39SJQJBBHTXPD7G5Q</string>
 </dict>
 </plist>
