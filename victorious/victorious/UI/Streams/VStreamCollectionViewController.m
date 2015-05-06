@@ -72,7 +72,10 @@
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <FBKVOController.h>
 
-#import "VAbstractDirectoryCollectionViewController.h"
+#import "VDirectoryCollectionViewController.h"
+#import "VDependencyManager+VUserProfile.h"
+#import "VLinkSelectionResponder.h"
+#import "VNoContentCollectionViewCellFactory.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -90,7 +93,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VLinkSelectionResponder>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -267,6 +270,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
             [(VStreamCollectionCell *)cell reloadCommentsCount];
         }
     }
+    
+    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
+    [self updateUserPostAllowed];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -285,6 +291,24 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - Navigation
+
+- (void)showHashtagStreamWithHashtag:(NSString *)hashtag
+{
+    // Prevent another stream view for the current tag from being pushed
+    if ( self.currentStream.hashtag && self.currentStream.hashtag.length )
+    {
+        if ( [[self.currentStream.hashtag lowercaseString] isEqualToString:[hashtag lowercaseString]] )
+        {
+            return;
+        }
+    }
+    
+    // Instantiate and push to stack
+    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Properties
@@ -396,7 +420,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     else if ( [streamItem isStreamOfStreams] )
     {
-        VAbstractDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VAbstractDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
+        VDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
         
         //Set the selected stream as the current stream in the directory
         directory.currentStream = (VStream *)streamItem;
@@ -423,11 +447,16 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         return;
     }
     
+    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
+    {
+        return;
+    }
+    
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     UIImage *previewImage = nil;
-    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
         previewImage = ((VStreamCollectionCell *)cell).previewImageView.image;
@@ -507,8 +536,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     if ([dataSource count] > (NSUInteger)indexPath.row + 2u)
     {
         NSIndexPath *preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
-        VSequence *preloadSequence = (VSequence *)[dataSource itemAtIndexPath:preloadPath];
-        [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[preloadSequence initialImageURLs]];
+        VStreamItem *streamItem = [dataSource itemAtIndexPath:preloadPath];
+        if ( [streamItem isKindOfClass:[VSequence class]] )
+        {
+            [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:[(VSequence *)streamItem initialImageURLs]];
+        }
     }
 }
 
@@ -519,13 +551,15 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
 }
 
-- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(VStreamCollectionCell *)streamCollectionCell
+- (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(VStreamCollectionCell *)streamCollectionCell
 {
-    [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
+    [self.sequenceActionController showProfile:user fromViewController:self];
 }
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
     [self.sequenceActionController showRemixOnViewController:self
                                                 withSequence:sequence
                                         andDependencyManager:self.dependencyManager
@@ -570,19 +604,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         return;
     }
-    
-    // Prevent another stream view for the current tag from being pushed
-    if ( self.currentStream.hashtag && self.currentStream.hashtag.length )
-    {
-        if ( [[self.currentStream.hashtag lowercaseString] isEqualToString:[hashtag lowercaseString]] )
-        {
-            return;
-        }
-    }
-    
-    // Instantiate and push to stack
-    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self showHashtagStreamWithHashtag:hashtag];
 }
 
 #pragma mark - Actions
@@ -837,6 +859,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
 }
 
+#pragma mark - VLinkSelectionResponder
+
+- (void)linkWithTextSelected:(NSString *)text
+{
+    [self showHashtagStreamWithHashtag:text];
+}
+
 @end
 
 #pragma mark -
@@ -854,6 +883,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     remixStream.currentStream.name = NSLocalizedString(@"Remixes", nil);
     
     VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:remixStream.view.bounds];
+    if ( [noRemixView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        noRemixView.dependencyManager = self;
+    }
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
     noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
     noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];

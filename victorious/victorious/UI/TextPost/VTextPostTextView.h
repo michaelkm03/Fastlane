@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CCHLinkTextView.h"
 
 /**
  A custom UITextView subclass that provides drawing routines necessary
  to render background frames behind its text.
  */
-@interface VTextPostTextView : UITextView
+@interface VTextPostTextView : CCHLinkTextView
 
 /**
  The drames to be drawing.  This setter will automatically trigger the view

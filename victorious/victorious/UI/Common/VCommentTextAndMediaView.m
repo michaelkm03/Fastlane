@@ -12,12 +12,6 @@
 #import "VVideoLightboxViewController.h"
 #import "VTagSensitiveTextView.h"
 
-#ifdef __LP64__
-#define CEIL(a) ceil(a)
-#else
-#define CEIL(a) ceilf(a)
-#endif
-
 static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
 @interface VCommentTextAndMediaView ()
@@ -330,7 +324,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
         mediaSpacing = kSpacingBetweenTextAndMedia;
     }
     CGFloat mediaSize = hasMedia ? width + mediaSpacing : 0.0f;
-    return CEIL(CGRectGetHeight(boundingRect)) + mediaSize;
+    return VCEIL(CGRectGetHeight(boundingRect)) + mediaSize;
 }
 
 - (void(^)(void))standardMediaTapHandlerWithMediaURL:(NSURL *)mediaURL presentingViewController:(UIViewController *)presentingViewController

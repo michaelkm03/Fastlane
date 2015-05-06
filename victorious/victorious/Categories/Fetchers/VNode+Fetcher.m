@@ -14,6 +14,7 @@
 
 static NSString * const km3u8MimeType = @"application/x-mpegURL";
 static NSString * const kmp4MimeType = @"video/mp4";
+static NSString * const kTextAsset = @"text";
 
 @implementation VNode (Fetcher)
 
@@ -75,7 +76,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
     
     [self.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
      {
-         if ( asset.data != nil && [asset.type isEqualToString:@"text"] && [asset.data isKindOfClass:[NSString class]] )
+         if ( asset.data != nil && [asset.type isEqualToString:kTextAsset] && [asset.data isKindOfClass:[NSString class]] )
          {
              textAsset = asset;
              *stop = YES;

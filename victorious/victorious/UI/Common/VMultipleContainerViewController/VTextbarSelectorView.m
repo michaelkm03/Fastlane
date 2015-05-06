@@ -134,7 +134,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     
     __weak VTextbarSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
-    UIColor *buttonTextColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *buttonTextColor = self.foregroundColor;
     UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
         
@@ -147,7 +147,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
         //Create a button, set it's text to the title, give it constraints that fit it to it's spot in the view
         UIButton *button = [[UIButton alloc] init];
         button.translatesAutoresizingMaskIntoConstraints = NO;
-        [button setTitle:viewController.title forState:UIControlStateNormal];
+        [button setTitle:viewController.navigationItem.title forState:UIControlStateNormal];
         [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
         button.titleLabel.font = buttonFont;
         button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;

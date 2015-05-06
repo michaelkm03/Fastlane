@@ -62,12 +62,8 @@
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
-	<key>showcase.screen</key>
-	<string>VShowcaseCollectionViewController</string>
-	<key>streamDirectory.screen</key>
+	<key>directory.screen</key>
 	<string>VDirectoryCollectionViewController</string>
-	<key>collections.screen</key>
-	<string>VCollectionsCollectionViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>
@@ -82,6 +78,10 @@
 	<string>VNotificationsViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
+	<key>staticProfile.streamHeader</key>
+	<string>VStaticUserProfileHeaderViewController</string>
+	<key>floatingProfile.streamHeader</key>
+	<string>VFloatingUserProfileHeaderViewController</string>
 	<key>userProfile.screen</key>
 	<string>VUserProfileViewController</string>
 	<key>settings.screen</key>
@@ -90,6 +90,12 @@
 	<string>VDiscoverContainerViewController</string>
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
+	<key>collections.directoryCell</key>
+	<string>VCollectionsDirectoryCellFactory</string>
+	<key>showcase.directoryCell</key>
+	<string>VShowcaseDirectoryCellFactory</string>
+	<key>card.directoryCell</key>
+	<string>VCardDirectoryCellFactory</string>
 	<key>inset.streamCell</key>
 	<string>VInsetStreamCellFactory</string>
 	<key>sleek.streamCell</key>
@@ -102,5 +108,7 @@
 	<string>VFullscreenMarqueeController</string>
 	<key>blurred.marqueeCell</key>
 	<string>VBlurredMarqueeController</string>
+	<key>inset.marqueeCell</key>
+	<string>VInsetMarqueeController</string>
 </dict>
 </plist>

@@ -70,7 +70,7 @@
 "PasswordNotMatching" = "La contraseña no coincide";
 "PollAlreadyAnswered" = "El resultado de la encuesta ya fue dado";
 "LoginFail" = "Error al ingresar";
-"LoginFailMessage" = "¡Ups! Algo salió mal.";
+"GenericFailMessage" = "¡Ups! Algo salió mal.";
 "NotLoggedInMessage" = "¡Ups! parece que no has ingresado";
 "SignupFail" = "Error al crear la cuenta";
 "AccountUpdateFail" = "Error al actualizar la cuenta";
@@ -167,6 +167,7 @@
 
 "TwitterDeniedTitle" = "No pudimos acceder a tu cuenta de Twitter";
 "TwitterDenied" = "Por favor, permite el acceso a tu cuenta de Twitter en Configuración -> Privacidad -> Twitter";
+"TwitterTroubleshooting" = "Trata de quitar y volver a añadir tu cuenta de twitter en configuración";
 
 "CameraRollDeniedTitle" = "No se pudo acceder a las fotos";
 "CameraRollDenied" = "Por favor, permite el acceso a tus fotos en Configuración -> Privacidad.";
@@ -175,6 +176,7 @@
 "StillCaptureFailed" = "No se pudo tomar la foto";
 "VideoCaptureFailed" = "No se pudo grabar el video";
 "VideoSaveFailed" = "No se pudo guardar el video";
+"VideoCoachMessage" = "Para grabar, presiona y mantén";
 
 "NoTwitterTitle" = "¡No se pudo encontrar una cuenta de Twitter";
 "NoTwitterMessage" = "Por favor, abre tu configuración y añade una nueva cuenta de Twitter";
@@ -408,7 +410,7 @@
 
 "RTCUserPostedAtSyntax" = "%@ a %@";//e.g. "Username at 0:04"
 
-"Report/Flag" = "Reporar/señalar";
+"Report/Flag" = "Reportar/Señalar";
 "CreatedBy" = "CREADO POR";
 "remixes" = "remixes";
 "Remix" = "Remix";
@@ -482,10 +484,10 @@
 
 "Always" = "Siempre";
 "Never" = "Nunca";
-"Only on Wifi" = "Solo en Wifi";
+"Only on Wifi" = "Sólo en Wifi";
 "NotificationSettingSectionFeeds" = "Alimentación";
 "NotificationSettingSectionPeople" = "Persona";
-"Open Settings" = "Abrir configuraciónPersonas";
+"Open Settings" = "Abrir configuración";
 
 "ErrorPushNotificationsNotEnabled" = "Las notificaciones de empuje no están habilitadas para su dispositivo.\n";
 "ErrorPushNotificationsUnknown" = "Error al cargar las notificaciones .\nPor favor, intentar más tarde.";

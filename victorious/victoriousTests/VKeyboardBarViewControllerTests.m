@@ -12,13 +12,13 @@
 
 @interface VMockKeyboardBarViewController : VKeyboardBarViewController <UITextViewDelegate>
 
-@property (nonatomic, assign) NSInteger mockCharacterLimit;
+@property (nonatomic, assign) NSUInteger mockCharacterLimit;
 
 @end
 
 @implementation VMockKeyboardBarViewController
 
-- (NSInteger)characterLimit
+- (NSUInteger)characterLimit
 {
     return self.mockCharacterLimit;
 }

@@ -32,6 +32,18 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
+/**
+ Fetches data for a user with the provided ID and creates an entry in the core data store.
+ 
+ @param forceReload This method is optimized to prevent reloading a user that has
+ already been loaded and added to the core data store.  Setting this parameter to YES
+ will bypass that optization and reload and update the user entity.
+ */
+- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
+                                   forceReload:(BOOL)forceReload
+                              withSuccessBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString *)accessToken
                                                    forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success

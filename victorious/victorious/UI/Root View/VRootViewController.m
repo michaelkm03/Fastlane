@@ -23,7 +23,6 @@
 #import "VTracking.h"
 #import "TremorVideoAd.h"
 #import "VConstants.h"
-#import "VTemplateGenerator.h"
 #import "VLocationManager.h"
 #import "VVoteSettings.h"
 #import "VVoteType.h"
@@ -52,6 +51,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
+@property (nonatomic, strong) VLoadingViewController *loadingViewController;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
@@ -85,6 +85,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)commonInit
 {
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
+    
+    [[VObjectManager sharedManager] resetSessionID];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
@@ -213,10 +215,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)showLoadingViewController
 {
     self.launchState = VAppLaunchStateWaiting;
-    VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
-    loadingViewController.delegate = self;
-    loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
-    [self showViewController:loadingViewController animated:NO completion:nil];
+    self.loadingViewController = [VLoadingViewController loadingViewController];
+    self.loadingViewController.delegate = self;
+    self.loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
+    [self showViewController:self.loadingViewController animated:NO completion:nil];
 }
 
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager

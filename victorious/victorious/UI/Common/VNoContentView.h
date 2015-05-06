@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VHasManagedDependencies.h"
 
-@interface VNoContentView : UIView
+@interface VNoContentView : UIView <VHasManagedDependencies>
 
-@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *messageLabel;
 
 + (instancetype)noContentViewWithFrame:(CGRect)frame;
 

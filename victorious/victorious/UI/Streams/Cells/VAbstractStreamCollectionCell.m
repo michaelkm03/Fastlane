@@ -271,10 +271,12 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (void)selectedUser
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
+
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUser:onSequence:fromView:)])
     {
-        [self.sequenceActionsDelegate selectedUserOnSequence:self.sequence
-                                                    fromView:self];
+        [self.sequenceActionsDelegate selectedUser:self.sequence.user
+                                        onSequence:self.sequence
+                                          fromView:self];
     }
 }
 

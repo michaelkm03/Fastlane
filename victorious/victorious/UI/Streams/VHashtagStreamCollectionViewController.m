@@ -117,11 +117,15 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)dataSourceDidRefresh
 {
-    if ( self.streamDataSource.count == 0 )
+    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
         if ( self.noContentView == nil )
         {
             VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
+            if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
+            {
+                noContentView.dependencyManager = self.dependencyManager;
+            }
             noContentView.titleLabel.text = NSLocalizedString( @"NoHashtagsTitle", @"" );
             noContentView.messageLabel.text = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
             noContentView.iconImageView.image = [UIImage imageNamed:@"tabIconHashtag"];
@@ -167,7 +171,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         // Animate follow button
         self.followingSelectedHashtag = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
         
         self.navigationItem.rightBarButtonItem.enabled = YES;
     };
@@ -195,7 +198,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         self.followingSelectedHashtag = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
         
         self.navigationItem.rightBarButtonItem.enabled = YES;
     };

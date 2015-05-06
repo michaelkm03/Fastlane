@@ -52,7 +52,7 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
                                               attributes:attributes
                                                  context:[[NSStringDrawingContext alloc] init]];
     
-    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, CEIL((CGRectGetHeight(boundingRect))) + kLabelInset.top + kLabelInset.bottom));
+    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, VCEIL((CGRectGetHeight(boundingRect))) + kLabelInset.top + kLabelInset.bottom));
 
     [[self sizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
                            forKey:keyForQuestionBoundsAndAttribute];

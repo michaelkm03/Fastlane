@@ -225,13 +225,17 @@
     
     if (error.code != kVUserBannedError)
     {
-        NSString       *message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
-                                            : NSLocalizedString(@"LoginFailMessage", @"");
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                               message:message
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                     otherButtonTitles:nil];
+        NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
+        
+        if ( error.code == kVUserOrPasswordInvalidError )
+        {
+            message = NSLocalizedString(@"Invalid email address or password", @"");
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                              otherButtonTitles:nil];
         [alert show];
     }
 }
@@ -260,7 +264,7 @@
                             [self didLoginWithUser:user];
                         });
      }
-                                         onError:^(NSError *error)
+                                         onError:^(NSError *error, BOOL thirdPartyAPIFailed)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {
@@ -406,7 +410,7 @@
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
-        profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.loginType = VLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.registrationStepDelegate = self;

@@ -8,9 +8,8 @@
 
 #import "VDefaultProfileButton.h"
 
-#import "VThemeManager.h"
-
 #import <SDWebImage/UIButton+WebCache.h>
+#import "UIImageView+VLoadingAnimations.h"
 #import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
@@ -24,7 +23,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self setup];
     }
@@ -33,17 +32,22 @@
 
 - (void)setup
 {
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self setImage:[self placeholderImage] forState:UIControlStateNormal];
     
-    [self setImage:defaultImage forState:UIControlStateNormal];
-    //Was previously accent color for A and D
-    NSString *colorKey = kVLinkColor;
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
+    //Setting vertical and horizontal alignment to fill causes the image set by "setImage"
+    //to completely fill the bounds of button
+    self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    self.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+    
+    self.backgroundColor = [UIColor whiteColor];
+    self.tintColor = [UIColor darkGrayColor];
     
     self.clipsToBounds = YES;
-    
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+}
 
+- (void)setTintColor:(UIColor *)tintColor
+{
+    super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
 }
 
 - (void)updateCornerRadius
@@ -54,11 +58,13 @@
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
+    UIImage *defaultImage = [self placeholderImage];
+
     [self sd_setImageWithURL:url
-                    forState:controlState
-            placeholderImage:defaultImage];
+                    forState:UIControlStateNormal
+            placeholderImage:defaultImage
+                     options:SDWebImageRetryFailed
+                   completed:nil];
     
     self.imageView.tintColor = self.tintColor;
 }
@@ -67,6 +73,16 @@
 {
     [super layoutSubviews];
     [self updateCornerRadius];
+}
+
+- (UIImage *)placeholderImage
+{
+    UIImage *image = [UIImage imageNamed:@"profile_thumb"];
+    if (CGRectGetHeight(self.bounds) > image.size.height)
+    {
+        image = [UIImage imageNamed:@"profile_full"];
+    }
+    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 @end

@@ -27,8 +27,6 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 @property (nonatomic, strong) UIImageView *selectionView;
 @property (nonatomic, strong) NSLayoutConstraint *selectionViewLeftConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *selectionViewWidthConstraint;
-@property (nonatomic, strong) UIColor *pillColor;
-
 @property (nonatomic, strong) UIImageView *highlightMask;
 
 @end
@@ -114,7 +112,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
          }
          
          //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
-         UIButton *button = [self newButtonWithTitle:viewController.title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
+         UIButton *button = [self newButtonWithTitle:viewController.navigationItem.title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
          button.tag = idx;
          [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
          
@@ -138,9 +136,9 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     //Reset buttons to proper "unhighlighted" color
     for (UIButton *button in self.buttons)
     {
-        [button setTitleColor:self.pillColor forState:UIControlStateNormal];
+        [button setTitleColor:self.foregroundColor forState:UIControlStateNormal];
         [[button titleLabel] setFont:[[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey] fontWithSize:kVBoldFontPointSize - kVRegularFontPointSizeSubtractor]];
-        [button setTitleColor:[self.pillColor colorWithAlphaComponent:0.5f] forState:UIControlStateHighlighted];
+        [button setTitleColor:[self.foregroundColor colorWithAlphaComponent:0.5f] forState:UIControlStateHighlighted];
     }
     
     [self addHighlightViewWithSnapshot:barScreenShot];
@@ -352,16 +350,6 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     return _buttons;
 }
 
-- (UIColor *)pillColor
-{
-    if ( _pillColor )
-    {
-        return _pillColor;
-    }
-    _pillColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    return _pillColor;
-}
-
 - (VExtendedView *)pillView
 {
     if ( _pillView )
@@ -371,7 +359,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     
     _pillView = [[VExtendedView alloc] init];
     _pillView.translatesAutoresizingMaskIntoConstraints = NO;
-    _pillView.borderColor = self.pillColor;
+    _pillView.borderColor = self.foregroundColor;
     _pillView.borderWidth = 1.0f;
     _pillView.cornerRadius = kVPillHeight / 2.0f;
     return _pillView;
@@ -408,7 +396,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 
 - (UIImageView *)newPillImageView
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage resizeableImageWithColor:self.pillColor]];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage resizeableImageWithColor:self.foregroundColor]];
     imageView.clipsToBounds = YES;
     imageView.backgroundColor = [UIColor clearColor];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;

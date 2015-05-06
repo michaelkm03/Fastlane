@@ -48,6 +48,11 @@
     return followImage;
 }
 
++ (CGFloat)cellHeight
+{
+    return 155.0f;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -66,6 +71,7 @@
         self.usernameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.descriptionLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.followButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 

@@ -54,6 +54,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
+@property (nonatomic, assign) BOOL showChangePassword;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -129,8 +130,9 @@ static NSString * const kSupportEmailKey = @"email.support";
 #endif
     
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
-    
     self.showPushNotificationSettings = YES;
+    
+    self.showChangePassword = [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
@@ -218,9 +220,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
-        
-        [[VUserManager sharedInstance] logout];
-        
+        [[VObjectManager sharedManager] logout];
         [self updateLogoutButtonState];
     }
     else
@@ -277,7 +277,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     }
     else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
     {
-        if ([VObjectManager sharedManager].mainUserLoggedIn)
+        if ( self.showChangePassword )
         {
             return self.tableView.rowHeight;
         }

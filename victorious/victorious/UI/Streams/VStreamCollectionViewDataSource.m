@@ -9,7 +9,7 @@
 #import "VStreamCollectionViewDataSource.h"
 
 //UI
-#import "VDirectoryItemCell.h"
+#import "VCardDirectoryCell.h"
 #import "VFooterActivityIndicatorView.h"
 
 //Managers
