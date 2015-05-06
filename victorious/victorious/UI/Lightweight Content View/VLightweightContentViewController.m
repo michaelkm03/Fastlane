@@ -224,8 +224,18 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     
     // Adjust height of container view to match aspect ratio of video
     CGSize naturalSize = videoPlayer.naturalSize;
-    CGFloat aspectRatio = naturalSize.width / naturalSize.height;
-    CGFloat newHeight = CGRectGetWidth(self.containerView.frame) / aspectRatio;
+    
+    CGFloat newHeight;
+    
+    if (naturalSize.width <= 0 || naturalSize.height <= 0)
+    {
+        newHeight = CGRectGetWidth(self.containerView.frame);
+    }
+    else
+    {
+        CGFloat aspectRatio = naturalSize.width / naturalSize.height;
+        newHeight = CGRectGetWidth(self.containerView.frame) / aspectRatio;
+    }
     
     self.containerHeightConstraint.constant = newHeight;
     
