@@ -17,8 +17,6 @@
 
 @property (nonatomic, weak) id<UITableViewDelegate>delegate;
 
-@property (nonatomic, assign) BOOL clearOnUpdate;
-
 - (void)performFetch;
 
 - (NSFetchedResultsController *)makeFetchedResultsController;

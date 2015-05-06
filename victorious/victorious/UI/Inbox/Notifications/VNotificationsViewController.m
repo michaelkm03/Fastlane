@@ -102,6 +102,7 @@ static int const kNotificationFetchBatchSize = 50;
 {
     [super viewWillAppear:animated];
     [self.refreshControl beginRefreshing];
+    [self.tableView setContentOffset:CGPointZero];
     [self refresh:nil];
 }
 
@@ -275,7 +276,6 @@ static int const kNotificationFetchBatchSize = 50;
         [self markAllNotificationsRead];
     };
     
-    self.clearOnUpdate = YES;
     self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
                                                                                successBlock:success
                                                                                   failBlock:fail];
