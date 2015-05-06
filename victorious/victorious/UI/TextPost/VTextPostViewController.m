@@ -279,11 +279,6 @@
 
 - (void)urlSelected:(NSString *)urlString
 {
-    UIResponder *responder = self;
-    while ((responder = [responder nextResponder])) {
-        NSLog(@"%@", responder);
-    }
-    
     id target = [[self nextResponder] targetForAction:@selector(URLSelected:) withSender:self];
     if ( [target conformsToProtocol:@protocol(VURLSelectionResponder)] )
     {

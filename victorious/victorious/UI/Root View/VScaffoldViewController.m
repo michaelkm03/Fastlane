@@ -52,6 +52,11 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - Lifecyle Methods
 
+- (BOOL)definesPresentationContext
+{
+    return YES;
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -131,31 +136,10 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         {
             [self dismissViewControllerAnimated:NO completion:nil];
         }
+        [contentView willMoveToParentViewController:self];
         [self presentViewController:contentView animated:YES completion:nil];
+        [contentView didMoveToParentViewController:self];
     }
-}
-
-#pragma mark - Web content
-
-- (void)showWebContentWithURL:(NSURL *)url sequence:(VSequence *)sequence
-{
-    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
-    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:url sequence:sequence];
-    if ( contentView != nil )
-    {
-        if ( self.presentedViewController )
-        {
-            [self dismissViewControllerAnimated:NO completion:nil];
-        }
-        [self presentViewController:contentView animated:YES completion:nil];
-    }
-}
-
-#pragma mark - VURLSelectionResponder
-
-- (void)URLSelected:(NSURL *)URL
-{
-    [self showWebContentWithURL:URL sequence:nil];
 }
 
 #pragma mark - VLightweightContentViewControllerDelegate
@@ -284,6 +268,22 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
+}
+
+#pragma mark - VURLSelectionResponder
+
+- (void)URLSelected:(NSURL *)URL
+{
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:URL];
+    if ( contentView != nil )
+    {
+        if ( self.presentedViewController )
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
+        [self presentViewController:contentView animated:YES completion:nil];
+    }
 }
 
 @end

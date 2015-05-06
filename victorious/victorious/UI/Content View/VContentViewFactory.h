@@ -48,7 +48,7 @@
  */
 - (UIViewController *)contentViewForSequence:(VSequence *)sequence commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage;
 
-- (UIViewController *)webContentViewControllerWithURL:(NSURL *)url sequence:(VSequence *)sequence;
+- (UIViewController *)webContentViewControllerWithURL:(NSURL *)url;
 
 @end
 

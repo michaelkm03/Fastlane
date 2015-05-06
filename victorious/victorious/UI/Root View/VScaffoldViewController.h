@@ -60,8 +60,6 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  */
 - (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage;
 
-- (void)showWebContentWithURL:(NSURL *)url sequence:(VSequence *)sequence;
-
 /**
  Subclasses should override this and return a list of navigation destinations
  that they know about. For example, the list of items in a side menu or
