@@ -32,5 +32,6 @@
 - (void)setLoadingStarted;
 - (void)setLoadingComplete:(BOOL)didFail;
 - (void)setLoadingProgress:(float)loadingProgress;
+- (void)setExitButtonHidden:(BOOL)hidden;
 
 @end

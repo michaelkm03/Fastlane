@@ -30,8 +30,10 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleX1Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackX1Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitX2Constraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonExitWidthConstraint;
 
-@property (nonatomic, assign) CGFloat startingButtonWidth;
+@property (nonatomic, assign) CGFloat startingBackButtonWidth;
+@property (nonatomic, assign) CGFloat startingExitButtonWidth;
 @property (nonatomic, assign) CGFloat startingPageTitleX1;
 
 @end
@@ -46,7 +48,8 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
     
     self.labelTitle.text = NSLocalizedString( @"Loading...", @"" );
     
-    self.startingButtonWidth = self.buttonBackWidthConstraint.constant;
+    self.startingBackButtonWidth = self.buttonBackWidthConstraint.constant;
+    self.startingExitButtonWidth = self.buttonExitWidthConstraint.constant;
     self.startingPageTitleX1 = self.pageTitleX1Constraint.constant;
     
     [self hideNavigationControls];
@@ -62,8 +65,13 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 - (void)showNavigationControls
 {
-    self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
+    self.buttonBackWidthConstraint.constant = self.startingBackButtonWidth;
     self.pageTitleX1Constraint.constant = self.startingPageTitleX1;
+}
+
+- (void)setExitButtonHidden:(BOOL)hidden
+{
+    self.buttonExitWidthConstraint.constant = hidden ? 0.0f : self.startingExitButtonWidth;
 }
 
 - (void)applyTheme
@@ -142,6 +150,7 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 - (void)setTitle:(NSString *)title
 {
+    self.labelTitle.textAlignment = NSTextAlignmentCenter;
     [self.labelTitle setText:title];
 }
 

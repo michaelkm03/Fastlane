@@ -31,6 +31,13 @@
 + (NSDictionary *)dictionaryFromJSONFile:(NSString *)filename;
 
 /**
+ Simple utility method that returns a JSON string from the provided dictionary.
+ 
+ @param dictionary An NSDictionary which to make the JSON string.
+ */
++ (NSString *)JSONStringFromDictionary:(NSDictionary *)dictionary;
+
+/**
  Add the provided component to the top level of the template, thereby concatenating it.
  Any keys used at the top level of the component will overwite those already
  in present on the templste.

@@ -26,8 +26,8 @@ static NSString * const kKeyPathDelimiter = @"/";
     NSString *pathInBundle = [[NSBundle bundleForClass:[self class]] pathForResource:filename ofType:kJSONType];
     NSError *error = nil;
     
-    NSAssert( pathInBundle != nil, @"Cannot find path in bundle for filename \"%@\". \
-             Make sure the file is added to the project.", filename );
+    NSAssert( pathInBundle != nil, @"VTemplateDecorator cannot find path in bundle for filename \"%@\". \
+             Make sure the file is added to the project and do not included the \".json\" extension.", filename );
     
     NSData *data = [NSData dataWithContentsOfFile:pathInBundle options:kNilOptions error:&error];
     if ( data == nil )
@@ -41,6 +41,12 @@ static NSString * const kKeyPathDelimiter = @"/";
     }
     
     return dictionary;
+}
+
++ (NSString *)JSONStringFromDictionary:(NSDictionary *)dictionary
+{
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 - (instancetype)init

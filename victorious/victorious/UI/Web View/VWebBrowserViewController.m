@@ -18,6 +18,8 @@
 #import "VTracking.h"
 #import "NSURL+VCustomScheme.h"
 #import "UIColor+VBrightness.h"
+#import "VNavigationController.h"
+#import "UIView+AutoLayout.h"
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -57,6 +59,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewDidLoad];
     
+    self.navigationController.navigationBar.backgroundColor = [UIColor darkGrayColor];
+    
     self.actions = [[VWebBrowserActions alloc] init];
     
     self.headerViewController.browserDelegate = self;
@@ -70,18 +74,15 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
         WKWebView instead.
      */
     self.webView.UIDelegate = self;
-    [self.containerView addSubview:self.webView];
     
-    NSDictionary *views = @{ @"webView" : self.webView };
-    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|"
-                                                                               options:kNilOptions
-                                                                               metrics:nil
-                                                                                 views:views]];
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|"
-                                                                               options:kNilOptions
-                                                                               metrics:nil
-                                                                                 views:views]];
+    [self.containerView addSubview:self.webView];
+    [self.containerView v_addFitToParentConstraintsToSubview:self.webView];
+    
+    NSString *templateUrlString = [self.dependencyManager stringForKey:VDependencyManagerWebURLKey];
+    self.currentURL = [NSURL URLWithString:templateUrlString];
+    NSString *tempalteTitle = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
+    [self.headerViewController setTitle:tempalteTitle];
+    [self.headerViewController setExitButtonHidden:YES];
     
     if ( self.currentURL != nil )
     {
@@ -93,11 +94,14 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewDidAppear:animated];
     
-    // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.sequence.remoteId,
-                              VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    if ( self.sequence != nil )
+    {
+        // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                  VTrackingKeySequenceId : self.sequence.remoteId,
+                                  VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -122,6 +126,11 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
         case VColorLuminanceDark:
             return UIStatusBarStyleLightContent;
     }
+}
+
+- (BOOL)v_prefersNavigationBarHidden
+{
+    return YES;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -176,7 +185,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
      {
          if ( !error && [result isKindOfClass:[NSString class]] )
          {
-             [self.headerViewController setTitle:result];
+             //[self.headerViewController setTitle:result];
          }
      }];
 }
