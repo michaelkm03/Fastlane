@@ -278,7 +278,10 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
         self.videoPlayerViewController = nil;
     }
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([self.delegate respondsToSelector:@selector(userWantsToDismissLightweightContentView:)])
+    {
+        [self.delegate userWantsToDismissLightweightContentView:self];
+    }
 }
 
 @end
