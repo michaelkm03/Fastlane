@@ -19,6 +19,7 @@
 #import "VStream+Fetcher.h"
 #import "VNoContentView.h"
 #import "VAuthorizedAction.h"
+#import <FBKVOController.h>
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
@@ -28,6 +29,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 @property (nonatomic, assign, getter=isFollowingSelectedHashtag) BOOL followingSelectedHashtag;
 @property (nonatomic, strong) NSString *selectedHashtag;
+@property (nonatomic, assign) BOOL isReappearing;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
 
 @end
@@ -71,19 +73,37 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+                        keyPath:NSStringFromSelector(@selector(hashtags))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(hashtagsUpdated)];
     
-    [self fetchHashtagsForLoggedInUser];
+    if ( [VObjectManager sharedManager].mainUser.hashtags.count == 0 )
+    {
+        //Only fetch hashtags for user to update the follow button status and visibility if they've never been loaded before
+        [self fetchHashtagsForLoggedInUser];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if ( [VObjectManager sharedManager].mainUser.hashtags.count != 0 || self.isReappearing )
+    {
+        [self updateUserFollowingStatus];
+    }
+    self.isReappearing = YES;
+}
+
+- (void)hashtagsUpdated
+{
+    [self updateUserFollowingStatus];
 }
 
 #pragma mark - Fetch Users Tags
 
 - (void)fetchHashtagsForLoggedInUser
 {
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self updateUserFollowingStatus];
-    };
-    
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         VLog(@"%@\n%@", operation, error);
@@ -91,7 +111,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
                                                            perPageLimit:1000
-                                                           successBlock:successBlock
+                                                           successBlock:nil
                                                               failBlock:failureBlock];
 }
 
@@ -145,7 +165,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)toggleFollowHashtag
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
+                                                                      dependencyManager:self.dependencyManager];
     [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^(BOOL authorized)
      {
          if (!authorized)
@@ -222,11 +242,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)setFollowingSelectedHashtag:(BOOL)followingSelectedHashtag
 {
-    BOOL isAlreadyNewValue = _followingSelectedHashtag == followingSelectedHashtag;
-    
     _followingSelectedHashtag = followingSelectedHashtag;
     
-    [self updateFollowingStatusAnimated:!isAlreadyNewValue];
+    [self updateFollowingStatus];
 }
 
 - (UIImage *)followButtonImage
@@ -235,7 +253,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     return [UIImage imageNamed:imageName];
 }
 
-- (void)updateFollowingStatusAnimated:(BOOL)animated
+- (void)updateFollowingStatus
 {
     if ( self.streamDataSource.count == 0 )
     {
