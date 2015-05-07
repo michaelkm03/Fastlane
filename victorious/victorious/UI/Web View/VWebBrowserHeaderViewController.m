@@ -29,8 +29,6 @@
     
     [self applyTheme];
     
-    self.labelTitle.text = NSLocalizedString( @"Loading...", @"" );
-    
     [self.layoutManager update];
 }
 
@@ -88,16 +86,6 @@
 - (void)setTitle:(NSString *)title
 {
     [self.labelTitle setText:title];
-}
-
-- (void)setLayoutMode:(VWebBrowserHeaderLayoutMode)layoutMode
-{
-    _layoutMode = layoutMode;
-    
-    if ( self.isViewLoaded )
-    {
-        [self.layoutManager update];
-    }
 }
 
 #pragma mark - Header Actions

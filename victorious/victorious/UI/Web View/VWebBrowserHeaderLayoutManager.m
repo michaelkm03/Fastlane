@@ -1,5 +1,5 @@
 //
-//  VWebBrowserHeaderState.m
+//  VWebBrowserHeaderLayoutManager.m
 //  victorious
 //
 //  Created by Patrick Lynch on 5/6/15.
@@ -28,6 +28,7 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 @property (nonatomic, assign) CGFloat startingPageTitleX1;
 
 @property (nonatomic, assign, readonly) BOOL shouldHideNavigationControls;
+@property (nonatomic, assign) BOOL hasSetInitialValues;
 
 @end
 
@@ -37,14 +38,12 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 {
     [super awakeFromNib];
     
-    // Capture some initial values as configured in interface builder
-    self.startingBackButtonWidth = self.buttonBackWidthConstraint.constant;
-    self.startingExitButtonWidth = self.buttonExitWidthConstraint.constant;
-    self.startingPageTitleX1 = self.pageTitleX1Constraint.constant;
-    
     // Set the defaults
     self.contentAlignment = VWebBrowserHeaderContentAlignmentLeft;
     self.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentBottom;
+    
+    [self.header.view removeConstraint:self.progressBarBottomConstraint];
+    [self.header.view removeConstraint:self.progressBarTopConstraint];
 }
 
 - (void)setContentAlignment:(VWebBrowserHeaderContentAlignment)contentAlignment
@@ -87,12 +86,32 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     return ![self.header.browserDelegate canGoBack];
 }
 
+- (void)setInitialValues
+{
+    if ( self.buttonBackWidthConstraint == nil ||
+         self.buttonExitWidthConstraint == nil ||
+         self.pageTitleX1Constraint == nil )
+    {
+        return;
+    }
+    
+    // Capture some initial values as configured in interface builder
+    self.startingBackButtonWidth = self.buttonBackWidthConstraint.constant;
+    self.startingExitButtonWidth = self.buttonExitWidthConstraint.constant;
+    self.startingPageTitleX1 = self.pageTitleX1Constraint.constant;
+    
+    self.hasSetInitialValues = YES;
+}
+
 - (void)update
 {
-    self.buttonBackWidthConstraint.constant = self.shouldHideNavigationControls ? 0.0f : self.startingBackButtonWidth;
+    if ( !self.hasSetInitialValues )
+    {
+        [self setInitialValues];
+        return;
+    }
     
-    [self.header.view removeConstraint:self.progressBarBottomConstraint];
-    [self.header.view removeConstraint:self.progressBarTopConstraint];
+    self.buttonBackWidthConstraint.constant = self.shouldHideNavigationControls ? 0.0f : self.startingBackButtonWidth;
     
     switch ( self.progressBarAlignment )
     {

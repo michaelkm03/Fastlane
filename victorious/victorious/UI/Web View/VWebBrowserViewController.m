@@ -22,6 +22,11 @@
 #import "UIView+AutoLayout.h"
 #import "VWebBrowserHeaderLayoutManager.h"
 
+NSString * const VWebBrowserViewControllerLayoutKey                     = @"layout";
+NSString * const VWebBrowserViewControllerLayoutHeaderTop               = @"topHeader";  //< Matches IB identifier
+NSString * const VWebBrowserViewControllerLayoutHeaderBottom            = @"bottomHeader"; //< Matches IB identifier
+NSString * const VWebBrowserViewControllerHeaderContentAlignmentKey     = @"headerContentAlignment";
+
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     VWebBrowserViewControllerStateComplete,
@@ -29,18 +34,12 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     VWebBrowserViewControllerStateFailed,
 };
 
-typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
-{
-    VWebBrowserViewControllerLayoutHeaderTop,
-    VWebBrowserViewControllerLayoutHeaderBottom
-};
-
 @interface VWebBrowserViewController() <WKNavigationDelegate, VWebBrowserHeaderViewDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState loadingState;
-@property (nonatomic, assign) VWebBrowserViewControllerLayout layout;
+@property (nonatomic, assign) NSString *layoutIdentifier;
 @property (nonatomic, strong) VWebBrowserActions *actions;
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) VWebBrowserHeaderContentAlignment headerContentAlignment;
@@ -48,6 +47,7 @@ typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 
 @property (nonatomic, strong) NSTimer *progressBarAnimationTimer;
+@property (nonatomic, strong) NSString *templateTitle;
 
 @end
 
@@ -55,15 +55,13 @@ typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VWebBrowserViewControllerLayout layout = (VWebBrowserViewControllerLayout)[dependencyManager numberForKey:@"layout"].integerValue;
-    VWebBrowserHeaderContentAlignment contentAlignment = (VWebBrowserHeaderContentAlignment)[dependencyManager numberForKey:@"headerContentAlignment"].integerValue;
-    
-    NSString *identifier = layout == VWebBrowserViewControllerLayoutHeaderTop ? @"topHeader" : @"bottomHeader";
+    NSString *defaultLayout = VWebBrowserViewControllerLayoutHeaderTop;
+    NSString *layoutIdentifier = [dependencyManager stringForKey:VWebBrowserViewControllerLayoutKey] ?: defaultLayout;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:[NSBundle mainBundle]];
-    VWebBrowserViewController *webBrowserViewController = (VWebBrowserViewController *)[storyboard instantiateViewControllerWithIdentifier:identifier];
+    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:layoutIdentifier];
+    VWebBrowserViewController *webBrowserViewController = (VWebBrowserViewController *)viewController;
     webBrowserViewController.dependencyManager = dependencyManager;
-    webBrowserViewController.layout = layout;
-    webBrowserViewController.headerContentAlignment = contentAlignment;
+    webBrowserViewController.layoutIdentifier = layoutIdentifier;
     
     NSString *templateUrlString = [dependencyManager stringForKey:VDependencyManagerWebURLKey];
     if ( templateUrlString != nil )
@@ -71,12 +69,12 @@ typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
         [webBrowserViewController loadUrlString:templateUrlString];
     }
     
-    NSString *tempalteTitle = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    if ( tempalteTitle != nil )
+    NSString *templateTitle = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    if ( templateTitle != nil )
     {
-        webBrowserViewController.title = tempalteTitle;
+        webBrowserViewController.templateTitle = templateTitle;
+        webBrowserViewController.headerContentAlignment = VWebBrowserHeaderContentAlignmentCenter;
     }
-    
     return webBrowserViewController;
 }
 
@@ -110,28 +108,34 @@ typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
         [self loadUrl:self.currentURL];
     }
     
+    self.headerViewController.title = self.templateTitle ?: NSLocalizedString( @"Loading...", @"" );
+    
     [self updateHeaderLayuout];
 }
 
-- (void)setLayout:(VWebBrowserViewControllerLayout)layout
+- (void)setLayoutIdentifier:(NSString *)layoutIdentifier
 {
-    _layout = layout;
+    _layoutIdentifier = layoutIdentifier;
     
     [self updateHeaderLayuout];
+}
+
+- (void)setTemplateTitle:(NSString *)templateTitle
+{
+    _templateTitle = templateTitle;
+    self.title = _templateTitle;
 }
 
 - (void)updateHeaderLayuout
 {
     self.headerViewController.layoutManager.contentAlignment = self.headerContentAlignment;
-    switch ( self.layout )
+    if ( [self.layoutIdentifier isEqualToString:VWebBrowserViewControllerLayoutHeaderTop] )
     {
-        case VWebBrowserViewControllerLayoutHeaderTop:
-            self.headerViewController.layoutManager.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentBottom;
-            break;
-            
-        case VWebBrowserViewControllerLayoutHeaderBottom:
-            self.headerViewController.layoutManager.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentTop;
-            break;
+        self.headerViewController.layoutManager.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentBottom;
+    }
+    if ( [self.layoutIdentifier isEqualToString:VWebBrowserViewControllerLayoutHeaderBottom] )
+    {
+        self.headerViewController.layoutManager.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentTop;
     }
 }
 
@@ -163,7 +167,7 @@ typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
 
 - (BOOL)v_prefersNavigationBarHidden
 {
-    return self.layout == VWebBrowserViewControllerLayoutHeaderTop;
+    return self.layoutIdentifier == VWebBrowserViewControllerLayoutHeaderTop;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -212,6 +216,8 @@ typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
     {
         [self.headerViewController setLoadingProgress:progress];
     }
+    
+    [self.headerViewController.layoutManager updateAnimated:YES];
 }
 
 #pragma mark - Data source
@@ -226,8 +232,23 @@ typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
 
 - (void)setTitle:(NSString *)title
 {
-    super.title = title;
-    self.headerViewController.title = title;
+    if ( self.templateTitle != nil )
+    {
+        if ( [self.layoutIdentifier isEqualToString:VWebBrowserViewControllerLayoutHeaderBottom] )
+        {
+            self.headerViewController.title = nil;
+            super.title = self.templateTitle;
+        }
+        else
+        {
+            self.headerViewController.title = self.templateTitle;
+            super.title = self.templateTitle;
+        }
+    }
+    else
+    {
+        self.headerViewController.title = title;
+    }
 }
 
 - (void)updateTitle

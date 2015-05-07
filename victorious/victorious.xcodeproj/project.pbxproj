@@ -401,6 +401,7 @@
 		A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */; };
 		A74679481AFAE37A005EB1D9 /* storeComponent.json in Resources */ = {isa = PBXBuildFile; fileRef = A74679461AFAE37A005EB1D9 /* storeComponent.json */; };
 		A74679611AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A746795E1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m */; };
+		A74679651AFBEC5C005EB1D9 /* VWebBrowserNavigationDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = A74679641AFBEC5C005EB1D9 /* VWebBrowserNavigationDestination.m */; };
 		A74C87FA1ABA5859004D2E16 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C10331A65DE6F00439809 /* VCommentHighlighter.m */; };
@@ -1595,6 +1596,8 @@
 		A74679461AFAE37A005EB1D9 /* storeComponent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = storeComponent.json; sourceTree = "<group>"; };
 		A746795D1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserHeaderLayoutManager.h; sourceTree = "<group>"; };
 		A746795E1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserHeaderLayoutManager.m; sourceTree = "<group>"; };
+		A74679631AFBEC5C005EB1D9 /* VWebBrowserNavigationDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserNavigationDestination.h; sourceTree = "<group>"; };
+		A74679641AFBEC5C005EB1D9 /* VWebBrowserNavigationDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserNavigationDestination.m; sourceTree = "<group>"; };
 		A74C87F81ABA5859004D2E16 /* VCreatorInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatorInfoHelper.h; sourceTree = "<group>"; };
 		A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatorInfoHelper.m; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFirstInstallManager.h; path = "First Install/VFirstInstallManager.h"; sourceTree = "<group>"; };
@@ -4247,6 +4250,8 @@
 				A746795E1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m */,
 				A769C3DB1A13176700698D0C /* VWebBrowserHeaderViewController.h */,
 				A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */,
+				A74679631AFBEC5C005EB1D9 /* VWebBrowserNavigationDestination.h */,
+				A74679641AFBEC5C005EB1D9 /* VWebBrowserNavigationDestination.m */,
 				A769C3DD1A13176700698D0C /* VWebBrowserViewController.h */,
 				A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */,
 				A769C3E01A13176700698D0C /* VWebContentViewController.h */,
@@ -6341,6 +6346,7 @@
 				F028CF4E1A97A6B0005EE2B5 /* VShowcaseCollectionViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
+				A74679651AFBEC5C005EB1D9 /* VWebBrowserNavigationDestination.m in Sources */,
 				A7F711FE1AE1D5A00086F729 /* VProfileFollowingContainerViewController.m in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,

@@ -10,6 +10,11 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString * const VWebBrowserViewControllerLayoutKey;
+extern NSString * const VWebBrowserViewControllerLayoutHeaderTop;
+extern NSString * const VWebBrowserViewControllerLayoutHeaderBottom;
+extern NSString * const VWebBrowserViewControllerHeaderContentAlignmentKey;
+
 @class VSequence, VWebBrowserHeaderViewController;
 
 @interface VWebBrowserViewController : UIViewController <VHasManagedDependencies>

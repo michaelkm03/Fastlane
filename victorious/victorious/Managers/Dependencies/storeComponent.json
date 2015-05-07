@@ -2,7 +2,8 @@
     "destination": {
         "name": "webView.screen",
         "webURL" : "http://www.eatyourkimchi.com/shop",
-        "title": "Store"
+        "title": "Store",
+        "layout" : "topHeader"
     },
     "icon": {
         "imageURL": "A_Inbox"

@@ -218,15 +218,16 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
 #warning For testing store component
-        if ( [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]] )
+        BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
+        if ( isSideNavMenu )
         {
-            //Side nav
-            [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/0/3"];
+            NSAssert( [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/0/2"], @"" );
+            NSAssert( [templateDecorator setTemplateValue:@"bottomHeader" forKeyPath:@"scaffold/menu/items/0/2/destination/layout"], @"" );
         }
         else
         {
-            // Bottom nav
-            [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/4"];
+            NSAssert( [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/4"], @"" );
+            NSAssert( [templateDecorator setTemplateValue:@"topHeader" forKeyPath:@"scaffold/menu/items/4/destination/layout"], @"" );
         }
                 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager

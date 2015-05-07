@@ -10,12 +10,6 @@
 #import "VProgressBarView.h"
 #import "VWebBrowserHeaderLayoutManager.h"
 
-typedef NS_ENUM( NSInteger, VWebBrowserHeaderLayoutMode )
-{
-    VWebBrowserHeaderLayoutModeStandalone,
-    VWebBrowserHeaderLayoutModeMenuItem
-};
-
 @protocol VWebBrowserHeaderViewDelegate <NSObject>
 
 - (BOOL)canGoBack;
@@ -31,7 +25,6 @@ typedef NS_ENUM( NSInteger, VWebBrowserHeaderLayoutMode )
 
 @interface VWebBrowserHeaderViewController : UIViewController <VHasManagedDependencies>
 
-@property (nonatomic, assign) VWebBrowserHeaderLayoutMode layoutMode;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VWebBrowserHeaderViewDelegate> browserDelegate;
 @property (nonatomic, strong) IBOutlet VWebBrowserHeaderLayoutManager *layoutManager;

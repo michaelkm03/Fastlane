@@ -1,5 +1,5 @@
 //
-//  VWebBrowserHeaderState.h
+//  VWebBrowserHeaderLayoutManager.h
 //  victorious
 //
 //  Created by Patrick Lynch on 5/6/15.
