@@ -29,7 +29,6 @@
 
 @end
 
-
 /**
  *  VCreationInfoContainer is used to display information about the creator
  *  of a given sequence. Will show "remixed/giffed" by text when the content is derivative.
