@@ -417,7 +417,7 @@
     NSNumber *profileImageRequiredValue = [self.dependencyManager numberForKey:VDependencyManagerProfileImageRequiredKey];
     const BOOL isProfileImageRequired = (profileImageRequiredValue == nil) ? YES : [profileImageRequiredValue boolValue];
     
-    BOOL isValid =((self.usernameTextField.text.length > 0) &&
+    BOOL isValid = ((self.usernameTextField.text.length > 0) &&
                    (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired));
     
     if (isValid)
