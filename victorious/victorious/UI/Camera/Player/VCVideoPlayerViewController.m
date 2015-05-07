@@ -269,10 +269,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     const BOOL shouldLoopWithComposition = loop && !self.loopWithoutComposition;
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition
-                               readyCallback:^(AVPlayerItem *playerItem, CMTime duration)
+    [self.videoUtils createPlayerItemWithURL:itemURL
+                                        loop:shouldLoopWithComposition
+                               readyCallback:^(AVPlayerItem *playerItem, CMTime originalAssetDuration)
      {
-         self.originalAssetDuration = duration;
+         self.originalAssetDuration = originalAssetDuration;
          [self.player replaceCurrentItemWithPlayerItem:playerItem];
      }];
 }
@@ -494,7 +495,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     CMTime output = CMTimeSubtract( time, adjustment );
     
     // Uncomment to debug adjusted time and current loop:
-    // VLog( @"adjusted time (%i): %.2f", currentLoop, CMTimeGetSeconds( output ) );
+//     VLog( @"adjusted time (%i): %.2f", currentLoop, CMTimeGetSeconds( output ) );
     
     return output;
 }
@@ -515,7 +516,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         self.toolbarView.slider.value = percentElapsed;
     }
     
-    CMTime duration = [self playerItemDuration];
+    CMTime duration = self.originalAssetDuration;
     Float64 playedSeconds = round(CMTimeGetSeconds(time));
     Float64 durationSeconds = round(CMTimeGetSeconds(duration));
     self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:CMTimeMakeWithSeconds(playedSeconds, time.timescale)];
