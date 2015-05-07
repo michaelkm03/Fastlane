@@ -407,6 +407,17 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         VDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
         
+        if ( directory == nil )
+        {
+            //We have no directory to show, just do nothing
+            [[[UIAlertView alloc] initWithTitle:nil
+                                        message:NSLocalizedString(@"GenericFailMessage", nil)
+                                       delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil] show];
+            return;
+        }
+        
         //Set the selected stream as the current stream in the directory
         directory.currentStream = (VStream *)streamItem;
         
