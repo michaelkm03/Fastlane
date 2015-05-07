@@ -51,11 +51,14 @@ static const int64_t kAssetLoopClippingScale = 100;
     return composition;
 }
 
-- (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *, CMTime CMTime originalAssetDuration))onReady
+- (void)createPlayerItemWithURL:(NSURL *)itemURL
+                           loop:(BOOL)loop
+                  readyCallback:(void(^)(AVPlayerItem *, CMTime originalAssetDuration))onReady
 {
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^void
                    {
-                       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
+                       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL
+                                                               options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
                        [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration)),
                                                                 NSStringFromSelector(@selector(tracks))]
                                             completionHandler:^{
