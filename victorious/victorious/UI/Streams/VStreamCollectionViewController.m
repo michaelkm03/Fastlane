@@ -148,19 +148,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
-    if ( sequenceID != nil )
-    {
-        streamCollectionVC.marqueeCellController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey withAddedDependencies:@{ kSequenceIDKey : sequenceID }];
-    }
-    
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
     {
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
-    }
-    
-    streamCollectionVC.canShowMarquee = YES;
-    
+    }    
+
     return streamCollectionVC;
 }
 
@@ -189,6 +182,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)sharedInit
 {
     self.canShowContent = YES;
+    self.canShowMarquee = YES;
 }
 
 #pragma mark - View Heirarchy
@@ -210,15 +204,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
     
-    if ( self.marqueeCellController == nil )
-    {
-        self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
-    }
-    self.marqueeCellController.dataDelegate = self;
-    self.marqueeCellController.selectionDelegate = self;
-    [self.marqueeCellController registerCellsWithCollectionView:self.collectionView];
-    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
-    
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     if ( self.streamDataSource == nil )
@@ -228,6 +213,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         self.streamDataSource.collectionView = self.collectionView;
         self.collectionView.dataSource = self.streamDataSource;
     }
+    
+    self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
+    self.marqueeCellController.stream = self.currentStream;
+    self.marqueeCellController.dataDelegate = self;
+    self.marqueeCellController.selectionDelegate = self;
+    [self.marqueeCellController registerCellsWithCollectionView:self.collectionView];
+    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
     
     self.collectionView.dataSource = self.streamDataSource;
     self.streamDataSource.collectionView = self.collectionView;
