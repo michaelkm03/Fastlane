@@ -17,7 +17,6 @@
 #import "VTracking.h"
 
 //Experiments
-NSString * const VExperimentsRequireProfileImage = @"requireProfileImage";
 NSString * const VExperimentsPauseVideoWhenCommenting = @"pauseVideoWhenCommenting";
 NSString * const VExperimentsClearVideoBackground = @"clearVideoBackground";
 
@@ -67,7 +66,8 @@ NSString * const VExperimentsClearVideoBackground = @"clearVideoBackground";
 
 - (BOOL)settingEnabledForKey:(NSString *)settingKey
 {
-    return [[self.dependencyManager numberForKey:settingKey] boolValue];
+    NSNumber *settingValue = [self.dependencyManager numberForKey:VDependencyManagerProfileImageRequiredKey];
+    return settingValue == nil ? NO : [settingValue boolValue];
 }
 
 @end

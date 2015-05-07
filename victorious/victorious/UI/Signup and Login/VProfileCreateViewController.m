@@ -13,6 +13,7 @@
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VDependencyManager.h"
+#import "VSettingManager.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -414,7 +415,10 @@
 
 - (BOOL)shouldCreateProfile
 {
-    BOOL    isValid =   (self.usernameTextField.text.length > 0);
+    const BOOL isProfileImageRequired = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage];
+    
+    BOOL isValid =((self.usernameTextField.text.length > 0) &&
+                   (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired));
     
     if (isValid)
     {
@@ -427,6 +431,11 @@
     if (!self.usernameTextField.text.length > 0)
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
+    }
+    
+    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && isProfileImageRequired)
+    {
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
     
     NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
