@@ -29,7 +29,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 @property (nonatomic, assign, getter=isFollowingSelectedHashtag) BOOL followingSelectedHashtag;
 @property (nonatomic, strong) NSString *selectedHashtag;
-@property (nonatomic, assign) BOOL isReappearing;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
 
 @end
@@ -73,6 +72,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -88,11 +88,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if ( [VObjectManager sharedManager].mainUser.hashtags.count != 0 || self.isReappearing )
-    {
-        [self updateUserFollowingStatus];
-    }
-    self.isReappearing = YES;
+    [self updateUserFollowingStatus];
 }
 
 - (void)hashtagsUpdated
@@ -104,6 +100,11 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)fetchHashtagsForLoggedInUser
 {
+    VSuccessBlock successBlock = ^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        [self updateUserFollowingStatus];
+    };
+    
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         VLog(@"%@\n%@", operation, error);
@@ -111,7 +112,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
                                                            perPageLimit:1000
-                                                           successBlock:nil
+                                                           successBlock:successBlock
                                                               failBlock:failureBlock];
 }
 
