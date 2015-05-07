@@ -177,6 +177,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             if ( self.profileHeaderViewController != nil )
             {
                 self.profileHeaderViewController.delegate = self;
+                [self setInitialHeaderState];
             }
         }
         
@@ -197,8 +198,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewWillAppear:animated];
     
-    [self setInitialHeaderState];
-    
     if ( self.isCurrentUser )
     {
         [self addFriendsButton];
@@ -213,6 +212,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(composeMessage:)];
+    }
+    
+    if ( self.user != nil )
+    {
+        [self reloadUserFollowCounts];
     }
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
