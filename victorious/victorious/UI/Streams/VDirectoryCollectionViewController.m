@@ -59,6 +59,22 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager andDirectoryCellFactory:(NSObject <VDirectoryCellFactory> *)directoryCellFactory
 {
+    //Check that we have all necessary components to show a directory
+    if ( directoryCellFactory == nil || dependencyManager == nil)
+    {
+        /*
+         Return nil if the directory cell factory dependency manager are missing as they're both
+         integral to being setup properly.
+         */
+        return nil;
+    }
+    
+    VAbstractMarqueeController *marqueeController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:kMarqueeKey];
+    if ( marqueeController == nil )
+    {
+        return nil;
+    }
+    
     VDirectoryCollectionViewController *streamDirectory = [[[self class] alloc] initWithNibName:nil bundle:nil];
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
@@ -68,6 +84,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     flowLayout.delegate = streamDirectory;
     streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     streamDirectory.marqueeController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:kMarqueeKey];
+    streamDirectory.marqueeController.stream = stream;
     [streamDirectory.marqueeController registerCellsWithCollectionView:streamDirectory.collectionView];
     streamDirectory.marqueeController.selectionDelegate = streamDirectory;
     streamDirectory.marqueeController.dataDelegate = streamDirectory;
