@@ -47,7 +47,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VThemeManager.h"
-#import "VSettingManager.h"
 
 //Categories
 #import "NSArray+VMap.h"

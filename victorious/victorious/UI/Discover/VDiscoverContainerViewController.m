@@ -10,7 +10,6 @@
 #import "VDiscoverConstants.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
-#import "VSettingManager.h"
 #import "VDiscoverViewControllerProtocol.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"

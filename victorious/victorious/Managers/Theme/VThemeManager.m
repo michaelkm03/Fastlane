@@ -8,7 +8,6 @@
 
 #import "VThemeManager.h"
 #import "VDependencyManager.h"
-#import "VSettingManager.h"
 
 #pragma mark - new theme constants
 

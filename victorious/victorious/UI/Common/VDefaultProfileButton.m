@@ -10,7 +10,6 @@
 
 #import <SDWebImage/UIButton+WebCache.h>
 #import "UIImageView+VLoadingAnimations.h"
-#import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
 

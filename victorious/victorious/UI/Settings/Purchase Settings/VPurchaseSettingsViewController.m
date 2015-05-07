@@ -13,7 +13,6 @@
 #import "VVoteType.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VSettingManager.h"
 #import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
 #import "VPurchaseStringMaker.h"
