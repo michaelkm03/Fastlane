@@ -20,6 +20,7 @@
 #import "UIColor+VBrightness.h"
 #import "VNavigationController.h"
 #import "UIView+AutoLayout.h"
+#import "VWebBrowserHeaderLayoutManager.h"
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -28,13 +29,21 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     VWebBrowserViewControllerStateFailed,
 };
 
+typedef NS_ENUM ( NSInteger, VWebBrowserViewControllerLayout )
+{
+    VWebBrowserViewControllerLayoutHeaderTop,
+    VWebBrowserViewControllerLayoutHeaderBottom
+};
+
 @interface VWebBrowserViewController() <WKNavigationDelegate, VWebBrowserHeaderViewDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) NSURL *currentURL;
-@property (nonatomic, assign) VWebBrowserViewControllerState state;
+@property (nonatomic, assign) VWebBrowserViewControllerState loadingState;
+@property (nonatomic, assign) VWebBrowserViewControllerLayout layout;
 @property (nonatomic, strong) VWebBrowserActions *actions;
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
+@property (nonatomic, assign) VWebBrowserHeaderContentAlignment headerContentAlignment;
 
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 
@@ -46,9 +55,28 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    VWebBrowserViewControllerLayout layout = (VWebBrowserViewControllerLayout)[dependencyManager numberForKey:@"layout"].integerValue;
+    VWebBrowserHeaderContentAlignment contentAlignment = (VWebBrowserHeaderContentAlignment)[dependencyManager numberForKey:@"headerContentAlignment"].integerValue;
+    
+    NSString *identifier = layout == VWebBrowserViewControllerLayoutHeaderTop ? @"topHeader" : @"bottomHeader";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:[NSBundle mainBundle]];
-    VWebBrowserViewController *webBrowserViewController = (VWebBrowserViewController *)[storyboard instantiateInitialViewController];
+    VWebBrowserViewController *webBrowserViewController = (VWebBrowserViewController *)[storyboard instantiateViewControllerWithIdentifier:identifier];
     webBrowserViewController.dependencyManager = dependencyManager;
+    webBrowserViewController.layout = layout;
+    webBrowserViewController.headerContentAlignment = contentAlignment;
+    
+    NSString *templateUrlString = [dependencyManager stringForKey:VDependencyManagerWebURLKey];
+    if ( templateUrlString != nil )
+    {
+        [webBrowserViewController loadUrlString:templateUrlString];
+    }
+    
+    NSString *tempalteTitle = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+    if ( tempalteTitle != nil )
+    {
+        webBrowserViewController.title = tempalteTitle;
+    }
+    
     return webBrowserViewController;
 }
 
@@ -61,8 +89,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.navigationController.navigationBar.backgroundColor = [UIColor darkGrayColor];
     
     self.actions = [[VWebBrowserActions alloc] init];
-    
-    self.headerViewController.browserDelegate = self;
     
     self.webView = [[WKWebView alloc] init];
     self.webView.navigationDelegate = self;
@@ -77,9 +103,35 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [self.containerView addSubview:self.webView];
     [self.containerView v_addFitToParentConstraintsToSubview:self.webView];
     
+    self.headerViewController.browserDelegate = self;
+    
     if ( self.currentURL != nil )
     {
         [self loadUrl:self.currentURL];
+    }
+    
+    [self updateHeaderLayuout];
+}
+
+- (void)setLayout:(VWebBrowserViewControllerLayout)layout
+{
+    _layout = layout;
+    
+    [self updateHeaderLayuout];
+}
+
+- (void)updateHeaderLayuout
+{
+    self.headerViewController.layoutManager.contentAlignment = self.headerContentAlignment;
+    switch ( self.layout )
+    {
+        case VWebBrowserViewControllerLayoutHeaderTop:
+            self.headerViewController.layoutManager.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentBottom;
+            break;
+            
+        case VWebBrowserViewControllerLayoutHeaderBottom:
+            self.headerViewController.layoutManager.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentTop;
+            break;
     }
 }
 
@@ -107,6 +159,11 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (BOOL)v_prefersNavigationBarHidden
+{
+    return self.layout == VWebBrowserViewControllerLayoutHeaderTop;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -169,6 +226,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (void)setTitle:(NSString *)title
 {
+    super.title = title;
     self.headerViewController.title = title;
 }
 
@@ -205,9 +263,9 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    self.state = VWebBrowserViewControllerStateComplete;
+    self.loadingState = VWebBrowserViewControllerStateComplete;
     [self updateTitle];
-    [self.headerViewController updateStateAnimated:YES];
+    [self.headerViewController.layoutManager updateAnimated:YES];
     [self.progressBarAnimationTimer invalidate];
     [self webViewDidUpdateProgress:1.0f];
 }
@@ -216,7 +274,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    self.state = VWebBrowserViewControllerStateFailed;
+    self.loadingState = VWebBrowserViewControllerStateFailed;
     [self updateTitle];
     [self.progressBarAnimationTimer invalidate];
     [self webViewDidUpdateProgress:-1.0f];
@@ -225,8 +283,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    self.state = VWebBrowserViewControllerStateLoading;
-    [self.headerViewController updateStateAnimated:YES];
+    self.loadingState = VWebBrowserViewControllerStateLoading;
+    [self.headerViewController.layoutManager updateAnimated:YES];
     
     [self webViewDidUpdateProgress:0.0f];
     [self.progressBarAnimationTimer invalidate];
@@ -276,7 +334,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (BOOL)canRefresh
 {
-    return self.currentURL != nil && self.state != VWebBrowserViewControllerStateLoading;
+    return self.currentURL != nil && self.loadingState != VWebBrowserViewControllerStateLoading;
 }
 
 - (void)goForward

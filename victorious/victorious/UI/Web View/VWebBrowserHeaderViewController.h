@@ -8,6 +8,7 @@
 
 #import "VHasManagedDependencies.h"
 #import "VProgressBarView.h"
+#import "VWebBrowserHeaderLayoutManager.h"
 
 typedef NS_ENUM( NSInteger, VWebBrowserHeaderLayoutMode )
 {
@@ -33,9 +34,11 @@ typedef NS_ENUM( NSInteger, VWebBrowserHeaderLayoutMode )
 @property (nonatomic, assign) VWebBrowserHeaderLayoutMode layoutMode;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VWebBrowserHeaderViewDelegate> browserDelegate;
+@property (nonatomic, strong) IBOutlet VWebBrowserHeaderLayoutManager *layoutManager;
 
 @property (nonatomic, weak) IBOutlet UIButton *buttonBack;
 @property (nonatomic, weak) IBOutlet UILabel *labelTitle;
+@property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
 
 - (void)setTitle:(NSString *)title;
 - (void)setLoadingStarted;

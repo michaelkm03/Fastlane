@@ -11,15 +11,13 @@
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
-#import "VWebBrowserHeaderState.h"
+#import "VWebBrowserHeaderLayoutManager.h"
 
 @interface VWebBrowserHeaderViewController()
 
 @property (nonatomic, strong) NSURL *currentURL;
-@property (nonatomic, strong) VWebBrowserHeaderState *state;
 @property (nonatomic, weak) IBOutlet UIButton *buttonOpenURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonExit;
-@property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
 
 @end
 
@@ -33,7 +31,7 @@
     
     self.labelTitle.text = NSLocalizedString( @"Loading...", @"" );
     
-    [self.state update];
+    [self.layoutManager update];
 }
 
 - (void)applyTheme
@@ -56,7 +54,7 @@
     self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.labelTitle.textColor = tintColor;
     
-    self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -98,7 +96,7 @@
     
     if ( self.isViewLoaded )
     {
-        [self.state update];
+        [self.layoutManager update];
     }
 }
 
@@ -107,31 +105,31 @@
 - (IBAction)backSelected:(id)sender
 {
     [self.browserDelegate goBack];
-    [self updateStateAnimated:YES];
+    [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)forwardSelected:(id)sender
 {
     [self.browserDelegate goForward];
-    [self updateStateAnimated:YES];
+    [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)exportSelected:(id)sender
 {
     [self.browserDelegate export];
-    [self updateStateAnimated:YES];
+    [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)exitSelected:(id)sender
 {
     [self.browserDelegate exit];
-    [self updateStateAnimated:YES];
+    [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)refreshSelected:(id)sender
 {
     [self.browserDelegate reload];
-    [self updateStateAnimated:YES];
+    [self.layoutManager updateAnimated:YES];
 }
 
 @end
