@@ -62,6 +62,7 @@ static NSString * const kImageURLKey = @"imageURL";
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
 NSString * const VDependencyManagerProfileImageRequiredKey = @"require_profile_image";
+NSString * const VDependencyManagerPauseVideoWhenCommentingKey = @"pause_video_when_commenting";
 
 // Keys for view controllers
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";

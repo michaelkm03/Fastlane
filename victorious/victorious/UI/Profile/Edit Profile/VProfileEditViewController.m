@@ -7,7 +7,6 @@
 //
 
 #import "VProfileEditViewController.h"
-#import "VSettingManager.h"
 #import "VUser.h"
 #import "MBProgressHUD.h"
 

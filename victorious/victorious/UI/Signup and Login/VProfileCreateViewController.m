@@ -414,7 +414,11 @@
 
 - (BOOL)shouldCreateProfile
 {
-    BOOL    isValid =   (self.usernameTextField.text.length > 0);
+    NSNumber *profileImageRequiredValue = [self.dependencyManager numberForKey:VDependencyManagerProfileImageRequiredKey];
+    const BOOL isProfileImageRequired = (profileImageRequiredValue == nil) ? YES : [profileImageRequiredValue boolValue];
+    
+    BOOL isValid = ((self.usernameTextField.text.length > 0) &&
+                   (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired));
     
     if (isValid)
     {
@@ -427,6 +431,11 @@
     if (!self.usernameTextField.text.length > 0)
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
+    }
+    
+    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && isProfileImageRequired)
+    {
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
     
     NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };

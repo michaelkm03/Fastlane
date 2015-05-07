@@ -7,7 +7,6 @@
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
 #import "VTracking.h"
-#import "VSettingManager.h"
 #import "VVideoUtils.h"
 
 static const CGFloat kToolbarHeight = 41.0f;
