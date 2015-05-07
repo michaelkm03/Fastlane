@@ -13,7 +13,6 @@
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VDependencyManager.h"
-#import "VSettingManager.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -415,7 +414,8 @@
 
 - (BOOL)shouldCreateProfile
 {
-    const BOOL isProfileImageRequired = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage];
+    NSNumber *profileImageRequiredValue = [self.dependencyManager numberForKey:VDependencyManagerProfileImageRequiredKey];
+    const BOOL isProfileImageRequired = (profileImageRequiredValue == nil) ? YES : [profileImageRequiredValue boolValue];
     
     BOOL isValid =((self.usernameTextField.text.length > 0) &&
                    (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired));

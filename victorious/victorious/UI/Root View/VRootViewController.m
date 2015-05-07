@@ -18,7 +18,6 @@
 #import "VRootViewController.h"
 #import "VScaffoldViewController.h"
 #import "VSessionTimer.h"
-#import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VTracking.h"
 #import "TremorVideoAd.h"
@@ -231,7 +230,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     self.sessionTimer.dependencyManager = self.dependencyManager;
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
-    [[VSettingManager sharedManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
     self.voteSettings = [[VVoteSettings alloc] init];
