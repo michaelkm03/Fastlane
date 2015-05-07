@@ -413,7 +413,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
             [[[UIAlertView alloc] initWithTitle:nil
                                         message:NSLocalizedString(@"GenericFailMessage", nil)
                                        delegate:nil
-                              cancelButtonTitle:@"OK"
+                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
                               otherButtonTitles:nil] show];
             return;
         }
