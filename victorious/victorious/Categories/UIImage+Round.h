@@ -10,6 +10,9 @@
 
 @interface UIImage (Round)
 
+/**
+ *  Returns a new image with rounded corners
+ */
 - (UIImage *)roundedImageWithCornerRadius:(CGFloat)cornerRadius;
 
 @end

@@ -12,17 +12,20 @@
 
 - (UIImage *)roundedImageWithCornerRadius:(CGFloat)cornerRadius
 {
+    // Image size
     CGSize mySize = self.size;
     
+    // Redraw bounds
     CGRect redrawBounds = CGRectMake(0, 0, mySize.width, mySize.height);
     
-    // Redraw image with rounded corners
     UIGraphicsBeginImageContextWithOptions(mySize, NO, [[UIScreen mainScreen] scale]);
     
     [[UIBezierPath bezierPathWithRoundedRect:redrawBounds cornerRadius:cornerRadius] addClip];
     
+    // Redraw image with rounded corners in bounds
     [self drawInRect:redrawBounds];
     
+    // Get new image
     UIImage *rounded = UIGraphicsGetImageFromCurrentImageContext();
     
     UIGraphicsEndImageContext();

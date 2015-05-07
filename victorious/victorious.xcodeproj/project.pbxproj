@@ -4936,6 +4936,8 @@
 				03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */,
 				A7ECC1BC1AD601040003E00A /* UIImage+VTint.h */,
 				A7ECC1BD1AD601040003E00A /* UIImage+VTint.m */,
+				C395E86C1AFAEAFA00B6E3DB /* UIImage+Round.h */,
+				C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */,
 				0314D06D19B4670A00FA363C /* UIImageView+Blurring.h */,
 				0314D06E19B4670A00FA363C /* UIImageView+Blurring.m */,
 				BE11447C19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.h */,
@@ -4964,8 +4966,6 @@
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
 				BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */,
 				BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */,
-				C395E86C1AFAEAFA00B6E3DB /* UIImage+Round.h */,
-				C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
