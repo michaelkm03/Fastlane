@@ -47,7 +47,7 @@ static const int64_t kAssetLoopClippingScale = 100;
     {
         [composition insertTimeRange:editRange ofAsset:asset atTime:composition.duration error:nil];
     }
-    VLog(@"%@", asset.composable ? @"YES" : @"NO" );
+
     return composition;
 }
 
@@ -75,7 +75,7 @@ static const int64_t kAssetLoopClippingScale = 100;
                                                 else
                                                 {
                                                     playerItem = [AVPlayerItem playerItemWithAsset:asset];
-                                                }    
+                                                }
                                                 dispatch_async( dispatch_get_main_queue(), ^
                                                                {
                                                                    if ( onReady != nil )
