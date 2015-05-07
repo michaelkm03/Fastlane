@@ -224,11 +224,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.dataSource = self.streamDataSource;
     self.streamDataSource.collectionView = self.collectionView;
     
-    // Notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(dataSourceDidChange:)
-                                                 name:VStreamCollectionDataSourceDidChangeNotification
-                                               object:self.streamDataSource];
+    [self.KVOController observe:self.streamDataSource.stream
+                        keyPath:NSStringFromSelector(@selector(streamItems))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(dataSourceDidChange)];
+    [self.KVOController observe:self.streamDataSource
+                        keyPath:NSStringFromSelector(@selector(hasHeaderCell))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(dataSourceDidChange)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -666,7 +669,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 #pragma mark - Notifications
 
-- (void)dataSourceDidChange:(NSNotification *)notification
+- (void)dataSourceDidChange
 {
     self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
@@ -681,9 +684,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     void (^noContentUpdates)(void);
     
-    if (self.streamDataSource.stream.streamItems.count <= 0)
+    if ( self.streamDataSource.stream.streamItems.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
-        if (![self.collectionView.backgroundView isEqual:self.noContentView])
+        if ( ![self.collectionView.backgroundView isEqual:self.noContentView] )
         {
             self.collectionView.backgroundView = self.noContentView;
         }
