@@ -55,12 +55,6 @@
     
     if (!alreadyContainsBackground)
     {
-        // We've already added a background do nothing
-        if (containerView.subviews.count > 0)
-        {
-            return;
-        }
-        
         UIView *backgroundView = [background viewForBackground];
         
         backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
