@@ -10,6 +10,7 @@
 
 // Categories
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImage+Round.h"
 
 @implementation VDefaultProfileImageView
 
@@ -33,16 +34,34 @@
 {
     self.image = [self placeholderImage];
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     self.tintColor = [UIColor darkGrayColor];
-    
-    self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
-    self.clipsToBounds = YES;
+    self.borderWidth = 0;
+    self.borderColor = [UIColor whiteColor];
 }
 
 - (void)setProfileImageURL:(NSURL *)url
 {
-    [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
+    __weak typeof(self) weakSelf = self;
+    [[SDWebImageManager sharedManager] downloadImageWithURL:url
+                                                    options:SDWebImageRetryFailed
+                                                   progress:nil
+                                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                                                      if (!image)
+                                                      {
+                                                          [weakSelf setImage:[weakSelf placeholderImage]];
+                                                          return;
+                                                      }
+                                                      
+                                                      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+                                                          UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2
+                                                                                                          borderWidth:weakSelf.borderWidth
+                                                                                                          borderColor:weakSelf.borderColor];
+                                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                                              [weakSelf setImage:roundedImage];
+                                                          });
+                                                      });
+                                                  }];
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -58,6 +77,15 @@
         image = [UIImage imageNamed:@"profile_full"];
     }
     return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    // Draws a white background
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddEllipseInRect(context, rect);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextFillPath(context);
 }
 
 @end

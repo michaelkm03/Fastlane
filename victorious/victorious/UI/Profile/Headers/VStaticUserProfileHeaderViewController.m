@@ -139,10 +139,9 @@
     UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     
-    self.profileImageView.layer.borderWidth = 2.0;
-    self.profileImageView.layer.borderColor = linkColor.CGColor;
+    self.profileImageView.borderWidth = 2.0f;
+    self.profileImageView.borderColor = linkColor;
     self.profileImageView.tintColor = linkColor;
-    self.profileImageView.backgroundColor = [UIColor whiteColor];
     
     self.primaryActionButton.primaryColor = linkColor;
     self.primaryActionButton.secondaryColor = linkColor;

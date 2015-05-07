@@ -15,4 +15,9 @@
  */
 - (UIImage *)roundedImageWithCornerRadius:(CGFloat)cornerRadius;
 
+/**
+ *  Returns a new image with rounded corners and a border
+ */
+- (UIImage *)roundedImageWithCornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor;
+
 @end

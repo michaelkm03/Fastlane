@@ -57,8 +57,8 @@
 {
     [super awakeFromNib];
     
-    CGFloat radius = self.profileImageView.bounds.size.width * 0.5f;
-    self.profileImageView.layer.cornerRadius = radius;
+//    CGFloat radius = self.profileImageView.bounds.size.width * 0.5f;
+//    self.profileImageView.layer.cornerRadius = radius;
     self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
 }
 

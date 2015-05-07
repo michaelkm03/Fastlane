@@ -40,38 +40,36 @@
     self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     self.tintColor = [UIColor darkGrayColor];
-    
-    self.clipsToBounds = YES;
 }
 
 - (void)setTintColor:(UIColor *)tintColor
 {
     super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
+    self.imageView.tintColor = super.tintColor;
 }
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
-    UIImage *defaultImage = [self placeholderImage];
-    
     __weak typeof(self) weakSelf = self;
-    [self sd_setImageWithURL:url
-                    forState:UIControlStateNormal
-            placeholderImage:defaultImage
-                     options:SDWebImageRetryFailed
-                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                       
-                       if (!image)
-                       {
-                           [weakSelf setImage:[weakSelf placeholderImage] forState:UIControlStateNormal];
-                           return;
-                       }
-                       
-                       [weakSelf setImage:[image roundedImageWithCornerRadius:image.size.height / 2] forState:UIControlStateNormal];
-                   }];
-    
-    self.imageView.tintColor = self.tintColor;
+    [[SDWebImageManager sharedManager] downloadImageWithURL:url
+                                                    options:SDWebImageRetryFailed
+                                                   progress:nil
+                                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                                                      if (!image)
+                                                      {
+                                                          [weakSelf setImage:[weakSelf placeholderImage] forState:controlState];
+                                                          return;
+                                                      }
+                                                      
+                                                      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+                                                          UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
+                                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                                              [weakSelf setImage:roundedImage forState:controlState];
+                                                          });
+                                                      });
+                                                  }];
 }
 
 - (UIImage *)placeholderImage
@@ -82,6 +80,15 @@
         image = [UIImage imageNamed:@"profile_full"];
     }
     return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    // Draws a white background
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddEllipseInRect(context, rect);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextFillPath(context);
 }
 
 @end

@@ -12,6 +12,11 @@
 
 - (UIImage *)roundedImageWithCornerRadius:(CGFloat)cornerRadius
 {
+    return [self roundedImageWithCornerRadius:cornerRadius borderWidth:0 borderColor:[UIColor whiteColor]];
+}
+
+- (UIImage *)roundedImageWithCornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor
+{
     // Image size
     CGSize mySize = self.size;
     
@@ -20,13 +25,23 @@
     
     UIGraphicsBeginImageContextWithOptions(mySize, NO, [[UIScreen mainScreen] scale]);
     
+    // Add circular clip to image
     [[UIBezierPath bezierPathWithRoundedRect:redrawBounds cornerRadius:cornerRadius] addClip];
     
     // Redraw image with rounded corners in bounds
     [self drawInRect:redrawBounds];
     
-    // Get new image
-    UIImage *rounded = UIGraphicsGetImageFromCurrentImageContext();
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // Set our border's color and width
+    CGContextSetStrokeColorWithColor(context, borderColor.CGColor);
+    CGContextSetLineWidth(context, borderWidth * 2);
+    
+    // Stroke the border
+    CGContextStrokeEllipseInRect(context, redrawBounds);
+    
+    // Get new rounded image
+    UIImage *rounded =  UIGraphicsGetImageFromCurrentImageContext();
     
     UIGraphicsEndImageContext();
     
