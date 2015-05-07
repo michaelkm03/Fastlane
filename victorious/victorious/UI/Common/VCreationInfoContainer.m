@@ -27,6 +27,9 @@
 // Views + Helpers
 #import "UIView+Autolayout.h"
 
+// Respdoner Chain
+#import "VSequenceActionsDelegate.h"
+
 static const CGFloat kClockSize = 8.5f;
 static const CGFloat kSpaceToCenterWhenTwoLines = 2.5f;
 static const CGFloat kSpaceCreatorLabelToClockImageView = 4.0f;
@@ -231,12 +234,27 @@ static const CGFloat kDefaultHeight = 44.0f;
     }
 }
 
+- (void)setShouldShowTimeSince:(BOOL)shouldShowTimeSince
+{
+    _shouldShowTimeSince = shouldShowTimeSince;
+    
+    self.clockImageView.hidden = !shouldShowTimeSince;
+    self.timeSinceLabel.hidden = !shouldShowTimeSince;
+}
+
 #pragma mark - Target/Action
 
 - (void)selectedUser:(UITapGestureRecognizer *)gestureRecognizer
 {
-    [self.delegate creationInfoContainer:self
-                  selectedUserOnSequence:self.sequence];
+    UIResponder<VSequenceActionsDelegate> *targetForUserSelection = [self targetForAction:@selector(selectedUser:onSequence:fromView:)
+                                                                               withSender:self];
+    if (targetForUserSelection == nil)
+    {
+        NSAssert(false, @"We need an object in the responder chain for user selection.");
+    }
+    [targetForUserSelection selectedUser:self.sequence.displayOriginalPoster
+                              onSequence:self.sequence
+                                fromView:self];
 }
 
 #pragma mark - Update UI

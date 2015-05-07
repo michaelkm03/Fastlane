@@ -259,6 +259,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         [self.marqueeCellController enableTimer];
     }
 
+#warning REMOVE ME AFTER REFACTOR
     for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
     {
         if ([cell isKindOfClass:[VAbstractStreamCollectionCell class]])

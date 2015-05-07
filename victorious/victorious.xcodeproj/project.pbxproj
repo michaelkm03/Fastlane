@@ -709,7 +709,6 @@
 		D85E42871AFA9A2F00A13BD3 /* VPollSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */; };
 		D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */; };
 		D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */; };
-		D85E42901AFAA92600A13BD3 /* VStreamHeaderBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E428F1AFAA92600A13BD3 /* VStreamHeaderBar.m */; };
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86528EF1AE80628003832AC /* VAbstractStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528EE1AE80628003832AC /* VAbstractStreamCollectionCell.m */; };
 		D86528F31AE82ABF003832AC /* VPollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528F21AE82ABF003832AC /* VPollView.m */; };
@@ -755,8 +754,6 @@
 		D8B44CD11ADCB3A4006340E8 /* VSleekStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B44CC91ADCB3A4006340E8 /* VSleekStreamCellFactory.m */; };
 		D8B44CD21ADCB3A4006340E8 /* VSleekStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B44CCB1ADCB3A4006340E8 /* VSleekStreamCollectionCell.m */; };
 		D8B44CD31ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B44CCC1ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib */; };
-		D8B44CD41ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B44CCE1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m */; };
-		D8B44CD51ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B44CCF1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib */; };
 		D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */; };
 		D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE91A805CC800090C5E /* VInlineValidationView.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
@@ -789,6 +786,8 @@
 		D8DD450A1AE9948B00C0039A /* VHermesStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DD45071AE9948B00C0039A /* VHermesStreamCellFactory.m */; };
 		D8DD450B1AE9948B00C0039A /* VHermesStreamCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DD45091AE9948B00C0039A /* VHermesStreamCollectionViewCell.m */; };
 		D8DD45101AE99EBE00C0039A /* VSlantView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DD450F1AE99EBE00C0039A /* VSlantView.m */; };
+		D8DF71DD1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71DC1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m */; };
+		D8DF71E01AFC1A9F002EA7A5 /* VTimeSinceWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71DF1AFC1A9F002EA7A5 /* VTimeSinceWidget.m */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */; };
@@ -2214,8 +2213,6 @@
 		D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextSequencePreviewView.m; sourceTree = "<group>"; };
 		D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHTMLSequncePreviewView.h; sourceTree = "<group>"; };
 		D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHTMLSequncePreviewView.m; sourceTree = "<group>"; };
-		D85E428E1AFAA92600A13BD3 /* VStreamHeaderBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamHeaderBar.h; sourceTree = "<group>"; };
-		D85E428F1AFAA92600A13BD3 /* VStreamHeaderBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamHeaderBar.m; sourceTree = "<group>"; };
 		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
 		D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceToWorkspaceAnimator.m; sourceTree = "<group>"; };
 		D86528ED1AE80628003832AC /* VAbstractStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamCollectionCell.h; sourceTree = "<group>"; };
@@ -2302,9 +2299,6 @@
 		D8B44CCA1ADCB3A4006340E8 /* VSleekStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekStreamCollectionCell.h; sourceTree = "<group>"; };
 		D8B44CCB1ADCB3A4006340E8 /* VSleekStreamCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekStreamCollectionCell.m; sourceTree = "<group>"; };
 		D8B44CCC1ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSleekStreamCollectionCell.xib; sourceTree = "<group>"; };
-		D8B44CCD1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekStreamCollectionCellPoll.h; sourceTree = "<group>"; };
-		D8B44CCE1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekStreamCollectionCellPoll.m; sourceTree = "<group>"; };
-		D8B44CCF1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSleekStreamCollectionCellPoll.xib; sourceTree = "<group>"; };
 		D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineValidationTextField.h; sourceTree = "<group>"; };
 		D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineValidationTextField.m; sourceTree = "<group>"; };
 		D8B70FE81A805CC800090C5E /* VInlineValidationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineValidationView.h; sourceTree = "<group>"; };
@@ -2365,6 +2359,10 @@
 		D8DD45091AE9948B00C0039A /* VHermesStreamCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHermesStreamCollectionViewCell.m; sourceTree = "<group>"; };
 		D8DD450E1AE99EBE00C0039A /* VSlantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSlantView.h; sourceTree = "<group>"; };
 		D8DD450F1AE99EBE00C0039A /* VSlantView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSlantView.m; sourceTree = "<group>"; };
+		D8DF71DB1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamHeaderTimeSince.h; sourceTree = "<group>"; };
+		D8DF71DC1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamHeaderTimeSince.m; sourceTree = "<group>"; };
+		D8DF71DE1AFC1A9F002EA7A5 /* VTimeSinceWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimeSinceWidget.h; sourceTree = "<group>"; };
+		D8DF71DF1AFC1A9F002EA7A5 /* VTimeSinceWidget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimeSinceWidget.m; sourceTree = "<group>"; };
 		D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewViewModel.h; sourceTree = "<group>"; };
 		D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewViewModel.m; sourceTree = "<group>"; };
 		D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
@@ -3266,6 +3264,7 @@
 		0314D43319B46B5E00FA363C /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				D8DF71DA1AFBDF81002EA7A5 /* Headers */,
 				A7AEF96C1A83F1C300A3D3A0 /* Cells */,
 				F06F10C31AC201B90062E1D1 /* Directory */,
 				A7AEF9891A83F1C300A3D3A0 /* Supplementary */,
@@ -4513,8 +4512,6 @@
 				A7AEF9831A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.h */,
 				A7AEF9841A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.m */,
 				A7AEF9851A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.xib */,
-				D85E428E1AFAA92600A13BD3 /* VStreamHeaderBar.h */,
-				D85E428F1AFAA92600A13BD3 /* VStreamHeaderBar.m */,
 				0308B1131AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.h */,
 				0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */,
 			);
@@ -5521,9 +5518,6 @@
 				D8B44CCA1ADCB3A4006340E8 /* VSleekStreamCollectionCell.h */,
 				D8B44CCB1ADCB3A4006340E8 /* VSleekStreamCollectionCell.m */,
 				D8B44CCC1ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib */,
-				D8B44CCD1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.h */,
-				D8B44CCE1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m */,
-				D8B44CCF1ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib */,
 				D893674B1ADDDD5E001D2426 /* VSleekActionView.h */,
 				D893674C1ADDDD5E001D2426 /* VSleekActionView.m */,
 			);
@@ -5606,6 +5600,18 @@
 				D86D77861AEACFF30028C0F8 /* VHermesActionView.m */,
 			);
 			path = Hermes;
+			sourceTree = "<group>";
+		};
+		D8DF71DA1AFBDF81002EA7A5 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				D8DF71DB1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.h */,
+				D8DF71DC1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m */,
+				D8DF71DE1AFC1A9F002EA7A5 /* VTimeSinceWidget.h */,
+				D8DF71DF1AFC1A9F002EA7A5 /* VTimeSinceWidget.m */,
+			);
+			name = Headers;
+			path = Cells/Headers;
 			sourceTree = "<group>";
 		};
 		D8E39BC119CB7C80007FD86A /* Cells */ = {
@@ -6170,7 +6176,6 @@
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				037FCF191A8DAF0E00E8ABFC /* VHamburgerButton.xib in Resources */,
-				D8B44CD51ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib in Resources */,
 				A7AEF9A91A83F1C300A3D3A0 /* VStreamCollectionCell.xib in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
@@ -6548,6 +6553,7 @@
 				A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */,
 				F0E0F1B31AE8BFC700143CBF /* VInsetMarqueeStreamItemCell.m in Sources */,
 				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
+				D8DF71DD1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m in Sources */,
 				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
 				A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */,
 				A716FC3C1AAE2DDB0032AA40 /* VLinkTextViewHelper.m in Sources */,
@@ -6769,6 +6775,7 @@
 				D87DE6CB1AF08EDE00069824 /* VFollowerEventResponder.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				D8E5A4ED1AAA72C30019F231 /* VBlurOverPresentationController.m in Sources */,
+				D8DF71E01AFC1A9F002EA7A5 /* VTimeSinceWidget.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
@@ -6925,7 +6932,6 @@
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
 				D87DE6CC1AF08EDE00069824 /* VResponder.m in Sources */,
 				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
-				D85E42901AFAA92600A13BD3 /* VStreamHeaderBar.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				D8332DC01A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m in Sources */,
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
@@ -6949,7 +6955,6 @@
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
-				D8B44CD41ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.m in Sources */,
 				0314D4E419B46B5E00FA363C /* VSuggestedFriendsTableViewController.m in Sources */,
 				A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */,
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,

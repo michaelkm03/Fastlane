@@ -13,11 +13,15 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VBackgroundContainer.h"
 
 // Views + Helpers
+#import "VSequencePreviewView.h"
+#import "UIView+AutoLayout.h"
 #import "NSString+VParseHelp.h"
-#import "VStreamCellHeaderView.h"
 #import "VSleekActionView.h"
+#import "VHashTagTextView.h"
+#import "VStreamHeaderTimeSince.h"
 
 const CGFloat kSleekCellHeaderHeight = 50.0f;
 const CGFloat kSleekCellActionViewHeight = 41.0f;
@@ -29,12 +33,19 @@ const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This represents 
 //Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
 const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 
-@interface VSleekStreamCollectionCell ()
+@interface VSleekStreamCollectionCell () <VBackgroundContainer>
 
+@property (nonatomic, strong) VSequencePreviewView *previewView;
+
+@property (nonatomic, weak) IBOutlet UIView *previewContainer;
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
+@property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
+@property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
-@property (weak, nonatomic) IBOutlet VSleekActionView *sleekActionView;
+@property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -44,56 +55,63 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super awakeFromNib];
     
+    self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
     self.actionViewTopConstraint.constant = kSleekCellActionViewTopConstraintHeight;
 }
 
-- (NSString *)headerViewNibName
-{
-    return @"VInsetStreamCellHeaderView";
-}
-
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super setDependencyManager:dependencyManager];
-    
-    if ( dependencyManager != nil )
+    _dependencyManager = dependencyManager;
+
+    if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
-        self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        [self.streamCellHeaderView refreshAppearanceAttributes];
-        
+        [self.previewView setDependencyManager:self.dependencyManager];
     }
-    [self.sleekActionView setDependencyManager:dependencyManager];
+    if ([self.sleekActionView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.sleekActionView setDependencyManager:dependencyManager];
+    }
+    if ([self.headerView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.headerView setDependencyManager:dependencyManager];
+    }
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
-    [super setSequence:sequence];
+    _sequence = sequence;
+    
+    [self updatePreviewViewForSequence:sequence];
+    self.headerView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
+    [self updateCaptionViewForSequence:sequence];
 }
 
-- (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
+#pragma mark - Internal Methods
+
+- (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
-    [super setSequenceActionsDelegate:sequenceActionsDelegate];
-    self.sleekActionView.sequenceActionsDelegate = sequenceActionsDelegate;
+    [self.previewView removeFromSuperview];
+    self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
+    [self.previewContainer addSubview:self.previewView];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
+    if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.previewView setDependencyManager:self.dependencyManager];
+    }
+    [self.previewView setSequence:sequence];
 }
 
-- (void)setDescriptionText:(NSString *)text
+- (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    [super setDescriptionText:text];
-    
-    BOOL zeroConstraints = !(!self.sequence.nameEmbeddedInContent.boolValue && text.length > 0);
-    
-    self.captionTextViewBottomConstraint.constant = zeroConstraints ? 0.0f : kSleekCellTextNeighboringViewSeparatorHeight;
-}
+    if (sequence.name == nil || self.dependencyManager == nil)
+    {
+        return;
+    }
 
-- (NSUInteger)maxCaptionLines
-{
-    return 0;
+    self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                          attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
 }
 
 #pragma mark - VBackgroundContainer
@@ -101,6 +119,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 - (UIView *)loadingBackgroundContainerView
 {
     return self.loadingBackgroundContainer;
+}
+
+- (UIView *)backgroundContainerView
+{
+    return self.contentView;
 }
 
 #pragma mark - Class Methods
@@ -112,7 +135,9 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     return CGSizeMake(width, height);
 }
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
+                                    sequence:(VSequence *)sequence
+                           dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
 

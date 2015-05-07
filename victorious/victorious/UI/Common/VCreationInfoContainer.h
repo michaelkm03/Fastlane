@@ -12,22 +12,6 @@
 #import "VActionBarFlexibleWidth.h"
 
 @class VSequence;
-@class VCreationInfoContainer;
-@class VUser;
-
-/**
- *  A delegate to inform a delegate about when a user is selected from
- *  the creation info container.
- */
-@protocol VCreationInfoContainerDelegate <NSObject>
-
-/**
- *  Informs the delegate about user selection.
- */
-- (void)creationInfoContainer:(VCreationInfoContainer *)container
-       selectedUserOnSequence:(VSequence *)sequence;
-
-@end
 
 /**
  *  VCreationInfoContainer is used to display information about the creator
@@ -43,8 +27,8 @@
 @property (nonatomic, strong) VSequence *sequence;
 
 /**
- *  The delegate that will be informed of user selection.
+ *  Whether or not the timeSince label and clock icon should be visible.
  */
-@property (nonatomic, weak) id <VCreationInfoContainerDelegate> delegate;
+@property (nonatomic, assign) BOOL shouldShowTimeSince;
 
 @end

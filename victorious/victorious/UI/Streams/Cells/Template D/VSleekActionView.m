@@ -30,7 +30,6 @@ static CGFloat const kCommentSpaceToActions = 22.0f;
 static CGFloat const kInterActionSpace = 25.0f;
 static CGFloat const kCommentWidth = 68.0f;
 static CGFloat const kActionButtonHeight = 31.0f;
-static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 
 @interface VSleekActionView ()
 
@@ -45,9 +44,40 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VRepostButtonController *repostButtonController;
 
+// Each view will be reused for a unique configuration (share only, share+repost, et)
+@property (nonatomic, assign) BOOL hasLayedOutActionView;
+
 @end
 
 @implementation VSleekActionView
+
+#pragma mark - Reuse Identifiers
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSMutableString *identifier = [baseIdentifier mutableCopy];
+
+    if ([sequence canComment])
+    {
+        [identifier appendString:@"comment"];
+    }
+    [identifier appendString:@"share"];
+    if ([sequence canRepost])
+    {
+        [identifier appendString:@"repost"];
+    }
+    if ([sequence canRemix])
+    {
+        [identifier appendString:@"meme"];
+    }
+    if ([sequence canRemix] && [sequence isVideo])
+    {
+        [identifier appendString:@"gif"];
+    }
+    
+    return [NSString stringWithString:identifier];
+}
 
 #pragma mark - VAbstractActionView
 
@@ -81,6 +111,7 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
         [_commentButton v_addHeightConstraint:kActionButtonHeight];
         _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
         _commentButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        _commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     }
     return _commentButton;
 }
@@ -129,13 +160,14 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
     if (_dependencyManager != nil)
     {
         //Override the default tint color to always have white text in the comment label
-        [self.commentButton setTintColor:[UIColor whiteColor]];
+        [self.commentButton setTintColor:[_dependencyManager colorForKey:VDependencyManagerMainTextColorKey]];
         [[self.commentButton titleLabel] setFont:[_dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
         self.commentButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
         [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
          {
+             actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
              actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
          }];
     }
@@ -147,6 +179,11 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
                    forSequence:(VSequence *)sequence
 {
     if (actionBar == nil)
+    {
+        return;
+    }
+    
+    if (self.hasLayedOutActionView)
     {
         return;
     }
@@ -180,6 +217,8 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
     }
     [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
     actionBar.actionItems = actionItems;
+    
+    self.hasLayedOutActionView = YES;
 }
 
 - (void)updateCommentCountForSequence:(VSequence *)sequence
@@ -212,9 +251,8 @@ static CGFloat const kActionBackgroundColorConstant = 238.0f / 255.0f;
 {
     VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    CGFloat colorVal = kActionBackgroundColorConstant;
-    actionButton.unselectedColor = [UIColor colorWithRed:colorVal green:colorVal blue:colorVal alpha:1.0f];
     actionButton.selected = NO;
+    actionButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                   forState:UIControlStateNormal];

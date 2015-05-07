@@ -41,7 +41,7 @@ static const CGFloat kActionBarHeight = 30.0f;
 static const CGFloat kCreationInfoContainerHeight = 44.0f;
 static const UIEdgeInsets kTextInsets = {25.0f, 10.0f, 15.0f, 15.0f};
 
-@interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate, VCreationInfoContainerDelegate>
+@interface VHermesStreamCollectionViewCell () <CCHLinkTextViewDelegate>
 
 @property (nonatomic, assign) BOOL hasLayedOutViews;
 
@@ -297,7 +297,6 @@ static const UIEdgeInsets kTextInsets = {25.0f, 10.0f, 15.0f, 15.0f};
         }
         [creationContainer v_addHeightConstraint:kCreationInfoContainerHeight];
         self.creationInfoContainer = creationContainer;
-        self.creationInfoContainer.delegate = self;
         
         headerBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
                                   button,
