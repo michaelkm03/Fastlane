@@ -63,14 +63,8 @@ static const int64_t kAssetLoopClippingScale = 100;
                                                 if ( loop )
                                                 {
                                                     AVComposition *composition = [self loopingCompositionWithAsset:asset];
-                                                    if (composition)
-                                                    {
-                                                        playerItem = [AVPlayerItem playerItemWithAsset:composition];
-                                                    }
-                                                    else
-                                                    {
-                                                        playerItem = [AVPlayerItem playerItemWithAsset:asset];
-                                                    }
+                                                    // Fallback to normal playback if we can't loop.
+                                                    playerItem = [AVPlayerItem playerItemWithAsset:composition ?: asset];
                                                 }
                                                 else
                                                 {
