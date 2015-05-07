@@ -221,12 +221,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         if ( [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]] )
         {
             //Side nav
-            [templateDecorator setComponentWithFilename:@"storeComponent2" forKeyPath:@"scaffold/menu/items/0/3"];
+            [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/0/3"];
         }
         else
         {
             // Bottom nav
-            [templateDecorator setComponentWithFilename:@"storeComponent1" forKeyPath:@"scaffold/menu/items/4"];
+            [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/4"];
         }
                 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager

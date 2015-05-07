@@ -61,18 +61,18 @@
                         <viewControllerLayoutGuide type="bottom" id="xd6-ZA-jPh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Hl5-ah-vB3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
-                                <rect key="frame" x="0.0" y="64" width="320" height="2"/>
+                                <rect key="frame" x="0.0" y="50" width="320" height="2"/>
                                 <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="tJ6-5s-lwx"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n7-et-juQ" userLabel="Back Button">
-                                <rect key="frame" x="2" y="17" width="30" height="45"/>
+                                <rect key="frame" x="2" y="17" width="30" height="31"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="qQ4-OK-Ra3"/>
@@ -86,13 +86,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6my-03-sbB" userLabel="Page Title Label">
-                                <rect key="frame" x="35" y="16" width="212" height="46"/>
+                                <rect key="frame" x="35" y="16" width="212" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cNG-U0-zNK" userLabel="Export Button">
-                                <rect key="frame" x="250" y="15" width="32" height="46"/>
+                                <rect key="frame" x="250" y="15" width="32" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="Rab-ah-Rby"/>
                                 </constraints>
@@ -106,7 +106,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-ew-6sW" userLabel="Exit Button">
-                                <rect key="frame" x="283" y="15" width="32" height="49"/>
+                                <rect key="frame" x="283" y="15" width="32" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="mWz-d4-er6"/>
                                 </constraints>
@@ -260,6 +260,6 @@
         <image name="browser-share" width="14" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="3rD-5f-0tG"/>
+        <segue reference="CWe-y5-CdX"/>
     </inferredMetricsTieBreakers>
 </document>

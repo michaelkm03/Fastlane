@@ -106,9 +106,7 @@
 	<string>VBlurredMarqueeController</string>
 	<key>inset.marqueeCell</key>
 	<string>VInsetMarqueeController</string>
-	<key>webViewBottom.screen</key>
-	<string>VBottomMenuWebBrowserViewController</string>
-	<key>webViewSide.screen</key>
-	<string>VSideMenuWebBrowserViewController</string>
+	<key>webView.screen</key>
+	<string>VWebBrowserViewController</string>
 </dict>
 </plist>

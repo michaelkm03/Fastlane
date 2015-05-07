@@ -11,31 +11,15 @@
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
-
-static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
-static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
-static const CGFloat kLayoutChangeAnimationSpringVelocity   = 0.1f;
-
-static const CGFloat kDefaultLeadingSpace                   = 8.0f;
+#import "VWebBrowserHeaderState.h"
 
 @interface VWebBrowserHeaderViewController()
 
 @property (nonatomic, strong) NSURL *currentURL;
-
-@property (nonatomic, weak) IBOutlet UIButton *buttonBack;
+@property (nonatomic, strong) VWebBrowserHeaderState *state;
 @property (nonatomic, weak) IBOutlet UIButton *buttonOpenURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonExit;
-@property (nonatomic, weak) IBOutlet UILabel *labelTitle;
 @property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleX1Constraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitX2Constraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonExitWidthConstraint;
-
-@property (nonatomic, assign) CGFloat startingBackButtonWidth;
-@property (nonatomic, assign) CGFloat startingExitButtonWidth;
-@property (nonatomic, assign) CGFloat startingPageTitleX1;
 
 @end
 
@@ -49,11 +33,7 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     
     self.labelTitle.text = NSLocalizedString( @"Loading...", @"" );
     
-    self.startingBackButtonWidth = self.buttonBackWidthConstraint.constant;
-    self.startingExitButtonWidth = self.buttonExitWidthConstraint.constant;
-    self.startingPageTitleX1 = self.pageTitleX1Constraint.constant;
-    
-    [self updateState];
+    [self.state update];
 }
 
 - (void)applyTheme
@@ -77,29 +57,6 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     self.labelTitle.textColor = tintColor;
     
     self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-}
-
-- (void)updateStateAnimated:(BOOL)animated
-{
-    void (^updateBlock)() = ^void ()
-    {
-        [self updateState];
-    };
-    
-    if ( animated )
-    {
-        [UIView animateWithDuration:kLayoutChangeAnimationDuration
-                              delay:0.0f
-             usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
-              initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
-                            options:kNilOptions
-                         animations:updateBlock
-                         completion:nil];
-    }
-    else
-    {
-        updateBlock();
-    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -141,32 +98,8 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     
     if ( self.isViewLoaded )
     {
-        [self updateState];
+        [self.state update];
     }
-}
-
-- (void)updateState
-{
-    const BOOL shouldHideNavControls = ![self.browserDelegate canGoBack];
-    self.buttonBack.enabled = [self.browserDelegate canGoBack];
-    self.buttonBackWidthConstraint.constant = shouldHideNavControls ? 0.0f : self.startingBackButtonWidth;
-    
-    switch ( self.layoutMode )
-    {
-        case VWebBrowserHeaderLayoutModeStandalone:
-            self.labelTitle.textAlignment = NSTextAlignmentLeft;
-            self.buttonExitWidthConstraint.constant = self.startingExitButtonWidth;
-            self.pageTitleX1Constraint.constant = self.startingPageTitleX1 + (shouldHideNavControls ? kDefaultLeadingSpace : 0.0f);
-            break;
-            
-        case VWebBrowserHeaderLayoutModeMenuItem:
-            self.labelTitle.textAlignment = NSTextAlignmentCenter;
-            self.buttonExitWidthConstraint.constant = 0.0f;
-            self.pageTitleX1Constraint.constant = self.startingPageTitleX1 + (shouldHideNavControls ? self.startingBackButtonWidth : 0.0f);
-            break;
-    }
-    
-    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Header Actions

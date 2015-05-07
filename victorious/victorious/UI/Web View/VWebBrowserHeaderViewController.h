@@ -34,7 +34,9 @@ typedef NS_ENUM( NSInteger, VWebBrowserHeaderLayoutMode )
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VWebBrowserHeaderViewDelegate> browserDelegate;
 
-- (void)updateStateAnimated:(BOOL)animated;
+@property (nonatomic, weak) IBOutlet UIButton *buttonBack;
+@property (nonatomic, weak) IBOutlet UILabel *labelTitle;
+
 - (void)setTitle:(NSString *)title;
 - (void)setLoadingStarted;
 - (void)setLoadingComplete:(BOOL)didFail;

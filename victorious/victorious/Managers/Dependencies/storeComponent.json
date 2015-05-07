@@ -1,6 +1,6 @@
 {
     "destination": {
-        "name": "webViewSide.screen",
+        "name": "webView.screen",
         "webURL" : "http://www.eatyourkimchi.com/shop",
         "title": "Store"
     },
