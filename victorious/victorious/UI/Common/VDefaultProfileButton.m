@@ -10,6 +10,7 @@
 
 #import <SDWebImage/UIButton+WebCache.h>
 #import "UIImageView+VLoadingAnimations.h"
+#import "UIImage+Round.h"
 #import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
@@ -67,18 +68,7 @@
                            return;
                        }
                        
-                       // Redraw image with rounded corners
-                       UIGraphicsBeginImageContextWithOptions(weakSelf.bounds.size, NO, [[UIScreen mainScreen] scale]);
-                       
-                       CGFloat radius = ( CGRectGetHeight(weakSelf.bounds) - weakSelf.imageEdgeInsets.top - weakSelf.imageEdgeInsets.bottom )/2 ;
-                       [[UIBezierPath bezierPathWithRoundedRect:weakSelf.bounds cornerRadius:radius] addClip];
-                       
-                       [image drawInRect:weakSelf.bounds];
-                       
-                       UIImage *rounded = UIGraphicsGetImageFromCurrentImageContext();
-                       [weakSelf setImage:rounded forState:UIControlStateNormal];
-                       
-                       UIGraphicsEndImageContext();
+                       [weakSelf setImage:[image roundedImageWithCornerRadius:image.size.height / 2] forState:UIControlStateNormal];
                    }];
     
     self.imageView.tintColor = self.tintColor;
