@@ -18,7 +18,6 @@
 #import "VImageSearchViewController.h"
 #import "UIImage+Cropping.h"
 #import "UIImage+Resize.h"
-#import "VSettingManager.h"
 #import "VCameraControl.h"
 #import "VThemeManager.h"
 #import "VRadialGradientView.h"

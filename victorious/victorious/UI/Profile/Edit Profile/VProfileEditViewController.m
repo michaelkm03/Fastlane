@@ -7,7 +7,6 @@
 //
 
 #import "VProfileEditViewController.h"
-#import "VSettingManager.h"
 #import "VUser.h"
 #import "MBProgressHUD.h"
 
@@ -104,7 +103,7 @@
                                                          name:self.usernameTextField.text
                                               profileImageURL:self.updatedProfileImage
                                                      location:self.locationTextField.text
-                                                      tagline:nil
+                                                      tagline:self.taglineTextView.text
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];

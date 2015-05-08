@@ -44,7 +44,6 @@
 		0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0A819B4698800FA363C /* VObjectManager+Users.m */; };
 		0314D0B819B4698800FA363C /* VObjectManager+Websites.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0AA19B4698800FA363C /* VObjectManager+Websites.m */; };
 		0314D0B919B4698800FA363C /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0AC19B4698800FA363C /* VObjectManager.m */; };
-		0314D0BD19B469C100FA363C /* VSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0BC19B469C100FA363C /* VSettingManager.m */; };
 		0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D2DE19B46AF300FA363C /* VThemeManager.m */; };
 		0314D2E319B46AF300FA363C /* VUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D2E119B46AF300FA363C /* VUserManager.m */; };
 		0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D2E519B46B0E00FA363C /* VPaginationManager.m */; };
@@ -1008,8 +1007,6 @@
 		0314D0AA19B4698800FA363C /* VObjectManager+Websites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Websites.m"; sourceTree = "<group>"; };
 		0314D0AB19B4698800FA363C /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VObjectManager.h; sourceTree = "<group>"; };
 		0314D0AC19B4698800FA363C /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VObjectManager.m; sourceTree = "<group>"; };
-		0314D0BB19B469C100FA363C /* VSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingManager.h; sourceTree = "<group>"; };
-		0314D0BC19B469C100FA363C /* VSettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingManager.m; sourceTree = "<group>"; };
 		0314D2DD19B46AF300FA363C /* VThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VThemeManager.h; sourceTree = "<group>"; };
 		0314D2DE19B46AF300FA363C /* VThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VThemeManager.m; sourceTree = "<group>"; };
 		0314D2E019B46AF300FA363C /* VUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserManager.h; sourceTree = "<group>"; };
@@ -2705,8 +2702,6 @@
 		0314D0BA19B469C100FA363C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				0314D0BB19B469C100FA363C /* VSettingManager.h */,
-				0314D0BC19B469C100FA363C /* VSettingManager.m */,
 				A70FC1231A31207400F5BBDE /* VVoteSettings.h */,
 				A70FC1241A31207400F5BBDE /* VVoteSettings.m */,
 			);
@@ -6581,7 +6576,6 @@
 				A780ED5B1A933D9300A8CD5D /* VCompositeImageFilter.m in Sources */,
 				D80BE58C1AB203E300219803 /* VLoopingCompositionGenerator.m in Sources */,
 				D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */,
-				0314D0BD19B469C100FA363C /* VSettingManager.m in Sources */,
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,

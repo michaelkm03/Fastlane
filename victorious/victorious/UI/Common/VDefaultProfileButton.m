@@ -11,7 +11,6 @@
 #import <SDWebImage/UIButton+WebCache.h>
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+Round.h"
-#import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
 

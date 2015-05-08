@@ -18,7 +18,6 @@
 #import "MBProgressHUD.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
-#import "VSettingManager.h"
 #import "VAutomation.h"
 #import "VButton.h"
 #import "VInlineValidationTextField.h"
@@ -95,7 +94,7 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
     if (linkRange.length > 0)
     {
         self.agreementText.linkAttributes = @{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
-        NSURL *url = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL];
+        NSURL *url = [NSURL URLWithString:[self.dependencyManager stringForKey:kVTermsOfServiceURL]];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
     

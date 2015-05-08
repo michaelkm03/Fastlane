@@ -11,7 +11,6 @@
 #import "VDependencyManager.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
-#import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"

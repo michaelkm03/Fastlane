@@ -7,7 +7,6 @@
 //
 
 #import "VWebBrowserHeaderViewController.h"
-#import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"

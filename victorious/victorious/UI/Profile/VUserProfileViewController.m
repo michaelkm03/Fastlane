@@ -28,7 +28,6 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
-#import "VSettingManager.h"
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
 #import "VDependencyManager+VScaffoldViewController.h"
