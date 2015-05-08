@@ -22,7 +22,7 @@ static NSString * const kStoryboardName = @"EndCard";
 
 @property (nonatomic, weak, readwrite) IBOutlet UICollectionView *actionsCollectionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionsCollectionViewWidthConstraint;
-@property (nonatomic, weak) IBOutlet UIButton *replayButton;
+@property (weak, nonatomic) IBOutlet UILabel *replayLabel;
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) NSURL *nextVideoURL;
 
@@ -68,8 +68,6 @@ static NSString * const kStoryboardName = @"EndCard";
 {
     [super viewDidLoad];
     
-    self.replayButton.titleLabel.numberOfLines = 3;
-    
     self.nextVideoBannerViewBottomMax = self.nextVideoBannerViewBottomConstraint.constant;
     [self.nextVideoBannerViewController configureWithDependencyManager:self.dependencyManager];
     
@@ -78,8 +76,8 @@ static NSString * const kStoryboardName = @"EndCard";
     
     [self updateContainerSize:nil];
     
-    [self.replayButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
-    [self.replayButton setTitle:self.model.videoTitle forState:UIControlStateNormal];
+    [self.replayLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
+    [self.replayLabel setText:self.model.videoTitle];
     
     NSString *identifier = [VEndCardActionCell cellIdentifier];
     [self.actionsCollectionView registerNib:[UINib nibWithNibName:identifier bundle:nil] forCellWithReuseIdentifier:identifier];
