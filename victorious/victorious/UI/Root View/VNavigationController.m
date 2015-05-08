@@ -348,7 +348,8 @@ static const CGFloat kStatusBarHeight = 20.0f;
         return;
     }
     
-    CGFloat navigationBarHeight = CGRectGetHeight(self.innerNavigationController.navigationBar.frame) +
+    CGFloat navigationBarHeight = CGRectGetHeight(self.innerNavigationController.navigationBar.frame) -
+                                  self.innerNavigationController.navigationBar.shadowImage.size.height +
                                   CGRectGetHeight(viewController.navigationItem.v_supplementaryHeaderView.frame) +
                                   CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     viewController.v_layoutInsets = UIEdgeInsetsMake(navigationBarHeight, 0, 0, 0);
