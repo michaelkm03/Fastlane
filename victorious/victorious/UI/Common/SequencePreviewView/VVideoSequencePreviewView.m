@@ -47,7 +47,7 @@
         [_playIconContainerView addSubview:playIconCircle];
         [_playIconContainerView v_addFitToParentConstraintsToSubview:playIconCircle];
         
-        UIImageView *playIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Play"]];
+        UIImageView *playIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayTriangle"]];
         [_playIconContainerView addSubview:playIconView];
         [_playIconContainerView v_addFitToParentConstraintsToSubview:playIconView];
         

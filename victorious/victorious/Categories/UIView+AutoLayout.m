@@ -126,6 +126,30 @@
                                                                    views:NSDictionaryOfVariableBindings(subView)]];
 }
 
+- (void)v_addPinToTopToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]"
+                                                                 options:kNilOptions
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(subview)]];
+}
+
+- (void)v_addPinToBottomToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[subview]|"
+                                                                 options:kNilOptions
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(subview)]];
+}
+
 - (NSLayoutConstraint *)v_internalWidthConstraint
 {
     __block NSLayoutConstraint *internalWidthConstraint;

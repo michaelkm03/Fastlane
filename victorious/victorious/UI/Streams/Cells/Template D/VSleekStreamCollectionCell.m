@@ -13,7 +13,6 @@
 
 // Dependencies
 #import "VDependencyManager.h"
-#import "VBackgroundContainer.h"
 
 // Views + Helpers
 #import "VSequencePreviewView.h"
@@ -36,6 +35,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @interface VSleekStreamCollectionCell () <VBackgroundContainer>
 
 @property (nonatomic, strong) VSequencePreviewView *previewView;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIView *previewContainer;
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
@@ -44,8 +44,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -59,6 +57,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
     self.actionViewTopConstraint.constant = kSleekCellActionViewTopConstraintHeight;
 }
+
+#pragma mark - VHasManagedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -77,6 +77,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         [self.headerView setDependencyManager:dependencyManager];
     }
 }
+
+#pragma mark - Property Accessors
 
 - (void)setSequence:(VSequence *)sequence
 {
@@ -141,7 +143,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
 
-    CGFloat width = actual.width - kTextViewInset - VStreamCollectionCellTextViewLineFragmentPadding * 2;
+    CGFloat width = actual.width - kTextViewInset;
     if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
     {
         //Subtract insets and line fragment padding that is padding text in textview BEFORE calculating size

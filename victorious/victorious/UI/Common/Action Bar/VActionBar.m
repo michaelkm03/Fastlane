@@ -208,6 +208,12 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
 - (void)applyFlexibleItemWith:(CGFloat)flexibleItemWidth
        toFlexibleItemsInItems:(NSArray *)items
 {
+    if (flexibleItemWidth == 0.0f)
+    {
+        // Zero width flex, do nothing.
+        return;
+    }
+    
     [items enumerateObjectsUsingBlock:^(UIView *actionItem, NSUInteger idx, BOOL *stop)
     {
         if ([self isFlexibleActionItem:actionItem])
@@ -220,8 +226,8 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
                                                 }
                                                 return NO;
                                             }];
-            NSArray *filteredConstrains = [[actionItem constraints] filteredArrayUsingPredicate:filterPredicate];
-            [actionItem removeConstraints:filteredConstrains];
+            NSArray *filteredConstraints = [[actionItem constraints] filteredArrayUsingPredicate:filterPredicate];
+            [actionItem removeConstraints:filteredConstraints];
             [actionItem setNeedsUpdateConstraints];
             NSLayoutConstraint *widthConstraint = [actionItem v_addWidthConstraint:flexibleItemWidth];
             widthConstraint.identifier = kConstraintIdentifier;

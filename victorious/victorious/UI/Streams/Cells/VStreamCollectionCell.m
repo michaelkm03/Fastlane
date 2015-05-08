@@ -226,7 +226,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     }
     
     self.streamCellHeaderView.dependencyManager = dependencyManager;
-    self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
     [self refreshDescriptionAttributes];
 }

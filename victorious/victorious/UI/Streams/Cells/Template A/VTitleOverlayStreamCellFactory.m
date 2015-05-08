@@ -1,25 +1,28 @@
 //
-//  VSleekStreamCellFactory.m
+//  VTitleOverlayStreamCellFactory.m
 //  victorious
 //
-//  Created by Sharif Ahmed on 3/17/15.
+//  Created by Josh Hinman on 3/12/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VSleekStreamCellFactory.h"
-#import "VSleekStreamCollectionCell.h"
+#import "VTitleOverlayStreamCellFactory.h"
+
+// Models + Helpers
 #import "VSequence+Fetcher.h"
+
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VNoContentCollectionViewCellFactory.h"
+#import "VTileOverlayCollectionCell.h"
 
-@interface VSleekStreamCellFactory ()
+@interface VTitleOverlayStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentCollectionViewCellFactory *noContentCollectionViewCellFactory;
 
 @end
 
-@implementation VSleekStreamCellFactory
+@implementation VTitleOverlayStreamCellFactory
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -34,7 +37,8 @@
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VSleekStreamCollectionCell nibForCell] forCellWithReuseIdentifier:[VSleekStreamCollectionCell suggestedReuseIdentifier]];
+    [collectionView registerClass:[VTileOverlayCollectionCell class]
+       forCellWithReuseIdentifier:[VTileOverlayCollectionCell suggestedReuseIdentifier]];
     [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
@@ -46,37 +50,31 @@
     }
     
     VSequence *sequence = (VSequence *)streamItem;
-    VSleekStreamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VSleekStreamCollectionCell suggestedReuseIdentifier]
+
+    VTileOverlayCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VTileOverlayCollectionCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
-    [self.dependencyManager addBackgroundToBackgroundHost:cell];
     
     return cell;
 }
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
-    if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
-    {
-        return [self.noContentCollectionViewCellFactory cellSizeForCollectionViewBounds:bounds];
-    }
-    
-    VSequence *sequence = (VSequence *)streamItem;
-    return [VSleekStreamCollectionCell actualSizeWithCollectionViewBounds:bounds
-                                                                 sequence:sequence
+    return [VTileOverlayCollectionCell actualSizeWithCollectionViewBounds:bounds
+                                                                 sequence:(VSequence *)streamItem
                                                         dependencyManager:self.dependencyManager];
 }
 
 - (CGFloat)minimumLineSpacing
 {
-    return 1.0f;
+    return 0;
 }
 
 - (UIEdgeInsets)sectionInsets
 {
-    return UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+    return UIEdgeInsetsZero;
 }
 
 @end

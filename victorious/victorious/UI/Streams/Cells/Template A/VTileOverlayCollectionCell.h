@@ -1,8 +1,8 @@
 //
-//  VSleekStreamCollectionCell.h
+//  VTileOverlayCollectionCell.h
 //  victorious
 //
-//  Created by Sharif Ahmed on 3/13/15.
+//  Created by Michael Sena on 5/7/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
@@ -12,11 +12,7 @@
 
 @class VSequence;
 
-/**
- * VSleekStreamCollectionCell is a stream cell component more commonly known as 
- *  template D or Hera. It represents a sequence.
- */
-@interface VSleekStreamCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer>
+@interface VTileOverlayCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer>
 
 /**
  *  Sizing method. All parameters are required.
@@ -26,7 +22,7 @@
                            dependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
- *  The sequence for this VSleekStreamCollectionCell to represent.
+ *  The sequence for this VTileOverlayCollectionCell to represent.
  */
 @property (nonatomic, strong) VSequence *sequence;
 
