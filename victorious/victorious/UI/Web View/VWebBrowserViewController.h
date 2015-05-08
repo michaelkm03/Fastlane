@@ -13,19 +13,34 @@
 
 @class VSequence, VWebBrowserHeaderViewController;
 
+/**
+ A view controller that provides a web view and basic navigation controls
+ for displaying external URLs or HTML content.  Can be used as part of the main menu
+ when specified in the template or can be presented standalone to display some
+ arbitrary web content.
+ */
 @interface VWebBrowserViewController : UIViewController <VHasManagedDependencies>
 
-@property (nonatomic, strong) VSequence *sequence;
-@property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController;
-@property (nonatomic, assign) NSString *layoutIdentifier;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) NSString *templateTitle;
-@property (nonatomic, assign) VWebBrowserHeaderContentAlignment headerContentAlignment;
+
+@property (nonatomic, strong) VSequence *sequence; ///< A related sequence, if any
+
+@property (nonatomic, assign) NSString *layoutIdentifier; ///< A template specifier that can determine alternate layouts
+@property (nonatomic, strong) NSString *templateTitle; ///< A title to display instead of the URL's page title
+
+@property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController; ///< A specialized header component with navigation actions
+@property (nonatomic, assign) VWebBrowserHeaderContentAlignment headerContentAlignment; ///< A specified for content alignment property of the header
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
+/**
+ Load and display the web content at the specified URL.
+ */
 - (void)loadUrl:(NSURL *)url;
 
+/**
+ Load and display the web content at a URL made from the specified string.
+ */
 - (void)loadUrlString:(NSString *)urlString;
 
 @end

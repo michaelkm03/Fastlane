@@ -83,7 +83,7 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 
 - (BOOL)shouldHideNavigationControls
 {
-    return ![self.header.browserDelegate canGoBack];
+    return ![self.header.stateDataSource canGoBack];
 }
 
 - (void)setInitialValues

@@ -16,8 +16,9 @@
 
 @property (nonatomic, assign) VWebBrowserHeaderProgressBarAlignment progressBarAlignment;
 @property (nonatomic, assign) VWebBrowserHeaderContentAlignment contentAlignment;
-
 @property (nonatomic, weak) IBOutlet VWebBrowserHeaderViewController *header;
+
+@property (nonatomic, weak) id<VWebBrowserHeaderStateDataSource> stateDataSource;
 
 - (void)update;
 

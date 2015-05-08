@@ -18,6 +18,10 @@
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonOpenURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonExit;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton *buttonBack;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel *labelTitle;
+@property (nonatomic, weak, readwrite) IBOutlet VProgressBarView *progressBar;
+@property (nonatomic, strong, readwrite) IBOutlet VWebBrowserHeaderLayoutManager *layoutManager;
 
 @end
 
@@ -92,31 +96,31 @@
 
 - (IBAction)backSelected:(id)sender
 {
-    [self.browserDelegate goBack];
+    [self.delegate goBack];
     [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)forwardSelected:(id)sender
 {
-    [self.browserDelegate goForward];
+    [self.delegate goForward];
     [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)exportSelected:(id)sender
 {
-    [self.browserDelegate export];
+    [self.delegate export];
     [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)exitSelected:(id)sender
 {
-    [self.browserDelegate exit];
+    [self.delegate exit];
     [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)refreshSelected:(id)sender
 {
-    [self.browserDelegate reload];
+    [self.delegate reload];
     [self.layoutManager updateAnimated:YES];
 }
 

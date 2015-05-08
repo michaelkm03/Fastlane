@@ -30,7 +30,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     VWebBrowserViewControllerStateFailed,
 };
 
-@interface VWebBrowserViewController() <WKNavigationDelegate, VWebBrowserHeaderViewDelegate, WKUIDelegate>
+@interface VWebBrowserViewController() <WKNavigationDelegate, VWebBrowserHeaderViewDelegate, VWebBrowserHeaderStateDataSource, WKUIDelegate>
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) NSURL *currentURL;
@@ -89,7 +89,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [self.containerView addSubview:self.webView];
     [self.containerView v_addFitToParentConstraintsToSubview:self.webView];
     
-    self.headerViewController.browserDelegate = self;
+    self.headerViewController.delegate = self;
+    self.headerViewController.stateDataSource = self;
     
     if ( self.currentURL != nil )
     {
@@ -329,7 +330,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     return nil;
 }
 
-#pragma mark - VWebBrowserHeaderView
+#pragma mark - VWebBrowserHeaderStateDataSource
 
 - (BOOL)canGoBack
 {
@@ -345,6 +346,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     return self.currentURL != nil && self.loadingState != VWebBrowserViewControllerStateLoading;
 }
+
+#pragma mark - VWebBrowserHeaderView
 
 - (void)goForward
 {
