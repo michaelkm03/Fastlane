@@ -217,6 +217,14 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+        NSDictionary *inboxAccessory = @{  @"destination": @{ @"name": @"inbox.screen" },
+                                           @"title": @"Inbox",
+                                           @"icon": @{ @"imageURL": @"A_inbox" },
+                                           @"identifier": @"Menu Inbox",
+                                           @"selectedIcon": @{ @"imageURL": @"A_inbox_selected" } };
+        
+        [templateDecorator setTemplateValue:inboxAccessory forKeyPath:@"scaffold/menu/items/3/accessoryScreens/1"];
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
