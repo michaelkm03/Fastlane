@@ -13,16 +13,6 @@
  */
 @interface VDefaultProfileImageView : UIImageView
 
-/**
- The width of the border. Defaults to 0.
- */
-@property (nonatomic, assign) CGFloat borderWidth;
-
-/**
- The color of the border. Defaults to white.
- */
-@property (nonatomic, strong) UIColor *borderColor;
-
 - (void)setup;
 - (void)setProfileImageURL:(NSURL *)url;
 
