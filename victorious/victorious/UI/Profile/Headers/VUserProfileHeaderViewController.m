@@ -228,6 +228,7 @@
                           block:^(id observer, id object, NSDictionary *change)
      {
          [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+         [welf updateProfileImage];
      }];
     
     [self.KVOController observe:user
