@@ -7,23 +7,20 @@
 //
 
 #import "VHasManagedDependencies.h"
+#import "VWebBrowserLayout.h"
 
 #import <UIKit/UIKit.h>
-
-extern NSString * const VWebBrowserViewControllerLayoutKey;
-extern NSString * const VWebBrowserViewControllerLayoutHeaderTop;
-extern NSString * const VWebBrowserViewControllerLayoutHeaderBottom;
-extern NSString * const VWebBrowserViewControllerHeaderContentAlignmentKey;
 
 @class VSequence, VWebBrowserHeaderViewController;
 
 @interface VWebBrowserViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VSequence *sequence;
-
 @property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController;
-
-@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, assign) NSString *layoutIdentifier;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) NSString *templateTitle;
+@property (nonatomic, assign) VWebBrowserHeaderContentAlignment headerContentAlignment;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

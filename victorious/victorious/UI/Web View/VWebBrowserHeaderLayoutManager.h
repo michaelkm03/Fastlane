@@ -8,17 +8,7 @@
 
 @import UIKit;
 
-typedef NS_ENUM( NSInteger, VWebBrowserHeaderContentAlignment )
-{
-    VWebBrowserHeaderContentAlignmentLeft,
-    VWebBrowserHeaderContentAlignmentCenter,
-};
-
-typedef NS_ENUM( NSInteger, VWebBrowserHeaderProgressBarAlignment )
-{
-    VWebBrowserHeaderProgressBarAlignmentTop,
-    VWebBrowserHeaderProgressBarAlignmentBottom,
-};
+#import "VWebBrowserLayout.h"
 
 @class VWebBrowserHeaderViewController;
 
