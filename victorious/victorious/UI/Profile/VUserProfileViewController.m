@@ -214,11 +214,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                                                                                  action:@selector(composeMessage:)];
     }
     
-    if ( self.user != nil )
-    {
-        [self reloadUserFollowCounts];
-    }
-    
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
     
