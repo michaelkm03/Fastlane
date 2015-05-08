@@ -332,7 +332,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
                                                              toItem:supplementaryHeaderView
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
-                                                           constant:-1.0f]];
+                                                           constant:0.0f]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[supplementaryHeaderView]|"
                                                                       options:0
                                                                       metrics:nil
