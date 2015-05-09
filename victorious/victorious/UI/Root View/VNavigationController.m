@@ -499,7 +499,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (void)reselected
 {
-    VLog(@"reselected");
     [self.innerNavigationController popToRootViewControllerAnimated:YES];
 }
 
