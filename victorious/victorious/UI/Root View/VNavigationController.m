@@ -14,6 +14,7 @@
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
 #import  "UIColor+VBrightness.h"
+#import "VTabMenuViewController.h"
 
 #import <objc/runtime.h>
 
@@ -492,6 +493,14 @@ static const CGFloat kStatusBarHeight = 20.0f;
         [self.displayedViewController v_setNavigationController:nil];
         self.displayedViewController = viewController;
     }
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    VLog(@"reselected");
+    [self.innerNavigationController popToRootViewControllerAnimated:YES];
 }
 
 @end

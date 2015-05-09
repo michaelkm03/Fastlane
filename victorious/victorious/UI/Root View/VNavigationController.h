@@ -7,16 +7,18 @@
 //
 
 #import "VHasManagedDependencies.h"
-
+#import "VTabMenuContainedViewControllerNavigation.h"
 #import <UIKit/UIKit.h>
 
+
 @class VNavigationControllerScrollDelegate;
+@protocol VTabMenuContainedViewControllerNavigation;
 
 /**
  A wrapper around UINavigation controller 
  that adds some new functionality
  */
-@interface VNavigationController : UIViewController <VHasManagedDependencies>
+@interface VNavigationController : UIViewController <VHasManagedDependencies, VTabMenuContainedViewControllerNavigation>
 
 /**
  The navigation controller doing all the work. Please 

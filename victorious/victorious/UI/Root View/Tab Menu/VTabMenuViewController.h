@@ -7,7 +7,12 @@
 //
 
 #import "VScaffoldViewController.h"
+#import "VTabMenuContainedViewControllerNavigation.h"
 
+/**
+ *  VTabMenuViewController is a scaffold subclass that wraps the native 
+ *  UITabBarController container view controller
+ */
 @interface VTabMenuViewController : VScaffoldViewController
 
 @end

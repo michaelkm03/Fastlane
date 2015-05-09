@@ -139,14 +139,9 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
 {
     if (viewController == tabBarController.selectedViewController)
     {
-        // We are alredy selected pop any navigation controllers
-        for (UIViewController *destinationViewController in viewController.childViewControllers)
+        if ([viewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)])
         {
-            if ([destinationViewController isKindOfClass:[VNavigationController class]])
-            {
-                VNavigationController *navigationControllerDestination = (VNavigationController *)destinationViewController;
-                [navigationControllerDestination.innerNavigationController popToRootViewControllerAnimated:YES];
-            }
+            [(id <VTabMenuContainedViewControllerNavigation>)viewController reselected];
         }
         return NO;
     }
