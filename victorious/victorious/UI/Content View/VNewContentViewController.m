@@ -70,7 +70,6 @@
 #import "VExperienceEnhancer.h"
 
 // Experiments
-#import "VSettingManager.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 
 #import "VSequence+Fetcher.h"
@@ -1399,9 +1398,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
          [inputAccessoryView clearTextAndResign];
          welf.mediaURL = nil;
          
-         if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
+         NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+         if (experimentValue != nil)
          {
-             [welf.videoCell play];
+             if ([experimentValue boolValue])
+             {
+                 [welf.videoCell play];
+             }
          }
      }];
 }
@@ -1443,11 +1446,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
         return;
     }
     
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
+    NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+    if (experimentValue != nil)
     {
-        [self.videoCell pause];
+        if ([experimentValue boolValue])
+        {
+            [self.videoCell pause];
+        }
     }
-    
     __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {

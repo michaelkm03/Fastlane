@@ -20,7 +20,6 @@
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VConstants.h"
-#import "VSettingManager.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 

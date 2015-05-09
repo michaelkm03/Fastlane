@@ -349,8 +349,14 @@ static const CGFloat kStatusBarHeight = 20.0f;
     }
     
     CGFloat navigationBarHeight = CGRectGetHeight(self.innerNavigationController.navigationBar.frame) +
-                                  CGRectGetHeight(viewController.navigationItem.v_supplementaryHeaderView.frame) +
                                   CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    UIView *supplementaryView = viewController.navigationItem.v_supplementaryHeaderView;
+    if ( supplementaryView != nil )
+    {
+        //The supplementary header exists, add its height and subtract the height of the shadow image that other content would normally be shown behind
+        navigationBarHeight += CGRectGetHeight(supplementaryView.frame) -
+                               self.innerNavigationController.navigationBar.shadowImage.size.height;
+    }
     viewController.v_layoutInsets = UIEdgeInsetsMake(navigationBarHeight, 0, 0, 0);
 }
 

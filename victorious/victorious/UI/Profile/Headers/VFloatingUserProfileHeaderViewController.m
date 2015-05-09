@@ -146,7 +146,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 - (NSURL *)getBestAvailableImage
 {
     NSURL *imageURL = nil;
-    BOOL canUseHighResAsset = YES; // Until proven otherwise
+    BOOL canUseHighResAsset = NO; // Until proven otherwise
     
     // Try to load high-res from server and make sure it's valid and large enough to display
     if ( self.user.previewAssets.count > 0 )

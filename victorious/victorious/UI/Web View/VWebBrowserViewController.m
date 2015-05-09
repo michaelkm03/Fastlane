@@ -11,7 +11,6 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderViewController.h"
-#import "VSettingManager.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
