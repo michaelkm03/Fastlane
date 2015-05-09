@@ -9,7 +9,7 @@
 #import "VFollowerTableViewCell.h"
 
 // Commands
-#import "VFollowing.h"
+#import "VFollowResponder.h"
 
 // Models + Helpers
 #import "VObjectManager+Users.h"
@@ -122,8 +122,8 @@ static const CGFloat kFollowerCellHeight = 50.0f;
 
 - (IBAction)tappedFollowControl:(VFollowUserControl *)sender
 {
-    id<VFollowing> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                       withSender:nil];
+    id<VFollowResponder> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                           withSender:nil];
     NSAssert(followCommandHandler != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
     sender.enabled = NO;
     if (sender.following)

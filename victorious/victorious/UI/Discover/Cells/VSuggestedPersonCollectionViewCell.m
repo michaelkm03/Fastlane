@@ -13,7 +13,7 @@
 #import "VFollowersTextFormatter.h"
 #import "VObjectManager+Users.h"
 #import "VDependencyManager.h"
-#import "VFollowing.h"
+#import "VFollowResponder.h"
 #import <KVOController/FBKVOController.h>
 
 @interface VSuggestedPersonCollectionViewCell()
@@ -141,8 +141,8 @@
 
 - (IBAction)onFollow:(VFollowUserControl *)sender
 {
-    id<VFollowing> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                     withSender:nil];
+    id<VFollowResponder> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                           withSender:nil];
     NSAssert(followCommandHandler != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
     sender.enabled = NO;
     if (sender.following)
