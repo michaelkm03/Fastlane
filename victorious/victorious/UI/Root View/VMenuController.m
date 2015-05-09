@@ -18,7 +18,6 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VScaffoldViewController.h"
-#import "VSettingManager.h"
 
 #import "VStream+Fetcher.h"
 

@@ -89,6 +89,7 @@
 "Profile load failed!" = "Error al cargar el perfil";
 
 "User already exists" = "El usuario ya existe";
+"Invalid email address or password" = "Email o contraseña inválidos";
 "Sorry, I can't display that right now" = "Lo sentimos, no podemos mostrar eso ahora";
 
 "WereSorry" = "Lo sentimos";
@@ -412,12 +413,8 @@
 
 "Report/Flag" = "Reportar/Señalar";
 "CreatedBy" = "CREADO POR";
-"remixes" = "remixes";
-"Remix" = "Remix";
 "RemixVerb" = "Remezclar";
-"reposts" = "Republicaciones";
-"REPOSTS" = "Vueltos a publicar";
-"REMIXES" = "Remixes";
+"Reposts" = "Vueltos a publicar";
 "Repost" = "Volver a publicar";
 "Reposted" = "Vuelto a publicar";
 "RepostContentView" = " REPUBLICACIÓN";
@@ -545,6 +542,8 @@
 
 "This will discard any content from the camera" = "Esto desechtará todo el contenido de la cámara";
 "Discard" = "Desechar";
+"Video failed to load" = "Error al cargar el video";
+"We encountered an error trying to edit this video." = "Detectamos un error al intentar editar este video.";
 
 "#nofilter" = "#nohayfiltro";
 "create a meme" = "crear meme";
