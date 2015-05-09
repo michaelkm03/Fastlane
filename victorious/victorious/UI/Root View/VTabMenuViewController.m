@@ -137,6 +137,19 @@ NSString * const kMenuKey = @"menu";
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
 shouldSelectViewController:(VNavigationDestinationContainerViewController *)viewController
 {
+    if (viewController == tabBarController.selectedViewController)
+    {
+        // We are alredy selected pop any navigation controllers
+        for (UIViewController *destinationViewController in viewController.childViewControllers)
+        {
+            if ([destinationViewController isKindOfClass:[VNavigationController class]])
+            {
+                VNavigationController *navigationControllerDestination = (VNavigationController *)destinationViewController;
+                [navigationControllerDestination.innerNavigationController popToRootViewControllerAnimated:YES];
+            }
+        }
+        return NO;
+    }
     NSInteger index = [tabBarController.viewControllers indexOfObject:viewController];
     if ( index != NSNotFound )
     {
@@ -147,6 +160,8 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     [self navigateToDestination:viewController.navigationDestination];
     return NO;
 }
+
+#pragma mark - VScaffoldViewController Overrides
 
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
