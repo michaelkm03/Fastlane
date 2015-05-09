@@ -55,20 +55,23 @@
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed
                                                    progress:nil
-                                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                                                      if (!image)
-                                                      {
-                                                          [weakSelf setImage:[weakSelf placeholderImage] forState:controlState];
-                                                          return;
-                                                      }
-                                                      
-                                                      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-                                                          UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
-                                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                                              [weakSelf setImage:roundedImage forState:controlState];
-                                                          });
-                                                      });
-                                                  }];
+                                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
+     {
+         if (!image)
+         {
+             [weakSelf setImage:[weakSelf placeholderImage] forState:controlState];
+             return;
+         }
+         
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
+                        {
+                            UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
+                            dispatch_async(dispatch_get_main_queue(), ^
+                                           {
+                                               [weakSelf setImage:roundedImage forState:controlState];
+                                           });
+                        });
+     }];
 }
 
 - (UIImage *)placeholderImage
