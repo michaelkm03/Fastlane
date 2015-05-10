@@ -33,7 +33,6 @@
 #import "VSequenceActionsDelegate.h"
 
 static const CGFloat kClockSize = 8.5f;
-static const CGFloat kSpaceToCenterWhenTwoLines = 1.0f;
 static const CGFloat kSpaceCreatorLabelToClockImageView = 4.0f;
 static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
 static const CGFloat kDefaultHeight = 44.0f;
@@ -49,9 +48,8 @@ static const CGFloat kDefaultHeight = 44.0f;
 @property (nonatomic, strong) UIImageView *clockImageView;
 @property (nonatomic, strong) UILabel *timeSinceLabel;
 
-@property (nonatomic, strong) NSLayoutConstraint *centerCreatorLabelConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *creatorBottomToCenterConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *parentUserTopToCenterConstraint;
+@property (nonatomic, strong) NSArray *singleLineConstraints;
+@property (nonatomic, strong) NSArray *multiLineConstraints;
 
 @property (nonatomic, assign) BOOL layedOutDefaultConstraints;
 
@@ -109,13 +107,21 @@ static const CGFloat kDefaultHeight = 44.0f;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
     
-    CCHLinkGestureRecognizer *linkGesture = [[CCHLinkGestureRecognizer alloc] initWithTarget:self
-                                                                                      action:@selector(recognizedGesture:)];
+    CCHLinkGestureRecognizer *originaluserGesture = [[CCHLinkGestureRecognizer alloc] initWithTarget:self
+                                                                                              action:@selector(recognizedGesture:)];
+    originaluserGesture.delegate = self;
+    originaluserGesture.minimumPressDuration = HUGE_VALF;
+    [self.creatorLabel addGestureRecognizer:originaluserGesture];
+    
+    CCHLinkGestureRecognizer *parentUserGesture = [[CCHLinkGestureRecognizer alloc] initWithTarget:self
+                                                                                            action:@selector(recognizedGesture:)];
 
-    linkGesture.delegate = self;
-    linkGesture.minimumPressDuration = HUGE_VALF;
-    [self.parentUserLabel addGestureRecognizer:linkGesture];
+    parentUserGesture.delegate = self;
+    parentUserGesture.minimumPressDuration = HUGE_VALF;
+    [self.parentUserLabel addGestureRecognizer:parentUserGesture];
+    
     self.parentUserLabel.userInteractionEnabled = YES;
+    self.creatorLabel.userInteractionEnabled = YES;
 }
 
 #pragma mark - UIView
@@ -172,40 +178,61 @@ static const CGFloat kDefaultHeight = 44.0f;
         self.layedOutDefaultConstraints = YES;
     }
     
-    [self removeConstraint:self.creatorBottomToCenterConstraint];
-    [self removeConstraint:self.parentUserTopToCenterConstraint];
-    [self removeConstraint:self.centerCreatorLabelConstraint];
     if (self.parentUserLabel.text == nil || self.parentUserLabel.attributedText == nil || [self.parentUserLabel.text isEqualToString:@""])
     {
         // Center the creator label vertically
-        self.centerCreatorLabelConstraint = [NSLayoutConstraint constraintWithItem:self.creatorLabel
-                                                                         attribute:NSLayoutAttributeCenterY
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self
-                                                                         attribute:NSLayoutAttributeCenterY
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-        [self addConstraint:self.centerCreatorLabelConstraint];
+        if (self.multiLineConstraints)
+        {
+            [NSLayoutConstraint deactivateConstraints:self.multiLineConstraints];
+        }
+
+        if (!self.singleLineConstraints)
+        {
+            self.singleLineConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[creatorLabel]|"
+                                                                                 options:kNilOptions
+                                                                                 metrics:nil
+                                                                                   views:@{@"creatorLabel":self.creatorLabel}];
+            [self addConstraints:self.singleLineConstraints];
+        }
+        [NSLayoutConstraint activateConstraints:self.singleLineConstraints];
     }
     else
     {
         // Distribute Creator/subtitle vertically
-        self.creatorBottomToCenterConstraint = [NSLayoutConstraint constraintWithItem:self.creatorLabel
-                                                                           attribute:NSLayoutAttributeBottom
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self
-                                                                           attribute:NSLayoutAttributeCenterY
-                                                                          multiplier:1.0f
-                                                                            constant:-kSpaceToCenterWhenTwoLines];
-        [self addConstraint:self.creatorBottomToCenterConstraint];
-        self.parentUserTopToCenterConstraint = [NSLayoutConstraint constraintWithItem:self.parentUserLabel
-                                                                            attribute:NSLayoutAttributeTop
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:self
-                                                                            attribute:NSLayoutAttributeCenterY
-                                                                           multiplier:1.0f
-                                                                             constant:kSpaceToCenterWhenTwoLines];
-        [self addConstraint:self.parentUserTopToCenterConstraint];
+        if (self.singleLineConstraints)
+        {
+            [NSLayoutConstraint deactivateConstraints:self.singleLineConstraints];
+        }
+
+        if (!self.multiLineConstraints)
+        {
+            NSMutableArray *multiLineConstraints = [[NSMutableArray alloc] init];
+            [multiLineConstraints addObject:[NSLayoutConstraint constraintWithItem:self.creatorLabel
+                                                                                attribute:NSLayoutAttributeBottom
+                                                                                relatedBy:NSLayoutRelationEqual
+                                                                                   toItem:self
+                                                                                attribute:NSLayoutAttributeCenterY
+                                                                               multiplier:1.0f
+                                                                                 constant:0.0f]];
+            [multiLineConstraints addObject:[NSLayoutConstraint constraintWithItem:self.parentUserLabel
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f]];
+            [multiLineConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_creatorLabel]"
+                                                                                              options:kNilOptions
+                                                                                              metrics:nil
+                                                                                                views:NSDictionaryOfVariableBindings(_creatorLabel)]];
+            [multiLineConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_parentUserLabel]|"
+                                                                                              options:kNilOptions
+                                                                                              metrics:nil
+                                                                                                views:NSDictionaryOfVariableBindings(_parentUserLabel)]];
+            self.multiLineConstraints = [NSArray arrayWithArray:multiLineConstraints];
+            [self addConstraints:self.multiLineConstraints];
+        }
+        [NSLayoutConstraint activateConstraints:self.multiLineConstraints];
     }
     
     if ([self v_internalHeightConstraint] == nil)
@@ -265,10 +292,24 @@ static const CGFloat kDefaultHeight = 44.0f;
         case CCHLinkGestureRecognizerResultTap:
         case CCHLinkGestureRecognizerResultLongPress:
         case CCHLinkGestureRecognizerResultUnknown:
-            self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:YES];
+            if (gestureRecognizer.view == self.parentUserLabel)
+            {
+                self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:YES];
+            }
+            else
+            {
+                self.creatorLabel.textColor = [self colorForCreatorLabelTextHighlighted:YES];
+            }
             break;
         case CCHLinkGestureRecognizerResultFailed:
-            self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
+            if (gestureRecognizer.view == self.parentUserLabel)
+            {
+                self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
+            }
+            else
+            {
+                self.creatorLabel.textColor = [self colorForCreatorLabelTextHighlighted:NO];
+            }
             gestureSucceeded = NO;
             break;
     }
@@ -278,6 +319,7 @@ static const CGFloat kDefaultHeight = 44.0f;
             if (gestureSucceeded)
             {
                 self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
+                self.creatorLabel.textColor = [self colorForCreatorLabelTextHighlighted:NO];
                 VUser *selectedUser;
                 if (gestureRecognizer.view == self.parentUserLabel)
                 {
@@ -309,6 +351,22 @@ static const CGFloat kDefaultHeight = 44.0f;
 }
 
 #pragma mark - Internal Methods
+
+- (UIColor *)colorForCreatorLabelTextHighlighted:(BOOL)highlighted
+{
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    if (!highlighted)
+    {
+        return textColor;
+    }
+    switch (textColor.v_colorLuminance)
+    {
+        case VColorLuminanceBright:
+            return [textColor v_colorDarkenedBy:0.5f];
+        case VColorLuminanceDark:
+            return [textColor v_colorLightenedBy:0.5f];
+    }
+}
 
 - (NSAttributedString *)attributedParentStringHightlighted:(BOOL)highlighted
 {
@@ -347,7 +405,7 @@ static const CGFloat kDefaultHeight = 44.0f;
     {
         NSDictionary *attributes = @{
                                      NSFontAttributeName: self.parentUserLabel.font,
-                                     NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
+                                     NSForegroundColorAttributeName: [self colorForCreatorLabelTextHighlighted:highlighted]
                                      };
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:formattedString
                                                                                              attributes:attributes];
@@ -383,7 +441,8 @@ static const CGFloat kDefaultHeight = 44.0f;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     CGPoint locationInView = [gestureRecognizer locationInView:self];
-    if (CGRectContainsPoint(CGRectInset(self.parentUserLabel.frame, -10.0f, -10.0f), locationInView))
+    if (CGRectContainsPoint(CGRectInset(self.parentUserLabel.frame, -10.0f, -10.0f), locationInView) ||
+        CGRectContainsPoint(CGRectInset(self.creatorLabel.frame, -10.0f, -10.0f), locationInView))
     {
         return YES;
     }
