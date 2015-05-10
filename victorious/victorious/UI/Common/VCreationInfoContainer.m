@@ -10,6 +10,7 @@
 
 // Libraries
 #import <KVOController/FBKVOController.h>
+#import <CCHLinkTextView/CCHLinkGestureRecognizer.h>
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -26,17 +27,18 @@
 
 // Views + Helpers
 #import "UIView+Autolayout.h"
+#import "UIColor+VBrightness.h"
 
 // Respdoner Chain
 #import "VSequenceActionsDelegate.h"
 
 static const CGFloat kClockSize = 8.5f;
-static const CGFloat kSpaceToCenterWhenTwoLines = 2.5f;
+static const CGFloat kSpaceToCenterWhenTwoLines = 1.0f;
 static const CGFloat kSpaceCreatorLabelToClockImageView = 4.0f;
 static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
 static const CGFloat kDefaultHeight = 44.0f;
 
-@interface VCreationInfoContainer ()
+@interface VCreationInfoContainer () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -107,9 +109,13 @@ static const CGFloat kDefaultHeight = 44.0f;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
     
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                           action:@selector(selectedUser:)];
-    [self addGestureRecognizer:tapGestureRecognizer];
+    CCHLinkGestureRecognizer *linkGesture = [[CCHLinkGestureRecognizer alloc] initWithTarget:self
+                                                                                      action:@selector(recognizedGesture:)];
+
+    linkGesture.delegate = self;
+    linkGesture.minimumPressDuration = HUGE_VALF;
+    [self.parentUserLabel addGestureRecognizer:linkGesture];
+    self.parentUserLabel.userInteractionEnabled = YES;
 }
 
 #pragma mark - UIView
@@ -151,10 +157,17 @@ static const CGFloat kDefaultHeight = 44.0f;
                                                          attribute:NSLayoutAttributeRight
                                                         multiplier:1.0f
                                                           constant:0.0f]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[parentUserLabel]|"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[parentUserLabel]"
                                                                      options:kNilOptions
                                                                      metrics:nil
                                                                        views:viewDictionary]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.parentUserLabel
+                                                         attribute:NSLayoutAttributeRight
+                                                         relatedBy:NSLayoutRelationLessThanOrEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeRight
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
         
         self.layedOutDefaultConstraints = YES;
     }
@@ -244,7 +257,45 @@ static const CGFloat kDefaultHeight = 44.0f;
 
 #pragma mark - Target/Action
 
-- (void)selectedUser:(UITapGestureRecognizer *)gestureRecognizer
+- (void)recognizedGesture:(CCHLinkGestureRecognizer *)gestureRecognizer
+{
+    BOOL gestureSucceeded = YES;
+    switch (gestureRecognizer.result)
+    {
+        case CCHLinkGestureRecognizerResultTap:
+        case CCHLinkGestureRecognizerResultLongPress:
+        case CCHLinkGestureRecognizerResultUnknown:
+            self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:YES];
+            break;
+        case CCHLinkGestureRecognizerResultFailed:
+            self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
+            gestureSucceeded = NO;
+            break;
+    }
+    switch (gestureRecognizer.state)
+    {
+        case UIGestureRecognizerStateEnded:
+            if (gestureSucceeded)
+            {
+                self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
+                VUser *selectedUser;
+                if (gestureRecognizer.view == self.parentUserLabel)
+                {
+                    selectedUser = self.sequence.displayParentUser;
+                }
+                else
+                {
+                    selectedUser = self.sequence.displayOriginalPoster;
+                }
+                [self selectedUser:selectedUser];
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)selectedUser:(VUser *)user
 {
     UIResponder<VSequenceActionsDelegate> *targetForUserSelection = [self targetForAction:@selector(selectedUser:onSequence:fromView:)
                                                                                withSender:self];
@@ -252,25 +303,16 @@ static const CGFloat kDefaultHeight = 44.0f;
     {
         NSAssert(false, @"We need an object in the responder chain for user selection.");
     }
-    [targetForUserSelection selectedUser:self.sequence.displayOriginalPoster
+    [targetForUserSelection selectedUser:user
                               onSequence:self.sequence
                                 fromView:self];
 }
 
-#pragma mark - Update UI
+#pragma mark - Internal Methods
 
-- (void)updateWithSequence:(VSequence *)sequence
+- (NSAttributedString *)attributedParentStringHightlighted:(BOOL)highlighted
 {
-    self.creatorLabel.text = [sequence displayOriginalPoster].name;
-    [self updateParentUserLabelWithSequence:sequence];
-    self.timeSinceLabel.text = [sequence.releasedAt timeSince];
-    [self setNeedsUpdateConstraints];
-}
-
-- (void)updateParentUserLabelWithSequence:(VSequence *)sequence
-{
-    // Format repost / remix string
-    NSString *parentUserString = sequence.displayParentUser.name ?: @"";
+    NSString *parentUserString = self.sequence.displayParentUser.name ?: @"";
     NSString *formattedString = nil;
     
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
@@ -286,6 +328,7 @@ static const CGFloat kDefaultHeight = 44.0f;
         }
         else
         {
+#warning TODO: Move +x others to a separate label (for separate gesture recognition)
             formattedString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), parentUserString, [self.sequence.repostCount unsignedLongValue]];
         }
     }
@@ -302,23 +345,49 @@ static const CGFloat kDefaultHeight = 44.0f;
     
     if (formattedString != nil && self.dependencyManager != nil)
     {
-        NSRange range = [formattedString rangeOfString:parentUserString];
         NSDictionary *attributes = @{
                                      NSFontAttributeName: self.parentUserLabel.font,
                                      NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
                                      };
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:formattedString
                                                                                              attributes:attributes];
+        
+        NSRange range = [formattedString rangeOfString:parentUserString];
+        UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        UIColor *userTextColor = highlighted ? [linkColor v_colorDarkenedBy:0.15f] : linkColor;
         [attributedString addAttribute:NSForegroundColorAttributeName
-                                 value:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                                 value:userTextColor
                                  range:range];
-        self.parentUserLabel.attributedText = attributedString;
+        return attributedString;
     }
     else
     {
-        self.parentUserLabel.text = nil;
-        self.parentUserLabel.attributedText = nil;
+        return nil;
     }
+}
+
+- (void)updateWithSequence:(VSequence *)sequence
+{
+    self.creatorLabel.text = [sequence displayOriginalPoster].name;
+    self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
+    self.timeSinceLabel.text = [sequence.releasedAt timeSince];
+    [self setNeedsUpdateConstraints];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    CGPoint locationInView = [gestureRecognizer locationInView:self];
+    if (CGRectContainsPoint(CGRectInset(self.parentUserLabel.frame, -10.0f, -10.0f), locationInView))
+    {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - VHasManagedDependencies
