@@ -6,12 +6,29 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "CCHLinkTextView.h"
+#import "VDependencyManager.h"
 #import "VLinkTextViewHelper.h"
-#import "VThemeManager.h"
+
+@interface VLinkTextViewHelper ()
+
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
+@end
 
 @implementation VLinkTextViewHelper
 
 #pragma mark - CCHLinkTextView
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _dependencyManager = dependencyManager;
+    }
+    return self;
+}
 
 - (void)setupLinkTextView:(CCHLinkTextView *)linkTextView withText:(NSString *)text range:(NSRange)range
 {
@@ -24,15 +41,15 @@
     UIColor *normalColor = linkTextView.textColor ?: [UIColor whiteColor];
     normalColor = [normalColor colorWithAlphaComponent:0.7f];
     UIColor *linkColor = normalColor;
-    UIFont *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    UIFont *linkFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+    UIFont *linkFont = [self.dependencyManager fontForKey:VDependencyManagerButton2FontKey];
     
-    NSDictionary *attributes = @{ NSFontAttributeName : font ?: [NSNull null],
+    NSDictionary *attributes = @{ NSFontAttributeName : font,
                                   NSForegroundColorAttributeName : normalColor,
                                   NSParagraphStyleAttributeName : paragraphStyle };
     
     NSDictionary *linkAttributes = @{ NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid),
-                                      NSFontAttributeName : linkFont ?: [NSNull null],
+                                      NSFontAttributeName : linkFont,
                                       NSForegroundColorAttributeName : linkColor,
                                       NSUnderlineColorAttributeName : linkColor,
                                       CCHLinkAttributeName : [text substringWithRange:range] };

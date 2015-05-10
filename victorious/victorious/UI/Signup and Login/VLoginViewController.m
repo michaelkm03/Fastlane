@@ -48,7 +48,7 @@
 @property (nonatomic, weak) IBOutlet CCHLinkTextView *loginTextView;
 
 @property (nonatomic, assign) VLoginType loginType;
-@property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, strong) VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, weak) IBOutlet VAuthorizationContextHelper *authorizationContextHelper;
 
 @property (nonatomic, weak) IBOutlet UITextView *authorizationContextTextView;
@@ -66,6 +66,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
     VLoginViewController *viewController = (VLoginViewController *)[storyboard instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager;
+    viewController.linkTextHelper = [[VLinkTextViewHelper alloc] initWithDependencyManager:dependencyManager];
     return viewController;
 }
 

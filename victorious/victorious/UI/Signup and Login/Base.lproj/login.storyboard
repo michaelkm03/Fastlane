@@ -245,7 +245,6 @@ We promise that your information is safe with us!</string>
                         <outlet property="contentContainer" destination="0KZ-2K-j2Q" id="f3Z-BV-D4y"/>
                         <outlet property="creatorInfoHelper" destination="adJ-S2-rCN" id="bzQ-WS-DM6"/>
                         <outlet property="facebookButton" destination="QtN-F1-Fqv" id="mqr-R0-Ab8"/>
-                        <outlet property="linkTextHelper" destination="guI-vW-pY8" id="sJZ-dv-Q0J"/>
                         <outlet property="loginTextView" destination="5M9-eq-LWT" id="inP-7v-uOj"/>
                         <outlet property="signupWithEmailButton" destination="wh7-OI-pHo" id="n74-jB-5vQ"/>
                         <outlet property="twitterButton" destination="2XQ-0V-UlZ" id="ERT-cY-JfD"/>
@@ -256,7 +255,6 @@ We promise that your information is safe with us!</string>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr7-SB-k6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="guI-vW-pY8" customClass="VLinkTextViewHelper"/>
                 <customObject id="jOc-o6-Jtn" customClass="VAuthorizationContextHelper"/>
                 <customObject id="adJ-S2-rCN" customClass="VCreatorInfoHelper">
                     <connections>
@@ -383,7 +381,6 @@ We promise that your information is safe with us!</string>
                     <connections>
                         <outlet property="cancelButton" destination="jhx-0Z-CyE" id="umF-p0-k9d"/>
                         <outlet property="forgotPasswordTextView" destination="bMr-K0-Coy" id="acE-9k-gKn"/>
-                        <outlet property="linkTextHelper" destination="uai-TB-Vho" id="PoV-oJ-aLV"/>
                         <outlet property="loginButton" destination="5AW-ID-rMK" id="R1h-HZ-i7K"/>
                         <outlet property="passwordTextField" destination="3pO-cP-eTE" id="g2J-cP-u9B"/>
                         <outlet property="usernameTextField" destination="Jbh-n4-soS" id="sa1-3r-n9Y"/>
@@ -392,7 +389,6 @@ We promise that your information is safe with us!</string>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQe-iH-88j" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="uai-TB-Vho" customClass="VLinkTextViewHelper"/>
             </objects>
             <point key="canvasLocation" x="649" y="-689"/>
         </scene>
@@ -871,7 +867,6 @@ We promise that your information is safe with us!</string>
                     <connections>
                         <outlet property="codeField" destination="Eus-qL-qzu" id="ndR-xL-dYg"/>
                         <outlet property="enterCodeLabel" destination="CGW-Kx-wFZ" id="ZeB-kf-uX5"/>
-                        <outlet property="linkTextHelper" destination="4hQ-OO-0rW" id="gXc-hB-QA7"/>
                         <outlet property="messageLabel" destination="sxb-gV-KJX" id="F7I-Sg-thg"/>
                         <outlet property="resendEmailTextView" destination="ucd-V3-oVY" id="BB5-JN-G9y"/>
                         <outlet property="titleLabel" destination="Lji-XP-yck" id="1Tp-71-Rk4"/>
@@ -880,7 +875,6 @@ We promise that your information is safe with us!</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A1h-V7-CoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="dle-oC-Vjm" userLabel="Preview Image Tap Gesture"/>
-                <customObject id="4hQ-OO-0rW" customClass="VLinkTextViewHelper"/>
             </objects>
             <point key="canvasLocation" x="1123" y="-689"/>
         </scene>
