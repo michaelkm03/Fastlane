@@ -14,6 +14,8 @@
 
 @interface VSequencePreviewView : UIView <VHasManagedDependencies>
 
++ (Class)classTypeForSequence:(VSequence *)sequence;
+
 + (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence;
 
 - (void)setSequence:(VSequence *)sequence;

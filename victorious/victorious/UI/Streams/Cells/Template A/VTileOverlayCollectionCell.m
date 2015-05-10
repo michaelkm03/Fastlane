@@ -165,6 +165,12 @@ static const CGFloat maxCaptionHeight = 80.0f;
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
+    if ([self.previewView class] == [VSequencePreviewView classTypeForSequence:sequence])
+    {
+        [self.previewView setSequence:sequence];
+        return;
+    }
+    
     [self.previewView removeFromSuperview];
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.contentContainer addSubview:self.previewView];
@@ -265,6 +271,17 @@ static const CGFloat maxCaptionHeight = 80.0f;
     {
         [self.header setDependencyManager:dependencyManager];
     }
+}
+
+#pragma mark - VStreamCellComponentSpecialization
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSMutableString *mutableBaseIdentifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier mutableCopy];
+    [mutableBaseIdentifier appendString:NSStringFromClass(self)];
+    [mutableBaseIdentifier appendFormat:@".%@.", NSStringFromClass([VSequencePreviewView classTypeForSequence:sequence])];
+    return [NSString stringWithString:mutableBaseIdentifier];
 }
 
 #pragma mark - CCHLinkTextViewDelegate

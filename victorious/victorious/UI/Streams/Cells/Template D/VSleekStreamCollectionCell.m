@@ -94,6 +94,12 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
+    if ([self.previewView class] == [VSequencePreviewView classTypeForSequence:sequence])
+    {
+        [self.previewView setSequence:sequence];
+        return;
+    }
+    
     [self.previewView removeFromSuperview];
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.previewContainer addSubview:self.previewView];
@@ -126,6 +132,19 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 - (UIView *)backgroundContainerView
 {
     return self.contentView;
+}
+
+#pragma mark - VStreamCellComponentSpecialization
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSMutableString *mutableBaseIdentifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier mutableCopy];
+    [mutableBaseIdentifier appendString:NSStringFromClass(self)];
+    [mutableBaseIdentifier appendFormat:@".%@.", NSStringFromClass([VSequencePreviewView classTypeForSequence:sequence])];
+    NSString *reuseIdentifierForActionView = [VSleekActionView reuseIdentifierForSequence:sequence
+                                                                           baseIdentifier:[NSString stringWithString:mutableBaseIdentifier]];
+    return reuseIdentifierForActionView;
 }
 
 #pragma mark - Class Methods

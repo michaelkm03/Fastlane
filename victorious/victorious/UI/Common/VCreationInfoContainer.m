@@ -45,6 +45,7 @@ static const CGFloat kDefaultHeight = 44.0f;
 
 @property (nonatomic, strong) UILabel *creatorLabel;
 @property (nonatomic, strong) UILabel *parentUserLabel;
+@property (nonatomic, strong) UILabel *otherPostersLabel;
 @property (nonatomic, strong) UIImageView *clockImageView;
 @property (nonatomic, strong) UILabel *timeSinceLabel;
 
@@ -107,6 +108,12 @@ static const CGFloat kDefaultHeight = 44.0f;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
     
+    self.otherPostersLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.otherPostersLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.otherPostersLabel.textAlignment = NSTextAlignmentLeft;
+    [self addSubview:self.otherPostersLabel];
+    
+    // Gesture Recognizers
     CCHLinkGestureRecognizer *originaluserGesture = [[CCHLinkGestureRecognizer alloc] initWithTarget:self
                                                                                               action:@selector(recognizedGesture:)];
     originaluserGesture.delegate = self;
@@ -120,8 +127,15 @@ static const CGFloat kDefaultHeight = 44.0f;
     parentUserGesture.minimumPressDuration = HUGE_VALF;
     [self.parentUserLabel addGestureRecognizer:parentUserGesture];
     
+    CCHLinkGestureRecognizer *otherPostersGesture = [[CCHLinkGestureRecognizer alloc] initWithTarget:self
+                                                                                              action:@selector(recognizedGesture:)];
+    otherPostersGesture.delegate = self;
+    otherPostersGesture.minimumPressDuration = HUGE_VALF;
+    [self.otherPostersLabel addGestureRecognizer:otherPostersGesture];
+    
     self.parentUserLabel.userInteractionEnabled = YES;
     self.creatorLabel.userInteractionEnabled = YES;
+    self.otherPostersLabel.userInteractionEnabled = YES;
 }
 
 #pragma mark - UIView
@@ -133,6 +147,7 @@ static const CGFloat kDefaultHeight = 44.0f;
                                      @"parentUserLabel":self.parentUserLabel,
                                      @"clockImageView":self.clockImageView,
                                      @"timeSinceLabel":self.timeSinceLabel,
+                                     @"otherPostersLabel":self.otherPostersLabel
                                      };
     
     if (!self.layedOutDefaultConstraints)
@@ -163,11 +178,11 @@ static const CGFloat kDefaultHeight = 44.0f;
                                                          attribute:NSLayoutAttributeRight
                                                         multiplier:1.0f
                                                           constant:0.0f]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[parentUserLabel]"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[parentUserLabel][otherPostersLabel]"
                                                                      options:kNilOptions
                                                                      metrics:nil
                                                                        views:viewDictionary]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.parentUserLabel
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.otherPostersLabel
                                                          attribute:NSLayoutAttributeRight
                                                          relatedBy:NSLayoutRelationLessThanOrEqual
                                                             toItem:self
@@ -221,6 +236,13 @@ static const CGFloat kDefaultHeight = 44.0f;
                                                                          attribute:NSLayoutAttributeCenterY
                                                                         multiplier:1.0f
                                                                           constant:0.0f]];
+            [multiLineConstraints addObject:[NSLayoutConstraint constraintWithItem:self.otherPostersLabel
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f]];
             [multiLineConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_creatorLabel]"
                                                                                               options:kNilOptions
                                                                                               metrics:nil
@@ -229,6 +251,10 @@ static const CGFloat kDefaultHeight = 44.0f;
                                                                                               options:kNilOptions
                                                                                               metrics:nil
                                                                                                 views:NSDictionaryOfVariableBindings(_parentUserLabel)]];
+            [multiLineConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_otherPostersLabel]|"
+                                                                                              options:kNilOptions
+                                                                                              metrics:nil
+                                                                                                views:NSDictionaryOfVariableBindings(_otherPostersLabel)]];
             self.multiLineConstraints = [NSArray arrayWithArray:multiLineConstraints];
             [self addConstraints:self.multiLineConstraints];
         }
@@ -296,9 +322,13 @@ static const CGFloat kDefaultHeight = 44.0f;
             {
                 self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:YES];
             }
-            else
+            else if (gestureRecognizer.view == self.creatorLabel)
             {
                 self.creatorLabel.textColor = [self colorForCreatorLabelTextHighlighted:YES];
+            }
+            else
+            {
+                self.otherPostersLabel.attributedText = [self othersFormattedStringHighlighted:YES];
             }
             break;
         case CCHLinkGestureRecognizerResultFailed:
@@ -306,9 +336,13 @@ static const CGFloat kDefaultHeight = 44.0f;
             {
                 self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
             }
-            else
+            else if (gestureRecognizer.view == self.creatorLabel)
             {
                 self.creatorLabel.textColor = [self colorForCreatorLabelTextHighlighted:NO];
+            }
+            else
+            {
+                self.otherPostersLabel.attributedText = [self othersFormattedStringHighlighted:NO];
             }
             gestureSucceeded = NO;
             break;
@@ -320,16 +354,24 @@ static const CGFloat kDefaultHeight = 44.0f;
             {
                 self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
                 self.creatorLabel.textColor = [self colorForCreatorLabelTextHighlighted:NO];
+                self.otherPostersLabel.attributedText = [self othersFormattedStringHighlighted:NO];
                 VUser *selectedUser;
                 if (gestureRecognizer.view == self.parentUserLabel)
                 {
                     selectedUser = self.sequence.displayParentUser;
+                    [self selectedUser:selectedUser];
+                }
+                else if (gestureRecognizer.view == self.creatorLabel)
+                {
+                    selectedUser = self.sequence.displayOriginalPoster;
+                    [self selectedUser:selectedUser];
                 }
                 else
                 {
-                    selectedUser = self.sequence.displayOriginalPoster;
+                    //TODO: Selected other reposters or other remixers
+                    
+                    
                 }
-                [self selectedUser:selectedUser];
             }
             break;
         default:
@@ -386,8 +428,7 @@ static const CGFloat kDefaultHeight = 44.0f;
         }
         else
         {
-#warning TODO: Move +x others to a separate label (for separate gesture recognition)
-            formattedString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), parentUserString, [self.sequence.repostCount unsignedLongValue]];
+            formattedString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), parentUserString];
         }
     }
     
@@ -424,10 +465,28 @@ static const CGFloat kDefaultHeight = 44.0f;
     }
 }
 
+- (NSAttributedString *)othersFormattedStringHighlighted:(BOOL)highlighted
+{
+    NSAttributedString *localizedOthersString = nil;
+    if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
+    {
+        NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
+        if (repostCount > 1)
+        {
+            NSString *baseString = [NSString stringWithFormat:NSLocalizedString(@"repostedByNOthersFormat", [self.sequence.repostCount unsignedLongValue])];
+            localizedOthersString = [[NSAttributedString alloc] initWithString:baseString
+                                                                    attributes:@{NSFontAttributeName : self.parentUserLabel.font,
+                                                                                 NSForegroundColorAttributeName: [self colorForCreatorLabelTextHighlighted:highlighted]}];
+        }
+    }
+    return localizedOthersString;
+}
+
 - (void)updateWithSequence:(VSequence *)sequence
 {
     self.creatorLabel.text = [sequence displayOriginalPoster].name;
     self.parentUserLabel.attributedText = [self attributedParentStringHightlighted:NO];
+    self.otherPostersLabel.attributedText = [self othersFormattedStringHighlighted:NO];
     self.timeSinceLabel.text = [sequence.releasedAt timeSince];
     [self setNeedsUpdateConstraints];
 }
@@ -438,16 +497,16 @@ static const CGFloat kDefaultHeight = 44.0f;
 {
     return YES;
 }
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    CGPoint locationInView = [gestureRecognizer locationInView:self];
-    if (CGRectContainsPoint(CGRectInset(self.parentUserLabel.frame, -10.0f, -10.0f), locationInView) ||
-        CGRectContainsPoint(CGRectInset(self.creatorLabel.frame, -10.0f, -10.0f), locationInView))
-    {
-        return YES;
-    }
-    return NO;
-}
+//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+//{
+//    CGPoint locationInView = [gestureRecognizer locationInView:self];
+//    if (CGRectContainsPoint(CGRectInset(self.parentUserLabel.frame, -10.0f, -10.0f), locationInView) ||
+//        CGRectContainsPoint(CGRectInset(self.creatorLabel.frame, -10.0f, -10.0f), locationInView))
+//    {
+//        return YES;
+//    }
+//    return NO;
+//}
 
 #pragma mark - VHasManagedDependencies
 

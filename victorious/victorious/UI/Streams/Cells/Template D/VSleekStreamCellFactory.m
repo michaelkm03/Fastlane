@@ -16,6 +16,7 @@
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentCollectionViewCellFactory *noContentCollectionViewCellFactory;
+@property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
 
 @end
 
@@ -28,6 +29,7 @@
     {
         _dependencyManager = dependencyManager;
         _noContentCollectionViewCellFactory = [[VNoContentCollectionViewCellFactory alloc] initWithAcceptableContentClasses:@[[VSequence class]]];
+        _registeredReuseIdentifiers = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -38,6 +40,22 @@
     [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+                        withStreamItems:(NSArray *)streamItems
+{
+    for (VSequence *sequence in streamItems)
+    {
+        NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForSequence:sequence baseIdentifier:@""];
+        
+        if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
+        {
+            [collectionView registerNib:[VSleekStreamCollectionCell nibForCell]
+             forCellWithReuseIdentifier:reuseIdentifierForSequence];
+            [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
+        }
+    }
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
     if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
@@ -45,8 +63,19 @@
         return [self.noContentCollectionViewCellFactory noContentCellForCollectionView:collectionView atIndexPath:indexPath];
     }
     
+    NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForSequence:(VSequence *)streamItem
+                                                                                   baseIdentifier:@""];
+    VLog(@"%@", reuseIdentifierForSequence);
+    
+    if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
+    {
+        [collectionView registerNib:[VSleekStreamCollectionCell nibForCell]
+         forCellWithReuseIdentifier:reuseIdentifierForSequence];
+        [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
+    }
+    
     VSequence *sequence = (VSequence *)streamItem;
-    VSleekStreamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VSleekStreamCollectionCell suggestedReuseIdentifier]
+    VSleekStreamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierForSequence
                                                                                  forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;

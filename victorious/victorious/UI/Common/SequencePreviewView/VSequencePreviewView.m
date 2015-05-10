@@ -20,44 +20,40 @@
 
 @implementation VSequencePreviewView
 
-+ (NSArray *)reuseIdentifiers
++ (Class)classTypeForSequence:(VSequence *)sequence
 {
-    return @[NSStringFromClass([VTextSequencePreviewView class]),
-             NSStringFromClass([VPollSequencePreviewView class]),
-             NSStringFromClass([VVideoSequencePreviewView class]),
-             NSStringFromClass([VImageSequencePreviewView class]),
-             NSStringFromClass([VHTMLSequncePreviewView class])];
-}
-
-+ (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence
-{
-    VSequencePreviewView *previewView;
+    Class classType = nil;
     if ([sequence isText])
     {
-        previewView = [[VTextSequencePreviewView alloc] initWithFrame:CGRectZero];
+        classType = [VTextSequencePreviewView class];
     }
     else if ([sequence isPoll])
     {
-        previewView = [[VPollSequencePreviewView alloc] initWithFrame:CGRectZero];
+        classType = [VPollSequencePreviewView class];
     }
     else if ([sequence isVideo])
     {
-        previewView = [[VVideoSequencePreviewView alloc] initWithFrame:CGRectZero];
+        classType = [VVideoSequencePreviewView class];
     }
     else if ([sequence isImage])
     {
-        previewView = [[VImageSequencePreviewView alloc] initWithFrame:CGRectZero];
+        classType = [VImageSequencePreviewView class];
     }
     else if ([sequence isWebContent])
     {
-        previewView = [[VHTMLSequncePreviewView alloc] initWithFrame:CGRectZero];
+        classType = [VHTMLSequncePreviewView class];
     }
     else
     {
         NSAssert(@"Unable to handle sequence!", @"");
     }
     
-    return previewView;
+    return classType;
+}
+
++ (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence
+{
+    return [[[self classTypeForSequence:sequence] alloc] initWithFrame:CGRectZero];
 }
 
 - (void)setSequence:(VSequence *)sequence

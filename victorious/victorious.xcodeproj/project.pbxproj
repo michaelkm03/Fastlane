@@ -2335,6 +2335,7 @@
 		D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MotionEffects.m"; sourceTree = "<group>"; };
 		D8CC90291ABA6C3F00A4B38C /* VTabMenuShim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuShim.h; sourceTree = "<group>"; };
 		D8CC902A1ABA6C3F00A4B38C /* VTabMenuShim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabMenuShim.m; sourceTree = "<group>"; };
+		D8D122F41AFFEA2600F29BD5 /* VStreamCellSpecialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellSpecialization.h; sourceTree = "<group>"; };
 		D8D3B7161AB20E6600CF966C /* VTrimLoopingPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimLoopingPlayerViewController.h; sourceTree = "<group>"; };
 		D8D3B7171AB20E6600CF966C /* VTrimLoopingPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimLoopingPlayerViewController.m; sourceTree = "<group>"; };
 		D8D3B71F1AB2643500CF966C /* AVComposition+VMutedAudioMix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVComposition+VMutedAudioMix.h"; sourceTree = "<group>"; };
@@ -4514,6 +4515,7 @@
 				A7AEF9831A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.h */,
 				A7AEF9841A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.m */,
 				A7AEF9851A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.xib */,
+				D8D122F41AFFEA2600F29BD5 /* VStreamCellSpecialization.h */,
 			);
 			path = Cells;
 			sourceTree = "<group>";

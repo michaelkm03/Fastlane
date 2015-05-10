@@ -60,20 +60,20 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
     if ([sequence canComment])
     {
-        [identifier appendString:@"comment"];
+        [identifier appendString:@"Comment."];
     }
-    [identifier appendString:@"share"];
+    [identifier appendString:@"Share."];
     if ([sequence canRepost])
     {
-        [identifier appendString:@"repost"];
+        [identifier appendString:@"Repost."];
     }
     if ([sequence canRemix])
     {
-        [identifier appendString:@"meme"];
+        [identifier appendString:@"Meme."];
     }
     if ([sequence canRemix] && [sequence isVideo])
     {
-        [identifier appendString:@"gif"];
+        [identifier appendString:@"Gif."];
     }
     
     return [NSString stringWithString:identifier];
