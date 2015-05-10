@@ -32,8 +32,6 @@
 #import "VMessageContainerViewController.h"
 #import "VMessageViewController.h"
 
-#import "VThemeManager.h"
-
 #import "MBProgressHUD.h"
 
 #import "VAuthorizedAction.h"
@@ -133,15 +131,15 @@ static const NSInteger kSearchResultLimit = 100;
     // SETUP SEARCH FIELD
     self.searchField.delegate = self;
     [self.searchField addTarget:self action:@selector(runUserSearch:) forControlEvents:UIControlEventEditingChanged];
-    [self.searchField setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
+    [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
     [self.searchField setTintColor:[UIColor grayColor]];
     [self.searchField sizeToFit];
     [self.searchField layoutIfNeeded];
     
     // NO RESULTS VIEW
     self.noResultsView.hidden = YES;
-    self.noResultsTitleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    self.noResultsMessageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.noResultsTitleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    self.noResultsMessageLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
 
     // TABLEVIEW
     self.tableView.delegate = self;
