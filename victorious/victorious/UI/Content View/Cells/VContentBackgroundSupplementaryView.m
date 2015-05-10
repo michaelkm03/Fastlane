@@ -8,8 +8,6 @@
 
 #import "VContentBackgroundSupplementaryView.h"
 
-#import "VThemeManager.h"
-
 @interface VContentBackgroundSupplementaryView ()
 
 @end

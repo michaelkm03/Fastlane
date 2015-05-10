@@ -7,7 +7,6 @@
 //
 
 #import "VSuggestedPersonCollectionViewCell.h"
-#import "VThemeManager.h"
 #import "VDefaultProfileImageView.h"
 #import "VFollowUserControl.h"
 #import "VFollowersTextFormatter.h"

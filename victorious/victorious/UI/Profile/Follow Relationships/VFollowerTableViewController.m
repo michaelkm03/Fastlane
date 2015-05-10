@@ -13,7 +13,6 @@
 #import "VObjectManager+Login.h"
 #import "VAuthorizedAction.h"
 #import "VUser.h"
-#import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
 #import "VConstants.h"

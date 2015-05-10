@@ -9,9 +9,6 @@
 #import "VNewContentViewController.h"
 #import "VObjectManager+ContentCreation.h"
 
-// Theme
-#import "VThemeManager.h"
-
 // SubViews
 #import "VExperienceEnhancerBar.h"
 #import "VHistogramBarView.h"
