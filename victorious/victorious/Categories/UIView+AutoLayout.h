@@ -10,6 +10,24 @@
 
 @interface UIView (AutoLayout)
 
+
+/**
+ Applies constraints necessary to fit the subview's leading, trailing space to this
+ view as its container with constant values provided.  Uses VFL like si:
+ `H:|-leading-[subview]-trailing-|`
+ */
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subview
+                                   leading:(CGFloat)leading
+                                  trailing:(CGFloat)trailing;
+/**
+ Applies constraints necessary to fit the subview's top and bottom space to this view
+ as its container with constant values provided.  Uses VFL like si:
+ `H:|-leading-[subview]-trailing-|`
+ `V:|-top-[subview]-bottom-|`
+ */
+- (void)v_addPintoTopBottomToSubview:(UIView *)subview
+                                 top:(CGFloat)top
+                              bottom:(CGFloat)bottom;
 /**
  Applies constraints necessary to fit the subview's leading, trailing, top and bottom
  space to this view as its container with constant values provided.  Uses VFL like si:
@@ -36,16 +54,16 @@
 - (void)v_addFitToParentConstraintsToSubview:(UIView *)subview;
 
 /**
+ Applies left to left and right to right constraints from the container view to the
+ passed in subview.
+ */
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView;
+
+/**
  Applies centering to subview of both horizontal and verticall
  directions to superview.
  */
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview;
-
-/**
- Applies left to left and right to right constraints from the container view to the 
- passed in subview.
- */
-- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView;
 
 /**
  Applies top to top and bottom to bottom constraints form the container view ot the

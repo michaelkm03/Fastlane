@@ -10,28 +10,60 @@
 
 @implementation UIView (AutoLayout)
 
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subview
+                                   leading:(CGFloat)leading
+                                  trailing:(CGFloat)trailing
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    NSDictionary *views = @{ @"subview" : subview };
+    NSDictionary *metrics = @{ @"leading" : @(leading),
+                               @"trailing" : @(trailing)
+                               };
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leading-[subview]-trailing-|"
+                                                                 options:kNilOptions
+                                                                 metrics:metrics
+                                                                   views:views]];
+}
+
+- (void)v_addPintoTopBottomToSubview:(UIView *)subview
+                                 top:(CGFloat)top
+                              bottom:(CGFloat)bottom
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    NSDictionary *views = @{ @"subview" : subview };
+    NSDictionary *metrics = @{@"top" : @(top),
+                              @"bottom" : @(bottom) };
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[subview]-bottom-|"
+                                                                 options:kNilOptions
+                                                                 metrics:metrics
+                                                                   views:views]];
+}
+
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView
+{
+    [self v_addPinToLeadingTrailingToSubview:subView
+                                     leading:0.0f
+                                    trailing:0.0f];
+}
+
+- (void)v_addPintoTopBottomToSubview:(UIView *)subView
+{
+    [self v_addPintoTopBottomToSubview:subView
+                                   top:0.0f
+                                bottom:0.0f];
+}
+
 - (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
                                    leading:(CGFloat)leading
                                   trailing:(CGFloat)trailing
                                        top:(CGFloat)top
                                     bottom:(CGFloat)bottom
 {
-    NSParameterAssert( [subview isDescendantOfView:self] );
-    
-    NSDictionary *views = @{ @"subview" : subview };
-    NSDictionary *metrics = @{ @"leading" : @(leading),
-                               @"trailing" : @(trailing),
-                               @"top" : @(top),
-                               @"bottom" : @(bottom) };
-    subview.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leading-[subview]-trailing-|"
-                                                                 options:kNilOptions
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[subview]-bottom-|"
-                                                                 options:kNilOptions
-                                                                 metrics:metrics
-                                                                   views:views]];
+    [self v_addPinToLeadingTrailingToSubview:subview leading:leading trailing:trailing];
+    [self v_addPintoTopBottomToSubview:subview top:top bottom:bottom];
 }
 
 - (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
@@ -100,30 +132,6 @@
                                                                          constant:height];
     [self addConstraint:heightConstraint];
     return heightConstraint;
-}
-
-- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView
-{
-    NSParameterAssert( [subView isDescendantOfView:self] );
-    
-    subView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[subView]|"
-                                                                 options:kNilOptions
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(subView)]];
-}
-
-- (void)v_addPintoTopBottomToSubview:(UIView *)subView
-{
-    NSParameterAssert( [subView isDescendantOfView:self] );
-    
-    subView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subView]|"
-                                                                 options:kNilOptions
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(subView)]];
 }
 
 - (void)v_addPinToTopToSubview:(UIView *)subview
