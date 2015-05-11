@@ -9,7 +9,6 @@
 #import "VChangePasswordViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
-#import "VThemeManager.h"
 #import "VConstants.h"
 #import "VPasswordValidator.h"
 #import "VButton.h"

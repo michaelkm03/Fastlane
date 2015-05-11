@@ -21,7 +21,6 @@
 #import "VReachability.h"
 #import "VTemplateDecorator.h"
 #import "VTemplateDownloadManager.h"
-#import "VThemeManager.h"
 #import "VUserManager.h"
 #import "VLaunchScreenProvider.h"
 #import "UIView+AutoLayout.h"

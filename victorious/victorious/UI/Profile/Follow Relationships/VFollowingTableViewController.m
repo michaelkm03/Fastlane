@@ -16,7 +16,6 @@
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
 #import "VConstants.h"
-#import "VThemeManager.h"
 #import "MBProgressHUD.h"
 #import "VDependencyManager.h"
 #import "VFollowerEventResponder.h"
