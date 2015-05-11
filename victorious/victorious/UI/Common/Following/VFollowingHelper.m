@@ -32,13 +32,11 @@
          
          VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
-             
              completion(user);
          };
          
          VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
          {
-             
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
                                                              message:error.localizedDescription
                                                             delegate:nil
@@ -72,8 +70,6 @@
          
          VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
          {
-             
-             
              UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
                                                                     message:error.localizedDescription
                                                                    delegate:nil
