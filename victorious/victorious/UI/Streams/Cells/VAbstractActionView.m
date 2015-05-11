@@ -74,6 +74,15 @@
      }];
 }
 
+#pragma mark - VStreamCellSpecialization
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSAssert(false, @"Implement in subclasses");
+    return nil;
+}
+
 @end
 
 @implementation VAbstractActionView (VActionMethods)

@@ -43,9 +43,15 @@
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
                         withStreamItems:(NSArray *)streamItems
 {
-    for (VSequence *sequence in streamItems)
+    for (VStreamItem *streamItem in streamItems)
     {
-        NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForSequence:sequence baseIdentifier:@""];
+        if (![streamItems isKindOfClass:[VSequence class]])
+        {
+            NSAssert(false, @"This factory can only handle sequences.");
+        }
+        VSequence *sequence = (VSequence *)streamItem;
+        NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForSequence:sequence
+                                                                                       baseIdentifier:@""];
         
         if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
         {
@@ -63,9 +69,9 @@
         return [self.noContentCollectionViewCellFactory noContentCellForCollectionView:collectionView atIndexPath:indexPath];
     }
     
-    NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForSequence:(VSequence *)streamItem
+    VSequence *sequence = (VSequence *)streamItem;
+    NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForSequence:sequence
                                                                                    baseIdentifier:@""];
-    VLog(@"%@", reuseIdentifierForSequence);
     
     if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
     {
@@ -74,7 +80,6 @@
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
-    VSequence *sequence = (VSequence *)streamItem;
     VSleekStreamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierForSequence
                                                                                  forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;

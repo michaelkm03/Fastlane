@@ -34,11 +34,10 @@ static const CGFloat maxCaptionHeight = 80.0f;
 
 @interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate>
 
-@property (nonatomic, strong) VSequencePreviewView *previewView;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @property (nonatomic, strong) UIView *loadingBackgroundContainer;
 @property (nonatomic, strong) UIView *contentContainer;
+@property (nonatomic, strong) VSequencePreviewView *previewView;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VPassthroughContainerView *overlayContainer;
 @property (nonatomic, strong) VLinearGradientView *topGradient;
 @property (nonatomic, strong) VLinearGradientView *bottomGradient;
@@ -71,18 +70,22 @@ static const CGFloat maxCaptionHeight = 80.0f;
 
 - (void)sharedInit
 {
+    // Background fills the entire content area
     _loadingBackgroundContainer = [[UIView alloc] initWithFrame:self.contentView.bounds];
     [self.contentView addSubview:_loadingBackgroundContainer];
     [self.contentView v_addFitToParentConstraintsToSubview:_loadingBackgroundContainer];
     
+    // Content is overlaid on the loading background
     _contentContainer = [[UIView alloc] initWithFrame:self.contentView.bounds];
     [self.contentView addSubview:_contentContainer];
     [self.contentView v_addFitToParentConstraintsToSubview:_contentContainer];
     
+    // Overlay is overlaid on the content
     _overlayContainer = [[VPassthroughContainerView alloc] initWithFrame:self.contentView.bounds];
     [self.contentView addSubview:_overlayContainer];
     [self.contentView v_addFitToParentConstraintsToSubview:_overlayContainer];
     
+    // Within overlay place gradients
     _topGradient = [[VLinearGradientView alloc] initWithFrame:CGRectZero];
     _topGradient.userInteractionEnabled = NO;
     [_overlayContainer addSubview:_topGradient];
@@ -92,6 +95,7 @@ static const CGFloat maxCaptionHeight = 80.0f;
     UIColor *gradientBlack = [[UIColor blackColor] colorWithAlphaComponent:0.3];
     [_topGradient setColors:@[gradientBlack, [UIColor clearColor]]];
     
+    // And the bottom
     _bottomGradient = [[VLinearGradientView alloc] initWithFrame:CGRectZero];
     _bottomGradient.userInteractionEnabled = NO;
     [_overlayContainer addSubview:_bottomGradient];
@@ -99,6 +103,7 @@ static const CGFloat maxCaptionHeight = 80.0f;
     [_overlayContainer v_addPinToBottomToSubview:_bottomGradient];
     [_bottomGradient setColors:@[[UIColor clearColor], gradientBlack]];
     
+    // Add the header
     _header = [[VStreamHeaderComment alloc] initWithFrame:CGRectZero];
     [_overlayContainer addSubview:_header];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_header];
@@ -109,6 +114,8 @@ static const CGFloat maxCaptionHeight = 80.0f;
     {
         [_header setDependencyManager:self.dependencyManager];
     }
+    
+    // The caption Text view
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [textStorage addLayoutManager:layoutManager];

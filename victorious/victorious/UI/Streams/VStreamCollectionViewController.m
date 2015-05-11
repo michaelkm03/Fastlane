@@ -830,6 +830,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSArray *visibleCells = self.collectionView.visibleCells;
     [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
      {
+#warning REFACTOR ME
          if ( ![cell isKindOfClass:[VStreamCollectionCell class]] )
          {
              return;

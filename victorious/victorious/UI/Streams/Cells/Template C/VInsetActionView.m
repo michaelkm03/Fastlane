@@ -97,6 +97,28 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 #pragma mark - VUpdateHooks
 
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSMutableString *identifier = [baseIdentifier mutableCopy];
+
+    [identifier appendString:@"Share."];
+    if ([sequence canRepost])
+    {
+        [identifier appendString:@"Repost."];
+    }
+    if ([sequence canRemix])
+    {
+        [identifier appendString:@"Meme."];
+    }
+    if ([sequence canRemix] && [sequence isVideo])
+    {
+        [identifier appendString:@"Gif."];
+    }
+    
+    return [NSString stringWithString:identifier];
+}
+
 - (void)updateActionItemsOnBar:(VActionBar *)actionBar
                    forSequence:(VSequence *)sequence
 {

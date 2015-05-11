@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "VAbstractActionView.h"
 #import "VHasManagedDependencies.h"
-#import "VStreamCellSpecialization.h"
 
 /**
- *  An VAbstractActionView for sleek cells
+ *  An VAbstractActionView for sleek cells.
  */
-@interface VSleekActionView : VAbstractActionView <VHasManagedDependencies, VStreamCellComponentSpecialization>
+@interface VSleekActionView : VAbstractActionView <VHasManagedDependencies>
 
 @end
