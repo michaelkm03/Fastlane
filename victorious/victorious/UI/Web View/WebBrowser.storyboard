@@ -165,7 +165,7 @@
                         <outlet property="buttonBackWidthConstraint" destination="qQ4-OK-Ra3" id="LLh-5n-R9p"/>
                         <outlet property="buttonExitWidthConstraint" destination="mWz-d4-er6" id="rPv-7e-cXd"/>
                         <outlet property="header" destination="XJq-6Z-G52" id="gAy-ed-mwQ"/>
-                        <outlet property="pageTitleX1Constraint" destination="WME-O1-JeV" id="VaV-sn-Swz"/>
+                        <outlet property="pageTitleLeadingConstraint" destination="WME-O1-JeV" id="VaV-sn-Swz"/>
                         <outlet property="progressBarBottomConstraint" destination="grt-4q-H2t" id="Qbw-rO-Aoe"/>
                         <outlet property="progressBarTopConstraint" destination="HoG-oS-zDo" id="Tu3-BI-6Cu"/>
                     </connections>

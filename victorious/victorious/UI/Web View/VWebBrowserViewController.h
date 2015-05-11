@@ -23,13 +23,30 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, strong) VSequence *sequence; ///< A related sequence, if any
+/**
+ A related sequence, if any
+ */
+@property (nonatomic, strong) VSequence *sequence;
 
-@property (nonatomic, assign) NSString *layoutIdentifier; ///< A template specifier that can determine alternate layouts
-@property (nonatomic, strong) NSString *templateTitle; ///< A title to display instead of the URL's page title
+/**
+ A template specifier that can determine alternate layouts
+ */
+@property (nonatomic, assign) NSString *layoutIdentifier;
 
-@property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController; ///< A specialized header component with navigation actions
-@property (nonatomic, assign) VWebBrowserHeaderContentAlignment headerContentAlignment; ///< A specified for content alignment property of the header
+/**
+ A title to display instead of the URL's page title
+ */
+@property (nonatomic, strong) NSString *templateTitle;
+
+/**
+ A specialized header component with navigation actions
+ */
+@property (nonatomic, weak) VWebBrowserHeaderViewController *headerViewController;
+
+/**
+ A specified for content alignment property of the header
+ */
+@property (nonatomic, assign) VWebBrowserHeaderContentAlignment headerContentAlignment;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
