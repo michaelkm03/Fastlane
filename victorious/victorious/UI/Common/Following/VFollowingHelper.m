@@ -1,5 +1,5 @@
 //
-//  VFollowerCommandHandler.m
+//  VFollowingHelper.m
 //  victorious
 //
 //  Created by Michael Sena on 4/28/15.
