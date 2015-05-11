@@ -141,13 +141,13 @@
 
 - (IBAction)onFollow:(VFollowUserControl *)sender
 {
-    id<VFollowResponder> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                            withSender:nil];
-    NSAssert(followCommandHandler != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+    NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
     sender.enabled = NO;
     if (sender.following)
     {
-        [followCommandHandler unfollowUser:self.user
+        [followResponder unfollowUser:self.user
                             withCompletion:^(VUser *userActedOn)
          {
              sender.enabled = YES;
@@ -155,7 +155,7 @@
     }
     else
     {
-        [followCommandHandler followUser:self.user
+        [followResponder followUser:self.user
                           withCompletion:^(VUser *userActedOn)
          {
              sender.enabled = YES;
