@@ -352,7 +352,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [self.webView reload];
 }
 
-- (void)export
+- (void)exportURL
 {
     // Only provide share text if this is the root of the navigation history,
     // i.e. the original announcement itself.

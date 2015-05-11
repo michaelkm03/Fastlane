@@ -31,7 +31,7 @@
 - (void)goForward;      ///< The user has selected the forward button and wants to move forward
 - (void)goBack;         ///< The user has selected the back button and wants to move back
 - (void)reload;         ///< The user has selected the reload button to reload the current page
-- (void)export;         ///< The user has selected to export button to present share/export options
+- (void)exportURL;      ///< The user has selected to export button to present share/export options
 - (void)exit;           ///< The user has selected the exit button to dismiss the web browser
 
 @end

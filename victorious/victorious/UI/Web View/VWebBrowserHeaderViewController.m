@@ -110,7 +110,7 @@
 
 - (IBAction)exportSelected:(id)sender
 {
-    [self.delegate export];
+    [self.delegate exportURL];
     [self.layoutManager updateAnimated:YES];
 }
 
