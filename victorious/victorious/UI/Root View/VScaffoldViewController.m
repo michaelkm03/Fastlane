@@ -50,9 +50,8 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     {
         _dependencyManager = dependencyManager;
         
-        _followHelper = [[VFollowingHelper alloc] init];
-        _followHelper.viewControllerToPresentAuthorizationOn = self;
-        _followHelper.dependencyManager = dependencyManager;
+        _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
+                                                  viewControllerToPresentOn:self];
     }
     return self;
 }

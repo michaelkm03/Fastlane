@@ -24,17 +24,23 @@ typedef void (^VFollowHelperCompletion)(VUser *userActedOn);
 @interface VFollowingHelper : NSObject
 
 /**
+ *  Designated intializers for the class. Both parameters are required.
+ */
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+                viewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn NS_DESIGNATED_INITIALIZER;
+
+/**
  *  Will present authorization on this viewController must not be nil 
  *  by the time VFollowerCommandHandler receives VFollowCommands.
  */
-@property (nonatomic, weak) UIViewController *viewControllerToPresentAuthorizationOn;
+@property (nonatomic, weak, readonly) UIViewController *viewControllerToPresentAuthorizationOn;
 
 /**
  *  Required for authorization. 
  *
  *  Temporary until authorization is incorporated to the command system.
  */
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 
 /**
  * Follows the user passed in after any authorization.

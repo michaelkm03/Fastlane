@@ -39,10 +39,8 @@
 {
     VUserSearchResultsViewController *searchResultsVC = [[VUserSearchResultsViewController alloc] init];
     searchResultsVC.dependencyManager = dependencyManager;
-    searchResultsVC.followHelper = [[VFollowingHelper alloc] init];
-    searchResultsVC.followHelper.viewControllerToPresentAuthorizationOn = searchResultsVC;
-    searchResultsVC.followHelper.dependencyManager = dependencyManager;
-    
+    searchResultsVC.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
+                                                             viewControllerToPresentOn:searchResultsVC];
     return searchResultsVC;
 }
 

@@ -18,6 +18,21 @@
 
 @implementation VFollowingHelper
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+                viewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
+{
+    NSParameterAssert(dependencyManager != nil);
+    NSParameterAssert(viewControllerToPresentOn != nil);
+    
+    self = [super init];
+    if (self != nil)
+    {
+        _dependencyManager = dependencyManager;
+        _viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
+    }
+    return self;
+}
+
 - (void)followUser:(VUser *)user
     withCompletion:(VFollowHelperCompletion)completion
 {
