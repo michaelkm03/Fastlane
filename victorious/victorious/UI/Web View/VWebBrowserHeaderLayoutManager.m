@@ -22,8 +22,10 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleLeadingConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *progressBarTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *progressBarBottomConstraint;
+
+// These cosntraints are strong because they are added and removed throughout the life of this view
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *progressBarTopConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *progressBarBottomConstraint;
 
 @property (nonatomic, assign) CGFloat startingBackButtonWidth;
 @property (nonatomic, assign) CGFloat startingExitButtonWidth;
@@ -44,8 +46,8 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     self.contentAlignment = VWebBrowserHeaderContentAlignmentLeft;
     self.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentBottom;
     
-    self.progressBarBottomConstraint.active = NO;
-    self.progressBarTopConstraint.active = NO;
+    [self.header.view removeConstraint:self.progressBarBottomConstraint];
+    [self.header.view removeConstraint:self.progressBarTopConstraint];
 }
 
 - (void)setContentAlignment:(VWebBrowserHeaderContentAlignment)contentAlignment
@@ -118,14 +120,14 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     switch ( self.progressBarAlignment )
     {
         case VWebBrowserHeaderProgressBarAlignmentTop:
-            self.progressBarTopConstraint.active = YES;
-            self.progressBarBottomConstraint.active = NO;
+            [self.header.view removeConstraint:self.progressBarBottomConstraint];
+            [self.header.view addConstraint:self.progressBarTopConstraint];
             self.progressBarTopConstraint.constant = 0.0f;
             break;
             
         case VWebBrowserHeaderProgressBarAlignmentBottom:
-            self.progressBarBottomConstraint.active = YES;
-            self.progressBarTopConstraint.active = NO;
+            [self.header.view addConstraint:self.progressBarBottomConstraint];
+            [self.header.view removeConstraint:self.progressBarTopConstraint];
             self.progressBarBottomConstraint.constant = 0.0f;
             break;
     }
