@@ -21,8 +21,6 @@
 
 #import "NSString+VParseHelp.h"
 
-#import "VSettingManager.h"
-
 static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
 static const NSUInteger kPollCellCaptionLineLimit = 2;
 

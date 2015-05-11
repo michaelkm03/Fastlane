@@ -11,7 +11,6 @@
 #import "VObjectManager+Analytics.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
-#import "VSettingManager.h"
 #import "VTracking.h"
 #import "VFirstInstallManager.h"
 

@@ -18,7 +18,6 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VScaffoldViewController.h"
-#import "VSettingManager.h"
 
 #import "VStream+Fetcher.h"
 
@@ -27,7 +26,6 @@
 #import "VSettingsViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VDirectoryCollectionViewController.h"
-#import "VShowcaseCollectionViewController.h"
 #import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"

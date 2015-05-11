@@ -7,7 +7,6 @@
 //
 
 #import "VPrivacyPoliciesViewController.h"
-#import "VSettingManager.h"
 #import "VDependencyManager.h"
 
 static NSString * const kVPrivacyURL = @"privacyURL";

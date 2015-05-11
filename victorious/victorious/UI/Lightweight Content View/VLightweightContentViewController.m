@@ -18,6 +18,7 @@
 #import "VScaffoldViewController.h"
 #import "VTrackingConstants.h"
 #import "VTracking.h"
+#import "UIView+AutoLayout.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
@@ -30,6 +31,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, weak) IBOutlet UIView *backgroundBlurredView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerHeightConstraint;
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -78,6 +80,10 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     self.getStartedButton.style = VButtonStyleSecondary;
     
     self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    
+    // Hide container view before it's properly sized
+    self.containerView.hidden = YES;
+    
     [self setupVideoUI];
 }
 
@@ -90,6 +96,17 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     {
         [self fetchMediaSequenceObject];
     }
+    
+    // Check orientation and update button state
+    [self updateGetStartedButtonForCurrentOrientation];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Check orientation on first appearance and update constraints
+    [self updateConstraintsForCurrentOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -123,20 +140,33 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-         
-         [self.portraitConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-          {
-              constraint.active = UIInterfaceOrientationIsPortrait(currentOrientation);
-          }];
-         [self.landscapeConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-          {
-              constraint.active = UIInterfaceOrientationIsLandscape(currentOrientation);
-          }];
-         
-         [self.view layoutIfNeeded];
+         [self updateConstraintsForCurrentOrientation];
+         [self updateGetStartedButtonForCurrentOrientation];
      }
                                  completion:nil];
+}
+
+- (void)updateConstraintsForCurrentOrientation
+{
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    [self.portraitConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         constraint.active = UIInterfaceOrientationIsPortrait(currentOrientation);
+     }];
+    [self.landscapeConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         constraint.active = UIInterfaceOrientationIsLandscape(currentOrientation);
+     }];
+    
+    [self.view layoutIfNeeded];
+}
+
+- (void)updateGetStartedButtonForCurrentOrientation
+{
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    self.getStartedButton.alpha = UIInterfaceOrientationIsPortrait(currentOrientation);
 }
 
 #pragma mark - Setup Video Playback View
@@ -148,20 +178,9 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
-    
-    self.videoPlayerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;;
-    
+
     [self.containerView addSubview:self.videoPlayerViewController.view];
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[videoPlayerView]|"
-                                                                               options:kNilOptions
-                                                                               metrics:nil
-                                                                                 views:@{@"videoPlayerView":self.videoPlayerViewController.view}]];
-    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPlayerView]|"
-                                                                               options:kNilOptions
-                                                                               metrics:nil
-                                                                                 views:@{@"videoPlayerView":self.videoPlayerViewController.view}]];
-    
-    self.videoPlayerViewController.view.hidden = NO;
+    [self.containerView v_addFitToParentConstraintsToSubview:self.videoPlayerViewController.view];
 }
 
 #pragma mark - Select media sequence
@@ -226,6 +245,28 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
     [self trackSequenceViewStart];
+    
+    // Adjust height of container view to match aspect ratio of video
+    CGSize naturalSize = videoPlayer.naturalSize;
+    
+    CGFloat newHeight;
+    
+    if (naturalSize.width <= 0 || naturalSize.height <= 0)
+    {
+        newHeight = CGRectGetWidth(self.containerView.frame);
+    }
+    else
+    {
+        CGFloat aspectRatio = naturalSize.width / naturalSize.height;
+        newHeight = CGRectGetWidth(self.containerView.frame) / aspectRatio;
+    }
+    
+    self.containerHeightConstraint.constant = newHeight;
+    
+    [self.containerView layoutIfNeeded];
+    
+    // Reveal container view
+    self.containerView.hidden = NO;
 }
 
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
@@ -241,6 +282,14 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 {
     [self.activityIndicator stopAnimating];
     [self getStartedButtonAction:nil];
+}
+
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
+{
+    if ( [self.delegate respondsToSelector:@selector(videoHasCompletedInLightweightContentView:)] )
+    {
+        [self.delegate videoHasCompletedInLightweightContentView:self];
+    }
 }
 
 #pragma mark - Video Playback
@@ -263,9 +312,9 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
         self.videoPlayerViewController = nil;
     }
     
-    if ( [self.delegate respondsToSelector:@selector(videoHasCompletedInLightweightContentView:)] )
+    if ([self.delegate respondsToSelector:@selector(userWantsToDismissLightweightContentView:)])
     {
-        [self.delegate videoHasCompletedInLightweightContentView:self];
+        [self.delegate userWantsToDismissLightweightContentView:self];
     }
 }
 

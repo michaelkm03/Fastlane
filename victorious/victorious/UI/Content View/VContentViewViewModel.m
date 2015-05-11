@@ -451,7 +451,14 @@
         return cacheURL;
     }
     
-    return [NSURL URLWithString:self.currentAsset.data];
+    if ([self loop])
+    {
+        return [NSURL URLWithString:mp4Asset.data];
+    }
+    else
+    {
+        return [NSURL URLWithString:self.currentAsset.data];
+    }
 }
 
 - (float)speed

@@ -20,8 +20,6 @@
 #import "VUser.h"
 
 #import "VThemeManager.h"
-#import "VSettingManager.h"
-
 #import "VTimerManager.h"
 
 #import "VStream.h"

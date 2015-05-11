@@ -47,7 +47,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VThemeManager.h"
-#import "VSettingManager.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -71,9 +70,9 @@
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <FBKVOController.h>
 
-#import "VAbstractDirectoryCollectionViewController.h"
+#import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VLinkSelectionResponder.h"
+#import "VHashtagSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
@@ -92,7 +91,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VLinkSelectionResponder>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -152,10 +151,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     if ( cellVisibilityRatio != nil )
     {
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
-    }
-    
-    streamCollectionVC.canShowMarquee = YES;
-    
+    }    
+
     return streamCollectionVC;
 }
 
@@ -184,6 +181,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)sharedInit
 {
     self.canShowContent = YES;
+    self.canShowMarquee = YES;
 }
 
 #pragma mark - View Heirarchy
@@ -205,12 +203,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
     [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
     
-    self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
-    self.marqueeCellController.dataDelegate = self;
-    self.marqueeCellController.selectionDelegate = self;
-    [self.marqueeCellController registerCellsWithCollectionView:self.collectionView];
-    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
-    
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     if ( self.streamDataSource == nil )
@@ -221,14 +213,24 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         self.collectionView.dataSource = self.streamDataSource;
     }
     
+    self.marqueeCellController = [self.dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:VStreamCollectionViewControllerMarqueeComponentKey];
+    self.marqueeCellController.stream = self.currentStream;
+    self.marqueeCellController.dataDelegate = self;
+    self.marqueeCellController.selectionDelegate = self;
+    [self.marqueeCellController registerCellsWithCollectionView:self.collectionView];
+    self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
+    
     self.collectionView.dataSource = self.streamDataSource;
     self.streamDataSource.collectionView = self.collectionView;
     
-    // Notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(dataSourceDidChange:)
-                                                 name:VStreamCollectionDataSourceDidChangeNotification
-                                               object:self.streamDataSource];
+    [self.KVOController observe:self.streamDataSource.stream
+                        keyPath:NSStringFromSelector(@selector(streamItems))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(dataSourceDidChange)];
+    [self.KVOController observe:self.streamDataSource
+                        keyPath:NSStringFromSelector(@selector(hasHeaderCell))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(dataSourceDidChange)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -255,6 +257,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
             [(VStreamCollectionCell *)cell reloadCommentsCount];
         }
     }
+    
+    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
+    [self updateUserPostAllowed];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -402,7 +407,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     else if ( [streamItem isStreamOfStreams] )
     {
-        VAbstractDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VAbstractDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
+        VDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
+        
+        if ( directory == nil )
+        {
+            //We have no directory to show, just do nothing
+            [[[UIAlertView alloc] initWithTitle:nil
+                                        message:NSLocalizedString(@"GenericFailMessage", nil)
+                                       delegate:nil
+                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                              otherButtonTitles:nil] show];
+            return;
+        }
         
         //Set the selected stream as the current stream in the directory
         directory.currentStream = (VStream *)streamItem;
@@ -594,6 +610,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)showContentViewForSequence:(VSequence *)sequence withPreviewImage:(UIImage *)previewImage
 {
+    NSParameterAssert(sequence != nil);
+    NSParameterAssert(self.currentStream != nil);
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
     [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence commentId:nil placeHolderImage:previewImage];
@@ -663,7 +681,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 #pragma mark - Notifications
 
-- (void)dataSourceDidChange:(NSNotification *)notification
+- (void)dataSourceDidChange
 {
     self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
@@ -678,9 +696,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     void (^noContentUpdates)(void);
     
-    if (self.streamDataSource.stream.streamItems.count <= 0)
+    if ( self.streamDataSource.stream.streamItems.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
-        if (![self.collectionView.backgroundView isEqual:self.noContentView])
+        if ( ![self.collectionView.backgroundView isEqual:self.noContentView] )
         {
             self.collectionView.backgroundView = self.noContentView;
         }
@@ -832,9 +850,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
 }
 
-#pragma mark - VLinkSelectionResponder
+#pragma mark - VHashtagSelectionResponder
 
-- (void)linkWithTextSelected:(NSString *)text
+- (void)hashtagSelected:(NSString *)text
 {
     [self showHashtagStreamWithHashtag:text];
 }

@@ -19,8 +19,8 @@ static NSString * const kVictoriousThisAppGenericScheme = @"vthisapp";
 
 - (BOOL)v_hasCustomScheme
 {
-    return ![self.scheme.lowercaseString isEqualToString:@"http"] &&
-           ![self.scheme.lowercaseString isEqualToString:@"https"];
+    NSArray *nonCustomSchemes = @[ @"http", @"https" ];
+    return ![nonCustomSchemes containsObject:self.scheme.lowercaseString] && self.scheme != nil;
 }
 
 - (BOOL)v_isThisAppGenericScheme

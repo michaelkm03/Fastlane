@@ -10,7 +10,6 @@
 
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
-#import "VSettingManager.h"
 #import "NSURL+VCustomScheme.h"
 
 @interface VWebContentViewController () <WKNavigationDelegate>

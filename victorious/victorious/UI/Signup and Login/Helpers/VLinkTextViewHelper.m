@@ -16,8 +16,6 @@
 - (void)setupLinkTextView:(CCHLinkTextView *)linkTextView withText:(NSString *)text range:(NSRange)range
 {
     linkTextView.textContainerInset = UIEdgeInsetsMake( 12, 0, 0, 0 );
-    linkTextView.textContainer.maximumNumberOfLines = 1;
-    linkTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
