@@ -159,24 +159,12 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     return self.layoutIdentifier == VDependencyManagerWebBrowserLayoutTopNavigation;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    UIColor *navBarBackgroundColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
-    switch ( [navBarBackgroundColor v_colorLuminance] )
-    {
-        case VColorLuminanceBright:
-            return UIStatusBarStyleDefault;
-        case VColorLuminanceDark:
-            return UIStatusBarStyleLightContent;
-    }
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ( [segue.destinationViewController isKindOfClass:[VWebBrowserHeaderViewController class]] )
     {
         self.headerViewController = (VWebBrowserHeaderViewController *)segue.destinationViewController;
-        self.headerViewController.dependencyManager = [self.dependencyManager dependencyManagerForNavigationBar];
+        self.headerViewController.dependencyManager = self.dependencyManager;
     }
 }
 

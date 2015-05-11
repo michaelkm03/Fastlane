@@ -12,8 +12,9 @@
 #import "VConstants.h"
 #import "VDependencyManager.h"
 #import "VWebBrowserHeaderLayoutManager.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
-@interface VWebBrowserHeaderViewController()
+@interface VWebBrowserHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonOpenURL;
@@ -22,6 +23,7 @@
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *labelTitle;
 @property (nonatomic, weak, readwrite) IBOutlet VProgressBarView *progressBar;
 @property (nonatomic, strong, readwrite) IBOutlet VWebBrowserHeaderLayoutManager *layoutManager;
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainerView;
 
 @end
 
@@ -53,9 +55,9 @@
         button.tintColor = tintColor;
     }
     
-    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.labelTitle.textColor = tintColor;
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
     
+    self.labelTitle.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 

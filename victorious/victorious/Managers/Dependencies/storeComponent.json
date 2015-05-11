@@ -3,7 +3,22 @@
         "name": "webView.screen",
         "webURL" : "http://www.eatyourkimchi.com/shop",
         "title": "Store",
-        "layout" : "topNavigation"
+        "layout" : "topNavigation",
+        "background" : {
+            "name": "solidColor.background",
+            "color": {
+                "red": 255,
+                "green": 255,
+                "blue": 255,
+                "alpha": 255
+            }
+        },
+        "color.text" : {
+            "red": 0,
+            "green": 0,
+            "blue": 0,
+            "alpha": 255
+        }
     },
     "icon": {
         "imageURL": "A_Inbox"

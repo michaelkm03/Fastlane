@@ -64,6 +64,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z3z-66-h9W" userLabel="Background Container">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
                                 <rect key="frame" x="0.0" y="44" width="320" height="2"/>
                                 <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -126,16 +129,20 @@
                         <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="PTL-ew-6sW" secondAttribute="centerY" constant="-1" id="0PI-5V-zkV"/>
+                            <constraint firstItem="z3z-66-h9W" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" id="7W9-Jn-bsB"/>
                             <constraint firstAttribute="trailing" secondItem="PTL-ew-6sW" secondAttribute="trailing" constant="5" id="9nl-ad-Es7"/>
                             <constraint firstItem="Vt8-xj-xda" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="44" id="HoG-oS-zDo"/>
                             <constraint firstAttribute="centerY" secondItem="2n7-et-juQ" secondAttribute="centerY" constant="-1" id="K1g-Sd-kAd"/>
+                            <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="z3z-66-h9W" secondAttribute="bottom" constant="-2" id="MCn-YV-EfL"/>
                             <constraint firstItem="6my-03-sbB" firstAttribute="leading" secondItem="2n7-et-juQ" secondAttribute="trailing" constant="3" id="WME-O1-JeV"/>
                             <constraint firstItem="PTL-ew-6sW" firstAttribute="leading" secondItem="cNG-U0-zNK" secondAttribute="trailing" constant="1" id="WkO-KO-Ko8"/>
                             <constraint firstAttribute="centerY" secondItem="cNG-U0-zNK" secondAttribute="centerY" constant="0.5" id="YAy-bp-cME"/>
                             <constraint firstItem="cNG-U0-zNK" firstAttribute="leading" secondItem="6my-03-sbB" secondAttribute="trailing" constant="3" id="YZ6-dE-ype"/>
                             <constraint firstItem="Vt8-xj-xda" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leading" id="bBy-jo-iab"/>
+                            <constraint firstAttribute="trailing" secondItem="z3z-66-h9W" secondAttribute="trailing" id="eJU-3Y-4pD"/>
                             <constraint firstItem="6my-03-sbB" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="4" id="eV7-eL-V7W"/>
                             <constraint firstItem="Vt8-xj-xda" firstAttribute="top" secondItem="xd6-ZA-jPh" secondAttribute="bottom" id="grt-4q-H2t"/>
+                            <constraint firstItem="z3z-66-h9W" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leading" id="pxF-vv-GXu"/>
                             <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="6my-03-sbB" secondAttribute="bottom" constant="3" id="q3N-Pd-YDx"/>
                             <constraint firstItem="2n7-et-juQ" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leading" constant="2" id="qF7-aT-FSL"/>
                             <constraint firstAttribute="trailing" secondItem="Vt8-xj-xda" secondAttribute="trailing" id="sym-Fn-EPZ"/>
@@ -143,6 +150,7 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="backgroundContainerView" destination="z3z-66-h9W" id="Gep-Bn-6Yq"/>
                         <outlet property="buttonBack" destination="2n7-et-juQ" id="Aqf-rt-BCt"/>
                         <outlet property="buttonExit" destination="PTL-ew-6sW" id="LSY-mg-lE0"/>
                         <outlet property="buttonOpenURL" destination="cNG-U0-zNK" id="fug-La-b7U"/>
