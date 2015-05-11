@@ -11,8 +11,6 @@
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
-#import "VStreamCollectionCell.h"
-#import "VAbstractStreamCollectionCell.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 
 //Controllers
@@ -261,18 +259,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         [self.marqueeCellController enableTimer];
     }
 
-#warning REMOVE ME AFTER REFACTOR
-    for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
-    {
-        if ([cell isKindOfClass:[VAbstractStreamCollectionCell class]])
-        {
-            [(VAbstractStreamCollectionCell *)cell updateCommentsForSequence:((VAbstractStreamCollectionCell *)cell).sequence];
-        }
-        if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
-        {
-            [(VStreamCollectionCell *)cell reloadCommentsCount];
-        }
-    }
+#warning FIX ME TO USE KVO
+//    for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
+//    {
+//        if ([cell isKindOfClass:[VAbstractStreamCollectionCell class]])
+//        {
+//            [(VAbstractStreamCollectionCell *)cell updateCommentsForSequence:((VAbstractStreamCollectionCell *)cell).sequence];
+//        }
+//        if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
+//        {
+//            [(VStreamCollectionCell *)cell reloadCommentsCount];
+//        }
+//    }
     
     //Because a stream can be presented without refreshing, we need to refresh the user post icon here
     [self updateUserPostAllowed];
@@ -461,7 +459,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         return;
     }
     
-    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
     if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
     {
         return;
@@ -471,10 +469,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     UIImage *previewImage = nil;
-    if ([cell isKindOfClass:[VStreamCollectionCell class]])
-    {
-        previewImage = ((VStreamCollectionCell *)cell).previewImageView.image;
-    }
+#warning FIXME to use SDCACHE
+//    if ([cell isKindOfClass:[VStreamCollectionCell class]])
+//    {
+//        previewImage = ((VStreamCollectionCell *)cell).previewImageView.image;
+//    }
     [self showContentViewForSequence:sequence withPreviewImage:previewImage];
 }
 
@@ -500,10 +499,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
-    {
-        [((VStreamCollectionCell *)cell) pauseVideo];
-    }
+#warning FIXME
+//    if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
+//    {
+//        [((VStreamCollectionCell *)cell) pauseVideo];
+//    }
 }
 
 #pragma mark - Activity indivator footer
@@ -533,13 +533,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamCellFactory collectionView:self.collectionView cellForStreamItem:sequence atIndexPath:indexPath];
-    
-
-    if ( [cell conformsToProtocol:@protocol(VSequenceActionsSender)] )
-    {
-        cell.sequenceActionsDelegate = self.actionDelegate ?: self;
-    }
+    UICollectionViewCell *cell = [self.streamCellFactory collectionView:self.collectionView
+                                                      cellForStreamItem:sequence atIndexPath:indexPath];
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
@@ -560,12 +555,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 #pragma mark - VSequenceActionsDelegate
 
-- (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(VStreamCollectionCell *)streamCollectionCell
+- (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
     [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
 }
 
-- (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(VStreamCollectionCell *)streamCollectionCell
+- (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
 {
     [self.sequenceActionController showProfile:user fromViewController:self];
 }
@@ -806,9 +801,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     const CGRect streamVisibleRect = self.collectionView.bounds;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
-    [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
+    [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
      {
-         if ( ![cell isKindOfClass:[VStreamCollectionCell class]] )
+         if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
          {
              return;
          }
@@ -828,50 +823,52 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     __block BOOL didPlayVideo = NO;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
-    [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
+    [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
      {
-#warning REFACTOR ME
-         if ( ![cell isKindOfClass:[VStreamCollectionCell class]] )
+         if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
          {
              return;
          }
          
          if ( didPlayVideo )
          {
-             [cell pauseVideo];
+#warning FIXME
+//             [cell pauseVideo];
          }
          else
          {
+#warning FIXME
              // Calculate visible ratio for just the media content of the cell
-             const CGRect contentFrameInCell = CGRectMake( CGRectGetMinX(cell.mediaContentFrame) + CGRectGetMinX(cell.frame),
-                                                          CGRectGetMinY(cell.mediaContentFrame) + CGRectGetMinY(cell.frame),
-                                                          CGRectGetWidth(cell.mediaContentFrame),
-                                                          CGRectGetHeight(cell.mediaContentFrame) );
-             
-             if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
-             {
-                 const CGRect contentIntersection = CGRectIntersection( streamVisibleRect, contentFrameInCell );
-                 const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
-                 if ( mediaContentVisibleRatio >= 0.8f )
-                 {
-                     [cell playVideo];
-                     didPlayVideo = YES;
-                 }
-                 else
-                 {
-                     [cell pauseVideo];
-                 }
-             }
+//             const CGRect contentFrameInCell = CGRectMake( CGRectGetMinX(cell.mediaContentFrame) + CGRectGetMinX(cell.frame),
+//                                                          CGRectGetMinY(cell.mediaContentFrame) + CGRectGetMinY(cell.frame),
+//                                                          CGRectGetWidth(cell.mediaContentFrame),
+//                                                          CGRectGetHeight(cell.mediaContentFrame) );
+//             
+//             if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
+//             {
+//                 const CGRect contentIntersection = CGRectIntersection( streamVisibleRect, contentFrameInCell );
+//                 const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
+//                 if ( mediaContentVisibleRatio >= 0.8f )
+//                 {
+//                     [cell playVideo];
+//                     didPlayVideo = YES;
+//                 }
+//                 else
+//                 {
+//                     [cell pauseVideo];
+//                 }
+//             }
          }
      }];
 }
 
-- (void)collectionViewCell:(VStreamCollectionCell *)cell didUpdateCellVisibility:(CGFloat)visibiltyRatio
+- (void)collectionViewCell:(UICollectionViewCell *)cell didUpdateCellVisibility:(CGFloat)visibiltyRatio
 {
-    if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
-    {
-        [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream sequence:cell.sequence];
-    }
+#warning FIXME
+//    if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
+//    {
+//        [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream sequence:cell.sequence];
+//    }
 }
 
 #pragma mark - VLinkSelectionResponder
