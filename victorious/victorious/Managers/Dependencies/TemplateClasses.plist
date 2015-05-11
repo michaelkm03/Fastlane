@@ -74,8 +74,12 @@
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VInboxViewController</string>
+	<key>message.screen</key>
+	<string>VMessageContainerViewController</string>
 	<key>notifications.screen</key>
 	<string>VNotificationsViewController</string>
+	<key>findFriends.screen</key>
+	<string>VFindFriendsViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
 	<key>staticProfile.streamHeader</key>

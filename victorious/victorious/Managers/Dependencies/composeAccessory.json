@@ -1,0 +1,12 @@
+{
+    "destination": {
+        "title": "New Message",
+        "name": "message.screen"
+    },
+    "title": "New Message",
+    "icon": {
+        "imageURL": "profileCompose"
+    },
+    "identifier": "Accessory New Message",
+    "position": "right"
+}

@@ -518,4 +518,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     }
 }
 
+#pragma mark - VNavigationDestination
+
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
+{
+    return YES;
+}
+
 @end

@@ -18,7 +18,7 @@
 extern NSString * const VInboxViewControllerDeeplinkHostComponent; ///< The host component for deepLink URLs that point to inbox messages
 extern NSString * const VInboxViewControllerInboxPushReceivedNotification; ///< Posted when an inbox push notification is received while the app is active
 
-@interface VInboxViewController : VFetchedResultsTableViewController <VDeeplinkSupporter, VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider>
+@interface VInboxViewController : VFetchedResultsTableViewController <VDeeplinkSupporter, VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider, VNavigationDestination>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;

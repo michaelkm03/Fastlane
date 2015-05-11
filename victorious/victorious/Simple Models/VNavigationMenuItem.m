@@ -21,6 +21,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                          icon:(UIImage *)icon
                  selectedIcon:(UIImage *)selectedIcon
                   destination:(id)destination
+                     position:(NSString *)position
 {
     self = [super init];
     if (self)
@@ -30,6 +31,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         _icon = icon;
         _selectedIcon = selectedIcon;
         _destination = destination;
+        _position = position;
     }
     return self;
 }
@@ -42,7 +44,8 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     UIImage *icon = [dependencyManager imageForKey:kIconKey];
     UIImage *selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
     id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
-    return [self initWithTitle:title identifier:identifier icon:icon selectedIcon:selectedIcon destination:destination];
+    NSString *position = [dependencyManager stringForKey:VDependencyManagerPositionKey];
+    return [self initWithTitle:title identifier:identifier icon:icon selectedIcon:selectedIcon destination:destination position:position];
 }
 
 - (BOOL)isEqual:(id)object

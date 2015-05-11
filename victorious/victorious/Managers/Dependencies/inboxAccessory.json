@@ -1,0 +1,34 @@
+{
+    "destination": {
+        "screens": [
+            {
+                "name": "inbox.screen",
+                "title": "Messages"
+            },
+            {
+                "name": "notifications.screen",
+                "title": "Notifications"
+            }
+        ],
+        "title": "Inbox",
+        "name": "basic.multiScreen",
+        "background": {
+            "name": "solidColor.background",
+            "color": {
+                "red": 241,
+                "alpha": 255,
+                "blue": 241,
+                "green": 241
+            }
+        }
+    },
+    "title": "Inbox",
+    "icon": {
+        "imageURL": "A_inbox"
+    },
+    "identifier": "Accessory Inbox",
+    "position": "right",
+    "selectedIcon": {
+        "imageURL": "A_inbox_selected"
+    }
+}

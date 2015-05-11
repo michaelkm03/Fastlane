@@ -198,21 +198,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewWillAppear:animated];
     
-    if ( self.isCurrentUser )
-    {
-        [self addFriendsButton];
-    }
-    else if ( self.user == nil && self.remoteId != nil )
+    if ( !self.isCurrentUser && self.user == nil && self.remoteId != nil )
     {
         [self loadUserWithRemoteId:self.remoteId];
     }
-    else if (!self.isCurrentUser && !self.user.isDirectMessagingDisabled.boolValue)
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(composeMessage:)];
-    }
+    
+#warning Hide compose accessory if is current user (can't message yo' self)
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
@@ -551,38 +542,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-#pragma mark - Find Friends
-
-- (void)addFriendsButton
-{
-    //Previously was C_findFriendsIcon in template C
-    UIImage *findFriendsIcon = [self.dependencyManager imageForKey:VDependencyManagerFindFriendsIconKey];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(findFriendsAction:)];
-}
-
-#pragma mark - Actions
-
-- (IBAction)findFriendsAction:(id)sender
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         VFindFriendsViewController *ffvc = [VFindFriendsViewController newWithDependencyManager:self.dependencyManager];
-         [ffvc setShouldAutoselectNewFriends:NO];
-         [self.navigationController pushViewController:ffvc animated:YES];
-     }];
-}
-
 - (void)setUser:(VUser *)user
 {
     NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil in VUserProfileViewController when the profile is set");
@@ -627,31 +586,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (BOOL)isDisplayingFloatingProfileHeader
 {
     return self.profileHeaderViewController.floatingProfileImage != nil;
-}
-
-- (IBAction)composeMessage:(id)sender
-{
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         
-         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.user dependencyManager:self.dependencyManager];
-         composeController.presentingFromProfile = YES;
-         
-         if ([self.navigationController.viewControllers containsObject:composeController])
-         {
-             [self.navigationController popToViewController:composeController animated:YES];
-         }
-         else
-         {
-             [self.navigationController pushViewController:composeController animated:YES];
-         }
-     }];
 }
 
 #pragma mark - VUserProfileHeaderDelegate

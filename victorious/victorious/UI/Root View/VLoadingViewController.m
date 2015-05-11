@@ -217,13 +217,15 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSDictionary *inboxAccessory = @{  @"destination": @{ @"name": @"inbox.screen" },
-                                           @"title": @"Inbox",
-                                           @"icon": @{ @"imageURL": @"A_inbox" },
-                                           @"identifier": @"Menu Inbox",
-                                           @"selectedIcon": @{ @"imageURL": @"A_inbox_selected" } };
+        // Add Inbox and Find Friends to current user profile
+        NSParameterAssert( [templateDecorator setComponentWithFilename:@"inboxAccessory"
+                                                            forKeyPath:@"scaffold/menu/items/3/accessoryScreens/1"] );
+        NSParameterAssert( [templateDecorator setComponentWithFilename:@"findFriendsAccessory"
+                                                            forKeyPath:@"scaffold/menu/items/3/accessoryScreens/2"] );
         
-        [templateDecorator setTemplateValue:inboxAccessory forKeyPath:@"scaffold/menu/items/3/accessoryScreens/1"];
+        NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/userProfileView/accessoryScreens"] );
+        NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
+                                                            forKeyPath:@"scaffold/userProfileView/accessoryScreens/0"] );
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

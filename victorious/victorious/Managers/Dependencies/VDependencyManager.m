@@ -21,6 +21,10 @@ static NSString * const kPlistFileExtension = @"plist";
 NSString * const VDependencyManagerTitleKey = @"title";
 NSString * const VDependencyManagerBackgroundKey = @"background";
 NSString * const VDependencyManagerImageURLKey = @"imageURL";
+NSString * const VDependencyManagerPositionKey = @"position";
+
+NSString * const VDependencyManagerPositionLeft = @"left";
+NSString * const VDependencyManagerPositionRight = @"right";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";

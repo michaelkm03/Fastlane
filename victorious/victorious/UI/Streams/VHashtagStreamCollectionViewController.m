@@ -30,6 +30,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 @property (nonatomic, assign, getter=isFollowingSelectedHashtag) BOOL followingSelectedHashtag;
 @property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
+@property (nonatomic, assign, getter=isFollowingEnabled) BOOL followingEnabled;
 
 @end
 
@@ -186,14 +187,14 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)followHashtag
 {
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.followingEnabled = NO;
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Animate follow button
         self.followingSelectedHashtag = YES;
         
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.followingEnabled = YES;
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -203,7 +204,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
         [self.failureHUD hide:YES afterDelay:3.0f];
         
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.followingEnabled = YES;
     };
     
     // Backend Subscribe to Hashtag call
@@ -214,13 +215,13 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)unfollowHashtag
 {
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.followingEnabled = NO;
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         self.followingSelectedHashtag = NO;
         
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.followingEnabled = YES;
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -230,7 +231,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
         [self.failureHUD hide:YES afterDelay:3.0f];
         
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.followingEnabled = YES;
     };
     
     // Backend Unsubscribe to Hashtag call
@@ -268,6 +269,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(toggleFollowHashtag)];
+}
+
+- (void)setFollowingEnabled:(BOOL)followingEnabled
+{
+    _followingEnabled = followingEnabled;
+    self.navigationItem.rightBarButtonItem.enabled = followingEnabled;
 }
 
 @end

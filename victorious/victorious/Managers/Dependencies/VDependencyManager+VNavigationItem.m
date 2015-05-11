@@ -44,6 +44,8 @@ static const char kAssociatedObjectKey;
     {
         objc_setAssociatedObject(self, &kAssociatedObjectKey, navigationController, OBJC_ASSOCIATION_ASSIGN);
         NSInteger tag = 0;
+        NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] init];
+        NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] init];
         for ( VNavigationMenuItem *menuItem in self.accessoryMenuItems )
         {
             UIBarButtonItem *accessoryBarItem = [[UIBarButtonItem alloc] initWithImage:menuItem.icon
@@ -51,8 +53,18 @@ static const char kAssociatedObjectKey;
                                                                                 target:self
                                                                                 action:@selector(showAccessoryMenuItemOnNavigation:)];
             accessoryBarItem.tag = tag++;
-            navigationItem.leftBarButtonItem = accessoryBarItem;
+            if ( [menuItem.position isEqualToString:VDependencyManagerPositionRight])
+            {
+                [barButtonItemsRight addObject:accessoryBarItem];
+            }
+            else if ( [menuItem.position isEqualToString:VDependencyManagerPositionLeft] || menuItem.position == nil )
+            {
+                [barButtonItemsLeft addObject:accessoryBarItem];
+            }
         }
+        
+        navigationItem.leftBarButtonItems = [barButtonItemsLeft arrayByAddingObjectsFromArray:navigationItem.leftBarButtonItems];
+        navigationItem.rightBarButtonItems = [barButtonItemsRight arrayByAddingObjectsFromArray:navigationItem.rightBarButtonItems];
     }
 }
 
@@ -65,13 +77,8 @@ static const char kAssociatedObjectKey;
     }
     
     VNavigationMenuItem *menuItem = self.accessoryMenuItems[ selectedIndex ];
-    UIViewController *destination = nil;
-    
     UINavigationController *navigationController = objc_getAssociatedObject(self, &kAssociatedObjectKey);
-    if ([((id <VNavigationDestination>)menuItem.destination) shouldNavigateWithAlternateDestination:&destination])
-    {
-        [navigationController pushViewController:menuItem.destination animated:YES];
-    }
+    [navigationController pushViewController:menuItem.destination animated:YES];
     
 }
 

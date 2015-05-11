@@ -46,8 +46,9 @@ static NSString * const kInitialKey = @"initial";
     {
         _didShowInitial = NO;
         _selectedIndex = 0;
-        CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
-        self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
+#warning Can we delete this?
+        //CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
+        //self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
     return self;
 }
