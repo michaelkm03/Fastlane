@@ -215,9 +215,9 @@
             noRepostersView.dependencyManager = self.dependencyManager;
         }
         self.tableView.backgroundView = noRepostersView;
-        noRepostersView.titleLabel.text = NSLocalizedString(@"NoRepostersTitle", @"");
-        noRepostersView.messageLabel.text = NSLocalizedString(@"NoRepostersMessage", @"");
-        noRepostersView.iconImageView.image = [UIImage imageNamed:@"noRepostsIcon"];
+        noRepostersView.title = NSLocalizedString(@"NoRepostersTitle", @"");
+        noRepostersView.message = NSLocalizedString(@"NoRepostersMessage", @"");
+        noRepostersView.icon = [UIImage imageNamed:@"noRepostsIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }

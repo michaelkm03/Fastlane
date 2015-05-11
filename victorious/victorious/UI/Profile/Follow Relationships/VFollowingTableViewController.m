@@ -243,9 +243,9 @@
             notFollowingView.dependencyManager = self.dependencyManager;
         }
         self.tableView.backgroundView = notFollowingView;
-        notFollowingView.titleLabel.text = title;
-        notFollowingView.messageLabel.text = msg;
-        notFollowingView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+        notFollowingView.title = title;
+        notFollowingView.message = msg;
+        notFollowingView.icon = [UIImage imageNamed:@"noFollowersIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
