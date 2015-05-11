@@ -26,6 +26,7 @@
 #import "VConstants.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
+#import "VHasManagedDependencies.h"
 #import "VAuthorizedAction.h"
 #import <KVOController/FBKVOController.h>
 
@@ -101,14 +102,9 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.suggestedPeopleViewController.dependencyManager = dependencyManager;
     for ( UITableViewCell *cell in self.tableView.visibleCells )
     {
-        if ( [cell isKindOfClass:[VTrendingTagCell class]] )
+        if ( [cell respondsToSelector:@selector(setDependencyManager:)] )
         {
-            ((VTrendingTagCell *)cell).dependencyManager = self.dependencyManager;
-        }
-        else if ( [cell isKindOfClass:[VSuggestedPeopleCell class]] )
-        {
-            UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-            [cell.contentView setBackgroundColor:backgroundColor];
+            [(id<VHasManagedDependencies>)cell setDependencyManager:dependencyManager];
         }
     }
 }
@@ -356,9 +352,13 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                      }
                  }];
             };
-            customCell.dependencyManager = self.dependencyManager;
             cell = customCell;
         }
+    }
+    
+    if ([cell respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [(id <VHasManagedDependencies>)cell setDependencyManager:self.dependencyManager];
     }
     
     return cell;
