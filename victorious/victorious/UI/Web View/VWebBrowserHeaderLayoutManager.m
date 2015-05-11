@@ -17,6 +17,8 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 
 @interface VWebBrowserHeaderLayoutManager()
 
+@property (nonatomic, weak, readwrite) IBOutlet VWebBrowserHeaderViewController *header;
+
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleX1Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitWidthConstraint;
