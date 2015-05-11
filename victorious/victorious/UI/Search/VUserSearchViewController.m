@@ -42,9 +42,10 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager.h"
 
-#import "VFollowerEventResponder.h"
+#import "VFollowingHelper.h"
+#import "VFollowResponder.h"
 
-@interface VUserSearchViewController () <UITextFieldDelegate>
+@interface VUserSearchViewController () <UITextFieldDelegate, VFollowResponder>
 
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;
@@ -63,12 +64,11 @@
 @property (nonatomic, weak) NSTimer *typeDelay;
 @property (nonatomic, assign) NSInteger charCount;
 @property (nonatomic, strong) VUser *selectedUser;
+@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
-
-@property (nonatomic, strong) VFollowerEventResponder *followCommandHandler;
 
 - (IBAction)closeButtonAction:(id)sender;
 - (void)runUserSearch:(id)sender;
@@ -83,6 +83,8 @@ static const NSInteger kSearchResultLimit = 100;
 {
     VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
     userSearchViewController.dependencyManager = dependencyManager;
+    userSearchViewController.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
+                                                                      viewControllerToPresentOn:userSearchViewController];
     return userSearchViewController;
 }
 
@@ -113,16 +115,7 @@ static const NSInteger kSearchResultLimit = 100;
     _searchContext = VObjectManagerSearchContextDiscover;
 }
 
-#pragma mark - UIResponder
-
-- (UIResponder *)nextResponder
-{
-    self.followCommandHandler = [[VFollowerEventResponder alloc] initWithNextResponder:[super nextResponder]];
-    self.followCommandHandler.viewControllerToPresentAuthorizationOn = self;
-    self.followCommandHandler.dependencyManager = self.dependencyManager;
-    
-    return self.followCommandHandler;
-}
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -325,6 +318,22 @@ static const NSInteger kSearchResultLimit = 100;
     [self runUserSearch:nil];
     [self.searchField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - VFollowing
+
+- (void)followUser:(VUser *)user
+    withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper followUser:user
+                   withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user
+      withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper unfollowUser:user
+                     withCompletion:completion];
 }
 
 @end

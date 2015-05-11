@@ -241,21 +241,31 @@ static NSString * const kVAPIParamContext = @"context";
         [self.mainUser addFollowingObject:user];
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
+        
         [self notifyIsFollowingUpdated];
-        
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser];
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
     };
     
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        if (error.code == kVFollowsRelationshipAlreadyExistsError)
+        {
+            // Add user relationship to local persistent store
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            [mainUser addFollowingObject:user];
+        }
+        fail(operation, error);
+    };
+    
     return [self POST:@"/api/follow/add"
                object:nil
            parameters:parameters
          successBlock:fullSuccess
-            failBlock:fail];
+            failBlock:fullFail];
 }
 
 - (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
@@ -266,7 +276,9 @@ static NSString * const kVAPIParamContext = @"context";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self.mainUser removeFollowingObject:user];
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        [mainUser removeFollowingObject:user];
+        
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
         [self notifyIsFollowingUpdated];
@@ -279,11 +291,22 @@ static NSString * const kVAPIParamContext = @"context";
         }
     };
     
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        NSInteger errorCode = error.code;
+        if (errorCode == kVFollowsRelationshipDoesNotExistError)
+        {
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            [mainUser removeFollowingObject:user];
+        }
+        fail(operation, error);
+    };
+    
     return [self POST:@"/api/follow/remove"
                object:nil
            parameters:parameters
          successBlock:fullSuccess
-            failBlock:fail];
+            failBlock:fullFail];
 }
 
 - (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user

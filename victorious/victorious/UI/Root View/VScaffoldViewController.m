@@ -25,6 +25,8 @@
 #import "VPushNotificationManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "VMultipleContainer.h"
+#import "VFollowingHelper.h"
+#import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
@@ -36,6 +38,8 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 
+@property (nonatomic, strong) VFollowingHelper *followHelper;
+
 @end
 
 @implementation VScaffoldViewController
@@ -46,6 +50,9 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        
+        _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
+                                                  viewControllerToPresentOn:self];
     }
     return self;
 }
@@ -268,6 +275,21 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
 }
 
+#pragma mark - VFollowing
+
+- (void)followUser:(VUser *)user
+    withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper followUser:user
+                   withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user
+      withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper unfollowUser:user
+                     withCompletion:completion];
+}
 #pragma mark - VURLSelectionResponder
 
 - (void)URLSelected:(NSURL *)URL
