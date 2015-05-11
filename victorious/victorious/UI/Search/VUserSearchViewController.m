@@ -44,7 +44,10 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager.h"
 
-@interface VUserSearchViewController () <UITextFieldDelegate>
+#import "VFollowingHelper.h"
+#import "VFollowResponder.h"
+
+@interface VUserSearchViewController () <UITextFieldDelegate, VFollowResponder>
 
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;
@@ -63,6 +66,7 @@
 @property (nonatomic, weak) NSTimer *typeDelay;
 @property (nonatomic, assign) NSInteger charCount;
 @property (nonatomic, strong) VUser *selectedUser;
+@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -81,6 +85,8 @@ static const NSInteger kSearchResultLimit = 100;
 {
     VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
     userSearchViewController.dependencyManager = dependencyManager;
+    userSearchViewController.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
+                                                                      viewControllerToPresentOn:userSearchViewController];
     return userSearchViewController;
 }
 
@@ -314,6 +320,22 @@ static const NSInteger kSearchResultLimit = 100;
     [self runUserSearch:nil];
     [self.searchField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - VFollowing
+
+- (void)followUser:(VUser *)user
+    withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper followUser:user
+                   withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user
+      withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper unfollowUser:user
+                     withCompletion:completion];
 }
 
 @end
