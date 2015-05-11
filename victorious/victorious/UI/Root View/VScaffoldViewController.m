@@ -52,11 +52,6 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - Lifecyle Methods
 
-- (BOOL)definesPresentationContext
-{
-    return YES;
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -136,9 +131,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         {
             [self dismissViewControllerAnimated:NO completion:nil];
         }
-        [contentView willMoveToParentViewController:self];
         [self presentViewController:contentView animated:YES completion:nil];
-        [contentView didMoveToParentViewController:self];
     }
 }
 
