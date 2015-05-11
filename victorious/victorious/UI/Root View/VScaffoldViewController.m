@@ -25,11 +25,12 @@
 #import "VPushNotificationManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "VMultipleContainer.h"
+#import "VURLSelectionResponder.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -265,6 +266,22 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
+}
+
+#pragma mark - VURLSelectionResponder
+
+- (void)URLSelected:(NSURL *)URL
+{
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:URL];
+    if ( contentView != nil )
+    {
+        if ( self.presentedViewController )
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
+        [self presentViewController:contentView animated:YES completion:nil];
+    }
 }
 
 @end

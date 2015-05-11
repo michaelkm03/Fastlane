@@ -101,14 +101,17 @@
 #import "VAuthorizedAction.h"
 #import "VNode+Fetcher.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VLinkSelectionResponder.h"
+#import "VHashtagSelectionResponder.h"
+#import "VURLSelectionResponder.h"
+#import "VDependencyManager+VScaffoldViewController.h"
+#import "VContentViewFactory.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VLinkSelectionResponder>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -1823,13 +1826,25 @@ referenceSizeForHeaderInSection:(NSInteger)section
     return NO;
 }
 
-#pragma mark - VLinkSelectionResponder
+#pragma mark - VHashtagSelectionResponder
 
-- (void)linkWithTextSelected:(NSString *)text
+- (void)hashtagSelected:(NSString *)text
 {
     //Tapped a hashtag, show a hashtag view controller
     VHashtagStreamCollectionViewController *hashtagViewController = [self.dependencyManager hashtagStreamWithHashtag:text];
     [self.navigationController pushViewController:hashtagViewController animated:YES];
+}
+
+#pragma mark - VURLSelectionResponder
+
+- (void)URLSelected:(NSURL *)URL
+{
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *webContentView = [contentViewFactory webContentViewControllerWithURL:URL];
+    if ( webContentView != nil )
+    {
+        [self presentViewController:webContentView animated:YES completion:nil];
+    }
 }
 
 @end
