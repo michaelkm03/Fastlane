@@ -424,8 +424,8 @@
 "repostedByFormat" = "Republié par %@";
 "doubleRepostedByFormat" = "Republié par %@ +1 autre";
 "multipleRepostedByFormat" = "Republié par %@ + %lu autres";
-"remixedFromFormat" = "Remixé depuis %@";
-"giffedFromFormat" = "GIF de%@";
+"remixedFromFormat" = "Remix de %@";
+"giffedFromFormat" = "GIF de %@";
 
 "leaveACommentFormat" = "Laisser un commentaire à %@";
 
