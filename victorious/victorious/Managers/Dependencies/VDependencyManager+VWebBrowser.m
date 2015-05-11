@@ -10,9 +10,9 @@
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderLayoutManager.h"
 
-NSString * const VDependencyManagerWebBrowserLayoutKey                     = @"layout";
-NSString * const VDependencyManagerWebBrowserLayoutHeaderTop               = @"topHeader";  //< Matches IB identifier
-NSString * const VDependencyManagerWebBrowserLayoutHeaderBottom            = @"bottomHeader"; //< Matches IB identifier
+NSString * const VDependencyManagerWebBrowserLayoutKey                  = @"layout";
+NSString * const VDependencyManagerWebBrowserLayoutTopNavigation        = @"topNavigation";  //< Matches IB identifier
+NSString * const VDependencyManagerWebBrowserLayoutBottomNavigation     = @"bottomNavigation"; //< Matches IB identifier
 
 @implementation VDependencyManager (VWebBrowser)
 

@@ -3,7 +3,7 @@
         "name": "webView.screen",
         "webURL" : "http://www.eatyourkimchi.com/shop",
         "title": "Store",
-        "layout" : "topHeader"
+        "layout" : "topNavigation"
     },
     "icon": {
         "imageURL": "A_Inbox"

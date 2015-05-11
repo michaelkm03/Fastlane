@@ -45,7 +45,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *defaultLayout = VDependencyManagerWebBrowserLayoutHeaderTop;
+    NSString *defaultLayout = VDependencyManagerWebBrowserLayoutTopNavigation;
     NSString *layoutIdentifier = [dependencyManager stringForKey:VDependencyManagerWebBrowserLayoutKey] ?: defaultLayout;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"WebBrowser" bundle:[NSBundle mainBundle]];
     UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:layoutIdentifier];
@@ -118,11 +118,11 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (void)updateHeaderLayuout
 {
     self.headerViewController.layoutManager.contentAlignment = self.headerContentAlignment;
-    if ( [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutHeaderTop] )
+    if ( [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutTopNavigation] )
     {
         self.headerViewController.layoutManager.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentBottom;
     }
-    if ( [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutHeaderBottom] )
+    if ( [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutBottomNavigation] )
     {
         self.headerViewController.layoutManager.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentTop;
     }
@@ -156,7 +156,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (BOOL)v_prefersNavigationBarHidden
 {
-    return self.layoutIdentifier == VDependencyManagerWebBrowserLayoutHeaderTop;
+    return self.layoutIdentifier == VDependencyManagerWebBrowserLayoutTopNavigation;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -223,7 +223,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     if ( self.templateTitle != nil )
     {
-        if ( [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutHeaderBottom] )
+        if ( [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutBottomNavigation] )
         {
             self.headerViewController.title = nil;
             super.title = self.templateTitle;

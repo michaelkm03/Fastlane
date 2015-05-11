@@ -9,8 +9,8 @@
 #import "VDependencyManager.h"
 
 extern NSString * const VDependencyManagerWebBrowserLayoutKey;
-extern NSString * const VDependencyManagerWebBrowserLayoutHeaderTop;
-extern NSString * const VDependencyManagerWebBrowserLayoutHeaderBottom;
+extern NSString * const VDependencyManagerWebBrowserLayoutTopNavigation;
+extern NSString * const VDependencyManagerWebBrowserLayoutBottomNavigation;
 
 @class VWebBrowserViewController;
 

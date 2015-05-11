@@ -222,12 +222,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         if ( isSideNavMenu )
         {
             NSAssert( [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/0/2"], @"" );
-            NSAssert( [templateDecorator setTemplateValue:@"bottomHeader" forKeyPath:@"scaffold/menu/items/0/2/destination/layout"], @"" );
+            NSAssert( [templateDecorator setTemplateValue:@"bottomNavigation" forKeyPath:@"scaffold/menu/items/0/2/destination/layout"], @"" );
         }
         else
         {
             NSAssert( [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/4"], @"" );
-            NSAssert( [templateDecorator setTemplateValue:@"topHeader" forKeyPath:@"scaffold/menu/items/4/destination/layout"], @"" );
+            NSAssert( [templateDecorator setTemplateValue:@"topNavigation" forKeyPath:@"scaffold/menu/items/4/destination/layout"], @"" );
         }
                 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
