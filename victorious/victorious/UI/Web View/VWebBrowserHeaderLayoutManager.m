@@ -22,8 +22,8 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleX1Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitWidthConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *progressBarTopConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *progressBarBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *progressBarTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *progressBarBottomConstraint;
 
 @property (nonatomic, assign) CGFloat startingBackButtonWidth;
 @property (nonatomic, assign) CGFloat startingExitButtonWidth;
@@ -44,8 +44,8 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     self.contentAlignment = VWebBrowserHeaderContentAlignmentLeft;
     self.progressBarAlignment = VWebBrowserHeaderProgressBarAlignmentBottom;
     
-    [self.header.view removeConstraint:self.progressBarBottomConstraint];
-    [self.header.view removeConstraint:self.progressBarTopConstraint];
+    self.progressBarBottomConstraint.active = NO;
+    self.progressBarTopConstraint.active = NO;
 }
 
 - (void)setContentAlignment:(VWebBrowserHeaderContentAlignment)contentAlignment
@@ -118,14 +118,14 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     switch ( self.progressBarAlignment )
     {
         case VWebBrowserHeaderProgressBarAlignmentTop:
-            [self.header.view removeConstraint:self.progressBarBottomConstraint];
-            [self.header.view addConstraint:self.progressBarTopConstraint];
+            self.progressBarTopConstraint.active = YES;
+            self.progressBarBottomConstraint.active = NO;
             self.progressBarTopConstraint.constant = 0.0f;
             break;
             
         case VWebBrowserHeaderProgressBarAlignmentBottom:
-            [self.header.view addConstraint:self.progressBarBottomConstraint];
-            [self.header.view removeConstraint:self.progressBarTopConstraint];
+            self.progressBarBottomConstraint.active = YES;
+            self.progressBarTopConstraint.active = NO;
             self.progressBarBottomConstraint.constant = 0.0f;
             break;
     }

@@ -8,9 +8,9 @@
 
 #import "VDependencyManager.h"
 
-extern NSString * const VDependencyManagerWebBrowserLayoutKey;
-extern NSString * const VDependencyManagerWebBrowserLayoutTopNavigation;
-extern NSString * const VDependencyManagerWebBrowserLayoutBottomNavigation;
+extern NSString * const VDependencyManagerWebBrowserLayoutKey;              ///< Key for specifiying top vs. bottom nav layout
+extern NSString * const VDependencyManagerWebBrowserLayoutTopNavigation;    ///< Browser header bar and navigation controls on top
+extern NSString * const VDependencyManagerWebBrowserLayoutBottomNavigation; ///< Browser header bar and navigation controls on bottom
 
 @class VWebBrowserViewController;
 
