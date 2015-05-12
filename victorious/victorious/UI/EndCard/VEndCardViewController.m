@@ -22,7 +22,7 @@ static NSString * const kStoryboardName = @"EndCard";
 
 @property (nonatomic, weak, readwrite) IBOutlet UICollectionView *actionsCollectionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionsCollectionViewWidthConstraint;
-@property (weak, nonatomic) IBOutlet UILabel *replayLabel;
+@property (nonatomic, weak) IBOutlet UILabel *replayLabel;
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) NSURL *nextVideoURL;
 
