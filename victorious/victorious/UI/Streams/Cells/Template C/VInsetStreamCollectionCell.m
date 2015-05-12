@@ -381,6 +381,21 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     return sizingCell;
 }
 
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    UIResponder<VSequenceActionsDelegate> *targetForHashTagSelection = [self targetForAction:@selector(hashTag:tappedFromSequence:fromView:)
+                                                                                  withSender:self];
+    if (targetForHashTagSelection == nil)
+    {
+        NSAssert(false, @"We need an object in the responder chain for hash tag selection.!");
+    }
+    [targetForHashTagSelection hashTag:value
+                    tappedFromSequence:self.sequence
+                              fromView:self];
+}
+
 #pragma mark - VStreamCellFocus
 
 - (void)setHasFocus:(BOOL)hasFocus
