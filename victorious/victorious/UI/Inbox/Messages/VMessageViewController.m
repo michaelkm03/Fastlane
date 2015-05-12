@@ -20,7 +20,6 @@
 #import "VMessage+RestKit.h"
 #import "VObjectManager.h"
 #import "VPaginationManager.h"
-#import "VThemeManager.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VUser+RestKit.h"
 #import "VUserProfileViewController.h"

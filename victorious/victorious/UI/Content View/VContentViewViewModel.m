@@ -48,7 +48,6 @@
 // End Card
 #import "VEndCard.h"
 #import "VStream.h"
-#import "VThemeManager.h"
 #import "VEndCardModel.h"
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"

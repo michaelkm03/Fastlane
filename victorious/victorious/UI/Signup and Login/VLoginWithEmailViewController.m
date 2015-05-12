@@ -46,7 +46,7 @@
 @property (nonatomic, strong) VPasswordValidator *passwordValidator;
 @property (nonatomic, strong) VEmailValidator *emailValidator;
 
-@property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, strong) VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, strong) IBOutlet CCHLinkTextView *forgotPasswordTextView;
 
 @end
@@ -68,6 +68,8 @@
 {
     [super viewDidLoad];
 
+    self.linkTextHelper = [[VLinkTextViewHelper alloc] initWithDependencyManager:self.dependencyManager];
+    
     self.emailValidator = [[VEmailValidator alloc] init];
     self.passwordValidator = [[VPasswordValidator alloc] init];
     

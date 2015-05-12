@@ -15,7 +15,6 @@
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VSideMenuViewController.h"
 #import "VStreamCollectionViewController.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VLaunchScreenProvider.h"

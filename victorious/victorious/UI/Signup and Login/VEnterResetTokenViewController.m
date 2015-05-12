@@ -27,7 +27,7 @@
 @property (nonatomic, weak) IBOutlet UITextField *codeField;
 
 @property (nonatomic, weak) IBOutlet CCHLinkTextView *resendEmailTextView;
-@property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, strong) VLinkTextViewHelper *linkTextHelper;
 
 @end
 
@@ -44,6 +44,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.linkTextHelper = [[VLinkTextViewHelper alloc] initWithDependencyManager:self.dependencyManager];
     
     self.titleLabel.text = NSLocalizedString(@"Thanks", @"");
     self.titleLabel.textColor = [self.dependencyManager colorForKey:@"color.text.content"];

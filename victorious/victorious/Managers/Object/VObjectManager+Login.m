@@ -14,7 +14,6 @@
 #import "VObjectManager+Users.h"
 #import "VUser+RestKit.h"
 #import "VDependencyManager.h"
-#import "VThemeManager.h"
 #import "VVoteType.h"
 #import "VTracking.h"
 #import "MBProgressHUD.h"
