@@ -13,6 +13,12 @@
 #import "UIImage+VTint.h"
 #import "UIImage+Round.h"
 
+@interface VDefaultProfileButton ()
+
+@property (nonatomic, strong) NSURL *imageURL;
+
+@end
+
 @implementation VDefaultProfileButton
 
 - (void)awakeFromNib
@@ -33,8 +39,6 @@
 
 - (void)setup
 {
-    [self setImage:[self placeholderImage] forState:UIControlStateNormal];
-    
     //Setting vertical and horizontal alignment to fill causes the image set by "setImage"
     //to completely fill the bounds of button
     self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
@@ -47,11 +51,17 @@
 - (void)setTintColor:(UIColor *)tintColor
 {
     super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
-    self.imageView.tintColor = super.tintColor;
+    // Re-render placeholder image if necessary
+    if (_imageURL == nil || [_imageURL absoluteString].length == 0)
+    {
+        [self setImage:[self placeholderImage] forState:UIControlStateNormal];
+    }
 }
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
+    _imageURL = url;
+    
     __weak typeof(self) weakSelf = self;
     [[SDWebImageManager sharedManager] downloadImageWithURL:url
                                                     options:SDWebImageRetryFailed

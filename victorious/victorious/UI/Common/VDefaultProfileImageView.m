@@ -38,19 +38,11 @@
 
 - (void)setup
 {
-    self.backgroundColor = [UIColor whiteColor];
-    self.tintColor = [UIColor darkGrayColor];
-    
-    self.image = [self placeholderImage];
-    
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
     self.clipsToBounds = YES;
-}
-
-- (void)setProfileImageURL:(NSURL *)url
-{
-    _imageURL = url;
-    [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
+        
+    self.backgroundColor = [UIColor whiteColor];
+    self.tintColor = [UIColor darkGrayColor];
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -60,6 +52,12 @@
     {
         self.image = [self placeholderImage];
     }
+}
+
+- (void)setProfileImageURL:(NSURL *)url
+{
+    _imageURL = url;
+    [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
 }
 
 - (UIImage *)placeholderImage
