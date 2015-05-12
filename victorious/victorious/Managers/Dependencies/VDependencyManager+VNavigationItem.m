@@ -78,8 +78,17 @@ static const char kAssociatedObjectKey;
     
     VNavigationMenuItem *menuItem = self.accessoryMenuItems[ selectedIndex ];
     UINavigationController *navigationController = objc_getAssociatedObject(self, &kAssociatedObjectKey);
-    [navigationController pushViewController:menuItem.destination animated:YES];
-    
+    UIViewController<VNavigationDestination> *destination = menuItem.destination;
+    BOOL shouldPerformNavigation = YES;
+    if ( [destination respondsToSelector:@selector(shouldNavigateFromViewController:withAlternateDestination:)] )
+    {
+        shouldPerformNavigation = [destination shouldNavigateFromViewController:navigationController.topViewController
+                                                                                     withAlternateDestination:&destination];
+    }
+    if ( shouldPerformNavigation )
+    {
+        [navigationController pushViewController:destination animated:YES];
+    }
 }
 
 @end

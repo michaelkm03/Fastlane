@@ -39,6 +39,13 @@ static const NSUInteger kCharacterLimit = 1024;
 
 @synthesize conversationTableViewController = _conversationTableViewController;
 
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VMessageContainerViewController *messageViewController = (VMessageContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kMessageContainerID];
+    messageViewController.dependencyManager = dependencyManager;
+    return messageViewController;
+}
+
 + (instancetype)messageViewControllerForUser:(VUser *)otherUser dependencyManager:(VDependencyManager *)dependencyManager
 {
     VMessageContainerViewController *messageViewController = (VMessageContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kMessageContainerID];

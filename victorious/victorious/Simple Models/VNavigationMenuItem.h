@@ -39,4 +39,6 @@
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
+@property (nonatomic, strong) id dependency;
+
 @end

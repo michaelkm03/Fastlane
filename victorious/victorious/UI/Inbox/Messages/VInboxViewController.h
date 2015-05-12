@@ -27,6 +27,4 @@ extern NSString * const VInboxViewControllerInboxPushReceivedNotification; ///< 
 
 - (void)displayConversationForUser:(VUser *)user animated:(BOOL)animated; ///< Pushes the conversation view for the given user onto the navigation controller
 
-- (IBAction)userSearchAction:(id)sender;
-
 @end

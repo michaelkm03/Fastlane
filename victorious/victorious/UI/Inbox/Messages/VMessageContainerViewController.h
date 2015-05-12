@@ -7,10 +7,11 @@
 //
 
 #import "VKeyboardBarContainerViewController.h"
+#import "VHasManagedDependencies.h"
 
 @class VDependencyManager, VUnreadMessageCountCoordinator, VUser;
 
-@interface VMessageContainerViewController : VKeyboardBarContainerViewController
+@interface VMessageContainerViewController : VKeyboardBarContainerViewController <VHasManagedDependencies>
 
 @property (nonatomic, readonly) VUser  *otherUser;
 @property (nonatomic, weak) IBOutlet UIView *busyView;

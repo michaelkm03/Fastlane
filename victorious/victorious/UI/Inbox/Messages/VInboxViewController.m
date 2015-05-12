@@ -412,7 +412,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 #pragma mark - Search
 
-- (IBAction)userSearchAction:(id)sender
+- (void)showUserSearch
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
     

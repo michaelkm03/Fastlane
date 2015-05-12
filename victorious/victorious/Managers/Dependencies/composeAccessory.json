@@ -1,7 +1,7 @@
 {
     "destination": {
         "title": "New Message",
-        "name": "message.screen"
+        "name": "compose.screen"
     },
     "title": "New Message",
     "icon": {
