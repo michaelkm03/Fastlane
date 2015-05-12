@@ -454,12 +454,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         [self loadNextPageAction];
     }
-    
-    //Notify the container about the scroll so it can handle the header
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-    {
-        [self.delegate scrollViewDidScroll:scrollView];
-    }
 }
 
 #pragma mark - NSNotification handlers

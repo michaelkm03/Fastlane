@@ -215,14 +215,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)markAllNotificationsRead
 {
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-    };
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self.tableView reloadData];
-    };
-    [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
+    [[VObjectManager sharedManager] markAllNotificationsRead:nil failBlock:nil];
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender
@@ -353,12 +346,6 @@ static int const kNotificationFetchBatchSize = 50;
     if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter] )
     {
         [self loadNextPageAction];
-    }
-    
-    //Notify the container about the scroll so it can handle the header
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-    {
-        [self.delegate scrollViewDidScroll:scrollView];
     }
 }
 
