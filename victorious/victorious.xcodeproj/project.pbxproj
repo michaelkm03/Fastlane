@@ -538,7 +538,6 @@
 		A7BB9C791AFD9934005B4596 /* inboxAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A7BB9C781AFD9934005B4596 /* inboxAccessory.json */; };
 		A7BB9C7D1AFD9C5D005B4596 /* composeAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */; };
 		A7BB9C821B019B4F005B4596 /* findFriendsAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A7BB9C811B019B4F005B4596 /* findFriendsAccessory.json */; };
-		A7BB9C861B029581005B4596 /* VComposeMessageNavigationDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BB9C851B029581005B4596 /* VComposeMessageNavigationDestination.m */; };
 		A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B619FAF64700726772 /* landscape_left.m4v */; };
 		A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B719FAF64700726772 /* landscape_right.m4v */; };
 		A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */; };
@@ -1862,8 +1861,6 @@
 		A7BB9C781AFD9934005B4596 /* inboxAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = inboxAccessory.json; sourceTree = "<group>"; };
 		A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = composeAccessory.json; sourceTree = "<group>"; };
 		A7BB9C811B019B4F005B4596 /* findFriendsAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = findFriendsAccessory.json; sourceTree = "<group>"; };
-		A7BB9C841B029581005B4596 /* VComposeMessageNavigationDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComposeMessageNavigationDestination.h; sourceTree = "<group>"; };
-		A7BB9C851B029581005B4596 /* VComposeMessageNavigationDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComposeMessageNavigationDestination.m; sourceTree = "<group>"; };
 		A7CFC1B619FAF64700726772 /* landscape_left.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_left.m4v; sourceTree = "<group>"; };
 		A7CFC1B719FAF64700726772 /* landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait_upsidedown.m4v; sourceTree = "<group>"; };
@@ -3013,8 +3010,6 @@
 				0314D3A319B46B5E00FA363C /* VMessageViewController.m */,
 				035FA78B1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.h */,
 				035FA78C1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m */,
-				A7BB9C841B029581005B4596 /* VComposeMessageNavigationDestination.h */,
-				A7BB9C851B029581005B4596 /* VComposeMessageNavigationDestination.m */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -6366,7 +6361,6 @@
 				F04DC6C01AC7791300FBCD50 /* VCrossFadingLabel.m in Sources */,
 				A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
-				A7BB9C861B029581005B4596 /* VComposeMessageNavigationDestination.m in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,

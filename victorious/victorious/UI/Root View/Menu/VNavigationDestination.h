@@ -34,7 +34,4 @@
  */
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController;
 
-- (BOOL)shouldNavigateFromViewController:(UIViewController *)viewController
-                withAlternateDestination:(__autoreleasing id *)alternateViewController;
-
 @end

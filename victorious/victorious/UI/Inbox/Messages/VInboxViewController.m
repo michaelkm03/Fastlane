@@ -34,7 +34,6 @@
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
 #import "VNavigationController.h"
-#import "VDependencyManager+VNavigationItem.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -408,6 +407,19 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeNext
                                                         successBlock:nil failBlock:nil];
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateToDestination:(id)destination
+{
+    if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
+    {
+        [self showUserSearch];
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - Search

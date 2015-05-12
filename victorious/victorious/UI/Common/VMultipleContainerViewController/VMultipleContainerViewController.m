@@ -46,9 +46,6 @@ static NSString * const kInitialKey = @"initial";
     {
         _didShowInitial = NO;
         _selectedIndex = 0;
-#warning Can we delete this?
-        //CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
-        //self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
     return self;
 }
@@ -279,6 +276,18 @@ static NSString * const kInitialKey = @"initial";
 - (UINavigationItem *)parentNavigationItem
 {
     return self.navigationItem;
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateToDestination:(id)destination
+{
+    id <VAccessoryNavigationSource> currentSource = (id <VAccessoryNavigationSource>)self.viewControllers[ self.selectedIndex ];
+    if ( [currentSource conformsToProtocol:@protocol(VAccessoryNavigationSource)] )
+    {
+        return [currentSource shouldNavigateToDestination:destination];
+    }
+    return YES;
 }
 
 #pragma mark - VAuthorizationContextProvider

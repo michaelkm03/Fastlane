@@ -25,7 +25,6 @@
 #import "VInboxViewController.h"
 #import "VProfileHeaderCell.h"
 #import "VAuthorizedAction.h"
-#import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
 #import "VDependencyManager.h"
@@ -202,8 +201,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [self loadUserWithRemoteId:self.remoteId];
     }
-    
-#warning Hide compose accessory if is current user (can't message yo' self)
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
@@ -806,6 +803,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(location))];
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(tagline))];
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateToDestination:(id)destination
+{
+    if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
+    {
+        ((VMessageContainerViewController *)destination).otherUser = self.user;
+    }
+    
+    return YES;
 }
 
 @end

@@ -13,7 +13,7 @@
 
 @interface VMessageContainerViewController : VKeyboardBarContainerViewController <VHasManagedDependencies>
 
-@property (nonatomic, readonly) VUser  *otherUser;
+@property (nonatomic, strong) VUser  *otherUser;
 @property (nonatomic, weak) IBOutlet UIView *busyView;
 @property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic, assign) BOOL presentingFromProfile;

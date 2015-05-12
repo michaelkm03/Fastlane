@@ -232,10 +232,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
                                                             forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens/0"] );
         
-        /*NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/menu/items/4/accessoryScreens"] );
-        NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
-                                                            forKeyPath:@"scaffold/menu/items/4/accessoryScreens/1"] );*/
-        
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

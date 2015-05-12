@@ -10,6 +10,16 @@
 
 extern NSString * const VDependencyManagerTitleImageKey; ///< The key that specifies a title image
 
+@protocol VAccessoryNavigationSource <NSObject>
+
+- (BOOL)shouldNavigateToDestination:(id)destination;
+
+@optional
+
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination;
+
+@end
+
 @interface VDependencyManager (VNavigationItem)
 
 /**

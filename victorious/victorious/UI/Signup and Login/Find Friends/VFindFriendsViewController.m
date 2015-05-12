@@ -70,6 +70,9 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
+    
+    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
+                                 pushAccessoryMenuItemsOn:self.navigationController];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -88,13 +91,6 @@
     BOOL canSendText = [MFMessageComposeViewController canSendText];
     BOOL hasValidDisplayStrings = [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
     self.shouldShowInvite = (canSendMail || canSendText) && hasValidDisplayStrings;
-    
-    UIBarButtonItem *barButtonItem = nil;
-    if ( self.shouldShowInvite )
-    {
-        barButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)];
-    }
-    self.navigationItem.rightBarButtonItem = barButtonItem;
 }
 
 - (void)setShouldShowInvite:(BOOL)shouldShowInvite
@@ -123,6 +119,30 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateToDestination:(id)destination
+{
+#warning This method of detecting destination will have to change
+    if ( destination == nil || [destination isKindOfClass:[NSNull class]] )
+    {
+        [self sendInvitation];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+{
+    if ( destination == nil )
+    {
+        return [self shouldShowInvite];
+    }
+    
+    return YES;
 }
 
 #pragma mark -
@@ -171,17 +191,10 @@
 
 - (void)inviteButtonWasTappedInFindFriendsTableViewController:(VFindFriendsTableViewController *)findFriendsTableViewController
 {
-    [self pressedInvite:nil];
+    [self sendInvitation];
 }
 
-#pragma mark - Button Actions
-
-- (IBAction)pressedBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (IBAction)pressedInvite:(id)sender
+- (void)sendInvitation
 {
     if ((![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText]) )
     {
@@ -213,6 +226,13 @@
     sheet.cancelButtonIndex = cancelButtonIndex;
     
     [sheet showInView:self.view];
+}
+
+#pragma mark - Button Actions
+
+- (IBAction)pressedBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)pressedDone:(id)sender

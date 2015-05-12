@@ -8,10 +8,11 @@
 
 #import "VDependencyManager.h"
 #import "VStreamCollectionViewController.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 @class VUser;
 
-@interface VUserProfileViewController : VStreamCollectionViewController
+@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource>
 
 @property (nonatomic, readonly) VUser *user;
 

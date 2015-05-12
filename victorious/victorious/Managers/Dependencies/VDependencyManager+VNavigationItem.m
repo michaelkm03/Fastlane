@@ -42,16 +42,44 @@ static const char kAssociatedObjectKey;
     
     if (navigationController != nil)
     {
+        id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)navigationController.topViewController;
+            
         objc_setAssociatedObject(self, &kAssociatedObjectKey, navigationController, OBJC_ASSOCIATION_ASSIGN);
         NSInteger tag = 0;
         NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] init];
         NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] init];
         for ( VNavigationMenuItem *menuItem in self.accessoryMenuItems )
         {
-            UIBarButtonItem *accessoryBarItem = [[UIBarButtonItem alloc] initWithImage:menuItem.icon
-                                                                                 style:UIBarButtonItemStylePlain
-                                                                                target:self
-                                                                                action:@selector(showAccessoryMenuItemOnNavigation:)];
+            // Check if the source can display the menu item (default is YES)
+            if ( [source conformsToProtocol:@protocol(VAccessoryNavigationSource)] &&
+                 [source respondsToSelector:@selector(shouldDisplayAccessoryForDestination:)] )
+            {
+                if ( ![source shouldDisplayAccessoryForDestination:menuItem.destination] )
+                {
+                    continue;
+                }
+            }
+            
+            UIBarButtonItem *accessoryBarItem = nil;
+            if ( menuItem.icon != nil )
+            {
+                accessoryBarItem = [[UIBarButtonItem alloc] initWithImage:menuItem.icon
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(showAccessoryMenuItemOnNavigation:)];
+            }
+            else if ( menuItem.title != nil )
+            {
+                accessoryBarItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString( menuItem.title, @"" )
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(showAccessoryMenuItemOnNavigation:)];
+            }
+            else
+            {
+                continue;
+            }
+            
             accessoryBarItem.tag = tag++;
             if ( [menuItem.position isEqualToString:VDependencyManagerPositionRight])
             {
@@ -63,8 +91,8 @@ static const char kAssociatedObjectKey;
             }
         }
         
-        navigationItem.leftBarButtonItems = [barButtonItemsLeft arrayByAddingObjectsFromArray:navigationItem.leftBarButtonItems];
-        navigationItem.rightBarButtonItems = [barButtonItemsRight arrayByAddingObjectsFromArray:navigationItem.rightBarButtonItems];
+        navigationItem.leftBarButtonItems = barButtonItemsLeft;
+        navigationItem.rightBarButtonItems = barButtonItemsRight;
     }
 }
 
@@ -79,13 +107,21 @@ static const char kAssociatedObjectKey;
     VNavigationMenuItem *menuItem = self.accessoryMenuItems[ selectedIndex ];
     UINavigationController *navigationController = objc_getAssociatedObject(self, &kAssociatedObjectKey);
     UIViewController<VNavigationDestination> *destination = menuItem.destination;
-    BOOL shouldPerformNavigation = YES;
-    if ( [destination respondsToSelector:@selector(shouldNavigateFromViewController:withAlternateDestination:)] )
+    
+    BOOL canNavigateFromSource = YES;
+    id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)navigationController.topViewController;
+    if ( [source conformsToProtocol:@protocol(VAccessoryNavigationSource)] )
     {
-        shouldPerformNavigation = [destination shouldNavigateFromViewController:navigationController.topViewController
-                                                                                     withAlternateDestination:&destination];
+        canNavigateFromSource = [source shouldNavigateToDestination:menuItem.destination];
     }
-    if ( shouldPerformNavigation )
+
+    BOOL canNavigationToDestination = YES;
+    if ( [destination conformsToProtocol:@protocol(VNavigationDestination)] )
+    {
+        canNavigationToDestination = [destination shouldNavigateWithAlternateDestination:&destination];
+    }
+    
+    if ( canNavigateFromSource && canNavigationToDestination )
     {
         [navigationController pushViewController:destination animated:YES];
     }

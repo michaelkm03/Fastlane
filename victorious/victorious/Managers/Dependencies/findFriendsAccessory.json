@@ -10,7 +10,14 @@
                 "blue": 241,
                 "green": 241
             }
-        }
+        },
+        "accessoryScreens" : [{
+            "destination" : null,
+            "title": "Invite",
+            "icon" : null,
+            "identifier": "Accessory Invite",
+            "position": "right"
+        }]
     },
     "icon": {
         "imageURL": "A_findFriendsIcon"
