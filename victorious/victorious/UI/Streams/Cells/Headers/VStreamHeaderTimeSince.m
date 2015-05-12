@@ -29,7 +29,6 @@
 static const CGFloat kLeadingTrailingHeaderSpace = 11.0f;
 static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 3.0f;
-static const CGFloat kCreationInfoContainerHeight = 44.0f;
 
 @interface VStreamHeaderTimeSince ()
 
@@ -94,7 +93,6 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
         {
             [creationContainer setDependencyManager:self.dependencyManager];
         }
-        [creationContainer v_addHeightConstraint:kCreationInfoContainerHeight];
         self.creationInfoContainer = creationContainer;
         self.creationInfoContainer.shouldShowTimeSince = NO;
         
@@ -111,7 +109,7 @@ static const CGFloat kCreationInfoContainerHeight = 44.0f;
                                        creationContainer,
                                        self.timeSinceWidget,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
-        
+        [self.actionBar v_addPintoTopBottomToSubview:self.creationInfoContainer];
         [self updateUserAvatarForSequence:self.sequence];
         [self updateInfoContainerForSequence:self.sequence];
     }

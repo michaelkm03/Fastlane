@@ -806,6 +806,7 @@
 		D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */; };
 		D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */; };
 		D8FFB8DF1B01AE1B0022A491 /* VFailureSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFB8DE1B01AE1B0022A491 /* VFailureSequencePreviewView.m */; };
+		D8FFB8E21B0272540022A491 /* VStreamLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFB8E11B0272540022A491 /* VStreamLabel.m */; };
 		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
 		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
 		DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A491D19DF437D00CB687B /* VNoContentView.xib */; };
@@ -2392,6 +2393,8 @@
 		D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlaceholderTextView.m; sourceTree = "<group>"; };
 		D8FFB8DD1B01AE1B0022A491 /* VFailureSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureSequencePreviewView.h; sourceTree = "<group>"; };
 		D8FFB8DE1B01AE1B0022A491 /* VFailureSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureSequencePreviewView.m; sourceTree = "<group>"; };
+		D8FFB8E01B0272540022A491 /* VStreamLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamLabel.h; sourceTree = "<group>"; };
+		D8FFB8E11B0272540022A491 /* VStreamLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamLabel.m; sourceTree = "<group>"; };
 		D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.stable.xcconfig"; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -5400,6 +5403,8 @@
 				037FCF071A8B0CE500E8ABFC /* FollowUserControl */,
 				D8282B1C1AE74074005D9DCF /* VRoundedCommentButton.h */,
 				D8282B1D1AE74074005D9DCF /* VRoundedCommentButton.m */,
+				D8FFB8E01B0272540022A491 /* VStreamLabel.h */,
+				D8FFB8E11B0272540022A491 /* VStreamLabel.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -6579,6 +6584,7 @@
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
+				D8FFB8E21B0272540022A491 /* VStreamLabel.m in Sources */,
 				0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */,
 				F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */,
 				BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */,

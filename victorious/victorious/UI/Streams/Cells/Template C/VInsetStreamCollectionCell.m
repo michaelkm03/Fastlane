@@ -242,9 +242,10 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     if (sequence.name == nil || self.dependencyManager == nil)
     {
         self.captionTextView.attributedText = nil;
+        self.captionTextView.hidden = YES;
         return;
     }
-    
+    self.captionTextView.hidden = NO;
     self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                           attributes:[VInsetStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
 }
