@@ -13,13 +13,13 @@ static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
 static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
 static const CGFloat kLayoutChangeAnimationSpringVelocity   = 0.1f;
 static const CGFloat kDefaultLeadingSpace                   = 8.0f;
-
+static const CGFloat kButtonBackLeadingOffsetMultipler      = 0.25f;
 
 @interface VWebBrowserHeaderLayoutManager()
 
 @property (nonatomic, weak, readwrite) IBOutlet VWebBrowserHeaderViewController *header;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackLeadingConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleLeadingConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitWidthConstraint;
 
@@ -27,8 +27,8 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *progressBarTopConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *progressBarBottomConstraint;
 
-@property (nonatomic, assign) CGFloat startingBackButtonWidth;
-@property (nonatomic, assign) CGFloat startingExitButtonWidth;
+@property (nonatomic, assign) CGFloat startomgButtonBackLeading;
+@property (nonatomic, assign) CGFloat startingButtonExitWidth;
 @property (nonatomic, assign) CGFloat startingPageTitleLeading;
 
 @property (nonatomic, assign, readonly) BOOL shouldHideNavigationControls;
@@ -92,7 +92,7 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 
 - (void)setInitialValues
 {
-    if ( self.buttonBackWidthConstraint == nil ||
+    if ( self.buttonBackLeadingConstraint == nil ||
          self.buttonExitWidthConstraint == nil ||
          self.pageTitleLeadingConstraint == nil )
     {
@@ -100,11 +100,16 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     }
     
     // Capture some initial values as configured in interface builder
-    self.startingBackButtonWidth = self.buttonBackWidthConstraint.constant;
-    self.startingExitButtonWidth = self.buttonExitWidthConstraint.constant;
+    self.startomgButtonBackLeading = self.buttonBackLeadingConstraint.constant;
+    self.startingButtonExitWidth = self.buttonExitWidthConstraint.constant;
     self.startingPageTitleLeading = self.pageTitleLeadingConstraint.constant;
     
     self.hasSetInitialValues = YES;
+}
+
+- (CGFloat)buttonBackLeadingOffset
+{
+    return CGRectGetWidth( self.header.buttonBack.frame ) * kButtonBackLeadingOffsetMultipler;
 }
 
 - (void)update
@@ -115,7 +120,16 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
         return;
     }
     
-    self.buttonBackWidthConstraint.constant = self.shouldHideNavigationControls ? 0.0f : self.startingBackButtonWidth;
+    if ( self.shouldHideNavigationControls )
+    {
+        self.buttonBackLeadingConstraint.constant = self.startomgButtonBackLeading - self.buttonBackLeadingOffset;
+        self.header.buttonBack.alpha = 0.0f;
+    }
+    else
+    {
+        self.buttonBackLeadingConstraint.constant = self.startomgButtonBackLeading;
+        self.header.buttonBack.alpha = 1.0f;
+    }
     
     switch ( self.progressBarAlignment )
     {
@@ -135,16 +149,20 @@ static const CGFloat kDefaultLeadingSpace                   = 8.0f;
     switch ( self.contentAlignment )
     {
         case VWebBrowserHeaderContentAlignmentCenter:
+        {
             self.header.labelTitle.textAlignment = NSTextAlignmentCenter;
             self.buttonExitWidthConstraint.constant = 0.0f;
-            self.pageTitleLeadingConstraint.constant = self.startingPageTitleLeading + (self.shouldHideNavigationControls ? self.startingBackButtonWidth : 0.0f);
+            const CGFloat leadingOffset = self.buttonBackLeadingOffset;
+            self.pageTitleLeadingConstraint.constant = self.startingPageTitleLeading + (self.shouldHideNavigationControls ? leadingOffset : 0.0f);
             break;
-            
+        }
         case VWebBrowserHeaderContentAlignmentLeft:
+        {
             self.header.labelTitle.textAlignment = NSTextAlignmentLeft;
-            self.buttonExitWidthConstraint.constant = self.startingExitButtonWidth;
+            self.buttonExitWidthConstraint.constant = self.startingButtonExitWidth;
             self.pageTitleLeadingConstraint.constant = self.startingPageTitleLeading + (self.shouldHideNavigationControls ? kDefaultLeadingSpace : 0.0f);
             break;
+        }
     }
     
     [self.header.view layoutIfNeeded];

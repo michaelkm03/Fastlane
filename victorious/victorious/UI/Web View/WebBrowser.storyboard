@@ -162,7 +162,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5P-AU-Gzq" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="Sxo-zT-JBi" customClass="VWebBrowserHeaderLayoutManager">
                     <connections>
-                        <outlet property="buttonBackWidthConstraint" destination="qQ4-OK-Ra3" id="LLh-5n-R9p"/>
+                        <outlet property="buttonBackLeadingConstraint" destination="qF7-aT-FSL" id="XLn-F8-vQa"/>
                         <outlet property="buttonExitWidthConstraint" destination="mWz-d4-er6" id="rPv-7e-cXd"/>
                         <outlet property="header" destination="XJq-6Z-G52" id="gAy-ed-mwQ"/>
                         <outlet property="pageTitleLeadingConstraint" destination="WME-O1-JeV" id="VaV-sn-Swz"/>
@@ -228,6 +228,6 @@
         <image name="browser-share" width="14" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KRd-Vh-WfY"/>
+        <segue reference="3rD-5f-0tG"/>
     </inferredMetricsTieBreakers>
 </document>
