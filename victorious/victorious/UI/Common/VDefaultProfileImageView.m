@@ -48,6 +48,7 @@
 - (void)setTintColor:(UIColor *)tintColor
 {
     super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
+    // Re-render placeholder image if necessary
     if (_imageURL == nil || [_imageURL absoluteString].length == 0)
     {
         self.image = [self placeholderImage];
