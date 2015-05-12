@@ -290,6 +290,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     [self.followHelper unfollowUser:user
                      withCompletion:completion];
 }
+
 #pragma mark - VURLSelectionResponder
 
 - (void)URLSelected:(NSURL *)URL
