@@ -21,10 +21,10 @@
         }
     },
     "icon": {
-        "imageURL": "A_Inbox"
+        "imageURL": "A_store"
     },
     "selectedIcon": {
-        "imageURL": "A_Inbox_selected"
+        "imageURL": "A_store_selected"
     },
     "identifier": "Menu Store",
     "title": "Store"
