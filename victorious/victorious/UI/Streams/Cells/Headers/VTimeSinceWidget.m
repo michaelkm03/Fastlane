@@ -72,22 +72,12 @@ static const CGFloat kClockSize = 8.5f;
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_clockImageView, _timeSinceLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_clockImageView]|"
-                                                                 options:kNilOptions
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_clockImageView, _timeSinceLabel)]];
+    [self v_addCenterVerticallyConstraintsToSubview:_clockImageView];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeSinceLabel]|"
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_clockImageView, _timeSinceLabel)]];
     self.translatesAutoresizingMaskIntoConstraints = NO;
-}
-
-#pragma mark - UIView
-
-- (CGSize)intrinsicContentSize
-{
-    return CGSizeMake(self.clockImageView.intrinsicContentSize.width + self.timeSinceLabel.intrinsicContentSize.width, self.timeSinceLabel.intrinsicContentSize.height);
 }
 
 #pragma mark - Property Accessors

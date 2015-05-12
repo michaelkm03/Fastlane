@@ -87,6 +87,27 @@
 
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview
 {
+    [self v_addcenterHorizontallyCOnstraintsToSubview:subview];
+    [self v_addCenterVerticallyConstraintsToSubview:subview];
+}
+
+- (void)v_addCenterVerticallyConstraintsToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+}
+
+- (void)v_addcenterHorizontallyCOnstraintsToSubview:(UIView *)subview
+{
     NSParameterAssert( [subview isDescendantOfView:self] );
     
     subview.translatesAutoresizingMaskIntoConstraints = NO;
@@ -96,14 +117,6 @@
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
                                                      attribute:NSLayoutAttributeCenterX
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
 }

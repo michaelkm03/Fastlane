@@ -60,10 +60,19 @@
 - (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView;
 
 /**
- Applies centering to subview of both horizontal and verticall
- directions to superview.
+ Applies both vertical and horizontal centering constraints.
  */
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview;
+
+/**
+ Adds vertical centering constraints to subview.
+ */
+- (void)v_addCenterVerticallyConstraintsToSubview:(UIView *)subview;
+
+/**
+ Adds horizontal centering constraints to subview.
+ */
+- (void)v_addcenterHorizontallyCOnstraintsToSubview:(UIView *)subview;
 
 /**
  Applies top to top and bottom to bottom constraints form the container view ot the

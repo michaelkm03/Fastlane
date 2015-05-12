@@ -21,7 +21,4 @@
 
 - (void)setSequence:(VSequence *)sequence;
 
-+ (CGSize)sizeForSequence:(VSequence *)sequence
-              withMaxSize:(CGSize)maxSize;
-
 @end

@@ -145,12 +145,16 @@ static const CGFloat kActionButtonWidth = 44.0f;
     
     // Calculate spacing
     __block CGFloat remainingSpace = CGRectGetWidth(actionBar.bounds);
+    if (remainingSpace == 0.0f)
+    {
+        // Nothing to do here
+        return;
+    }
     [justActionItems enumerateObjectsUsingBlock:^(UIButton *actionItem, NSUInteger idx, BOOL *stop)
     {
         remainingSpace = remainingSpace - [actionItem v_internalWidthConstraint].constant;
     }];
     CGFloat spacingWidth = remainingSpace / justActionItems.count;
-    
     // Add our action items and spacing to an array to provide to the action bar
     // Edge spacing should be half the inter-item spacing
     NSMutableArray *actionItemsAndSpacing = [[NSMutableArray alloc] init];
@@ -166,6 +170,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
     [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth * 0.5f]];
     
     actionBar.actionItems = [NSArray arrayWithArray:actionItemsAndSpacing];
+    for (UIView *actionView in actionBar.actionItems)
+    {
+        [actionBar v_addPintoTopBottomToSubview:actionView];
+    }
 }
 
 - (void)updateRepostButtonForSequence:(VSequence *)sequence
