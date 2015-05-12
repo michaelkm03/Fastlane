@@ -10,6 +10,13 @@
 
 // Categories
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImage+VTint.h"
+
+@interface VDefaultProfileImageView ()
+
+@property (nonatomic, strong) NSURL *imageURL;
+
+@end
 
 @implementation VDefaultProfileImageView
 
@@ -31,10 +38,10 @@
 
 - (void)setup
 {
-    self.image = [self placeholderImage];
-    
     self.backgroundColor = [UIColor whiteColor];
     self.tintColor = [UIColor darkGrayColor];
+    
+    self.image = [self placeholderImage];
     
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
     self.clipsToBounds = YES;
@@ -42,12 +49,17 @@
 
 - (void)setProfileImageURL:(NSURL *)url
 {
+    _imageURL = url;
     [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
 }
 
 - (void)setTintColor:(UIColor *)tintColor
 {
     super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
+    if (_imageURL == nil || [_imageURL absoluteString].length == 0)
+    {
+        self.image = [self placeholderImage];
+    }
 }
 
 - (UIImage *)placeholderImage
@@ -57,7 +69,23 @@
     {
         image = [UIImage imageNamed:@"profile_full"];
     }
-    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    // Create unique key from tint color
+    NSString *tintKey = [self.tintColor description];
+    
+    // Check cache for already tinted image
+    SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
+    UIImage *cachedImage = [cache imageFromMemoryCacheForKey:tintKey];
+    if (cachedImage != nil)
+    {
+        return cachedImage;
+    }
+    
+    // Tint image and store in cache
+    UIImage *tintedImage = [image v_tintedTemplateImageWithColor:[self tintColor]];
+    [cache storeImage:tintedImage forKey:tintKey];
+    
+    return tintedImage;
 }
 
 @end

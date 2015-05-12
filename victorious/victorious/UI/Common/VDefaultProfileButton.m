@@ -10,6 +10,7 @@
 
 #import <SDWebImage/UIButton+WebCache.h>
 #import "UIImageView+VLoadingAnimations.h"
+#import "UIImage+VTint.h"
 
 @implementation VDefaultProfileButton
 
@@ -81,7 +82,23 @@
     {
         image = [UIImage imageNamed:@"profile_full"];
     }
-    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    // Create unique key from tint color
+    NSString *tintKey = [self.tintColor description];
+    
+    // Check cache for already tinted image
+    SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
+    UIImage *cachedImage = [cache imageFromMemoryCacheForKey:tintKey];
+    if (cachedImage != nil)
+    {
+        return cachedImage;
+    }
+    
+    // Tint image and store in cache
+    UIImage *tintedImage = [image v_tintedTemplateImageWithColor:self.tintColor];
+    [cache storeImage:tintedImage forKey:tintKey];
+    
+    return tintedImage;
 }
 
 @end
