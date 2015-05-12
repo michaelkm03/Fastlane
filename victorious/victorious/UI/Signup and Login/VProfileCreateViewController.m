@@ -27,6 +27,7 @@
 #import "UIAlertView+VBlocks.h"
 #import "VAutomation.h"
 #import "VButton.h"
+#import "VDefaultProfileImageView.h"
 
 #import "VLocationManager.h"
 
@@ -37,7 +38,7 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *locationTextField;
-@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet VButton *doneButton;
 
 @property (nonatomic, strong) VLocationManager *locationManager;

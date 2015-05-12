@@ -674,6 +674,7 @@
 		BEEDF46119D2337B000DF6F5 /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEDF46019D2337B000DF6F5 /* VStreamItem.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
+		C395E86E1AFAEAFA00B6E3DB /* UIImage+Round.m in Sources */ = {isa = PBXBuildFile; fileRef = C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
 		D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */; };
 		D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DD1A53941D0035D788 /* VTrimControl.m */; };
@@ -2128,6 +2129,8 @@
 		BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPollResult+RestKit.m"; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
+		C395E86C1AFAEAFA00B6E3DB /* UIImage+Round.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Round.h"; sourceTree = "<group>"; };
+		C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Round.m"; sourceTree = "<group>"; };
 		C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D800A6161AEEAA0F00F1A06A /* VCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCompatibility.h; sourceTree = "<group>"; };
 		D800A6181AF01B6100F1A06A /* VCameraCoachMarkAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCoachMarkAnimator.h; sourceTree = "<group>"; };
@@ -4938,6 +4941,8 @@
 				03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */,
 				A7ECC1BC1AD601040003E00A /* UIImage+VTint.h */,
 				A7ECC1BD1AD601040003E00A /* UIImage+VTint.m */,
+				C395E86C1AFAEAFA00B6E3DB /* UIImage+Round.h */,
+				C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */,
 				0314D06D19B4670A00FA363C /* UIImageView+Blurring.h */,
 				0314D06E19B4670A00FA363C /* UIImageView+Blurring.m */,
 				BE11447C19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.h */,
@@ -6307,6 +6312,7 @@
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
+				C395E86E1AFAEAFA00B6E3DB /* UIImage+Round.m in Sources */,
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
 				0314D4A219B46B5E00FA363C /* VImageSearchViewController.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
