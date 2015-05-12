@@ -72,7 +72,7 @@ static inline BOOL isSessionQueue()
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _useBackgroundSession = YES;
         _objectManager = objectManager;
@@ -102,7 +102,7 @@ static inline BOOL isSessionQueue()
     {
         [self _startURLSessionWithCompletion:^(void)
         {
-            if (completion)
+            if ( completion != nil )
             {
                 dispatch_async(self.callbackQueue, ^(void)
                 {
@@ -116,17 +116,17 @@ static inline BOOL isSessionQueue()
 - (void)_startURLSessionWithCompletion:(void(^)(void))completion
 {
     NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
-    if (!self.tasksInProgressSerializer)
+    if ( self.tasksInProgressSerializer == nil )
     {
         self.tasksInProgressSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForInProgressTaskList]];
     }
     
-    if (!self.tasksPendingSerializer)
+    if ( self.tasksPendingSerializer == nil )
     {
         self.tasksPendingSerializer = [[VUploadTaskSerializer alloc] initWithFileURL:[self urlForPendingTaskList]];
     }
     
-    if (!self.urlSession)
+    if ( self.urlSession == nil )
     {
         NSArray *savedTasks = [self.tasksInProgressSerializer uploadTasksFromDisk];
         if (savedTasks)
@@ -139,7 +139,7 @@ static inline BOOL isSessionQueue()
         }
         
         NSArray *pendingTasks = [self.tasksPendingSerializer uploadTasksFromDisk];
-        if (pendingTasks)
+        if ( pendingTasks != nil )
         {
             self.pendingTaskInformation = [self arrayOfTasksByFilteringOutInvalidTasks:pendingTasks];
         }
@@ -163,13 +163,13 @@ static inline BOOL isSessionQueue()
             dispatch_async(self.sessionQueue, ^(void)
             {
                 // Reconnect in-progress upload tasks with their VUploadTaskInformation instances
-                if (self.taskInformation.count)
+                if ( self.taskInformation.count != 0 )
                 {
                     for (NSURLSessionUploadTask *task in uploadTasks)
                     {
                         VUploadTaskInformation *taskInformation = [self informationForSessionTask:task];
                         
-                        if (taskInformation)
+                        if ( taskInformation != nil )
                         {
                             [self.taskInformationBySessionTask setObject:taskInformation forKey:task];
                         }
@@ -178,14 +178,14 @@ static inline BOOL isSessionQueue()
                 
                 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:self.objectManager];
                 
-                if (completion)
+                if ( completion != nil )
                 {
                     completion();
                 }
             });
         }];
     }
-    else if (completion)
+    else if ( completion != nil )
     {
         completion();
     }
@@ -234,7 +234,7 @@ static inline BOOL isSessionQueue()
         
         if (![[NSFileManager defaultManager] fileExistsAtPath:[uploadBodyFileURL path]])
         {
-            if (complete)
+            if ( complete != nil )
             {
                 dispatch_async(self.callbackQueue, ^(void)
                 {
@@ -249,7 +249,7 @@ static inline BOOL isSessionQueue()
             [self.pendingTaskInformation addObject:uploadTask];
             [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
             
-            if (complete)
+            if ( complete != nil )
             {
                 [self.completionBlocksForPendingTasks setObject:complete forKey:uploadTask];
             }
@@ -274,10 +274,10 @@ static inline BOOL isSessionQueue()
         [self.objectManager updateHTTPHeadersInRequest:request];
         NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadBodyFileURL];
         
-        if (!uploadSessionTask)
+        if ( uploadSessionTask == nil )
         {
             NSError *uploadError = [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerCouldNotStartUploadErrorCode userInfo:nil];
-            if (complete)
+            if ( complete != nil )
             {
                 dispatch_async(self.callbackQueue, ^(void)
                 {
@@ -297,7 +297,7 @@ static inline BOOL isSessionQueue()
             return;
         }
         
-        if (complete)
+        if ( complete != nil )
         {
            [self.completionBlocks setObject:complete forKey:uploadSessionTask];
         }
@@ -310,7 +310,7 @@ static inline BOOL isSessionQueue()
 
 - (void)getQueuedUploadTasksWithCompletion:(void (^)(NSArray *tasks))completion
 {
-    if (completion)
+    if ( completion != nil )
     {
         [self startURLSessionWithCompletion:^(void)
         {
@@ -354,7 +354,7 @@ static inline BOOL isSessionQueue()
 
 - (BOOL)isTaskInProgress:(VUploadTaskInformation *)task
 {
-    if (!task)
+    if ( task == nil )
     {
         return NO;
     }
@@ -362,7 +362,7 @@ static inline BOOL isSessionQueue()
     BOOL __block isInProgress = NO;
     dispatch_sync(self.sessionQueue, ^(void)
     {
-        if (self.urlSession)
+        if ( self.urlSession != nil )
         {
             for (VUploadTaskInformation *taskInProgress in [self.taskInformationBySessionTask objectEnumerator])
             {
@@ -386,19 +386,19 @@ static inline BOOL isSessionQueue()
     NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
     VUploadTaskInformation *cachedInformation = [self.taskInformationBySessionTask objectForKey:task];
     
-    if (cachedInformation)
+    if ( cachedInformation != nil )
     {
         return cachedInformation;
     }
     NSUUID *identifier = [[NSUUID alloc] initWithUUIDString:task.taskDescription];
 
-    if (!identifier)
+    if ( identifier == nil )
     {
         return nil;
     }
     NSArray *taskInformation = [self.taskInformation filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K=%@", NSStringFromSelector(@selector(identifier)), identifier]];
     
-    if (taskInformation.count)
+    if ( taskInformation.count != 0 )
     {
         return taskInformation[0];
     }
@@ -432,14 +432,14 @@ static inline BOOL isSessionQueue()
         return;
     }
     
-    if (self.pendingTaskInformation.count)
+    if ( self.pendingTaskInformation.count != 0 )
     {
         VUploadTaskInformation *nextUpload = self.pendingTaskInformation[0];
         [self.pendingTaskInformation removeObjectAtIndex:0];
         [self.tasksPendingSerializer saveUploadTasks:self.pendingTaskInformation];
         
         VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocksForPendingTasks objectForKey:nextUpload];
-        if (completionBlock)
+        if ( completionBlock != nil )
         {
             [self.completionBlocksForPendingTasks removeObjectForKey:nextUpload];
         }
@@ -517,20 +517,17 @@ static inline BOOL isSessionQueue()
 - (NSDictionary *)parsedResponseFromData:(NSData *)responseData parsedError:(NSError *__autoreleasing *)error
 {
     NSDictionary *jsonObject = nil;
-    @try
+    if ( responseData != nil )
     {
         jsonObject = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-    }
-    @catch (NSException *exception)
-    {
     }
     
     if ([jsonObject isKindOfClass:[NSDictionary class]])
     {
         NSInteger errorCode = [jsonObject[kVErrorKey] integerValue];
-        if (errorCode)
+        if ( errorCode != 0 )
         {
-            if (error)
+            if ( error != nil )
             {
                 *error = [NSError errorWithDomain:kVictoriousErrorDomain
                                              code:errorCode
@@ -566,7 +563,7 @@ static inline BOOL isSessionQueue()
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
-        if (_backgroundSessionEventsCompleteHandler) // direct ivar access because calling the property getter would surely deadlock.
+        if ( _backgroundSessionEventsCompleteHandler != nil ) // direct ivar access because calling the property getter would surely deadlock.
         {
             _backgroundSessionEventsCompleteHandler();
             _backgroundSessionEventsCompleteHandler = nil;
@@ -585,8 +582,10 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     dispatch_async(self.sessionQueue, ^(void)
     {
         VUploadTaskInformation *taskInformation = [self.taskInformationBySessionTask objectForKey:task];
-        if (taskInformation)
+        if ( taskInformation != nil )
         {
+            taskInformation.expectedBytesToSend = totalBytesExpectedToSend;
+            taskInformation.bytesSent = totalBytesSent;
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskProgressNotification
@@ -606,7 +605,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     {
         NSMutableData *responseData = [self.responseData objectForKey:dataTask];
         
-        if (!responseData)
+        if ( responseData == nil )
         {
             responseData = [[NSMutableData alloc] init];
             [self.responseData setObject:responseData forKey:dataTask];
@@ -626,25 +625,25 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
         NSDictionary *jsonObject = nil;
         NSData *data = [self.responseData objectForKey:task];
         
-        if (data)
+        if ( data != nil )
         {
             jsonObject = [self parsedResponseFromData:data parsedError:&victoriousError];
-            if (victoriousError)
+            if ( victoriousError != nil )
             {
                 [self.objectManager defaultErrorHandlingForCode:victoriousError.code];
             }
             [self.responseData removeObjectForKey:task];
         }
         
-        if (!error && !victoriousError && ![self isOKResponseCode:[(NSHTTPURLResponse *)task.response statusCode]])
+        if ( error == nil && victoriousError == nil && ![self isOKResponseCode:[(NSHTTPURLResponse *)task.response statusCode]] )
         {
             victoriousError = [NSError errorWithDomain:VUploadManagerErrorDomain code:VUploadManagerBadHTTPResponseErrorCode userInfo:nil];
         }
         
         VUploadTaskInformation *taskInformation = [self informationForSessionTask:task];
-        if (taskInformation)
+        if ( taskInformation != nil )
         {
-            if (error || victoriousError)
+            if ( error != nil || victoriousError != nil )
             {
                 if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled)
                 {
@@ -678,7 +677,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
         [self.taskInformationBySessionTask removeObjectForKey:task];
         
         VUploadManagerTaskCompleteBlock completionBlock = [self.completionBlocks objectForKey:task];
-        if (completionBlock)
+        if ( completionBlock != nil )
         {
             // An intentional exception to the "all callbacks made on self.callbackQueue" rule
             dispatch_async(dispatch_get_main_queue(), ^(void)
@@ -715,6 +714,16 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                                   VTrackingKeyMediaType : [url pathExtension] ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUploadDidFail parameters:params];
     }
+}
+
++ (VUploadManager *)sharedManager
+{
+    static VUploadManager *sharedManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedManager = [[VUploadManager alloc] initWithObjectManager:[VObjectManager sharedManager]];
+    });
+    return sharedManager;
 }
 
 @end

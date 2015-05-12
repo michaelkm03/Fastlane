@@ -62,7 +62,7 @@
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
-    manager.uploadManager = [[VUploadManager alloc] initWithObjectManager:manager];
+    manager.uploadManager = [VUploadManager sharedManager];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];

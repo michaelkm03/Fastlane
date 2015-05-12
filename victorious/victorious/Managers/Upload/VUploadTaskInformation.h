@@ -45,6 +45,17 @@
 @property (nonatomic, readonly) NSUUID *identifier;
 
 /**
+ The total number of bytes sent for this task
+ */
+@property (nonatomic, assign) int64_t bytesSent;
+
+/**
+ The expected number bytes to be sent to complete this task. 
+ This value will be zero when a request is started.
+ */
+@property (nonatomic, assign) int64_t expectedBytesToSend;
+
+/**
  Creates a new instance of VUploadTaskInformation with the specified properties.
  */
 - (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFilename:(NSString *)bodyFilename description:(NSString *)uploadDescription;

@@ -136,4 +136,9 @@ extern const NSInteger VUploadManagerBadHTTPResponseErrorCode; ///< Indicates th
  */
 - (BOOL)isTaskInProgress:(VUploadTaskInformation *)task;
 
+/**
+ Returns the upload manager singleton that should be used across the app
+ */
++ (VUploadManager *)sharedManager;
+
 @end

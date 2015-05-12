@@ -93,7 +93,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 - (void)addUpload:(VUploadTaskInformation *)uploadTask withState:(VUploadProgressViewState)state animated:(BOOL)animated
 {
     NSArray *existingProgressViews = [self.uploadProgressViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K==%@", NSStringFromSelector(@selector(uploadTask)), uploadTask]];
-    if (existingProgressViews.count)
+    if ( existingProgressViews.count != 0 )
     {
         VUploadProgressView *upv = existingProgressViews[0];
         [self.view bringSubviewToFront:upv];
@@ -125,9 +125,9 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     
     if (animated)
     {
-        [self.view layoutIfNeeded];
-        CGRect currentFrame = progressView.frame;
-        progressView.frame = CGRectMake(CGRectGetMinX(currentFrame), -CGRectGetHeight(currentFrame), CGRectGetWidth(currentFrame), CGRectGetHeight(currentFrame));
+        CGRect newFrame = progressView.frame;
+        newFrame.origin.y = -CGRectGetHeight(newFrame);
+        progressView.frame = newFrame;
         [UIView animateWithDuration:kAnimationDuration
                          animations:^(void)
         {
@@ -184,7 +184,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
             {
                 if (uploadProgressView.state == VUploadProgressViewStateInProgress)
                 {
-                    uploadProgressView.state = VUploadProgressViewStateCancelling;
+                    uploadProgressView.state = VUploadProgressViewStateCanceling;
                 }
                 else
                 {
@@ -263,13 +263,37 @@ static const NSTimeInterval kAnimationDuration = 0.2;
             {
                 typeof(self) __weak weakSelf = self;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kFinishedTaskDisplayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
-                {
-                    typeof(weakSelf) strongSelf = weakSelf;
-                    if (strongSelf && [strongSelf.uploadProgressViews containsObject:uploadProgressView])
-                    {
-                        [self removeUpload:uploadProgressView animated:YES];
-                    }
-                });
+                               {
+                                   typeof(weakSelf) strongSelf = weakSelf;
+                                   if (strongSelf && [strongSelf.uploadProgressViews containsObject:uploadProgressView])
+                                   {
+                                       [self removeUpload:uploadProgressView animated:YES];
+                                   }
+                               });
+            }
+            break;
+        }
+    }
+}
+
+- (void)dismissUploadViewForTask:(VUploadTaskInformation *)task withState:(VUploadProgressViewState)state
+{
+    for (VUploadProgressView *uploadProgressView in self.uploadProgressViews)
+    {
+        if ([uploadProgressView.uploadTask isEqual:task])
+        {
+            uploadProgressView.state = state;
+            if (self.numberOfUploads == 1)
+            {
+                typeof(self) __weak weakSelf = self;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kFinishedTaskDisplayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                               {
+                                   typeof(weakSelf) strongSelf = weakSelf;
+                                   if (strongSelf && [strongSelf.uploadProgressViews containsObject:uploadProgressView])
+                                   {
+                                       [self removeUpload:uploadProgressView animated:YES];
+                                   }
+                               });
             }
             break;
         }
