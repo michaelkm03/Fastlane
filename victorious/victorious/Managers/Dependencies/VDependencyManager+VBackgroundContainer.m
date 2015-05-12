@@ -52,7 +52,7 @@ static const char kAssociatedBackgroundKey;
     
     UIView *existingBackground = objc_getAssociatedObject(containerView, &kAssociatedBackgroundKey);
     
-    if (!existingBackground)
+    if (existingBackground == nil)
     {
         UIView *backgroundView = [background viewForBackground];
         

@@ -196,12 +196,12 @@ static const CGFloat kDefaultHeight = 44.0f;
     if (self.parentUserLabel.text == nil || self.parentUserLabel.attributedText == nil || [self.parentUserLabel.text isEqualToString:@""])
     {
         // Center the creator label vertically
-        if (self.multiLineConstraints)
+        if (self.multiLineConstraints != nil)
         {
             [NSLayoutConstraint deactivateConstraints:self.multiLineConstraints];
         }
 
-        if (!self.singleLineConstraints)
+        if (self.singleLineConstraints == nil)
         {
             self.singleLineConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[creatorLabel]|"
                                                                                  options:kNilOptions
@@ -214,12 +214,12 @@ static const CGFloat kDefaultHeight = 44.0f;
     else
     {
         // Distribute Creator/subtitle vertically
-        if (self.singleLineConstraints)
+        if (self.singleLineConstraints != nil)
         {
             [NSLayoutConstraint deactivateConstraints:self.singleLineConstraints];
         }
 
-        if (!self.multiLineConstraints)
+        if (self.multiLineConstraints == nil)
         {
             NSMutableArray *multiLineConstraints = [[NSMutableArray alloc] init];
             [multiLineConstraints addObject:[NSLayoutConstraint constraintWithItem:self.creatorLabel
@@ -497,16 +497,6 @@ static const CGFloat kDefaultHeight = 44.0f;
 {
     return YES;
 }
-//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-//{
-//    CGPoint locationInView = [gestureRecognizer locationInView:self];
-//    if (CGRectContainsPoint(CGRectInset(self.parentUserLabel.frame, -10.0f, -10.0f), locationInView) ||
-//        CGRectContainsPoint(CGRectInset(self.creatorLabel.frame, -10.0f, -10.0f), locationInView))
-//    {
-//        return YES;
-//    }
-//    return NO;
-//}
 
 #pragma mark - VHasManagedDependencies
 

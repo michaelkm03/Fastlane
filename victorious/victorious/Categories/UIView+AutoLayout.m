@@ -87,7 +87,7 @@
 
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview
 {
-    [self v_addcenterHorizontallyCOnstraintsToSubview:subview];
+    [self v_addcenterHorizontallyConstraintsToSubview:subview];
     [self v_addCenterVerticallyConstraintsToSubview:subview];
 }
 
@@ -106,7 +106,7 @@
                                                       constant:0.0f]];
 }
 
-- (void)v_addcenterHorizontallyCOnstraintsToSubview:(UIView *)subview
+- (void)v_addcenterHorizontallyConstraintsToSubview:(UIView *)subview
 {
     NSParameterAssert( [subview isDescendantOfView:self] );
     

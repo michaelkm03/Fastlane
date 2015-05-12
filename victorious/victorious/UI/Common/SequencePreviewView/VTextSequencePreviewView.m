@@ -28,13 +28,6 @@
 
 @implementation VTextSequencePreviewView
 
-#pragma mark - VHasManagedDependencies
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-}
-
 #pragma mark - VSequencePreviewView Overrides
 
 - (void)setSequence:(VSequence *)sequence

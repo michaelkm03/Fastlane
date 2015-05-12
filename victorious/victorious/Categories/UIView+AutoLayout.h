@@ -72,7 +72,7 @@
 /**
  Adds horizontal centering constraints to subview.
  */
-- (void)v_addcenterHorizontallyCOnstraintsToSubview:(UIView *)subview;
+- (void)v_addcenterHorizontallyConstraintsToSubview:(UIView *)subview;
 
 /**
  Applies top to top and bottom to bottom constraints form the container view ot the
