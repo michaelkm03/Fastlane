@@ -34,6 +34,7 @@
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
 #import "VNavigationController.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -69,10 +70,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         viewController.dependencyManager = dependencyManager;
         viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
         viewController.title = NSLocalizedString(@"Messages", @"");
-        viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:viewController
-                                                                                 action:@selector(userSearchAction:)];
+        
+        [dependencyManager addPropertiesToNavigationItem:viewController.navigationItem
+                                pushAccessoryMenuItemsOn:viewController.navigationController];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];

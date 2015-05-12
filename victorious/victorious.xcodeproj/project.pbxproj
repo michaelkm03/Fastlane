@@ -537,6 +537,7 @@
 		A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */; };
 		A7BB9C791AFD9934005B4596 /* inboxAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A7BB9C781AFD9934005B4596 /* inboxAccessory.json */; };
 		A7BB9C7D1AFD9C5D005B4596 /* composeAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */; };
+		A7BB9C821B019B4F005B4596 /* findFriendsAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A7BB9C811B019B4F005B4596 /* findFriendsAccessory.json */; };
 		A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B619FAF64700726772 /* landscape_left.m4v */; };
 		A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B719FAF64700726772 /* landscape_right.m4v */; };
 		A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */; };
@@ -1859,6 +1860,7 @@
 		A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManagerTests.m; sourceTree = "<group>"; };
 		A7BB9C781AFD9934005B4596 /* inboxAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = inboxAccessory.json; sourceTree = "<group>"; };
 		A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = composeAccessory.json; sourceTree = "<group>"; };
+		A7BB9C811B019B4F005B4596 /* findFriendsAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = findFriendsAccessory.json; sourceTree = "<group>"; };
 		A7CFC1B619FAF64700726772 /* landscape_left.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_left.m4v; sourceTree = "<group>"; };
 		A7CFC1B719FAF64700726772 /* landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait_upsidedown.m4v; sourceTree = "<group>"; };
@@ -3590,6 +3592,7 @@
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
 				A7BB9C781AFD9934005B4596 /* inboxAccessory.json */,
 				A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */,
+				A7BB9C811B019B4F005B4596 /* findFriendsAccessory.json */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -5982,6 +5985,7 @@
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
 				03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */,
 				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
+				A7BB9C821B019B4F005B4596 /* findFriendsAccessory.json in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
 				DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */,
 				035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */,

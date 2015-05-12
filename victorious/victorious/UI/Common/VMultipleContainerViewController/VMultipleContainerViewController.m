@@ -65,8 +65,8 @@ static NSString * const kInitialKey = @"initial";
         _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
+        [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem];
         self.navigationItem.v_supplementaryHeaderView = _selector;
-        [_dependencyManager addPropertiesToNavigationItem:self.navigationItem];
         self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
         
         __weak typeof(self) weakSelf = self;
@@ -325,11 +325,12 @@ static NSString * const kInitialKey = @"initial";
 - (void)resetNavigationItemForIndex:(NSUInteger)index
 {
     [self resetNavigationItem];
-    UIViewController<VMultipleContainerChild> *viewController = self.viewControllers[ index ];
-    if ([viewController.navigationItem.rightBarButtonItems count] > 0)
-    {
-        self.navigationItem.rightBarButtonItems = viewController.navigationItem.rightBarButtonItems;
-    }
+    
+    NSArray *screens = [self.dependencyManager templateValueOfType:[NSArray class] forKey:kScreensKey];
+    NSDictionary *childConfiguration = screens[ index ];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
+    [childDependencyManager addPropertiesToNavigationItem:self.navigationItem
+                                 pushAccessoryMenuItemsOn:self.navigationController];
 }
 
 - (void)resetNavigationItem

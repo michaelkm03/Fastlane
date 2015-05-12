@@ -1,0 +1,20 @@
+{
+    "destination": {
+        "name": "findFriends.screen",
+        "title": "Find Friends",
+        "background": {
+            "name": "solidColor.background",
+            "color": {
+                "red": 241,
+                "alpha": 255,
+                "blue": 241,
+                "green": 241
+            }
+        }
+    },
+    "icon": {
+        "imageURL": "A_findFriendsIcon"
+    },
+    "identifier": "Accessory Find Friends",
+    "position": "right"
+}
