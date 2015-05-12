@@ -138,12 +138,12 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
                           baseIdentifier:(NSString *)baseIdentifier
 {
-    NSMutableString *mutableBaseIdentifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier mutableCopy];
-    [mutableBaseIdentifier appendString:NSStringFromClass(self)];
-    [mutableBaseIdentifier appendFormat:@".%@.", NSStringFromClass([VSequencePreviewView classTypeForSequence:sequence])];
-    NSString *reuseIdentifierForActionView = [VSleekActionView reuseIdentifierForSequence:sequence
-                                                                           baseIdentifier:[NSString stringWithString:mutableBaseIdentifier]];
-    return reuseIdentifierForActionView;
+    baseIdentifier = baseIdentifier == nil ? [[NSString alloc] init] : baseIdentifier;
+    baseIdentifier = [NSString stringWithFormat:@"%@.%@", baseIdentifier, NSStringFromClass(self)];
+    baseIdentifier = [VSequencePreviewView reuseIdentifierForSequence:sequence
+                                                       baseIdentifier:baseIdentifier];
+    return [VSleekActionView reuseIdentifierForSequence:sequence
+                                         baseIdentifier:baseIdentifier];
 }
 
 #pragma mark - Class Methods
