@@ -61,4 +61,11 @@
     NSAssert(false, @"Override in subclasses!");
 }
 
+#pragma mark - VStreamCellComponentSpecialization
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier
+{
+    return [NSString stringWithFormat:@"%@.%@", baseIdentifier, NSStringFromClass([self classTypeForSequence:sequence])];
+}
+
 @end

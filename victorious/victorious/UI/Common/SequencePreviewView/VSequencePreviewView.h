@@ -9,15 +9,19 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
+#import "VStreamCellSpecialization.h"
 
 @class VSequence;
 
-@interface VSequencePreviewView : UIView <VHasManagedDependencies>
+@interface VSequencePreviewView : UIView <VHasManagedDependencies, VStreamCellComponentSpecialization>
 
 + (Class)classTypeForSequence:(VSequence *)sequence;
 
 + (VSequencePreviewView *)sequencePreviewViewWithSequence:(VSequence *)sequence;
 
 - (void)setSequence:(VSequence *)sequence;
+
++ (CGSize)sizeForSequence:(VSequence *)sequence
+              withMaxSize:(CGSize)maxSize;
 
 @end
