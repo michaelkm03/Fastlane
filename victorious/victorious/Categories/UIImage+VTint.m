@@ -14,7 +14,7 @@
 - (UIImage *)v_tintedImageWithColor:(UIColor *)tintColor alpha:(CGFloat)alpha blendMode:(CGBlendMode)blendMode
 {
     UIImage *tintedImage;
-    UIGraphicsBeginImageContextWithOptions( self.size, NO, 0.0f );
+    UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.0f);
     {
         [tintColor setFill];
         CGRect bounds = CGRectMake(0, 0, self.size.width, self.size.height);
@@ -31,7 +31,7 @@
 - (UIImage *)v_tintedTemplateImageWithColor:(UIColor *)tintColor
 {
     UIImage *tintedImage;
-    UIGraphicsBeginImageContextWithOptions(self.size, NO, [[UIScreen mainScreen] scale]);
+    UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.0f);
     {
         CGContextRef context = UIGraphicsGetCurrentContext();
         // Set blend mode to normal
