@@ -24,6 +24,7 @@
 @property (nonatomic, strong) UIView *playIconContainerView;
 @property (nonatomic, strong) VVideoView *videoView;
 @property (nonatomic, strong) VSequence *sequence;
+@property (nonatomic, assign) BOOL hasFocus;
 
 @end
 
@@ -85,7 +86,30 @@
 
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
-    [videoView play];
+    if (_hasFocus)
+    {
+        [videoView play];
+    }
+}
+
+#pragma mark - VStreamCellFocus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    _hasFocus = hasFocus;
+    if (_hasFocus)
+    {
+        [self.videoView play];
+    }
+    else
+    {
+        [self.videoView pause];
+    }
+}
+
+- (CGRect)contentArea
+{
+    return self.bounds;
 }
 
 @end

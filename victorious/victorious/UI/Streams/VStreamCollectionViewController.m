@@ -31,6 +31,7 @@
 
 //Views
 #import "VNoContentView.h"
+#import "VStreamCellFocus.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -62,7 +63,6 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
 
-#import "VInsetStreamCellFactory.h"
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
 
@@ -258,19 +258,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          */
         [self.marqueeCellController enableTimer];
     }
-
-#warning FIX ME TO USE KVO
-//    for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
-//    {
-//        if ([cell isKindOfClass:[VAbstractStreamCollectionCell class]])
-//        {
-//            [(VAbstractStreamCollectionCell *)cell updateCommentsForSequence:((VAbstractStreamCollectionCell *)cell).sequence];
-//        }
-//        if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
-//        {
-//            [(VStreamCollectionCell *)cell reloadCommentsCount];
-//        }
-//    }
     
     //Because a stream can be presented without refreshing, we need to refresh the user post icon here
     [self updateUserPostAllowed];
@@ -468,13 +455,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    UIImage *previewImage = nil;
-#warning FIXME to use SDCACHE
-//    if ([cell isKindOfClass:[VStreamCollectionCell class]])
-//    {
-//        previewImage = ((VStreamCollectionCell *)cell).previewImageView.image;
-//    }
-    [self showContentViewForSequence:sequence withPreviewImage:previewImage];
+    [self showContentViewForSequence:sequence withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -499,11 +480,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-#warning FIXME
-//    if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
-//    {
-//        [((VStreamCollectionCell *)cell) pauseVideo];
-//    }
+    if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
+    {
+        [(id <VStreamCellFocus>)cell setHasFocus:NO];
+    }
 }
 
 #pragma mark - Activity indivator footer
@@ -825,50 +805,52 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSArray *visibleCells = self.collectionView.visibleCells;
     [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
      {
-         if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
+         if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
          {
              return;
          }
          
-         if ( didPlayVideo )
+         id <VStreamCellFocus>focusCell;
+         if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
          {
-#warning FIXME
-//             [cell pauseVideo];
+             focusCell = (id <VStreamCellFocus>)cell;
          }
-         else
+         
+         // Calculate visible ratio for just the media content of the cell
+         const CGRect contentFrameInCell = [focusCell contentArea];
+         
+         if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
          {
-#warning FIXME
-             // Calculate visible ratio for just the media content of the cell
-//             const CGRect contentFrameInCell = CGRectMake( CGRectGetMinX(cell.mediaContentFrame) + CGRectGetMinX(cell.frame),
-//                                                          CGRectGetMinY(cell.mediaContentFrame) + CGRectGetMinY(cell.frame),
-//                                                          CGRectGetWidth(cell.mediaContentFrame),
-//                                                          CGRectGetHeight(cell.mediaContentFrame) );
-//             
-//             if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
-//             {
-//                 const CGRect contentIntersection = CGRectIntersection( streamVisibleRect, contentFrameInCell );
-//                 const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
-//                 if ( mediaContentVisibleRatio >= 0.8f )
-//                 {
-//                     [cell playVideo];
-//                     didPlayVideo = YES;
-//                 }
-//                 else
-//                 {
-//                     [cell pauseVideo];
-//                 }
-//             }
+             const CGRect contentIntersection = CGRectIntersection( streamVisibleRect, cell.frame );
+             const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
+             if ( mediaContentVisibleRatio >= 0.8f )
+             {
+                 if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
+                 {
+                     [(id <VStreamCellFocus>)cell setHasFocus:YES];
+                 }
+                 didPlayVideo = YES;
+             }
+             else
+             {
+                 if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
+                 {
+                     [(id <VStreamCellFocus>)cell setHasFocus:NO];
+                 }
+             }
          }
      }];
 }
 
 - (void)collectionViewCell:(UICollectionViewCell *)cell didUpdateCellVisibility:(CGFloat)visibiltyRatio
 {
-#warning FIXME
-//    if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
-//    {
-//        [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream sequence:cell.sequence];
-//    }
+    if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
+    {
+        NSIndexPath *indexPathForCell = [self.collectionView indexPathForCell:cell];
+        VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPathForCell.row];
+        [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
+                                                                 sequence:sequence];
+    }
 }
 
 #pragma mark - VLinkSelectionResponder

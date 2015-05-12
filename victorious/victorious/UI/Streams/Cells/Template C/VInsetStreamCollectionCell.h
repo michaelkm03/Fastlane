@@ -10,10 +10,14 @@
 #import "VHasManagedDependencies.h"
 #import "VBackgroundContainer.h"
 #import "VStreamCellSpecialization.h"
+#import "VStreamCellFocus.h"
 
 @class VSequence;
 
-@interface VInsetStreamCollectionCell : VBaseCollectionViewCell  <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization>
+/**
+ *  VInsetStreamCollectionCell a.k.a. Template C Cell.
+ */
+@interface VInsetStreamCollectionCell : VBaseCollectionViewCell  <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus>
 
 /**
  *  Sizing method. All parameters are required.

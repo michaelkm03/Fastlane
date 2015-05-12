@@ -306,4 +306,19 @@ static const CGFloat maxCaptionHeight = 80.0f;
                               fromView:self];
 }
 
+#pragma mark - VStreamCellFocus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    if ([self.previewView conformsToProtocol:@protocol(VStreamCellFocus)])
+    {
+        [(id <VStreamCellFocus>)self.previewView setHasFocus:hasFocus];
+    }
+}
+
+- (CGRect)contentArea
+{
+    return self.contentContainer.frame;
+}
+
 @end

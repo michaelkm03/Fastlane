@@ -381,4 +381,19 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     return sizingCell;
 }
 
+#pragma mark - VStreamCellFocus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    if ([self.previewView conformsToProtocol:@protocol(VStreamCellFocus)])
+    {
+        [(id <VStreamCellFocus>)self.previewView setHasFocus:hasFocus];
+    }
+}
+
+- (CGRect)contentArea
+{
+    return self.previewView.frame;
+}
+
 @end

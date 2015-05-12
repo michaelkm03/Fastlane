@@ -188,4 +188,19 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     return [NSDictionary dictionaryWithDictionary:attributes];
 }
 
+#pragma mark - VStreamCellFocus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    if ([self.previewView conformsToProtocol:@protocol(VStreamCellFocus)])
+    {
+        [(id <VStreamCellFocus>)self.previewView setHasFocus:hasFocus];
+    }
+}
+
+- (CGRect)contentArea
+{
+    return self.previewContainer.frame;
+}
+
 @end
