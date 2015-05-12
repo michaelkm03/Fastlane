@@ -10,12 +10,14 @@
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
-#import "VHashTags.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
 #import <SDWebImageManager.h>
 #import "CCHLinkTextViewDelegate.h"
-#import "VLinkSelectionResponder.h"
+#import "VHashtagSelectionResponder.h"
+#import "VURLSelectionResponder.h"
 #import "UIColor+VBrightness.h"
+#import "VURLDetector.h"
+#import "VTextPostCalloutHelper.h"
 
 @interface VTextPostViewController () <CCHLinkTextViewDelegate>
 
@@ -30,11 +32,13 @@
 @property (nonatomic, strong) NSDictionary *calloutAttributes;
 @property (nonatomic, strong) NSDictionary *attributes;
 
+@property (nonatomic, strong) VTextPostCalloutHelper *calloutHelper;
+
 @end
 
 @implementation VTextPostViewController
 
-#pragma mark - Initializations
+#pragma mark - Caches
 
 + (NSCache *)backgroundFramesCache
 {
@@ -46,15 +50,13 @@
     return backgroundFramesCache;
 }
 
-+ (NSCache *)calloutRangesCache
+- (void)updateCachedTextAttributes
 {
-    static NSCache *calloutRangesCache;
-    if ( calloutRangesCache == nil )
-    {
-        calloutRangesCache = [[NSCache alloc] init];
-    }
-    return calloutRangesCache;
+    self.attributes = [self.viewModel textAttributesWithDependencyManager:_dependencyManager];
+    self.calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:_dependencyManager];
 }
+
+#pragma mark - Dependencies and initializations
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -64,6 +66,15 @@
     viewController.dependencyManager = dependencyManager;
     return viewController;
 }
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    [self updateCachedTextAttributes];
+}
+
+#pragma mark - View controller life cycle
 
 - (void)viewDidLoad
 {
@@ -93,23 +104,7 @@
     }
 }
 
-- (void)updateCachedTextAttributes
-{
-    self.attributes = [self.viewModel textAttributesWithDependencyManager:_dependencyManager];
-    self.calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:_dependencyManager];
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    
-    [self updateCachedTextAttributes];
-}
-
-- (void)overlayButtonTapped:(UIButton *)sender
-{
-    self.textView.selectedRange = NSMakeRange(0, 0);
-}
+#pragma mark - public
 
 - (void)setText:(NSString *)text
 {
@@ -121,30 +116,6 @@
     _text = text;
     [self updateTextView];
 }
-
-- (void)updateTextView
-{
-    if ( self.text == nil )
-    {
-        return;
-    }
-    
-    NSCache *cache = [[self class] calloutRangesCache];
-    NSArray *calloutRanges = [cache objectForKey:self.text];
-    if ( calloutRanges == nil )
-    {
-        calloutRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
-        [cache setObject:calloutRanges forKey:self.text];
-    }
-    
-    [self updateTextView:self.textPostTextView
-                withText:self.text
-           calloutRanges:calloutRanges
-          textAttributes:self.attributes
-       calloutAttributes:self.calloutAttributes];
-}
-
-#pragma mark - public
 
 - (void)setColor:(UIColor *)color
 {
@@ -191,6 +162,34 @@
     _isTextSelectable = isTextSelectable;
     
     [self updateTextIsSelectable];
+}
+
+#pragma mark -
+
+- (VTextPostCalloutHelper *)calloutHelper
+{
+    if ( _calloutHelper == nil )
+    {
+        _calloutHelper = [[VTextPostCalloutHelper alloc] init];
+    }
+    return _calloutHelper;
+}
+
+- (void)updateTextView
+{
+    if ( self.text != nil )
+    {
+        [self updateTextView:self.textPostTextView
+                    withText:self.text
+               calloutRanges:[self.calloutHelper calloutRangesForText:self.text]
+              textAttributes:self.attributes
+           calloutAttributes:self.calloutAttributes];
+    }
+}
+
+- (void)overlayButtonTapped:(UIButton *)sender
+{
+    self.textView.selectedRange = NSMakeRange(0, 0);
 }
 
 - (void)updateTextIsSelectable
@@ -249,17 +248,42 @@
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
     NSString *calloutText = (NSString *)value;
-    calloutText = [VHashTags stringByRemovingPrependingHashmarkFromString:calloutText];
     if ( calloutText == nil || calloutText.length == 0 )
     {
         return;
     }
     
-    id target = [self targetForAction:@selector(linkWithTextSelected:) withSender:self];
-    if ( [target conformsToProtocol:@protocol(VLinkSelectionResponder)] )
+    NSDictionary *callouts = [self.calloutHelper calloutsForText:self.text];
+    VTextPostCallout *callout = callouts[ calloutText ];
+    if ( callout.type == VTextCalloutTypeHashtag )
     {
-        id<VLinkSelectionResponder> responder = (id<VLinkSelectionResponder>)target;
-        [responder linkWithTextSelected:calloutText];
+        [self hashtagSelected:calloutText];
+    }
+    else if ( callout.type == VTextCalloutTypeURL )
+    {
+        [self urlSelected:calloutText];
+    }
+}
+
+#pragma mark - Handling tapped callouts
+
+- (void)hashtagSelected:(NSString *)hashtag
+{
+    id target = [[self nextResponder] targetForAction:@selector(hashtagSelected:) withSender:self];
+    if ( [target conformsToProtocol:@protocol(VHashtagSelectionResponder)] )
+    {
+        id<VHashtagSelectionResponder> responder = (id<VHashtagSelectionResponder>)target;
+        [responder hashtagSelected:[hashtag substringFromIndex:1]];
+    }
+}
+
+- (void)urlSelected:(NSString *)urlString
+{
+    id target = [[self nextResponder] targetForAction:@selector(URLSelected:) withSender:self];
+    if ( [target conformsToProtocol:@protocol(VURLSelectionResponder)] )
+    {
+        id<VURLSelectionResponder> responder = (id<VURLSelectionResponder>)target;
+        [responder URLSelected:[NSURL URLWithString:urlString]];
     }
 }
 

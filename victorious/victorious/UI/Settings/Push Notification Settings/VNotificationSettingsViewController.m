@@ -16,7 +16,6 @@
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"
-#import "VThemeManager.h"
 #import "VDependencyManager.h"
 #import "VAppInfo.h"
 

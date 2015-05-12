@@ -20,7 +20,7 @@ static NSString * const kSuggestedPersonCellIdentifier          = @"VSuggestedPe
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
 static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
-@interface VSuggestedPeopleCollectionViewController () <VSuggestedPersonCollectionViewCellDelegate>
+@interface VSuggestedPeopleCollectionViewController ()
 
 @property (nonatomic, strong) VUser *userToAnimate;
 
@@ -80,7 +80,6 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 - (void)followingDidUpdate:(NSNotification *)note
 {
     [self updateFollowingInUsers:self.suggestedUsers];
-    [self.collectionView reloadData];
 }
 
 - (void)updateFollowingInUsers:(NSArray *)users
@@ -204,53 +203,6 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
     return self.suggestedUsers.count == 0 || self.error != nil;
 }
 
-#pragma mark - VSuggestedPersonCollectionViewCellDelegate
-
-- (void)unfollowPerson:(VUser *)user
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueSuggestedPeople forSessionParameterWithKey:VTrackingKeyContext];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:[self.delegate componentRootViewController] context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-             
-         [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-          {
-              [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-              
-              self.userToAnimate = user;
-              [self.collectionView reloadData];
-          } failBlock:nil];
-     }];
-}
-
-- (void)followPerson:(VUser *)user
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueSuggestedPeople forSessionParameterWithKey:VTrackingKeyContext];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:[self.delegate componentRootViewController] context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-          {
-              [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-              
-              self.userToAnimate = user;
-              [self.collectionView reloadData];
-          } failBlock:nil];
-     }];
-}
-
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -268,7 +220,6 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
     {
         self.userToAnimate = nil;
     }
-    cell.delegate = self;
     cell.dependencyManager = self.dependencyManager;
     return cell;
 }

@@ -1,5 +1,5 @@
 //
-//  VFollowing.h
+//  VFollowResponder.h
 //  victorious
 //
 //  Created by Michael Sena on 4/28/15.
@@ -17,7 +17,7 @@
  */
 typedef void (^VFollowEventCompletion)(VUser *userActedOn);
 
-@protocol VFollowing <NSObject>
+@protocol VFollowResponder <NSObject>
 
 /**
  *  A command for the current user to follow a specific user.

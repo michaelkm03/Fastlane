@@ -46,7 +46,6 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
-#import "VThemeManager.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -71,7 +70,7 @@
 
 #import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VLinkSelectionResponder.h"
+#import "VHashtagSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
@@ -90,7 +89,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VLinkSelectionResponder>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -610,6 +609,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)showContentViewForSequence:(VSequence *)sequence withPreviewImage:(UIImage *)previewImage
 {
+    NSParameterAssert(sequence != nil);
+    NSParameterAssert(self.currentStream != nil);
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
     [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence commentId:nil placeHolderImage:previewImage];
@@ -853,9 +854,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
 }
 
-#pragma mark - VLinkSelectionResponder
+#pragma mark - VHashtagSelectionResponder
 
-- (void)linkWithTextSelected:(NSString *)text
+- (void)hashtagSelected:(NSString *)text
 {
     [self showHashtagStreamWithHashtag:text];
 }

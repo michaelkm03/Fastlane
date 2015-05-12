@@ -196,7 +196,7 @@
 "BlockUser" = "Usuario bloqueado";
 "CopyProfileURL" = "Copiar la URL del perfil";
 
-"Create a Video Post" = "Crea una publicación sobre el video";
+"Create a Video Post" = "Crear una publicación sobre el vídeo";
 "Create an Image Post" = "Crea una publicación sobre la imagen";
 "Create a Poll" = "Crea una encuesta";
 "Create a Text Post" = "Crea una publicación de texto";
@@ -219,7 +219,7 @@
 "Uploading" = "Tu contenido se está cargando...";
 "UploadFinalizing" = "Estamos por terminar tu publicación, pronto la verás.";
 "UploadFailed" = "Lo sentimos, tu carga tuvo un error. Por favor, comprueba la conexión y vuelve a intentarlo.";
-"UploadSuccess" = "¡Lo logramos! tu publicación ya se cargó.";
+"UploadSuccess" = "¡Lo logramos! Tu publicación ya se cargó.";
 "UploadError" = "Error al cargar";
 "UploadErrorBody" = "Algo salió mal y no podemos completar la carga en este momento.";
 "UploadCancelAreYouSure" = "¿Seguro que deseas cancelar esta carga?";

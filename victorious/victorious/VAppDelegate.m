@@ -7,7 +7,6 @@
 //
 
 #import "VAppDelegate.h"
-#import "VThemeManager.h"
 #import "VReachability.h"
 
 #import "VFacebookManager.h"
