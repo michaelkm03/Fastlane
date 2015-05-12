@@ -20,7 +20,7 @@
 
 // Views + Helpers
 #import "VSequenceActionsDelegate.h"
-#import "VActionBar.h"
+#import "VFlexBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VCreationInfoContainer.h"
@@ -40,7 +40,7 @@ static const CGFloat kCommentButtonHeight = 44.0f;
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VActionBar *actionBar;
+@property (nonatomic, strong) VFlexBar *actionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) UIButton *commentButton;
@@ -71,7 +71,7 @@ static const CGFloat kCommentButtonHeight = 44.0f;
 
 - (void)sharedInit
 {
-    _actionBar = [[VActionBar alloc] initWithFrame:CGRectZero];
+    _actionBar = [[VFlexBar alloc] initWithFrame:CGRectZero];
     [self addSubview:_actionBar];
     [self v_addFitToParentConstraintsToSubview:_actionBar];
     _numberFormatter = [[VLargeNumberFormatter alloc] init];

@@ -1,12 +1,12 @@
 //
-//  VActionBar.m
+//  VFlexBar.m
 //  victorious
 //
 //  Created by Michael Sena on 4/14/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VActionBar.h"
+#import "VFlexBar.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFlexibleWidth.h"
@@ -20,7 +20,7 @@ static const CGFloat kDefaultActionItemWidth = 44.0f;
 
 static NSString *kConstraintIdentifier = @"VActionBarConstraints";
 
-@implementation VActionBar
+@implementation VFlexBar
 
 - (void)layoutSubviews
 {

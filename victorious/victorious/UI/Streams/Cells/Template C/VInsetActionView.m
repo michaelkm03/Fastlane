@@ -18,7 +18,7 @@
 #import "VSequence+Fetcher.h"
 
 // Action Bar
-#import "VActionBar.h"
+#import "VFlexBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VRoundedBackgroundButton.h"
@@ -119,7 +119,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     return [NSString stringWithString:identifier];
 }
 
-- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+- (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
     if (actionBar == nil)

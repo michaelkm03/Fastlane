@@ -1,5 +1,5 @@
 //
-//  VActionBar.h
+//  VFlexBar.h
 //  victorious
 //
 //  Created by Michael Sena on 4/14/15.
@@ -9,17 +9,20 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  VActionBar lays out action items in a UIToolBar like API.
+ *  VFlexBar lays out action items in a UIToolBar like API. Items that are flexible will
+ *  be given equal widths.
  *
  *  Ignores margins.
  *
  *  VActionBar determines the width of item as follows:
- *      1. If any width constraints are installed on the view that don't reference 
+ *      1. Check if the item is flexible (either by conforming to VActionBarFlexibleWidth
+ *          or being of type VActionBarFlexibleSpaceItem.)
+ *      2. If any width constraints are installed on the view that don't reference
  *         any other views. (i.e. secondItem should be nil.)
- *      2. The intrinsic content size width.
- *      3. Defaults to 44 pt width
+ *      3. The intrinsic content size width.
+ *      4. Defaults to 44 pt width
  */
-@interface VActionBar : UIView
+@interface VFlexBar : UIView
 
 /**
  *  The items to distribute over the action bar.

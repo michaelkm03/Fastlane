@@ -10,7 +10,7 @@
 #import "VStreamCellSpecialization.h"
 #import "VSequenceActionsDelegate.h"
 
-@class VActionBar;
+@class VFlexBar;
 @class VSequence;
 
 /**
@@ -79,7 +79,7 @@
 /**
  *  Subclasses should install buttons on actionBar configured appropriately for the sequence.
  */
-- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+- (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence;
 
 /**

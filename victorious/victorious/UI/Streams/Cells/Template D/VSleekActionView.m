@@ -15,7 +15,7 @@
 #import "VSequence+Fetcher.h"
 
 // Action Bar
-#import "VActionBar.h"
+#import "VFlexBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VRoundedBackgroundButton.h"
@@ -175,7 +175,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 #pragma mark - VUpdateHooks
 
-- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+- (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
     if (actionBar == nil)

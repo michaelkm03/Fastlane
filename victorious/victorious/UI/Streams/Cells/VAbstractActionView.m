@@ -12,7 +12,7 @@
 #import <FBKVOController.h>
 
 // Action Bar
-#import "VActionBar.h"
+#import "VFlexBar.h"
 
 // Views + Helpers
 #import "UIView+Autolayout.h"
@@ -22,7 +22,7 @@
 
 @interface VAbstractActionView ()
 
-@property (nonatomic, strong) VActionBar *actionBar;
+@property (nonatomic, strong) VFlexBar *actionBar;
 
 @end
 
@@ -43,11 +43,11 @@
     }
 }
 
-- (VActionBar *)actionBar
+- (VFlexBar *)actionBar
 {
     if (_actionBar == nil)
     {
-        _actionBar = [[VActionBar alloc] initWithFrame:self.bounds];
+        _actionBar = [[VFlexBar alloc] initWithFrame:self.bounds];
         [self addSubview:_actionBar];
         [self v_addFitToParentConstraintsToSubview:_actionBar];
     }
@@ -161,7 +161,7 @@
 
 @implementation VAbstractActionView (VUpdateHooks)
 
-- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+- (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
     // Implement in subclasses
