@@ -277,10 +277,7 @@ static int const kNotificationFetchBatchSize = 50;
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeNext
-                                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self markAllNotificationsRead];
-     }
+                                                         successBlock:nil
                                                             failBlock:nil];
 }
 
