@@ -97,7 +97,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
         [self loadUrl:self.currentURL];
     }
     
-    self.headerViewController.title = self.templateTitle ?: NSLocalizedString( @"Loading...", @"" );
+    self.title = NSLocalizedString( @"Loading...", @"" );
     
     [self updateHeaderLayuout];
 }
@@ -209,22 +209,22 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (void)setTitle:(NSString *)title
 {
-    if ( self.templateTitle != nil )
+    if ( [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutTopNavigation] )
     {
-        if ( [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutBottomNavigation] )
-        {
-            self.headerViewController.title = nil;
-            super.title = self.templateTitle;
-        }
-        else
+        if ( self.templateTitle != nil )
         {
             self.headerViewController.title = self.templateTitle;
             super.title = self.templateTitle;
         }
+        else
+        {
+            self.headerViewController.title = title;
+        }
     }
     else
     {
-        self.headerViewController.title = title;
+        self.headerViewController.title = nil;
+        super.title = self.templateTitle;
     }
 }
 
