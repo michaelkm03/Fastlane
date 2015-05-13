@@ -174,7 +174,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
 }
 
-- (void)updateUserPostAllowed
+- (void)updateNavigationItems
 {
     // Nothing to do here, provided to override in subclasses
 }
@@ -197,7 +197,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
         [self.streamTrackingHelper multipleContainerDidSetSelected:self.currentStream];
     }
     
-    [self updateUserPostAllowed];
+    [self updateNavigationItems];
 }
 
 #pragma mark - Property Setters
@@ -268,7 +268,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
          BOOL viewIsVisible = self.parentViewController != nil;
          if ( viewIsVisible )
          {
-             [self updateUserPostAllowed];
+             [self updateNavigationItems];
          }
          
          if (completionBlock)

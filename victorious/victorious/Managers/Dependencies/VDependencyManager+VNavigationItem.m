@@ -91,8 +91,8 @@ static const char kAssociatedObjectKey;
             }
         }
         
-        navigationItem.leftBarButtonItems = barButtonItemsLeft;
-        navigationItem.rightBarButtonItems = barButtonItemsRight;
+        navigationItem.leftBarButtonItems = [navigationItem.leftBarButtonItems arrayByAddingObjectsFromArray:barButtonItemsLeft];
+        navigationItem.rightBarButtonItems = [navigationItem.rightBarButtonItems arrayByAddingObjectsFromArray:barButtonItemsRight];
     }
 }
 

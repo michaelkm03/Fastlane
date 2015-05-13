@@ -100,6 +100,8 @@
  */
 - (NSArray *)keyPathsForKey:(NSString *)key;
 
+- (NSArray *)keyPathsForValue:(id)value;
+
 /**
  Returns output as an NSDictionary instance which contains all modifications
  that have yet been made to the template using any of the methods available on this class.

@@ -74,6 +74,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VLinkSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -259,7 +260,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     //Because a stream can be presented without refreshing, we need to refresh the user post icon here
-    [self updateUserPostAllowed];
+    [self updateNavigationItems];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -331,9 +332,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     return isUserPostAllowedByTemplate || isUserPostAllowedByStream;
 }
 
-- (void)updateUserPostAllowed
+- (void)updateNavigationItems
 {
-    [super updateUserPostAllowed];
+    [super updateNavigationItems];
     
     [self addUploadProgressView];
     

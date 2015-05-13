@@ -217,23 +217,49 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        // Add Inbox and Find Friends to current user profile
-        NSParameterAssert( [templateDecorator setComponentWithFilename:@"inboxAccessory"
-                                                            forKeyPath:@"scaffold/menu/items/3/accessoryScreens/1"] );
-        NSParameterAssert( [templateDecorator setComponentWithFilename:@"findFriendsAccessory"
-                                                            forKeyPath:@"scaffold/menu/items/3/accessoryScreens/2"] );
-        
-        // Add Compose to user profile for other users
-        NSParameterAssert( [templateDecorator setTemplateValue:@[]
-                                                    forKeyPath:@"scaffold/userProfileView/accessoryScreens"] );
-        NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
-                                                            forKeyPath:@"scaffold/userProfileView/accessoryScreens/0"] );
-        
-        // Add Compose to messages screen in inbox main menu item
-        NSParameterAssert( [templateDecorator setTemplateValue:@[]
-                                                    forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens"] );
-        NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
-                                                            forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens/0"] );
+        BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
+        if ( isSideNavMenu )
+        {
+            //NSLog( @"%@", [templateDecorator keyPathsForValue:@"inbox.screen"] );
+            //NSLog( @"%@", [templateDecorator keyPathsForValue:@"userProfile.screen"] );
+            //NSLog( @"%@", [templateDecorator keyPathsForValue:@"currentUserProfile.screen"] );
+            
+            // Find Friends to current user profile
+            NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/menu/items/1/1/accessoryScreens"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"findFriendsAccessory"
+                                                                forKeyPath:@"scaffold/menu/items/1/1/accessoryScreens/0"] );
+            
+            // Add Compose to messages screen in inbox main menu item
+            NSParameterAssert( [templateDecorator setTemplateValue:@[]
+                                                        forKeyPath:@"scaffold/menu/items/1/0/destination/screens/0/accessoryScreens"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
+                                                                forKeyPath:@"scaffold/menu/items/1/0/destination/screens/0/accessoryScreens/0"] );
+            
+            // Add Compose to messages screen in inbox main menu item
+            NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/userProfileView/accessoryScreens"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
+                                                                forKeyPath:@"scaffold/userProfileView/accessoryScreens/0"] );
+        }
+        else
+        {
+            // Add Inbox and Find Friends to current user profile
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"inboxAccessory"
+                                                                forKeyPath:@"scaffold/menu/items/3/accessoryScreens/1"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"findFriendsAccessory"
+                                                                forKeyPath:@"scaffold/menu/items/3/accessoryScreens/2"] );
+            
+            // Add Compose to user profile for other users
+            NSParameterAssert( [templateDecorator setTemplateValue:@[]
+                                                        forKeyPath:@"scaffold/userProfileView/accessoryScreens"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
+                                                                forKeyPath:@"scaffold/userProfileView/accessoryScreens/0"] );
+            
+            // Add Compose to messages screen in inbox main menu item
+            NSParameterAssert( [templateDecorator setTemplateValue:@[]
+                                                        forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
+                                                                forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens/0"] );
+        }
         
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
