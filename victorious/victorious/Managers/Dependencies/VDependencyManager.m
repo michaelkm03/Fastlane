@@ -197,20 +197,26 @@ static NSString * const kMacroReplacement = @"XXXXX";
 
 - (UIFont *)fontForKey:(NSString *)key
 {
+    UIFont *font = nil;
     NSDictionary *fontDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     VJSONHelper *helper = [[VJSONHelper alloc] init];
     NSString *fontName = fontDictionary[kFontNameKey];
     NSNumber *fontSize = [helper numberFromJSONValue:fontDictionary[kFontSizeKey]];
     
-    if (![fontName isKindOfClass:[NSString class]] ||
-        ![fontSize isKindOfClass:[NSNumber class]])
+    if ([fontName isKindOfClass:[NSString class]] &&
+        [fontSize isKindOfClass:[NSNumber class]])
+    {
+        font = [UIFont fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
+    }
+    if ( font == nil )
     {
         return [self.parentManager fontForKey:key];
     }
-    
-    UIFont *font = [UIFont fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
-    return font;
+    else
+    {
+        return font;
+    }
 }
 
 - (NSString *)stringForKey:(NSString *)key

@@ -1,5 +1,5 @@
 //
-//  VLinkSelectionResponder.h
+//  VHashtagSelectionResponder.h
 //  victorious
 //
 //  Created by Patrick Lynch on 4/27/15.
@@ -12,11 +12,11 @@
  A protocol that any UIResponder subclass can implement in order to receive respond to
  events that occur and are passed up along the responder chain.
  */
-@protocol VLinkSelectionResponder <NSObject>
+@protocol VHashtagSelectionResponder <NSObject>
 
 /**
- Called when a user taps the displayed callout text.
+ Called when a user taps a hashtag in some text.
  */
-- (void)linkWithTextSelected:(NSString *)text;
+- (void)hashtagSelected:(NSString *)text;
 
 @end

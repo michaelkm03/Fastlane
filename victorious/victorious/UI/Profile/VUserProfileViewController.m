@@ -177,6 +177,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             if ( self.profileHeaderViewController != nil )
             {
                 self.profileHeaderViewController.delegate = self;
+                [self setInitialHeaderState];
             }
         }
         
@@ -196,8 +197,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self setInitialHeaderState];
     
     if ( self.isCurrentUser )
     {
@@ -782,8 +781,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{    
-    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+{
+    BOOL isNoContentCell = [[collectionView cellForItemAtIndexPath:indexPath] isKindOfClass:[VNotAuthorizedProfileCollectionViewCell class]];
+    if ( ( self.streamDataSource.hasHeaderCell && indexPath.section == 0 ) || isNoContentCell )
     {
         return;
     }
