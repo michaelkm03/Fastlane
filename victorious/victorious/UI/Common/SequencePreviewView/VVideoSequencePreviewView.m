@@ -86,7 +86,7 @@
 
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
-    if (_hasFocus)
+    if (self.hasFocus)
     {
         [videoView play];
     }

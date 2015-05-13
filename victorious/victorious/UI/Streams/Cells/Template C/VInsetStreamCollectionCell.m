@@ -343,40 +343,50 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     // Add 1:1 preivew view
     actualSize.height = actualSize.height + actualSize.width;
 
-    // Add text area sizes
-    {
-        // Top Margins
-        actualSize.height = actualSize.height + kTextMargins.top;
-        
-        // Comment size
-        NSAttributedString *attributedCommentText = [self attributedCommentTextForSequence:sequence
-                                                                      andDependencyManager:dependencyManager];
-        [self sizingCell].frame = CGRectMake(0, 0, actualSize.width, actualSize.height + actualSize.height);
-        [[self sizingCell].commentsLabel setAttributedText:attributedCommentText];
-        CGSize commentSize = [[self sizingCell].commentsLabel intrinsicContentSize];
-
-        actualSize.height = actualSize.height + commentSize.height;
-        if (sequence.name.length > 0)
-        {
-            // Inter-Text spacing
-            actualSize.height = actualSize.height + kTextSeparatorHeight;
-            
-            // Caption view size
-            NSAttributedString *attributedCaptionText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                                         attributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-            [self sizingCell].captionTextView.attributedText = attributedCaptionText;
-            CGSize captionSize = [[self sizingCell].captionTextView intrinsicContentSize];
-            actualSize.height = actualSize.height + captionSize.height;
-        }
-        
-        // Bottom Margins
-        actualSize.height = actualSize.height + kTextMargins.bottom;
-    }
+    // Text size
+    actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize
+                                             sequence:sequence
+                                    dependencyManager:dependencyManager];
     
     // Action View
     actualSize.height = actualSize.height + kInsetCellActionViewHeight;
     
     return actualSize;
+}
+
++ (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
+                                sequence:(VSequence *)sequence
+                       dependencyManager:(VDependencyManager *)dependencyManager
+{
+    CGSize sizeWithText = initialSize;
+    
+    // Top Margins
+    sizeWithText.height = sizeWithText.height + kTextMargins.top;
+    
+    // Comment size
+    NSAttributedString *attributedCommentText = [self attributedCommentTextForSequence:sequence
+                                                                  andDependencyManager:dependencyManager];
+    [self sizingCell].frame = CGRectMake(0, 0, sizeWithText.width, sizeWithText.height + sizeWithText.height);
+    [[self sizingCell].commentsLabel setAttributedText:attributedCommentText];
+    CGSize commentSize = [[self sizingCell].commentsLabel intrinsicContentSize];
+    
+    sizeWithText.height = sizeWithText.height + commentSize.height;
+    if (sequence.name.length > 0)
+    {
+        // Inter-Text spacing
+        sizeWithText.height = sizeWithText.height + kTextSeparatorHeight;
+        
+        // Caption view size
+        NSAttributedString *attributedCaptionText = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                                    attributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
+        [self sizingCell].captionTextView.attributedText = attributedCaptionText;
+        CGSize captionSize = [[self sizingCell].captionTextView intrinsicContentSize];
+        sizeWithText.height = sizeWithText.height + captionSize.height;
+    }
+    
+    // Bottom Margins
+    sizeWithText.height = sizeWithText.height + kTextMargins.bottom;
+    return sizeWithText;
 }
 
 + (VInsetStreamCollectionCell *)sizingCell

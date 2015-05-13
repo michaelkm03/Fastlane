@@ -107,7 +107,7 @@ static const CGFloat kCommentButtonHeight = 44.0f;
         self.commentButton.translatesAutoresizingMaskIntoConstraints = NO;
         [self.commentButton setImage:[[UIImage imageNamed:@"StreamComments"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                             forState:UIControlStateNormal];
-        [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -kCommentButtonBuffer)];
+        self.commentButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -kCommentButtonBuffer);
         self.commentButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [self.commentButton addTarget:self action:@selector(selectedCommentButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.commentButton v_addWidthConstraint:kCommentButtonWidth];
@@ -193,7 +193,7 @@ static const CGFloat kCommentButtonHeight = 44.0f;
 - (void)applyStyle
 {
     self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    [self.commentButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
+    self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
 }
 
 - (void)updateCommentButtonForSequence:(VSequence *)sequence
