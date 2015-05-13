@@ -227,7 +227,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
-    if ([self.previewView class] == [VSequencePreviewView classTypeForSequence:sequence])
+    if ([self.previewView canHandleSequence:sequence])
     {
         [self.previewView setSequence:sequence];
         return;
@@ -280,12 +280,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
                           baseIdentifier:(NSString *)baseIdentifier
 {
-    NSMutableString *mutableBaseIdentifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier mutableCopy];
-    [mutableBaseIdentifier appendString:NSStringFromClass(self)];
-    [mutableBaseIdentifier appendFormat:@".%@.", NSStringFromClass([VSequencePreviewView classTypeForSequence:sequence])];
-    NSString *reuseIdentifierForActionView = [VInsetActionView reuseIdentifierForSequence:sequence
-                                                                           baseIdentifier:[NSString stringWithString:mutableBaseIdentifier]];
-    return reuseIdentifierForActionView;
+    NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
+    identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
+    identifier = [VSequencePreviewView reuseIdentifierForSequence:sequence
+                                                   baseIdentifier:identifier];
+    return identifier;
 }
 
 #pragma mark - NSAttributedString Attributes

@@ -93,7 +93,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
-    if ([self.previewView class] == [VSequencePreviewView classTypeForSequence:sequence])
+    if ([self.previewView canHandleSequence:sequence])
     {
         [self.previewView setSequence:sequence];
         return;
@@ -138,12 +138,12 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
                           baseIdentifier:(NSString *)baseIdentifier
 {
-    baseIdentifier = baseIdentifier == nil ? [[NSString alloc] init] : baseIdentifier;
-    baseIdentifier = [NSString stringWithFormat:@"%@.%@", baseIdentifier, NSStringFromClass(self)];
-    baseIdentifier = [VSequencePreviewView reuseIdentifierForSequence:sequence
-                                                       baseIdentifier:baseIdentifier];
+    NSString *identifier = baseIdentifier == nil ? [[NSString alloc] init] : baseIdentifier;
+    identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
+    identifier = [VSequencePreviewView reuseIdentifierForSequence:sequence
+                                                   baseIdentifier:identifier];
     return [VSleekActionView reuseIdentifierForSequence:sequence
-                                         baseIdentifier:baseIdentifier];
+                                         baseIdentifier:identifier];
 }
 
 #pragma mark - Class Methods

@@ -2176,7 +2176,6 @@
 		D83AC7A91AB201A600F63603 /* VPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlayerView.m; sourceTree = "<group>"; };
 		D84558FE1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeStringFormatter.h; sourceTree = "<group>"; };
 		D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBadgeStringFormatter.m; sourceTree = "<group>"; };
-		D84C338B1AEB3231006F0F3B /* hermesCells.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = hermesCells.json; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
 		D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewView.h; sourceTree = "<group>"; };
@@ -4759,7 +4758,6 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
-				D84C338B1AEB3231006F0F3B /* hermesCells.json */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,

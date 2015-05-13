@@ -217,52 +217,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         // Sleek
-//        [templateDecorator setValue:@{
-//                                      @"name": @"sleek.streamCell",
-//                                      @"orIcon": @{
-//                                                    @"imageURL": @"D_pollOr"
-//                                                },
-//                                      @"background":@{
-//                                              @"name": @"solidColor.background",
-//                                              @"color":
-//                                                  @{
-//                                                      @"red": @50,
-//                                                      @"green": @50,
-//                                                      @"blue": @50,
-//                                                      @"alpha": @255
-//                                                      }
-//                                              },
-//                                      @"loadingBackground":@{
-//                                              @"name": @"solidColor.background",
-//                                              @"color":
-//                                                  @{
-//                                                      @"red": @0,
-//                                                      @"green": @50,
-//                                                      @"blue": @50,
-//                                                      @"alpha": @255
-//                                                      }
-//                                              },
-//                                      @"color.text.content": @{
-//                                              @"red": @102,
-//                                              @"green": @102,
-//                                              @"blue": @102,
-//                                              @"alpha": @255
-//                                              },
-//                                      @"color.text": @{
-//                                              @"red": @200,
-//                                              @"green": @200,
-//                                              @"blue": @200,
-//                                              @"alpha": @255
-//                                              }
-//                                      }
-//              forAllOccurencesOfKey:@"streamCell"];
-        
-        // Tile Overlay
         [templateDecorator setValue:@{
-                                      @"name": @"titleOverlay.streamCell",
+                                      @"name": @"sleek.streamCell",
                                       @"orIcon": @{
-                                              @"imageURL": @"D_pollOr"
-                                              },
+                                                    @"imageURL": @"D_pollOr"
+                                                },
                                       @"background":@{
                                               @"name": @"solidColor.background",
                                               @"color":
@@ -273,11 +232,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                       @"alpha": @255
                                                       }
                                               },
-                                      @"loadingBackground": @{
+                                      @"loadingBackground":@{
                                               @"name": @"solidColor.background",
                                               @"color":
                                                   @{
-                                                      @"red": @50,
+                                                      @"red": @0,
                                                       @"green": @50,
                                                       @"blue": @50,
                                                       @"alpha": @255
@@ -290,13 +249,54 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                               @"alpha": @255
                                               },
                                       @"color.text": @{
-                                              @"red": @255,
-                                              @"green": @255,
-                                              @"blue": @255,
+                                              @"red": @200,
+                                              @"green": @200,
+                                              @"blue": @200,
                                               @"alpha": @255
                                               }
                                       }
               forAllOccurencesOfKey:@"streamCell"];
+        
+        // Tile Overlay
+//        [templateDecorator setValue:@{
+//                                      @"name": @"titleOverlay.streamCell",
+//                                      @"orIcon": @{
+//                                              @"imageURL": @"D_pollOr"
+//                                              },
+//                                      @"background":@{
+//                                              @"name": @"solidColor.background",
+//                                              @"color":
+//                                                  @{
+//                                                      @"red": @50,
+//                                                      @"green": @50,
+//                                                      @"blue": @50,
+//                                                      @"alpha": @255
+//                                                      }
+//                                              },
+//                                      @"loadingBackground": @{
+//                                              @"name": @"solidColor.background",
+//                                              @"color":
+//                                                  @{
+//                                                      @"red": @50,
+//                                                      @"green": @50,
+//                                                      @"blue": @50,
+//                                                      @"alpha": @255
+//                                                      }
+//                                              },
+//                                      @"color.text.content": @{
+//                                              @"red": @102,
+//                                              @"green": @102,
+//                                              @"blue": @102,
+//                                              @"alpha": @255
+//                                              },
+//                                      @"color.text": @{
+//                                              @"red": @255,
+//                                              @"green": @255,
+//                                              @"blue": @255,
+//                                              @"alpha": @255
+//                                              }
+//                                      }
+//              forAllOccurencesOfKey:@"streamCell"];
 
         // inset
 //        [templateDecorator setValue:@{

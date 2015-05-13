@@ -63,6 +63,15 @@
     NSAssert(false, @"Override in subclasses!");
 }
 
+- (BOOL)canHandleSequence:(VSequence *)sequence
+{
+    if ([self class] == [[self class] classTypeForSequence:sequence])
+    {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - VStreamCellComponentSpecialization
 
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier

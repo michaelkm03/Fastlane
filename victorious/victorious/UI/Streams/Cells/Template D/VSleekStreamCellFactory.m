@@ -45,7 +45,7 @@
 {
     for (VStreamItem *streamItem in streamItems)
     {
-        if (![streamItems isKindOfClass:[VSequence class]])
+        if (![streamItem isKindOfClass:[VSequence class]])
         {
             NSAssert(false, @"This factory can only handle sequences.");
         }
