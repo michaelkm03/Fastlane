@@ -179,6 +179,12 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
         [NSLayoutConstraint activateConstraints:self.noCaptionConstraints];
     }
+    if ([self.captionTextView v_internalHeightConstraint] != nil)
+    {
+        // CaptionTextView sometimes screws with layout with compression resistance.
+        [self.captionTextView removeConstraint:[self.captionTextView v_internalHeightConstraint]];
+    }
+
     [super updateConstraints];
 }
 
