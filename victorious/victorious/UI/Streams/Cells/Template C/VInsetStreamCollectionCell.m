@@ -214,6 +214,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     [self updateCaptionViewForSequence:sequence];
     [self reloadCommentsCountForSequence:sequence];
     [self setNeedsUpdateConstraints];
+    [self setNeedsLayout];
 }
 
 #pragma mark - Internal Methods

@@ -303,22 +303,28 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                       @"background": @{
                                               @"name": @"solidColor.background",
                                               @"color": @{
-                                                      @"red":@255,
-                                                      @"green":@255,
-                                                      @"blue":@255,
+                                                      @"red":@25,
+                                                      @"green":@25,
+                                                      @"blue":@25,
                                                       @"alpha":@255,
                                                       }
                                               },
                                       @"color.text":@{
-                                              @"red":@0,
-                                              @"green":@0,
-                                              @"blue":@0,
+                                              @"red":@255,
+                                              @"green":@55,
+                                              @"blue":@55,
                                               @"alpha":@255,
                                               },
                                       @"color.text.content": @{
                                               @"red":@200,
-                                              @"green":@20,
+                                              @"green":@200,
                                               @"blue":@200,
+                                              @"alpha":@255,
+                                              },
+                                      @"color.accent": @{
+                                              @"red":@100,
+                                              @"green":@100,
+                                              @"blue":@100,
                                               @"alpha":@255,
                                               },
                                       @"name":@"inset.streamCell",

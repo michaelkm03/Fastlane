@@ -185,6 +185,19 @@ static const CGFloat kActionButtonWidth = 44.0f;
                                                                     unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
 }
 
+#pragma mark - VHasManagedDependencies
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    UIColor *imageTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.shareButton.tintColor = imageTintColor;
+    self.gifButton.tintColor = imageTintColor;
+    self.memeButton.tintColor = imageTintColor;
+    self.repostButton.tintColor = imageTintColor;
+}
+
 #pragma mark - Button Factory
 
 - (UIButton *)actionButtonWithImage:(UIImage *)actionImage
