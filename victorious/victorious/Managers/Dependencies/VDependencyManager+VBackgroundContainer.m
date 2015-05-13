@@ -10,6 +10,9 @@
 #import "VDependencyManager+VBackground.h"
 #import "VBackground.h"
 #import "UIView+AutoLayout.h"
+#import <objc/runtime.h>
+
+static const char kAssociatedBackgroundKey;
 
 @implementation VDependencyManager (VBackgroundContainer)
 
@@ -19,7 +22,7 @@
     {
         return;
     }
-
+    
     [self addBackground:[self background]
         asSubviewOfView:[backgroundHost backgroundContainerView]];
 }
@@ -38,22 +41,18 @@
 - (void)addBackground:(VBackground *)background
       asSubviewOfView:(UIView *)containerView
 {
+    if (containerView == nil)
+    {
+        return;
+    }
     if (background == nil)
     {
         return;
     }
     
-    __block BOOL alreadyContainsBackground = NO;
-    [containerView.subviews enumerateObjectsUsingBlock:^(UIView *subView, NSUInteger idx, BOOL *stop)
-     {
-         if ([subView isKindOfClass:[VBackground class]])
-         {
-             alreadyContainsBackground = YES;
-             *stop = YES;
-         }
-     }];
+    UIView *existingBackground = objc_getAssociatedObject(containerView, &kAssociatedBackgroundKey);
     
-    if (!alreadyContainsBackground)
+    if (existingBackground == nil)
     {
         UIView *backgroundView = [background viewForBackground];
         
@@ -61,6 +60,7 @@
         [containerView addSubview:backgroundView];
         [containerView sendSubviewToBack:backgroundView];
         [containerView v_addFitToParentConstraintsToSubview:backgroundView];
+        objc_setAssociatedObject(containerView, &kAssociatedBackgroundKey, background, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
 
