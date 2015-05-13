@@ -22,6 +22,7 @@
 // Views + Helpers
 #import "VDefaultProfileButton.h"
 #import "VFollowUserControl.h"
+#import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <KVOController/FBKVOController.h>
 
@@ -29,7 +30,7 @@ static const CGFloat kFollowerCellHeight = 50.0f;
 
 @interface VFollowerTableViewCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *profileName;
 @property (nonatomic, weak) IBOutlet UILabel *profileLocation;
 @property (nonatomic, weak) IBOutlet VFollowUserControl *followControl;
@@ -94,11 +95,7 @@ static const CGFloat kFollowerCellHeight = 50.0f;
          [welf updateFollowingAnimated:YES];
      }];
     
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
-    [self.profileImageView fadeInImageAtURL:[NSURL URLWithString:profile.pictureUrl]
-                           placeholderImage:defaultImage];
-    self.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    [self.profileImageView setProfileImageURL:[NSURL URLWithString:profile.pictureUrl]];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
     self.followControl.enabled = YES;

@@ -90,6 +90,8 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 
 - (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
+- (VAbstractFilter *)notificationFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+
 - (VAbstractFilter *)filterForStream:(VStream *)stream;
 
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
