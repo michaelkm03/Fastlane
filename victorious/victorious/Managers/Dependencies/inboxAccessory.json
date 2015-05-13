@@ -3,7 +3,19 @@
         "screens": [
             {
                 "name": "inbox.screen",
-                "title": "Messages"
+                "title": "Messages",
+                "accessoryScreens" : [{
+                    "destination": {
+                        "title": "New Message",
+                        "name": "message.screen"
+                    },
+                    "title": "New Message",
+                        "icon": {
+                        "imageURL": "profileCompose"
+                    },
+                    "identifier": "Accessory New Message",
+                    "position": "right"
+                }]
             },
             {
                 "name": "notifications.screen",
@@ -20,7 +32,8 @@
                 "blue": 241,
                 "green": 241
             }
-        }
+        },
+        "accessoryScreens": []
     },
     "title": "Inbox",
     "icon": {

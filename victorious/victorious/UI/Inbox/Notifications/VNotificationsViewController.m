@@ -50,7 +50,6 @@ static int const kNotificationFetchBatchSize = 50;
     if (viewController)
     {
         viewController.dependencyManager = dependencyManager;
-        viewController.navigationItem.rightBarButtonItem = nil;
         [dependencyManager addPropertiesToNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];

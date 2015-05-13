@@ -210,20 +210,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         [self shrinkHeaderAnimated:YES];
     }
     
-    //If we came from the inbox we can get into a loop with the compose button, so hide it
-    BOOL fromInbox = NO;
-    for (UIViewController *vc in self.navigationController.viewControllers)
-    {
-        if ([vc isKindOfClass:[VInboxViewController class]])
-        {
-            fromInbox = YES;
-        }
-    }
-    if (fromInbox)
-    {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
-    
     self.didEndViewWillAppear = YES;
     [self attemptToRefreshProfileUI];
     
@@ -806,6 +792,16 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 }
 
 #pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+{
+    if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
+    {
+        return self.user != [VObjectManager sharedManager].mainUser;
+    }
+    
+    return YES;
+}
 
 - (BOOL)shouldNavigateToDestination:(id)destination
 {

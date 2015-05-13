@@ -333,19 +333,11 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)resetNavigationItemForIndex:(NSUInteger)index
 {
-    [self resetNavigationItem];
-    
     NSArray *screens = [self.dependencyManager templateValueOfType:[NSArray class] forKey:kScreensKey];
     NSDictionary *childConfiguration = screens[ index ];
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
     [childDependencyManager addPropertiesToNavigationItem:self.navigationItem
                                  pushAccessoryMenuItemsOn:self.navigationController];
-}
-
-- (void)resetNavigationItem
-{
-    CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
-    self.navigationItem.rightBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
 }
 
 #pragma mark - UICollectionViewDelegate methods
