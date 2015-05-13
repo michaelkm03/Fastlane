@@ -23,7 +23,7 @@
 
 #import "VDependencyManager+VBackgroundContainer.h"
 
-@interface VFullscreenMarqueeController () <VFullscreenMarqueeCellDelegate>
+@interface VFullscreenMarqueeController ()
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
 
@@ -76,23 +76,12 @@
 {
     VFullscreenMarqueeStreamItemCell *streamItemCell = (VFullscreenMarqueeStreamItemCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    streamItemCell.delegate = self;
-    
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:streamItemCell];
     
     return streamItemCell;
 }
 
 #pragma mark - VMarqueeCellDelegate
-
-- (void)cell:(VFullscreenMarqueeStreamItemCell *)cell selectedUser:(VUser *)user
-{
-    if ( [self.selectionDelegate conformsToProtocol:@protocol(VFullscreenMarqueeSelectionDelegate)] )
-    {
-        [(id <VFullscreenMarqueeSelectionDelegate>)self.selectionDelegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
-        [self.autoScrollTimerManager invalidate];
-    }
-}
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {

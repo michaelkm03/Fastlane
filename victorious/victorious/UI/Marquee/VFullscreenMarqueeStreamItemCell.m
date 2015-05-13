@@ -29,7 +29,6 @@ CGFloat const kVDetailHideDuration = 2.0f;
 static CGFloat const kVDetailHideTime = 0.3f;
 static CGFloat const kVDetailBounceHeight = 8.0f;
 static CGFloat const kVDetailBounceTime = 0.15f;
-static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
 static NSString * const kVOrIconKey = @"orIcon";
 
@@ -63,23 +62,6 @@ static NSString * const kVOrIconKey = @"orIcon";
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];
     [self restartHideTimer];
-}
-
-- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
-{
-    if ( self.hideMarqueePosterImage == hideMarqueePosterImage )
-    {
-        return;
-    }
-    
-    _hideMarqueePosterImage = hideMarqueePosterImage;
-
-    if ( self.hideMarqueePosterImage )
-    {
-        self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
-        self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
-        [self layoutIfNeeded];
-    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -160,14 +142,6 @@ static NSString * const kVOrIconKey = @"orIcon";
     [super prepareForReuse];
     
     [self setDetailsContainerVisible:YES animated:NO];
-}
-
-- (IBAction)userSelected:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(cell:selectedUser:)])
-    {
-        [self.delegate cell:self selectedUser:((VSequence *)self.streamItem).user];
-    }
 }
 
 #pragma mark - VBackgroundContainer

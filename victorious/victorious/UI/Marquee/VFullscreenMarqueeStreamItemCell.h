@@ -15,15 +15,6 @@ extern CGFloat const kVDetailVisibilityDuration;
 extern CGFloat const kVDetailHideDuration;
 
 /**
- *  Delegate for a VMarqueeStreamItemCell
- */
-@protocol VFullscreenMarqueeCellDelegate <NSObject>
-
-- (void)cell:(VFullscreenMarqueeStreamItemCell *)cell selectedUser:(VUser *)user;///<Sent when the user button is clicked in a marquee cell
-
-@end
-
-/**
  *  A cell that displays a streamItem for a Marquee
  */
 @interface VFullscreenMarqueeStreamItemCell : VAbstractMarqueeStreamItemCell <VBackgroundContainer>
@@ -41,8 +32,5 @@ extern CGFloat const kVDetailHideDuration;
  Start the timer to hide the detail view
  */
 - (void)restartHideTimer;
-
-@property (nonatomic, weak) id <VFullscreenMarqueeCellDelegate> delegate; ///< The delegate that will recieve messages when a user is selected from marquee content
-@property (nonatomic, assign) BOOL hideMarqueePosterImage; ///< Toggles display of poster's profile image in the center of the marquee content
 
 @end
