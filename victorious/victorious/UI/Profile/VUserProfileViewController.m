@@ -797,7 +797,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
     {
-        return self.user != [VObjectManager sharedManager].mainUser;
+        return self.user != nil && self.user != [VObjectManager sharedManager].mainUser;
     }
     
     return YES;

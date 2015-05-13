@@ -8,10 +8,11 @@
 
 #import "VKeyboardBarContainerViewController.h"
 #import "VHasManagedDependencies.h"
+#import "VAuthorizationContextProvider.h"
 
 @class VDependencyManager, VUnreadMessageCountCoordinator, VUser;
 
-@interface VMessageContainerViewController : VKeyboardBarContainerViewController <VHasManagedDependencies>
+@interface VMessageContainerViewController : VKeyboardBarContainerViewController <VHasManagedDependencies, VAuthorizationContextProvider>
 
 @property (nonatomic, strong) VUser  *otherUser;
 @property (nonatomic, weak) IBOutlet UIView *busyView;

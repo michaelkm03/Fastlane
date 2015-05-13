@@ -10,6 +10,9 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VNavigationMenuItem.h"
 #import "VNavigationDestination.h"
+#import "VAuthorizationContextProvider.h"
+#import "VAuthorizedAction.h"
+#import "VObjectManager.h"
 
 #import <Objc/runtime.h>
 
@@ -46,8 +49,8 @@ static const char kAssociatedObjectKey;
             
         objc_setAssociatedObject(self, &kAssociatedObjectKey, navigationController, OBJC_ASSOCIATION_ASSIGN);
         NSInteger tag = 0;
-        NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] init];
-        NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] init];
+        NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] initWithArray:navigationItem.leftBarButtonItems];
+        NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] initWithArray:navigationItem.rightBarButtonItems];
         for ( VNavigationMenuItem *menuItem in self.accessoryMenuItems )
         {
             // Check if the source can display the menu item (default is YES)
@@ -81,19 +84,33 @@ static const char kAssociatedObjectKey;
             }
             
             accessoryBarItem.tag = tag++;
-            if ( [menuItem.position isEqualToString:VDependencyManagerPositionRight])
+            if ( [menuItem.position isEqualToString:VDependencyManagerPositionRight] &&
+                 ![self barButtonItemsArray:barButtonItemsRight containsMenuItem:menuItem] )
             {
                 [barButtonItemsRight addObject:accessoryBarItem];
             }
-            else if ( [menuItem.position isEqualToString:VDependencyManagerPositionLeft] || menuItem.position == nil )
+            else if ( ([menuItem.position isEqualToString:VDependencyManagerPositionLeft] || menuItem.position == nil) &&
+                      ![self barButtonItemsArray:barButtonItemsLeft containsMenuItem:menuItem] )
             {
                 [barButtonItemsLeft addObject:accessoryBarItem];
             }
         }
         
-        navigationItem.leftBarButtonItems = [navigationItem.leftBarButtonItems arrayByAddingObjectsFromArray:barButtonItemsLeft];
-        navigationItem.rightBarButtonItems = [navigationItem.rightBarButtonItems arrayByAddingObjectsFromArray:barButtonItemsRight];
+        navigationItem.leftBarButtonItems = barButtonItemsLeft;
+        navigationItem.rightBarButtonItems = barButtonItemsRight;
     }
+}
+
+- (BOOL)barButtonItemsArray:(NSArray *)barButtonItems containsMenuItem:(VNavigationMenuItem *)menuItem
+{
+    for ( UIBarButtonItem *barButtonItem in barButtonItems )
+    {
+        if ( [barButtonItem.title isEqualToString:menuItem.title] || [barButtonItem.image isEqual:menuItem.icon] )
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)showAccessoryMenuItemOnNavigation:(UIBarItem *)barButton
@@ -123,7 +140,20 @@ static const char kAssociatedObjectKey;
     
     if ( canNavigateFromSource && canNavigationToDestination )
     {
-        [navigationController pushViewController:destination animated:YES];
+        id <VAuthorizationContextProvider> authorizedDestination = (id <VAuthorizationContextProvider>)destination;
+        if ( [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] && authorizedDestination.requiresAuthorization )
+        {
+            VAuthorizationContext context = [authorizedDestination authorizationContext];
+            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager] dependencyManager:self];
+            [authorizedAction performFromViewController:navigationController context:context completion:^(BOOL authorized)
+             {
+                 [navigationController pushViewController:destination animated:YES];
+             }];
+        }
+        else
+        {
+            [navigationController pushViewController:destination animated:YES];
+        }
     }
 }
 

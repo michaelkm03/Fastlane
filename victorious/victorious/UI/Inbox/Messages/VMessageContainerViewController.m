@@ -231,4 +231,16 @@ static const NSUInteger kCharacterLimit = 1024;
     }];
 }
 
+#pragma mark - I
+
+- (BOOL)requiresAuthorization
+{
+    return YES;
+}
+
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextInbox;
+}
+
 @end
