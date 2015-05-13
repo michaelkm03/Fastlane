@@ -137,6 +137,14 @@ NSString * const kMenuKey = @"menu";
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
 shouldSelectViewController:(VNavigationDestinationContainerViewController *)viewController
 {
+    if (viewController == tabBarController.selectedViewController)
+    {
+        if ([viewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)])
+        {
+            [(id <VTabMenuContainedViewControllerNavigation>)viewController reselected];
+        }
+        return NO;
+    }
     NSInteger index = [tabBarController.viewControllers indexOfObject:viewController];
     if ( index != NSNotFound )
     {
@@ -147,6 +155,8 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     [self navigateToDestination:viewController.navigationDestination];
     return NO;
 }
+
+#pragma mark - VScaffoldViewController Overrides
 
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {

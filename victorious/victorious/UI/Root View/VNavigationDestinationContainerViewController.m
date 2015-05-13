@@ -7,6 +7,7 @@
 //
 
 #import "VNavigationDestinationContainerViewController.h"
+#import "VTabMenuViewController.h"
 
 @implementation VNavigationDestinationContainerViewController
 
@@ -81,6 +82,16 @@
     [self.view addSubview:containedViewController.view];
     [containedViewController didMoveToParentViewController:self];
     [self setNeedsStatusBarAppearanceUpdate];
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    if ([self.containedViewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation) ])
+    {
+        [(id <VTabMenuContainedViewControllerNavigation>)self.containedViewController reselected];
+    }
 }
 
 @end
