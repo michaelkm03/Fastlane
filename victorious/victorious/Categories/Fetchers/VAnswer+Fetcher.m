@@ -12,7 +12,7 @@
 
 - (NSURL *)previewMediaURL
 {
-    return [NSURL URLWithString:self.mediaUrl];
+    return [NSURL URLWithString:self.thumbnailUrl];
 }
 
 @end

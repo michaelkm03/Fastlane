@@ -58,9 +58,8 @@ static NSString *kOrIconKey = @"orIcon";
 {
     _sequence = sequence;
     
-    NSArray *answers = [[self.sequence firstNode] firstAnswers];
-    VAnswer *answerA = [answers firstObject];
-    VAnswer *answerB = [answers lastObject];
+    VAnswer *answerA = [self.sequence.firstNode answerA];
+    VAnswer *answerB = [self.sequence.firstNode answerB];
     [self.pollView setImageURL:answerA.previewMediaURL
                  forPollAnswer:VPollAnswerA];
     [self.pollView setImageURL:answerB.previewMediaURL
