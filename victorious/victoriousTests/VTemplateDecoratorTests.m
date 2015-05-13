@@ -228,4 +228,35 @@
     XCTAssertThrows( [templateDecorator keyPathsForKey:nil] );
 }
 
+- (void)testValueReplacement
+{
+    NSDictionary *template = @{ @"key1" : @"value9",
+                                @"key2" : @{ @"subkey0" : @{ @"key4" : @"subvalue0",
+                                                             @"key5" : @{ @"key4" : @"subvalue1",
+                                                                          @"key5" : @"subvalue2" } } },
+                                @"key3" : @[ @{ @"key6" : @"subarrayvalue1" } ],
+                                @"key4" : @[ @{ @"key6" : @"subvalue3" } ] };
+    
+    VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+    
+    NSString *replacementString = @"__REPLACEMENT__";
+    NSInteger replacementCount;
+    
+    replacementCount = [templateDecorator replaceOccurencesOfString:@"value9" withString:replacementString];
+    XCTAssertEqual( replacementCount, 1 );
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key1" ], replacementString );
+    
+    replacementCount = [templateDecorator replaceOccurencesOfString:@"subvalue" withString:replacementString];
+    XCTAssertEqual( replacementCount, 4 );
+    
+    NSString *expected = [NSString stringWithFormat:@"%@0", replacementString];
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key2" ][ @"subkey0" ][ @"key4" ], expected );
+    expected = [NSString stringWithFormat:@"%@1", replacementString];
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key2" ][ @"subkey0" ][ @"key5" ][ @"key4" ], expected );
+    expected = [NSString stringWithFormat:@"%@2", replacementString];
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key2" ][ @"subkey0" ][ @"key5" ][ @"key5" ], expected );
+    expected = [NSString stringWithFormat:@"%@3", replacementString];
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key4" ][ 0 ][ @"key6" ], expected );
+}
+
 @end

@@ -229,6 +229,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
             NSAssert( [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/4"], @"" );
             NSAssert( [templateDecorator setTemplateValue:@"topNavigation" forKeyPath:@"scaffold/menu/items/4/destination/layout"], @"" );
         }
+        [templateDecorator replaceOccurencesOfString:@"A_" withString:@"D_"];
                 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

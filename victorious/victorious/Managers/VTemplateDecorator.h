@@ -108,6 +108,16 @@
 - (NSArray *)keyPathsForKey:(NSString *)key;
 
 /**
+ Searches recursively for any dictinoary string values and performs a string replacement with all occurences
+ of the string within the value.
+ 
+ @param stringToReplace The string that will be removed in place of `replacementString`
+ @param replacementString The string to add in place of `stringToReplace`
+ @return The number of tempalte values that had one or more string replacements applied.
+ */
+- (NSInteger)replaceOccurencesOfString:(NSString *)stringToReplace withString:(NSString *)replacementString;
+
+/**
  Returns output as an NSDictionary instance which contains all modifications
  that have yet been made to the template using any of the methods available on this class.
  */

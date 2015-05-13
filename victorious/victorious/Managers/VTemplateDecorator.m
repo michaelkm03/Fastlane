@@ -385,4 +385,67 @@ static NSString * const kKeyPathDelimiter = @"/";
     }
 }
 
+- (NSInteger)replaceOccurencesOfString:(NSString *)stringToReplace withString:(NSString *)replacementString
+{
+    NSInteger replacementCount = 0;
+    self.workingTemplate = [self replaceOccurencesOfString:stringToReplace withString:replacementString inCollection:self.workingTemplate replacementCount:&replacementCount];
+    return replacementCount;
+}
+
+- (id)replaceOccurencesOfString:(NSString *)stringToReplace withString:(NSString *)replacementString inCollection:(id)source replacementCount:(NSInteger *)replacementCount
+{
+    if ( [source isKindOfClass:[NSArray class]] )
+    {
+        NSMutableArray *destination = [[NSMutableArray alloc] init];
+        NSMutableArray *sourceArray = (NSMutableArray *)source;
+        for ( NSInteger i = 0; i < (NSInteger)sourceArray.count; i++ )
+        {
+            id value = sourceArray[ i ];
+            if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+            {
+                destination[ i ] = [self replaceOccurencesOfString:stringToReplace withString:replacementString inCollection:value replacementCount:replacementCount];
+            }
+            else
+            {
+                destination[ i ] = value;
+            }
+        }
+        return destination;
+    }
+    else if ( [source isKindOfClass:[NSDictionary class]] )
+    {
+        NSMutableDictionary *destination = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *sourceDictionary = (NSMutableDictionary *)source;
+        for ( NSString *templateKey in sourceDictionary.allKeys )
+        {
+            id value = ((NSDictionary *)source)[ templateKey ];
+            if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+            {
+                destination[ templateKey ] = [self replaceOccurencesOfString:stringToReplace withString:replacementString inCollection:value replacementCount:replacementCount];
+            }
+            else if ( [value isKindOfClass:[NSString class]] )
+            {
+                NSString *stringValue = (NSString *)source[ templateKey ];
+                if ( [stringValue rangeOfString:stringToReplace].location != NSNotFound )
+                {
+                    destination[ templateKey ] = [stringValue stringByReplacingOccurrencesOfString:stringToReplace
+                                                                                        withString:replacementString];
+                    (*replacementCount)++;
+                }
+                else
+                {
+                    destination[ templateKey ] = source[ templateKey ];
+                }
+            }
+            else
+            {
+                destination[ templateKey ] = source[ templateKey ];
+            }
+        }
+        return destination;
+    }
+    
+    return nil;
+}
+
 @end
