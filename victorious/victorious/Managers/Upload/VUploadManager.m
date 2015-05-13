@@ -66,16 +66,10 @@ static inline BOOL isSessionQueue()
 
 - (id)init
 {
-    return [self initWithObjectManager:nil];
-}
-
-- (instancetype)initWithObjectManager:(VObjectManager *)objectManager
-{
     self = [super init];
     if ( self != nil )
     {
         _useBackgroundSession = YES;
-        _objectManager = objectManager;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
         _taskInformationBySessionTask = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];
         _completionBlocks = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableCopyIn];
@@ -89,6 +83,16 @@ static inline BOOL isSessionQueue()
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setObjectManager:(VObjectManager *)objectManager
+{
+    if ( _objectManager != nil )
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:_objectManager];
+    }
+    _objectManager = objectManager;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:_objectManager];
 }
 
 - (void)startURLSession
@@ -175,8 +179,6 @@ static inline BOOL isSessionQueue()
                         }
                     }
                 }
-                
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:self.objectManager];
                 
                 if ( completion != nil )
                 {
@@ -721,7 +723,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     static VUploadManager *sharedManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedManager = [[VUploadManager alloc] initWithObjectManager:[VObjectManager sharedManager]];
+        sharedManager = [[VUploadManager alloc] init];
     });
     return sharedManager;
 }

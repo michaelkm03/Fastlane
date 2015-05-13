@@ -24,8 +24,6 @@ typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
 
 @property (nonatomic, readonly) VPaginationManager *paginationManager; ///< An object responsible for tracking paginated responses
 
-@property (nonatomic, readonly) VUploadManager *uploadManager; ///< An object responsible for uploading files
-
 + (void)setupObjectManager;
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass;

@@ -39,7 +39,11 @@ extern const NSInteger VUploadManagerBadHTTPResponseErrorCode; ///< Indicates th
  */
 @interface VUploadManager : NSObject
 
-@property (nonatomic, weak, readonly) VObjectManager *objectManager; ///< The objectManager passed to the -init call
+/**
+ The objectManager that will be monitored for changes in authorization and
+ login state and update HTTP headers on outgoing requests.
+ */
+@property (nonatomic, weak) VObjectManager *objectManager;
 
 /**
  If YES (default), uploads will happen via a background session.
@@ -70,11 +74,9 @@ extern const NSInteger VUploadManagerBadHTTPResponseErrorCode; ///< Indicates th
 @property (nonatomic, copy) void (^backgroundSessionEventsCompleteHandler)(void);
 
 /**
- The designated initializer.
- 
- @param objectManager An instance of VObjectManager used to add authentication headers to HTTP requests.
+ Returns the upload manager singleton that should be used across the app
  */
-- (instancetype)initWithObjectManager:(VObjectManager *)objectManager;
++ (VUploadManager *)sharedManager;
 
 /**
  Returns YES if the backgroundSessionIdentifier belongs to the reciever.
@@ -135,10 +137,5 @@ extern const NSInteger VUploadManagerBadHTTPResponseErrorCode; ///< Indicates th
  Returns YES if the task is being uploaded.
  */
 - (BOOL)isTaskInProgress:(VUploadTaskInformation *)task;
-
-/**
- Returns the upload manager singleton that should be used across the app
- */
-+ (VUploadManager *)sharedManager;
 
 @end

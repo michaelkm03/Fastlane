@@ -276,28 +276,4 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     }
 }
 
-- (void)dismissUploadViewForTask:(VUploadTaskInformation *)task withState:(VUploadProgressViewState)state
-{
-    for (VUploadProgressView *uploadProgressView in self.uploadProgressViews)
-    {
-        if ([uploadProgressView.uploadTask isEqual:task])
-        {
-            uploadProgressView.state = state;
-            if (self.numberOfUploads == 1)
-            {
-                typeof(self) __weak weakSelf = self;
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kFinishedTaskDisplayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
-                               {
-                                   typeof(weakSelf) strongSelf = weakSelf;
-                                   if (strongSelf && [strongSelf.uploadProgressViews containsObject:uploadProgressView])
-                                   {
-                                       [self removeUpload:uploadProgressView animated:YES];
-                                   }
-                               });
-            }
-            break;
-        }
-    }
-}
-
 @end

@@ -43,7 +43,6 @@
 
 @property (nonatomic, readwrite) VLoginType mainUserLoginType;
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
-@property (nonatomic, strong, readwrite) VUploadManager *uploadManager;
 @property (nonatomic, strong) NSString *sessionID;
 
 @end
@@ -62,7 +61,8 @@
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
-    manager.uploadManager = [VUploadManager sharedManager];
+    
+    [VUploadManager sharedManager].objectManager = manager;
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];

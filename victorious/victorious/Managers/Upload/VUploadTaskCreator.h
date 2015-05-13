@@ -18,11 +18,6 @@
 @interface VUploadTaskCreator : NSObject
 
 /**
- The upload manager that was passed into the init method.
- */
-@property (nonatomic, readonly) VUploadManager *uploadManager;
-
-/**
  The request that will be used to create the upload task.
  */
 @property (nonatomic, strong) NSURLRequest *request;
@@ -45,15 +40,6 @@
  The upload description used to create the upload task.
  */
 @property (nonatomic, strong) NSString *uploadDescription;
-
-/**
- Creates a new VUploadTaskCreator instance
- 
- @param uploadManager The instance of VUploadManager that will
-                      ultimately be responsible for uploading
-                      the task that we are creating.
- */
-- (instancetype)initWithUploadManager:(VUploadManager *)uploadManager;
 
 /**
  Creates an upload task object with the information stored

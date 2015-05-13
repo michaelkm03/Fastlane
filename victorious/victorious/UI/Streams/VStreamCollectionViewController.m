@@ -47,6 +47,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VThemeManager.h"
+#import "VUploadManager.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -621,7 +622,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     if ( self.uploadProgressViewController == nil )
     {
-        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[VUploadManager sharedManager]];
         self.uploadProgressViewController.delegate = self;
         [self addChildViewController:self.uploadProgressViewController];
         self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
