@@ -155,7 +155,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
         VImageAsset *imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.user.previewAssets];
         imageURL = [NSURL URLWithString:imageAsset.imageURL];
         const BOOL isURLValid = imageURL != nil && imageURL.absoluteString.length > 0;
-        canUseHighResAsset = isURLValid && [imageAsset encompassesSize:minSize];
+        canUseHighResAsset = isURLValid;
     }
     
     if ( !canUseHighResAsset )
