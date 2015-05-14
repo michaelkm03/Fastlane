@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}GLAM</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}glam</string>
+	<string>com.getvictorious.${ProductPrefix}glamss</string>
 	<key>CFBundleName</key>
 	<string>${ProductPrefix}GLAM</string>
 	<key>CFBundleURLTypes</key>
