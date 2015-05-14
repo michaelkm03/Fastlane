@@ -13,11 +13,14 @@
 #import "VButton.h"
 #import "VDependencyManager.h"
 
+static const CGFloat kCornderRadius = 3.0f;
+
 @interface VNotAuthorizedProfileCollectionViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *noContentViewContainer;
 @property (weak, nonatomic) VNoContentView *noContentView;
 @property (weak, nonatomic) IBOutlet VButton *loginButton;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -45,9 +48,12 @@
     
     [self.loginButton setStyle:VButtonStylePrimary];
     [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+    
+    self.noContentViewContainer.layer.cornerRadius = kCornderRadius;
+    self.noContentViewContainer.layer.masksToBounds = YES;
 }
 
-#pragma mark - Properties
+#pragma mark - VHasMangaedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
