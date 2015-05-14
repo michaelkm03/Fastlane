@@ -322,6 +322,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         if (profileImageURL)
         {
             user.pictureUrl = profileImageURL.absoluteString;
+            user.previewAssets = [NSSet set];
         }
         [user.managedObjectContext save:nil];
         
