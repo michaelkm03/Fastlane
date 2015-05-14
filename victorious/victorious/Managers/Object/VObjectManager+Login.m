@@ -14,8 +14,6 @@
 #import "VObjectManager+Users.h"
 #import "VUser+RestKit.h"
 #import "VDependencyManager.h"
-#import "VThemeManager.h"
-#import "VSettingManager.h"
 #import "VVoteType.h"
 #import "VTracking.h"
 #import "MBProgressHUD.h"
@@ -323,6 +321,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         if (profileImageURL)
         {
             user.pictureUrl = profileImageURL.absoluteString;
+            user.previewAssets = [NSSet set];
         }
         [user.managedObjectContext save:nil];
         

@@ -11,7 +11,6 @@
 #import "VWebBrowserViewController.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VWebBrowserHeaderViewController.h"
-#import "VSettingManager.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
@@ -246,7 +245,13 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.currentURL = url;
     if ( self.webView != nil )
     {
-        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+        if ( url.scheme == nil ) //< WKWebView won't load a URL without a scheme
+        {
+            NSString *defaultScheme = @"http://";
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", defaultScheme, url.absoluteString]];
+        }
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [self.webView loadRequest:request];
     }
 }
 

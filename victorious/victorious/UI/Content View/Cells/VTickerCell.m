@@ -8,9 +8,6 @@
 
 #import "VTickerCell.h"
 
-// Theme
-#import "VThemeManager.h"
-
 @interface VTickerCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *realtimeCommentStrip;

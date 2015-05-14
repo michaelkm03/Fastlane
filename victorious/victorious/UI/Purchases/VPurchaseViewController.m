@@ -8,7 +8,6 @@
 
 #import "VPurchaseViewController.h"
 #import "VPurchaseManager.h"
-#import "VSettingManager.h"
 #import "VAlertController.h"
 #import "VThemeManager.h"
 #import "VButton.h"

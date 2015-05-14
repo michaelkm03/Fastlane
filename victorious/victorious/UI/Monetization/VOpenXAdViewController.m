@@ -8,7 +8,6 @@
 
 #import "VOpenXAdViewController.h"
 #import "OpenXMSDK.h"
-#import "VSettingManager.h"
 #import "VAdPlayerView.h"
 #import "VAdBreakFallback.h"
 

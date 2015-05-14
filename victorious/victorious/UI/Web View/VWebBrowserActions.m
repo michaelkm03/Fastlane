@@ -8,7 +8,6 @@
 
 #import "VWebBrowserActions.h"
 #import "UIActionSheet+VBlocks.h"
-#import "VThemeManager.h"
 #import "VFacebookActivity.h"
 #import "VSequence+Fetcher.h"
 #import "VFacebookManager.h"

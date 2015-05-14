@@ -53,6 +53,10 @@ static NSString * const kOrIconKey = @"orIcon";
         
         self.pollOrImageView.hidden = ![sequence isPoll];
     }
+    else
+    {
+        self.pollOrImageView.hidden = YES;
+    }
 }
 
 #pragma mark - Cell setup

@@ -16,10 +16,8 @@
 #import "VFullscreenMarqueeCollectionCell.h"
 #import "VFullscreenMarqueeSelectionDelegate.h"
 
-#import "VShowcaseCollectionViewController.h"
 #import "VFullscreenMarqueeTabIndicatorView.h"
 
-#import "VThemeManager.h"
 #import "VTimerManager.h"
 
 #import "VDependencyManager+VBackgroundContainer.h"

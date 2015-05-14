@@ -134,7 +134,10 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                                                                           },
                                                                                        @"font.heading1": @{
                                                                                                
-                                                                                               }
+                                                                                               },
+                                                                                       @"font.heading2": @{ @"fontName": @"Not Your Father's Font",
+                                                                                                            @"fontSize": @36
+                                                                                               },
                                                                                        }
                                                   dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
 }
@@ -215,6 +218,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:24];
     UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testAnotherKindOfInvalidFontDefaultsToParent
+{
+    UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:20];
+    UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     XCTAssertEqualObjects(expected, actual);
 }
 

@@ -12,7 +12,6 @@
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VSettingManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"

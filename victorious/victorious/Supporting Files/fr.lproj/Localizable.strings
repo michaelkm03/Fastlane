@@ -89,6 +89,7 @@
 "Profile load failed!" = "Échec de chargement du profil !";
 
 "User already exists" = "L'utilisateur existe déjà";
+"Invalid email address or password" = "Adresse e-mail ou mot de passe invalide";
 "Sorry, I can't display that right now" = "Désolé, je ne peux pas afficher cela pour le moment";
 
 "WereSorry" = "Nous sommes désolés";
@@ -412,12 +413,8 @@
 
 "Report/Flag" = "Signaler/Marquer comme inapproprié";
 "CreatedBy" = "CRÉÉ PAR";
-"remixes" = "remixes";
-"Remix" = "Remix";
 "RemixVerb" = "Remixer";
-"reposts" = "republications";
-"REPOSTS" = "Republications";
-"REMIXES" = "Remixes";
+"Reposts" = "Republications";
 "Repost" = "Republier";
 "Reposted" = "Republié";
 "RepostContentView" = "REPUBLIER";
@@ -427,8 +424,8 @@
 "repostedByFormat" = "Republié par %@";
 "doubleRepostedByFormat" = "Republié par %@ +1 autre";
 "multipleRepostedByFormat" = "Republié par %@ + %lu autres";
-"remixedFromFormat" = "Remixé depuis %@";
-"giffedFromFormat" = "GIF de%@";
+"remixedFromFormat" = "Remix de %@";
+"giffedFromFormat" = "GIF de %@";
 
 "leaveACommentFormat" = "Laisser un commentaire à %@";
 
@@ -545,6 +542,8 @@
 
 "This will discard any content from the camera" = "Cette action ignorera tout contenu de l'appareil photo";
 "Discard" = "Ignorer";
+"Video failed to load" = "Impossible de charger la vidéo";
+"We encountered an error trying to edit this video." = "Une erreur est survenue lors de la modification de cette vidéo.";
 
 "#nofilter" = "#nofilter";
 "create a meme" = "Créer un MEME";

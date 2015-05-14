@@ -9,7 +9,7 @@
 #import "VAbstractStreamCollectionViewController.h"
 
 #import "VStreamCollectionViewDataSource.h"
-#import "VDirectoryItemCell.h"
+#import "VCardDirectoryCell.h"
 
 #import "MBProgressHUD.h"
 
@@ -28,7 +28,6 @@
 #import "VSequence.h"
 #import "VAbstractFilter.h"
 
-#import "VSettingManager.h"
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"

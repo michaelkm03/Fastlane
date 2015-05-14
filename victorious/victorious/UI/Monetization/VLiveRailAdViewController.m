@@ -8,7 +8,6 @@
 
 #import "VLiveRailAdViewController.h"
 #import "LiveRailAdManager.h"
-#import "VSettingManager.h"
 #import "VAdBreakFallback+RestKit.h"
 
 #define EnableLiveRailLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.

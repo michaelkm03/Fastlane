@@ -27,6 +27,7 @@
 #import "UIAlertView+VBlocks.h"
 #import "VAutomation.h"
 #import "VButton.h"
+#import "VDefaultProfileImageView.h"
 
 #import "VLocationManager.h"
 
@@ -37,7 +38,7 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *locationTextField;
-@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet VButton *doneButton;
 
 @property (nonatomic, strong) VLocationManager *locationManager;
@@ -48,6 +49,8 @@
 
 @property (nonatomic, assign) BOOL addedAccessoryView;
 @property (nonatomic, assign) CGFloat previousKeyboardHeight;
+
+@property (nonatomic, assign) BOOL hasLocationAlreadyBeenAutoFilled;
 
 @end
 
@@ -288,8 +291,14 @@
     {
         return;
     }
-    self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
-    self.registrationModel.locationText = self.locationTextField.text;
+    
+    // Only update location text field if we haven't done it yet, and if user hasn't manually entered anything
+    if (!self.hasLocationAlreadyBeenAutoFilled && self.locationTextField.text.length == 0)
+    {
+        self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
+        self.registrationModel.locationText = self.locationTextField.text;
+        self.hasLocationAlreadyBeenAutoFilled = YES;
+    }
 }
 
 #pragma mark - State
@@ -406,7 +415,11 @@
 
 - (BOOL)shouldCreateProfile
 {
-    BOOL    isValid =   (self.usernameTextField.text.length > 0);
+    NSNumber *profileImageRequiredValue = [self.dependencyManager numberForKey:VDependencyManagerProfileImageRequiredKey];
+    const BOOL isProfileImageRequired = (profileImageRequiredValue == nil) ? YES : [profileImageRequiredValue boolValue];
+    
+    BOOL isValid = ((self.usernameTextField.text.length > 0) &&
+                   (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired));
     
     if (isValid)
     {
@@ -419,6 +432,11 @@
     if (!self.usernameTextField.text.length > 0)
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
+    }
+    
+    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && isProfileImageRequired)
+    {
+        [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
     
     NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
@@ -436,17 +454,6 @@
                          animated:YES];
     
     return NO;
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toInviteFriends"])
-    {
-//        VInviteFriendsViewController   *inviteViewController = (VInviteFriendsViewController *)segue.destinationViewController;
-//        inviteViewController.profile = self.profile;
-    }
 }
 
 #pragma mark - Support

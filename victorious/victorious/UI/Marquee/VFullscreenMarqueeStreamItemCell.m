@@ -12,7 +12,7 @@
 #import "VStreamItem+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
-#import "VSettingManager.h"
+
 #import "VStreamWebViewController.h"
 
 // Views + Helpers
