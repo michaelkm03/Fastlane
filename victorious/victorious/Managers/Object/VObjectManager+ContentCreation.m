@@ -92,7 +92,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
-    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] init];
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:[[VObjectManager sharedManager] uploadManager]];
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
     uploadTaskCreator.previewImage = previewImage;
@@ -154,7 +154,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
     VUploadManager *uploadManager = [VUploadManager sharedManager];
-    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] init];
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:[[VObjectManager sharedManager] uploadManager]];
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
     uploadTaskCreator.previewImage = previewImage;
@@ -237,7 +237,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
-    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] init];
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:[[VObjectManager sharedManager] uploadManager]];
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
     uploadTaskCreator.previewImage = publishParameters.previewImage;

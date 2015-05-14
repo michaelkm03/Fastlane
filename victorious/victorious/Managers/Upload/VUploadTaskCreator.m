@@ -13,9 +13,20 @@
 
 @implementation VUploadTaskCreator
 
+- (instancetype)initWithUploadManager:(VUploadManager *)uploadManager
+{
+    NSParameterAssert(uploadManager != nil);
+    self = [super init];
+    if ( self != nil )
+    {
+        _uploadManager = uploadManager;
+    }
+    return self;
+}
+
 - (VUploadTaskInformation *)createUploadTaskWithError:(NSError *__autoreleasing *)error
 {
-    NSURL *bodyFileURL = [[VUploadManager sharedManager] urlForNewUploadBodyFile];
+    NSURL *bodyFileURL = [self.uploadManager urlForNewUploadBodyFile];
     NSURL *bodyFileDirectoryURL = [bodyFileURL URLByDeletingLastPathComponent];
     
     NSError *directoryError = nil;
