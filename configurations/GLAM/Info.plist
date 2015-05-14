@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}GLAMSS</string>
+	<string>${ProductPrefix}GLAM</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}glamss</string>
+	<string>com.getvictorious.${ProductPrefix}glam</string>
 	<key>CFBundleName</key>
-	<string>${ProductPrefix}GLAMSS</string>
+	<string>${ProductPrefix}GLAM</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -30,7 +30,7 @@
 	<key>QAAppID</key>
 	<integer>48</integer>
 	<key>CreatorSalutation</key>
-	<string>GLAMSS</string>
+	<string>GLAM</string>
 	<key>FlurryAPIKey</key>
 	<string>RRV4DMGR9K7PGJHXK598</string>
 </dict>
