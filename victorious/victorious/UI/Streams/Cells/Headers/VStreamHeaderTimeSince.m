@@ -28,7 +28,7 @@
 
 static const CGFloat kLeadingTrailingHeaderSpace = 11.0f;
 static const CGFloat kAvatarSize = 32.0f;
-static const CGFloat kSpaceAvatarToLabels = 3.0f;
+static const CGFloat kSpaceAvatarToLabels = 7.0f;
 
 @interface VStreamHeaderTimeSince ()
 
