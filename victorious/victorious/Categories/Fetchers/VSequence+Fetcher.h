@@ -21,6 +21,7 @@
 - (BOOL)isOwnerContent;
 - (BOOL)isWebContent;
 - (BOOL)isPreviewWebContent;
+- (BOOL)isPreviewImageContent;
 - (BOOL)isAnnouncement;
 - (BOOL)canDelete;
 - (BOOL)canRemix;

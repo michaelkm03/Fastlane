@@ -15,6 +15,7 @@
 #import "VUser.h"
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
+#import "NSURL+MediaType.h"
 
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
@@ -104,6 +105,18 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 - (BOOL)isAnnouncement
 {
     return [self.category isEqualToString:kVOwnerAnnouncementCategory];
+}
+
+- (BOOL)isPreviewImageContent
+{
+    BOOL isImageURL = NO;
+    if ([self.previewData isKindOfClass:[NSString class]])
+    {
+        NSURL *previewURL = [NSURL URLWithString:self.previewData];
+        isImageURL = [previewURL v_hasImageExtension];
+    }
+    
+    return [self.previewType isEqualToString:kVAssetTypeMedia] && isImageURL;
 }
 
 - (BOOL)isPreviewWebContent

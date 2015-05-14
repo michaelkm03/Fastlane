@@ -36,7 +36,7 @@
     {
         classType = [VVideoSequencePreviewView class];
     }
-    else if ([sequence isImage])
+    else if ([sequence isImage] || [sequence isPreviewImageContent])
     {
         classType = [VImageSequencePreviewView class];
     }
@@ -60,6 +60,7 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
+    VLog(@"%@", sequence.firstNode);
     NSAssert(false, @"Override in subclasses!");
 }
 
