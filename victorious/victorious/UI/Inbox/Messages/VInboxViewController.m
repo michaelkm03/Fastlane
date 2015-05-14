@@ -411,7 +411,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 #pragma mark - VAccessoryNavigationSource
 
-- (BOOL)shouldNavigateToDestination:(id)destination
+- (BOOL)willNavigationToDestination:(id)destination
 {
     if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
     {
@@ -419,6 +419,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         return NO;
     }
     
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+{
     return YES;
 }
 

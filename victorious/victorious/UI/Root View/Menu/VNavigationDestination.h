@@ -18,6 +18,8 @@
 
 @optional
 
+- (NSInteger)badgeNumber;
+
 /**
  Asks the receiver if it is ready to be navigated to. If the receiver
  is not a UIViewController subclass, it would be a programmer error

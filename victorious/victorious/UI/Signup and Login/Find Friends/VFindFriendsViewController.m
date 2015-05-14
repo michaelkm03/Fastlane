@@ -123,7 +123,7 @@
 
 #pragma mark - VAccessoryNavigationSource
 
-- (BOOL)shouldNavigateToDestination:(id)destination
+- (BOOL)willNavigationToDestination:(id)destination
 {
 #warning This method of detecting destination will have to change
     if ( destination == nil || [destination isKindOfClass:[NSNull class]] )

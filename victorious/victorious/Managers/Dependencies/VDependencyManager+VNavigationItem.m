@@ -13,6 +13,7 @@
 #import "VAuthorizationContextProvider.h"
 #import "VAuthorizedAction.h"
 #import "VObjectManager.h"
+#import "VBarButton.h"
 
 #import <Objc/runtime.h>
 
@@ -43,14 +44,16 @@ static const char kAssociatedObjectKey;
         navigationItem.titleView = [[UIImageView alloc] initWithImage:titleImage];
     }
     
-    if (navigationController != nil)
+    if ( navigationController != nil && self.accessoryMenuItems.count > 0 )
     {
-        id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)navigationController.topViewController;
             
         objc_setAssociatedObject(self, &kAssociatedObjectKey, navigationController, OBJC_ASSOCIATION_ASSIGN);
-        NSInteger tag = 0;
-        NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] initWithArray:navigationItem.leftBarButtonItems];
-        NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] initWithArray:navigationItem.rightBarButtonItems];
+        
+        //NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] initWithArray:navigationItem.leftBarButtonItems];
+        //NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] initWithArray:navigationItem.rightBarButtonItems];
+        NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] init];
+        NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] init];
+        id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)navigationController.topViewController;
         for ( VNavigationMenuItem *menuItem in self.accessoryMenuItems )
         {
             // Check if the source can display the menu item (default is YES)
@@ -66,10 +69,19 @@ static const char kAssociatedObjectKey;
             UIBarButtonItem *accessoryBarItem = nil;
             if ( menuItem.icon != nil )
             {
-                accessoryBarItem = [[UIBarButtonItem alloc] initWithImage:menuItem.icon
-                                                                    style:UIBarButtonItemStylePlain
-                                                                   target:self
-                                                                   action:@selector(showAccessoryMenuItemOnNavigation:)];
+                // If an icon is provided, a badge
+                NSDictionary *configuration = @{ VHamburgerButtonIconKey : menuItem.icon };
+                VBarButton *barButton = [VBarButton newWithDependencyManager:[self childDependencyManagerWithAddedConfiguration:configuration]];
+                [barButton addTarget:self action:@selector(showAccessoryMenuItemOnNavigation:)
+                    forControlEvents:UIControlEventTouchUpInside];
+                
+                id<VNavigationDestination> destination = (id<VNavigationDestination>)menuItem.destination;
+                if ( [destination respondsToSelector:@selector(badgeNumber)] )
+                {
+                    barButton.badgeNumber = [destination badgeNumber];
+                }
+                
+                accessoryBarItem = [[UIBarButtonItem alloc] initWithCustomView:barButton];
             }
             else if ( menuItem.title != nil )
             {
@@ -83,7 +95,6 @@ static const char kAssociatedObjectKey;
                 continue;
             }
             
-            accessoryBarItem.tag = tag++;
             if ( [menuItem.position isEqualToString:VDependencyManagerPositionRight] &&
                  ![self barButtonItemsArray:barButtonItemsRight containsMenuItem:menuItem] )
             {
@@ -94,6 +105,12 @@ static const char kAssociatedObjectKey;
             {
                 [barButtonItemsLeft addObject:accessoryBarItem];
             }
+        }
+        
+        NSInteger tag = 0;
+        for ( UIBarButtonItem *accessoryBarItem in [barButtonItemsLeft arrayByAddingObjectsFromArray:barButtonItemsRight] )
+        {
+            accessoryBarItem.tag = tag++;
         }
         
         navigationItem.leftBarButtonItems = barButtonItemsLeft;
@@ -124,36 +141,50 @@ static const char kAssociatedObjectKey;
     VNavigationMenuItem *menuItem = self.accessoryMenuItems[ selectedIndex ];
     UINavigationController *navigationController = objc_getAssociatedObject(self, &kAssociatedObjectKey);
     UIViewController<VNavigationDestination> *destination = menuItem.destination;
-    
-    BOOL canNavigateFromSource = YES;
-    id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)navigationController.topViewController;
-    if ( [source conformsToProtocol:@protocol(VAccessoryNavigationSource)] )
-    {
-        canNavigateFromSource = [source shouldNavigateToDestination:menuItem.destination];
-    }
 
-    BOOL canNavigationToDestination = YES;
+    BOOL canNavigationToDestination = destination != nil && ![destination isKindOfClass:[NSNull class]];
     if ( [destination conformsToProtocol:@protocol(VNavigationDestination)] )
     {
         canNavigationToDestination = [destination shouldNavigateWithAlternateDestination:&destination];
     }
     
-    if ( canNavigateFromSource && canNavigationToDestination )
+    id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)navigationController.topViewController;
+    
+    id <VAuthorizationContextProvider> authorizedDestination = (id <VAuthorizationContextProvider>)destination;
+    BOOL requiresAuthorization = [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] &&
+                                 authorizedDestination.requiresAuthorization;
+    
+    if ( requiresAuthorization )
     {
-        id <VAuthorizationContextProvider> authorizedDestination = (id <VAuthorizationContextProvider>)destination;
-        if ( [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] && authorizedDestination.requiresAuthorization )
-        {
-            VAuthorizationContext context = [authorizedDestination authorizationContext];
-            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager] dependencyManager:self];
-            [authorizedAction performFromViewController:navigationController context:context completion:^(BOOL authorized)
+        VAuthorizationContext context = [authorizedDestination authorizationContext];
+        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                             dependencyManager:self];
+        [authorizedAction performFromViewController:navigationController context:context completion:^(BOOL authorized)
+         {
+             if ( authorized && canNavigationToDestination )
              {
-                 [navigationController pushViewController:destination animated:YES];
-             }];
-        }
-        else
-        {
-            [navigationController pushViewController:destination animated:YES];
-        }
+                 [self performNavigationFromSource:source toDestination:destination inNavigationController:navigationController];
+             }
+         }];
+    }
+    else if ( canNavigationToDestination )
+    {
+        [self performNavigationFromSource:source toDestination:destination inNavigationController:navigationController];
+    }
+}
+
+- (void)performNavigationFromSource:(id<VAccessoryNavigationSource>)source
+                       toDestination:(UIViewController *)destination
+              inNavigationController:(UINavigationController *)navigationController
+{
+    BOOL shouldNavigate = YES;
+    if ( [source respondsToSelector:@selector(willNavigationToDestination:)] )
+    {
+        shouldNavigate = [source willNavigationToDestination:destination];
+    }
+    if ( shouldNavigate )
+    {
+        [navigationController pushViewController:destination animated:YES];
     }
 }
 

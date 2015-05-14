@@ -8,21 +8,21 @@
 
 #import "VBadgeBackgroundView.h"
 #import "VDependencyManager.h"
-#import "VHamburgerButton.h"
+#import "VBarButton.h"
 #import "VNumericalBadgeView.h"
 
 NSString * const VHamburgerButtonIconKey = @"menuIcon";
 
-@interface VHamburgerButton ()
+@interface VBarButton ()
 
-@property (nonatomic, weak) IBOutlet UIButton *hamburgerButton;
+@property (nonatomic, weak) IBOutlet UIButton *button;
 @property (nonatomic, weak) IBOutlet VNumericalBadgeView *badgeView;
 @property (nonatomic, weak) IBOutlet VBadgeBackgroundView *badgeBorder;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VHamburgerButton
+@implementation VBarButton
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -32,7 +32,7 @@ NSString * const VHamburgerButtonIconKey = @"menuIcon";
     {
         if ( [object isKindOfClass:self] )
         {
-            ((VHamburgerButton *)object).dependencyManager = dependencyManager;
+            ((VBarButton *)object).dependencyManager = dependencyManager;
             return object;
         }
     }
@@ -53,6 +53,7 @@ NSString * const VHamburgerButtonIconKey = @"menuIcon";
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
+    self.badgeView.hidden = badgeNumber <= 0;
     self.badgeView.badgeNumber = badgeNumber;
 }
 
@@ -64,14 +65,16 @@ NSString * const VHamburgerButtonIconKey = @"menuIcon";
     }
     _dependencyManager = dependencyManager;
     
-    UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     
-    self.hamburgerButton.tintColor = tintColor;
+    self.button.tintColor = tintColor;
     self.badgeBorder.color = self.backgroundColor;
+    self.badgeNumber = 0;
     
     UIImage *image = [[self.dependencyManager imageForKey:VHamburgerButtonIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.hamburgerButton setImage:image forState:UIControlStateNormal];
+    [self.button setImage:image forState:UIControlStateNormal];
     
+    self.badgeView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.badgeView.font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
 }
 
@@ -79,7 +82,7 @@ NSString * const VHamburgerButtonIconKey = @"menuIcon";
 
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
 {
-    [self.hamburgerButton addTarget:target action:action forControlEvents:controlEvents];
+    [self.button addTarget:target action:action forControlEvents:controlEvents];
 }
 
 @end

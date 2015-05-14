@@ -12,9 +12,7 @@ extern NSString * const VDependencyManagerTitleImageKey; ///< The key that speci
 
 @protocol VAccessoryNavigationSource <NSObject>
 
-- (BOOL)shouldNavigateToDestination:(id)destination;
-
-@optional
+- (BOOL)willNavigationToDestination:(id)destination;
 
 - (BOOL)shouldDisplayAccessoryForDestination:(id)destination;
 

@@ -1,0 +1,8 @@
+{
+    "destination": null,
+    "icon": {
+        "imageURL": "Menu"
+    },
+    "identifier": "Menu",
+    "position": "left"
+}

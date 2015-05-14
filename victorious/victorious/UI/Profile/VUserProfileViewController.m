@@ -151,9 +151,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                                              selector:@selector(loginStateDidChange:)
                                                  name:kLoggedInChangedNotification object:nil];
     
-    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
-                                 pushAccessoryMenuItemsOn:self.navigationController];
-    
     [self updateProfileHeader];
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
@@ -216,6 +213,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     self.navigationViewfloatingController.animationEnabled = YES;
     
     self.navigationItem.title = self.title;
+    
+    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
+                                 pushAccessoryMenuItemsOn:self.navigationController];
 }
 
 - (void)viewDidLayoutSubviews
@@ -244,6 +244,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
     
     [self setupFloatingView];
+    
+    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
+                                 pushAccessoryMenuItemsOn:self.navigationController];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -795,19 +798,36 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)shouldDisplayAccessoryForDestination:(id)destination
 {
+    const BOOL isCurrentUserLoggedIn = [VObjectManager sharedManager].authorized;
+    const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
+    
     if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
     {
-        return self.user != nil && self.user != [VObjectManager sharedManager].mainUser;
+        if ( isCurrentUserLoggedIn )
+        {
+            return !isCurrentUser;
+        }
+        else
+        {
+            return self.user != nil;
+        }
+    }
+    else if ( [destination isKindOfClass:[VFindFriendsViewController class]] )
+    {
+        return isCurrentUser;
     }
     
     return YES;
 }
 
-- (BOOL)shouldNavigateToDestination:(id)destination
+- (BOOL)willNavigationToDestination:(id)destination
 {
+    const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
+    
     if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
     {
         ((VMessageContainerViewController *)destination).otherUser = self.user;
+        return !isCurrentUser;
     }
     
     return YES;

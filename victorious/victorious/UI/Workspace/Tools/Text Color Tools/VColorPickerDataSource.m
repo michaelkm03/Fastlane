@@ -44,7 +44,7 @@ static NSString * const kTitleKey = @"title";
     NSArray *suppliedColors = [colorOptions v_map:^VColorType *(NSDictionary *dictionary)
                                {
                                    NSString *title = dictionary[ kTitleKey ];
-                                   UIColor *color = [self.dependencyManager colorFromDictionary:dictionary[ kColorKey ]];
+                                   UIColor *color = [VDependencyManager colorFromDictionary:dictionary[ kColorKey ]];
                                    if ( color != nil && title != nil )
                                    {
                                        return [[VColorType alloc] initWithColor:color title:title];

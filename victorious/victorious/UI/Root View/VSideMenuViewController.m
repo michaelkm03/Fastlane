@@ -8,7 +8,7 @@
 
 #import "VDependencyManager.h"
 #import "VDependencyManager+VScaffoldViewController.h"
-#import "VHamburgerButton.h"
+#import "VBarButton.h"
 #import "VMenuController.h"
 #import "VNavigationController.h"
 #import "VNavigationDestination.h"
@@ -26,7 +26,7 @@
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
-@property (strong, readwrite, nonatomic) VHamburgerButton *hamburgerButton;
+//@property (strong, readwrite, nonatomic) VBarButton *hamburgerButton;
 @property (strong, readwrite, nonatomic) UIViewController *menuViewController;
 
 @end
@@ -67,7 +67,7 @@
     __weak typeof(self) weakSelf = self;
     VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
     {
-        [weakSelf.hamburgerButton setBadgeNumber:badgeNumber];
+        //[weakSelf.hamburgerButton setBadgeNumber:badgeNumber];
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
     };
     
@@ -99,9 +99,9 @@
     
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     
-    self.hamburgerButton = [VHamburgerButton newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
+    /*self.hamburgerButton = [VBarButton newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
     [self.hamburgerButton addTarget:self action:@selector(presentMenuViewController) forControlEvents:UIControlEventTouchUpInside];
-    self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.hamburgerButton];
+    self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.hamburgerButton];*/
     
     if (!_contentViewInLandscapeOffsetCenterX)
     {

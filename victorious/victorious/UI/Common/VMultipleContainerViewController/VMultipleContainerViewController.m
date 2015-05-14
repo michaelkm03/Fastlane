@@ -280,12 +280,22 @@ static NSString * const kInitialKey = @"initial";
 
 #pragma mark - VAccessoryNavigationSource
 
-- (BOOL)shouldNavigateToDestination:(id)destination
+- (BOOL)willNavigationToDestination:(id)destination
 {
     id <VAccessoryNavigationSource> currentSource = (id <VAccessoryNavigationSource>)self.viewControllers[ self.selectedIndex ];
     if ( [currentSource conformsToProtocol:@protocol(VAccessoryNavigationSource)] )
     {
-        return [currentSource shouldNavigateToDestination:destination];
+        return [currentSource willNavigationToDestination:destination];
+    }
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+{
+    id <VAccessoryNavigationSource> currentSource = (id <VAccessoryNavigationSource>)self.viewControllers[ self.selectedIndex ];
+    if ( [currentSource conformsToProtocol:@protocol(VAccessoryNavigationSource)] )
+    {
+        return [currentSource shouldDisplayAccessoryForDestination:destination];
     }
     return YES;
 }

@@ -18,6 +18,7 @@
 
 @end
 
+static CGFloat kMaxFontPointSize = 12.0f;
 static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
 
 @implementation VNumericalBadgeView
@@ -42,12 +43,17 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
     return self;
 }
 
+- (UIColor *)defaultBadgeColor
+{
+    return [UIColor colorWithRed:0.88f green:0.18f blue:0.22f alpha:1.0f];
+}
+
 - (void)commonInit
 {
     super.backgroundColor = [UIColor clearColor];
     
     VBadgeBackgroundView *backgroundView = [[VBadgeBackgroundView alloc] init];
-    backgroundView.color = [UIColor colorWithRed:0.88f green:0.18f blue:0.22f alpha:1.0f];
+    backgroundView.color = self.defaultBadgeColor;
     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:backgroundView];
     _backgroundView = backgroundView;
@@ -95,7 +101,7 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
                                                         toItem:self
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
-                                                      constant:1.0f]];
+                                                      constant:0.0f]];
 }
 
 - (CGSize)intrinsicContentSize
@@ -119,7 +125,7 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
 
 - (void)setFont:(UIFont *)font
 {
-    self.label.font = font;
+    self.label.font = [UIFont fontWithName:font.fontName size:MIN(font.pointSize, kMaxFontPointSize)];
     [self invalidateIntrinsicContentSize];
 }
 
@@ -151,7 +157,7 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
     }
     _badgeNumber = badgeNumber;
     
-    self.label.text = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+    self.label.text = badgeNumber == VBadgeEmptyValue ? @"" : [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
     [self invalidateIntrinsicContentSize];
 }
 

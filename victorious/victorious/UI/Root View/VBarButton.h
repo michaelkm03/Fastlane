@@ -13,10 +13,9 @@
 extern NSString * const VHamburgerButtonIconKey; ///< The key that identifies the menu icon in VDependencyManager
 
 /**
- A hamburger button to be displayed in the navigation bar.
- Includes a numerical badge, too.
+ A bar button to be displayed in the navigation bar. Includes a numerical badge, too.
  */
-@interface VHamburgerButton : UIView <VHasManagedDependencies>
+@interface VBarButton : UIView <VHasManagedDependencies>
 
 @property (nonatomic) NSInteger badgeNumber; ///< The number to display in the badge
 

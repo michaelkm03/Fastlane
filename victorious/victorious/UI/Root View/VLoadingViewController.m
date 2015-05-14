@@ -220,14 +220,17 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
         if ( isSideNavMenu )
         {
-            //NSLog( @"%@", [templateDecorator keyPathsForValue:@"inbox.screen"] );
-            //NSLog( @"%@", [templateDecorator keyPathsForValue:@"userProfile.screen"] );
-            //NSLog( @"%@", [templateDecorator keyPathsForValue:@"currentUserProfile.screen"] );
+            // Add hamburger button
+            NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/accessoryScreens"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"hamburgerAccessory"
+                                                                forKeyPath:@"scaffold/accessoryScreens/0"] );
             
             // Find Friends to current user profile
             NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/menu/items/1/1/accessoryScreens"] );
-            NSParameterAssert( [templateDecorator setComponentWithFilename:@"findFriendsAccessory"
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
                                                                 forKeyPath:@"scaffold/menu/items/1/1/accessoryScreens/0"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"findFriendsAccessory"
+                                                                forKeyPath:@"scaffold/menu/items/1/1/accessoryScreens/1"] );
             
             // Add Compose to messages screen in inbox main menu item
             NSParameterAssert( [templateDecorator setTemplateValue:@[]

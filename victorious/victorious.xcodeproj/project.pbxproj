@@ -209,8 +209,8 @@
 		037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */; };
 		037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */; };
 		037FCF0A1A8B0CE500E8ABFC /* VFollowUserControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF091A8B0CE500E8ABFC /* VFollowUserControl.m */; };
-		037FCF181A8DAF0E00E8ABFC /* VHamburgerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF121A8DAF0E00E8ABFC /* VHamburgerButton.m */; };
-		037FCF191A8DAF0E00E8ABFC /* VHamburgerButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VHamburgerButton.xib */; };
+		037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF121A8DAF0E00E8ABFC /* VBarButton.m */; };
+		037FCF191A8DAF0E00E8ABFC /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */; };
 		037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */; };
 		037FCF1E1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF1D1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m */; };
@@ -486,6 +486,7 @@
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
+		A79291621B054AF0000763BF /* hamburgerAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A79291611B054AF0000763BF /* hamburgerAccessory.json */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
 		A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */; };
 		A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E41AD7124D00F2564A /* VDeepLinkReceiver.m */; };
@@ -1278,9 +1279,9 @@
 		037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VNavigationMenuItem.m"; sourceTree = "<group>"; };
 		037FCF081A8B0CE500E8ABFC /* VFollowUserControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowUserControl.h; sourceTree = "<group>"; };
 		037FCF091A8B0CE500E8ABFC /* VFollowUserControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowUserControl.m; sourceTree = "<group>"; };
-		037FCF111A8DAF0E00E8ABFC /* VHamburgerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHamburgerButton.h; sourceTree = "<group>"; };
-		037FCF121A8DAF0E00E8ABFC /* VHamburgerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHamburgerButton.m; sourceTree = "<group>"; };
-		037FCF131A8DAF0E00E8ABFC /* VHamburgerButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHamburgerButton.xib; sourceTree = "<group>"; };
+		037FCF111A8DAF0E00E8ABFC /* VBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBarButton.h; sourceTree = "<group>"; };
+		037FCF121A8DAF0E00E8ABFC /* VBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBarButton.m; sourceTree = "<group>"; };
+		037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBarButton.xib; sourceTree = "<group>"; };
 		037FCF141A8DAF0E00E8ABFC /* VNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationController.h; sourceTree = "<group>"; };
 		037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationController.m; sourceTree = "<group>"; };
 		037FCF161A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationControllerScrollDelegate.h; sourceTree = "<group>"; };
@@ -1763,6 +1764,7 @@
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
 		A790C8241A01980F00C4F208 /* VTrackingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingManager.h; sourceTree = "<group>"; };
 		A790C8251A01980F00C4F208 /* VTrackingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManager.m; sourceTree = "<group>"; };
+		A79291611B054AF0000763BF /* hamburgerAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = hamburgerAccessory.json; sourceTree = "<group>"; };
 		A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
 		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
@@ -3069,9 +3071,9 @@
 				030931871A18425B004E9781 /* Menu */,
 				DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */,
 				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
-				037FCF111A8DAF0E00E8ABFC /* VHamburgerButton.h */,
-				037FCF121A8DAF0E00E8ABFC /* VHamburgerButton.m */,
-				037FCF131A8DAF0E00E8ABFC /* VHamburgerButton.xib */,
+				037FCF111A8DAF0E00E8ABFC /* VBarButton.h */,
+				037FCF121A8DAF0E00E8ABFC /* VBarButton.m */,
+				037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */,
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
 				0314D3E919B46B5E00FA363C /* VMenuController.h */,
@@ -3593,6 +3595,7 @@
 				A7BB9C781AFD9934005B4596 /* inboxAccessory.json */,
 				A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */,
 				A7BB9C811B019B4F005B4596 /* findFriendsAccessory.json */,
+				A79291611B054AF0000763BF /* hamburgerAccessory.json */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -5991,6 +5994,7 @@
 				035ABE791AD7AB8B00B6B1A5 /* defaultTemplate.json in Resources */,
 				D8E39BDB19CB7C80007FD86A /* VContentImageCell.xib in Resources */,
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
+				A79291621B054AF0000763BF /* hamburgerAccessory.json in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				A7BB9C7D1AFD9C5D005B4596 /* composeAccessory.json in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
@@ -6067,7 +6071,7 @@
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
-				037FCF191A8DAF0E00E8ABFC /* VHamburgerButton.xib in Resources */,
+				037FCF191A8DAF0E00E8ABFC /* VBarButton.xib in Resources */,
 				D8B44CD51ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib in Resources */,
 				A7AEF9A91A83F1C300A3D3A0 /* VStreamCollectionCell.xib in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
@@ -6498,7 +6502,7 @@
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
-				037FCF181A8DAF0E00E8ABFC /* VHamburgerButton.m in Sources */,
+				037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
 				D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */,
 				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
