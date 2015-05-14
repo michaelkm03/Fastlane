@@ -31,6 +31,7 @@
 
 static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
+static CGFloat const kMinimumToolViewHeight = 100.0f;
 
 @interface VBaseWorkspaceViewController ()
 
@@ -487,10 +488,10 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
                                                                      attribute:NSLayoutAttributeBottom
                                                                     multiplier:1.0f
                                                                       constant:0.0f];
-    topConstraint.priority = 800;
+    topConstraint.priority = UILayoutPriorityDefaultHigh;
     
-    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
-    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[picker(>=100)]-toolbarHeight-|"
+    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds)), @"minimumToolViewHeight":@(kMinimumToolViewHeight)};
+    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[picker(>=minimumToolViewHeight)]-toolbarHeight-|"
                                                                                            options:kNilOptions
                                                                                            metrics:verticalMetrics
                                                                                              views:@{@"picker":toolViewController.view,
