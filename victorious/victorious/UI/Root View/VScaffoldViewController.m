@@ -29,6 +29,9 @@
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
 
+#warning remove
+#import "VPermissionAlertViewController.h"
+
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
@@ -74,6 +77,9 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     }
+    
+    VPermissionAlertViewController *alert = [VPermissionAlertViewController newWithDependencyManager:_dependencyManager];
+    [alert presentInViewController:self animated:YES];
 }
 
 #pragma mark - First Time User Experience
