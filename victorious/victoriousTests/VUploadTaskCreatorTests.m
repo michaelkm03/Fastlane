@@ -7,7 +7,6 @@
 //
 
 #import "VUploadManager.h"
-#import "VObjectManager.h"
 #import "VUploadTaskCreator.h"
 #import "VUploadTaskInformation.h"
 
