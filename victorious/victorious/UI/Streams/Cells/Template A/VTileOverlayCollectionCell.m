@@ -77,6 +77,7 @@ static const CGFloat maxCaptionHeight = 80.0f;
     
     // Content is overlaid on the loading background
     _contentContainer = [[UIView alloc] initWithFrame:self.contentView.bounds];
+    _contentContainer.clipsToBounds = YES;
     [self.contentView addSubview:_contentContainer];
     [self.contentView v_addFitToParentConstraintsToSubview:_contentContainer];
     

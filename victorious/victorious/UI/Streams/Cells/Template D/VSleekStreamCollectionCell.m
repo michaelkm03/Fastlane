@@ -52,6 +52,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super awakeFromNib];
     
+    self.previewContainer.clipsToBounds = YES;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
     self.actionViewTopConstraint.constant = kSleekCellActionViewTopConstraintHeight;
