@@ -22,7 +22,7 @@
 #import "NSDate+timeSince.h"
 
 static const CGFloat kClockSize = 8.5f;
-
+static const CGFloat kSpacing = 2.0f;
 @interface VTimeSinceWidget ()
 
 @property (nonatomic, strong) UIImageView *clockImageView;
@@ -68,9 +68,9 @@ static const CGFloat kClockSize = 8.5f;
     _timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_clockImageView][_timeSinceLabel]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_clockImageView]-(spacing)-[_timeSinceLabel]|"
                                                                  options:kNilOptions
-                                                                 metrics:nil
+                                                                 metrics:@{@"spacing":@(kSpacing)}
                                                                    views:NSDictionaryOfVariableBindings(_clockImageView, _timeSinceLabel)]];
     [self v_addCenterVerticallyConstraintsToSubview:_clockImageView];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeSinceLabel]|"

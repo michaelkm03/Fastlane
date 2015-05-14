@@ -37,7 +37,7 @@ static const CGFloat kClockSize = 8.5f;
 static const CGFloat kSpaceCreatorLabelToClockImageView = 4.0f;
 static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
 static const CGFloat kDefaultHeight = 44.0f;
-static const CGFloat kVerticalPaddingToCenterLabels = 1.5f;
+static const CGFloat kVerticalPaddingToCenterLabels = 0.0f;
 static const CGFloat kHorizontalHitPadding = 44.0f;
 
 @interface VCreationInfoContainer () <VStreamLabelDelegate>
