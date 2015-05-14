@@ -22,7 +22,7 @@
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit amet" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-Bo-1cB" customClass="VHashTagTextView">
-                        <rect key="frame" x="40" y="50" width="252" height="2"/>
+                        <rect key="frame" x="42" y="50" width="250" height="2"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -63,7 +63,7 @@
                 <constraint firstItem="gyd-x0-d0C" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="bottom" constant="8" id="LCa-Vw-jCf"/>
                 <constraint firstItem="21k-Mb-C9q" firstAttribute="top" secondItem="k5V-32-ew9" secondAttribute="top" id="XhY-0i-FGU"/>
                 <constraint firstAttribute="trailing" secondItem="0yG-Rl-S8H" secondAttribute="trailing" priority="999" id="cya-dt-NQV"/>
-                <constraint firstItem="6Ls-Bo-1cB" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" constant="40" id="ruo-fr-hcv"/>
+                <constraint firstItem="6Ls-Bo-1cB" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" constant="42" id="ruo-fr-hcv"/>
                 <constraint firstAttribute="trailing" secondItem="21k-Mb-C9q" secondAttribute="trailing" id="s25-GV-47J"/>
                 <constraint firstItem="6Ls-Bo-1cB" firstAttribute="top" secondItem="21k-Mb-C9q" secondAttribute="bottom" id="stU-iI-F8H"/>
                 <constraint firstAttribute="bottom" secondItem="gyd-x0-d0C" secondAttribute="bottom" constant="28" id="wVb-eX-0SM"/>

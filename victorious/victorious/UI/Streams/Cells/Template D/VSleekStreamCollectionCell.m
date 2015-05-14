@@ -27,7 +27,7 @@
 
 const CGFloat kSleekCellHeaderHeight = 50.0f;
 const CGFloat kSleekCellActionViewHeight = 41.0f;
-static const CGFloat kTextViewInset = 58.0f; //Needs to be sum of textview inset from left and right
+static const CGFloat kTextViewInset = 52.0f; //Needs to be sum of textview inset from left and right
 
 const CGFloat kSleekCellActionViewBottomConstraintHeight = 34.0f; //This represents the space between the bottom of the cell and the actionView
 const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This represents the space between the bottom of the content and the top of the actionView
