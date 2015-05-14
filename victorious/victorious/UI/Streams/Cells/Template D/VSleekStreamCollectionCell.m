@@ -8,6 +8,9 @@
 
 #import "VSleekStreamCollectionCell.h"
 
+// Libraries
+#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
+
 // Stream Support
 #import "VSequence+Fetcher.h"
 
@@ -32,7 +35,7 @@ const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This represents 
 //Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
 const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 
-@interface VSleekStreamCollectionCell () <VBackgroundContainer>
+@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate>
 
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -54,6 +57,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     
     self.previewContainer.clipsToBounds = YES;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
+    self.captionTextView.linkDelegate = self;
     self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
     self.actionViewTopConstraint.constant = kSleekCellActionViewTopConstraintHeight;
 }
@@ -202,6 +206,21 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 - (CGRect)contentArea
 {
     return self.previewContainer.frame;
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    UIResponder<VSequenceActionsDelegate> *targetForHashTagSelection = [self targetForAction:@selector(hashTag:tappedFromSequence:fromView:)
+                                                                                  withSender:self];
+    if (targetForHashTagSelection == nil)
+    {
+        NSAssert(false, @"We need an object in the responder chain for hash tag selection.!");
+    }
+    [targetForHashTagSelection hashTag:value
+                    tappedFromSequence:self.sequence
+                              fromView:self];
 }
 
 @end
