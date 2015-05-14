@@ -39,9 +39,9 @@
     {
         self.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
         self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
-        self.titleLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-        self.messageLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-        self.iconImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+        self.titleLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.messageLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.iconImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     }
 }
 
