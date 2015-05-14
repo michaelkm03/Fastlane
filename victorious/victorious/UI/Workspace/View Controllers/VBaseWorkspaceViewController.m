@@ -479,12 +479,23 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
                                                                                            metrics:nil
                                                                                              views:@{@"picker":toolViewController.view}]];
     
+    // Add a lower priority constraint to fill difference between canvas and toolbar on bigger devices
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:toolViewController.view
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.canvasView
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+    topConstraint.priority = 800;
+    
     NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
-    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
+    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[picker(>=100)]-toolbarHeight-|"
                                                                                            options:kNilOptions
                                                                                            metrics:verticalMetrics
                                                                                              views:@{@"picker":toolViewController.view,
                                                                                                      @"canvas":self.canvasView}]];
+    [self.inspectorConstraints addObject:topConstraint];
     [self.view addConstraints:self.inspectorConstraints];
 }
 
