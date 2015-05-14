@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Being Indian Official</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}beingindianofficial</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb627392204027346</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>627392204027346</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>2RmSo6KXc2u0t2C9JaCFk4s3c</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>OQ85kpiE4hVUE3Dc7wnS3NLiaX49KoumQx1ZJpgVnliSm6Idq9</string>
+	<key>VictoriousAppID</key>
+	<integer>40</integer>
+	<key>StagingAppID</key>
+	<integer>54</integer>
+	<key>QAAppID</key>
+	<integer>38</integer>
+	<key>CreatorSalutation</key>
+	<string>Being Indian Official</string>
+	<key>FlurryAPIKey</key>
+	<string>BD25JNRC2Z9FNFWNBCTT</string>
+</dict>
+</plist>
