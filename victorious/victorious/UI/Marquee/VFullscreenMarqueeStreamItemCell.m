@@ -20,15 +20,16 @@
 #import "UIView+Autolayout.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
+#import "VCompatibility.h"
 
 // Dependencies
 #import "VDependencyManager.h"
 
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;
-static CGFloat const kVDetailHideTime = 0.3f;
-static CGFloat const kVDetailBounceHeight = 8.0f;
-static CGFloat const kVDetailBounceTime = 0.15f;
+static NSTimeInterval const kVDetailHideTime = 0.1f;
+static CGFloat const kVDetailBounceHeight = 4.0f;
+static NSTimeInterval const kVDetailBounceTime = 0.35f;
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
 static NSString * const kVOrIconKey = @"orIcon";
 
@@ -70,7 +71,7 @@ static NSString * const kVOrIconKey = @"orIcon";
     
     if ( dependencyManager != nil )
     {
-        self.detailsBackgroundView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.detailsContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
         UIImage *orIcon = [dependencyManager imageForKey:kVOrIconKey];
@@ -99,24 +100,32 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 - (void)setDetailsContainerVisible:(BOOL)visible animated:(BOOL)animated
 {
-    CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
+    CGFloat targetConstraintValue = visible ? 0.0f : - self.detailsContainer.bounds.size.height;
     
     [self cancelDetailsAnimation];
     if ( animated )
     {
-        [UIView animateWithDuration:kVDetailBounceTime animations:^
-        {
-            self.detailsBottomLayoutConstraint.constant = 0.0f;
-            [self layoutIfNeeded];
-        }
-        completion:^(BOOL finished)
-        {
-            [UIView animateWithDuration:kVDetailHideTime animations:^
+        [UIView animateKeyframesWithDuration:kVDetailBounceTime + kVDetailHideTime
+                                       delay:0.0f
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^
+         {
+            [UIView addKeyframeWithRelativeStartTime:0.0f
+                                    relativeDuration:kVDetailBounceTime / (kVDetailBounceTime + kVDetailHideTime)
+                                          animations:^
              {
-                 self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+                 self.detailsBottomLayoutConstraint.constant = kVDetailBounceHeight;
                  [self layoutIfNeeded];
              }];
-        }];
+             [UIView addKeyframeWithRelativeStartTime:kVDetailBounceTime / (kVDetailBounceTime + kVDetailHideTime)
+                                     relativeDuration:kVDetailHideTime
+                                           animations:^
+              {
+                  self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+                  [self layoutIfNeeded];
+              }];
+         }
+                                  completion:nil];
     }
     else
     {
@@ -133,7 +142,7 @@ static NSString * const kVOrIconKey = @"orIcon";
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = floorf(width * kVCellHeightRatio);
+    CGFloat height = VFLOOR(width * kVCellHeightRatio);
     return CGSizeMake(width, height);
 }
 
