@@ -75,6 +75,7 @@
     [super viewDidLoad];
 
     self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
+    self.searchField.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     self.searchField.delegate = self;
 
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
