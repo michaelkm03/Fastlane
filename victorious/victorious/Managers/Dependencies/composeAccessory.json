@@ -1,9 +1,12 @@
 {
-    "destination" : null,
-    "title": "Menu",
-    "icon": {
-        "imageURL": "menuC"
+    "destination": {
+        "title": "New Message",
+        "name": "message.screen"
     },
-    "identifier": "Accessory Menu",
+    "title": "New Message",
+    "icon": {
+        "imageURL": "profileCompose"
+    },
+    "identifier": "Accessory New Message",
     "position": "right"
 }

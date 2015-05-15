@@ -21,7 +21,7 @@
  *  Forwards VAuthorizationContextProvider methods to the
  *  currently selected viewController.
  */
-@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider, VInitialViewController, VAccessoryNavigationSource>
+@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider, VInitialViewController>
 
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The view controllers to be displayed
 @property (nonatomic, assign) BOOL isInitialViewController;

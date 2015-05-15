@@ -278,28 +278,6 @@ static NSString * const kInitialKey = @"initial";
     return self.navigationItem;
 }
 
-#pragma mark - VAccessoryNavigationSource
-
-- (BOOL)willNavigationToDestination:(id)destination
-{
-    id <VAccessoryNavigationSource> currentSource = (id <VAccessoryNavigationSource>)self.viewControllers[ self.selectedIndex ];
-    if ( [currentSource conformsToProtocol:@protocol(VAccessoryNavigationSource)] )
-    {
-        return [currentSource willNavigationToDestination:destination];
-    }
-    return YES;
-}
-
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
-{
-    id <VAccessoryNavigationSource> currentSource = (id <VAccessoryNavigationSource>)self.viewControllers[ self.selectedIndex ];
-    if ( [currentSource conformsToProtocol:@protocol(VAccessoryNavigationSource)] )
-    {
-        return [currentSource shouldDisplayAccessoryForDestination:destination];
-    }
-    return YES;
-}
-
 #pragma mark - VAuthorizationContextProvider
 
 - (BOOL)requiresAuthorization
@@ -346,8 +324,7 @@ static NSString * const kInitialKey = @"initial";
     NSArray *screens = [self.dependencyManager templateValueOfType:[NSArray class] forKey:kScreensKey];
     NSDictionary *childConfiguration = screens[ index ];
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
-    [childDependencyManager addPropertiesToNavigationItem:self.navigationItem
-                                 pushAccessoryMenuItemsOn:self.navigationController];
+    [childDependencyManager addPropertiesToNavigationItem:self.navigationItem source:self.viewControllers[ index ]];
 }
 
 #pragma mark - UICollectionViewDelegate methods

@@ -71,8 +71,7 @@
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
     
-    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
-                                 pushAccessoryMenuItemsOn:self.navigationController];
+    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem source:self];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

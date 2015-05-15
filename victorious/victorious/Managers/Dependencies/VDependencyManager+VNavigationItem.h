@@ -21,7 +21,7 @@ extern NSString * const VDependencyManagerTitleImageKey; ///< The key that speci
 @interface VDependencyManager (VNavigationItem)
 
 /**
- Internally calls addPropertiesToNavigationItem:pushAccessoryMenuItemsOn: 
+ Internally calls addPropertiesToNavigationItem:source: 
  with nil for navigationController.
  
  @param navigationItem the navigation item to configure
@@ -40,6 +40,6 @@ extern NSString * const VDependencyManagerTitleImageKey; ///< The key that speci
  
  */
 - (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem
-             pushAccessoryMenuItemsOn:(UINavigationController *)navigationController;
+                               source:(UIViewController *)sourceViewController;
 
 @end

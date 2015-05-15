@@ -21,16 +21,21 @@ NSString * const VDependencyManagerTitleImageKey = @"titleImage";
 
 static const char kAssociatedObjectKey;
 
+@interface VDependencyManager()
+
+@property (nonatomic, strong) VDependencyManager *parentManager;
+
+@end
+
 @implementation VDependencyManager (VNavigationItem)
 
 - (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem
 {
-    [self addPropertiesToNavigationItem:navigationItem
-               pushAccessoryMenuItemsOn:nil];
+    [self addPropertiesToNavigationItem:navigationItem source:nil];
 }
 
 - (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem
-             pushAccessoryMenuItemsOn:(UINavigationController *)navigationController
+                               source:(UIViewController *)sourceViewController
 {
     NSString *title = [self stringForKey:VDependencyManagerTitleKey];
     if ( title != nil )
@@ -44,27 +49,64 @@ static const char kAssociatedObjectKey;
         navigationItem.titleView = [[UIImageView alloc] initWithImage:titleImage];
     }
     
-    if ( navigationController != nil && self.accessoryMenuItems.count > 0 )
+    if ( self.accessoryMenuItems.count > 0 )
     {
-            
-        objc_setAssociatedObject(self, &kAssociatedObjectKey, navigationController, OBJC_ASSOCIATION_ASSIGN);
+        objc_setAssociatedObject(self, &kAssociatedObjectKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN);
         
-        //NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] initWithArray:navigationItem.leftBarButtonItems];
-        //NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] initWithArray:navigationItem.rightBarButtonItems];
         NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] init];
         NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] init];
-        id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)navigationController.topViewController;
+        
+        VDependencyManager *dependencyManager = self;
+        NSMutableArray *accessoryMenuItems = [[NSMutableArray alloc] initWithArray:dependencyManager.accessoryMenuItems];
+        while ( dependencyManager.parentManager != nil )
+        {
+            dependencyManager = dependencyManager.parentManager;
+            [accessoryMenuItems addObjectsFromArray:dependencyManager.accessoryMenuItems];
+        }
+        
         for ( VNavigationMenuItem *menuItem in self.accessoryMenuItems )
         {
+            id<VAccessoryNavigationSource> source;
+            id responder = sourceViewController;
+            BOOL shouldDisplay = YES;
+            while (( responder = [responder nextResponder] ))
+            {
+                if ( [responder respondsToSelector:@selector(shouldDisplayAccessoryForDestination:)] )
+                {
+                    source = (id<VAccessoryNavigationSource>)responder;
+                    
+                    // If anyone in the responder chain says no, then we don't display
+                    if ( ![source shouldDisplayAccessoryForDestination:menuItem.destination] )
+                    {
+                        shouldDisplay = NO;
+                        break;
+                    }
+                }
+            }
+            
+            if ( !shouldDisplay )
+            {
+                continue;
+            }
+            
+            /*NSString *tab = @"";
+            UIResponder *responder = sourceViewController;
+            while (( responder = [responder nextResponder] ))
+            {
+                tab = [tab stringByAppendingString:@"\t"];
+                NSInteger index = [[responder description] rangeOfString:@":"].location;
+                NSLog( @"\n%@- %@\n", tab, [[responder description] substringToIndex:index] );
+            }*/
+            
             // Check if the source can display the menu item (default is YES)
-            if ( [source conformsToProtocol:@protocol(VAccessoryNavigationSource)] &&
-                 [source respondsToSelector:@selector(shouldDisplayAccessoryForDestination:)] )
+            /*id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)[sourceViewController targetForAction:@selector(shouldDisplayAccessoryForDestination:) withSender:self];
+            if ( [source conformsToProtocol:@protocol(VAccessoryNavigationSource)] )
             {
                 if ( ![source shouldDisplayAccessoryForDestination:menuItem.destination] )
                 {
                     continue;
                 }
-            }
+            }*/
             
             UIBarButtonItem *accessoryBarItem = nil;
             if ( menuItem.icon != nil )
@@ -139,16 +181,14 @@ static const char kAssociatedObjectKey;
     }
     
     VNavigationMenuItem *menuItem = self.accessoryMenuItems[ selectedIndex ];
-    UINavigationController *navigationController = objc_getAssociatedObject(self, &kAssociatedObjectKey);
+    UINavigationController *sourceViewController = objc_getAssociatedObject(self, &kAssociatedObjectKey);
     UIViewController<VNavigationDestination> *destination = menuItem.destination;
 
-    BOOL canNavigationToDestination = destination != nil && ![destination isKindOfClass:[NSNull class]];
+    BOOL canNavigationToDestination = YES;
     if ( [destination conformsToProtocol:@protocol(VNavigationDestination)] )
     {
         canNavigationToDestination = [destination shouldNavigateWithAlternateDestination:&destination];
     }
-    
-    id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)navigationController.topViewController;
     
     id <VAuthorizationContextProvider> authorizedDestination = (id <VAuthorizationContextProvider>)destination;
     BOOL requiresAuthorization = [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] &&
@@ -159,32 +199,33 @@ static const char kAssociatedObjectKey;
         VAuthorizationContext context = [authorizedDestination authorizationContext];
         VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                              dependencyManager:self];
-        [authorizedAction performFromViewController:navigationController context:context completion:^(BOOL authorized)
+        [authorizedAction performFromViewController:sourceViewController context:context completion:^(BOOL authorized)
          {
              if ( authorized && canNavigationToDestination )
              {
-                 [self performNavigationFromSource:source toDestination:destination inNavigationController:navigationController];
+                 [self performNavigationFromSource:sourceViewController toDestination:destination];
              }
          }];
     }
     else if ( canNavigationToDestination )
     {
-        [self performNavigationFromSource:source toDestination:destination inNavigationController:navigationController];
+        [self performNavigationFromSource:sourceViewController toDestination:destination];
     }
 }
 
-- (void)performNavigationFromSource:(id<VAccessoryNavigationSource>)source
+- (void)performNavigationFromSource:(UIViewController *)sourceViewController
                        toDestination:(UIViewController *)destination
-              inNavigationController:(UINavigationController *)navigationController
 {
-    BOOL shouldNavigate = YES;
+    id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)[sourceViewController targetForAction:@selector(willNavigationToDestination:) withSender:self];
+    
+    BOOL shouldNavigate = sourceViewController.navigationController != nil;
     if ( [source respondsToSelector:@selector(willNavigationToDestination:)] )
     {
         shouldNavigate = [source willNavigationToDestination:destination];
     }
-    if ( shouldNavigate )
+    if ( shouldNavigate && destination != nil && ![destination isKindOfClass:[NSNull class]] )
     {
-        [navigationController pushViewController:destination animated:YES];
+        [sourceViewController.navigationController pushViewController:destination animated:YES];
     }
 }
 

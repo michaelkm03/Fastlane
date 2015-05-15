@@ -442,4 +442,22 @@
     return UIStatusBarAnimationFade;
 }
 
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)willNavigationToDestination:(id)destination
+{
+    if ( destination == nil || [destination isKindOfClass:[NSNull class]] )
+    {
+        [self presentMenuViewController];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+{
+    const BOOL shouldDisplay = self.navigationController == nil || self.navigationController.viewControllers.count == 1;
+    return shouldDisplay;
+}
+
 @end

@@ -213,9 +213,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     self.navigationViewfloatingController.animationEnabled = YES;
     
     self.navigationItem.title = self.title;
-    
-    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
-                                 pushAccessoryMenuItemsOn:self.navigationController];
 }
 
 - (void)viewDidLayoutSubviews
@@ -245,8 +242,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     [self setupFloatingView];
     
-    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
-                                 pushAccessoryMenuItemsOn:self.navigationController];
+    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem source:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
