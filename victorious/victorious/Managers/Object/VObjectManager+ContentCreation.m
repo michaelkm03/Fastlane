@@ -92,7 +92,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
-    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:[[VObjectManager sharedManager] uploadManager]];
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
     uploadTaskCreator.previewImage = previewImage;
@@ -117,7 +117,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         completionBlock( nil, nil, nil, nil );
     }
     
-    [[VUploadManager sharedManager] enqueueUploadTask:uploadTask onComplete:nil];
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:nil];
 }
 
 - (void)createPollWithName:(NSString *)name
@@ -153,8 +153,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
-    VUploadManager *uploadManager = [VUploadManager sharedManager];
-    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:[[VObjectManager sharedManager] uploadManager]];
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
     uploadTaskCreator.previewImage = previewImage;
@@ -173,7 +172,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         }
         return;
     }
-    [uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
 }
 
 - (void)uploadMediaWithPublishParameters:(VPublishParameters *)publishParameters
@@ -237,7 +236,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
-    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:[[VObjectManager sharedManager] uploadManager]];
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
     uploadTaskCreator.previewImage = publishParameters.previewImage;
@@ -260,7 +259,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         completionBlock(nil, nil, nil, nil);
     }
-    [[VUploadManager sharedManager] enqueueUploadTask:uploadTask onComplete:nil];
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:nil];
 }
 
 - (RKManagedObjectRequestOperation *)repostNode:(VNode *)node
