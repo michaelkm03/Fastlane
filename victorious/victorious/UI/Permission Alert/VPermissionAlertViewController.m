@@ -17,7 +17,7 @@ static NSString * const kStoryboardName = @"PermissionAlert";
 
 @interface VPermissionAlertViewController () <VBackgroundContainer>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (strong, nonatomic) VPermissionAlertTransitionDelegate *transitionDelegate;
 
 @property (weak, nonatomic) IBOutlet UIView *alertContainerView;

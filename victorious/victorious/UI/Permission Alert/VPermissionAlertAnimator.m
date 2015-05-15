@@ -43,15 +43,20 @@
          {
              animatingView.transform = CGAffineTransformIdentity;
              animatingView.alpha = 1.0f;
-         } completion:^(BOOL finished) {
+         } completion:^(BOOL finished)
+         {
              [transitionContext completeTransition:YES];
          }];
     }
     else
     {
-        [UIView animateWithDuration:0.2 animations:^{
-            animatingView.alpha = 0.0f;
-        }];
+        [UIView animateWithDuration:0.2 animations:^
+         {
+             animatingView.alpha = 0.0f;
+         } completion:^(BOOL finished)
+         {
+             [transitionContext completeTransition:YES];
+         }];
     }
 }
 
@@ -75,10 +80,13 @@
     return animatedTransitioner;
 }
 
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented
+                                                      presentingViewController:(UIViewController *)presenting
+                                                          sourceViewController:(UIViewController *)source
 {
     return [[VPermissionAlertPresentationController alloc] initWithPresentedViewController:presented
-                                                           presentingViewController:presenting];
+                                                                  presentingViewController:presenting
+                                                                                    source:source];
 }
 
 @end

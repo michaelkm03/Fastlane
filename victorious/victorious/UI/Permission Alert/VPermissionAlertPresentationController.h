@@ -10,4 +10,8 @@
 
 @interface VPermissionAlertPresentationController : UIPresentationController
 
+- (instancetype)initWithPresentedViewController:(UIViewController *)presentedViewController
+                       presentingViewController:(UIViewController *)presentingViewController
+                                         source:(UIViewController *)source;
+
 @end
