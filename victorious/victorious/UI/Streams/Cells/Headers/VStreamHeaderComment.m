@@ -119,7 +119,7 @@ static const CGFloat kCommentButtonHeight = 44.0f;
                                        self.creationInfoContainer,
                                        self.commentButton,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingMargin]];
-        [self.actionBar v_addPintoTopBottomToSubview:self.creationInfoContainer];
+        [self.actionBar v_addPinToTopBottomToSubview:self.creationInfoContainer];
         [self updateUserAvatarForSequence:self.sequence];
         [self updateInfoContainerForSequence:self.sequence];
         [self updateCommentButtonForSequence:self.sequence];

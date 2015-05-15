@@ -425,7 +425,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
         if (repostCount > 1)
         {
-            NSString *baseString = [NSString stringWithFormat:NSLocalizedString(@"repostedByNOthersFormat", [self.sequence.repostCount unsignedLongValue])];
+            NSString *baseString = [NSString stringWithFormat:NSLocalizedString(@"+ &lu others", [self.sequence.repostCount unsignedLongValue])];
             UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
             if (highlighted)
             {

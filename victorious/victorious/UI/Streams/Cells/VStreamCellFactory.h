@@ -51,7 +51,7 @@
 /**
  *  For factories that allow cells to specialize themselves. "Specialization" allows for
  *  cells to configure a view hierarchy for a particular stream item once and merely update 
- *  properties on reuse. This prevent expensive view hierarchy manipulation and layout from 
+ *  properties on reuse. This prevents expensive view hierarchy manipulation and layout from
  *  occurring on the main thread while scrolling. In order for specialization to work the stream
  *  cell factory conformer must be able to register a unique identifier per view hierarchy.
  *  The required view hierarchy should be able to be derived form the streamItems array.

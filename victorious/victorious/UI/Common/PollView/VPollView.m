@@ -75,8 +75,8 @@
     
     if (!self.hasLayedOutViews)
     {
-        [self v_addPintoTopBottomToSubview:self.answerAImageView];
-        [self v_addPintoTopBottomToSubview:self.answerBImageView];
+        [self v_addPinToTopBottomToSubview:self.answerAImageView];
+        [self v_addPinToTopBottomToSubview:self.answerBImageView];
         
         [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                          attribute:NSLayoutAttributeLeft

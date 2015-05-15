@@ -109,7 +109,7 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
                                        creationContainer,
                                        self.timeSinceWidget,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
-        [self.actionBar v_addPintoTopBottomToSubview:self.creationInfoContainer];
+        [self.actionBar v_addPinToTopBottomToSubview:self.creationInfoContainer];
         [self updateUserAvatarForSequence:self.sequence];
         [self updateInfoContainerForSequence:self.sequence];
     }

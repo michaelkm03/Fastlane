@@ -71,9 +71,9 @@ typedef NS_ENUM(NSInteger, VStreamLabelState)
 @end
 
 /**
- *  Methdos in this category merely forward to their respective counterparts on the wrapped 
+ *  Methods in this category merely forward to their respective counterparts on the wrapped
  *  UILabel.
- *  NOTE for futures maintainers: if you want to expose the internal UILabel, consider
+ *  NOTE for future maintainers: if you want to expose the internal UILabel, consider
  *  merely exposing the appropriate property/method via this category.
  */
 @interface VStreamLabel (UILabelForwarding)

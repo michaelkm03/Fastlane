@@ -16,7 +16,7 @@
 /**
  *  VSequencePreviewView is a class cluster for previewing a sequence. A concrete subclass is provided
  *  from the "sequencePreviewViewWithSequence" constructor method. VSequencePreviewView conforms to
- *  VStreamCellComponentSpecialization and should be reuseed for squences that return the same reuse
+ *  VStreamCellComponentSpecialization and should be reused for sequences that return the same reuse
  *  identifier from: "reuseIdentifierForSequence:baseIdentifier:".
  */
 @interface VSequencePreviewView : UIView <VHasManagedDependencies, VStreamCellComponentSpecialization>

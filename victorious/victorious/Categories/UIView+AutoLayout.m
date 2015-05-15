@@ -49,7 +49,7 @@
                                     trailing:0.0f];
 }
 
-- (void)v_addPintoTopBottomToSubview:(UIView *)subView
+- (void)v_addPinToTopBottomToSubview:(UIView *)subView
 {
     [self v_addPintoTopBottomToSubview:subView
                                    top:0.0f
@@ -87,7 +87,7 @@
 
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview
 {
-    [self v_addcenterHorizontallyConstraintsToSubview:subview];
+    [self v_addCenterHorizontallyConstraintsToSubview:subview];
     [self v_addCenterVerticallyConstraintsToSubview:subview];
 }
 
@@ -106,7 +106,7 @@
                                                       constant:0.0f]];
 }
 
-- (void)v_addcenterHorizontallyConstraintsToSubview:(UIView *)subview
+- (void)v_addCenterHorizontallyConstraintsToSubview:(UIView *)subview
 {
     NSParameterAssert( [subview isDescendantOfView:self] );
     

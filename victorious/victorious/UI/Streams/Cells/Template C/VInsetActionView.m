@@ -172,7 +172,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     actionBar.actionItems = [NSArray arrayWithArray:actionItemsAndSpacing];
     for (UIView *actionView in actionBar.actionItems)
     {
-        [actionBar v_addPintoTopBottomToSubview:actionView];
+        [actionBar v_addPinToTopBottomToSubview:actionView];
     }
 }
 
