@@ -330,7 +330,10 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     }
     else
     {
-        imageUrl = [NSURL URLWithString:self.previewImagesObject];
+        if ([self.previewImagesObject isKindOfClass:[NSString class]])
+        {
+            imageUrl = [NSURL URLWithString:self.previewImagesObject];
+        }
     }
     return imageUrl;
 }
