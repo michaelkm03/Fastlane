@@ -26,7 +26,7 @@
 #import <CCHLinkTextViewDelegate.h>
 
 static const CGFloat kHeaderHeight = 74.0f;
-static const CGFloat kGradientAlpha = 0.3f;
+static const CGFloat kGradientAlpha = 0.5f;
 static const UIEdgeInsets kTextInsets = {0, 20.0f, 20.0f, 20.0f};
 static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
 static const CGFloat minCaptionHeight = 25.0f;
