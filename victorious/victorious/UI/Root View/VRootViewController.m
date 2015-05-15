@@ -26,6 +26,7 @@
 #import "VVoteSettings.h"
 #import "VVoteType.h"
 #import "VAppInfo.h"
+#import "VUploadManager.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -402,7 +403,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     [self showViewController:nil animated:NO completion:nil];
     [RKObjectManager setSharedManager:nil];
-    [VObjectManager setupObjectManager];
+    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
     [self showLoadingViewController];
 }
 
