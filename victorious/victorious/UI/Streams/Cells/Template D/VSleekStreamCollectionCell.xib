@@ -28,7 +28,7 @@
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0yG-Rl-S8H" userLabel="Content Container">
-                        <rect key="frame" x="0.0" y="83" width="302" height="302"/>
+                        <rect key="frame" x="0.0" y="88" width="302" height="302"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JB7-zc-ces" userLabel="Loading View">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
@@ -45,7 +45,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyd-x0-d0C" customClass="VSleekActionView">
-                        <rect key="frame" x="-1" y="393" width="304" height="41"/>
+                        <rect key="frame" x="-1" y="398" width="304" height="41"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="fqP-L2-g3J"/>
@@ -63,7 +63,7 @@
                 <constraint firstAttribute="trailing" secondItem="6Ls-Bo-1cB" secondAttribute="trailing" constant="10" id="Oa7-2d-TrN"/>
                 <constraint firstAttribute="trailing" secondItem="gyd-x0-d0C" secondAttribute="trailing" constant="-1" id="Ph8-Kx-NqC"/>
                 <constraint firstAttribute="trailing" secondItem="0yG-Rl-S8H" secondAttribute="trailing" id="aos-SC-C9i"/>
-                <constraint firstItem="0yG-Rl-S8H" firstAttribute="top" secondItem="6Ls-Bo-1cB" secondAttribute="bottom" id="cjt-QC-WdE"/>
+                <constraint firstItem="0yG-Rl-S8H" firstAttribute="top" secondItem="6Ls-Bo-1cB" secondAttribute="bottom" constant="5" id="cjt-QC-WdE"/>
                 <constraint firstItem="21k-Mb-C9q" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" id="fSo-qn-QmP"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gyd-x0-d0C" secondAttribute="bottom" priority="750" constant="28" id="hW3-jE-fH1"/>
                 <constraint firstItem="6Ls-Bo-1cB" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" constant="45" id="hxm-u0-3dS"/>
@@ -71,6 +71,7 @@
             </constraints>
             <size key="customSize" width="543" height="417"/>
             <connections>
+                <outlet property="bottomSpaceCaptionToPreview" destination="cjt-QC-WdE" id="WAZ-3e-8tH"/>
                 <outlet property="captionTextView" destination="6Ls-Bo-1cB" id="bIh-mH-QI3"/>
                 <outlet property="headerView" destination="21k-Mb-C9q" id="qKP-yg-aYp"/>
                 <outlet property="loadingBackgroundContainer" destination="JB7-zc-ces" id="dXU-4M-ad5"/>

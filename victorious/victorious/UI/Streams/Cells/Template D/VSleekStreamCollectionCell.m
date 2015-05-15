@@ -33,7 +33,7 @@ static const CGFloat kPreviewToActionViewSpacing = 8.0f;
 static const CGFloat kActionViewBottomSpacing = 28.0f;
 static const CGFloat kSleekCellActionViewBottomConstraintHeight = 34.0f; //This represents the space between the bottom of the cell and the actionView
 static const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This represents the space between the bottom of the content and the top of the actionView
-static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 0.0f, 10.0f };
+static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 //Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
 const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 
@@ -46,6 +46,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
 
 @end
 
@@ -115,14 +116,19 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if (sequence.name == nil || self.dependencyManager == nil)
+    if (sequence.name == nil || self.dependencyManager == nil || sequence.name.length == 0)
     {
         self.captionTextView.attributedText = nil;
-        return;
+        self.bottomSpaceCaptionToPreview.constant = 0.0f;
+        [self.captionTextView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     }
-
-    self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                          attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+    else
+    {
+        [self.captionTextView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        self.bottomSpaceCaptionToPreview.constant = kCaptionMargins.bottom;
+        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                              attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+    }
 }
 
 #pragma mark - VBackgroundContainer
@@ -210,7 +216,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     CGSize sizeWithText = initialSize;
     
-    
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [textStorage addLayoutManager:layoutManager];
@@ -225,10 +230,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     sizingCaptionTextView.textContainerInset = UIEdgeInsetsZero;
     sizingCaptionTextView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    // Top Margins
     CGFloat captionWidth = initialSize.width - kCaptionMargins.left - kCaptionMargins.right;
     [sizingCaptionTextView v_addWidthConstraint:captionWidth];
-
     if (sequence.name.length > 0)
     {
         // Caption view size
@@ -237,7 +240,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         sizingCaptionTextView.attributedText = attributedCaptionText;
         
         CGSize size = [sizingCaptionTextView systemLayoutSizeFittingSize:CGSizeMake(captionWidth, HUGE_VALF)];
-        sizeWithText.height = sizeWithText.height + size.height;
+        sizeWithText.height = sizeWithText.height + size.height + kCaptionMargins.top + kCaptionMargins.bottom;
     }
 
     return sizeWithText;
