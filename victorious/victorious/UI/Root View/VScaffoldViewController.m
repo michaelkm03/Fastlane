@@ -87,9 +87,6 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     [alert setDenyHandler:^(VPermissionAlertViewController *alert) {
         [alert dismissViewControllerAnimated:YES completion:nil];
     }];
-    alert.modalPresentationStyle = UIModalPresentationCustom;
-    self.transitionDelegate = [[VPermissionAlertTransitionDelegate alloc] init];
-    alert.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:alert animated:YES completion:nil];
 }
 

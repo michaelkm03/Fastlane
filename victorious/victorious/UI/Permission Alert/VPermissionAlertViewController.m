@@ -11,12 +11,14 @@
 #import "VBackgroundContainer.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VButtonWithCircularEmphasis.h"
+#import "VPermissionAlertAnimator.h"
 
 static NSString * const kStoryboardName = @"PermissionAlert";
 
 @interface VPermissionAlertViewController () <VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (strong, nonatomic) VPermissionAlertTransitionDelegate *transitionDelegate;
 
 @property (weak, nonatomic) IBOutlet UIView *alertContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
@@ -35,8 +37,19 @@ static NSString * const kStoryboardName = @"PermissionAlert";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kStoryboardName bundle:nil];
     VPermissionAlertViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     viewController.dependencyManager = dependencyManager;
-    viewController.modalPresentationStyle = UIModalPresentationCustom;
     return viewController;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        self.modalPresentationStyle = UIModalPresentationCustom;
+        _transitionDelegate = [[VPermissionAlertTransitionDelegate alloc] init];
+        self.transitioningDelegate = _transitionDelegate;
+    }
+    return self;
 }
 
 #pragma mark - Life cycle
