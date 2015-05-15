@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}BeautyLiciousInsider</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}beautyliciousinsider</string>
+	<string>com.iADAPPT.${ProductPrefix}bli</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -30,8 +30,8 @@
 	<key>GAID</key>
 	<string></string>
 	<key>CreatorSalutation</key>
-	<string>TBD</string>
+	<string>BeautyliciousInsider</string>
 	<key>FlurryAPIKey</key>
-	<string>XXXXXXXXXX</string>
+	<string>N4HSYNP8GJ2WXD54J7XN</string>
 </dict>
 </plist>

@@ -11,11 +11,12 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderViewController.h"
-#import "VSettingManager.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
 #import "VTracking.h"
+#import "NSURL+VCustomScheme.h"
+#import "UIColor+VBrightness.h"
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -24,7 +25,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     VWebBrowserViewControllerStateFailed,
 };
 
-@interface VWebBrowserViewController() <WKNavigationDelegate, VWebBrowserHeaderViewDelegate>
+@interface VWebBrowserViewController() <WKNavigationDelegate, VWebBrowserHeaderViewDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) NSURL *currentURL;
@@ -61,6 +62,13 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     
     self.webView = [[WKWebView alloc] init];
     self.webView.navigationDelegate = self;
+    /*
+     To support opening new tabs, we have to be a UIDelegate, respond to the
+        webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures: method and,
+        when asked to load a url that isn't aimed at our current targetFrame, load it in our
+        WKWebView instead.
+     */
+    self.webView.UIDelegate = self;
     [self.containerView addSubview:self.webView];
     
     NSDictionary *views = @{ @"webView" : self.webView };
@@ -84,11 +92,14 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewDidAppear:animated];
     
-    // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.sequence.remoteId,
-                              VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    if ( self.sequence != nil )
+    {
+        // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                  VTrackingKeySequenceId : self.sequence.remoteId,
+                                  VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -101,6 +112,18 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    UIColor *navBarBackgroundColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
+    switch ( [navBarBackgroundColor v_colorLuminance] )
+    {
+        case VColorLuminanceBright:
+            return UIStatusBarStyleDefault;
+        case VColorLuminanceDark:
+            return UIStatusBarStyleLightContent;
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -167,7 +190,13 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.currentURL = url;
     if ( self.webView != nil )
     {
-        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+        if ( url.scheme == nil ) //< WKWebView won't load a URL without a scheme
+        {
+            NSString *defaultScheme = @"http://";
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", defaultScheme, url.absoluteString]];
+        }
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [self.webView loadRequest:request];
     }
 }
 
@@ -216,7 +245,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if ( [navigationAction.request.URL.scheme.lowercaseString rangeOfString:@"http"].location != 0 )
+    if ( [navigationAction.request.URL v_hasCustomScheme] )
     {
         [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
         decisionHandler( WKNavigationActionPolicyCancel );
@@ -225,6 +254,18 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     {
         decisionHandler( WKNavigationActionPolicyAllow );
     }
+}
+
+#pragma mark - WKUIDelegate
+
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
+{
+    if ( !navigationAction.targetFrame.isMainFrame )
+    {
+        //The webView wants to load a request in a new tab / window, load it in our webView instead
+        [webView loadRequest:navigationAction.request];
+    }
+    return nil;
 }
 
 #pragma mark - VWebBrowserHeaderView

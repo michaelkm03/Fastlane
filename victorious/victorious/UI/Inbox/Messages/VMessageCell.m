@@ -9,7 +9,6 @@
 #import "UIImage+ImageCreation.h"
 #import "VCommentTextAndMediaView.h"
 #import "VMessageCell.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
 
@@ -46,7 +45,8 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
 {
-    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) text:text withMedia:hasMedia] +
+    CGFloat contentWidth = width - kTextInsets.left - kTextInsets.right;
+    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:contentWidth text:text withMedia:hasMedia] +
                 kTextInsets.top +
                 kTextInsets.bottom,
                kMinimumCellHeight);

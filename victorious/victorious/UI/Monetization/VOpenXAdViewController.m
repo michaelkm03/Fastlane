@@ -8,7 +8,6 @@
 
 #import "VOpenXAdViewController.h"
 #import "OpenXMSDK.h"
-#import "VSettingManager.h"
 #import "VAdPlayerView.h"
 #import "VAdBreakFallback.h"
 
@@ -26,6 +25,8 @@
 @end
 
 @implementation VOpenXAdViewController
+
+@dynamic playerView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

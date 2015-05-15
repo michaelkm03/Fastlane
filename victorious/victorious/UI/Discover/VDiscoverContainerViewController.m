@@ -10,7 +10,6 @@
 #import "VDiscoverConstants.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
-#import "VSettingManager.h"
 #import "VDiscoverViewControllerProtocol.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
@@ -19,6 +18,8 @@
 
 // Dependency Manager
 #import "VDependencyManager.h"
+#import "VDependencyManager+VUserProfile.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
@@ -26,6 +27,7 @@
 // Transition
 #import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
+#import "VDiscoverDeepLinkHandler.h"
 
 @interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild>
 
@@ -43,7 +45,7 @@
 
 @implementation VDiscoverContainerViewController
 
-@synthesize multipleViewControllerChildDelegate; ///< VMultipleContainerChild
+@synthesize multipleContainerChildDelegate; ///< VMultipleContainerChild
 
 #pragma mark - Initializers
 
@@ -59,6 +61,7 @@
 {
     VDiscoverContainerViewController *discoverContainer = [self instantiateFromStoryboard:@"Discover"];
     discoverContainer.dependencyManager = dependencyManager;
+    [dependencyManager addPropertiesToNavigationItem:discoverContainer.navigationItem];
     return discoverContainer;
 }
 
@@ -118,6 +121,15 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - mark
+
+- (id<VDeeplinkHandler>)deepLinkHandler
+{
+    VDiscoverDeepLinkHandler *handler = [[VDiscoverDeepLinkHandler alloc] init];
+    handler.navigationDestination = self;
+    return handler;
 }
 
 #pragma mark - Show Profile
@@ -197,7 +209,7 @@
 
 #pragma mark - VMultipleContainerChild
 
-- (void)viewControllerSelected:(BOOL)isDefault
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
     // This event is not actually stream related, its name remains for legacy purposes
     NSDictionary *params = @{ VTrackingKeyStreamName : [self.dependencyManager stringForKey:VDependencyManagerTitleKey] ?: @"Discover" };

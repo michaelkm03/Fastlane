@@ -100,37 +100,42 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 {
     // Format repost / remix string
     NSString *parentUserString;
+    NSString *displaySafeText = text == nil ? @"" : text;
     if ( self.colorForParentSequenceText != nil )
     {
         self.parentLabel.textColor = self.colorForParentSequenceText;
     }
     
+    CGFloat usernameBottomConstant = self.usernameLabelTopConstraint.constant;
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
+        usernameBottomConstant = self.defaultUsernameBottomConstraintValue;
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
         if ( repostCount == 0 )
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), text];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), displaySafeText];
         }
         else if ( repostCount == 1 )
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), text];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), displaySafeText];
         }
         else
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), text, [self.sequence.repostCount unsignedLongValue]];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), displaySafeText, [self.sequence.repostCount unsignedLongValue]];
         }
     }
-    
-    if (self.sequence.isRemix.boolValue && self.sequence.parentUser != nil)
+    else if (self.sequence.isRemix.boolValue && self.sequence.parentUser != nil)
     {
+        usernameBottomConstant = self.defaultUsernameBottomConstraintValue;
         NSString *formatString = NSLocalizedString(@"remixedFromFormat", nil);
         if ([[[[self.sequence firstNode] mp4Asset] playerControlsDisabled] boolValue])
         {
             formatString = NSLocalizedString(@"giffedFromFormat", nil);
         }
-        parentUserString = [NSString stringWithFormat:formatString, text];
+        parentUserString = [NSString stringWithFormat:formatString, displaySafeText];
     }
+    
+    self.usernameLabelBottomConstraint.constant = usernameBottomConstant;
     
     NSDictionary *attributes = @{
                                  NSFontAttributeName: self.parentLabel.font,
@@ -138,7 +143,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
                                  };
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:parentUserString ?: @""
                                                                                          attributes:attributes];
-    if ( parentUserString != nil && self.colorForParentSequenceAuthorName != nil )
+    if ( text != nil && parentUserString != nil && self.colorForParentSequenceAuthorName != nil )
     {
         NSRange range = [parentUserString rangeOfString:text];
         
@@ -198,17 +203,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     
     [self reloadCommentsCount];
     
-    NSString *parentText = @"";
-    CGFloat usernameBottomConstant = self.usernameLabelTopConstraint.constant;
-    if ( parentUser != nil )
-    {
-        //Will show "reposted" or "remix" text, so reset the username to it's spot towards the top of the cell
-        parentText = parentUser.name;
-        usernameBottomConstant = self.defaultUsernameBottomConstraintValue;
-    }
-    
+    NSString *parentText = parentUser != nil ? parentUser.name : @"";
     [self setParentText:parentText];
-    self.usernameLabelBottomConstraint.constant = usernameBottomConstant;
     
     // Set username and format date
     self.usernameLabel.text = originalPoster.name;
@@ -266,7 +262,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     self.parentLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     [self.commentButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
     self.dateLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    
+    self.profileImageButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.dateImageView.tintColor = self.dateLabel.textColor;
     self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }
@@ -275,9 +271,15 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
+    if ([self.delegate respondsToSelector:@selector(selectedUser:onSequence:fromView:)])
     {
-        [self.delegate selectedUserOnSequence:self.sequence fromView:self];
+        VSequence *sequence = self.sequence;
+        VUser *user = sequence.user;
+        if ( sequence.isRepost.boolValue && sequence.parentUser != nil )
+        {
+            user = sequence.parentUser;
+        }
+        [self.delegate selectedUser:user onSequence:sequence fromView:self];
     }
 }
 

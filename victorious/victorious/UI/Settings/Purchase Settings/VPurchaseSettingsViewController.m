@@ -13,7 +13,6 @@
 #import "VVoteType.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VSettingManager.h"
 #import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
 #import "VPurchaseStringMaker.h"
@@ -123,7 +122,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
 {
     VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
+    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:nil]];
     [alertConroller presentInViewController:self animated:YES completion:nil];
 }
 

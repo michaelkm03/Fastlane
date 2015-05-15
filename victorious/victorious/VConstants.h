@@ -60,6 +60,7 @@ static NSUInteger const kVHashTagSubscriptionAlreadyExistsError = 1001;
 
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
 static NSUInteger const kVUserBannedError               = 1007;
+static NSUInteger const kVUserOrPasswordInvalidError    = 1010;
 
 static NSUInteger const kVMediaAlreadyCreatedError      = 1005;
 static NSUInteger const kVCommentAlreadyFlaggedError    = 1005;
@@ -68,19 +69,9 @@ static NSUInteger const kVSequenceAlreadyReposted       = 1005;
 static NSUInteger const kVUpgradeRequiredError          = 426;
 static NSUInteger const kVUnauthoizedError              = 401;
 
-#pragma mark - App ID keys
+#pragma mark - Info.plist keys
 
-static NSUInteger  const   kDevAppID                = 1;
-
-static NSString * const   kVictoriousAppIDKey      = @"VictoriousAppID";
-static NSString * const   kStagingAppIDKey         = @"StagingAppID";
-static NSString * const   kQAAppIDKey              = @"QAAppID";
-
-static NSString * const   kTestflightQAToken       = @"TestflightQAAppToken";
-static NSString * const   kTestflightStagingToken  = @"TestflightStagingAppToken";
-static NSString * const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
-
-static NSString * const   kGAID                    = @"GAID";
+static NSString * const kGAID = @"GAID";
 
 #pragma mark - API Payload keys
 
@@ -113,6 +104,8 @@ static NSString * const VConstantAppStoreURL = @"com.getvictorious.appstoreurl";
 
 //NOTE: If you add categories, add them all to the necessary C functions in this section
 static NSString * const   kVOwnerPollCategory          = @"owner_poll";
+static NSString * const   kVOwnerTextCategory          = @"owner_text";
+static NSString * const   kVOwnerTextRepostCategory    = @"owner_text_repost";
 static NSString * const   kVOwnerImageCategory         = @"owner_image";
 static NSString * const   kVOwnerImageRepostCategory   = @"owner_image_repost";
 static NSString * const   kVOwnerImageQuoteCategory    = @"owner_image_secret";
@@ -125,6 +118,8 @@ static NSString * const   kVOwnerQuoteRepostCategory   = @"owner_secret_repost";
 static NSString * const   kVOwnerAnnouncementCategory  = @"owner_announcement";
 
 static NSString * const   kVUGCPollCategory            = @"ugc_poll";
+static NSString * const   kVUGCTextCategory            = @"ugc_text";
+static NSString * const   kVUGCTextRepostCategory      = @"ugc_text_repost";
 static NSString * const   kVUGCImageCategory           = @"ugc_image";
 static NSString * const   kVUGCImageRepostCategory     = @"ugc_image_repost";
 static NSString * const   kVUGCImageQuoteCategory      = @"ugc_image_secret";

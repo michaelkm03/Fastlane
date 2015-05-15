@@ -30,6 +30,7 @@
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager.h"
 #import "VCreatorInfoHelper.h"
+#import "UIAlertView+VBlocks.h"
 
 @import Accounts;
 @import Social;
@@ -47,7 +48,7 @@
 @property (nonatomic, weak) IBOutlet CCHLinkTextView *loginTextView;
 
 @property (nonatomic, assign) VLoginType loginType;
-@property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, strong) VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, weak) IBOutlet VAuthorizationContextHelper *authorizationContextHelper;
 
 @property (nonatomic, weak) IBOutlet UITextView *authorizationContextTextView;
@@ -65,6 +66,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
     VLoginViewController *viewController = (VLoginViewController *)[storyboard instantiateInitialViewController];
     viewController.dependencyManager = dependencyManager;
+    viewController.linkTextHelper = [[VLinkTextViewHelper alloc] initWithDependencyManager:dependencyManager];
     return viewController;
 }
 
@@ -176,7 +178,8 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return [self.navigationController.presentingViewController prefersStatusBarHidden];
+    //Simply don't change the hidden state of the status bar
+    return [[UIApplication sharedApplication] isStatusBarHidden];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -247,22 +250,42 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
                                                     message:NSLocalizedString(@"TwitterDenied", @"")
                                                    delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
 }
 
-- (void)didFailWithError:(NSError *)error
+- (void)twitterLoginFailedWithError:(NSError *)error fromTwitterAPI:(BOOL)fromTwitterAPI
 {
-    if (error.code != kVUserBannedError)
+    if ( error.code != kVUserBannedError )
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
+        NSString *message = NSLocalizedString(@"TwitterTroubleshooting", @"");
+        if ( error.code == NSURLErrorNetworkConnectionLost || !fromTwitterAPI )
+        {
+            //We've encountered a network error, show the localized description instead of the twitter troubleshooting tips
+            message = error.localizedDescription;
+        }
+        [self showLoginFailureAlertWithMessage:message];
     }
+}
+
+- (void)facebookLoginFailedWithError:(NSError *)error
+{
+    if ( error.code != kVUserBannedError )
+    {
+        NSString *message = error.localizedDescription;
+        [self showLoginFailureAlertWithMessage:message];
+    }
+}
+
+- (void)showLoginFailureAlertWithMessage:(NSString *)message
+{
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                           message:message
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Actions
@@ -286,14 +309,14 @@
                            }
                        });
     }
-                                                         onError:^(NSError *error)
+                                                         onError:^(NSError *error, BOOL thirdPartyAPIFailed)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
                        {
                            NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:params];
                            
-                           [self didFailWithError:error];
+                           [self facebookLoginFailedWithError:error];
                            [self hideLoginProgress];
                        });
     }];
@@ -332,7 +355,7 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
                                                                    delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                           otherButtonTitles:nil];
                     [alert show];
                 });
@@ -405,7 +428,7 @@
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;
-        profileViewController.loginType = kVLoginTypeFaceBook;
+        profileViewController.loginType = VLoginTypeFaceBook;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
@@ -414,7 +437,7 @@
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;
-        profileViewController.loginType = kVLoginTypeTwitter;
+        profileViewController.loginType = VLoginTypeTwitter;
         profileViewController.profile = self.profile;
         profileViewController.registrationStepDelegate = self;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
@@ -423,7 +446,7 @@
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;
-        profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.loginType = VLoginTypeEmail;
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
     }
@@ -473,7 +496,8 @@
              [self loginDidFinishWithSuccess:YES];
          }
          
-     } onError:^(NSError *error)
+     }
+                                                        onError:^(NSError *error, BOOL thirdPartyAPIFailed)
      {
          [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
          
@@ -481,7 +505,7 @@
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown parameters:params];
          
          [self hideLoginProgress];
-         [self didFailWithError:error];
+         [self twitterLoginFailedWithError:error fromTwitterAPI:thirdPartyAPIFailed];
      }];
 }
 

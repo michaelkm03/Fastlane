@@ -210,6 +210,10 @@
     if (!hasReposters)
     {
         VNoContentView *noRepostersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        if ( [noRepostersView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noRepostersView.dependencyManager = self.dependencyManager;
+        }
         self.tableView.backgroundView = noRepostersView;
         noRepostersView.titleLabel.text = NSLocalizedString(@"NoRepostersTitle", @"");
         noRepostersView.messageLabel.text = NSLocalizedString(@"NoRepostersMessage", @"");

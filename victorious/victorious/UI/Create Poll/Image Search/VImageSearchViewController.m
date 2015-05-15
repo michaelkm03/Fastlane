@@ -143,7 +143,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SearchFailed", @"")
                                                         message:@""
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                               otherButtonTitles:nil];
         [alert show];
     }];
@@ -272,7 +272,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ImageDownloadFailed", @"")
                                                                     message:@""
                                                                    delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                           otherButtonTitles:nil];
                 [alertView show];
                 [strongSelf.collectionView deselectItemAtIndexPath:indexPath animated:YES];

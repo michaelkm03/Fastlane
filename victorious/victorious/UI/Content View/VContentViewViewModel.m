@@ -29,6 +29,7 @@
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
 #import "VPaginationManager.h"
+#import "VAsset+VCachedData.h"
 
 // Formatters
 #import "NSDate+timeSince.h"
@@ -38,6 +39,7 @@
 
 // Media
 #import "NSURL+MediaType.h"
+#import "VAsset+VAssetCache.h"
 
 // Monetization
 #import "VAdBreak.h"
@@ -46,13 +48,11 @@
 // End Card
 #import "VEndCard.h"
 #import "VStream.h"
-#import "VThemeManager.h"
 #import "VEndCardModel.h"
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
-#import "VEndCardActionModel.h"
-
-#define FORCE_SHOW_DEBUG_END_CARD 0
+#import "UIColor+VHex.h"
+#import "VEndCardModelFactory.h"
 
 @interface VContentViewViewModel ()
 
@@ -91,6 +91,10 @@
         
         _dependencyManager = dependencyManager;
         
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
+        
+        _currentNode = [sequence firstNode];
+        
         if ([sequence isPoll])
         {
             _type = VContentViewTypePoll;
@@ -99,27 +103,34 @@
         {
             _type = VContentViewTypeVideo;
             _realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] init];
+            _currentAsset = [_currentNode httpLiveStreamingAsset];
         }
         else if ([sequence isGIFVideo])
         {
             _type = VContentViewTypeGIFVideo;
+            _currentAsset = [_currentNode mp4Asset];
         }
         else if ([sequence isImage])
         {
             _type = VContentViewTypeImage;
+            _currentAsset = [self mediaAssetFromSequence:sequence];
+        }
+        else if ( [sequence isText] )
+        {
+            _type = VContentViewTypeText;
+            _currentAsset = [_currentNode textAsset];
         }
         else
         {
             // Fall back to image.
             _type = VContentViewTypeImage;
+            _currentAsset = [self mediaAssetFromSequence:sequence];
         }
         
         _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
-
-        _currentNode = [sequence firstNode];
         
         _hasReposted = [sequence.hasReposted boolValue];
-        _currentAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
+        
         if ( _currentAsset == nil )
         {
             _currentAsset = [_currentNode imageAsset];
@@ -129,6 +140,21 @@
         self.currentAdChainIndex = 0;
     }
     return self;
+}
+
+- (VAsset *)mediaAssetFromSequence:(VSequence *)sequence
+{
+    VAsset *videoAsset = sequence.isGIFVideo ? [_currentNode mp4Asset] : [_currentNode httpLiveStreamingAsset];
+    if ( videoAsset != nil )
+    {
+        return videoAsset;
+    }
+    else
+    {
+        return [_currentNode imageAsset];
+    }
+    
+    return nil;
 }
 
 - (id)init
@@ -187,6 +213,16 @@
 
 - (void)fetchSequenceData
 {
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
+    // Check for the cached mp4
+    BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
+    if (assetIsCached)
+    {
+        [self createVideoModel];
+        [self.delegate didUpdateContent];
+    }
+#endif
+    
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
@@ -242,8 +278,22 @@
 
 - (void)createVideoModel
 {
+#ifdef V_ALLOW_VIDEO_DOWNLOADS
+    // Check for the cached mp4
+    BOOL assetIsCached = [[self.currentNode mp4Asset] assetDataIsCached];
+    if (assetIsCached)
+    {
+        VLog(@"asset cached!");
+        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                    withAdSystem:VMonetizationPartnerNone
+                                                                     withDetails:nil
+                                                                        withLoop:[self loop]];
+        return;
+    }
+#endif
+    
     // Sets up the monetization chain
-    if (self.sequence.adBreaks.count > 0 )
+    if (self.sequence.adBreaks.count > 0)
     {
         [self createAdChainWithCompletion];
         self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
@@ -259,70 +309,8 @@
                                                                         withLoop:[self loop]];
     }
     
-    self.videoViewModel.endCardViewModel = [self createEndCardModel];
-}
-
-- (VEndCardModel *)createEndCardModel
-{
-#if FORCE_SHOW_DEBUG_END_CARD
-#warning Debug end card will show for all video sequences... make sure to turn this off before committing!
-    return [self DEBUG_endardModel];
-#endif
-    
-    if ( self.sequence.endCard == nil  )
-    {
-        return nil;
-    }
-    
-    VSequence *nextSequence = self.sequence.endCard.nextSequence;
-    if ( nextSequence == nil  )
-    {
-        return nil;
-    }
-    
-    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-    endCardModel.videoTitle = self.sequence.name;
-    endCardModel.nextSequenceId = nextSequence.remoteId;
-    endCardModel.nextVideoTitle = nextSequence.sequenceDescription;
-    endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewImagesObject];
-    endCardModel.streamName = self.sequence.endCard.streamName ?: @"";
-    endCardModel.videoAuthorName = nextSequence.user.name;
-    endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
-    endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
-    endCardModel.dependencyManager = self.dependencyManager;
-    
-    // Set up actions
-    NSMutableArray *actions = [[NSMutableArray alloc] init];
-    VEndCardActionModel *action = nil;
-    if ( self.sequence.endCard.canRemix.boolValue )
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierGIF;
-        action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
-        action.iconImageNameDefault = @"action_gif";
-        [actions addObject:action];
-    }
-    if ( self.sequence.endCard.canRepost.boolValue )
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierRepost;
-        action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
-        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
-        action.iconImageNameDefault = @"action_repost";
-        action.iconImageNameSuccess = @"action_success";
-        [actions addObject:action];
-    }
-    if ( self.sequence.endCard.canShare.boolValue )
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierShare;
-        action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
-        action.iconImageNameDefault = @"action_share";
-        [actions addObject:action];
-    }
-    endCardModel.actions = [NSArray arrayWithArray:actions];
-    
-    return endCardModel;
+    VEndCardModelFactory *endCardBuilder = [[VEndCardModelFactory alloc] initWithDependencyManager:self.dependencyManager];
+    self.videoViewModel.endCardViewModel = [endCardBuilder createWithSequence:self.sequence];
 }
 
 - (void)reloadData
@@ -453,7 +441,23 @@
 
 - (NSURL *)videoURL
 {
-    return [NSURL URLWithString:self.currentAsset.data];
+    // Check for the cached mp4
+    VAsset *mp4Asset = [self.currentNode mp4Asset];
+    NSURL *cacheURL = [mp4Asset cacheURLForAsset];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:cacheURL.path])
+    {
+        VLog(@"cache hit!");
+        return cacheURL;
+    }
+    
+    if ([self loop])
+    {
+        return [NSURL URLWithString:mp4Asset.data];
+    }
+    else
+    {
+        return [NSURL URLWithString:self.currentAsset.data];
+    }
 }
 
 - (float)speed
@@ -474,6 +478,22 @@
 - (BOOL)audioMuted
 {
     return [self.currentAsset.audioMuted boolValue];
+}
+
+- (NSString *)textContent
+{
+    return self.currentAsset.data;
+}
+
+- (UIColor *)textBackgroundColor
+{
+    return [UIColor v_colorFromHexString:self.currentAsset.backgroundColor];
+}
+
+- (NSURL *)textBackgroundImageURL
+{
+    VAsset *imageAsset = [self.sequence.firstNode imageAsset];
+    return [NSURL URLWithString:imageAsset.data];
 }
 
 - (void)setComments:(NSArray *)comments
@@ -626,7 +646,17 @@
                 break;
             case VContentViewTypeGIFVideo:
             case VContentViewTypeVideo:
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+                if (self.sequence.name.length > 0)
+                {
+                    shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
+                }
+                else
+                {
+                    shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), self.sequence.user.name];
+                }
+                break;
+            case VContentViewTypeText:
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareTextFormat", nil), self.sequence.name, self.sequence.user.name];
                 break;
             case VContentViewTypeInvalid:
                 break;
@@ -647,6 +677,9 @@
                 break;
             case VContentViewTypeVideo:
                 shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
+                break;
+            case VContentViewTypeText:
+                shareText = NSLocalizedString(@"UGCShareTextFormat", nil);
                 break;
             case VContentViewTypeInvalid:
                 break;
@@ -881,49 +914,5 @@
     }
     return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
 }
-
-#if FORCE_SHOW_DEBUG_END_CARD
-- (VEndCardModel *)DEBUG_endardModel
-{
-    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-    endCardModel.videoTitle = self.sequence.sequenceDescription;
-    endCardModel.nextSequenceId = nil;
-    endCardModel.nextVideoTitle = nil;
-    endCardModel.nextVideoThumbailImageURL = nil;
-    endCardModel.streamName = self.sequence.endCard.streamName ?: @"";
-    endCardModel.videoAuthorName = nil;
-    endCardModel.videoAuthorProfileImageURL = nil;
-    endCardModel.countdownDuration = 1000000000;
-    endCardModel.dependencyManager = self.dependencyManager;
-    NSMutableArray *actions = [[NSMutableArray alloc] init];
-    VEndCardActionModel *action = nil;
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierGIF;
-        action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
-        action.iconImageNameDefault = @"action_gif";
-        [actions addObject:action];
-    }
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierRepost;
-        action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
-        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
-        action.iconImageNameDefault = @"action_repost";
-        action.iconImageNameSuccess = @"action_success";
-        [actions addObject:action];
-    }
-    {
-        action = [[VEndCardActionModel alloc] init];
-        action.identifier = VEndCardActionIdentifierShare;
-        action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
-        action.iconImageNameDefault = @"action_share";
-        [actions addObject:action];
-    }
-    endCardModel.actions = [NSArray arrayWithArray:actions];
-    return endCardModel;
-}
-
-#endif
 
 @end

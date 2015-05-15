@@ -29,6 +29,7 @@
 #import "VMessage+RestKit.h"
 #import "VUser+Fetcher.h"
 #import "AVAsset+Orientation.h"
+#import "UIColor+VHex.h"
 
 @import AVFoundation;
 
@@ -72,6 +73,52 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 #pragma mark - Sequence Methods
+
+- (void)createTextPostWithText:(NSString *)textContent
+               backgroundColor:(UIColor *)backgroundColor
+                      mediaURL:(NSURL *)mediaToUploadURL
+                  previewImage:(UIImage *)previewImage
+                    completion:(VUploadManagerTaskCompleteBlock)completionBlock
+{
+    NSParameterAssert( backgroundColor != nil || mediaToUploadURL != nil ); // One or the other must be non-nil
+    
+    NSDictionary *parameters = @{ @"content" : textContent,
+                                  @"background_image": mediaToUploadURL ?: @"",
+                                  @"background_color" : [backgroundColor v_hexString] ?: @"" };
+    
+    VLog( @"Uploading text post with parameters: %@", parameters );
+    
+    NSURL *endpoint = [NSURL URLWithString:@"/api/text/create" relativeToURL:self.baseURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
+    request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
+    
+    VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
+    uploadTaskCreator.request = request;
+    uploadTaskCreator.formFields = parameters;
+    uploadTaskCreator.previewImage = previewImage;
+    
+    NSError *uploadCreationError = nil;
+    VUploadTaskInformation *uploadTask = [uploadTaskCreator createUploadTaskWithError:&uploadCreationError];
+    if ( uploadTask == nil )
+    {
+        if ( completionBlock )
+        {
+            if ( uploadCreationError != nil )
+            {
+                uploadCreationError = [NSError errorWithDomain:kVictoriousErrorDomain code:0 userInfo:nil];
+            }
+            completionBlock( nil, nil, nil, uploadCreationError );
+        }
+        return;
+    }
+    
+    if ( completionBlock != nil )
+    {
+        completionBlock( nil, nil, nil, nil );
+    }
+    
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:nil];
+}
 
 - (void)createPollWithName:(NSString *)name
                description:(NSString *)description

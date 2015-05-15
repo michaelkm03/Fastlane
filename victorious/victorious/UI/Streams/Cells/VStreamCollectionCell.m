@@ -25,8 +25,6 @@
 #import "VConstants.h"
 
 #import "VCommentCell.h"
-#import "VStreamCellActionView.h"
-#import "VSleekStreamCellActionView.h"
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
@@ -41,9 +39,12 @@
 #import "UIView+Autolayout.h"
 #import "VVideoView.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
+#import "UIColor+VHex.h"
+#import "VTextPostViewController.h"
 
-@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@interface VStreamCollectionCell() <CCHLinkTextViewDelegate, VVideoViewDelegtae>
+
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
@@ -57,6 +58,7 @@
 @property (nonatomic, assign) BOOL isPlayButtonVisible;
 
 @property (nonatomic, readonly) BOOL canPlayVideo;
+@property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -85,7 +87,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
                                                                    views:views]];
     self.captionTextView.textContainer.lineFragmentPadding = VStreamCollectionCellTextViewLineFragmentPadding;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
-    self.streamCellHeaderView.delegate = self;
 }
 
 - (NSString *)headerViewNibName
@@ -139,6 +140,9 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [self pauseVideo];
     self.videoPlayerView.alpha = 0.0f;
     self.videoAsset = nil;
+    
+    [self.textPostViewController.view removeFromSuperview];
+    self.textPostViewController = nil;
 }
 
 - (CGRect)mediaContentFrame
@@ -191,6 +195,34 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     {
         self.isPlayButtonVisible = NO;
     }
+    
+    if ( [sequence isText] )
+    {
+        VAsset *textAsset = [self.sequence.firstNode textAsset];
+        if ( textAsset.data != nil )
+        {
+            NSString *text = textAsset.data;
+            UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
+            VAsset *imageAsset = [self.sequence.firstNode imageAsset];
+            NSURL *imageUrl = [NSURL URLWithString:imageAsset.data];
+            [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:self.sequence.remoteId];
+        }
+    }
+}
+
+- (void)setupTextPostViewControllerText:(NSString *)text color:(UIColor *)color backgroundImageURL:(NSURL *)backgroundImageURL cacheKey:(NSString *)cacheKey
+{
+    if ( self.textPostViewController == nil )
+    {
+        self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+        self.textPostViewController.view.frame = self.contentContainer.bounds;
+        [self.contentContainer addSubview:self.textPostViewController.view];
+        [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
+    }
+    
+    self.textPostViewController.text = text;
+    self.textPostViewController.color = color;
+    self.textPostViewController.imageURL = backgroundImageURL;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -203,7 +235,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     }
     
     self.streamCellHeaderView.dependencyManager = dependencyManager;
-    self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+    self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
     [self refreshDescriptionAttributes];
 }
@@ -281,24 +313,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     self.overlayView.center = CGPointMake(self.center.x, self.center.y);
 }
 
-#pragma mark - VSequenceActionsDelegate
-
-- (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
-    }
-}
-
-- (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate selectedUserOnSequence:self.sequence fromView:self];
-    }
-}
-
 #pragma mark - VSharedCollectionReusableViewMethods
 
 + (NSString *)suggestedReuseIdentifier
@@ -371,9 +385,9 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)backgroundContainerView
+- (UIView *)loadingBackgroundContainerView
 {
-    return self.backgroundContainer;
+    return self.loadingBackgroundContainer;
 }
 
 @end

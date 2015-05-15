@@ -12,7 +12,6 @@
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VSettingManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"
@@ -54,6 +53,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
+@property (nonatomic, assign) BOOL showChangePassword;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -129,8 +129,9 @@ static NSString * const kSupportEmailKey = @"email.support";
 #endif
     
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
-    
     self.showPushNotificationSettings = YES;
+    
+    self.showChangePassword = [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
@@ -218,9 +219,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
-        
-        [[VUserManager sharedInstance] logout];
-        
+        [[VObjectManager sharedManager] logout];
         [self updateLogoutButtonState];
     }
     else
@@ -277,7 +276,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     }
     else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
     {
-        if ([VObjectManager sharedManager].mainUserLoggedIn)
+        if ( self.showChangePassword )
         {
             return self.tableView.rowHeight;
         }
@@ -339,7 +338,7 @@ static NSString * const kSupportEmailKey = @"email.support";
         if ( creatorName != nil )
         {
             NSString *subjectWithCreatorNameFormat = NSLocalizedString(@"SupportEmailSubjectWithName", @"Feedback / Help");
-            messageSubject = [NSString stringWithFormat:@"%@ %@", subjectWithCreatorNameFormat, creatorName];
+            messageSubject = [NSString stringWithFormat:subjectWithCreatorNameFormat, creatorName];
             
             messageBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
                                      NSLocalizedString(@"Type your feedback here...", @""), [self deviceInfo], creatorName];
@@ -411,7 +410,7 @@ static NSString * const kSupportEmailKey = @"email.support";
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                                      otherButtonTitles:nil];
         [alert show];
     }

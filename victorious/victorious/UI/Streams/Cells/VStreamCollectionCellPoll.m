@@ -21,9 +21,8 @@
 
 #import "NSString+VParseHelp.h"
 
-#import "VSettingManager.h"
-
 static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
+static const NSUInteger kPollCellCaptionLineLimit = 2;
 
 @interface VStreamCollectionCellPoll ()
 
@@ -77,6 +76,11 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
 {
     return [self desiredSizeWithCollectionViewBounds:bounds];
+}
+
+- (NSUInteger)maxCaptionLines
+{
+    return kPollCellCaptionLineLimit;
 }
 
 @end

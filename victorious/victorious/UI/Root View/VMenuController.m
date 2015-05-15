@@ -15,20 +15,16 @@
 #import "VMenuController.h"
 #import "VNavigationMenuItem.h"
 
-#import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VScaffoldViewController.h"
-#import "VSettingManager.h"
 
 #import "VStream+Fetcher.h"
 
 #import "VLoginViewController.h"
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
-#import "VInboxContainerViewController.h"
 #import "VUserProfileNavigationDestination.h"
-#import "VDirectoryViewController.h"
-#import "VGroupedStreamCollectionViewController.h"
+#import "VDirectoryCollectionViewController.h"
 #import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"

@@ -129,12 +129,12 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     [self addSubview:view];
     
     NSDictionary *views = NSDictionaryOfVariableBindings(view);
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[view]|" options:0 metrics:nil views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view(barHeight)]|" options:0 metrics:@{ @"barHeight" : @(kVBarHeight)} views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[view]|" options:kNilOptions metrics:nil views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view(barHeight)]|" options:kNilOptions metrics:@{ @"barHeight" : @(kVBarHeight)} views:views]];
     
     __weak VTextbarSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
-    UIColor *buttonTextColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *buttonTextColor = self.foregroundColor;
     UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
         
@@ -146,44 +146,46 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
         
         //Create a button, set it's text to the title, give it constraints that fit it to it's spot in the view
         UIButton *button = [[UIButton alloc] init];
-        [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [button setTitle:viewController.title forState:UIControlStateNormal];
+        button.translatesAutoresizingMaskIntoConstraints = NO;
+        [button setTitle:viewController.navigationItem.title forState:UIControlStateNormal];
         [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
-        [[button titleLabel] setFont:buttonFont];
+        button.titleLabel.font = buttonFont;
+        button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        
         button.tag = idx;
         [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
         [sSelf addSubview:button];
         
         NSDictionary *buttonDictionary = NSDictionaryOfVariableBindings(button);
-        [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics:nil views:buttonDictionary]];
+        [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:kNilOptions metrics:nil views:buttonDictionary]];
         
-        if ( priorButton == nil )
+        if (priorButton == nil)
         {
-            [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[button]" options:0 metrics:nil views:buttonDictionary]];
+            [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[button]" options:kNilOptions metrics:nil views:buttonDictionary]];
         }
         else
         {
-            [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[priorButton(==button)][button]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(button, priorButton)]];
+            [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[priorButton(==button)][button]" options:kNilOptions metrics:nil views:NSDictionaryOfVariableBindings(button, priorButton)]];
         }
         
-        if ( idx == sSelf.viewControllers.count - 1 )
+        if (idx == sSelf.viewControllers.count - 1)
         {
             //Last label to be created, pin it to the right side of it's superview
-            [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[button]|" options:0 metrics:nil views:buttonDictionary]];
+            [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[button]|" options:kNilOptions metrics:nil views:buttonDictionary]];
         }
         priorButton = button;
         [sSelf.buttons addObject:button];
     }];
     
-    if ( self.trackLine == nil )
+    if (self.trackLine == nil)
     {
         [self setupTrackLine];
         [self addSubview:self.trackLine];
     }
     
     views = @{ @"line" : self.trackLine };
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[line(lineHeight)]" options:0 metrics:@{ @"lineHeight" : @(kVTrackLineHeight) } views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[line]|" options:0 metrics:nil views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[line(lineHeight)]" options:kNilOptions metrics:@{ @"lineHeight" : @(kVTrackLineHeight) } views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[line]|" options:kNilOptions metrics:nil views:views]];
     
     //Setting up selection line
     if ( self.selectionLine == nil )
@@ -192,7 +194,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
         [self addSubview:self.selectionLine];
     }
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-trackHeight-[line(lineHeight)]" options:0 metrics:@{ @"lineHeight" : @(kVLineHeight), @"trackHeight" : @(kVTrackLineHeight) } views:@{ @"line" : self.selectionLine }]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-trackHeight-[line(lineHeight)]" options:kNilOptions metrics:@{ @"lineHeight" : @(kVLineHeight), @"trackHeight" : @(kVTrackLineHeight) } views:@{ @"line" : self.selectionLine }]];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                     attribute:NSLayoutAttributeWidth

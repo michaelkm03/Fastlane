@@ -62,7 +62,7 @@
                                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
                                                                                    delegate:nil
-                                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                                           otherButtonTitles:nil];
                                     [alert show];
                                     if (completionBlock)

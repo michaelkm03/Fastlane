@@ -12,16 +12,7 @@
 #import "VVideoLightboxViewController.h"
 #import "VTagSensitiveTextView.h"
 
-#ifdef __LP64__
-#define CEIL(a) ceil(a)
-#else
-#define CEIL(a) ceilf(a)
-#endif
-
-static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
-
-// Necessary to balance interactivity of textView (select/copy) with swipeView
-static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
+static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
 @interface VCommentTextAndMediaView ()
 
@@ -64,7 +55,8 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
     self.textView.editable = NO;
     self.textView.scrollEnabled = NO;
     self.textView.userInteractionEnabled = YES;
-    self.textView.textContainerInset = UIEdgeInsetsMake(0.0, -5.0, 2.0, -5.0);
+    self.textView.textContainerInset = UIEdgeInsetsZero;
+    self.textView.textContainer.lineFragmentPadding = 0.0f;
     self.textView.dataDetectorTypes = UIDataDetectorTypeLink;
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
@@ -318,12 +310,21 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
         return 0;
     }
     
-    CGRect boundingRect = [text boundingRectWithSize:CGSizeMake(width - kSpacingBetweenTextAndEdge, CGFLOAT_MAX)
-                                             options:NSStringDrawingUsesLineFragmentOrigin
-                                          attributes:font ? [self attributesForTextWithFont:font] : [self attributesForText]
-                                             context:[[NSStringDrawingContext alloc] init]];
-    CGFloat mediaSize = hasMedia ? width + kSpacingBetweenTextAndMedia : 0.0f;
-    return CEIL(CGRectGetHeight(boundingRect)) + mediaSize;
+    __block CGRect boundingRect = CGRectZero;
+    CGFloat mediaSpacing = 0.0f;
+    if ( ![text isEqualToString:@""] )
+    {
+        NSDictionary *attributes = font != nil ? [self attributesForTextWithFont:font] : [self attributesForText];
+        [VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:text tagAttributes:attributes andDefaultAttributes:attributes toCallbackBlock:^(VTagDictionary *foundTags, NSAttributedString *displayFormattedString)
+        {
+            boundingRect = [displayFormattedString boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                                                context:[[NSStringDrawingContext alloc] init]];
+        }];
+        mediaSpacing = kSpacingBetweenTextAndMedia;
+    }
+    CGFloat mediaSize = hasMedia ? width + mediaSpacing : 0.0f;
+    return VCEIL(CGRectGetHeight(boundingRect)) + mediaSize;
 }
 
 - (void(^)(void))standardMediaTapHandlerWithMediaURL:(NSURL *)mediaURL presentingViewController:(UIViewController *)presentingViewController

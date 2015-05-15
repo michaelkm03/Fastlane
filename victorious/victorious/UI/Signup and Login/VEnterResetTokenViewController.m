@@ -27,7 +27,7 @@
 @property (nonatomic, weak) IBOutlet UITextField *codeField;
 
 @property (nonatomic, weak) IBOutlet CCHLinkTextView *resendEmailTextView;
-@property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, strong) VLinkTextViewHelper *linkTextHelper;
 
 @end
 
@@ -45,6 +45,8 @@
 {
     [super viewDidLoad];
     
+    self.linkTextHelper = [[VLinkTextViewHelper alloc] initWithDependencyManager:self.dependencyManager];
+    
     self.titleLabel.text = NSLocalizedString(@"Thanks", @"");
     self.titleLabel.textColor = [self.dependencyManager colorForKey:@"color.text.content"];
     self.titleLabel.font = [self.dependencyManager fontForKey:@"font.heading1"];
@@ -58,6 +60,8 @@
     self.enterCodeLabel.font = [self.dependencyManager fontForKey:@"font.header"];
 
     self.codeField.tintColor = [UIColor blueColor];
+    self.codeField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.codeField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
     NSString *text = NSLocalizedString( @"Resend Email", @"" );
     [self.linkTextHelper setupLinkTextView:self.resendEmailTextView withText:text range:[text rangeOfString:text]];
@@ -92,9 +96,12 @@
                                            otherButtonTitles:NSLocalizedString(@"ResetButton", @""), nil];
     
     resetAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [resetAlert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
-    [resetAlert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
-    [resetAlert textFieldAtIndex:0].returnKeyType = UIReturnKeyDone;
+    UITextField *textField = [resetAlert textFieldAtIndex:0];
+    textField.placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
+    textField.keyboardType = UIKeyboardTypeEmailAddress;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
     [resetAlert show];
 }
 
@@ -113,7 +120,7 @@
                                                                    message:NSLocalizedString(@"EmailNotFound", @"")
                                                                   delegate:nil
                                                          cancelButtonTitle:nil
-                                                         otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                                                         otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
              [alert show];
          }];
     }
@@ -146,7 +153,7 @@
                                                             message:NSLocalizedString(@"IncorrectCode", @"")
                                                            delegate:nil
                                                   cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                                                  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
          [alert show];
      }];
     

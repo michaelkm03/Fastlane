@@ -12,7 +12,6 @@
 #import "VLiveRailAdViewController.h"
 #import "VOpenXAdViewController.h"
 #import "VTremorAdViewController.h"
-#import "VSettingManager.h"
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
@@ -27,12 +26,13 @@
 
 @implementation VAdVideoPlayerViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
-        // Custom initialization
+        NSAssert(details != nil, @"%@ needs a details array in order to initialize.", [VAdVideoPlayerViewController class]);
+        [self assignMonetizationPartner:monetizationPartner details:details];
     }
     return self;
 }
@@ -40,19 +40,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.view.backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsClearVideoBackground] ? [UIColor clearColor] : [UIColor blackColor];
-
+    self.view.backgroundColor = [UIColor clearColor];
 }
 
-#pragma mark - Monetization setter
+#pragma mark - Monetization and details setter
 
-- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details
+- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner details:(NSArray *)details
 {
     self.adDetails = details;
-    _monetizationPartner = monetizationPartner;
+    self.monetizationPartner = monetizationPartner;
     
-    switch (_monetizationPartner)
+    switch (self.monetizationPartner)
     {
         case VMonetizationPartnerLiveRail:
             self.adViewController = [[VLiveRailAdViewController alloc] initWithNibName:nil bundle:nil];
@@ -94,14 +92,13 @@
 
 - (void)adDidLoadForAdViewController:(VAdViewController *)adViewController
 {
-        VLog(@"");
+    VLog(@"");
     [self.delegate adDidLoadForAdVideoPlayerViewController:self];
 }
 
 - (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
-        VLog(@"");
-    // Set ad playback flag
+    VLog(@"");
     self.adPlaying = NO;
     
     // Remove the adViewController from the view hierarchy
@@ -116,8 +113,7 @@
 // Optional delegate methods
 - (void)adHadErrorInAdViewController:(VAdViewController *)adViewController
 {
-        VLog(@"");
-    // Set ad playback flag
+    VLog(@"");
     self.adPlaying = NO;
 
     // Remove the adViewController from the view hierarchy
@@ -125,7 +121,6 @@
     [self.adViewController.view removeFromSuperview];
     [self.adViewController removeFromParentViewController];
     
-    // Set ad playback flag
     self.adPlaying = NO;
 
     if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
@@ -136,7 +131,7 @@
 
 - (void)adHadImpressionInAdViewController:(VAdViewController *)adViewController
 {
-        VLog(@"");
+    VLog(@"");
     if ([self.delegate respondsToSelector:@selector(adHadImpressionForAdVideoPlayerViewController:)])
     {
         [self.delegate adHadImpressionForAdVideoPlayerViewController:self];

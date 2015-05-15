@@ -16,7 +16,6 @@
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"
-#import "VThemeManager.h"
 #import "VDependencyManager.h"
 #import "VAppInfo.h"
 
@@ -186,7 +185,7 @@
             NSString *title = NSLocalizedString( @"ErrorPushNotificationsNotSaved", nil );
             NSString *message = NSLocalizedString( @"ErrorPushNotificationsNotSavedMessage", nil );
             VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-            [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
+            [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OK", nil ) handler:nil]];
             [alertConroller presentInViewController:navigationController animated:YES completion:nil];
         }
     }];
@@ -283,8 +282,7 @@
             cell.message = self.settingsError.domain;
             cell.isCentered = YES;
             
-            BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
-            if ( canOpenSettings && self.settingsError.code == kErrorCodeUserNotRegistered )
+            if ( self.settingsError.code == kErrorCodeUserNotRegistered )
             {
                 [cell showActionButtonWithLabel:NSLocalizedString( @"Open Settings", nil) callback:^void
                  {

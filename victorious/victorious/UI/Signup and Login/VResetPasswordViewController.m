@@ -30,6 +30,15 @@
 
 @synthesize registrationStepDelegate; //< VRegistrationStep
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.confirmPasswordTextField];
+    
+    self.passwordTextField.delegate = nil;
+    self.confirmPasswordTextField.delegate = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -37,9 +46,13 @@
     self.passwordTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.confirmPasswordTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.confirmPasswordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.confirmPasswordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     
     self.cancelButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.cancelButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
@@ -55,6 +68,9 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     self.passwordValidator = [[VPasswordValidator alloc] init];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.confirmPasswordTextField];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -68,15 +84,13 @@
 
 - (IBAction)update:(id)sender
 {
+    BOOL shouldReset = [self shouldResetPassword];
+    
     [[self view] endEditing:YES];
     
     NSString *newPassword = self.passwordTextField.text;
     
-    NSError *outError = nil;
-    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
-                                      withKeyPath:NSStringFromSelector(@selector(text))];
-    if ([self.passwordValidator validateString:newPassword
-                                      andError:&outError])
+    if (shouldReset)
     {
         [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                        deviceToken:self.deviceToken
@@ -90,24 +104,34 @@
                                                          failBlock:^(NSOperation *operation, NSError *error)
          {
              NSString *title = NSLocalizedString( @"Error Resetting Password", @"" );
-             NSString *message = NSLocalizedString( @"Please check your network connection or try agian later.", @"" );
+             NSString *message = NSLocalizedString( @"Please check your network connection or try again later.", @"" );
              UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
              [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString( @"OK", nil) style:UIAlertActionStyleCancel handler:nil]];
              [self presentViewController:alertController animated:YES completion:nil];
          }];
     }
-    else
-    {
-        [self.passwordValidator showAlertInViewController:self withError:outError];
-    }
 }
 
 - (IBAction)cancel:(id)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    UIAlertController *confirmCancel = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ResetPasswordConfirmCancelTitle", @"" ) message:NSLocalizedString(@"ResetPasswordConfirmCancelMessage", @"" ) preferredStyle:UIAlertControllerStyleActionSheet];
+    [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"ResetPasswordYesCancelButton", @"" ) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }]];
+    [confirmCancel addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"ResetPasswordNoContinueButton", @"" ) style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:confirmCancel animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
+{
+    if ( textField.text.length > 0 )
+    {
+        [self validateWithTextField:textField];
+    }
+    return YES;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -127,5 +151,105 @@
 {
     [[self view] endEditing:YES];
 }
+
+#pragma mark - Notifications
+
+- (void)textFieldDidChange:(NSNotification *)notification
+{
+    VInlineValidationTextField *textField = notification.object;
+    [self validateWithTextField:textField];
+}
+
+#pragma mark - Private
+
+- (BOOL)shouldResetPassword
+{
+    BOOL shouldReset = YES;
+    NSError *validationError;
+    UIResponder *newResponder = nil;
+    
+    [self.passwordValidator setConfirmationObject:nil
+                                      withKeyPath:nil];
+    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
+    {
+        [self.passwordTextField showInvalidText:validationError.localizedDescription
+                                       animated:YES
+                                          shake:YES
+                                         forced:YES];
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
+        
+        shouldReset = NO;
+        if (newResponder == nil)
+        {
+            [self.passwordTextField becomeFirstResponder];
+            newResponder = self.passwordTextField;
+        }
+    }
+    
+    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
+                                      withKeyPath:NSStringFromSelector(@selector(text))];
+    if (![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
+    {
+        [self.confirmPasswordTextField showInvalidText:validationError.localizedDescription
+                                              animated:YES
+                                                 shake:YES
+                                                forced:YES];
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
+        
+        shouldReset = NO;
+        if (newResponder == nil)
+        {
+            [self.confirmPasswordTextField becomeFirstResponder];
+        }
+    }
+    
+    return shouldReset;
+}
+
+- (void)validateWithTextField:(VInlineValidationTextField *)textField
+{
+    NSError *validationError;
+    
+    if (textField == self.passwordTextField)
+    {
+        [self.passwordValidator setConfirmationObject:nil
+                                          withKeyPath:nil];
+        BOOL validPassword = [self.passwordValidator validateString:textField.text
+                                                           andError:&validationError];
+        if (!validPassword)
+        {
+            [textField showInvalidText:validationError.localizedDescription
+                              animated:NO
+                                 shake:NO
+                                forced:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+        }
+    }
+    if (textField == self.confirmPasswordTextField)
+    {
+        [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
+                                          withKeyPath:NSStringFromSelector(@selector(text))];
+        BOOL validConfimration = [self.passwordValidator validateString:self.passwordTextField.text
+                                                               andError:&validationError];
+        if (!validConfimration)
+        {
+            [textField showInvalidText:validationError.localizedDescription
+                              animated:NO
+                                 shake:NO
+                                forced:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+            [self.passwordTextField hideInvalidText];
+        }
+    }}
 
 @end

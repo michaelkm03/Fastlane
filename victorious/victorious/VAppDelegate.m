@@ -7,7 +7,6 @@
 //
 
 #import "VAppDelegate.h"
-#import "VThemeManager.h"
 #import "VReachability.h"
 
 #import "VFacebookManager.h"
@@ -20,7 +19,6 @@
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VConstants.h"
-#import "VSettingManager.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 
@@ -60,7 +58,7 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
     
-    [VObjectManager setupObjectManager];
+    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
@@ -103,7 +101,7 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    [[VRootViewController rootViewController] handleDeeplinkURL:url];
+    [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:url];
     return YES;
 }
 

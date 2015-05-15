@@ -16,14 +16,6 @@
 				<string>fb365587963613882</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}theyoungturks</string>
-			</array>
-		</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>365587963613882</string>
@@ -45,5 +37,7 @@
 	<integer>10</integer>
 	<key>QAAppID</key>
 	<integer>14</integer>
+	<key>FlurryAPIKey</key>
+	<string>YJS96FZR6N4QG9K3JS23</string>
 </dict>
 </plist>

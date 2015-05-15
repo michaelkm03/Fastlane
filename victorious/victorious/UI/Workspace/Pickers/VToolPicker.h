@@ -7,18 +7,29 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "VWorkspaceTool.h"
+
+@protocol VToolPicker;
+
+@class VTickerPickerViewController;
+
+/**
+ *  VToolPicker describes a generalized protocol that can be used by tool picker classes.
+ */
+@protocol VToolPickerDelegate <NSObject>
+
+- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectTool:(id<VWorkspaceTool>)tool;
+
+@end
 
 /**
  *  VToolPicker describes a generalized protocol that can be used by tool picker classes.
  */
 @protocol VToolPicker <NSObject>
 
-- (void)setTools:(NSArray /* That implement VWorkspaceTool */ *)tools; ///< The tools to chose from. Retains a copy of the array.
+@property (nonatomic, strong) id<VToolPickerDelegate> pickerDelegate;
 
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.
 
-@property (nonatomic, copy) void (^onToolSelection)(id <VWorkspaceTool> selectedTool); ///< A block that is called whenever a new tool has been selected.
-
 @end
+

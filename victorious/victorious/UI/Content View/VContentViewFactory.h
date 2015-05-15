@@ -36,7 +36,7 @@
 
 /**
  Instantiates and returns a content view primed to display the given
- sequence. If the sequence contains a deeplink to another app, this
+ sequence. If the sequence contains a deep link to another app, this
  method returns nil and -[UIApplication openURL:] will be called.
  
  @param sequence          The sequence to display
@@ -47,6 +47,12 @@
                           is no comment, simply pass `nil`.
  */
 - (UIViewController *)contentViewForSequence:(VSequence *)sequence commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage;
+
+/**
+ Instantiates and returns a web browser content view to display the specified URL.
+ Calling code is responding for presenting, this method only creates the view controller.
+ */
+- (UIViewController *)webContentViewControllerWithURL:(NSURL *)url;
 
 @end
 

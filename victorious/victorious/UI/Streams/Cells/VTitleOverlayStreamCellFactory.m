@@ -14,10 +14,12 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VBackground.h"
 #import "UIView+AutoLayout.h"
+#import "VNoContentCollectionViewCellFactory.h"
 
 @interface VTitleOverlayStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VNoContentCollectionViewCellFactory *noContentCollectionViewCellFactory;
 
 @end
 
@@ -29,6 +31,7 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _noContentCollectionViewCellFactory = [[VNoContentCollectionViewCellFactory alloc] initWithAcceptableContentClasses:@[[VSequence class]]];
     }
     return self;
 }
@@ -38,11 +41,15 @@
     [collectionView registerNib:[VStreamCollectionCell nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]];
     [collectionView registerNib:[VStreamCollectionCellPoll nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
+    [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
-    NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
+    if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
+    {
+        return [self.noContentCollectionViewCellFactory noContentCellForCollectionView:collectionView atIndexPath:indexPath];
+    }
     
     VSequence *sequence = (VSequence *)streamItem;
     VStreamCollectionCell *cell;
@@ -58,7 +65,7 @@
         VStreamCollectionCellWebContent *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                           forIndexPath:indexPath];
         cell.sequence = sequence;
-        [self.dependencyManager addBackgroundToBackgroundHost:cell];
+        [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
         return cell;
     }
     else
@@ -68,14 +75,18 @@
     }
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
-    [self.dependencyManager addBackgroundToBackgroundHost:cell];
+    [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     
     return cell;
 }
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
-    NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
+    if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
+    {
+        return [self.noContentCollectionViewCellFactory cellSizeForCollectionViewBounds:bounds];
+    }
+    
     VSequence *sequence = (VSequence *)streamItem;
     
     if ([sequence isPoll])

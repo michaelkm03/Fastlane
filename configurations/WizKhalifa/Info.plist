@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Wiz Khalifa</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}wizkhalifa</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}WizKhalifa</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb904586286249954</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>904586286249954</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>0uaPfdT0Gi9GofwwMmFXXaTVK</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>jk5wGkmvArgJdFnrYPjwdeTiQjWB8AxalkuJ5kdj73q65TPeot</string>
+	<key>VictoriousAppID</key>
+	<integer>46</integer>
+	<key>StagingAppID</key>
+	<integer>61</integer>
+	<key>QAAppID</key>
+	<integer>44</integer>
+	<key>GAID</key>
+	<string></string>
+	<key>CreatorSalutation</key>
+	<string>Wiz Khalifa</string>
+	<key>FlurryAPIKey</key>
+	<string>2M9ND5K2YJFDJ7VNX8YH</string>
+</dict>
+</plist>

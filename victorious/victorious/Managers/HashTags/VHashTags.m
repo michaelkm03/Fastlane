@@ -12,6 +12,11 @@
 
 + (NSArray *)detectHashTags:(NSString *)fieldText
 {
+    return [[self class] detectHashTags:fieldText includeHashSymbol:NO];
+}
+
++ (NSArray *)detectHashTags:(NSString *)fieldText includeHashSymbol:(BOOL)includeHashSymbol
+{
     if (!fieldText)
     {
         return nil;
@@ -28,6 +33,11 @@
     for (NSTextCheckingResult *tag in tags)
     {
         NSRange wordRange = [tag rangeAtIndex:1];
+        if ( includeHashSymbol )
+        {
+            wordRange.location -= 1;
+            wordRange.length += 1;
+        }
         [array addObject:[NSValue valueWithRange:wordRange]];
     }
     
@@ -51,14 +61,14 @@
     }
     
     [tagRanges enumerateObjectsUsingBlock:^(NSValue *tagRangeValue, NSUInteger idx, BOOL *stop)
-    {
-        NSRange tagRange = [tagRangeValue rangeValue];
-        if (tagRange.location && tagRange.length < fieldText.length)
-        {
-            NSRange tagRangeWithHash = {tagRange.location - 1, tagRange.length + 1};
-            [fieldText addAttributes:attributes range:tagRangeWithHash];
-        }
-    }];
+     {
+         NSRange tagRange = [tagRangeValue rangeValue];
+         if (tagRange.location && tagRange.length < fieldText.length)
+         {
+             NSRange tagRangeWithHash = {tagRange.location - 1, tagRange.length + 1};
+             [fieldText addAttributes:attributes range:tagRangeWithHash];
+         }
+     }];
     
     return YES;
 }
@@ -87,6 +97,25 @@
     if ( rangeOfHashmark.location != 0 || rangeOfHashmark.length != 1 )
     {
         return [NSString stringWithFormat:@"#%@", string];
+    }
+    else
+    {
+        return [string copy];
+    }
+}
+
++ (NSString *)stringByRemovingPrependingHashmarkFromString:(NSString *)string
+{
+    // Check invalid input
+    if ( string == nil || string.length == 0 )
+    {
+        return string;
+    }
+    
+    NSRange rangeOfHashmark = [string rangeOfString:@"#"];
+    if ( rangeOfHashmark.location == 0 && rangeOfHashmark.length == 1 )
+    {
+        return [string substringFromIndex:1];
     }
     else
     {

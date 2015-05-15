@@ -18,11 +18,11 @@
 #import "VImageSearchViewController.h"
 #import "UIImage+Cropping.h"
 #import "UIImage+Resize.h"
-#import "VSettingManager.h"
 #import "VCameraControl.h"
 #import "VThemeManager.h"
 #import "VRadialGradientView.h"
 #import "VRadialGradientLayer.h"
+#import "VCameraCoachMarkAnimator.h"
 #import <FBKVOController.h>
 
 static const NSTimeInterval kAnimationDuration = 0.4;
@@ -64,6 +64,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIView *cameraControlContainer;
+@property (weak, nonatomic) IBOutlet UILabel *coachView;
 
 @property (nonatomic, weak) VRadialGradientView *radialGradientView;
 
@@ -84,6 +85,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 @property (nonatomic, strong) dispatch_queue_t captureAnimationQueue;
 @property (nonatomic, assign) BOOL animationCompleted;
+
+@property (nonatomic, strong) VCameraCoachMarkAnimator *coachMarkAnimator;
 
 @end
 
@@ -166,6 +169,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.cameraControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.cameraControlContainer addSubview:self.cameraControl];
     
+    self.searchButton.hidden = !self.allowPhotos;
+    
     VCameraControlCaptureMode captureMode = 0;
     if (self.allowVideo)
     {
@@ -200,8 +205,21 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                  forControlEvents:VCameraControlEventStartRecordingVideo];
     [self.cameraControl addTarget:self action:@selector(stopRecording)
                  forControlEvents:VCameraControlEventEndRecordingVideo];
+    [self.cameraControl addTarget:self
+                           action:@selector(failedRecording)
+                 forControlEvents:VCameraControlEventFailedRecordingVideo];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidEnter];
+    
+    if (self.allowVideo && self.videoEnabled)
+    {
+        self.coachMarkAnimator = [[VCameraCoachMarkAnimator alloc] initWithCoachView:self.coachView];
+        self.coachView.text = NSLocalizedString(@"VideoCoachMessage", @"Video coach message");
+    }
+    else
+    {
+        self.coachView.hidden = YES;
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -291,6 +309,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
+    [self.coachMarkAnimator fadeIn];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -390,7 +409,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.closeButton.enabled = YES;
             
             self.searchButton.enabled = YES;
-            self.searchButton.hidden = NO;
+            self.searchButton.hidden = !self.allowPhotos;
             
             [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
                                                 animated:NO];
@@ -501,7 +520,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:errorMessage
                                                    delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
 }
@@ -520,7 +539,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:errorMessage
                                                    delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
 }
@@ -755,6 +774,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 #pragma mark - Support
 
+- (void)failedRecording
+{
+    [self.coachMarkAnimator flash];
+}
+
 - (void)startRecording
 {
     if (!self.captureController.videoEncoder)
@@ -777,6 +801,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         self.captureController.videoEncoder.recording = YES;
     }
     self.state = VCameraViewControllerStateRecording;
+    [self.coachMarkAnimator fadeOut];
 }
 
 - (void)stopRecording

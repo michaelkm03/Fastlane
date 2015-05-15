@@ -37,6 +37,8 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
+@property (nonatomic, assign, readonly) BOOL hasBeenShown;
+
 /**
  Initializes the receiver with an instance of VDependencyManager
  */
@@ -57,11 +59,6 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
                 is no comment, simply pass `nil`.
  */
 - (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage;
-
-/**
- Navigates to the view controller pointed to by the given URL
- */
-- (void)navigateToDeeplinkURL:(NSURL *)url;
 
 /**
  Subclasses should override this and return a list of navigation destinations

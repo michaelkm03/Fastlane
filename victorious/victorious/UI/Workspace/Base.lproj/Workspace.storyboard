@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Workspace View Controller-->
@@ -86,6 +85,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="600"/>
                     <connections>
+                        <outlet property="backButton" destination="by5-os-pzS" id="jWH-qZ-60H"/>
                         <outlet property="blurredBackgroundImageView" destination="rB7-pY-luZ" id="Gwp-ON-jBt"/>
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
                         <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
@@ -98,64 +98,56 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-121" y="-336"/>
+            <point key="canvasLocation" x="-115.5" y="-361"/>
         </scene>
         <!--Ticker Picker View Controller-->
-        <scene sceneID="4nq-PE-ZjB">
+        <scene sceneID="RfN-22-BQF">
             <objects>
-                <collectionViewController storyboardIdentifier="VTickerPickerViewController" id="ANa-cl-9mG" customClass="VTickerPickerViewController" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="pi5-F3-QKh">
+                <viewController storyboardIdentifier="VTickerPickerViewController" id="PZc-gv-TWz" customClass="VTickerPickerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SB6-NJ-TKx"/>
+                        <viewControllerLayoutGuide type="bottom" id="BZb-Wb-mFR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Njd-O6-ATB">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="D59-AO-FIm">
-                            <size key="itemSize" width="300" height="44"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VBasicToolPickerCell" id="xpu-Iq-Llo" customClass="VBasicToolPickerCell">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYL-wr-dlh">
-                                            <rect key="frame" x="8" y="12" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="72F-7l-zgu">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="EYL-wr-dlh" secondAttribute="trailing" id="0zu-rG-hmg"/>
-                                    <constraint firstAttribute="centerY" secondItem="EYL-wr-dlh" secondAttribute="centerY" id="KxO-yI-UDJ"/>
-                                    <constraint firstItem="EYL-wr-dlh" firstAttribute="leading" secondItem="xpu-Iq-Llo" secondAttribute="leadingMargin" id="egW-rx-r6q"/>
-                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="nq0-Xc-geA">
+                                    <size key="itemSize" width="300" height="44"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
                                 <connections>
-                                    <outlet property="label" destination="EYL-wr-dlh" id="at4-xr-yO4"/>
+                                    <outlet property="delegate" destination="PZc-gv-TWz" id="ft9-iq-qyQ"/>
                                 </connections>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="ANa-cl-9mG" id="EJ8-wH-WfR"/>
-                            <outlet property="delegate" destination="ANa-cl-9mG" id="aiL-mG-K7z"/>
-                        </connections>
-                    </collectionView>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="72F-7l-zgu" firstAttribute="top" secondItem="SB6-NJ-TKx" secondAttribute="bottom" id="1Ii-ot-WMC"/>
+                            <constraint firstItem="BZb-Wb-mFR" firstAttribute="top" secondItem="72F-7l-zgu" secondAttribute="bottom" id="agM-hW-jVt"/>
+                            <constraint firstItem="72F-7l-zgu" firstAttribute="leading" secondItem="Njd-O6-ATB" secondAttribute="leading" id="bTr-lc-MkZ"/>
+                            <constraint firstAttribute="trailing" secondItem="72F-7l-zgu" secondAttribute="trailing" id="kYa-Ms-orR"/>
+                        </constraints>
+                    </view>
                     <nil key="simulatedStatusBarMetrics"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="noe-Zt-QpP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    <connections>
+                        <outlet property="collectionView" destination="72F-7l-zgu" id="6KX-KD-PH7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6g5-5H-Uze" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-121" y="343"/>
+            <point key="canvasLocation" x="-116" y="402"/>
         </scene>
         <!--Crop Tool View Controller-->
         <scene sceneID="3yx-bR-QwV">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="VCropToolViewController" id="68P-kQ-eWn" customClass="VCropToolViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
@@ -180,9 +172,52 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="550" y="343"/>
+        </scene>
+        <!--Multiple Picker View Controller-->
+        <scene sceneID="Jsz-Ch-OUc">
+            <objects>
+                <viewController storyboardIdentifier="VMultiplePickerViewController" id="Xk2-Zv-tuo" customClass="VMultiplePickerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tAf-q3-G6q"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ltx-tt-Fus"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="K8p-a6-nls">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gk8-ZG-gG1">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="2x0-Y4-BSb">
+                                    <size key="itemSize" width="300" height="44"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="delegate" destination="Xk2-Zv-tuo" id="AY0-Lt-2vz"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ltx-tt-Fus" firstAttribute="top" secondItem="gk8-ZG-gG1" secondAttribute="bottom" id="2OJ-Pe-XAn"/>
+                            <constraint firstItem="gk8-ZG-gG1" firstAttribute="top" secondItem="tAf-q3-G6q" secondAttribute="bottom" id="7Hp-wV-eNh"/>
+                            <constraint firstItem="gk8-ZG-gG1" firstAttribute="leading" secondItem="K8p-a6-nls" secondAttribute="leading" id="8XS-QD-aEt"/>
+                            <constraint firstAttribute="trailing" secondItem="gk8-ZG-gG1" secondAttribute="trailing" id="CV6-5c-kj7"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="collectionView" destination="gk8-ZG-gG1" id="s7W-11-BHj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TIj-W6-35e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-756" y="402"/>
         </scene>
     </scenes>
     <resources>

@@ -6,12 +6,14 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <FBKVOController.h>
+
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager.h"
 #import "VInsetStreamCollectionCell.h"
 #import "VSequence+Fetcher.h"
-#import "VStreamCellActionView.h"
 #import "VStreamCellHeaderView.h"
+#import "VInsetActionView.h"
 
 // IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
@@ -25,7 +27,9 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 @interface VInsetStreamCollectionCell ()
 
-@property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
+@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
+
+@property (nonatomic, weak) IBOutlet VInsetActionView *insetActionView;
 
 @end
 
@@ -92,13 +96,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
 {
     [super setSequenceActionsDelegate:sequenceActionsDelegate];
-    self.actionView.sequenceActionsDelegate = sequenceActionsDelegate;
+    self.insetActionView.sequenceActionsDelegate = sequenceActionsDelegate;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     [super setDependencyManager:dependencyManager];
-    self.actionView.dependencyManager = dependencyManager;
+    [self.insetActionView setDependencyManager:dependencyManager];
     
     if ( dependencyManager != nil )
     {
@@ -114,28 +118,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))];
     [super setSequence:sequence];
-    self.actionView.sequence = sequence;
-    [self reloadCommentsCount];
-    [self setupActionBar];
-}
 
-- (void)setupActionBar
-{
-    [self.actionView clearButtons];
-    
-    [self.actionView addShareButton];
-    if ( [self.sequence canRemix] )
-    {
-        [self.actionView addRemixButton];
-    }
-    if ( [self.sequence canRepost] || [self.sequence.hasReposted boolValue] )
-    {
-        [self.actionView addRepostButton];
-    }
-    [self.actionView addMoreButton];
-    
-    [self.actionView updateLayoutOfButtons];
+    self.insetActionView.sequence = sequence;
+    [self reloadCommentsCount];
 }
 
 - (void)setDescriptionText:(NSString *)text
@@ -151,16 +138,25 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (void)reloadCommentsCount
 {
     NSNumber *commentCount = [self.sequence commentCount];
-    NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
+    NSString *commentsString = nil;
+    NSInteger cCount = [commentCount integerValue];
+    if (cCount == 0)
+    {
+        commentsString = NSLocalizedString(@"LeaveAComment", @"");
+    }
+    else
+    {
+        commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
+    }
     [self.commentsLabel setText:commentsString];
     self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
 }
 
 #pragma mark - VBackgroundContainer
 
-- (UIView *)backgroundContainerView
+- (UIView *)loadingBackgroundContainerView
 {
-    return self.backgroundContainer;
+    return self.loadingBackgroundContainer;
 }
 
 @end

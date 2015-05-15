@@ -21,40 +21,31 @@
 
 @implementation VTremorAdViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSAssert([self.adServerMonetizationDetails count] > 0, @"%@ needs and initialized details array to load.", [VTremorAdViewController class]);
     
-    VAdBreakFallback *adBreak = [self.adServerMonetizationDetails objectAtIndex:0];
+    VAdBreakFallback *adBreak = [self.adServerMonetizationDetails firstObject];
     NSString *appId = adBreak.tremorAppId;
     
     if ([appId isEqualToString:@""] || [appId isKindOfClass:[NSNull class]] || appId == nil)
     {
         [self didAdComplete];
-        return;
     }
-    
-    [TremorVideoAd initWithAppID:appId];
-    [TremorVideoAd start];
-
-    [TremorVideoAd setDelegate:self];
-    
-    // Return if we do not have an ad loaded
-    if (![TremorVideoAd isAdReady])
+    else
     {
-        [self didAdComplete];
+        [TremorVideoAd initWithAppID:appId];
+        [TremorVideoAd start];
+        
+        [TremorVideoAd setDelegate:self];
+        
+        // Return if we do not have an ad loaded
+        if (![TremorVideoAd isAdReady])
+        {
+            [self didAdComplete];
+        }
     }
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -68,7 +59,12 @@
 
 - (void)startAdManager
 {
-    [TremorVideoAd showAd:self.parentViewController];
+    BOOL showAd = [TremorVideoAd showAd:self.parentViewController];
+    
+    if (showAd)
+    {
+        [self.delegate adDidStartPlaybackInAdViewController:self];
+    }
 }
 
 - (void)destroyAdInstance

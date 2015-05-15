@@ -244,6 +244,10 @@
     if (toShow)
     {
         VNoContentView *noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.tableView.frame];
+        if ( [noFollowersView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noFollowersView.dependencyManager = self.dependencyManager;
+        }
         self.tableView.tableView.backgroundView = noFollowersView;
         noFollowersView.titleLabel.text = [NSLocalizedString(@"NoFriends", @"") uppercaseString];
         noFollowersView.messageLabel.text = NSLocalizedString(@"NoFriendsDetail", @"");
@@ -390,7 +394,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                      otherButtonTitles:nil];
         [alert show];
     };
@@ -447,7 +451,7 @@
         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
                                                                message:error.localizedDescription
                                                               delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                      otherButtonTitles:nil];
         [alert show];
     };

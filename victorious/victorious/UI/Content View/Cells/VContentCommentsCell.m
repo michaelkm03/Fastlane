@@ -30,7 +30,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VTagSensitiveTextView.h"
 
-static const UIEdgeInsets kTextInsets        = { 36.0f, 66.0f, 11.0f, 55.0f };
+static const UIEdgeInsets kTextInsets        = { 32.0f, 56.0f, 11.0f, 55.0f };
 
 static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
 
@@ -128,9 +128,10 @@ static NSCache *_sharedImageCache = nil;
     self.commentAndMediaView.mediaThumbnailView.image = nil;
     self.commentAndMediaView.mediaThumbnailView.hidden = YES;
     
+    __weak typeof(self) welf = self;
     self.commentAndMediaView.onMediaTapped = ^(void)
     {
-        [self tappedOnMedia];
+        [welf tappedOnMedia];
     };
 }
 
@@ -194,7 +195,8 @@ static NSCache *_sharedImageCache = nil;
     if ((comment.realtime != nil) && (comment.realtime.floatValue >= 0))
     {
         self.realTimeCommentText = [[VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:@""
-                                                                                            andPostedTime:comment.realtime] string];
+                                                                                            andPostedTime:comment.realtime
+                                                                                    withDependencyManager:self.dependencyManager] string];
     }
     else
     {

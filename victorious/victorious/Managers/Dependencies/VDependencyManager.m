@@ -8,14 +8,9 @@
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
+#import "VJSONHelper.h"
 #import "VSolidColorBackground.h"
 #import "VURLMacroReplacement.h"
-
-#if CGFLOAT_IS_DOUBLE
-#define CGFLOAT_VALUE doubleValue
-#else
-#define CGFLOAT_VALUE floatValue
-#endif
 
 typedef BOOL (^TypeTest)(Class);
 
@@ -29,9 +24,9 @@ NSString * const VDependencyManagerImageURLKey = @"imageURL";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
-NSString * const VDependencyManagerSecondaryBackgroundColorKey = @"color.background.secondary";
 NSString * const VDependencyManagerMainTextColorKey = @"color.text";
 NSString * const VDependencyManagerContentTextColorKey = @"color.text.content";
+NSString * const VDependencyManagerSecondaryTextColorKey = @"color.text.secondary";
 NSString * const VDependencyManagerAccentColorKey = @"color.accent";
 NSString * const VDependencyManagerSecondaryAccentColorKey = @"color.accent.secondary";
 NSString * const VDependencyManagerLinkColorKey = @"color.link";
@@ -67,6 +62,7 @@ static NSString * const kImageURLKey = @"imageURL";
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
 NSString * const VDependencyManagerProfileImageRequiredKey = @"require_profile_image";
+NSString * const VDependencyManagerPauseVideoWhenCommentingKey = @"pause_video_when_commenting";
 
 // Keys for view controllers
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
@@ -74,7 +70,9 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 // Keys for Workspace
 NSString * const VDependencyManagerWorkspaceFlowKey = @"defaultWorkspaceDestination";
+NSString * const VDependencyManagerTextWorkspaceFlowKey = @"workspaceText";
 NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
+NSString * const VDependencyManagerEditTextWorkspaceKey = @"editTextWorkspace";
 NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 // Keys for image URLs
@@ -150,15 +148,31 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    UIColor *color = [self colorFromDictionary:colorDictionary];
     
+    if ( color == nil )
+    {
+        return [self.parentManager colorForKey:key];
+    }
+    else
+    {
+        return color;
+    }
+}
+
+- (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary
+{
     if (![colorDictionary isKindOfClass:[NSDictionary class]])
     {
         return nil;
     }
-    NSNumber *red = colorDictionary[kRedKey];
-    NSNumber *green = colorDictionary[kGreenKey];
-    NSNumber *blue = colorDictionary[kBlueKey];
-    NSNumber *alpha = colorDictionary[kAlphaKey];
+    
+    VJSONHelper *helper = [[VJSONHelper alloc] init];
+    
+    NSNumber *red = [helper numberFromJSONValue:colorDictionary[kRedKey]];
+    NSNumber *green = [helper numberFromJSONValue:colorDictionary[kGreenKey]];
+    NSNumber *blue = [helper numberFromJSONValue:colorDictionary[kBlueKey]];
+    NSNumber *alpha = [helper numberFromJSONValue:colorDictionary[kAlphaKey]];
     
     // Work around a bug in the back-end
     if ( alpha.doubleValue == 1.0 )
@@ -166,36 +180,43 @@ static NSString * const kMacroReplacement = @"XXXXX";
         alpha = @255;
     }
     
-    if (![red isKindOfClass:[NSNumber class]] ||
-        ![green isKindOfClass:[NSNumber class]] ||
-        ![blue isKindOfClass:[NSNumber class]] ||
-        ![alpha isKindOfClass:[NSNumber class]])
+    if ( red == nil ||
+         green == nil ||
+         blue == nil ||
+         alpha == nil )
     {
         return nil;
     }
     
-    UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] / 255.0f
-                                     green:[green CGFLOAT_VALUE] / 255.0f
-                                      blue:[blue CGFLOAT_VALUE] / 255.0f
-                                     alpha:[alpha CGFLOAT_VALUE] / 255.0f];
+    UIColor *color = [UIColor colorWithRed:[red VCGFLOAT_VALUE] / 255.0f
+                                     green:[green VCGFLOAT_VALUE] / 255.0f
+                                      blue:[blue VCGFLOAT_VALUE] / 255.0f
+                                     alpha:[alpha VCGFLOAT_VALUE] / 255.0f];
     return color;
 }
 
 - (UIFont *)fontForKey:(NSString *)key
 {
+    UIFont *font = nil;
     NSDictionary *fontDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
+    VJSONHelper *helper = [[VJSONHelper alloc] init];
     NSString *fontName = fontDictionary[kFontNameKey];
-    NSNumber *fontSize = fontDictionary[kFontSizeKey];
+    NSNumber *fontSize = [helper numberFromJSONValue:fontDictionary[kFontSizeKey]];
     
-    if (![fontName isKindOfClass:[NSString class]] ||
-        ![fontSize isKindOfClass:[NSNumber class]])
+    if ([fontName isKindOfClass:[NSString class]] &&
+        [fontSize isKindOfClass:[NSNumber class]])
     {
-        return nil;
+        font = [UIFont fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
     }
-    
-    UIFont *font = [UIFont fontWithName:fontName size:[fontSize CGFLOAT_VALUE]];
-    return font;
+    if ( font == nil )
+    {
+        return [self.parentManager fontForKey:key];
+    }
+    else
+    {
+        return font;
+    }
 }
 
 - (NSString *)stringForKey:(NSString *)key
@@ -492,6 +513,15 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
 }
 
+- (void)cleanup
+{
+    dispatch_barrier_sync(self.privateQueue, ^(void)
+    {
+        [self.singletonsByID removeAllObjects];
+        [self.childDependencyManagersByID removeAllObjects];
+    });
+}
+
 #pragma mark - Dependency getter primatives
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key
@@ -750,39 +780,74 @@ static NSString * const kMacroReplacement = @"XXXXX";
         if ( [value isKindOfClass:[NSDictionary class]] )
         {
             NSDictionary *component = (NSDictionary *)value;
-            if ( [self isDictionaryAComponentWithoutAnID:component] )
+            if ( [self isDictionaryAComponent:component] )
             {
                 preparedDictionary[key] = [self componentByAddingIDToComponent:component];
+            }
+            else
+            {
+                preparedDictionary[key] = [self preparedConfigurationWithUnpreparedDictionary:component];
             }
         }
         else if ( [value isKindOfClass:[NSArray class]] )
         {
-            NSMutableArray *preparedArray = [value mutableCopy];
-            NSUInteger count = preparedArray.count;
-            for (NSUInteger n = 0; n < count; n++)
-            {
-                NSDictionary *component = preparedArray[n];
-                if ( [component isKindOfClass:[NSDictionary class]] && [self isDictionaryAComponentWithoutAnID:component] )
-                {
-                    preparedArray[n] = [self componentByAddingIDToComponent:component];
-                }
-            }
-            preparedDictionary[key] = preparedArray;
+            preparedDictionary[key] = [self preparedArrayWithUnpreparedArray:value];
         }
     }
-    return preparedDictionary;
+    return [preparedDictionary copy];
+}
+
+/**
+ Takes an array of configuration objeccts and returns it after adding IDs to any components that are missing one.
+ */
+- (NSArray *)preparedArrayWithUnpreparedArray:(NSArray *)configurationArray
+{
+    NSMutableArray *preparedArray = [configurationArray mutableCopy];
+    
+    for (NSUInteger n = 0; n < preparedArray.count; n++)
+    {
+        if ( [preparedArray[n] isKindOfClass:[NSDictionary class]] )
+        {
+            NSDictionary *component = (NSDictionary *)preparedArray[n];
+            if ( [self isDictionaryAComponent:component] )
+            {
+                preparedArray[n] = [self componentByAddingIDToComponent:component];
+            }
+            else
+            {
+                preparedArray[n] = [self preparedConfigurationWithUnpreparedDictionary:component];
+            }
+        }
+        else if ( [preparedArray[n] isKindOfClass:[NSArray class]] )
+        {
+            preparedArray[n] = [self preparedArrayWithUnpreparedArray:preparedArray[n]];
+        }
+    }
+    return [preparedArray copy];
 }
 
 - (NSDictionary *)componentByAddingIDToComponent:(NSDictionary *)component
 {
-    NSMutableDictionary *preparedComponent = [component mutableCopy];
-    preparedComponent[kIDKey] = [[NSUUID UUID] UUIDString];
-    return preparedComponent;
+    if ( ![self componentHasID:component] )
+    {
+        NSMutableDictionary *preparedComponent = [component mutableCopy];
+        preparedComponent[kIDKey] = [[NSUUID UUID] UUIDString];
+        return preparedComponent;
+    }
+    else
+    {
+        return component;
+    }
 }
 
-- (BOOL)isDictionaryAComponentWithoutAnID:(NSDictionary *)possibleComponent
+- (BOOL)isDictionaryAComponent:(NSDictionary *)possibleComponent
 {
-    return possibleComponent[kClassNameKey] != nil && possibleComponent[kIDKey] == nil;
+    return possibleComponent[kClassNameKey] != nil;
+}
+
+- (BOOL)componentHasID:(NSDictionary *)component
+{
+    return component[kIDKey] != nil;
 }
 
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration

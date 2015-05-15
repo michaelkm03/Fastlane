@@ -22,7 +22,6 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Users.h"
 
-
 //Data Models
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
@@ -31,8 +30,7 @@
 
 #import "VLoginViewController.h"
 #import "VMessageContainerViewController.h"
-
-#import "VThemeManager.h"
+#import "VMessageViewController.h"
 
 #import "MBProgressHUD.h"
 
@@ -44,7 +42,10 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager.h"
 
-@interface VUserSearchViewController () <UITextFieldDelegate>
+#import "VFollowingHelper.h"
+#import "VFollowResponder.h"
+
+@interface VUserSearchViewController () <UITextFieldDelegate, VFollowResponder>
 
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;
@@ -63,6 +64,7 @@
 @property (nonatomic, weak) NSTimer *typeDelay;
 @property (nonatomic, assign) NSInteger charCount;
 @property (nonatomic, strong) VUser *selectedUser;
+@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -81,6 +83,8 @@ static const NSInteger kSearchResultLimit = 100;
 {
     VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
     userSearchViewController.dependencyManager = dependencyManager;
+    userSearchViewController.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
+                                                                      viewControllerToPresentOn:userSearchViewController];
     return userSearchViewController;
 }
 
@@ -111,6 +115,8 @@ static const NSInteger kSearchResultLimit = 100;
     _searchContext = VObjectManagerSearchContextDiscover;
 }
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -118,21 +124,22 @@ static const NSInteger kSearchResultLimit = 100;
     // SETUP SEARCH FIELD
     self.searchField.delegate = self;
     [self.searchField addTarget:self action:@selector(runUserSearch:) forControlEvents:UIControlEventEditingChanged];
-    [self.searchField setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
+    [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
     [self.searchField setTintColor:[UIColor grayColor]];
     [self.searchField sizeToFit];
     [self.searchField layoutIfNeeded];
     
     // NO RESULTS VIEW
     self.noResultsView.hidden = YES;
-    self.noResultsTitleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    self.noResultsMessageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.noResultsTitleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    self.noResultsMessageLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
 
     // TABLEVIEW
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
+    [self.tableView registerNib:[VFollowerTableViewCell nibForCell]
+         forCellReuseIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]];
     self.tableView.hidden = YES;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
@@ -161,12 +168,6 @@ static const NSInteger kSearchResultLimit = 100;
     [self.searchField resignFirstResponder];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-}
-
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -184,7 +185,6 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)characterCheck:(id)sender
 {
-    
     self.charCount++;
     
     if (self.charCount == 3)
@@ -209,29 +209,17 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (IBAction)closeButtonAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)composeMessageToUser:(VUser *)profile
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectUserFromSearchRecipient];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
-    {
-        if (!authorized)
-        {
-            return;
-        }
-        VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile dependencyManager:self.dependencyManager];
-        [self.navigationController pushViewController:composeController animated:YES];
-    }];
+    [self.messageSearchDelegate didSelectUser:profile inUserSearchViewController:self];
 }
 
 - (void)runUserSearch:(id)sender
 {
-    
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
@@ -293,133 +281,6 @@ static const NSInteger kSearchResultLimit = 100;
     }
 }
 
-#pragma mark - Friend Actions
-
-- (void)followFriendAction:(VUser *)user
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        // Add user relationship to local persistent store
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSManagedObjectContext *moc = mainUser.managedObjectContext;
-        
-        [mainUser addFollowingObject:user];
-        [moc saveToPersistentStore:nil];
-        
-        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
-        {
-            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            if (cell.profile == user)
-            {
-                [cell flipFollowIconAction:nil];
-                return;
-            }
-        }
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        if (error.code == kVFollowsRelationshipAlreadyExistsError)
-        {
-            // Add user relationship to local persistent store
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser addFollowingObject:user];
-            [moc saveToPersistentStore:nil];
-            
-            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in indexPaths)
-            {
-                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.profile == user)
-                {
-                    [cell flipFollowIconAction:nil];
-                    return;
-                }
-            }
-            return;
-        }
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
-                                                        message:error.localizedDescription
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                              otherButtonTitles:nil];
-        [alert show];
-    };
-    
-    // Add user at backend
-    [[VObjectManager sharedManager] followUser:user successBlock:successBlock failBlock:failureBlock];
-}
-
-- (void)unfollowFriendAction:(VUser *)user
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSManagedObjectContext *moc = mainUser.managedObjectContext;
-        
-        [mainUser removeFollowingObject:user];
-        [moc saveToPersistentStore:nil];
-        
-        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
-        {
-            VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            if (cell.profile == user)
-            {
-                void (^animations)() = ^(void)
-                {
-                    cell.haveRelationship = NO;
-                };
-                [UIView transitionWithView:cell.followButton
-                                  duration:0.3
-                                   options:UIViewAnimationOptionTransitionFlipFromTop
-                                animations:animations
-                                completion:nil];
-                
-                [cell flipFollowIconAction:nil];
-                return;
-            }
-        }
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        NSInteger errorCode = error.code;
-        if (errorCode == kVFollowsRelationshipDoesNotExistError)
-        {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser removeFollowingObject:user];
-            [moc saveToPersistentStore:nil];
-            NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in indexPaths)
-            {
-                VFollowerTableViewCell *cell = (VFollowerTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.profile == user)
-                {
-                    [cell flipFollowIconAction:nil];
-                    return;
-                }
-            }
-            
-        }
-        
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    };
-    
-    [[VObjectManager sharedManager] unfollowUser:user successBlock:successBlock failBlock:failureBlock];
-}
-
 #pragma mark - TableView Delegate Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -430,36 +291,12 @@ static const NSInteger kSearchResultLimit = 100;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser *profile = self.foundUsers[indexPath.row];
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL haveRelationship = [mainUser.following containsObject:profile];
     
-    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
+    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]
+                                                                   forIndexPath:indexPath];
     cell.profile = profile;
-    cell.haveRelationship = haveRelationship;
     cell.dependencyManager = self.dependencyManager;
-    
-    // Tell the button what to do when it's tapped
-    cell.followButtonAction = ^(void)
-    {
-        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                    dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-         {
-             if (!authorized)
-             {
-                 return;
-             }
-             
-             if ([mainUser.following containsObject:profile])
-             {
-                 [self unfollowFriendAction:profile];
-             }
-             else
-             {
-                 [self followFriendAction:profile];
-             }
-         }];
-    };
+
     return cell;
 }
 
@@ -471,7 +308,7 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50.0f;
+    return [VFollowerTableViewCell desiredSizeWithCollectionViewBounds:tableView.bounds].height;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -483,19 +320,20 @@ static const NSInteger kSearchResultLimit = 100;
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+#pragma mark - VFollowing
+
+- (void)followUser:(VUser *)user
+    withCompletion:(VFollowEventCompletion)completion
 {
-    BOOL ans = YES;
-    return ans;
-}
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return YES;
+    [self.followHelper followUser:user
+                   withCompletion:completion];
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (void)unfollowUser:(VUser *)user
+      withCompletion:(VFollowEventCompletion)completion
 {
-    return YES;
+    [self.followHelper unfollowUser:user
+                     withCompletion:completion];
 }
 
 @end

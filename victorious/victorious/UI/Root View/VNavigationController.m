@@ -14,6 +14,7 @@
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
 #import  "UIColor+VBrightness.h"
+#import "VTabMenuViewController.h"
 
 #import <objc/runtime.h>
 
@@ -58,7 +59,8 @@ static const CGFloat kStatusBarHeight = 20.0f;
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
-        _statusBarStyle = [self statusBarStyleForColor:[[_dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey]];
+        UIColor *navigationBarTextColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
+        _statusBarStyle = [self statusBarStyleForColor:navigationBarTextColor];
     }
     return self;
 }
@@ -72,12 +74,16 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
 {
-    switch ([color v_colorLuminance])
+    VColorLuminance luminance = [color v_colorLuminance];
+    switch (luminance)
     {
         case VColorLuminanceBright:
-            return UIStatusBarStyleDefault;
-        case VColorLuminanceDark:
             return UIStatusBarStyleLightContent;
+            break;
+            
+        case VColorLuminanceDark:
+            return UIStatusBarStyleDefault;
+            break;
     }
 }
 
@@ -344,8 +350,14 @@ static const CGFloat kStatusBarHeight = 20.0f;
     }
     
     CGFloat navigationBarHeight = CGRectGetHeight(self.innerNavigationController.navigationBar.frame) +
-                                  CGRectGetHeight(viewController.navigationItem.v_supplementaryHeaderView.frame) +
                                   CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    UIView *supplementaryView = viewController.navigationItem.v_supplementaryHeaderView;
+    if ( supplementaryView != nil )
+    {
+        //The supplementary header exists, add its height and subtract the height of the shadow image that other content would normally be shown behind
+        navigationBarHeight += CGRectGetHeight(supplementaryView.frame) -
+                               self.innerNavigationController.navigationBar.shadowImage.size.height;
+    }
     viewController.v_layoutInsets = UIEdgeInsetsMake(navigationBarHeight, 0, 0, 0);
 }
 
@@ -361,50 +373,15 @@ static const CGFloat kStatusBarHeight = 20.0f;
     [self provideLayoutInsetsToViewController:viewController];
     [viewController v_setNavigationController:self];
     
+    UIColor *statusBarBackgroundColor = [viewController statusBarBackgroundColor];
+    statusBarBackgroundColor = statusBarBackgroundColor ?: [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
+    self.statusBarBackgroundView.backgroundColor = statusBarBackgroundColor;
+    
     BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
     
-    if ( !prefersNavigationBarHidden && self.statusBarBackgroundView.hidden )
+    if ( prefersNavigationBarHidden != self.innerNavigationController.navigationBarHidden )
     {
-        if ( viewController.transitionCoordinator == nil )
-        {
-            self.statusBarBackgroundView.hidden = YES;
-        }
-        else
-        {
-            [self performCompanionAnimation:^(void)
-            {
-                self.statusBarBackgroundView.alpha = 1.0f;
-            }
-                  withTransitionCoordinator:viewController.transitionCoordinator
-                                     before:^(void)
-            {
-                self.statusBarBackgroundView.hidden = NO;
-                self.statusBarBackgroundView.alpha = 0;
-            }
-                                 completion:nil];
-        }
-    }
-    else if ( prefersNavigationBarHidden && !self.statusBarBackgroundView.hidden )
-    {
-        [self performCompanionAnimation:^(void)
-        {
-            self.statusBarBackgroundView.alpha = 0;
-        }
-              withTransitionCoordinator:viewController.transitionCoordinator
-                                 before:nil
-                             completion:^(void)
-        {
-            self.statusBarBackgroundView.hidden = YES;
-        }];
-    }
-    
-    if ( !prefersNavigationBarHidden && self.innerNavigationController.navigationBarHidden )
-    {
-        [self.innerNavigationController setNavigationBarHidden:NO animated:animated];
-    }
-    else if ( prefersNavigationBarHidden && !self.innerNavigationController.navigationBarHidden )
-    {
-        [self.innerNavigationController setNavigationBarHidden:YES animated:animated];
+        [self.innerNavigationController setNavigationBarHidden:prefersNavigationBarHidden animated:animated];
     }
     
     if ( viewController.toolbarItems.count > 0 )
@@ -412,9 +389,79 @@ static const CGFloat kStatusBarHeight = 20.0f;
         [self.innerNavigationController setToolbarHidden:NO animated:animated];
     }
     
+    [self updateSupplementaryHeaderViewForViewController:viewController];
+    
+    BOOL wantsStatusBarHidden = [viewController prefersStatusBarHidden];
+    if ( wantsStatusBarHidden != self.wantsStatusBarHidden )
+    {
+        if ( [viewController.transitionCoordinator isInteractive] )
+        {
+            [viewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context)
+            {
+                if ( ![context isCancelled] )
+                {
+                    self.wantsStatusBarHidden = wantsStatusBarHidden;
+                    [self setNeedsStatusBarAppearanceUpdate];
+                }
+            }];
+        }
+        else
+        {
+            self.wantsStatusBarHidden = wantsStatusBarHidden;
+            [self setNeedsStatusBarAppearanceUpdate];
+        }
+        
+        if ( !wantsStatusBarHidden )
+        {
+            if ( viewController.transitionCoordinator == nil )
+            {
+                self.statusBarBackgroundView.alpha = 1.0f;
+                self.statusBarBackgroundView.hidden = NO;
+            }
+            else
+            {
+                [self performCompanionAnimation:^(void)
+                 {
+                     self.statusBarBackgroundView.alpha = 1.0f;
+                 }
+                      withTransitionCoordinator:viewController.transitionCoordinator
+                                         before:^(void)
+                 {
+                     self.statusBarBackgroundView.hidden = NO;
+                     self.statusBarBackgroundView.alpha = 0.0f;
+                 }
+                                     completion:nil];
+            }
+        }
+        else
+        {
+            [self performCompanionAnimation:^(void)
+             {
+                 self.statusBarBackgroundView.alpha = 0;
+             }
+                  withTransitionCoordinator:viewController.transitionCoordinator
+                                     before:nil
+                                 completion:^(void)
+             {
+                 self.statusBarBackgroundView.hidden = YES;
+             }];
+        }
+    }
+    
+    if ( self.leftBarButtonItem != nil &&
+         navigationController.viewControllers.count > 0 &&
+         navigationController.viewControllers[0] == viewController )
+    {
+        viewController.navigationItem.leftBarButtonItems = @[ self.leftBarButtonItem ];
+    }
+}
+
+- (void)updateSupplementaryHeaderViewForViewController:(UIViewController *)viewController
+{
+    BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
     UIView *newSupplementaryHeaderView = viewController.navigationItem.v_supplementaryHeaderView;
     if ( self.supplementaryHeaderView != nil &&
-         self.supplementaryHeaderView != newSupplementaryHeaderView )
+        self.supplementaryHeaderView != newSupplementaryHeaderView )
     {
         if ( viewController.transitionCoordinator == nil )
         {
@@ -437,34 +484,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
             [self addSupplementaryHeaderView:newSupplementaryHeaderView withTransitionCoordinator:viewController.transitionCoordinator];
         }
     }
-    
-    BOOL wantsStatusBarHidden = prefersNavigationBarHidden;
-    if ( wantsStatusBarHidden != self.wantsStatusBarHidden )
-    {
-        if ( [viewController.transitionCoordinator isInteractive] )
-        {
-            [viewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context)
-            {
-                if ( ![context isCancelled] )
-                {
-                    self.wantsStatusBarHidden = wantsStatusBarHidden;
-                    [self setNeedsStatusBarAppearanceUpdate];
-                }
-            }];
-        }
-        else
-        {
-            self.wantsStatusBarHidden = wantsStatusBarHidden;
-            [self setNeedsStatusBarAppearanceUpdate];
-        }
-    }
-    
-    if ( self.leftBarButtonItem != nil &&
-         navigationController.viewControllers.count > 0 &&
-         navigationController.viewControllers[0] == viewController )
-    {
-        viewController.navigationItem.leftBarButtonItems = @[ self.leftBarButtonItem ];
-    }
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -474,6 +493,13 @@ static const CGFloat kStatusBarHeight = 20.0f;
         [self.displayedViewController v_setNavigationController:nil];
         self.displayedViewController = viewController;
     }
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self.innerNavigationController popToRootViewControllerAnimated:YES];
 }
 
 @end
@@ -487,6 +513,11 @@ static char kNavigationControllerKey;
 - (BOOL)v_prefersNavigationBarHidden
 {
     return NO;
+}
+
+- (UIColor *)statusBarBackgroundColor
+{
+    return nil;
 }
 
 - (VNavigationController *)v_navigationController

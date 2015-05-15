@@ -16,9 +16,13 @@
 
 #import "VUserProfileViewController.h"
 
-#import "VDefaultProfileImageView.h"
+#import "VDefaultProfileButton.h"
+#import "VDependencyManager+VUserProfile.h"
 
-CGFloat const kVConversationCellHeight = 72;
+const CGFloat VConversationCellHeight = 72.0f;
+static const CGFloat kLineSpacing = 3.0f;
+static const CGFloat kMinimumLineHeight = 15.0f;
+static const CGFloat kBaselineOffset = 0.5f;
 
 @implementation VConversationCell
 
@@ -39,6 +43,7 @@ CGFloat const kVConversationCellHeight = 72;
         self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         self.usernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 
@@ -47,9 +52,16 @@ CGFloat const kVConversationCellHeight = 72;
     _conversation = conversation;
     
     self.usernameLabel.text  = conversation.user.name;
-    self.messageLabel.text = conversation.lastMessageText;
+    
+    //This paragraph style causes emojis to display correctly
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    paragraphStyle.minimumLineHeight = kMinimumLineHeight;
+    paragraphStyle.lineSpacing = kLineSpacing;
+    
+    NSString *safeText = conversation.lastMessageText == nil ? @"" : conversation.lastMessageText;
+    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:safeText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
     self.dateLabel.text = [conversation.postedAt timeSince];
-    [self.profileImageView setProfileImageURL:[NSURL URLWithString:conversation.user.pictureUrl]];
+    [self.profileButton setProfileImageURL:[NSURL URLWithString:conversation.user.pictureUrl] forState:UIControlStateNormal];
 
     if (self.conversation.isRead.boolValue)
     {
@@ -57,6 +69,7 @@ CGFloat const kVConversationCellHeight = 72;
     }
     else
     {
+        //Could / should this be backend driven?
         self.backgroundColor = [UIColor colorWithRed:.90 green:.91 blue:.93 alpha:1];
     }
 }
@@ -70,7 +83,7 @@ CGFloat const kVConversationCellHeight = 72;
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    [self.profileImageView setup];
+    [self.profileButton setup];
 }
 
 @end

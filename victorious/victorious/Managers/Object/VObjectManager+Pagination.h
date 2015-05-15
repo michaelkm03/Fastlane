@@ -75,6 +75,10 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 - (RKManagedObjectRequestOperation *)loadNotificationsListWithPageType:(VPageType)pageType
                                                           successBlock:(VSuccessBlock)success
                                                              failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)markAllNotificationsRead:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)notificationsCount:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail;
 
 #pragma mark Filters
 
@@ -85,6 +89,8 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 - (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence;;
 
 - (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+
+- (VAbstractFilter *)notificationFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 - (VAbstractFilter *)filterForStream:(VStream *)stream;
 

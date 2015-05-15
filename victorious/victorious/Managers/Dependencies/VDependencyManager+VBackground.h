@@ -20,4 +20,9 @@
  */
 - (VBackground *)background;
 
+/**
+ *  A background to use in place of content while loading.
+ */
+- (VBackground *)loadingBackground;
+
 @end

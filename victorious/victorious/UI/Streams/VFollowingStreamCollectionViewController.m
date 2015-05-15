@@ -14,7 +14,6 @@
 
 @interface VFollowingStreamCollectionViewController ()
 
-@property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, assign) BOOL shouldRefreshOnView;
 
 @end
@@ -78,14 +77,19 @@
 
 - (void)dataSourceDidRefresh
 {
-    if ( self.streamDataSource.count == 0 )
+    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
         if ( self.noContentView == nil )
         {
-            self.noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
-            self.noContentView.titleLabel.text = NSLocalizedString( @"NotFollowingTitle", @"" );
-            self.noContentView.messageLabel.text = NSLocalizedString( @"NotFollowingMessage", @"" );
-            self.noContentView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+            VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
+            if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
+            {
+                noContentView.dependencyManager = self.dependencyManager;
+            }
+            noContentView.titleLabel.text = NSLocalizedString( @"NotFollowingTitle", @"" );
+            noContentView.messageLabel.text = NSLocalizedString( @"NotFollowingMessage", @"" );
+            noContentView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+            self.noContentView = noContentView;
         }
         
         self.collectionView.backgroundView = self.noContentView;

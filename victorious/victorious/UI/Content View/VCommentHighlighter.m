@@ -49,16 +49,20 @@ static NSString * const kCompletionCallback = @"com.getvictorious.completionCall
 {
     self.isAnimatingCellHighlight = YES;
     
+    __weak VCommentHighlighter *weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        // Start the timer to wait for the cell in the collectionView to be created as the scrolling animation plays
-                       NSDictionary *userInfo = @{ kTargetIndexPath : indexPath, kCompletionCallback : (completion ?: ^{}) };
-                       self.cellHighlightAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/30.0 target:self
-                                                                                         selector:@selector(showHighlightAnimation:)
-                                                                                         userInfo:userInfo
-                                                                                          repeats:YES];
-                       
-                       [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+                       if ([weakSelf.collectionView numberOfSections] >= indexPath.section)
+                       {
+                           NSDictionary *userInfo = @{ kTargetIndexPath : indexPath, kCompletionCallback : (completion ?: ^{}) };
+                           weakSelf.cellHighlightAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/30.0 target:weakSelf
+                                                                                             selector:@selector(showHighlightAnimation:)
+                                                                                             userInfo:userInfo
+                                                                                              repeats:YES];
+                           
+                           [weakSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+                       }
                    });
     
 }

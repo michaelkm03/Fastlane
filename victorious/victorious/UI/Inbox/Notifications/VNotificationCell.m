@@ -8,10 +8,25 @@
 
 #import "VNotificationCell.h"
 #import "NSDate+timeSince.h"
-#import "VThemeManager.h"
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
+#import "VDefaultProfileButton.h"
+#import "VDependencyManager.h"
+#import "VTagStringFormatter.h"
+#import "VUserProfileViewController.h"
+#import "VDependencyManager+VUserProfile.h"
 
+static const CGFloat kLineSpacing = 3.0f;
+static const CGFloat kMinimumLineHeight = 15.0f;
+static const CGFloat kBaselineOffset = 0.5f;
+
+@interface VNotificationCell ()
+
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet VDefaultProfileButton *notificationWho;
+
+@end
 
 @implementation VNotificationCell
 
@@ -21,33 +36,77 @@
     
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    
-    self.notificationType.clipsToBounds = YES;
-    self.notificationType.layer.cornerRadius = CGRectGetHeight(self.notificationType.bounds)/2;
-    self.notificationType.layer.borderColor = self.backgroundColor.CGColor;
-    self.notificationType.layer.borderWidth = 1.0f;
+    self.dateLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
-- (void)setNotifcation:(VNotification *)notifcation
+- (void)layoutSubviews
 {
-    _notifcation = notifcation;
+    [super layoutSubviews];
+    self.backgroundColor = [self.notification.isRead boolValue] ? [UIColor whiteColor] : [UIColor colorWithWhite:0.75 alpha:1.0];
+}
+
+- (void)setNotification:(VNotification *)notification
+{
+    _notification = notification;
     
-    self.usernameLabel.text  = notifcation.user.name;
+    [self.notificationWho setProfileImageURL:[NSURL URLWithString:_notification.imageURL] forState:UIControlStateNormal];
+    self.accessoryType = [self.notification.deepLink length] > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     
-    [self.notificationType setImage:[UIImage imageNamed:@"user-icon"]];
+    //This paragraph style causes emojis to display correctly
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    paragraphStyle.minimumLineHeight = kMinimumLineHeight;
+    paragraphStyle.lineSpacing = kLineSpacing;
+
+    NSString *safeText = notification.subject == nil ? @"" : notification.subject;
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:safeText];
+    NSDictionary *stringAttributes = @{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) };
+    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:mutableAttributedString
+                                             withTagStringAttributes:stringAttributes
+                                          andDefaultStringAttributes:stringAttributes];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:mutableAttributedString.string attributes:stringAttributes];
+    self.messageLabel.attributedText = attributedString;
+
+    self.dateLabel.text = [notification.createdAt timeSince];
     
-    self.messageLabel.text = @"notification message goes here";
-    self.dateLabel.text = [notifcation.postedAt timeSince];
+    if ([notification.deepLink length] > 0)
+    {
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else
+    {
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( _dependencyManager != nil )
+    {
+        self.messageLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+        [self.messageLabel sizeToFit];
+        self.notificationWho.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    }
+}
+
+- (IBAction)profileButtonAction:(id)sender
+{
+    VUser *user = self.notification.user;
+    
+    //Check for nil user to avoid trying to navigate to create a profile with a nil user
+    if ( user != nil )
+    {
+        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
+        [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+    }
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [self.notificationWho setup];
 }
 
 @end

@@ -20,6 +20,8 @@
 	<string>VCropToolViewController</string>
 	<key>vertical.picker</key>
 	<string>VTickerPickerViewController</string>
+	<key>vertical.multiplePicker</key>
+	<string>VMultiplePickerViewController</string>
 	<key>filter.tool</key>
 	<string>VFilterTool</string>
 	<key>quote.tool</key>
@@ -32,10 +34,16 @@
 	<string>VTextTool</string>
 	<key>textType.tool</key>
 	<string>VTextTypeTool</string>
+	<key>hashtag.tool</key>
+	<string>VHashtagTool</string>
+	<key>textColor.tool</key>
+	<string>VTextColorTool</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>workspace</key>
 	<string>VWorkspaceShimDestination</string>
+	<key>workspaceText</key>
+	<string>VTextWorkspaceFlowController</string>
 	<key>sideMenu.scaffold</key>
 	<string>VSideMenuViewController</string>
 	<key>tabMenu.scaffold</key>
@@ -54,10 +62,8 @@
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
-	<key>showcase.screen</key>
-	<string>VGroupedStreamCollectionViewController</string>
-	<key>streamDirectory.screen</key>
-	<string>VDirectoryViewController</string>
+	<key>directory.screen</key>
+	<string>VDirectoryCollectionViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>
@@ -67,9 +73,15 @@
 	<key>rounded.multiScreenSelector</key>
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
-	<string>VInboxContainerViewController</string>
+	<string>VInboxViewController</string>
+	<key>notifications.screen</key>
+	<string>VNotificationsViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
+	<key>staticProfile.streamHeader</key>
+	<string>VStaticUserProfileHeaderViewController</string>
+	<key>floatingProfile.streamHeader</key>
+	<string>VFloatingUserProfileHeaderViewController</string>
 	<key>userProfile.screen</key>
 	<string>VUserProfileViewController</string>
 	<key>settings.screen</key>
@@ -78,11 +90,23 @@
 	<string>VDiscoverContainerViewController</string>
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
+	<key>collections.directoryCell</key>
+	<string>VCollectionsDirectoryCellFactory</string>
+	<key>showcase.directoryCell</key>
+	<string>VShowcaseDirectoryCellFactory</string>
+	<key>card.directoryCell</key>
+	<string>VCardDirectoryCellFactory</string>
 	<key>inset.streamCell</key>
 	<string>VInsetStreamCellFactory</string>
 	<key>sleek.streamCell</key>
 	<string>VSleekStreamCellFactory</string>
 	<key>titleOverlay.streamCell</key>
 	<string>VTitleOverlayStreamCellFactory</string>
+	<key>fullscreen.marqueeCell</key>
+	<string>VFullscreenMarqueeController</string>
+	<key>blurred.marqueeCell</key>
+	<string>VBlurredMarqueeController</string>
+	<key>inset.marqueeCell</key>
+	<string>VInsetMarqueeController</string>
 </dict>
 </plist>

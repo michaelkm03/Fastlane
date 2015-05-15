@@ -12,9 +12,10 @@
 // Constants
 #import "VConstants.h"
 
-// Theme
-#import "VThemeManager.h"
+// DependencyManager
+#import "VDependencyManager.h"
 
+static const NSInteger kCharacterLimit = 255;
 const CGFloat VInputAccessoryViewDesiredMinimumHeight = 51.0f;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
@@ -34,13 +35,16 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToBottomConstraint;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, assign) BOOL addedTextView;
+
 @end
 
 @implementation VKeyboardInputAccessoryView
 
 #pragma mark - Factory Methods
 
-+ (VKeyboardInputAccessoryView *)defaultInputAccessoryView
++ (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UINib *nibForInputAccessoryView = [UINib nibWithNibName:NSStringFromClass([self class])
                                                      bundle:nil];
@@ -49,16 +53,33 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     
     VKeyboardInputAccessoryView *accessoryView = [nibContents firstObject];
     
+    accessoryView.dependencyManager = dependencyManager;
+    
     return accessoryView;
 }
 
 #pragma mark - Initialization
 
-- (void)awakeFromNib
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
+    _dependencyManager = dependencyManager;
+    if ( _dependencyManager != nil )
+    {
+        if ( !self.addedTextView )
+        {
+            self.addedTextView = YES;
+            [self addTextViewToContainer];
+        }
+        [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                              forState:UIControlStateNormal];
+    }
+}
 
+- (void)addTextViewToContainer
+{
+    UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
+    
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
     
@@ -68,7 +89,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     UITextView *editingTextView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
     editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
     editingTextView.delegate = self;
-    editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    editingTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     editingTextView.font = defaultFont;
     
     //Adding this to the top inset centers the text with it's placeholder
@@ -99,7 +120,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 {
     [super layoutSubviews];
     
-    [self.sendButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
+    [self.sendButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                           forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor lightGrayColor]
                           forState:UIControlStateDisabled];
@@ -215,6 +236,11 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     [self.editingTextView scrollRangeToVisible:self.editingTextView.selectedRange];
 }
 
+- (NSInteger)characterLimit
+{
+    return kCharacterLimit;
+}
+
 - (BOOL)textView:(UITextView *)textView
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
@@ -235,7 +261,7 @@ shouldChangeTextInRange:(NSRange)range
         return NO;
     }
     
-    return YES;
+    return [textView.text stringByReplacingCharactersInRange:range withString:text].length <= (NSUInteger)self.characterLimit;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
@@ -258,7 +284,7 @@ shouldChangeTextInRange:(NSRange)range
 
 - (NSDictionary *)textEntryAttributes
 {
-    return @{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont]};
+    return @{ NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey] };
 }
 
 - (void)updateSendButton

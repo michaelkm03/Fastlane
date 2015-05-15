@@ -19,23 +19,41 @@
     {
         return;
     }
+
+    [self addBackground:[self background]
+        asSubviewOfView:[backgroundHost backgroundContainerView]];
+}
+
+- (void)addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundContainer
+{
+    if (![backgroundContainer respondsToSelector:@selector(loadingBackgroundContainerView)])
+    {
+        return;
+    }
     
-    VBackground *background = [self background];
+    [self addBackground:[self loadingBackground]
+        asSubviewOfView:[backgroundContainer loadingBackgroundContainerView]];
+}
+
+- (void)addBackground:(VBackground *)background
+      asSubviewOfView:(UIView *)containerView
+{
     if (background == nil)
     {
         return;
     }
     
     // We've already added a background do nothing
-    if ([backgroundHost backgroundContainerView].subviews.count > 0)
+    if (containerView.subviews.count > 0)
     {
         return;
     }
     
     UIView *backgroundView = [background viewForBackground];
+    
     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    [[backgroundHost backgroundContainerView] addSubview:backgroundView];
-    [[backgroundHost backgroundContainerView] v_addFitToParentConstraintsToSubview:backgroundView];
+    [containerView addSubview:backgroundView];
+    [containerView v_addFitToParentConstraintsToSubview:backgroundView];
 }
 
 @end

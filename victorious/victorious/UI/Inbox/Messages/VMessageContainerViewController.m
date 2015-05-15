@@ -17,7 +17,6 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VConversation.h"
-#import "VThemeManager.h"
 #import "VUser.h"
 #import "NSString+VParseHelp.h"
 
@@ -25,6 +24,9 @@
 #import "VUserTaggingTextStorage.h"
 
 #import "MBProgressHUD.h"
+#import "VLaunchScreenProvider.h"
+
+static const NSUInteger kCharacterLimit = 1024;
 
 @interface VMessageContainerViewController ()
 
@@ -52,6 +54,7 @@
     self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
     self.keyboardBarViewController.hideAccessoryBar = YES;
     self.keyboardBarViewController.textStorage.disableSearching = YES;
+    self.keyboardBarViewController.characterLimit = kCharacterLimit;
     
     [self addBackgroundImage];
     [self hideKeyboardBarIfNeeded];
@@ -105,7 +108,7 @@
                                            UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                                                                                   message:NSLocalizedString(@"ReportUserMessage", @"")
                                                                                                  delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                                                         otherButtonTitles:nil];
                                            [alert show];
                                            
@@ -117,7 +120,7 @@
                                            UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                                                   message:NSLocalizedString(@"ErrorOccured", @"")
                                                                                                  delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                                                         otherButtonTitles:nil];
                                            [alert show];
                                        }];
@@ -148,16 +151,21 @@
 
 - (void)addBackgroundImage
 {
-    UIImage *defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyExtraLightEffect];
-    
     if (self.otherUser)
     {
-        [self.backgroundImageView setExtraLightBlurredImageWithURL:[NSURL URLWithString:self.otherUser.pictureUrl]
-                                                  placeholderImage:defaultBackgroundImage];
+        [self.backgroundImageView applyExtraLightBlurAndAnimateImageWithURLToVisible:[NSURL URLWithString:self.otherUser.pictureUrl]];
     }
     else
     {
-        self.backgroundImageView.image = defaultBackgroundImage;
+        UIImage *launchScreenImage = [VLaunchScreenProvider screenshotOfLaunchScreenAtSize:self.view.bounds.size];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+        {
+            UIImage *defaultBackgroundImage = [launchScreenImage applyExtraLightEffect];
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                self.backgroundImageView.image = defaultBackgroundImage;
+            });
+        });
     }
 }
 
@@ -169,6 +177,11 @@
     {
         [(VMessageViewController *)self.conversationTableViewController setMessageCountCoordinator:messageCountCoordinator];
     }
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 - (BOOL)v_prefersNavigationBarHidden

@@ -17,7 +17,9 @@
 /**
  *  MUST be overriden by subclasses!
  *
- *  @return A view representing the appropriate background.
+ *  @return A view representing the appropriate background.  Each time this is called it will return
+ *  a new background view, so be sure to call it once and retain the result if you want to modify
+ *  it with constraints or add to the view hierarchy.
  */
 - (UIView *)viewForBackground;
 

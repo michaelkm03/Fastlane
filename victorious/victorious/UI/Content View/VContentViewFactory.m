@@ -12,6 +12,8 @@
 #import "VNewContentViewController.h"
 #import "VSequence+Fetcher.h"
 #import "VWebBrowserViewController.h"
+#import "NSURL+VCustomScheme.h"
+#import "VRootViewController.h"
 
 static NSString * const kContentViewComponentKey = @"contentView";
 
@@ -37,7 +39,8 @@ static NSString * const kContentViewComponentKey = @"contentView";
 {
     if ( [sequence isWebContent] )
     {
-        return [self webContentViewControllerWithSequence:sequence];
+        NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
+        return [self webContentViewControllerWithURL:sequenceContentURL sequence:sequence];
     }
     
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence depenencyManager:self.dependencyManager];
@@ -60,7 +63,12 @@ static NSString * const kContentViewComponentKey = @"contentView";
     if ( [sequence isWebContent] )
     {
         NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
-        if ( [self isCustomScheme:sequenceContentURL] )
+        if ( [sequenceContentURL v_isThisAppGenericScheme] )
+        {
+            [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:sequenceContentURL];
+            return YES;
+        }
+        else if ( [sequenceContentURL v_hasCustomScheme] )
         {
             if ( [[UIApplication sharedApplication] canOpenURL:sequenceContentURL] )
             {
@@ -86,25 +94,34 @@ static NSString * const kContentViewComponentKey = @"contentView";
     }
 }
 
-- (UIViewController *)webContentViewControllerWithSequence:(VSequence *)sequence
+- (UIViewController *)webContentViewControllerWithURL:(NSURL *)url
 {
-    NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
-    if ( [self isCustomScheme:sequenceContentURL] )
+    return [self webContentViewControllerWithURL:url sequence:nil];
+}
+
+- (UIViewController *)webContentViewControllerWithURL:(NSURL *)url sequence:(VSequence *)sequence
+{
+    if ( [url v_isThisAppGenericScheme] )
     {
-        [[UIApplication sharedApplication] openURL:sequenceContentURL];
+        [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:url];
         return nil;
+    }
+    else if ( [url v_hasCustomScheme] )
+    {
+        [[UIApplication sharedApplication] openURL:url];
+        return nil;  return nil;
     }
     else
     {
         VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:self.dependencyManager];
         viewController.sequence = sequence;
+        if ( url != nil )
+        {
+            [viewController loadUrl:url];
+        }
         return viewController;
     }
-}
-
-- (BOOL)isCustomScheme:(NSURL *)url
-{
-    return [url.scheme rangeOfString:@"http"].location != 0;
+    return nil;
 }
 
 @end

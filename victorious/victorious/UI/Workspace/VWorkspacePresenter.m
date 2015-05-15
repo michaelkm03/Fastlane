@@ -16,6 +16,7 @@
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 #import "VCreatePollViewController.h"
+#import "VTextWorkspaceFlowController.h"
 
 // Action sheet
 #import "VAlertController.h"
@@ -65,6 +66,13 @@
                                                             initialImageEditState:VImageToolControllerInitialImageEditStateText
                                                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
                                }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Text Post", @"Create a text post action button.")
+                                                    handler:^(VAlertAction *action)
+                               {
+                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
+                                   
+                                   [self presentTextOnlyWorkspace];
+                               }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
@@ -91,7 +99,6 @@
         VWorkspaceFlowControllerInitialCaptureStateKey: @(initialCaptureState),
         VImageToolControllerInitialImageEditStateKey: @(initialImageEdit),
         VVideoToolControllerInitalVideoEditStateKey: @(initialVideoEdit) }];
-    workspaceFlowController.videoEnabled = YES;
     workspaceFlowController.delegate = self;
     
     [self.viewControllerToPresentOn presentViewController:workspaceFlowController.flowRootViewController
@@ -104,6 +111,12 @@
     [self presentCreateFlowWithInitialCaptureState:initialCaptureState
                              initialImageEditState:VImageToolControllerInitialImageEditStateFilter
                           andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
+}
+
+- (void)presentTextOnlyWorkspace
+{
+    VTextWorkspaceFlowController *textWorkspaceController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:nil];
+    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate

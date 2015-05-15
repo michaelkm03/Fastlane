@@ -15,8 +15,6 @@ static const CGFloat VCommentButtonContentRightInset = 3.0f; ///< Inset of comme
 static const CGFloat VButtonHeight = 36.0f; ///< Height of action buttons
 static const CGFloat VCommentButtonWidth = 68.0f; ///< Width of comment button
 
-static NSString * const VStreamCellActionViewGifIconKey = @"gifIcon"; ///< Key for "gif" icon
-static NSString * const VStreamCellActionViewMemeIconKey = @"memeIcon"; ///< Key for "meme" icon
 static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; ///< Key for "comment" icon
 
 @interface VSleekStreamCellActionView ()
@@ -76,7 +74,17 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 
 - (void)updateCommentsCount:(NSNumber *)commentsCount
 {
-    [self.commentsButton setTitle:[self.largeNumberFormatter stringForInteger:[commentsCount integerValue]] forState:UIControlStateNormal];
+    NSString *numberValue = @"";
+    if ([commentsCount integerValue] > 0)
+    {
+        self.commentsButton.contentEdgeInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, VCommentButtonContentRightInset);
+        numberValue = [self.largeNumberFormatter stringForInteger:[commentsCount integerValue]];
+    }
+    else
+    {
+        self.commentsButton.contentEdgeInsets = UIEdgeInsetsZero;
+    }
+    [self.commentsButton setTitle:numberValue forState:UIControlStateNormal];
 }
 
 - (void)addCommentsButton
@@ -84,7 +92,6 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
     self.commentsButton = [self addButtonWithImageKey:VStreamCellActionViewCommentIconKey];
     [self.commentsButton addTarget:self action:@selector(commentsAction:) forControlEvents:UIControlEventTouchUpInside];
     self.commentsButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.commentsButton.contentEdgeInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, VCommentButtonContentRightInset);
     CGFloat yOrigin = ( CGRectGetHeight(self.commentsButton.frame) - VButtonHeight ) / 2.0f;
     [self.commentsButton setFrame:CGRectMake(self.commentsButton.frame.origin.x, yOrigin, VCommentButtonWidth, VButtonHeight)];
 
@@ -107,6 +114,8 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 
 - (void)gifAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
     if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
         [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditGIF];
@@ -121,6 +130,8 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 
 - (void)memeAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
     if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
         [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditSnapshot];
@@ -150,7 +161,8 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
 - (UIButton *)addButtonWithImage:(UIImage *)image
 {
     UIButton *button = [super addButtonWithImage:image];
-    button.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    CGFloat colorVal = 238.0f / 255.0f;
+    button.backgroundColor = [UIColor colorWithRed:colorVal green:colorVal blue:colorVal alpha:1.0f];
     button.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     return button;
 }
@@ -162,12 +174,12 @@ static NSString * const VStreamCellActionViewCommentIconKey = @"commentIcon"; //
     dispatch_once(&onceToken, ^(void)
                   {
                       buttonImages = @{
-                                       VStreamCellActionViewShareIconKey : @"shareIcon-D",
-                                       VStreamCellActionViewRepostIconKey : @"repostIcon-D",
-                                       VStreamCellActionViewRepostSuccessIconKey : @"repostIcon-success-D",
-                                       VStreamCellActionViewCommentIconKey : @"commentIcon-D",
-                                       VStreamCellActionViewMemeIconKey : @"memeIcon-D",
-                                       VStreamCellActionViewGifIconKey : @"gifIcon-D"
+                                       VStreamCellActionViewShareIconKey : @"D_shareIcon",
+                                       VStreamCellActionViewRepostIconKey : @"D_repostIcon",
+                                       VStreamCellActionViewRepostSuccessIconKey : @"D_repostIcon-success",
+                                       VStreamCellActionViewCommentIconKey : @"D_commentIcon",
+                                       VStreamCellActionViewMemeIconKey : @"D_memeIcon",
+                                       VStreamCellActionViewGifIconKey : @"D_gifIcon"
                                        };
                   });
     return buttonImages;

@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSNumber * streamAutoplay;
 @property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) VNode *node;
+@property (nonatomic, retain) NSString * backgroundColor;
 @end
 
 @interface VAsset (CoreDataGeneratedAccessors)

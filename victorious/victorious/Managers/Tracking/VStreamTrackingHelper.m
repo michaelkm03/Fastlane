@@ -125,7 +125,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
 }
 
-- (void)viewControllerSelected:(VStream *)stream
+- (void)multipleContainerDidSetSelected:(VStream *)stream
 {
     if ( self.canTrackViewDidAppear )
     {

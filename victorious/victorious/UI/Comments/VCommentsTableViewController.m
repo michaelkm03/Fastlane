@@ -47,6 +47,7 @@
 #import "VHashtagStreamCollectionViewController.h"
 
 #import "UIStoryboard+VMainStoryboard.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @import Social;
 
@@ -152,6 +153,10 @@
     if (!hasComments)
     {
         VNoContentView *noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        if ( [noCommentsView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noCommentsView.dependencyManager = self.dependencyManager;
+        }
         self.tableView.backgroundView = noCommentsView;
         noCommentsView.titleLabel.text = NSLocalizedString(@"NoCommentsTitle", @"");
         noCommentsView.messageLabel.text = NSLocalizedString(@"NoCommentsMessage", @"");
@@ -254,12 +259,14 @@
     if (comment.realtime.integerValue < 0)
     {
         
-        cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formatRTCUserName:comment.user.name];
+        cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formatRTCUserName:comment.user.name
+                                                                   withDependencyManager:self.dependencyManager];
     }
     else
     {
         cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:comment.user.name
-                                                                                      andPostedTime:comment.realtime];
+                                                                                                    andPostedTime:comment.realtime
+                                                                                            withDependencyManager:self.dependencyManager];
     }
     
     //Ugly, but only way I can think of to reliably update to proper string formatting per each cell
@@ -286,7 +293,7 @@
         cell.commentTextView.mediaThumbnailView.hidden = YES;
         cell.commentTextView.hasMedia = NO;
     }
-    
+    cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {

@@ -21,8 +21,7 @@
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
 
-static const NSInteger kCharacterLimit = 255;
-static const NSInteger VDefaultKeyboardHeight = 51;
+static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
 
@@ -31,6 +30,8 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) NSURL *mediaURL;
+
+@property (nonatomic, assign, readonly) CGFloat maxTextFieldHeight;
 
 @end
 
@@ -90,14 +91,14 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     
     [self.textStorage setTextView:self.textView];
     
+    _maxTextFieldHeight = ([defaultFont lineHeight] * kTextInputFieldMaxLines) + [self.delegate initialHeightForKeyboardBar:self];
     [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
 }
 
 - (void)addAccessoryBar
 {
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), VDefaultKeyboardHeight)];
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), [self.delegate initialHeightForKeyboardBar:self])];
     inputAccessoryView.textInputView = self.textView;
-    inputAccessoryView.maxCharacterLength = kCharacterLimit;
     inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
 
     self.textView.inputAccessoryView = inputAccessoryView;
@@ -293,25 +294,21 @@ static const NSInteger VDefaultKeyboardHeight = 51;
                     [self.delegate didCancelKeyboardBar:self];
                 }
                 return NO;
-                break;
-            case UIReturnKeyDefault:
-            case UIReturnKeyGoogle:
-            case UIReturnKeyJoin:
-            case UIReturnKeyNext:
-            case UIReturnKeyRoute:
-            case UIReturnKeySearch:
-            case UIReturnKeyYahoo:
-            case UIReturnKeyEmergencyCall:
             default:
                 break;
         }
+    }
+    
+    if ( self.characterLimit != 0 )
+    {
+        return [textView.text stringByReplacingCharactersInRange:range withString:text].length <= self.characterLimit;
     }
     return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    self.promptLabel.hidden = ![textView.text isEqualToString:@""];
+    self.promptLabel.hidden = ([textView.text length] != 0);
     [self enableOrDisableSendButtonAsAppropriate];
 }
 
@@ -323,8 +320,8 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     {
         if ([self.delegate respondsToSelector:@selector(keyboardBar:wouldLikeToBeResizedToHeight:)])
         {
-            CGFloat desiredHeight = fmaxf(14.0f + self.textView.contentSize.height, VDefaultKeyboardHeight);
-            if (CGRectGetHeight(self.view.bounds) != desiredHeight)
+            CGFloat desiredHeight = fmaxf(self.textView.contentSize.height, [self.delegate initialHeightForKeyboardBar:self]);
+            if (desiredHeight < self.maxTextFieldHeight)
             {
                 [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:desiredHeight];
             }

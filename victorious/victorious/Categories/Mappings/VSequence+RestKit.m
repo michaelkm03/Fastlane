@@ -14,6 +14,7 @@
 #import "VTracking+RestKit.h"
 #import "VAdBreak+RestKit.h"
 #import "VEndCard+RestKit.h"
+#import "VStream+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -46,7 +47,7 @@
                                   @"preview.type"           : VSelectorName(previewType),
                                   @"preview.data"           : VSelectorName(previewData),
                                   @"stream_content_type" :   VSelectorName(streamContentType),
-                                  @"has_reposted"   :   VSelectorName(hasReposted)
+                                  @"has_reposted"   :   VSelectorName(hasReposted),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -88,69 +89,10 @@
 
 + (NSArray *)descriptors
 {
-    return @[ [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                        method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/detail_list_by_category/:category"
-                                                       keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-            
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_user/:userid/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-          
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_category/:category/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/hot_detail_list_by_stream/:stream/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:category/:filtername"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_hashtag/:hashtag/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/follows_detail_list_by_stream/:userid/:stream/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/remixes_by_sequence/:sequenceID/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
+    return @[
               [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                            method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/fetch/:sequence_id"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:stream/:page/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:streamId/:filterId/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
               ];

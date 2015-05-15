@@ -41,51 +41,61 @@ static const NSTimeInterval kBlurOverDismissTransitionDuration = 0.5f;
         UIGraphicsEndImageContext();
         
         self.blurredImageView = [[UIImageView alloc] initWithFrame:[transitionContext containerView].bounds];
-        [self.blurredImageView setBlurredImageWithClearImage:snapshotImage placeholderImage:snapshotImage tintColor:nil];
         [toViewController.view addSubview:self.blurredImageView];
         [toViewController.view sendSubviewToBack:self.blurredImageView];
         
         [[transitionContext containerView] addSubview:toViewController.view];
         toViewController.view.alpha = 0.0f;
+        
+        [self.blurredImageView blurImage:snapshotImage withTintColor:nil toCallbackBlock:^(UIImage *blurredImage)
+        {
+            self.blurredImageView.image = blurredImage;
+            [self animateToNewViewControllerWithContext:transitionContext];
+        }];
     }
     else
     {
         [[transitionContext containerView] addSubview:toViewController.view];
         [[transitionContext containerView] sendSubviewToBack:toViewController.view];
+        [self animateToNewViewControllerWithContext:transitionContext];
     }
-    
+}
+
+- (void)animateToNewViewControllerWithContext:(id<UIViewControllerContextTransitioning>)transitionContext
+{
+    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
          usingSpringWithDamping:0.7f
           initialSpringVelocity:0.0f
                         options:kNilOptions
                      animations:^
-    {
-        if (self.presenting)
-        {
-            if ([toViewController isKindOfClass:[VPublishViewController class]])
-            {
-                VPublishViewController *publishVC = (VPublishViewController *)toViewController;
-                publishVC.animateInBlock();
-            }
-            toViewController.view.alpha = 1.0f;
-            self.blurredImageView.alpha = 1.0f;
-        }
-        else
-        {
-            fromViewController.view.alpha = 0.0f;
-            self.blurredImageView.alpha = 0.0f;
-        }
-    }
+     {
+         if (self.presenting)
+         {
+             if ([toViewController isKindOfClass:[VPublishViewController class]])
+             {
+                 VPublishViewController *publishVC = (VPublishViewController *)toViewController;
+                 publishVC.animateInBlock();
+             }
+             toViewController.view.alpha = 1.0f;
+         }
+         else
+         {
+             fromViewController.view.alpha = 0.0f;
+             self.blurredImageView.alpha = 0.0f;
+         }
+     }
                      completion:^(BOOL finished)
-    {
-        if (!self.presenting)
-        {
-            [self.blurredImageView removeFromSuperview];
-        }
-        
-        [transitionContext completeTransition:finished];
-    }];
+     {
+         if (!self.presenting)
+         {
+             [self.blurredImageView removeFromSuperview];
+         }
+         
+         [transitionContext completeTransition:finished];
+     }];
 }
 
 @end

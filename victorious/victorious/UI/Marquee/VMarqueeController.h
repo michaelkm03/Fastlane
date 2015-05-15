@@ -12,22 +12,30 @@
 
 @class VStream, VUser, VStreamItem, VStreamCollectionViewDataSource, VMarqueeController, VMarqueeTabIndicatorView, VTimerManager, VDependencyManager;
 
-@protocol VMarqueeDelegate <NSObject>
+@protocol VMarqueeSelectionDelegate <NSObject>
 
 @required
 
 - (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image;
 - (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path;
-- (void)marqueeRefreshedContent:(VMarqueeController *)marquee;
 
 @end
 
-@interface VMarqueeController : NSObject <UICollectionViewDelegate, UIScrollViewDelegate>
+@protocol VMarqueeDataDelegate <NSObject>
 
-@property (nonatomic, weak) id<VMarqueeDelegate> delegate;
+@required
+
+- (void)marquee:(VMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems;
+
+@end
+
+@interface VMarqueeController : NSObject <UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate>
+
+@property (nonatomic, weak) id <VMarqueeSelectionDelegate> selectionDelegate;
+@property (nonatomic, weak) id <VMarqueeDataDelegate> dataDelegate;
+
 @property (nonatomic, readonly) VStreamItem *currentStreamItem;///<The stream item currently being displayed
 @property (nonatomic, readonly) VStream *stream;///<The Marquee Stream
-@property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.
 @property (weak, nonatomic) UICollectionView *collectionView;///<The colletion view used to display the streamItems
 @property (weak, nonatomic) VMarqueeTabIndicatorView *tabView;///<The Marquee tab view to update
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager;///<The timer in control of auto scroll
@@ -37,6 +45,5 @@
 - (instancetype)initWithStream:(VStream *)stream;
 - (void)disableTimer;
 - (void)enableTimer;
-- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock;
 
 @end

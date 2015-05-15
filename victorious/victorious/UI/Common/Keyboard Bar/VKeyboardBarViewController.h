@@ -13,7 +13,10 @@
 @protocol VKeyboardBarDelegate <NSObject, VUserTaggingTextStorageDelegate>
 @required
 
+- (CGFloat)initialHeightForKeyboardBar:(VKeyboardBarViewController *)keyboardBar;
+
 @optional
+
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL;
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height;
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar;
@@ -29,6 +32,7 @@
 @property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;
 @property (nonatomic)         BOOL                      sendButtonEnabled;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
+@property (nonatomic, assign) NSUInteger               characterLimit; ///< Defaults to 0, no limit
 
 /**
  If YES (default), text and media will be cleared automatically after the 

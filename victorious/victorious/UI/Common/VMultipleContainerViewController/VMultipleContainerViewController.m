@@ -9,19 +9,26 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDependencyManager+VNavigationItem.h"
-#import "VMultipleContainerChild.h"
+#import "VMultipleContainer.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
 #import "VStreamCollectionViewController.h"
+#import "VAuthorizationContext.h"
+#import "VNavigationDestination.h"
+#import "VProvidesNavigationMenuItemBadge.h"
+#import "UIView+AutoLayout.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
+@property (nonatomic) NSUInteger selectedIndex;
+@property (nonatomic) NSInteger badgeNumber;
+@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -38,6 +45,7 @@ static NSString * const kInitialKey = @"initial";
     if (self)
     {
         _didShowInitial = NO;
+        _selectedIndex = 0;
         CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
         self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
@@ -53,12 +61,26 @@ static NSString * const kInitialKey = @"initial";
     {
         _dependencyManager = dependencyManager;
         self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
-        _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey withAddedDependencies:[dependencyManager styleDictionaryForNavigationBar]];
+        _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
         [_dependencyManager addPropertiesToNavigationItem:self.navigationItem];
-        self.title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
+        self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
+        
+        __weak typeof(self) weakSelf = self;
+        VNavigationMenuItemBadgeNumberUpdateBlock block = ^(NSInteger badgeNumber)
+        {
+            [weakSelf updateBadge];
+        };
+        for (UIViewController *vc in _viewControllers)
+        {
+            if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+            {
+                UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
+                viewController.badgeNumberUpdateBlock = block;
+            }
+        }
     }
     return self;
 }
@@ -79,6 +101,7 @@ static NSString * const kInitialKey = @"initial";
     collectionView.delegate = self;
     collectionView.scrollEnabled = NO;
     collectionView.scrollsToTop = NO;
+    collectionView.backgroundColor = [UIColor clearColor];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kCellReuseID];
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
@@ -102,18 +125,17 @@ static NSString * const kInitialKey = @"initial";
     if ( !self.didShowInitial )
     {
         UIViewController *initialViewController = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:kInitialKey];
+        NSUInteger index = 0;
         if ( initialViewController != nil )
         {
-            NSUInteger index = [self.viewControllers indexOfObject:initialViewController];
-        
+            index = [self.viewControllers indexOfObject:initialViewController];
             if ( index == NSNotFound )
             {
                 index = 0;
             }
-            [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
-            [self.selector setActiveViewControllerIndex:index];
         }
-        self.didShowInitial = YES;
+        [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
+        [self.selector setActiveViewControllerIndex:index];
     }
 }
 
@@ -131,15 +153,24 @@ static NSString * const kInitialKey = @"initial";
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    id<VMultipleContainerChild> viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
-    [viewController viewControllerSelected:YES];
+    if ( !self.didShowInitial )
+    {
+        if ( !self.isInitialViewController )
+        {
+            [self.collectionView reloadData];
+        }
+        self.didShowInitial = YES;
+    }
+    
+    id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
+    [child multipleContainerDidSetSelected:YES];
 }
 
 #pragma mark - Rotation
@@ -164,7 +195,7 @@ static NSString * const kInitialKey = @"initial";
          NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] );
          
          id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
-         child.multipleViewControllerChildDelegate = self;
+         child.multipleContainerChildDelegate = self;
     }];
     
     _viewControllers = [viewControllers copy];
@@ -180,9 +211,66 @@ static NSString * const kInitialKey = @"initial";
     {
         if ( [obj isKindOfClass:[UIViewController class]] )
         {
-            obj.v_layoutInsets = layoutInsets;
+            // TODO: Remove me when we no longer use UITVC
+            if ([obj isKindOfClass:[UITableViewController class]])
+            {
+                obj.v_layoutInsets = UIEdgeInsetsZero;
+            }
+            else
+            {
+                obj.v_layoutInsets = layoutInsets;
+            }
         }
     }];
+}
+
+#pragma mark - Badges
+
+- (void)setBadgeNumber:(NSInteger)badgeNumber
+{
+    if ( badgeNumber == _badgeNumber )
+    {
+        return;
+    }
+    _badgeNumber = badgeNumber;
+    
+    if ( self.badgeNumberUpdateBlock != nil )
+    {
+        self.badgeNumberUpdateBlock(self.badgeNumber);
+    }
+}
+
+- (void)updateBadge
+{
+    NSInteger count = 0;
+    for (UIViewController *vc in _viewControllers)
+    {
+        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
+            count += viewController.badgeNumber;
+        }
+    }
+    self.badgeNumber = count;
+}
+
+#pragma mark - VMultipleContainer
+
+- (NSArray *)children
+{
+    return self.viewControllers;
+}
+
+- (void)selectChild:(id<VMultipleContainerChild>)child
+{
+    NSUInteger index = [self.viewControllers indexOfObject:child];
+    if ( index == NSNotFound )
+    {
+        index = 0;
+    }
+    [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
+    [self.selector setActiveViewControllerIndex:index];
+    [self.v_navigationController setNavigationBarHidden:NO];
 }
 
 #pragma mark - VMultipleContainerChildDelegate
@@ -190,6 +278,28 @@ static NSString * const kInitialKey = @"initial";
 - (UINavigationItem *)parentNavigationItem
 {
     return self.navigationItem;
+}
+
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VAuthorizationContextProvider)])
+    {
+        UIViewController<VAuthorizationContextProvider> *viewController = self.viewControllers[self.selectedIndex];
+        return [viewController requiresAuthorization];
+    }
+    return NO;
+}
+
+- (VAuthorizationContext)authorizationContext
+{
+    if ([self.viewControllers[self.selectedIndex] conformsToProtocol:@protocol(VAuthorizationContextProvider)])
+    {
+        UIViewController<VAuthorizationContextProvider> *viewController = self.viewControllers[self.selectedIndex];
+        return [viewController authorizationContext];
+    }
+    return VAuthorizationContextDefault;
 }
 
 #pragma mark -
@@ -201,13 +311,24 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
-    [self resetNavigationItem];
+    self.selectedIndex = index;
+    [self resetNavigationItemForIndex:index];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
     id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
-    [viewController viewControllerSelected:isDefaultSelection];
+    [viewController multipleContainerDidSetSelected:isDefaultSelection];
+}
+
+- (void)resetNavigationItemForIndex:(NSUInteger)index
+{
+    [self resetNavigationItem];
+    UIViewController<VMultipleContainerChild> *viewController = self.viewControllers[ index ];
+    if ([viewController.navigationItem.rightBarButtonItems count] > 0)
+    {
+        self.navigationItem.rightBarButtonItems = viewController.navigationItem.rightBarButtonItems;
+    }
 }
 
 - (void)resetNavigationItem
@@ -242,7 +363,7 @@ static NSString * const kInitialKey = @"initial";
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellReuseID forIndexPath:indexPath];
     UIViewController *viewController = [self viewControllerAtIndexPath:indexPath];
-    viewController.v_layoutInsets = self.v_layoutInsets;
+
     UIView *viewControllerView = viewController.view;
     
     [self addChildViewController:viewController];
@@ -250,14 +371,22 @@ static NSString * const kInitialKey = @"initial";
     [cell.contentView addSubview:viewControllerView];
     [viewController didMoveToParentViewController:self];
     
-    [cell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[viewControllerView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(viewControllerView)]];
-    [cell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[viewControllerView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(viewControllerView)]];
+    // TODO: Remove me once we no longer use UITVC sÜper hacky
+    if ([viewController isKindOfClass:[UITableViewController class]])
+    {
+        viewController.v_layoutInsets = UIEdgeInsetsZero;
+        [cell.contentView v_addFitToParentConstraintsToSubview:viewControllerView
+                                                       leading:self.v_layoutInsets.left
+                                                      trailing:self.v_layoutInsets.right
+                                                           top:self.v_layoutInsets.top
+                                                        bottom:self.v_layoutInsets.bottom];
+    }
+    else
+    {
+        viewController.v_layoutInsets = self.v_layoutInsets;
+        [cell.contentView v_addFitToParentConstraintsToSubview:viewControllerView];
+    }
+
     return cell;
 }
 

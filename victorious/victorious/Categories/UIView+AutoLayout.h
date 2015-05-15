@@ -41,4 +41,22 @@
  */
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview;
 
+/**
+ Applies internal width constraint to view.
+ */
+- (void)v_addWidthConstraint:(CGFloat)width;
+
+/**
+ Applies internal height constraint to view.
+ */
+- (void)v_addHeightConstraint:(CGFloat)height;
+
+/**
+ Returns the first width constraint found by enumerating constraints according
+ to the following criteria:
+    1. secondItem is nil
+    2. firstAttribute == NSLayoutAttributeWidth
+ */
+- (NSLayoutConstraint *)v_internalWidthConstraint;
+
 @end

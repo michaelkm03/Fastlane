@@ -20,6 +20,7 @@
 #import "TWAPIManager.h"
 
 #import "VConstants.h"
+#import "VJSONHelper.h"
 
 @import Accounts;
 
@@ -46,6 +47,14 @@ static NSString * const kVAPIParamContext = @"context";
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
+    return [self fetchUser:userId forceReload:NO withSuccessBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber *)userId
+                                   forceReload:(BOOL)forceReload
+                              withSuccessBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail
+{
     __block VUser *user = nil;
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     [context performBlockAndWait:^(void)
@@ -55,16 +64,15 @@ static NSString * const kVAPIParamContext = @"context";
                                 entityName:[VUser entityName]
                       managedObjectContext:context];
      }];
-    if (user)
+    if ( user != nil && !forceReload )
     {
-        if (success)
+        if ( success != nil )
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
                            {
-                               success(nil, nil, @[user]);
+                               success( nil, nil, @[user] );
                            });
         }
-        
         return nil;
     }
     
@@ -233,21 +241,31 @@ static NSString * const kVAPIParamContext = @"context";
         [self.mainUser addFollowingObject:user];
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
+        
         [self notifyIsFollowingUpdated];
-        
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser];
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
     };
     
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        if (error.code == kVFollowsRelationshipAlreadyExistsError)
+        {
+            // Add user relationship to local persistent store
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            [mainUser addFollowingObject:user];
+        }
+        fail(operation, error);
+    };
+    
     return [self POST:@"/api/follow/add"
                object:nil
            parameters:parameters
          successBlock:fullSuccess
-            failBlock:fail];
+            failBlock:fullFail];
 }
 
 - (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
@@ -258,7 +276,9 @@ static NSString * const kVAPIParamContext = @"context";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self.mainUser removeFollowingObject:user];
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        [mainUser removeFollowingObject:user];
+        
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
         [self notifyIsFollowingUpdated];
@@ -271,11 +291,22 @@ static NSString * const kVAPIParamContext = @"context";
         }
     };
     
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        NSInteger errorCode = error.code;
+        if (errorCode == kVFollowsRelationshipDoesNotExistError)
+        {
+            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            [mainUser removeFollowingObject:user];
+        }
+        fail(operation, error);
+    };
+    
     return [self POST:@"/api/follow/remove"
                object:nil
            parameters:parameters
          successBlock:fullSuccess
-            failBlock:fail];
+            failBlock:fullFail];
 }
 
 - (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user
@@ -284,8 +315,10 @@ static NSString * const kVAPIParamContext = @"context";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        user.numberOfFollowers = @(((NSString *)fullResponse[kVPayloadKey][@"followers"]).integerValue);
-        user.numberOfFollowing = @(((NSString *)fullResponse[kVPayloadKey][@"subscribed_to"]).integerValue);
+        VJSONHelper *helper = [[VJSONHelper alloc] init];
+        
+        user.numberOfFollowers = [helper numberFromJSONValue:fullResponse[kVPayloadKey][@"followers"]];
+        user.numberOfFollowing = [helper numberFromJSONValue:fullResponse[kVPayloadKey][@"subscribed_to"]];
         
         if ( success != nil )
         {

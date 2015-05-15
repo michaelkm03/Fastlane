@@ -16,9 +16,9 @@ extern NSString * const VDependencyManagerImageURLKey;
 
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;
-extern NSString * const VDependencyManagerSecondaryBackgroundColorKey;
 extern NSString * const VDependencyManagerMainTextColorKey;
 extern NSString * const VDependencyManagerContentTextColorKey;
+extern NSString * const VDependencyManagerSecondaryTextColorKey;
 extern NSString * const VDependencyManagerAccentColorKey;
 extern NSString * const VDependencyManagerSecondaryAccentColorKey;
 extern NSString * const VDependencyManagerLinkColorKey;
@@ -41,6 +41,7 @@ extern NSString * const VDependencyManagerButton2FontKey;
 // Keys for experiments (these should be retrieved with -numberForKey:, as a bool wrapped in an NSNumber)
 extern NSString * const VDependencyManagerHistogramEnabledKey;
 extern NSString * const VDependencyManagerProfileImageRequiredKey;
+extern NSString * const VDependencyManagerPauseVideoWhenCommentingKey;
 
 // Keys for view controllers
 extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "scaffold" is the view controller that sits at the root of the view controller heirarchy
@@ -48,8 +49,10 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 
 // Keys for Workspace
 extern NSString * const VDependencyManagerWorkspaceFlowKey;
+extern NSString * const VDependencyManagerTextWorkspaceFlowKey;
 extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
+extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 
 /**
  Provides loose coupling between components.
@@ -75,6 +78,12 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Returns the color with the specified key
  */
 - (UIColor *)colorForKey:(NSString *)key;
+
+/**
+ Marshalls a dictionary in the expected format into a UIColor object.
+ Returns nil if failed.
+*/
+ - (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary;
 
 /**
  Returns the font with the specified key
@@ -210,6 +219,26 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  of class, we return nil.
  */
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
+
+/**
+ Performs necessary cleanup before deallocating the receiver. 
+ After calling this method, any further method calls to this
+ object or its children and grandchildren should be avoided.
+ 
+ @discussion
+ VDependencyManager creates several retain cycles as part of
+ its design. This method exists to break those cycles when
+ a new session starts, or any other case in which you are about
+ to deallocate this dependency manager and instantiate a brand
+ new one from scratch (i.e., without a parent-child relationship
+ to an existing instance of VDependencyManager).
+ 
+ NOTE: This method only has effect if the receiver has no parent 
+ dependency manager. This ensures that any random object with a
+ reference to a child manager can't mess things up for everyone
+ else.
+ */
+- (void)cleanup;
 
 /**
  Creates and returns a new dependency manager with the given configuration dictionary. The

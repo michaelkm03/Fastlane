@@ -15,9 +15,10 @@
 - (id)init
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _identifier = [NSUUID UUID];
+        _expectedBytesToSend = 0;
     }
     return self;
 }
@@ -25,7 +26,7 @@
 - (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFilename:(NSString *)bodyFilename description:(NSString *)uploadDescription
 {
     self = [self init];
-    if (self)
+    if ( self != nil )
     {
         _request = [request copy];
         _previewImage = previewImage;
@@ -38,7 +39,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [self init];
-    if (self)
+    if ( self != nil )
     {
         _request = [aDecoder decodeObjectOfClass:[NSURLRequest class] forKey:NSStringFromSelector(@selector(request))];
         _bodyFilename = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(bodyFilename))];

@@ -7,8 +7,8 @@
 //
 
 #import "VHasManagedDependencies.h"
-
 #import "VNavigationDestination.h"
+#import "VAuthorizationContextProvider.h"
 
 @class VWorkspaceFlowController;
 
@@ -51,7 +51,7 @@ extern NSString * const VWorkspaceFlowControllerInitialCaptureStateKey;
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
 {
     VWorkspaceFlowControllerInitialCaptureStateImage, // Default
-    VWorkspaceFlowControllerInitialCaptureStateVideo
+    VWorkspaceFlowControllerInitialCaptureStateVideo,
 };
 
 // Remix
@@ -73,7 +73,7 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
  */
-@interface VWorkspaceFlowController : NSObject <VHasManagedDependencies, VNavigationDestination>
+@interface VWorkspaceFlowController : NSObject <VHasManagedDependencies, VNavigationDestination, VAuthorizationContextProvider>
 
 //TODO: this is a temporary workaround for when there may not be a dependency manager.
 + (instancetype)workspaceFlowControllerWithoutADependencyManger;

@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 03/23/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 04/24/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -187,6 +187,7 @@ extern NSString * const VTrackingEventUserDidSelectCreateMessage;
 extern NSString * const VTrackingEventUserDidSendMessage; //< "Params: TextLength, MediaType"
 extern NSString * const VTrackingEventUserDidSelectMessage; 
 extern NSString * const VTrackingEventUserDidSelectUserFromSearchRecipient; 
+extern NSString * const VTrackingEventUserDidSelectNotification; 
 extern NSString * const VTrackingEventUserDidFlagConversation; 
 
 // Discover

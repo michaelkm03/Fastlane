@@ -8,7 +8,6 @@
 
 #import "VLiveRailAdViewController.h"
 #import "LiveRailAdManager.h"
-#import "VSettingManager.h"
 #import "VAdBreakFallback+RestKit.h"
 
 #define EnableLiveRailLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
@@ -23,21 +22,6 @@
 @end
 
 @implementation VLiveRailAdViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -67,11 +51,6 @@
     {
         [self.adManager pauseAd];
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 - (void)dealloc

@@ -15,6 +15,8 @@
  */
 @interface VPushNotificationManager : NSObject
 
+@property (nonatomic, readonly) BOOL started; ///< YES if -startPushNotificationManager has already been called.
+
 + (VPushNotificationManager *)sharedPushNotificationManager;
 
 /**

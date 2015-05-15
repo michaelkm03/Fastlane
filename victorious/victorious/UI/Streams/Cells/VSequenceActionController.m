@@ -33,7 +33,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Sequence.h"
-#import "VThemeManager.h"
 
 #pragma mark - Categories
 #import "NSString+VParseHelp.h"
@@ -49,6 +48,7 @@
 #import "VAuthorizedAction.h"
 
 #import "VAppInfo.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -71,18 +71,28 @@
 
 - (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    if ( !viewController || !viewController.navigationController || !sequence )
+    if ( sequence == nil )
+    {
+        return NO;
+    }
+    
+    return [self showProfile:sequence.user fromViewController:viewController];
+}
+
+- (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController
+{
+    if ( viewController == nil || viewController.navigationController == nil || user == nil )
     {
         return NO;
     }
     
     if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
-        [((VUserProfileViewController *)viewController).profile isEqual:sequence.user] )
+        [((VUserProfileViewController *)viewController).user isEqual:user] )
     {
         return NO;
     }
     
-    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:sequence.user];
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
     return YES;
@@ -325,7 +335,7 @@
          UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                                                 message:NSLocalizedString(@"ReportContentMessage", @"")
                                                                delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                       otherButtonTitles:nil];
          [alert show];
          
@@ -337,7 +347,7 @@
          UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
                                                                 message:NSLocalizedString(@"ErrorOccured", @"")
                                                                delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                       otherButtonTitles:nil];
          [alert show];
      }];
@@ -349,7 +359,7 @@
 - (NSString *)shareTextForSequence:(VSequence *)sequence
 {
     NSString *shareText = @"";
-    
+
     if ([sequence.user isOwner])
     {
         if ([sequence isPoll])
@@ -358,7 +368,14 @@
         }
         else if ([sequence isVideo])
         {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), sequence.name, sequence.user.name];
+            if (sequence.name.length > 0)
+            {
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), sequence.name, sequence.user.name];
+            }
+            else
+            {
+                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), sequence.user.name];
+            }
         }
         else
         {

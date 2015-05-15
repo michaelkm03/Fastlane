@@ -16,7 +16,7 @@
 NSString * const kVCommentCellNibName = @"VCommentCell";
 
 static const CGFloat      kMinimumCellHeight = 45.0f;
-static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
+static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
 
 @interface VCommentCell()
 
@@ -34,6 +34,7 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
     [super awakeFromNib];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.profileImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     [self setupSwipeView];
     [self.contentView v_addFitToParentConstraintsToSubview:self.swipeViewController.view];

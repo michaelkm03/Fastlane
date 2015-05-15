@@ -19,17 +19,14 @@
 /* Class = "UIButton"; normalTitle = "Done"; ObjectID = "9Wi-As-OwD"; */
 "9Wi-As-OwD.normalTitle" = "Terminé";
 
+/* Class = "UILabel"; text = "I'm at least 13 years old and agree to the Terms of Service"; ObjectID = "87v-KS-JzW"; */
+"87v-KS-JzW.text" = "J'ai au moins 13 ans et j'accepte les conditions d'utilisation";
+
 /* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "A3z-ra-4Af"; */
 "A3z-ra-4Af.placeholder" = "E-mail";
 
-/* Class = "UILabel"; text = "Create Profile"; ObjectID = "A8K-lD-yg5"; */
-"A8K-lD-yg5.text" = "Créer un profil";
-
 /* Class = "UILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
 "CGW-Kx-wFZ.text" = "SAISIR LE CODE";
-
-/* Class = "UILabel"; text = "I'm at least 13 years old and agree to the Terms of Service"; ObjectID = "EGg-eb-7Dm"; */
-"EGg-eb-7Dm.text" = "J'ai au moins 13 ans et j'accepte les conditions d'utilisation";
 
 /* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "Jbh-n4-soS"; */
 "Jbh-n4-soS.placeholder" = "E-mail";
@@ -39,6 +36,9 @@
 
 /* Class = "UILabel"; text = "Thanks!"; ObjectID = "Lji-XP-yck"; */
 "Lji-XP-yck.text" = "Merci !";
+
+/* Class = "UINavigationItem"; title = "Find Friends"; ObjectID = "NwV-bN-un0"; */
+"NwV-bN-un0.title" = "Trouver des amis";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "UDE-m8-fBQ"; */
 "UDE-m8-fBQ.placeholder" = "Mot de passe";
@@ -52,17 +52,11 @@
 /* Class = "UINavigationItem"; title = "Login with E-mail"; ObjectID = "d29-FA-lll"; */
 "d29-FA-lll.title" = "Se connecter via une adresse e-mail";
 
-/* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "g23-E6-rHp"; */
-"g23-E6-rHp.placeholder" = "Confirmer le mot de passe";
-
 /* Class = "UILabel"; text = "Sign up with Email"; ObjectID = "gWK-fr-OZX"; */
 "gWK-fr-OZX.text" = "Se connecter via une adresse e-mail";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "jhx-0Z-CyE"; */
 "jhx-0Z-CyE.normalTitle" = "Annuler";
-
-/* Class = "UILabel"; text = "Tell us about yourself..."; ObjectID = "kzi-75-z6l"; */
-"kzi-75-z6l.text" = "Parlez-nous de vous...";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
 "pDv-b6-X4m.placeholder" = "Emplacement";
@@ -87,4 +81,7 @@
 
 /* Class = "UITextView"; text = "Resend Email"; ObjectID = "ucd-V3-oVY"; */
 "ucd-V3-oVY.text" = "Renvoyer l'e-mail";
+
+/* Class = "UILabel"; text = "Create Profile"; ObjectID = "xl3-0J-ghm"; */
+"xl3-0J-ghm.text" = "Créer un profil";
 

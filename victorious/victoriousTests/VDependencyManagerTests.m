@@ -91,6 +91,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 @interface VDependencyManagerTests : XCTestCase
 
 @property (nonatomic, strong) NSDictionary *dictionaryOfClassesByTemplateName;
+@property (nonatomic, strong) VDependencyManager *baseDependencyManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VDependencyManager *childDependencyManager;
 
@@ -108,14 +109,43 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                 @"solidColor.background": @"VSolidColorBackground",
                                             };
     
-    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                                    configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
-                                                                dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                     configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
+                                                 dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
-    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
-    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.baseDependencyManager
+                                                                 configuration:configuration
+                                             dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
+                                                                      configuration:@{ @"invalidColor": @{ @"red": @"spot",
+                                                                                                           @"green": @"monkey",
+                                                                                                           @"blue": @255,
+                                                                                                           @"alpha": @255,
+                                                                                                           },
+                                                                                       @"color.text": @{ @"red": @"green",
+                                                                                                         @"green": @"red",
+                                                                                                         @"blue": @"blue",
+                                                                                                         @"alpha": @"refridgerator",
+                                                                                                         },
+                                                                                       @"invalidFont": @{ @"fontName": @"Comic Sans",
+                                                                                                          @"fontSize": @24,
+                                                                                                          },
+                                                                                       @"font.heading1": @{
+                                                                                               
+                                                                                               },
+                                                                                       @"font.heading2": @{ @"fontName": @"Not Your Father's Font",
+                                                                                                            @"fontSize": @36
+                                                                                               },
+                                                                                       }
+                                                  dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+}
+
+- (void)tearDown
+{
+    [self.baseDependencyManager cleanup];
+    [super tearDown];
 }
 
 #pragma mark - Colors, fonts
@@ -141,6 +171,19 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqualObjects(expected, actual);
 }
 
+- (void)testInvalidColorReturnsNil
+{
+    UIColor *invalid = [self.childDependencyManager colorForKey:@"invalidColor"];
+    XCTAssertNil(invalid);
+}
+
+- (void)testInvalidColorDefaultsToParent
+{
+    UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
+    UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
 - (void)testFont
 {
     UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:18];
@@ -162,6 +205,26 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     UIFont *expected = [UIFont fontWithName:@"Helvetica" size:12];
     UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testInvalidFontReturnsNil
+{
+    UIFont *invalid = [self.childDependencyManager fontForKey:@"invalidFont"];
+    XCTAssertNil(invalid);
+}
+
+- (void)testInvalidFontDefaultsToParent
+{
+    UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:24];
+    UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testAnotherKindOfInvalidFontDefaultsToParent
+{
+    UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:20];
+    UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     XCTAssertEqualObjects(expected, actual);
 }
 
@@ -634,6 +697,43 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     NSString *expected = @"http://example.com/";
     NSString *actual = [viewController.dependencyManager stringForKey:@"app_store_url"];
     XCTAssertEqualObjects(expected, actual);
+}
+
+#pragma mark - Cleanup
+
+- (VDependencyManager *)extractChildFromDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VTestViewControllerWithInitMethod *vc = (VTestViewControllerWithInitMethod *)[dependencyManager viewControllerForKey:@"ivc"];
+    return vc.dependencyManager;
+}
+
+- (void)testCleanupRemovesSingletons
+{
+    // One of the main sources of retain cycles that -cleanup targets is singletons.
+    // This method ensures they are released
+    
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result1);
+
+    [self.baseDependencyManager cleanup];
+    
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotEqual(result1, result2);
+}
+
+- (void)testCleanupDoesntWorkOnChildren
+{
+    // -cleanup is documented to not work when called on child dependency managers.
+    // This test verifies that's true.
+    
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result1);
+    
+    [self.dependencyManager cleanup];
+    
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
 }
 
 #pragma mark - Children

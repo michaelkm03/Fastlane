@@ -9,6 +9,7 @@
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
 #import "VMessage+RestKit.h"
+#import "VUser+RestKit.h"
 
 @implementation VNotification (RestKit)
 
@@ -20,10 +21,16 @@
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
+                                  @"body" : VSelectorName(body),
+                                  @"deeplink" : VSelectorName(deepLink),
+                                  @"is_read" : VSelectorName(isRead),
+                                  @"type" : VSelectorName(type),
+                                  @"updated_at" : VSelectorName(updatedAt),
                                   @"id" : VSelectorName(remoteId),
-                                  @"user_id" : VSelectorName(userId),
-                                  @"notify_type" : VSelectorName(notifyType),
-                                  @"posted_at" : VSelectorName(postedAt)
+                                  @"subject" : VSelectorName(subject),
+                                  @"creator_profile_image_url" : VSelectorName(imageURL),
+                                  @"created_at" : VSelectorName(createdAt),
+                                  @"display_order" : VSelectorName(displayOrder),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -32,37 +39,30 @@
     
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"userId" : @"remoteId"}];
+        
+    RKRelationshipMapping *userMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"created_by"
+                                                                                         toKeyPath:VSelectorName(user)
+                                                                                       withMapping:[VUser entityMapping]];
+    [mapping addPropertyMapping:userMapping];
     
     return mapping;
 }
 
 + (NSArray *)descriptors
 {
-    return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/message/notifications_list"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/message/notifications_list/:currentpage/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/message/notifications_for_user/:userid/:currentpage/:perpage"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                           method:RKRequestMethodGET
-                                                      pathPattern:@"/api/message/notifications_for_user/:userid"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
-              ];
+    return @[
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/notification/notifications_list"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/notification/notifications_list/:currentpage/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             ];
 }
 
 @end

@@ -8,10 +8,16 @@
 
 #import "VDefaultProfileButton.h"
 
-#import "VThemeManager.h"
-
 #import <SDWebImage/UIButton+WebCache.h>
-#import "VSettingManager.h"
+#import "UIImageView+VLoadingAnimations.h"
+#import "UIImage+VTint.h"
+#import "UIImage+Round.h"
+
+@interface VDefaultProfileButton ()
+
+@property (nonatomic, strong) NSURL *imageURL;
+
+@end
 
 @implementation VDefaultProfileButton
 
@@ -24,7 +30,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self setup];
     }
@@ -33,31 +39,85 @@
 
 - (void)setup
 {
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    //Setting vertical and horizontal alignment to fill causes the image set by "setImage"
+    //to completely fill the bounds of button
+    self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    self.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     
-    [self setImage:defaultImage forState:UIControlStateNormal];
-    //Was previously accent color for A and D
-    NSString *colorKey = kVLinkColor;
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
-    
-    CGFloat radius = CGRectGetHeight(self.bounds)/2;
-    self.layer.cornerRadius = radius;
-    self.clipsToBounds = YES;
-    
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.backgroundColor = [UIColor clearColor];
+    self.tintColor = [UIColor darkGrayColor];
+}
 
+- (void)setTintColor:(UIColor *)tintColor
+{
+    super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
+    // Re-render placeholder image if necessary
+    if (_imageURL == nil || [_imageURL absoluteString].length == 0)
+    {
+        [self setImage:[self placeholderImage] forState:UIControlStateNormal];
+    }
 }
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
+    _imageURL = url;
     
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    __weak typeof(self) weakSelf = self;
+    [[SDWebImageManager sharedManager] downloadImageWithURL:url
+                                                    options:SDWebImageRetryFailed
+                                                   progress:nil
+                                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
+     {
+         if (!image)
+         {
+             [weakSelf setImage:[weakSelf placeholderImage] forState:controlState];
+             return;
+         }
+         
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
+                        {
+                            UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
+                            dispatch_async(dispatch_get_main_queue(), ^
+                                           {
+                                               [weakSelf setImage:roundedImage forState:controlState];
+                                           });
+                        });
+     }];
+}
+
+- (UIImage *)placeholderImage
+{
+    UIImage *image = [UIImage imageNamed:@"profile_thumb"];
+    if (CGRectGetHeight(self.bounds) > image.size.height)
+    {
+        image = [UIImage imageNamed:@"profile_full"];
+    }
     
-    [self sd_setImageWithURL:url
-                    forState:controlState
-            placeholderImage:defaultImage];
+    // Create unique key from tint color
+    NSString *tintKey = [self.tintColor description];
     
-    self.imageView.tintColor = self.tintColor;
+    // Check cache for already tinted image
+    SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
+    UIImage *cachedImage = [cache imageFromMemoryCacheForKey:tintKey];
+    if (cachedImage != nil)
+    {
+        return cachedImage;
+    }
+    
+    // Tint image and store in cache
+    UIImage *tintedImage = [image v_tintedTemplateImageWithColor:self.tintColor];
+    [cache storeImage:tintedImage forKey:tintKey];
+    
+    return tintedImage;
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    // Draws a white background
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddEllipseInRect(context, rect);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextFillPath(context);
 }
 
 @end

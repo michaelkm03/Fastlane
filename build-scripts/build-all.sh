@@ -15,19 +15,8 @@ DEFAULT_DEV_ACCOUNT="build.server@getvictorious.com"
 
 shift 2
 
-# Default App ID key: the plist key that contains the app ID that corresponds to the configuration we're building.
-if [ "$CONFIGURATION" == "Release" -o "$CONFIGURATION" == "Stable" ]; then
-    DEFAULT_APP_ID_KEY="VictoriousAppID"
-elif [ "$CONFIGURATION" == "Staging" ]; then
-    DEFAULT_APP_ID_KEY="StagingAppID"
-elif [ "$CONFIGURATION" == "QA" ]; then
-    DEFAULT_APP_ID_KEY="QAAppID"
-else
-    DEFAULT_APP_ID_KEY=""
-fi
-
 if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [app name(s) (optional)]"
+    echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [--macros <macros>] [app name(s) (optional)]"
     exit 1
 fi
 
@@ -39,6 +28,13 @@ else
     SPECIAL_PREFIX=""
 fi
 
+if [ "$1" == "--macros" ]; then
+    shift
+    MACROS="GCC_PREPROCESSOR_DEFINITIONS=\$GCC_PREPROCESSOR_DEFINITIONS $1"
+    shift
+else
+    MACROS=""
+fi
 
 ### Find and update provisioning profile
 # If this step fails or hangs, you may need to store or update the dev center credentials
@@ -85,9 +81,15 @@ xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generi
 
 ### Build
 
-xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-           CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX archive
+if [ "$MACROS" == "" ]; then
+    xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
+               -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
+               CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX archive
+else
+    xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
+               -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
+               CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX "$MACROS" archive
+fi
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
     pushd ../victorious.xcarchive/dSYMs > /dev/null
@@ -107,11 +109,16 @@ popd > /dev/null
 ### Package the individual apps
 
 applyConfiguration(){
-    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive
+    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive $CONFIGURATION
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
         exit 1
     fi
+
+    # Download the latest template
+    INFOPLIST="victorious.xcarchive/Products/Applications/victorious.app/Info.plist"
+    BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
+    ./build-scripts/download-template.sh "victorious.xcarchive/Products/Applications/victorious.app/environments.plist" "$BUILDNUM" "victorious.xcarchive/Products/Applications/victorious.app"
 
     # Copy standard provisioning profile
     cp "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
@@ -165,11 +172,11 @@ applyConfiguration(){
     fi
 
     xcodebuild -exportArchive -exportFormat ipa -archivePath "victorious.xcarchive" \
-               -exportPath "products/$CONFIG" -exportSigningIdentity "$CODESIGN_ID"
+               -exportPath "products/$FOLDER" -exportSigningIdentity "$CODESIGN_ID"
     EXPORTRESULT=$?
 
     if [ $EXPORTRESULT == 0 ]; then
-        cp victorious.app.dSYM.zip "products/$CONFIG.app.dSYM.zip"
+        cp victorious.app.dSYM.zip "products/$FOLDER.app.dSYM.zip"
     else
         exit $EXPORTRESULT
     fi
@@ -178,20 +185,18 @@ applyConfiguration(){
 ANY_APP_BUILT=0
 
 if [ $# == 0 ]; then
-    CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
+    CONFIG_FOLDERS=`find configurations -type d -depth 1 -exec basename {} \;`
     IFS=$'\n'
 else
-    CONFIGS=$*
+    CONFIG_FOLDERS=$*
 fi
 
-for CONFIG in $CONFIGS
+for FOLDER in $CONFIG_FOLDERS
 do
-    if [ "$DEFAULT_APP_ID_KEY" != "" ]; then
-        DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist")
-        if [ "$DEFAULT_APP_ID" != "0" ]; then # don't build apps with app ID of 0
-            applyConfiguration $CONFIG
-            ANY_APP_BUILT=1
-        fi
+    DEFAULT_APP_ID=$(./build-scripts/get-app-id.sh $FOLDER $CONFIGURATION)
+    if [ "$DEFAULT_APP_ID" != "0" -a "$DEFAULT_APP_ID" != "" ]; then # don't build apps with empty app ID or 0
+        applyConfiguration $FOLDER
+        ANY_APP_BUILT=1
     fi
 done
 
