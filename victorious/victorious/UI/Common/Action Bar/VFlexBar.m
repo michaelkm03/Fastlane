@@ -112,9 +112,16 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
         {
             return;
         }
+
+        CGSize systemSize = [actionItem systemLayoutSizeFittingSize:CGSizeMake(HUGE_VALF, HUGE_VALF)];
+        if (systemSize.width != 0.0f)
+        {
+            return;
+        }
         
         [actionItem v_addWidthConstraint:kDefaultActionItemWidth];
     }];
+    
 }
 
 - (void)addLeadingTrailingContraintsForFirstAndLastItems:(NSArray *)items
@@ -132,12 +139,12 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
     // Add trailing for last item
     NSLayoutConstraint *trailingLastItem = [NSLayoutConstraint constraintWithItem:self
                                                                         attribute:NSLayoutAttributeRight
-                                                                        relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                        relatedBy:NSLayoutRelationEqual
                                                                            toItem:[items lastObject]
                                                                         attribute:NSLayoutAttributeRight
                                                                        multiplier:1.0f
                                                                          constant:0.0f];
-    trailingLastItem.priority = UILayoutPriorityDefaultLow;
+    trailingLastItem.priority = UILayoutPriorityRequired;
 
     [self addConstraint:trailingLastItem];
 }
@@ -199,6 +206,14 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
             remainingSpace = remainingSpace - actionItem.intrinsicContentSize.width;
             return;
         }
+        
+        CGSize layoutSize = [actionItem systemLayoutSizeFittingSize:CGSizeMake(CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+        if (layoutSize.width)
+        {
+            remainingSpace = remainingSpace - layoutSize.width;
+            return;
+        }
+        
         remainingSpace = remainingSpace - kDefaultActionItemWidth;
     }];
     
@@ -229,8 +244,18 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
             NSArray *filteredConstraints = [[actionItem constraints] filteredArrayUsingPredicate:filterPredicate];
             [actionItem removeConstraints:filteredConstraints];
             [actionItem setNeedsUpdateConstraints];
-            NSLayoutConstraint *widthConstraint = [actionItem v_addWidthConstraint:flexibleItemWidth];
+            NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:actionItem
+                                                                               attribute:NSLayoutAttributeWidth
+                                                                               relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                  toItem:nil
+                                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                                              multiplier:1.0f
+                                                                                constant:flexibleItemWidth];
+//            NSLayoutConstraint *widthConstraint = [actionItem v_addWidthConstraint:flexibleItemWidth];
+
             widthConstraint.identifier = kConstraintIdentifier;
+            widthConstraint.priority = UILayoutPriorityDefaultHigh;
+            [actionItem addConstraint:widthConstraint];
         }
     }];
 }

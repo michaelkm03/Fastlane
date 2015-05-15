@@ -23,6 +23,7 @@
 
 static const CGFloat kClockSize = 8.5f;
 static const CGFloat kSpacing = 2.0f;
+
 @interface VTimeSinceWidget ()
 
 @property (nonatomic, strong) UIImageView *clockImageView;

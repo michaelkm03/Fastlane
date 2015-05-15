@@ -24,14 +24,16 @@
 #import "VSleekActionView.h"
 #import "VHashTagTextView.h"
 #import "VStreamHeaderTimeSince.h"
+#import "VCompatibility.h"
 
-const CGFloat kSleekCellHeaderHeight = 50.0f;
-const CGFloat kSleekCellActionViewHeight = 41.0f;
-static const CGFloat kTextViewInset = 55.0f; //Needs to be sum of textview inset from left and right
-
-const CGFloat kSleekCellActionViewBottomConstraintHeight = 34.0f; //This represents the space between the bottom of the cell and the actionView
-const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This represents the space between the bottom of the content and the top of the actionView
-
+static const CGFloat kSleekCellHeaderHeight = 50.0f;
+static const CGFloat kSleekCellActionViewHeight = 41.0f;
+//static const CGFloat kTextViewInset = 55.0f; //Needs to be sum of textview inset from left and right
+static const CGFloat kPreviewToActionViewSpacing = 8.0f;
+static const CGFloat kActionViewBottomSpacing = 28.0f;
+static const CGFloat kSleekCellActionViewBottomConstraintHeight = 34.0f; //This represents the space between the bottom of the cell and the actionView
+static const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This represents the space between the bottom of the content and the top of the actionView
+static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 0.0f, 10.0f };
 //Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
 const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 
@@ -43,8 +45,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 
 @end
@@ -58,8 +58,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.previewContainer.clipsToBounds = YES;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
-    self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
-    self.actionViewTopConstraint.constant = kSleekCellActionViewTopConstraintHeight;
 }
 
 #pragma mark - VHasManagedDependencies
@@ -119,6 +117,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     if (sequence.name == nil || self.dependencyManager == nil)
     {
+        self.captionTextView.attributedText = nil;
         return;
     }
 
@@ -164,23 +163,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     return CGSizeMake(width, height);
 }
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
-                                    sequence:(VSequence *)sequence
-                           dependencyManager:(VDependencyManager *)dependencyManager
-{
-    CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
-
-    CGFloat width = actual.width - kTextViewInset;
-    if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
-    {
-        //Subtract insets and line fragment padding that is padding text in textview BEFORE calculating size
-        CGSize textSize = [sequence.name frameSizeForWidth:width
-                                             andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        actual.height += textSize.height + kSleekCellTextNeighboringViewSeparatorHeight; //Neighboring space adds space BELOW the captionTextView
-    }
-    return actual;
-}
-
 + (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
@@ -191,6 +173,74 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     }
     attributes[ NSParagraphStyleAttributeName ] = [[NSMutableParagraphStyle alloc] init];
     return [NSDictionary dictionaryWithDictionary:attributes];
+}
+
+#pragma mark - Sizing
+
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
+                                    sequence:(VSequence *)sequence
+                           dependencyManager:(VDependencyManager *)dependencyManager
+{
+    // Size the inset cell from top to bottom
+    // Use width to ensure 1:1 aspect ratio of previewView
+    CGSize actualSize = CGSizeMake(CGRectGetWidth(bounds), 0.0f);
+
+    // Add header
+    actualSize.height = actualSize.height + kSleekCellHeaderHeight;
+
+    // Text size
+    actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize
+                                             sequence:sequence
+                                    dependencyManager:dependencyManager];
+    
+    // Add 1:1 preivew view
+    actualSize.height = actualSize.height + actualSize.width;
+    
+    // Action View
+    actualSize.height = actualSize.height + kPreviewToActionViewSpacing;
+    actualSize.height = actualSize.height + kSleekCellActionViewHeight;
+    actualSize.height = actualSize.height + kActionViewBottomSpacing;
+    
+    return actualSize;
+}
+
++ (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
+                                sequence:(VSequence *)sequence
+                       dependencyManager:(VDependencyManager *)dependencyManager
+{
+    CGSize sizeWithText = initialSize;
+    
+    
+    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [textStorage addLayoutManager:layoutManager];
+    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:CGSizeZero];
+    [layoutManager addTextContainer:textContainer];
+    textContainer.heightTracksTextView = YES;
+    textContainer.widthTracksTextView = YES;
+    textContainer.lineFragmentPadding = 0.0f;
+    VHashTagTextView *sizingCaptionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
+    sizingCaptionTextView.scrollEnabled = NO;
+    sizingCaptionTextView.editable = NO;
+    sizingCaptionTextView.textContainerInset = UIEdgeInsetsZero;
+    sizingCaptionTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // Top Margins
+    CGFloat captionWidth = initialSize.width - kCaptionMargins.left - kCaptionMargins.right;
+    [sizingCaptionTextView v_addWidthConstraint:captionWidth];
+
+    if (sequence.name.length > 0)
+    {
+        // Caption view size
+        NSAttributedString *attributedCaptionText = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                                    attributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
+        sizingCaptionTextView.attributedText = attributedCaptionText;
+        
+        CGSize size = [sizingCaptionTextView systemLayoutSizeFittingSize:CGSizeMake(captionWidth, HUGE_VALF)];
+        sizeWithText.height = sizeWithText.height + size.height;
+    }
+
+    return sizeWithText;
 }
 
 #pragma mark - VStreamCellFocus
