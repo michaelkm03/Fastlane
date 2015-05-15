@@ -623,7 +623,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     if ( self.uploadProgressViewController == nil )
     {
-        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[VUploadManager sharedManager]];
+        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
         self.uploadProgressViewController.delegate = self;
         [self addChildViewController:self.uploadProgressViewController];
         self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;

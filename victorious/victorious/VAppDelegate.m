@@ -85,7 +85,7 @@ static BOOL isRunningTests(void) __attribute__((const));
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
 {
     VLog(@"handling events for background identifier: %@", identifier);
-    VUploadManager *uploadManager = [VUploadManager sharedManager];
+    VUploadManager *uploadManager = [[VObjectManager sharedManager] uploadManager];
     if ([uploadManager isYourBackgroundURLSession:identifier])
     {
         uploadManager.backgroundSessionEventsCompleteHandler = completionHandler;
