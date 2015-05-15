@@ -12,6 +12,14 @@
 
 @interface VPermissionAlertViewController : UIViewController <VHasManagedDependencies>
 
-- (void)presentInViewController:(UIViewController *)viewController animated:(BOOL)animated;
+/**
+ Block to call when user presses confirm button
+ */
+@property (nonatomic, copy) void (^confirmationHandler)(VPermissionAlertViewController *permissionAlertViewController);
+
+/**
+ Block to call when user presses deny button
+ */
+@property (nonatomic, copy) void (^denyHandler)(VPermissionAlertViewController *permissionAlertViewController);
 
 @end

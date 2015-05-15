@@ -31,6 +31,7 @@
 
 #warning remove
 #import "VPermissionAlertViewController.h"
+#import "VPermissionAlertAnimator.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -42,6 +43,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 
 @property (nonatomic, strong) VFollowingHelper *followHelper;
+@property (nonatomic, strong) VPermissionAlertTransitionDelegate *transitionDelegate;
 
 @end
 
@@ -77,9 +79,18 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     }
-    
-    VPermissionAlertViewController *alert = [VPermissionAlertViewController newWithDependencyManager:_dependencyManager];
-    [alert presentInViewController:self animated:YES];
+
+    VPermissionAlertViewController *alert = [self.dependencyManager templateValueOfType:[VPermissionAlertViewController class] forKey:@"alertController"];
+    [alert setConfirmationHandler:^(VPermissionAlertViewController *alert) {
+        [alert dismissViewControllerAnimated:YES completion:nil];
+    }];
+    [alert setDenyHandler:^(VPermissionAlertViewController *alert) {
+        [alert dismissViewControllerAnimated:YES completion:nil];
+    }];
+    alert.modalPresentationStyle = UIModalPresentationCustom;
+    self.transitionDelegate = [[VPermissionAlertTransitionDelegate alloc] init];
+    alert.transitioningDelegate = self.transitionDelegate;
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - First Time User Experience

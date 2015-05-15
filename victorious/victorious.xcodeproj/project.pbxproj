@@ -675,6 +675,10 @@
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
 		C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */; };
 		C30AA4DA1B0517170010CEFE /* VPermissionAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */; };
+		C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */; };
+		C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4DF1B055EC60010CEFE /* VPermissionAlertAnimator.m */; };
+		C30AA4E31B057D290010CEFE /* VButtonWithCircularEmphasis.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4E21B057D290010CEFE /* VButtonWithCircularEmphasis.m */; };
+		C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
 		C395E86E1AFAEAFA00B6E3DB /* UIImage+Round.m in Sources */ = {isa = PBXBuildFile; fileRef = C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
@@ -2132,6 +2136,14 @@
 		C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PermissionAlert.storyboard; path = "UI/Permission Alert/PermissionAlert.storyboard"; sourceTree = "<group>"; };
 		C30AA4D81B0517170010CEFE /* VPermissionAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertViewController.h; path = "UI/Permission Alert/VPermissionAlertViewController.h"; sourceTree = "<group>"; };
 		C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertViewController.m; path = "UI/Permission Alert/VPermissionAlertViewController.m"; sourceTree = "<group>"; };
+		C30AA4DB1B055C000010CEFE /* VPermissionAlertPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertPresentationController.h; path = "UI/Permission Alert/VPermissionAlertPresentationController.h"; sourceTree = "<group>"; };
+		C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertPresentationController.m; path = "UI/Permission Alert/VPermissionAlertPresentationController.m"; sourceTree = "<group>"; };
+		C30AA4DE1B055EC60010CEFE /* VPermissionAlertAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertAnimator.h; path = "UI/Permission Alert/VPermissionAlertAnimator.h"; sourceTree = "<group>"; };
+		C30AA4DF1B055EC60010CEFE /* VPermissionAlertAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertAnimator.m; path = "UI/Permission Alert/VPermissionAlertAnimator.m"; sourceTree = "<group>"; };
+		C30AA4E11B057D290010CEFE /* VButtonWithCircularEmphasis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VButtonWithCircularEmphasis.h; path = "UI/Permission Alert/VButtonWithCircularEmphasis.h"; sourceTree = "<group>"; };
+		C30AA4E21B057D290010CEFE /* VButtonWithCircularEmphasis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VButtonWithCircularEmphasis.m; path = "UI/Permission Alert/VButtonWithCircularEmphasis.m"; sourceTree = "<group>"; };
+		C30AA4E71B0595A90010CEFE /* VRoundedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRoundedImageView.h; path = "UI/Permission Alert/VRoundedImageView.h"; sourceTree = "<group>"; };
+		C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRoundedImageView.m; path = "UI/Permission Alert/VRoundedImageView.m"; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
 		C395E86C1AFAEAFA00B6E3DB /* UIImage+Round.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Round.h"; sourceTree = "<group>"; };
@@ -5246,6 +5258,14 @@
 				C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */,
 				C30AA4D81B0517170010CEFE /* VPermissionAlertViewController.h */,
 				C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */,
+				C30AA4DB1B055C000010CEFE /* VPermissionAlertPresentationController.h */,
+				C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */,
+				C30AA4DE1B055EC60010CEFE /* VPermissionAlertAnimator.h */,
+				C30AA4DF1B055EC60010CEFE /* VPermissionAlertAnimator.m */,
+				C30AA4E11B057D290010CEFE /* VButtonWithCircularEmphasis.h */,
+				C30AA4E21B057D290010CEFE /* VButtonWithCircularEmphasis.m */,
+				C30AA4E71B0595A90010CEFE /* VRoundedImageView.h */,
+				C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */,
 			);
 			name = "Permission Alert";
 			path = ..;
@@ -6660,6 +6680,7 @@
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
+				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
 				DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */,
@@ -6765,6 +6786,7 @@
 				D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */,
 				D8E39BDD19CB7C80007FD86A /* VContentVideoCell.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
+				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */,
 				A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */,
 				D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */,
@@ -6789,6 +6811,7 @@
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
 				A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */,
+				C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */,
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
@@ -6833,6 +6856,7 @@
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
 				03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */,
 				03A058C91AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m in Sources */,
+				C30AA4E31B057D290010CEFE /* VButtonWithCircularEmphasis.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A7F711FA1AE1D5A00086F729 /* VFollowerTableViewCell.m in Sources */,
 				D8C5CFE81A68835100EC819F /* VAsset+Fetcher.m in Sources */,

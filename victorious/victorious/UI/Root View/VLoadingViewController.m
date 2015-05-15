@@ -216,6 +216,46 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+        [templateDecorator setTemplateValue:@{@"name":@"default.alertController",
+                                              VDependencyManagerAccentColorKey:@{@"alpha":@(255),
+                                                                                 @"blue":@(236),
+                                                                                 @"green":@(158),
+                                                                                 @"red":@(21)
+                                                                                 },
+                                              VDependencyManagerBackgroundKey:@{@"name":@"solidColor.background",
+                                                                                @"color":@{@"alpha":@(255),
+                                                                                           @"blue":@(28),
+                                                                                           @"green":@(0),
+                                                                                           @"red":@(230)
+                                                                                           }
+                                                                                },
+                                              VDependencyManagerLabel1FontKey:@{@"fontName": @"PTSans-Narrow",
+                                                                                @"fontSize":@(22)
+                                                                                },
+                                              VDependencyManagerMainTextColorKey:@{@"alpha":@(255),
+                                                                                   @"blue":@(255),
+                                                                                   @"green":@(255),
+                                                                                   @"red":@(255)
+                                                                                   },
+                                              VDependencyManagerButton1FontKey:@{@"fontName": @"PTSans-Narrow",
+                                                                                 @"fontSize":@(20)
+                                                                                 },
+                                              VDependencyManagerLinkColorKey:@{@"alpha":@(255),
+                                                                               @"blue":@(255),
+                                                                               @"green":@(255),
+                                                                               @"red":@(255)
+                                                                               },
+                                              VDependencyManagerButton2FontKey:@{@"fontName": @"PTSans-Narrow",
+                                                                                 @"fontSize":@(20)
+                                                                                 },
+                                              VDependencyManagerSecondaryLinkColorKey:@{@"alpha":@(255),
+                                                                               @"blue":@(135),
+                                                                               @"green":@(134),
+                                                                               @"red":@(133)
+                                                                               }
+                                              }
+                                 forKeyPath:@"alertController"];
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
