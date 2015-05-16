@@ -11,7 +11,7 @@
 
 @interface VPermissionAlertPresentationController ()
 
-@property (nonatomic, strong) UIView *blackView;
+@property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) UIView *dimmingView;
 @property (nonatomic, strong) UIView *snapshotView;
 
@@ -26,8 +26,8 @@
     self = [super initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
     if (self)
     {
-        _blackView = [UIView new];
-        _blackView.backgroundColor = [UIColor blackColor];
+        _backgroundView = [UIView new];
+        _backgroundView.backgroundColor = [UIColor blackColor];
         _dimmingView = [UIView new];
         _dimmingView.backgroundColor = [UIColor darkGrayColor];
         _dimmingView.alpha = 0.0f;
@@ -40,15 +40,15 @@
 
 - (void)presentationTransitionWillBegin
 {
-    self.blackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     self.snapshotView.translatesAutoresizingMaskIntoConstraints = NO;
     self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [self.containerView addSubview:self.blackView];
+    [self.containerView addSubview:self.backgroundView];
     [self.containerView addSubview:self.snapshotView];
     [self.containerView addSubview:self.dimmingView];
     
-    [self.containerView v_addFitToParentConstraintsToSubview:self.blackView];
+    [self.containerView v_addFitToParentConstraintsToSubview:self.backgroundView];
     [self.containerView v_addFitToParentConstraintsToSubview:self.snapshotView];
     [self.containerView v_addFitToParentConstraintsToSubview:self.dimmingView];
     
@@ -65,6 +65,8 @@
     if (completed == NO)
     {
         [self.dimmingView removeFromSuperview];
+        [self.snapshotView removeFromSuperview];
+        [self.backgroundView removeFromSuperview];
     }
 }
 
@@ -86,7 +88,7 @@
     {
         [self.dimmingView removeFromSuperview];
         [self.snapshotView removeFromSuperview];
-        [self.blackView removeFromSuperview];
+        [self.backgroundView removeFromSuperview];
     }
 }
 

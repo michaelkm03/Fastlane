@@ -35,6 +35,10 @@
 #import "VAuthorizedAction.h"
 #import "VNavigationController.h"
 
+#warning Remove this
+#import "VPermissionPhotoLibrary.h"
+#import "VPermissionCamera.h"
+
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
 @interface VInboxViewController () <VUserSearchViewControllerDelegate>
@@ -121,6 +125,28 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
+    
+#warning remove this
+    VPermissionCamera *camPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
+    [camPermission requestPermissionIfNecessaryInViewController:self
+                                          withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+    {
+        if (!granted)
+        {
+            if (state == VPermissionStateSystemDenied)
+            {
+                NSLog(@"got to settings");
+            }
+            else
+            {
+                NSLog(@"prompt denied");
+            }
+        }
+        else
+        {
+            NSLog(@"yayyy");
+        }
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

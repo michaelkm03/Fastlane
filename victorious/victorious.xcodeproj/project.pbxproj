@@ -679,6 +679,9 @@
 		C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4DF1B055EC60010CEFE /* VPermissionAlertAnimator.m */; };
 		C30AA4E31B057D290010CEFE /* VButtonWithCircularEmphasis.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4E21B057D290010CEFE /* VButtonWithCircularEmphasis.m */; };
 		C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */; };
+		C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4EF1B0678BB0010CEFE /* VPermission.m */; };
+		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
+		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
 		C395E86E1AFAEAFA00B6E3DB /* UIImage+Round.m in Sources */ = {isa = PBXBuildFile; fileRef = C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
@@ -2144,6 +2147,12 @@
 		C30AA4E21B057D290010CEFE /* VButtonWithCircularEmphasis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VButtonWithCircularEmphasis.m; path = "UI/Permission Alert/VButtonWithCircularEmphasis.m"; sourceTree = "<group>"; };
 		C30AA4E71B0595A90010CEFE /* VRoundedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRoundedImageView.h; path = "UI/Permission Alert/VRoundedImageView.h"; sourceTree = "<group>"; };
 		C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRoundedImageView.m; path = "UI/Permission Alert/VRoundedImageView.m"; sourceTree = "<group>"; };
+		C30AA4EE1B0678BB0010CEFE /* VPermission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermission.h; path = Permissions/VPermission.h; sourceTree = "<group>"; };
+		C30AA4EF1B0678BB0010CEFE /* VPermission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermission.m; path = Permissions/VPermission.m; sourceTree = "<group>"; };
+		C30AA4F11B067C370010CEFE /* VPermissionCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionCamera.h; path = Permissions/VPermissionCamera.h; sourceTree = "<group>"; };
+		C30AA4F21B067C370010CEFE /* VPermissionCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionCamera.m; path = Permissions/VPermissionCamera.m; sourceTree = "<group>"; };
+		C30AA4F41B06B82A0010CEFE /* VPermissionPhotoLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionPhotoLibrary.h; path = Permissions/VPermissionPhotoLibrary.h; sourceTree = "<group>"; };
+		C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionPhotoLibrary.m; path = Permissions/VPermissionPhotoLibrary.m; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
 		C395E86C1AFAEAFA00B6E3DB /* UIImage+Round.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Round.h"; sourceTree = "<group>"; };
@@ -5090,6 +5099,7 @@
 				0314D08D19B4694600FA363C /* Interaction */,
 				DBDD7D5C1A97F49C0023CBF9 /* Location */,
 				0314D09119B4698800FA363C /* Object */,
+				C30AA4EA1B06746C0010CEFE /* Permissions */,
 				A70FC0F81A2D40B400F5BBDE /* Purchases */,
 				0326BBB719A8181B00D995DA /* Push Notifications */,
 				036AE5EA18FF0C0600A74BDA /* Reachability */,
@@ -5269,6 +5279,19 @@
 			);
 			name = "Permission Alert";
 			path = ..;
+			sourceTree = "<group>";
+		};
+		C30AA4EA1B06746C0010CEFE /* Permissions */ = {
+			isa = PBXGroup;
+			children = (
+				C30AA4EE1B0678BB0010CEFE /* VPermission.h */,
+				C30AA4EF1B0678BB0010CEFE /* VPermission.m */,
+				C30AA4F11B067C370010CEFE /* VPermissionCamera.h */,
+				C30AA4F21B067C370010CEFE /* VPermissionCamera.m */,
+				C30AA4F41B06B82A0010CEFE /* VPermissionPhotoLibrary.h */,
+				C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */,
+			);
+			name = Permissions;
 			sourceTree = "<group>";
 		};
 		D80A94D31A535DFA0035D788 /* Video */ = {
@@ -6524,6 +6547,7 @@
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
+				C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */,
 				03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */,
 				A716FC451AAE2E4D0032AA40 /* VLoginButton.m in Sources */,
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
@@ -6729,6 +6753,7 @@
 				0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */,
 				A7ECC1D81AD6178F0003E00A /* VPublishViewController.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
+				C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */,
 				A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */,
@@ -6835,6 +6860,7 @@
 				C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */,
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
+				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */,

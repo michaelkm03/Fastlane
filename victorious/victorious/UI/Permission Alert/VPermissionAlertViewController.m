@@ -14,6 +14,8 @@
 #import "VPermissionAlertAnimator.h"
 
 static NSString * const kStoryboardName = @"PermissionAlert";
+static NSString * const kConfirmButtonTitleKey = @"title.button1";
+static NSString * const kCancelButtonTitleKey = @"title.button2";
 
 @interface VPermissionAlertViewController () <VBackgroundContainer>
 
@@ -65,15 +67,32 @@ static NSString * const kStoryboardName = @"PermissionAlert";
     
     self.messageLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.messageLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.messageLabel.text = NSLocalizedString(@"We hope to connect and communicate with our fans. By having a profile picture, we will be able to recognize you!\n\nWould you like to take a profile picture?", nil);
+    NSString *message = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
+    if (!message || message.length == 0)
+    {
+       message = NSLocalizedString(@"We hope to connect and communicate with our fans. By having a profile picture, we will be able to recognize you!\n\nWould you like to take a profile picture?", nil);
+    }
+    self.messageLabel.text = message;
     
     [self.confirmationButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton1FontKey]];
     [self.confirmationButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
     [self.confirmationButton setTitle:@"Okay!" forState:UIControlStateNormal];
     [self.confirmationButton setEmphasisColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
+    NSString *confirmButtonTitle = [self.dependencyManager stringForKey:kConfirmButtonTitleKey];
+    if (!confirmButtonTitle || confirmButtonTitle.length == 0)
+    {
+        confirmButtonTitle = NSLocalizedString(@"Okay!", @"");
+    }
+    [self.confirmationButton setTitle:confirmButtonTitle forState:UIControlStateNormal];
     
     [self.cancelButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton2FontKey]];
     [self.cancelButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey] forState:UIControlStateNormal];
+    NSString *cancelButtonTitle = [self.dependencyManager stringForKey:kCancelButtonTitleKey];
+    if (!cancelButtonTitle || cancelButtonTitle.length == 0)
+    {
+        cancelButtonTitle = NSLocalizedString(@"Maybe Later", @"");
+    }
+    [self.cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
