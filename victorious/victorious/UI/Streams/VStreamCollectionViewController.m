@@ -595,6 +595,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self showHashtagStreamWithHashtag:hashtag];
 }
 
+- (void)showRepostersForSequence:(VSequence *)sequence
+{
+    [self.sequenceActionController showRepostersFromViewController:self sequence:sequence];
+}
+
 #pragma mark - Actions
 
 - (void)setBackgroundImageWithURL:(NSURL *)url

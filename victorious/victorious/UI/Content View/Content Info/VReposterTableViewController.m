@@ -44,6 +44,8 @@
 {
     [super viewDidLoad];
     
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     self.title = NSLocalizedString(@"REPOSTS", nil);

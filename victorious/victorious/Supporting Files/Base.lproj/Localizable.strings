@@ -425,10 +425,10 @@
 "RepostedContentView"   =   " REPOSTED";
 "Comment"               =   "Comment";
 
-"repostedByFormat"    =   "Reposted by %@";
+"repostedByFormat"      =   "Reposted by %@";
 "doubleRepostedByFormat" = "Reposted by %@ + 1 other";
 "multipleRepostedByFormat" = "Reposted by %@ + %lu others";
-"+ &lu others" = "+ %lu others";
+"+ %lu others"          = "+ %lu others";
 "remixedFromFormat"     =   "Remix from %@";
 "giffedFromFormat"      =   "GIF from %@";
 

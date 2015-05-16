@@ -48,7 +48,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
 
 @property (nonatomic, strong) VStreamLabel *creatorLabel;
 @property (nonatomic, strong) VStreamLabel *parentUserLabel;
-@property (nonatomic, strong) UILabel *otherPostersLabel;
+@property (nonatomic, strong) VStreamLabel *otherPostersLabel;
 @property (nonatomic, strong) UIImageView *clockImageView;
 @property (nonatomic, strong) UILabel *timeSinceLabel;
 
@@ -113,9 +113,10 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
     [self addSubview:self.timeSinceLabel];
     
-    self.otherPostersLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.otherPostersLabel = [[VStreamLabel alloc] initWithFrame:CGRectZero];
     self.otherPostersLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.otherPostersLabel.textAlignment = NSTextAlignmentLeft;
+    self.otherPostersLabel.delegate = self;
     [self addSubview:self.otherPostersLabel];
 }
 
@@ -206,10 +207,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
                                                                          attribute:NSLayoutAttributeCenterY
                                                                         multiplier:1.0f
                                                                           constant:kVerticalPaddingToCenterLabels]];
-            [multiLineConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_otherPostersLabel]|"
-                                                                                              options:kNilOptions
-                                                                                              metrics:nil
-                                                                                                views:NSDictionaryOfVariableBindings(_otherPostersLabel)]];
+
             self.multiLineConstraints = [NSArray arrayWithArray:multiLineConstraints];
             [self addConstraints:self.multiLineConstraints];
         }
@@ -324,6 +322,17 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
                                 fromView:self];
 }
 
+- (void)showReposters
+{
+    UIResponder<VSequenceActionsDelegate> *targetForReposter = [self targetForAction:@selector(showRepostersForSequence:)
+                                                                          withSender:self];
+    if (targetForReposter == nil)
+    {
+        NSAssert(false, @"We need an object in the responder chain for reposters selection.");
+    }
+    [targetForReposter showRepostersForSequence:self.sequence];
+}
+
 #pragma mark - Internal Methods
 
 - (UIColor *)highlightedColorForColor:(UIColor *)color
@@ -345,6 +354,11 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
 
 - (NSAttributedString *)attributedCreatorStringHighlighted:(BOOL)highlighted
 {
+    if (self.sequence.displayOriginalPoster.name.length == 0)
+    {
+        return nil;
+    }
+    
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     if (highlighted)
     {
@@ -353,6 +367,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: textColor,
                                  NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey]};
+
     return [[NSAttributedString alloc] initWithString:self.sequence.displayOriginalPoster.name
                                            attributes:attributes];
 }
@@ -425,7 +440,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
         if (repostCount > 1)
         {
-            NSString *baseString = [NSString stringWithFormat:NSLocalizedString(@"+ &lu others", [self.sequence.repostCount unsignedLongValue])];
+            NSString *baseString = [NSString stringWithFormat:NSLocalizedString(@"+ %lu others", @""), (unsigned long)repostCount];
             UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
             if (highlighted)
             {
@@ -450,7 +465,9 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
                         forStreamLabelState:VStreamLabelStateDefault];
     [self.parentUserLabel setAttributedText:[self attributedParentStringHightlighted:YES]
                         forStreamLabelState:VStreamLabelStateHighlighted];
-    self.otherPostersLabel.attributedText = [self othersFormattedStringHighlighted:NO];
+    [self.otherPostersLabel setAttributedText:[self othersFormattedStringHighlighted:NO]
+                          forStreamLabelState:VStreamLabelStateDefault];
+    
     self.timeSinceLabel.text = [sequence.releasedAt timeSince];
     [self setNeedsUpdateConstraints];
 }
@@ -466,6 +483,10 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     else if (streamLabel == self.parentUserLabel)
     {
         [self selectedUser:[self.sequence displayParentUser]];
+    }
+    else if (streamLabel == self.otherPostersLabel)
+    {
+        [self showReposters];
     }
 }
 
