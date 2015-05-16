@@ -12,6 +12,7 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VButtonWithCircularEmphasis.h"
 #import "VPermissionAlertAnimator.h"
+#import "VRoundedImageView.h"
 
 static NSString * const kStoryboardName = @"PermissionAlert";
 static NSString * const kConfirmButtonTitleKey = @"title.button1";
@@ -26,7 +27,7 @@ static NSString * const kCancelButtonTitleKey = @"title.button2";
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet VButtonWithCircularEmphasis *confirmationButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
+@property (weak, nonatomic) IBOutlet VRoundedImageView *iconImageView;
 
 @end
 
@@ -93,6 +94,8 @@ static NSString * const kCancelButtonTitleKey = @"title.button2";
         cancelButtonTitle = NSLocalizedString(@"Maybe Later", @"");
     }
     [self.cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
+    
+    [self.iconImageView setIconImageURL:[NSURL URLWithString:[self.dependencyManager stringForKey:VDependencyManagerImageURLKey]]];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }

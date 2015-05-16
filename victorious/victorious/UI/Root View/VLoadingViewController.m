@@ -217,6 +217,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         [templateDecorator setTemplateValue:@{@"name":@"default.alertController",
+                                              VDependencyManagerImageURLKey:@"http://aceshightattooshop.com/wp-content/uploads/2014/06/profile-placeholder.jpg",
                                               VDependencyManagerAccentColorKey:@{@"alpha":@(255),
                                                                                  @"blue":@(236),
                                                                                  @"green":@(158),

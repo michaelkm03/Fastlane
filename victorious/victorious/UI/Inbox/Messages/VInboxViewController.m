@@ -127,26 +127,26 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
     
 #warning remove this
-    VPermissionCamera *camPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
-    [camPermission requestPermissionIfNecessaryInViewController:self
-                                          withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
-    {
-        if (!granted)
-        {
-            if (state == VPermissionStateSystemDenied)
-            {
-                NSLog(@"got to settings");
-            }
-            else
-            {
-                NSLog(@"prompt denied");
-            }
-        }
-        else
-        {
-            NSLog(@"yayyy");
-        }
-    }];
+//    VPermissionCamera *camPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
+//    [camPermission requestPermissionIfNecessaryInViewController:self
+//                                          withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+//    {
+//        if (!granted)
+//        {
+//            if (state == VPermissionStateSystemDenied)
+//            {
+//                NSLog(@"got to settings");
+//            }
+//            else
+//            {
+//                NSLog(@"prompt denied");
+//            }
+//        }
+//        else
+//        {
+//            NSLog(@"yayyy");
+//        }
+//    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

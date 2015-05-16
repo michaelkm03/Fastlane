@@ -120,7 +120,7 @@
                                     <constraint firstAttribute="bottom" secondItem="zxv-Um-jbA" secondAttribute="bottom" id="r0h-0R-1WW"/>
                                     <constraint firstItem="UeK-9M-hrf" firstAttribute="top" secondItem="uqE-hA-Enb" secondAttribute="bottom" constant="25" id="umF-ch-rqi"/>
                                     <constraint firstAttribute="width" secondItem="Lv4-pq-CPH" secondAttribute="width" multiplier="2" id="wEz-Uu-4NA"/>
-                                    <constraint firstItem="zxv-Um-jbA" firstAttribute="top" secondItem="UeK-9M-hrf" secondAttribute="bottom" constant="70" id="x0f-4C-x4B"/>
+                                    <constraint firstItem="zxv-Um-jbA" firstAttribute="top" secondItem="UeK-9M-hrf" secondAttribute="bottom" constant="50" id="x0f-4C-x4B"/>
                                     <constraint firstAttribute="bottom" secondItem="Lv4-pq-CPH" secondAttribute="bottom" id="yTt-IE-aku"/>
                                 </constraints>
                                 <variation key="default">

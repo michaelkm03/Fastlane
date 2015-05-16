@@ -10,4 +10,6 @@
 
 @interface VRoundedImageView : UIImageView
 
+- (void)setIconImageURL:(NSURL *)url;
+
 @end
