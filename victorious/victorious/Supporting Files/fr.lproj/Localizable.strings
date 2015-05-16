@@ -411,7 +411,7 @@
 
 "RTCUserPostedAtSyntax" = "%@ à %@";//e.g. "Username at 0:04"
 
-"Report/Flag" = "Signaler/Marquer comme inapproprié";
+"Report/Flag" = "Signaler un contenu";
 "CreatedBy" = "CRÉÉ PAR";
 "RemixVerb" = "Remixer";
 "Reposts" = "Republications";
