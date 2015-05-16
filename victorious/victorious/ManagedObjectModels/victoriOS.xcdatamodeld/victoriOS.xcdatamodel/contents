@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
@@ -287,7 +287,7 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="240"/>
         <element name="Comment" positionX="1078" positionY="38" width="128" height="315"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="EndCard" positionX="693" positionY="-648" width="128" height="148"/>
+        <element name="EndCard" positionX="693" positionY="-648" width="128" height="150"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
         <element name="ImageAsset" positionX="693" positionY="-648" width="128" height="120"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>

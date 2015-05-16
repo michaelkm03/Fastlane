@@ -108,5 +108,7 @@
 	<string>VBlurredMarqueeController</string>
 	<key>inset.marqueeCell</key>
 	<string>VInsetMarqueeController</string>
+	<key>standard.coachmark</key>
+	<string>VCoachmark</string>
 </dict>
 </plist>

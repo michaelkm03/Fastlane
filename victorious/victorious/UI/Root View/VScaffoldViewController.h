@@ -12,7 +12,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence, VAuthorization;
+@class VSequence, VAuthorization, VCoachmarkManager;
 
 /**
  The key that identifies the menu component in VDependencyManager
@@ -38,6 +38,8 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
 @property (nonatomic, assign, readonly) BOOL hasBeenShown;
+
+@property (nonatomic, readonly) VCoachmarkManager *coachmarkManager;
 
 /**
  Initializes the receiver with an instance of VDependencyManager

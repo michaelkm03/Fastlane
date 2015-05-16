@@ -74,6 +74,8 @@
 #import "VHashtagSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
 
+#import "VCoachmarkManager.h"
+
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
 static NSString * const kCanAddContentKey = @"canAddContent";
@@ -267,6 +269,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
+    [[[self.dependencyManager scaffoldViewController] coachmarkManager] displayCoachmarkViewInViewController:self withIdentifier:@"TEST"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[[self.dependencyManager scaffoldViewController] coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
 - (BOOL)shouldAutorotate

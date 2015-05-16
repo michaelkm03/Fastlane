@@ -13,7 +13,15 @@
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     UIView *result = [super hitTest:point withEvent:event];
-    return result == self ? nil : result;
+    if ( result == self )
+    {
+        if ( self.delegate != nil )
+        {
+            [self.delegate passthroughViewRecievedTouch:self];
+        }
+        return nil;
+    }
+    return result;
 }
 
 @end

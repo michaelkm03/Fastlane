@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VPassthroughContainerViewDelegate.h"
 
 /**
  Overrides `hitTest:withEvent:` to only allow subviews to receive touches
@@ -14,5 +15,7 @@
  background.
  */
 @interface VPassthroughContainerView : UIView
+
+@property (nonatomic, weak) id <VPassthroughContainerViewDelegate> delegate;
 
 @end
