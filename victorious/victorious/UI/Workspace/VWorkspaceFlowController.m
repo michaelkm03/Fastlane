@@ -84,23 +84,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @implementation VWorkspaceFlowController
 
-+ (instancetype)workspaceFlowControllerWithoutADependencyMangerWithInjection:(NSDictionary *)injectedDependencies
-{
-    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:VDependencyManagerWorkspaceFlowKey
-                                                                               withAddedDependencies:injectedDependencies];
-    return workspaceFlowController;
-}
-
-+ (instancetype)workspaceFlowControllerWithoutADependencyManger
-{
-    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:VDependencyManagerWorkspaceFlowKey];
-    return workspaceFlowController;
-}
-
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
