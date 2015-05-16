@@ -30,7 +30,6 @@ static const NSUInteger kCharacterLimit = 1024;
 
 @interface VMessageContainerViewController ()
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
 @end
