@@ -27,6 +27,7 @@
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -141,6 +142,8 @@ static NSString * const kSupportEmailKey = @"email.support";
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

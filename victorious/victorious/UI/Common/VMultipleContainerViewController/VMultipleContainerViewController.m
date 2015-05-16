@@ -62,7 +62,7 @@ static NSString * const kInitialKey = @"initial";
         _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
-        [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem];
+        //[self.dependencyManager configureNavigationItem:self.navigationItem];
         self.navigationItem.v_supplementaryHeaderView = _selector;
         self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
         
@@ -324,7 +324,7 @@ static NSString * const kInitialKey = @"initial";
     NSArray *screens = [self.dependencyManager templateValueOfType:[NSArray class] forKey:kScreensKey];
     NSDictionary *childConfiguration = screens[ index ];
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
-    [childDependencyManager addPropertiesToNavigationItem:self.navigationItem source:self.viewControllers[ index ]];
+    //[childDependencyManager configureNavigationItem:self.navigationItem forViewController:self.viewControllers[ index ]];
 }
 
 #pragma mark - UICollectionViewDelegate methods

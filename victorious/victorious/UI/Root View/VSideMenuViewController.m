@@ -67,6 +67,7 @@
     __weak typeof(self) weakSelf = self;
     VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
     {
+#warning FIX!
         //[weakSelf.hamburgerButton setBadgeNumber:badgeNumber];
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
     };
@@ -449,15 +450,21 @@
     if ( destination == nil || [destination isKindOfClass:[NSNull class]] )
     {
         [self presentMenuViewController];
-        return NO;
+        return YES;
     }
-    return YES;
+    
+    return NO;
 }
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source
 {
-    const BOOL shouldDisplay = self.navigationController == nil || self.navigationController.viewControllers.count == 1;
-    return shouldDisplay;
+    if ( destination == self )
+    {
+        const BOOL shouldDisplay = source.navigationController.viewControllers.count == 1;
+        return shouldDisplay;
+    }
+    
+    return YES;
 }
 
 @end

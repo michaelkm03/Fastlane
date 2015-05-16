@@ -56,6 +56,13 @@
     self.tabBarViewController = [[VTabBarViewController alloc] init];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,8 +77,6 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
-    
-    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem source:self];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -134,7 +139,7 @@
     return YES;
 }
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source
 {
     if ( destination == nil )
     {

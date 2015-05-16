@@ -50,7 +50,7 @@ static int const kNotificationFetchBatchSize = 50;
     if (viewController)
     {
         viewController.dependencyManager = dependencyManager;
-        [dependencyManager addPropertiesToNavigationItem:viewController.navigationItem];
+        //[dependencyManager configureNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];

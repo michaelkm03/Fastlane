@@ -33,4 +33,8 @@
  */
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager;
 
+@optional
+
+- (VDependencyManager *)dependencyManager;
+
 @end

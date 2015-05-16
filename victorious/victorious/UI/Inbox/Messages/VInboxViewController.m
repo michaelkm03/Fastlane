@@ -70,7 +70,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
         viewController.title = NSLocalizedString(@"Messages", @"");
         
-        [dependencyManager addPropertiesToNavigationItem:viewController.navigationItem source:viewController];
+        //[dependencyManager configureNavigationItem:viewController.navigationItem forViewController:viewController];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
@@ -89,7 +89,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleContainerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
+    }
+    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
 }
 
 #pragma mark - View Lifecycle
@@ -421,7 +426,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return YES;
 }
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source
 {
     return YES;
 }
@@ -446,7 +451,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)didSelectUser:(VUser *)user inUserSearchViewController:(VUserSearchViewController *)userSearchViewController
 {
-    [self displayConversationForUser:user animated:NO];
+    if ( user != nil )
+    {
+        [self displayConversationForUser:user animated:NO];
+    }
     
     /*
      Call this to update the top bar before dismissing since UINavigationDelegate methods will not fire

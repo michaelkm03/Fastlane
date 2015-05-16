@@ -159,6 +159,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self updateNavigationItems];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;

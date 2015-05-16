@@ -14,20 +14,20 @@ extern NSString * const VDependencyManagerTitleImageKey; ///< The key that speci
 
 - (BOOL)willNavigationToDestination:(id)destination;
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination;
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source;
 
 @end
 
 @interface VDependencyManager (VNavigationItem)
 
 /**
- Internally calls addPropertiesToNavigationItem:source: 
+ Internally calls configureNavigationItem:source: 
  with nil for navigationController.
  
  @param navigationItem the navigation item to configure
  
  */
-- (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem;
+- (void)configureNavigationItem:(UINavigationItem *)navigationItem;
 
 /**
  Adds properties to the given navigation item according to
@@ -39,7 +39,7 @@ extern NSString * const VDependencyManagerTitleImageKey; ///< The key that speci
  @param navigationController the navigationController where accessories will be pushed on to
  
  */
-- (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem
-                               source:(UIViewController *)sourceViewController;
+- (void)configureNavigationItem:(UINavigationItem *)navigationItem
+              forViewController:(UIViewController *)sourceViewController;
 
 @end

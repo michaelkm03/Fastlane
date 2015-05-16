@@ -41,6 +41,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     title = NSLocalizedString(title, "");
     NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
+#warning TODO Optimize this to not loading images until added to navigation bar
     UIImage *icon = [dependencyManager imageForKey:kIconKey];
     UIImage *selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
     id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
@@ -50,16 +51,26 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 
 - (BOOL)isEqual:(id)object
 {
-    VNavigationMenuItem *menuItem = object;
-    
-    if ( ![menuItem isKindOfClass:[VNavigationMenuItem class]] )
+    if ( [object isKindOfClass:[VNavigationMenuItem class]] )
     {
-        return NO;
+        VNavigationMenuItem *menuItem = object;
+        return [self.identifier isEqualToString:menuItem.identifier] && [self.position isEqualToString:menuItem.position];
     }
-    return [self.title isEqualToString:menuItem.title] &&
-        [self.icon isEqual:menuItem.icon] &&
-        [self.destination isEqual:menuItem.destination] &&
-        [self.identifier isEqual:menuItem.identifier];
+    
+    return [super isEqual:object];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@: %@ (%@)", NSStringFromClass([self class]), self.identifier, self.position];
+}
+
+- (NSUInteger)hash
+{
+    NSUInteger hash = 0;
+    hash += [self.identifier hash];
+    hash += [self.position hash];
+    return hash;
 }
 
 @end

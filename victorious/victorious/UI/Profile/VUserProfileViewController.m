@@ -36,6 +36,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VStreamNavigationViewFloatingController.h"
 #import "VNavigationController.h"
+#import "VBarButton.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -242,7 +243,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     [self setupFloatingView];
     
-    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem source:self];
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -546,8 +547,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     NSString *profileName = user.name ?: @"Profile";
     
-    //Update title AFTER updating current stream as that update resets the title to nil (because there is nil name in the stream)
-    self.title = self.isCurrentUser ? NSLocalizedString(@"me", "") : profileName;
+    self.title = self.isCurrentUser ? nil : profileName;
     
     [self updateProfileHeader];
     
@@ -792,7 +792,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 #pragma mark - VAccessoryNavigationSource
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination
+- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source
 {
     const BOOL isCurrentUserLoggedIn = [VObjectManager sharedManager].authorized;
     const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
@@ -822,11 +822,17 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
     {
-        ((VMessageContainerViewController *)destination).otherUser = self.user;
-        return !isCurrentUser;
+        if ( isCurrentUser )
+        {
+            return YES;
+        }
+        else
+        {
+            ((VMessageContainerViewController *)destination).otherUser = self.user;
+        }
     }
     
-    return YES;
+    return NO;
 }
 
 @end

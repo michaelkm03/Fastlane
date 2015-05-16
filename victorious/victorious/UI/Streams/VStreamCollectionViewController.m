@@ -348,7 +348,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self installCreateButtonOnNavigationItem:navigationItem
                              initiallyVisible:userPostAllowed];
     
-    navigationItem.rightBarButtonItem.customView.hidden = !userPostAllowed;
+#warning FIX
+    //navigationItem.rightBarButtonItem.customView.hidden = !userPostAllowed;
+}
+
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
+{
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleContainerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
+    }
+    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
 }
 
 - (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
