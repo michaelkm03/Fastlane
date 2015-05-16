@@ -34,7 +34,8 @@
 
 + (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VDependencyManager *dependencyManagerToUse = dependencyManager ?: [[VRootViewController rootViewController] dependencyManager];
+    NSAssert(dependencyManager != nil, @"Workspace flow controller needs a dependency manager");
+    VDependencyManager *dependencyManagerToUse = dependencyManager;
     return [dependencyManagerToUse templateValueOfType:[VTextWorkspaceFlowController class] forKey:VDependencyManagerTextWorkspaceFlowKey];
 }
 

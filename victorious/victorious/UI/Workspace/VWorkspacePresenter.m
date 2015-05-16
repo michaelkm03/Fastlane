@@ -115,7 +115,7 @@
 
 - (void)presentTextOnlyWorkspace
 {
-    VTextWorkspaceFlowController *textWorkspaceController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:nil];
+    VTextWorkspaceFlowController *textWorkspaceController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
     [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
 }
 
