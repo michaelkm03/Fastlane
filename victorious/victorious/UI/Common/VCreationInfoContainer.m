@@ -97,6 +97,9 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     self.parentUserLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.parentUserLabel.textAlignment = NSTextAlignmentLeft;
     self.parentUserLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    self.parentUserLabel.horizontalLayoutPriority = UILayoutPriorityDefaultLow;
+    [self.parentUserLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh
+                                                          forAxis:UILayoutConstraintAxisHorizontal];
     self.parentUserLabel.delegate = self;
     [self addSubview:self.parentUserLabel];
     
@@ -117,6 +120,8 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     self.otherPostersLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.otherPostersLabel.textAlignment = NSTextAlignmentLeft;
     self.otherPostersLabel.delegate = self;
+    [self.otherPostersLabel setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                                            forAxis:UILayoutConstraintAxisHorizontal];
     [self addSubview:self.otherPostersLabel];
 }
 
@@ -259,7 +264,13 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
         UIEdgeInsets creatorHitInsets = UIEdgeInsetsMake(-creatorTopPadding, 0.0f, -kVerticalPaddingToCenterLabels, -kHorizontalHitPadding);
         self.creatorLabel.hitInsets = creatorHitInsets;
         CGFloat parentUserBottomPadding = CGRectGetMaxY(self.bounds) - CGRectGetMaxY(self.parentUserLabel.frame);
-        self.parentUserLabel.hitInsets = UIEdgeInsetsMake(-kVerticalPaddingToCenterLabels, 0.0f, -parentUserBottomPadding, -kHorizontalHitPadding);
+        CGFloat parentUserRightPadding = -kHorizontalHitPadding;
+        if ([self.sequence.repostCount integerValue] > 0)
+        {
+            self.otherPostersLabel.hitInsets = UIEdgeInsetsMake(-kVerticalPaddingToCenterLabels, 0.0f, -parentUserBottomPadding, 0.0f);
+            parentUserRightPadding = 0.0f;
+        }
+        self.parentUserLabel.hitInsets = UIEdgeInsetsMake(-kVerticalPaddingToCenterLabels, 0.0f, -parentUserBottomPadding, parentUserRightPadding);
     }
     else
     {
@@ -390,7 +401,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
         }
         else
         {
-            formattedString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), parentUserString];
+            formattedString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat ;lk jdfs;lkjasdf;lkjl;kajdfskl;jasdfkl;kl;adfsk;ljadfs;jkl;lajks", nil), parentUserString];
         }
     }
     
@@ -467,6 +478,8 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
                         forStreamLabelState:VStreamLabelStateHighlighted];
     [self.otherPostersLabel setAttributedText:[self othersFormattedStringHighlighted:NO]
                           forStreamLabelState:VStreamLabelStateDefault];
+    [self.otherPostersLabel setAttributedText:[self othersFormattedStringHighlighted:YES]
+                          forStreamLabelState:VStreamLabelStateHighlighted];
     
     self.timeSinceLabel.text = [sequence.releasedAt timeSince];
     [self setNeedsUpdateConstraints];

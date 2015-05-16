@@ -88,4 +88,10 @@ typedef NS_ENUM(NSInteger, VStreamLabelState)
  */
 @property (nonatomic, assign) NSLineBreakMode lineBreakMode;
 
+/**
+ *  Forwards the horizontal layout priority by calling setContentCompressionResistancePriority:forAxis: 
+ *  with the given layout priority and UILayoutConstraintAxisHorizontal for axis.
+ */
+- (void)setHorizontalLayoutPriority:(UILayoutPriority)horizontalLayoutPriority;
+
 @end

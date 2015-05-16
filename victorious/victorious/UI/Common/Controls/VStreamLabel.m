@@ -185,4 +185,10 @@
     return self.internalLabel.lineBreakMode;
 }
 
+- (void)setHorizontalLayoutPriority:(UILayoutPriority)horizontalLayoutPriority
+{
+    [self.internalLabel setContentCompressionResistancePriority:horizontalLayoutPriority
+                                                        forAxis:UILayoutConstraintAxisHorizontal];
+}
+
 @end
