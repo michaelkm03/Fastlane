@@ -208,7 +208,7 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
         }
         
         CGSize layoutSize = [actionItem systemLayoutSizeFittingSize:CGSizeMake(CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
-        if (layoutSize.width)
+        if (layoutSize.width != 0.0f)
         {
             remainingSpace = remainingSpace - layoutSize.width;
             return;
