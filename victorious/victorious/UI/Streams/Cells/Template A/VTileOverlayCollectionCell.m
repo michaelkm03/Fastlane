@@ -111,10 +111,6 @@ static const CGFloat maxCaptionHeight = 80.0f;
     [_overlayContainer v_addPinToTopToSubview:_header];
     [_header v_addHeightConstraint:kHeaderHeight];
     _header.sequence = self.sequence;
-    if ([_header respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [_header setDependencyManager:self.dependencyManager];
-    }
     
     // The caption Text view
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];

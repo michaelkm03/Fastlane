@@ -345,7 +345,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
 
 - (NSAttributedString *)attributedCreatorStringHighlighted:(BOOL)highlighted
 {
-    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     if (highlighted)
     {
         textColor = [self highlightedColorForColor:textColor];
