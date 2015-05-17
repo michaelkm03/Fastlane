@@ -65,6 +65,10 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
+    if (_dependencyManager == dependencyManager)
+    {
+        return;
+    }
     _dependencyManager = dependencyManager;
 
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
@@ -85,21 +89,26 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)setSequence:(VSequence *)sequence
 {
+//TICK
     _sequence = sequence;
     
     [self updatePreviewViewForSequence:sequence];
     self.headerView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
+//TOCK
 }
 
 #pragma mark - Internal Methods
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
+    TICK
     if ([self.previewView canHandleSequence:sequence])
     {
         [self.previewView setSequence:sequence];
+        VLog(@"reuse: %@", self.previewView.class);
+        TOCK
         return;
     }
     
@@ -112,6 +121,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         [self.previewView setDependencyManager:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
+    VLog(@"new: %@", self.previewView.class);
+    TOCK
 }
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence

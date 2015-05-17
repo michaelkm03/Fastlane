@@ -27,7 +27,7 @@
 
 static CGFloat const kLeadingTrailingSpace = 15.0f;
 static CGFloat const kCommentSpaceToActions = 22.0f;
-static CGFloat const kInterActionSpace = 25.0f;
+static CGFloat const kInterActionSpace = 23.0f;
 static CGFloat const kCommentWidth = 68.0f;
 static CGFloat const kActionButtonHeight = 31.0f;
 
