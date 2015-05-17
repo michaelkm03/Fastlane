@@ -50,12 +50,6 @@
     
     self.title = NSLocalizedString(@"REPOSTS", nil);
     
-    self.navigationItem.backBarButtonItem = nil;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(goBack:)];
-    
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     self.reposters = [[NSArray alloc] init];
@@ -236,13 +230,6 @@
              self.tableView.backgroundView = nil;
          }];
     }
-}
-
-#pragma mark - Actions
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
