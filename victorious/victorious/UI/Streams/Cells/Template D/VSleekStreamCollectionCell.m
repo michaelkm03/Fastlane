@@ -215,34 +215,35 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
                        dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize sizeWithText = initialSize;
+
+    static NSMutableDictionary *textSizes = nil;
+    if (textSizes == nil)
+    {
+        textSizes = [NSMutableDictionary new];
+    }
     
-    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
-    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
-    [textStorage addLayoutManager:layoutManager];
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:CGSizeZero];
-    [layoutManager addTextContainer:textContainer];
-    textContainer.heightTracksTextView = YES;
-    textContainer.widthTracksTextView = YES;
-    textContainer.lineFragmentPadding = 0.0f;
-    VHashTagTextView *sizingCaptionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
-    sizingCaptionTextView.scrollEnabled = NO;
-    sizingCaptionTextView.editable = NO;
-    sizingCaptionTextView.textContainerInset = UIEdgeInsetsZero;
-    sizingCaptionTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSValue *textSizeValue = [textSizes objectForKey:sequence.remoteId];
+    if (textSizeValue)
+    {
+        return [textSizeValue CGSizeValue];
+    }
     
     CGFloat captionWidth = initialSize.width - kCaptionMargins.left - kCaptionMargins.right;
-    [sizingCaptionTextView v_addWidthConstraint:captionWidth];
     if (sequence.name.length > 0)
     {
         // Caption view size
-        NSAttributedString *attributedCaptionText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                                    attributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        sizingCaptionTextView.attributedText = attributedCaptionText;
+        static NSDictionary *sharedAttributes = nil;
+        if (sharedAttributes == nil)
+        {
+            sharedAttributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
+        }
         
-        CGSize size = [sizingCaptionTextView systemLayoutSizeFittingSize:CGSizeMake(captionWidth, HUGE_VALF)];
+        CGSize size = [sequence.name frameSizeForWidth:captionWidth
+                                         andAttributes:sharedAttributes];
         sizeWithText.height = sizeWithText.height + size.height + kCaptionMargins.top + kCaptionMargins.bottom;
     }
-
+    [textSizes setObject:[NSValue valueWithCGSize:sizeWithText]
+                  forKey:sequence.remoteId];
     return sizeWithText;
 }
 
