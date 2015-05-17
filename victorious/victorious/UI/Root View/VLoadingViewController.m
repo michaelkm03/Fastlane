@@ -217,45 +217,45 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         // Sleek
-        [templateDecorator setValue:@{
-                                      @"name": @"sleek.streamCell",
-                                      @"orIcon": @{
-                                                    @"imageURL": @"D_pollOr"
-                                                },
-                                      @"background":@{
-                                              @"name": @"solidColor.background",
-                                              @"color":
-                                                  @{
-                                                      @"red": @50,
-                                                      @"green": @50,
-                                                      @"blue": @50,
-                                                      @"alpha": @255
-                                                      }
-                                              },
-                                      @"loadingBackground":@{
-                                              @"name": @"solidColor.background",
-                                              @"color":
-                                                  @{
-                                                      @"red": @0,
-                                                      @"green": @50,
-                                                      @"blue": @50,
-                                                      @"alpha": @255
-                                                      }
-                                              },
-                                      @"color.text.content": @{
-                                              @"red": @102,
-                                              @"green": @102,
-                                              @"blue": @102,
-                                              @"alpha": @255
-                                              },
-                                      @"color.text": @{
-                                              @"red": @200,
-                                              @"green": @200,
-                                              @"blue": @200,
-                                              @"alpha": @255
-                                              }
-                                      }
-              forAllOccurencesOfKey:@"streamCell"];
+//        [templateDecorator setValue:@{
+//                                      @"name": @"sleek.streamCell",
+//                                      @"orIcon": @{
+//                                                    @"imageURL": @"D_pollOr"
+//                                                },
+//                                      @"background":@{
+//                                              @"name": @"solidColor.background",
+//                                              @"color":
+//                                                  @{
+//                                                      @"red": @50,
+//                                                      @"green": @50,
+//                                                      @"blue": @50,
+//                                                      @"alpha": @255
+//                                                      }
+//                                              },
+//                                      @"loadingBackground":@{
+//                                              @"name": @"solidColor.background",
+//                                              @"color":
+//                                                  @{
+//                                                      @"red": @0,
+//                                                      @"green": @50,
+//                                                      @"blue": @50,
+//                                                      @"alpha": @255
+//                                                      }
+//                                              },
+//                                      @"color.text.content": @{
+//                                              @"red": @102,
+//                                              @"green": @102,
+//                                              @"blue": @102,
+//                                              @"alpha": @255
+//                                              },
+//                                      @"color.text": @{
+//                                              @"red": @200,
+//                                              @"green": @200,
+//                                              @"blue": @200,
+//                                              @"alpha": @255
+//                                              }
+//                                      }
+//              forAllOccurencesOfKey:@"streamCell"];
         
         // Tile Overlay
 //        [templateDecorator setValue:@{
@@ -299,54 +299,54 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 //              forAllOccurencesOfKey:@"streamCell"];
 
         // inset
-//        [templateDecorator setValue:@{
-//                                      @"background": @{
-//                                              @"name": @"solidColor.background",
-//                                              @"color": @{
-//                                                      @"red":@230,
-//                                                      @"green":@230,
-//                                                      @"blue":@230,
-//                                                      @"alpha":@255,
-//                                                      }
-//                                              },
-//                                      @"color.link":@{
-//                                              @"red":@49,
-//                                              @"green":@198,
-//                                              @"blue":@133,
-//                                              @"alpha":@255,
-//                                              },
-//                                      @"color.text":@{
-//                                              @"red":@55,
-//                                              @"green":@55,
-//                                              @"blue":@55,
-//                                              @"alpha":@255,
-//                                              },
-//                                      @"color.text.content": @{
-//                                              @"red":@20,
-//                                              @"green":@20,
-//                                              @"blue":@20,
-//                                              @"alpha":@255,
-//                                              },
-//                                      @"color.accent": @{
-//                                              @"red":@200,
-//                                              @"green":@10,
-//                                              @"blue":@10,
-//                                              @"alpha":@255,
-//                                              },
-//                                      @"name":@"inset.streamCell",
-//                                      @"showComments":@YES,
-//                                      @"loadingBackground": @{
-//                                              @"name": @"solidColor.background",
-//                                              @"color":
-//                                                  @{
-//                                                      @"red": @200,
-//                                                      @"green": @200,
-//                                                      @"blue": @200,
-//                                                      @"alpha": @255
-//                                                      }
-//                                              },
-//                                      }
-//              forAllOccurencesOfKey:@"streamCell"];
+        [templateDecorator setValue:@{
+                                      @"background": @{
+                                              @"name": @"solidColor.background",
+                                              @"color": @{
+                                                      @"red":@230,
+                                                      @"green":@230,
+                                                      @"blue":@230,
+                                                      @"alpha":@255,
+                                                      }
+                                              },
+                                      @"color.link":@{
+                                              @"red":@49,
+                                              @"green":@198,
+                                              @"blue":@133,
+                                              @"alpha":@255,
+                                              },
+                                      @"color.text":@{
+                                              @"red":@55,
+                                              @"green":@55,
+                                              @"blue":@55,
+                                              @"alpha":@255,
+                                              },
+                                      @"color.text.content": @{
+                                              @"red":@20,
+                                              @"green":@20,
+                                              @"blue":@20,
+                                              @"alpha":@255,
+                                              },
+                                      @"color.accent": @{
+                                              @"red":@200,
+                                              @"green":@10,
+                                              @"blue":@10,
+                                              @"alpha":@255,
+                                              },
+                                      @"name":@"inset.streamCell",
+                                      @"showComments":@YES,
+                                      @"loadingBackground": @{
+                                              @"name": @"solidColor.background",
+                                              @"color":
+                                                  @{
+                                                      @"red": @200,
+                                                      @"green": @200,
+                                                      @"blue": @200,
+                                                      @"alpha": @255
+                                                      }
+                                              },
+                                      }
+              forAllOccurencesOfKey:@"streamCell"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

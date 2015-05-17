@@ -109,6 +109,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     _captionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
     _captionTextView.scrollEnabled = NO;
     _captionTextView.editable = NO;
+    _captionTextView.textContainerInset = UIEdgeInsetsZero;
     _captionTextView.linkDelegate = self;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_captionTextView];
@@ -292,6 +293,12 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 + (NSAttributedString *)attributedCommentTextForSequence:(VSequence *)sequence
                                     andDependencyManager:(VDependencyManager *)dependencyManager
 {
+    return [[NSAttributedString alloc] initWithString:[self stringForCommentTextWithSequence:sequence]
+                                           attributes:[self sequenceCommentCountAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSString *)stringForCommentTextWithSequence:(VSequence *)sequence
+{
     NSNumber *commentCount = [sequence commentCount];
     NSString *commentsString = nil;
     NSInteger cCount = [commentCount integerValue];
@@ -303,8 +310,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     {
         commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
     }
-    return [[NSAttributedString alloc] initWithString:commentsString
-                                           attributes:[self sequenceCommentCountAttributesWithDependencyManager:dependencyManager]];
+    return commentsString;
 }
 
 + (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -361,41 +367,41 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Top Margins
     sizeWithText.height = sizeWithText.height + kTextMargins.top;
+
+    static NSMutableDictionary *textSizes = nil;
+    if (textSizes == nil)
+    {
+        textSizes = [NSMutableDictionary new];
+    }
+    
+    NSValue *textSizeValue = [textSizes objectForKey:sequence.remoteId];
+    if (textSizeValue)
+    {
+        return [textSizeValue CGSizeValue];
+    }
     
     // Comment size
-    NSAttributedString *attributedCommentText = [self attributedCommentTextForSequence:sequence
-                                                                  andDependencyManager:dependencyManager];
-    [self sizingCell].frame = CGRectMake(0, 0, sizeWithText.width, sizeWithText.height + sizeWithText.height);
-    [[self sizingCell].commentsLabel setAttributedText:attributedCommentText];
-    CGSize commentSize = [[self sizingCell].commentsLabel intrinsicContentSize];
-    
+    CGFloat textAreaWidth = sizeWithText.width - kTextMargins.left - kTextMargins.right;
+    CGSize commentSize = [[self stringForCommentTextWithSequence:sequence] frameSizeForWidth:textAreaWidth
+                                                                               andAttributes:[self sequenceCommentCountAttributesWithDependencyManager:dependencyManager]];
     sizeWithText.height = sizeWithText.height + commentSize.height;
     if (sequence.name.length > 0)
     {
         // Inter-Text spacing
         sizeWithText.height = sizeWithText.height + kTextSeparatorHeight;
-        
+
         // Caption view size
-        NSAttributedString *attributedCaptionText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                                    attributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        [self sizingCell].captionTextView.attributedText = attributedCaptionText;
-        CGSize captionSize = [[self sizingCell].captionTextView intrinsicContentSize];
-        sizeWithText.height = sizeWithText.height + captionSize.height;
+
+        CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
+                                                andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
+        sizeWithText.height = sizeWithText.height + captionSize.height + 4.0f;
     }
     
     // Bottom Margins
     sizeWithText.height = sizeWithText.height + kTextMargins.bottom;
+    [textSizes setObject:[NSValue valueWithCGSize:sizeWithText]
+                  forKey:sequence.remoteId];
     return sizeWithText;
-}
-
-+ (VInsetStreamCollectionCell *)sizingCell
-{
-    static VInsetStreamCollectionCell *sizingCell = nil;
-    if (sizingCell == nil)
-    {
-        sizingCell = [[VInsetStreamCollectionCell alloc] initWithFrame:CGRectMake(0, 0, 600.0f, 600.0f)];
-    }
-    return sizingCell;
 }
 
 #pragma mark - CCHLinkTextViewDelegate
