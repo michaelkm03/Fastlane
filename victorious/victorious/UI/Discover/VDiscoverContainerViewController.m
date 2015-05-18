@@ -108,6 +108,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self updateNavigationItem];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -207,6 +214,16 @@
     }
 }
 
+- (void)updateNavigationItem
+{
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleContainerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
+    }
+    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
+}
+
 #pragma mark - VMultipleContainerChild
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
@@ -214,6 +231,8 @@
     // This event is not actually stream related, its name remains for legacy purposes
     NSDictionary *params = @{ VTrackingKeyStreamName : [self.dependencyManager stringForKey:VDependencyManagerTitleKey] ?: @"Discover" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
+    
+    [self updateNavigationItem];
 }
 
 #pragma mark - UINavigationControllerDelegate methods

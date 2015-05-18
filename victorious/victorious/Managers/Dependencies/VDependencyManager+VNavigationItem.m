@@ -67,13 +67,12 @@ static const char kAssociatedObjectSourceViewControllerKey;
         BOOL shouldDisplay = YES;
         do
         {
-            if ( [responder respondsToSelector:@selector(shouldDisplayAccessoryForDestination:fromSource:)] )
+            if ( [responder respondsToSelector:@selector(shouldDisplayAccessoryMenuItem:fromSource:)] )
             {
                 source = (id<VAccessoryNavigationSource>)responder;
-                id destination = [menuItem.destination isKindOfClass:[NSNull class]] ? sourceViewController : menuItem.destination;
                 
                 // If anyone in the responder chain can and does say no, then we don't display
-                if ( ![source shouldDisplayAccessoryForDestination:destination fromSource:sourceViewController] )
+                if ( ![source shouldDisplayAccessoryMenuItem:menuItem fromSource:sourceViewController] )
                 {
                     shouldDisplay = NO;
                     break;
@@ -136,6 +135,8 @@ static const char kAssociatedObjectSourceViewControllerKey;
 
 - (NSOrderedSet *)accessoriesForSource:(UIResponder *)source
 {
+    return [[NSOrderedSet alloc] initWithArray:self.accessoryMenuItems];
+    
     // Walk the responder chain and collect accessoryMenuItems from each responders dependencyManager
     NSMutableOrderedSet *accessoryMenuItems = [[NSMutableOrderedSet alloc] init];
     UIResponder *responder = source;
@@ -199,37 +200,36 @@ static const char kAssociatedObjectSourceViewControllerKey;
          {
              if ( authorized && canNavigationToDestination )
              {
-                 [self performNavigationFromSource:sourceViewController toDestination:destination];
+                 [self performNavigationFromSource:sourceViewController withMenuItem:menuItem];
              }
          }];
     }
     else if ( canNavigationToDestination )
     {
-        [self performNavigationFromSource:sourceViewController toDestination:destination];
+        [self performNavigationFromSource:sourceViewController withMenuItem:menuItem];
     }
 }
 
 - (void)performNavigationFromSource:(UIViewController *)sourceViewController
-                      toDestination:(UIViewController *)destination
+                       withMenuItem:(VNavigationMenuItem *)menuItem
 {
-    BOOL willNavigate = NO;
+    BOOL shouldNavigate = YES;
     UIResponder *responder = sourceViewController;
     do
     {
-        id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)[responder targetForAction:@selector(willNavigationToDestination:) withSender:self];
-        willNavigate = [source willNavigationToDestination:destination];
-        if ( willNavigate )
+        id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)[responder targetForAction:@selector(shouldNavigateWithAccessoryMenuItem:) withSender:self];
+        if ( source != nil && ![source shouldNavigateWithAccessoryMenuItem:menuItem] )
         {
+            shouldNavigate = NO;
             break;
         }
     }
     while (( responder = [responder nextResponder] ));
     
-    BOOL isValidDestination = destination != nil && ![destination isKindOfClass:[NSNull class]];
     BOOL isValidNavController = sourceViewController.navigationController != nil;
-    if ( !willNavigate && isValidDestination && isValidNavController )
+    if ( shouldNavigate && menuItem.hasValidDestination && isValidNavController )
     {
-        [sourceViewController.navigationController pushViewController:destination animated:YES];
+        [sourceViewController.navigationController pushViewController:menuItem.destination animated:YES];
     }
 }
 

@@ -26,7 +26,6 @@
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
-//@property (strong, readwrite, nonatomic) VBarButton *hamburgerButton;
 @property (strong, readwrite, nonatomic) UIViewController *menuViewController;
 
 @end
@@ -99,10 +98,6 @@
     self.view = [[UIView alloc] init];
     
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-    
-    /*self.hamburgerButton = [VBarButton newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
-    [self.hamburgerButton addTarget:self action:@selector(presentMenuViewController) forControlEvents:UIControlEventTouchUpInside];
-    self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.hamburgerButton];*/
     
     if (!_contentViewInLandscapeOffsetCenterX)
     {
@@ -445,23 +440,22 @@
 
 #pragma mark - VAccessoryNavigationSource
 
-- (BOOL)willNavigationToDestination:(id)destination
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    if ( destination == nil || [destination isKindOfClass:[NSNull class]] )
+    if ( [menuItem.position isEqualToString:@"left"] )
     {
         [self presentMenuViewController];
-        return YES;
+        return NO;
     }
     
-    return NO;
+    return YES;
 }
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
-    if ( destination == self )
+    if ( [menuItem.position isEqualToString:@"left"] )
     {
-        const BOOL shouldDisplay = source.navigationController.viewControllers.count == 1;
-        return shouldDisplay;
+        return source.navigationController.viewControllers.count == 1;
     }
     
     return YES;

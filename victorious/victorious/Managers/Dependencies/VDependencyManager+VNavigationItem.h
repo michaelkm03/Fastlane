@@ -7,14 +7,15 @@
 //
 
 #import "VDependencyManager.h"
+#import "VNavigationMenuItem.h"
 
 extern NSString * const VDependencyManagerTitleImageKey; ///< The key that specifies a title image
 
 @protocol VAccessoryNavigationSource <NSObject>
 
-- (BOOL)willNavigationToDestination:(id)destination;
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem;
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source;
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source;
 
 @end
 

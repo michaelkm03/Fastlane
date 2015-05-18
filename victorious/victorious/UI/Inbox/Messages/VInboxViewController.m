@@ -89,12 +89,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
+    [self updateNavigationItem];
 }
 
 #pragma mark - View Lifecycle
@@ -124,6 +119,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
+    
+    [self updateNavigationItem];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -142,6 +139,16 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 }
 
 #pragma mark - Properties
+
+- (void)updateNavigationItem
+{
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleContainerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
+    }
+    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
+}
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
 {
@@ -415,9 +422,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 #pragma mark - VAccessoryNavigationSource
 
-- (BOOL)willNavigationToDestination:(id)destination
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
     {
         [self showUserSearch];
         return NO;
@@ -426,7 +433,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return YES;
 }
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
     return YES;
 }

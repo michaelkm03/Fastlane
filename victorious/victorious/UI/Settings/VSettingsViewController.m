@@ -428,4 +428,11 @@ static NSString * const kSupportEmailKey = @"email.support";
     return YES;
 }
 
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    return self.navigationController.viewControllers.count == 1;
+}
+
 @end

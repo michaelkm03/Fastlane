@@ -792,12 +792,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 #pragma mark - VAccessoryNavigationSource
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
     const BOOL isCurrentUserLoggedIn = [VObjectManager sharedManager].authorized;
     const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
     
-    if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
     {
         if ( isCurrentUserLoggedIn )
         {
@@ -808,7 +808,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             return self.user != nil;
         }
     }
-    else if ( [destination isKindOfClass:[VFindFriendsViewController class]] )
+    else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
     {
         return isCurrentUser;
     }
@@ -816,23 +816,23 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return YES;
 }
 
-- (BOOL)willNavigationToDestination:(id)destination
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
     const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
     
-    if ( [destination isKindOfClass:[VMessageContainerViewController class]] )
+    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
     {
         if ( isCurrentUser )
         {
-            return YES;
+            return NO;
         }
         else
         {
-            ((VMessageContainerViewController *)destination).otherUser = self.user;
+            ((VMessageContainerViewController *)menuItem.destination).otherUser = self.user;
         }
     }
     
-    return NO;
+    return YES;
 }
 
 @end

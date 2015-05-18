@@ -73,4 +73,9 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     return hash;
 }
 
+- (BOOL)hasValidDestination
+{
+    return self.description != nil && ![self.destination isKindOfClass:[NSNull class]];
+}
+
 @end

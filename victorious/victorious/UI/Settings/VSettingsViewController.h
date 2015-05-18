@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
-#import "VHasManagedDependencies.h"
-
 #import <UIKit/UIKit.h>
 
+#import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
+#import "VDependencyManager+VNavigationItem.h"
 
-@interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination>
+@interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination, VAccessoryNavigationSource>
 
 @end

@@ -127,10 +127,10 @@
 
 #pragma mark - VAccessoryNavigationSource
 
-- (BOOL)willNavigationToDestination:(id)destination
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
 #warning This method of detecting destination will have to change
-    if ( destination == nil || [destination isKindOfClass:[NSNull class]] )
+    if ( !menuItem.hasValidDestination )
     {
         [self sendInvitation];
         return NO;
@@ -139,10 +139,12 @@
     return YES;
 }
 
-- (BOOL)shouldDisplayAccessoryForDestination:(id)destination fromSource:(UIViewController *)source
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
-    if ( destination == nil )
+    if ( !menuItem.hasValidDestination )
     {
+#warning FIX:
+        return YES;
         return [self shouldShowInvite];
     }
     

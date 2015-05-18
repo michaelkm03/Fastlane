@@ -41,4 +41,6 @@
 
 @property (nonatomic, strong) id dependency;
 
+@property (nonatomic, assign, readonly) BOOL hasValidDestination;
+
 @end
