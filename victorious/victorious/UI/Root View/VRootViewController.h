@@ -36,9 +36,6 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 
 - (void)presentForceUpgradeScreen;
 
-#warning Temporary
-@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
-
 /**
  An object that receives deep links and forwads to appropriate handlers
  */

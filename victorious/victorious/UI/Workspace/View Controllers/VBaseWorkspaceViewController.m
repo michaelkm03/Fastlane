@@ -7,7 +7,7 @@
 //
 
 #import "VBaseWorkspaceViewController.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspace.h"
 
 // Views
 #import "VCanvasView.h"

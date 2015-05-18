@@ -7,7 +7,7 @@
 //
 
 #import "VTextWorkspaceFlowController.h"
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 #import "VWorkspaceViewController.h"
 #import "VTextToolController.h"
 #import "VRootViewController.h"
@@ -34,7 +34,8 @@
 
 + (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VDependencyManager *dependencyManagerToUse = dependencyManager ?: [[VRootViewController rootViewController] dependencyManager];
+    NSAssert(dependencyManager != nil, @"Workspace flow controller needs a dependency manager");
+    VDependencyManager *dependencyManagerToUse = dependencyManager;
     return [dependencyManagerToUse templateValueOfType:[VTextWorkspaceFlowController class] forKey:VDependencyManagerTextWorkspaceFlowKey];
 }
 
