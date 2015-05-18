@@ -486,7 +486,7 @@
 "NotificationSettingSectionPeople" = "Leute";
 "Open Settings" = "Einstellungen öffnen";
 
-"ErrorPushNotificationsNotEnabled" = "Push-Benachrichtigungen sind für dein Gerät nicht aktiviert.\nBitte erlaube Benachrichtiigungen in den Einstellungen deines Gerätes, um sie zu aktivieren.";
+"ErrorPushNotificationsNotEnabled" = "Push-Benachrichtigungen sind für dein Gerät nicht aktiviert.\nBitte erlaube Benachrichtigungen in den Einstellungen deines Gerätes, um sie zu aktivieren.";
 "ErrorPushNotificationsUnknown" = "Fehler beim Laden der Benachrichtigungseinstellungen.\nBitte versuche es später erneut.";
 "ErrorPushNotificationsNotSaved" = "Fehler beim Speichern der Einstellungen";
 "ErrorPushNotificationsNotSavedMessage" = "Bitte versuche es später erneut.";
