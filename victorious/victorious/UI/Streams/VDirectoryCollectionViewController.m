@@ -315,6 +315,11 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if ( [super respondsToSelector:@selector(scrollViewDidScroll:)] )
+    {
+        [super scrollViewDidScroll:scrollView];
+    }
+    
     if ( [scrollView isKindOfClass:[UICollectionView class]] && [self.directoryCellFactory respondsToSelector:@selector(collectionViewDidScroll:)] )
     {
         [self.directoryCellFactory collectionViewDidScroll:(UICollectionView *)scrollView];

@@ -262,6 +262,7 @@
 		03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
 		03A058C91AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
+		03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */; };
 		03AC453A19BA1F1000CE4351 /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453919BA1F1000CE4351 /* NSString+VCrypto.m */; };
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
 		03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3CF1A3BBCE900F0634A /* VBadgeBackgroundView.m */; };
@@ -768,6 +769,7 @@
 		D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */; };
 		D8D945FD1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */; };
 		D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE58F1ADD835B0004B782 /* VFlexBar.m */; };
+		D8DCE5901ADD835B0004B782 /* VActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE58F1ADD835B0004B782 /* VActionBar.m */; };
 		D8DCE5921ADD85820004B782 /* VActionBarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE5911ADD85820004B782 /* VActionBarTests.m */; };
 		D8DF71DD1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71DC1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m */; };
 		D8DF71E01AFC1A9F002EA7A5 /* VTimeSinceWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71DF1AFC1A9F002EA7A5 /* VTimeSinceWidget.m */; };
@@ -1383,6 +1385,8 @@
 		03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+VTemplateDownloaderConformance.m"; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
+		03A9CBEC1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VWorkspace.h"; sourceTree = "<group>"; };
+		03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VWorkspace.m"; sourceTree = "<group>"; };
 		03AC453819BA1F1000CE4351 /* NSString+VCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VCrypto.h"; sourceTree = "<group>"; };
 		03AC453919BA1F1000CE4351 /* NSString+VCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VCrypto.m"; sourceTree = "<group>"; };
 		03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringVCryptoTests.m; sourceTree = "<group>"; };
@@ -2313,8 +2317,6 @@
 		D8D8958719E88C2100632663 /* VExperienceEnhancerBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperienceEnhancerBarCell.h; sourceTree = "<group>"; };
 		D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerBarCell.m; sourceTree = "<group>"; };
 		D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VExperienceEnhancerBarCell.xib; sourceTree = "<group>"; };
-		D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VWorkspaceTool.h"; sourceTree = "<group>"; };
-		D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VWorkspaceTool.m"; sourceTree = "<group>"; };
 		D8D946011A2EBC120089D271 /* VWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceTool.h; sourceTree = "<group>"; };
 		D8DCE58E1ADD835B0004B782 /* VFlexBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFlexBar.h; sourceTree = "<group>"; };
 		D8DCE58F1ADD835B0004B782 /* VFlexBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFlexBar.m; sourceTree = "<group>"; };
@@ -3607,8 +3609,8 @@
 				039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */,
 				A7F711D61AE1B8540086F729 /* VDependencyManager+VUserProfile.h */,
 				A7F711D71AE1B8540086F729 /* VDependencyManager+VUserProfile.m */,
-				D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */,
-				D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */,
+				03A9CBEC1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.h */,
+				03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
 			);
@@ -6508,7 +6510,6 @@
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
-				D8D945FD1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
 				A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */,
@@ -6568,6 +6569,7 @@
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				A716FC3E1AAE2DDB0032AA40 /* VRegistrationModel.m in Sources */,
+				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				A77FB9231A897201003E9AA2 /* UIColor+VBrightness.m in Sources */,

@@ -169,6 +169,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
          {
              actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
              actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+             actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
          }];
     }
 }
