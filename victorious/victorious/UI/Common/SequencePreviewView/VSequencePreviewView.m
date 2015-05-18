@@ -60,7 +60,6 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    VLog(@"%@", sequence.firstNode);
     NSAssert(false, @"Override in subclasses!");
 }
 
