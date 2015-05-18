@@ -8,9 +8,7 @@
 
 #import "VInsetStreamCellFactory.h"
 #import "VInsetStreamCollectionCell.h"
-#import "VInsetStreamCollectionCellPoll.h"
 #import "VSequence+Fetcher.h"
-#import "VStreamCollectionCellWebContent.h"
 #import "VDependencyManager.h"
 
 // Background
@@ -23,6 +21,7 @@
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentCollectionViewCellFactory *noContentCollectionViewCellFactory;
+@property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
 
 @end
 
@@ -41,10 +40,29 @@
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VInsetStreamCollectionCell nibForCell] forCellWithReuseIdentifier:[VInsetStreamCollectionCell suggestedReuseIdentifier]];
-    [collectionView registerNib:[VInsetStreamCollectionCellPoll nibForCell] forCellWithReuseIdentifier:[VInsetStreamCollectionCellPoll suggestedReuseIdentifier]];
-    [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
     [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
+}
+
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView withStreamItems:(NSArray *)streamItems
+{
+    for (VStreamItem *streamItem in streamItems)
+    {
+        if (![streamItem isKindOfClass:[VSequence class]])
+        {
+            NSAssert(false, @"This factory can only handle sequences.");
+        }
+        VSequence *sequence = (VSequence *)streamItem;
+        
+        NSString *reuseIdentifierForSequence = [VInsetStreamCollectionCell reuseIdentifierForSequence:sequence
+                                                                                       baseIdentifier:@""];
+        
+        if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
+        {
+            [collectionView registerClass:[VInsetStreamCollectionCell class]
+               forCellWithReuseIdentifier:reuseIdentifierForSequence];
+            [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
+        }
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
@@ -55,31 +73,22 @@
     }
     
     VSequence *sequence = (VSequence *)streamItem;
-    VStreamCollectionCell *cell;
+    NSString *reuseIdentifierForSequence = [VInsetStreamCollectionCell reuseIdentifierForSequence:(VSequence *)streamItem
+                                                                                   baseIdentifier:@""];
     
-    if ( [sequence isPoll] )
+    if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
     {
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VInsetStreamCollectionCellPoll suggestedReuseIdentifier]
-                                                         forIndexPath:indexPath];
+        [collectionView registerClass:[VInsetStreamCollectionCell class]
+           forCellWithReuseIdentifier:reuseIdentifierForSequence];
+        [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
-    else if ([sequence isPreviewWebContent])
-    {
-        NSString *identifier = [VStreamCollectionCellWebContent suggestedReuseIdentifier];
-        VStreamCollectionCellWebContent *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                                                          forIndexPath:indexPath];
-        cell.sequence = sequence;
-        [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
-        return cell;
-    }
-    else
-    {
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VInsetStreamCollectionCell suggestedReuseIdentifier]
-                                                         forIndexPath:indexPath];
-    }
+
+    VInsetStreamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierForSequence
+                                                                                 forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
-    
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
+    [self.dependencyManager addBackgroundToBackgroundHost:cell];
     
     return cell;
 }
@@ -93,14 +102,9 @@
     
     VSequence *sequence = (VSequence *)streamItem;
 
-    if ( [sequence isPoll] )
-    {
-        return [VInsetStreamCollectionCellPoll actualSizeWithCollectionViewBounds:bounds sequence:sequence dependencyManager:self.dependencyManager];
-    }
-    else
-    {
-        return [VInsetStreamCollectionCell actualSizeWithCollectionViewBounds:bounds sequence:sequence dependencyManager:self.dependencyManager];
-    }
+    return [VInsetStreamCollectionCell actualSizeWithCollectionViewBounds:bounds
+                                                                 sequence:sequence
+                                                        dependencyManager:self.dependencyManager];
 }
 
 - (CGFloat)minimumLineSpacing

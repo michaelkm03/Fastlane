@@ -8,15 +8,21 @@
 
 #import "VAbstractActionView.h"
 
+// Libraries
+#import <FBKVOController.h>
+
 // Action Bar
-#import "VActionBar.h"
+#import "VFlexBar.h"
 
 // Views + Helpers
 #import "UIView+Autolayout.h"
 
+// Models
+#import "VSequence+Fetcher.h"
+
 @interface VAbstractActionView ()
 
-@property (nonatomic, strong) VActionBar *actionBar;
+@property (nonatomic, strong) VFlexBar *actionBar;
 
 @end
 
@@ -29,10 +35,6 @@
 {
     [super layoutSubviews];
     
-    self.actionBar = [[VActionBar alloc] initWithFrame:self.bounds];
-    [self addSubview:self.actionBar];
-    [self v_addFitToParentConstraintsToSubview:self.actionBar];
-    
     // If we got a sequence before we setup our action bar
     if (self.sequence != nil)
     {
@@ -41,14 +43,44 @@
     }
 }
 
+- (VFlexBar *)actionBar
+{
+    if (_actionBar == nil)
+    {
+        _actionBar = [[VFlexBar alloc] initWithFrame:self.bounds];
+        [self addSubview:_actionBar];
+        [self v_addFitToParentConstraintsToSubview:_actionBar];
+    }
+    return _actionBar;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:_sequence];
+    
     _sequence = sequence;
     
     [self updateActionItemsOnBar:self.actionBar
                      forSequence:_sequence];
     [self updateRepostButtonForSequence:_sequence];
     [self updateCommentCountForSequence:_sequence];
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:sequence
+                        keyPath:NSStringFromSelector(@selector(commentCount))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, VSequence *observedSequence, NSDictionary *change)
+     {
+         [welf updateCommentCountForSequence:observedSequence];
+     }];
+}
+
+#pragma mark - VStreamCellSpecialization
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSAssert(false, @"Implement in subclasses");
+    return nil;
 }
 
 @end
@@ -57,62 +89,79 @@
 
 - (void)comment:(id)sender
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
+    UIResponder<VSequenceActionsDelegate> *targetForComment = [self targetForAction:@selector(willCommentOnSequence:fromView:)
+                                              withSender:self];
+    if (targetForComment == nil)
     {
-        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence
-                                                   fromView:self];
+        NSAssert(false, @"We need an object in the respodner chain for commenting.");
+
     }
+    [targetForComment willCommentOnSequence:self.sequence
+                                   fromView:self];
 }
 
 - (void)share:(id)sender
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willShareSequence:fromView:)])
+    UIResponder<VSequenceActionsDelegate> *targetForShare = [self targetForAction:@selector(willShareSequence:fromView:)
+                                                                       withSender:self];
+    if (targetForShare == nil)
     {
-        [self.sequenceActionsDelegate willShareSequence:self.sequence
-                                               fromView:self];
+        NSAssert(false, @"We need an object in the responder chain for sharing.");
     }
+    [targetForShare willShareSequence:self.sequence
+                             fromView:self];
 }
 
 - (void)repost:(id)sender
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)])
+    UIResponder<VSequenceActionsDelegate> *targetForRepost = [self targetForAction:@selector(willRepostSequence:fromView:completion:)
+                                                                        withSender:self];
+    if (targetForRepost == nil)
     {
-        self.reposting = YES;
-        __weak typeof(self) welf = self;
-        [self.sequenceActionsDelegate willRepostSequence:self.sequence
-                                                fromView:self
-                                              completion:^(BOOL success)
-         {
-             welf.reposting = NO;
-         }];
+        NSAssert(false, @"We need an object in the responder chain for resposting.");
     }
+
+    self.reposting = YES;
+    __weak typeof(self) welf = self;
+    [targetForRepost willRepostSequence:self.sequence
+                               fromView:self
+                             completion:^(BOOL success)
+     {
+         welf.reposting = NO;
+     }];
 }
 
 - (void)meme:(id)sender
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
+    UIResponder<VSequenceActionsDelegate> *targetForMeme = [self targetForAction:@selector(willRemixSequence:fromView:videoEdit:)
+                                                                      withSender:self];
+    if (targetForMeme == nil)
     {
-        [self.sequenceActionsDelegate willRemixSequence:self.sequence
-                                               fromView:self
-                                              videoEdit:VDefaultVideoEditSnapshot];
+        NSAssert(false, @"We need an object in the responder chain for memeing.");
     }
+    [targetForMeme willRemixSequence:self.sequence
+                            fromView:self
+                           videoEdit:VDefaultVideoEditSnapshot];
 }
 
 - (void)gif:(id)sender
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
+    UIResponder<VSequenceActionsDelegate> *targetForGIF = [self targetForAction:@selector(willRemixSequence:fromView:videoEdit:)
+                                                                     withSender:self];
+    if (targetForGIF == nil)
     {
-        [self.sequenceActionsDelegate willRemixSequence:self.sequence
-                                               fromView:self
-                                              videoEdit:VDefaultVideoEditGIF];
+        NSAssert(false, @"We need an object in the responder chain for gifing.");
     }
+    [targetForGIF willRemixSequence:self.sequence
+                           fromView:self
+                          videoEdit:VDefaultVideoEditGIF];
 }
 
 @end
 
 @implementation VAbstractActionView (VUpdateHooks)
 
-- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+- (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
     // Implement in subclasses

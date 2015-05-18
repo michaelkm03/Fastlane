@@ -18,7 +18,7 @@
 #import "VSequence+Fetcher.h"
 
 // Action Bar
-#import "VActionBar.h"
+#import "VFlexBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VRoundedBackgroundButton.h"
@@ -97,7 +97,29 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 #pragma mark - VUpdateHooks
 
-- (void)updateActionItemsOnBar:(VActionBar *)actionBar
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSMutableString *identifier = [baseIdentifier mutableCopy];
+
+    [identifier appendString:@"Share."];
+    if ([sequence canRepost])
+    {
+        [identifier appendString:@"Repost."];
+    }
+    if ([sequence canRemix])
+    {
+        [identifier appendString:@"Meme."];
+    }
+    if ([sequence canRemix] && [sequence isVideo])
+    {
+        [identifier appendString:@"Gif."];
+    }
+    
+    return [NSString stringWithString:identifier];
+}
+
+- (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
     if (actionBar == nil)
@@ -123,12 +145,16 @@ static const CGFloat kActionButtonWidth = 44.0f;
     
     // Calculate spacing
     __block CGFloat remainingSpace = CGRectGetWidth(actionBar.bounds);
+    if (remainingSpace == 0.0f)
+    {
+        // Nothing to do here
+        return;
+    }
     [justActionItems enumerateObjectsUsingBlock:^(UIButton *actionItem, NSUInteger idx, BOOL *stop)
     {
         remainingSpace = remainingSpace - [actionItem v_internalWidthConstraint].constant;
     }];
     CGFloat spacingWidth = remainingSpace / justActionItems.count;
-    
     // Add our action items and spacing to an array to provide to the action bar
     // Edge spacing should be half the inter-item spacing
     NSMutableArray *actionItemsAndSpacing = [[NSMutableArray alloc] init];
@@ -144,6 +170,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
     [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth * 0.5f]];
     
     actionBar.actionItems = [NSArray arrayWithArray:actionItemsAndSpacing];
+    for (UIView *actionView in actionBar.actionItems)
+    {
+        [actionBar v_addPinToTopBottomToSubview:actionView];
+    }
 }
 
 - (void)updateRepostButtonForSequence:(VSequence *)sequence
@@ -153,6 +183,19 @@ static const CGFloat kActionButtonWidth = 44.0f;
                                                                        repostButton:self.repostButton
                                                                       repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
                                                                     unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
+}
+
+#pragma mark - VHasManagedDependencies
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    UIColor *imageTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.shareButton.tintColor = imageTintColor;
+    self.gifButton.tintColor = imageTintColor;
+    self.memeButton.tintColor = imageTintColor;
+    self.repostButton.tintColor = imageTintColor;
 }
 
 #pragma mark - Button Factory
