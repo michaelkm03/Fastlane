@@ -26,7 +26,7 @@ typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
 
 @property (nonatomic, readonly) VUploadManager *uploadManager; ///< An object responsible for uploading files
 
-+ (void)setupObjectManager;
++ (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager;
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass;
 

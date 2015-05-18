@@ -33,7 +33,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Sequence.h"
-#import "VThemeManager.h"
 
 #pragma mark - Categories
 #import "NSString+VParseHelp.h"

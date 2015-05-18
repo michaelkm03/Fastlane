@@ -27,6 +27,7 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nextVideoBannerTrailingConstraint;
 @property (weak, nonatomic) IBOutlet UIView *nextVideoBannerView;
 @property (weak, nonatomic) IBOutlet UIButton *replayButton;
+@property (weak, nonatomic) IBOutlet UILabel *replayLabel;
 @property (nonatomic, strong) NSTimer *replayButtonTimer;
 @property (nonatomic, assign) CGFloat nextVideoBannerMaxTrailing;
 @property (nonatomic, assign, readwrite) VEndCardAnimationState state;
@@ -103,6 +104,7 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
 {
     self.state = VEndCardAnimationStateDidTransitionOut;
     self.replayButton.alpha = 0.0f;
+    self.replayLabel.alpha = 0.0f;
     self.replayButtonMaxAlpha = 1.0f;
     self.collectionView.hidden = YES;
     self.nextVideoBannerMaxTrailing = self.nextVideoBannerTrailingConstraint.constant;
@@ -244,6 +246,7 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
     void (^animations)() = ^
     {
         self.replayButton.alpha = visible ? self.replayButtonMaxAlpha : 0.0f;
+        self.replayLabel.alpha = visible ? self.replayButtonMaxAlpha : 0.0f;
     };
     
     if ( !animated )

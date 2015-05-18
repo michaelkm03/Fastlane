@@ -10,6 +10,14 @@
 
 #import <SDWebImage/UIButton+WebCache.h>
 #import "UIImageView+VLoadingAnimations.h"
+#import "UIImage+VTint.h"
+#import "UIImage+Round.h"
+
+@interface VDefaultProfileButton ()
+
+@property (nonatomic, strong) NSURL *imageURL;
+
+@end
 
 @implementation VDefaultProfileButton
 
@@ -31,47 +39,50 @@
 
 - (void)setup
 {
-    [self setImage:[self placeholderImage] forState:UIControlStateNormal];
-    
     //Setting vertical and horizontal alignment to fill causes the image set by "setImage"
     //to completely fill the bounds of button
     self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     self.tintColor = [UIColor darkGrayColor];
-    
-    self.clipsToBounds = YES;
 }
 
 - (void)setTintColor:(UIColor *)tintColor
 {
     super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
-}
-
-- (void)updateCornerRadius
-{
-    CGFloat radius = ( CGRectGetHeight(self.bounds) - self.imageEdgeInsets.top - self.imageEdgeInsets.bottom )/2 ;
-    self.layer.cornerRadius = radius;
+    // Re-render placeholder image if necessary
+    if (_imageURL == nil || [_imageURL absoluteString].length == 0)
+    {
+        [self setImage:[self placeholderImage] forState:UIControlStateNormal];
+    }
 }
 
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState
 {
-    UIImage *defaultImage = [self placeholderImage];
-
-    [self sd_setImageWithURL:url
-                    forState:UIControlStateNormal
-            placeholderImage:defaultImage
-                     options:SDWebImageRetryFailed
-                   completed:nil];
+    _imageURL = url;
     
-    self.imageView.tintColor = self.tintColor;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self updateCornerRadius];
+    __weak typeof(self) weakSelf = self;
+    [[SDWebImageManager sharedManager] downloadImageWithURL:url
+                                                    options:SDWebImageRetryFailed
+                                                   progress:nil
+                                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
+     {
+         if (!image)
+         {
+             [weakSelf setImage:[weakSelf placeholderImage] forState:controlState];
+             return;
+         }
+         
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^
+                        {
+                            UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
+                            dispatch_async(dispatch_get_main_queue(), ^
+                                           {
+                                               [weakSelf setImage:roundedImage forState:controlState];
+                                           });
+                        });
+     }];
 }
 
 - (UIImage *)placeholderImage
@@ -81,7 +92,32 @@
     {
         image = [UIImage imageNamed:@"profile_full"];
     }
-    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    // Create unique key from tint color
+    NSString *tintKey = [self.tintColor description];
+    
+    // Check cache for already tinted image
+    SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
+    UIImage *cachedImage = [cache imageFromMemoryCacheForKey:tintKey];
+    if (cachedImage != nil)
+    {
+        return cachedImage;
+    }
+    
+    // Tint image and store in cache
+    UIImage *tintedImage = [image v_tintedTemplateImageWithColor:self.tintColor];
+    [cache storeImage:tintedImage forKey:tintKey];
+    
+    return tintedImage;
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    // Draws a white background
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddEllipseInRect(context, rect);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextFillPath(context);
 }
 
 @end

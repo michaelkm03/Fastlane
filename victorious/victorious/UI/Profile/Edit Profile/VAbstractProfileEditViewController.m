@@ -15,8 +15,9 @@
 #import "VContentInputAccessoryView.h"
 #import "VConstants.h"
 #import "VNavigationController.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspace.h"
 #import "VTemplateBackgroundView.h"
+#import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -27,7 +28,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate, VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
-@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UIButton *cameraButton;
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
@@ -182,8 +183,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     {
         [backgroundImageView applyTintAndBlurToImageWithURL:profileImageURL
                                               withTintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
-        [self.profileImageView fadeInImageAtURL:profileImageURL
-                               placeholderImage:self.profileImageView.image];
+        [self.profileImageView setProfileImageURL:profileImageURL];
     }
     else
     {
@@ -195,7 +195,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 - (IBAction)takePicture:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{ VImageToolControllerInitialImageEditStateKey: @(VImageToolControllerInitialImageEditStateFilter) }];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;
     [self presentViewController:workspaceFlowController.flowRootViewController

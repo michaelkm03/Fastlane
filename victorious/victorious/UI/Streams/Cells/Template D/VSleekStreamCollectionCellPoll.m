@@ -10,7 +10,6 @@
 #import "VAnswer.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "VSleekStreamCollectionCell.h"

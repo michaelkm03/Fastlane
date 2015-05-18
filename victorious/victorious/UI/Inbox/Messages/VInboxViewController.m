@@ -199,7 +199,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     RKObjectManager *manager = [RKObjectManager sharedManager];
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(postedAt)) ascending:NO];
 
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
@@ -401,13 +401,15 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     };
 
     self.refreshRequest = [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
-                                                                              successBlock:success failBlock:fail];
+                                                                              successBlock:success
+                                                                                 failBlock:fail];
 }
 
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeNext
-                                                        successBlock:nil failBlock:nil];
+                                                        successBlock:nil
+                                                           failBlock:nil];
 }
 
 #pragma mark - Search
@@ -447,20 +449,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
     VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:context];
-                               CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
     
-    if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&
-        [[self.fetchedResultsController sections][0] numberOfObjects] &&
-        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
+    if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter] )
     {
         [self loadNextPageAction];
-    }
-    
-    //Notify the container about the scroll so it can handle the header
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-    {
-        [self.delegate scrollViewDidScroll:scrollView];
     }
 }
 

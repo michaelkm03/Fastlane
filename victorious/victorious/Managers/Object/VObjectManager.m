@@ -43,14 +43,14 @@
 
 @property (nonatomic, readwrite) VLoginType mainUserLoginType;
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
-@property (nonatomic, strong, readwrite) VUploadManager *uploadManager;
 @property (nonatomic, strong) NSString *sessionID;
+@property (nonatomic, readwrite) VUploadManager *uploadManager; ///< An object responsible for uploading files
 
 @end
 
 @implementation VObjectManager
 
-+ (void)setupObjectManager
++ (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager
 {
 #if DEBUG && EnableRestKitLogs
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
@@ -62,7 +62,9 @@
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
-    manager.uploadManager = [[VUploadManager alloc] initWithObjectManager:manager];
+    
+    uploadManager.objectManager = manager;
+    manager.uploadManager = uploadManager;
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];

@@ -11,7 +11,6 @@
 #import "VContentInputAccessoryView.h"
 #import "VCreatePollViewController.h"
 #import "VImageSearchViewController.h"
-#import "VThemeManager.h"
 #import "VObjectManager+ContentCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
@@ -20,7 +19,7 @@
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 
-#import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspace.h"
 
 static const NSInteger kMinLength = 2;
 
@@ -64,14 +63,16 @@ static char KVOContext;
 @property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *constraintsThatNeedHalfPointConstant;
 
 @property (nonatomic) BOOL textViewsCleared;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VCreatePollViewController
 
-+ (instancetype)newCreatePollViewController
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VCreatePollViewController *createView = (VCreatePollViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
+    createView.dependencyManager = dependencyManager;
     return createView;
 }
 
@@ -92,7 +93,7 @@ static char KVOContext;
     [super viewDidLoad];
     
     self.titleLabel.text = NSLocalizedString(@"NEW POLL", @"");
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
     [self.constraintsThatNeedHalfPointConstant enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
     {
@@ -101,11 +102,11 @@ static char KVOContext;
 
     UIImage *newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
-    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.mediaButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 
     newImage = [self.searchImageButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.searchImageButton setImage:newImage forState:UIControlStateNormal];
-    self.searchImageButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.searchImageButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
@@ -113,17 +114,17 @@ static char KVOContext;
     newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [self.leftRemoveButton setImage:newImage forState:UIControlStateNormal];
     
-    self.questionTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.questionTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.questionTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.questionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.questionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.questionTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     self.questionTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.questionTextView];
 
     self.questionPrompt.text      = NSLocalizedString(@"Ask a question...", @"");
-    self.questionPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.questionPrompt.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     
-    self.leftAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.leftAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.leftAnswerTextView.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.leftAnswerTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.leftAnswerTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.leftAnswerTextView.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     [self.leftAnswerTextView addObserver:self
                               forKeyPath:NSStringFromSelector(@selector(contentSize))
                                  options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
@@ -132,9 +133,9 @@ static char KVOContext;
     self.leftAnswerTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.leftAnswerTextView];
     ((VContentInputAccessoryView *)self.leftAnswerTextView.inputAccessoryView).maxCharacterLength = VConstantsPollAnswerLength;
     
-    self.rightAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.rightAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.rightAnswerTextView.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.rightAnswerTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.rightAnswerTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.rightAnswerTextView.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     [self.rightAnswerTextView addObserver:self
                                forKeyPath:NSStringFromSelector(@selector(contentSize))
                                   options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
@@ -159,16 +160,16 @@ static char KVOContext;
                                                                        constant:30.0f]];
     
     self.leftAnswerPrompt.text      = NSLocalizedString(@"Vote this", @"");
-    self.leftAnswerPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.leftAnswerPrompt.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
 
     self.rightAnswerPrompt.text      = NSLocalizedString(@"Vote that", @"");
-    self.rightAnswerPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.rightAnswerPrompt.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     
-    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    [self.postButton setBackgroundImage:[UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]] forState:UIControlStateNormal];
+    self.postButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    [self.postButton setBackgroundImage:[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]] forState:UIControlStateNormal];
     [self.postButton setBackgroundImage:[UIImage resizeableImageWithColor:[UIColor colorWithRed:0.6f green:0.6f blue:0.6f alpha:1.0f]] forState:UIControlStateDisabled];
     [self.postButton setTitle:NSLocalizedString(@"Create Poll", @"Create Poll") forState:UIControlStateNormal];
-    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
+    self.postButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey];
     
     [self.postButton setEnabled:YES];
 
@@ -299,7 +300,10 @@ static char KVOContext;
 
 - (IBAction)mediaButtonAction:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter), VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{
+        VImageToolControllerInitialImageEditStateKey: @(VImageToolControllerInitialImageEditStateFilter),
+        VVideoToolControllerInitalVideoEditStateKey: @(VVideoToolControllerInitialVideoEditStateVideo),
+    }];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = YES;
     [self presentViewController:workspaceFlowController.flowRootViewController

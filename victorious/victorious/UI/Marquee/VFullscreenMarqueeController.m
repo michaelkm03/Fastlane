@@ -18,7 +18,6 @@
 
 #import "VFullscreenMarqueeTabIndicatorView.h"
 
-#import "VThemeManager.h"
 #import "VTimerManager.h"
 
 #import "VDependencyManager+VBackgroundContainer.h"
