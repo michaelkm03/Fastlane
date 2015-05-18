@@ -35,6 +35,7 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 @interface VFullscreenMarqueeStreamItemCell ()
 
+@property (nonatomic, assign) BOOL detailsVisible;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
@@ -100,6 +101,12 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 - (void)setDetailsContainerVisible:(BOOL)visible animated:(BOOL)animated
 {
+    if (_detailsVisible == visible)
+    {
+        return;
+    }
+    _detailsVisible = visible;
+    
     CGFloat detailsContainerHeight = CGRectGetHeight(self.detailsContainer.bounds);
     
     CGFloat targetConstraintValue = visible ? -detailsContainerHeight : detailsContainerHeight;
