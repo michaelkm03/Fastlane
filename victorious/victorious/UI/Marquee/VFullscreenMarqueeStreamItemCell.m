@@ -27,7 +27,7 @@
 
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;
-static NSTimeInterval const kVDetailHideTime = 0.1f;
+static NSTimeInterval const kVDetailHideTime = 0.2f;
 static CGFloat const kVDetailBounceHeight = 4.0f;
 static NSTimeInterval const kVDetailBounceTime = 0.35f;
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
