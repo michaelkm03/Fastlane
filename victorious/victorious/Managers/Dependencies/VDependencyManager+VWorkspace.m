@@ -9,7 +9,6 @@
 #import "VDependencyManager+VWorkspace.h"
 #import "VWorkspaceFlowController.h"
 #import "VWorkspaceTool.h"
-#import "NSArray+VMap.h"
 
 static NSString * const kToolsKey = @"tools";
 
