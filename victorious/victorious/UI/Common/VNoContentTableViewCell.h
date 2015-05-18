@@ -26,7 +26,7 @@
  When set to YES, the textview in the cell is set to center alignment.
  When set to NO, the textview has left alignment.
  */
-@property (nonatomic, assign) BOOL isCentered;
+@property (nonatomic, assign, getter=isCentered) BOOL centered;
 
 /**
  Convenience method that handles dequeing a cell from the provided table view.

@@ -280,7 +280,7 @@
         if ( self.settingsError != nil )
         {
             cell.message = self.settingsError.domain;
-            cell.isCentered = YES;
+            cell.centered = YES;
             
             if ( self.settingsError.code == kErrorCodeUserNotRegistered )
             {
