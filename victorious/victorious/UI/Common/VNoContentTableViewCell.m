@@ -59,7 +59,7 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
 
 #pragma mark - Public properties for configuration
 
-- (void)setIsCentered:(BOOL)isCentered
+- (void)setCentered:(BOOL)isCentered
 {
     self.messageTextView.textAlignment = isCentered ? NSTextAlignmentCenter : NSTextAlignmentLeft;
 }
