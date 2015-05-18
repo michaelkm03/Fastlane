@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 @class VCreatePollViewController;
 
 /**
@@ -25,12 +27,12 @@ typedef void (^VCreatePollViewControllerCompletionHandler)(VCreatePollViewContro
 /**
  A UIViewController for creating polls.
  */
-@interface VCreatePollViewController : UIViewController
+@interface VCreatePollViewController : UIViewController <VHasManagedDependencies>
 
 /**
- A convenience factory method.
+ Creates a new instance of VCreatePollViewController by passing in an instance of VDependencyManager
  */
-+ (instancetype)newCreatePollViewController;
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  Specify a block to be called whe the user is done.

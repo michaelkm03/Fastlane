@@ -46,6 +46,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
+#import "VUploadManager.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -381,7 +382,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          {
              return;
          }
-         weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
+         weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
          [weakSelf.workspacePresenter present];
      }];
 }
@@ -620,36 +621,34 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)addUploadProgressView
 {
-    if ( self.uploadProgressViewController != nil )
+    if ( self.uploadProgressViewController == nil )
     {
-        return;
+        self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+        self.uploadProgressViewController.delegate = self;
+        [self addChildViewController:self.uploadProgressViewController];
+        self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:self.uploadProgressViewController.view];
+        [self.uploadProgressViewController didMoveToParentViewController:self];
+        
+        UIView *upvc = self.uploadProgressViewController.view;
+        upvc.hidden = YES;
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[upvc]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(upvc)]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:upvc
+                                                              attribute:NSLayoutAttributeHeight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:nil
+                                                              attribute:NSLayoutAttributeNotAnAttribute
+                                                             multiplier:1.0f
+                                                               constant:VUploadProgressViewControllerIdealHeight]];
+        self.uploadProgressViewYconstraint = [NSLayoutConstraint constraintWithItem:upvc
+                                                                          attribute:NSLayoutAttributeTop
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeTop
+                                                                         multiplier:1.0f
+                                                                           constant:self.topInset];
+        [self.view addConstraint:self.uploadProgressViewYconstraint];
     }
-    
-    self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
-    self.uploadProgressViewController.delegate = self;
-    [self addChildViewController:self.uploadProgressViewController];
-    self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.uploadProgressViewController.view];
-    [self.uploadProgressViewController didMoveToParentViewController:self];
-    
-    UIView *upvc = self.uploadProgressViewController.view;
-    upvc.hidden = YES;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[upvc]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(upvc)]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:upvc
-                                                          attribute:NSLayoutAttributeHeight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:nil
-                                                          attribute:NSLayoutAttributeNotAnAttribute
-                                                         multiplier:1.0f
-                                                           constant:VUploadProgressViewControllerIdealHeight]];
-    self.uploadProgressViewYconstraint = [NSLayoutConstraint constraintWithItem:upvc
-                                                                      attribute:NSLayoutAttributeTop
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeTop
-                                                                     multiplier:1.0f
-                                                                       constant:self.topInset];
-    [self.view addConstraint:self.uploadProgressViewYconstraint];
     
     if (self.uploadProgressViewController.numberOfUploads > 0)
     {

@@ -10,7 +10,7 @@
 #import "VBasicToolPickerCell.h"
 #import "VTextTypeTool.h"
 #import "VDependencyManager.h"
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 
 @interface VTextTypePickerDataSource ()
 

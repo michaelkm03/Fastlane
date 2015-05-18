@@ -26,6 +26,7 @@
 #import "VVoteSettings.h"
 #import "VVoteType.h"
 #import "VAppInfo.h"
+#import "VUploadManager.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -45,7 +46,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
-@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VVoteSettings *voteSettings;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
@@ -402,7 +403,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     [self showViewController:nil animated:NO completion:nil];
     [RKObjectManager setSharedManager:nil];
-    [VObjectManager setupObjectManager];
+    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
     [self showLoadingViewController];
 }
 
