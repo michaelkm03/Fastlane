@@ -226,15 +226,9 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
                        dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize sizeWithText = initialSize;
-
-    static NSMutableDictionary *textSizes = nil;
-    if (textSizes == nil)
-    {
-        textSizes = [NSMutableDictionary new];
-    }
     
-    NSValue *textSizeValue = [textSizes objectForKey:sequence.remoteId];
-    if (textSizeValue)
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.name];
+    if (textSizeValue != nil)
     {
         return [textSizeValue CGSizeValue];
     }
@@ -253,9 +247,19 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
                                          andAttributes:sharedAttributes];
         sizeWithText.height = sizeWithText.height + size.height + kCaptionMargins.top + kCaptionMargins.bottom;
     }
-    [textSizes setObject:[NSValue valueWithCGSize:sizeWithText]
-                  forKey:sequence.remoteId];
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
+                             forKey:sequence.name];
     return sizeWithText;
+}
+
++ (NSCache *)textSizeCache
+{
+    static NSCache *textCache;
+    if (textCache == nil)
+    {
+        textCache = [[NSCache alloc] init];
+    }
+    return textCache;
 }
 
 #pragma mark - VStreamCellFocus
