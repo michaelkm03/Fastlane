@@ -214,6 +214,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     actionButton.selected = NO;
+    actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     actionButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                   forState:UIControlStateNormal];
