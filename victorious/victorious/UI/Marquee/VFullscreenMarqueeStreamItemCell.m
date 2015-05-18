@@ -36,11 +36,11 @@ static NSString * const kVOrIconKey = @"orIcon";
 @interface VFullscreenMarqueeStreamItemCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
-
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
+@property (nonatomic, weak) IBOutlet UIView *detailsContainerBackdrop;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsContainerTopToStreamItemBottom;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
 
@@ -71,7 +71,7 @@ static NSString * const kVOrIconKey = @"orIcon";
     
     if ( dependencyManager != nil )
     {
-        self.detailsContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.detailsContainerBackdrop.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
         UIImage *orIcon = [dependencyManager imageForKey:kVOrIconKey];
@@ -100,7 +100,9 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 - (void)setDetailsContainerVisible:(BOOL)visible animated:(BOOL)animated
 {
-    CGFloat targetConstraintValue = visible ? 0.0f : - self.detailsContainer.bounds.size.height;
+    CGFloat detailsContainerHeight = CGRectGetHeight(self.detailsContainer.bounds);
+    
+    CGFloat targetConstraintValue = visible ? -detailsContainerHeight : detailsContainerHeight;
     
     [self cancelDetailsAnimation];
     if ( animated )
@@ -114,14 +116,14 @@ static NSString * const kVOrIconKey = @"orIcon";
                                     relativeDuration:kVDetailBounceTime / (kVDetailBounceTime + kVDetailHideTime)
                                           animations:^
              {
-                 self.detailsBottomLayoutConstraint.constant = kVDetailBounceHeight;
+                 self.detailsContainerTopToStreamItemBottom.constant = -detailsContainerHeight -kVDetailBounceHeight;
                  [self layoutIfNeeded];
              }];
              [UIView addKeyframeWithRelativeStartTime:kVDetailBounceTime / (kVDetailBounceTime + kVDetailHideTime)
                                      relativeDuration:kVDetailHideTime
                                            animations:^
               {
-                  self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+                  self.detailsContainerTopToStreamItemBottom.constant = targetConstraintValue;
                   [self layoutIfNeeded];
               }];
          }
@@ -129,14 +131,14 @@ static NSString * const kVOrIconKey = @"orIcon";
     }
     else
     {
-        self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+        self.detailsContainerTopToStreamItemBottom.constant = targetConstraintValue;
     }
 }
 
 - (void)cancelDetailsAnimation
 {
-    [((UIView *)self.detailsBottomLayoutConstraint.firstItem).layer removeAllAnimations];
-    [((UIView *)self.detailsBottomLayoutConstraint.secondItem).layer removeAllAnimations];
+    [((UIView *)self.detailsContainerTopToStreamItemBottom.firstItem).layer removeAllAnimations];
+    [((UIView *)self.detailsContainerTopToStreamItemBottom.secondItem).layer removeAllAnimations];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
