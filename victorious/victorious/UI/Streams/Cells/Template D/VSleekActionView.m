@@ -15,7 +15,7 @@
 #import "VSequence+Fetcher.h"
 
 // Action Bar
-#import "VActionBar.h"
+#import "VFlexBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VRoundedBackgroundButton.h"
@@ -27,7 +27,7 @@
 
 static CGFloat const kLeadingTrailingSpace = 15.0f;
 static CGFloat const kCommentSpaceToActions = 22.0f;
-static CGFloat const kInterActionSpace = 25.0f;
+static CGFloat const kInterActionSpace = 23.0f;
 static CGFloat const kCommentWidth = 68.0f;
 static CGFloat const kActionButtonHeight = 31.0f;
 
@@ -44,9 +44,40 @@ static CGFloat const kActionButtonHeight = 31.0f;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VRepostButtonController *repostButtonController;
 
+// Each view will be reused for a unique configuration (share only, share+repost, et)
+@property (nonatomic, assign) BOOL hasLayedOutActionView;
+
 @end
 
 @implementation VSleekActionView
+
+#pragma mark - Reuse Identifiers
+
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSMutableString *identifier = [baseIdentifier mutableCopy];
+
+    if ([sequence canComment])
+    {
+        [identifier appendString:@"Comment."];
+    }
+    [identifier appendString:@"Share."];
+    if ([sequence canRepost])
+    {
+        [identifier appendString:@"Repost."];
+    }
+    if ([sequence canRemix])
+    {
+        [identifier appendString:@"Meme."];
+    }
+    if ([sequence canRemix] && [sequence isVideo])
+    {
+        [identifier appendString:@"Gif."];
+    }
+    
+    return [NSString stringWithString:identifier];
+}
 
 #pragma mark - VAbstractActionView
 
@@ -81,6 +112,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
         [_commentButton v_addHeightConstraint:kActionButtonHeight];
         _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
         _commentButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        _commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     }
     return _commentButton;
 }
@@ -129,13 +161,14 @@ static CGFloat const kActionButtonHeight = 31.0f;
     if (_dependencyManager != nil)
     {
         //Override the default tint color to always have white text in the comment label
-        [self.commentButton setTintColor:[_dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey]];
-        [[self.commentButton titleLabel] setFont:[_dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
+        self.commentButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
+        self.commentButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
         self.commentButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
         [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
          {
+             actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
              actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
              actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
          }];
@@ -144,10 +177,15 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 #pragma mark - VUpdateHooks
 
-- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+- (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence
 {
     if (actionBar == nil)
+    {
+        return;
+    }
+    
+    if (self.hasLayedOutActionView)
     {
         return;
     }
@@ -181,6 +219,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
     }
     [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
     actionBar.actionItems = actionItems;
+    
+    self.hasLayedOutActionView = YES;
 }
 
 - (void)updateCommentCountForSequence:(VSequence *)sequence
@@ -216,6 +256,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     actionButton.selected = NO;
     actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     actionButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                   forState:UIControlStateNormal];
     [actionButton v_addWidthConstraint:kActionButtonHeight];
