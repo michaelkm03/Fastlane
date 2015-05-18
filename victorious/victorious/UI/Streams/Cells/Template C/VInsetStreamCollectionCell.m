@@ -367,14 +367,8 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     // Top Margins
     sizeWithText.height = sizeWithText.height + kTextMargins.top;
 
-    static NSMutableDictionary *textSizes = nil;
-    if (textSizes == nil)
-    {
-        textSizes = [NSMutableDictionary new];
-    }
-    
-    NSValue *textSizeValue = [textSizes objectForKey:sequence.remoteId];
-    if (textSizeValue)
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
+    if (textSizeValue != nil)
     {
         return [textSizeValue CGSizeValue];
     }
@@ -398,9 +392,19 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Bottom Margins
     sizeWithText.height = sizeWithText.height + kTextMargins.bottom;
-    [textSizes setObject:[NSValue valueWithCGSize:sizeWithText]
-                  forKey:sequence.remoteId];
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
+                             forKey:sequence.remoteId];
     return sizeWithText;
+}
+
++ (NSCache *)textSizeCache
+{
+    static NSCache *textSizeCache;
+    if (textSizeCache == nil)
+    {
+        textSizeCache = [[NSCache alloc] init];
+    }
+    return textSizeCache;
 }
 
 #pragma mark - CCHLinkTextViewDelegate
