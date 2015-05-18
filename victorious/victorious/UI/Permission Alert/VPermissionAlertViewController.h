@@ -13,6 +13,21 @@
 @interface VPermissionAlertViewController : UIViewController <VHasManagedDependencies>
 
 /**
+ Main message to display on alert view
+ */
+@property (nonatomic, strong) NSString *messageText;
+
+/**
+ Text that displays on the confirmation button
+ */
+@property (nonatomic, strong) NSString *confirmButtonText;
+
+/**
+ Text that displays on the denial button
+ */
+@property (nonatomic, strong) NSString *denyButtonText;
+
+/**
  Block to call when user presses confirm button
  */
 @property (nonatomic, copy) void (^confirmationHandler)(VPermissionAlertViewController *permissionAlertViewController);

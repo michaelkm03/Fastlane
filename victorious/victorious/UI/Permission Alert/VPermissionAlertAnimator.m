@@ -34,7 +34,7 @@
         animatingView.transform = scaleTransform;
         [containerView addSubview:animatingView];
         
-        [UIView animateWithDuration:0.3
+        [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0.0f
              usingSpringWithDamping:0.6f
               initialSpringVelocity:0.0f
@@ -50,7 +50,7 @@
     }
     else
     {
-        [UIView animateWithDuration:0.2 animations:^
+        [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^
          {
              animatingView.alpha = 0.0f;
          } completion:^(BOOL finished)

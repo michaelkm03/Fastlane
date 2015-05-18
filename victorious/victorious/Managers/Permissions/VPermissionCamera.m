@@ -31,38 +31,21 @@
 
 - (void)requestForPermission:(VPermissionRequestCompletionHandler)completion
 {
-    VPermissionAlertViewController *permissionAlert = [self.dependencyManager templateValueOfType:[VPermissionAlertViewController class]
-                                                                                           forKey:VPermissionAlertViewControllerKey];
-    [permissionAlert setConfirmationHandler:^(VPermissionAlertViewController *alert)
-    {
-        [alert dismissViewControllerAnimated:YES completion:^
-        {
-            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^
-                {
-                    if (completion)
-                    {
-                        completion(granted, granted ? VPermissionStateAuthorized : VPermissionStateSystemDenied, nil);
-                    }
-                });
-            }];
-        }];
-    }];
-    [permissionAlert setDenyHandler:^(VPermissionAlertViewController *alert)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            [alert dismissViewControllerAnimated:YES completion:^
-            {
-                if (completion)
-                {
-                    completion(NO, VPermissionStatePromptDenied, nil);
-                }
-            }];
-        });
-    }];
-    [self.presentingViewController presentViewController:permissionAlert animated:YES completion:nil];
+    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            if (completion)
+                            {
+                                completion(granted, granted ? VPermissionStateAuthorized : VPermissionStateSystemDenied, nil);
+                            }
+                        });
+     }];
+}
+
+- (NSString *)message
+{
+    return NSLocalizedString(@"We need permission to use your camera.", @"");
 }
 
 @end

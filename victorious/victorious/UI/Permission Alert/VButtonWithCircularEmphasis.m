@@ -8,6 +8,9 @@
 
 #import "VButtonWithCircularEmphasis.h"
 
+static const CGFloat kWidthInset = 26.0f;
+static const CGFloat kHeightInset = 5.0f;
+
 @interface VButtonWithCircularEmphasis ()
 
 @property (nonatomic, strong) CALayer *pillLayer;
@@ -58,7 +61,7 @@
     [super layoutSubviews];
     
     // Adjust emphasis frame to match text
-    self.pillLayer.frame = CGRectInset(self.titleLabel.frame, -26.0f, -5.0f);
+    self.pillLayer.frame = CGRectInset(self.titleLabel.frame, -kWidthInset, -kHeightInset);
     self.pillLayer.cornerRadius = CGRectGetHeight(self.pillLayer.bounds) / 2;
 }
 

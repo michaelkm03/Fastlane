@@ -26,7 +26,7 @@ static NSString * const kCancelButtonTitleKey = @"title.button2";
 @property (weak, nonatomic) IBOutlet UIView *alertContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet VButtonWithCircularEmphasis *confirmationButton;
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *denyButton;
 @property (weak, nonatomic) IBOutlet VRoundedImageView *iconImageView;
 
 @end
@@ -68,36 +68,53 @@ static NSString * const kCancelButtonTitleKey = @"title.button2";
     
     self.messageLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.messageLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    NSString *message = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
-    if (!message || message.length == 0)
-    {
-       message = NSLocalizedString(@"We hope to connect and communicate with our fans. By having a profile picture, we will be able to recognize you!\n\nWould you like to take a profile picture?", nil);
-    }
-    self.messageLabel.text = message;
+    self.messageLabel.text = self.messageText;
     
     [self.confirmationButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton1FontKey]];
     [self.confirmationButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
     [self.confirmationButton setTitle:@"Okay!" forState:UIControlStateNormal];
     [self.confirmationButton setEmphasisColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
-    NSString *confirmButtonTitle = [self.dependencyManager stringForKey:kConfirmButtonTitleKey];
-    if (!confirmButtonTitle || confirmButtonTitle.length == 0)
-    {
-        confirmButtonTitle = NSLocalizedString(@"Okay!", @"");
-    }
-    [self.confirmationButton setTitle:confirmButtonTitle forState:UIControlStateNormal];
+    [self.confirmationButton setTitle:self.confirmButtonText forState:UIControlStateNormal];
     
-    [self.cancelButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton2FontKey]];
-    [self.cancelButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey] forState:UIControlStateNormal];
-    NSString *cancelButtonTitle = [self.dependencyManager stringForKey:kCancelButtonTitleKey];
-    if (!cancelButtonTitle || cancelButtonTitle.length == 0)
-    {
-        cancelButtonTitle = NSLocalizedString(@"Maybe Later", @"");
-    }
-    [self.cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
+    [self.denyButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton2FontKey]];
+    [self.denyButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey] forState:UIControlStateNormal];
+    [self.denyButton setTitle:self.denyButtonText forState:UIControlStateNormal];
     
     [self.iconImageView setIconImageURL:[NSURL URLWithString:[self.dependencyManager stringForKey:VDependencyManagerImageURLKey]]];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+}
+
+#pragma mark - Properties
+
+- (NSString *)messageText
+{
+    if (_messageText == nil || _messageText.length == 0)
+    {
+        return NSLocalizedString(@"We need access to this permission.", nil);
+    }
+    
+    return _messageText;
+}
+
+- (NSString *)confirmButtonText
+{
+    if (_confirmButtonText == nil || _confirmButtonText.length == 0)
+    {
+        return NSLocalizedString(@"Okay!", nil);
+    }
+    
+    return _confirmButtonText;
+}
+
+- (NSString *)denyButtonText
+{
+    if (_denyButtonText == nil || _denyButtonText.length == 0)
+    {
+        return NSLocalizedString(@"Maybe Later", nil);
+    }
+    
+    return _denyButtonText;
 }
 
 #pragma mark - Actions

@@ -16,6 +16,7 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _shouldShowInitialPrompt = YES;
     }
     return self;
 }
@@ -42,8 +43,35 @@
         return;
     }
     
-    _presentingViewController = viewController;
-    [self requestForPermission:completion];
+    if (self.shouldShowInitialPrompt == NO)
+    {
+        [self requestForPermission:completion];
+    }
+    else
+    {
+        VPermissionAlertViewController *permissionAlert = [self.dependencyManager templateValueOfType:[VPermissionAlertViewController class]
+                                                                                               forKey:VPermissionAlertViewControllerKey];
+        permissionAlert.messageText = [self message];
+        
+        [permissionAlert setConfirmationHandler:^(VPermissionAlertViewController *alert)
+         {
+             [alert dismissViewControllerAnimated:YES completion:^
+              {
+                  [self requestForPermission:completion];
+              }];
+         }];
+        [permissionAlert setDenyHandler:^(VPermissionAlertViewController *alert)
+         {
+             [alert dismissViewControllerAnimated:YES completion:^
+              {
+                  if (completion)
+                  {
+                      completion(NO, VPermissionStatePromptDenied, nil);
+                  }
+              }];
+         }];
+        [viewController presentViewController:permissionAlert animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Overrides
@@ -57,6 +85,12 @@
 - (void)requestForPermission:(VPermissionRequestCompletionHandler)completion
 {
     NSAssert( NO, @"This method must be overidden in a subclass." );
+}
+
+- (NSString *)message
+{
+    NSAssert( NO, @"This method must be overidden in a subclass." );
+    return @"";
 }
 
 @end

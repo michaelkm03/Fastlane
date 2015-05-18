@@ -53,9 +53,9 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
- *  View controller for the initial prompt to be presented over.
+ Determines whether the initial prompt is shown before the system prompt
  */
-@property (nonatomic, strong, readonly) UIViewController *presentingViewController;
+@property (nonatomic, assign) BOOL shouldShowInitialPrompt;
 
 /**
  Prompts the user for a certain permission if necessary. If the user has already
@@ -74,6 +74,11 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
  Subclasses should override this and return the status of the specific permission
  */
 - (VPermissionState)permissionState;
+
+/**
+ Subclasses should override this to display a custom message on the permissions alert view
+ */
+- (NSString *)message;
 
 /**
  Subclasses should override this and prompt for permission appropriately
