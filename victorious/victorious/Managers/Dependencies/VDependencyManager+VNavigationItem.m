@@ -17,7 +17,15 @@
 
 #import <Objc/runtime.h>
 
-NSString * const VDependencyManagerTitleImageKey = @"titleImage";
+#define LOG_ACCESSRY_MENU_ITEMS_PROVIDED 0
+
+NSString * const VDependencyManagerTitleImageKey                = @"titleImage";
+
+NSString * const VDependencyManagerAccessoryItemMenu            = @"Accessory Menu";
+NSString * const VDependencyManagerAccessoryItemCompose         = @"Accessory Compose";
+NSString * const VDependencyManagerAccessoryItemInbox           = @"Accessory Inbox";
+NSString * const VDependencyManagerAccessoryItemFindFriends     = @"Accessory Find Friends";
+NSString * const VDependencyManagerAccessoryItemAddContent      = @"Accessory Add Content";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 
@@ -52,36 +60,17 @@ static const char kAssociatedObjectSourceViewControllerKey;
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
     
-    NSLog( @"accessoryMenuItems = %@", accessoryMenuItems );
+#if LOG_ACCESSRY_MENU_ITEMS_PROVIDED
+    VLog( @"accessoryMenuItems = %@", accessoryMenuItems );
+#endif
     
-    NSMutableArray *barButtonItemsLeft = [[NSMutableArray alloc] init];
-    NSMutableArray *barButtonItemsRight = [[NSMutableArray alloc] init];
+    NSMutableArray *newBarButtonItemsLeft = [[NSMutableArray alloc] init];
+    NSMutableArray *newBarButtonItemsRight = [[NSMutableArray alloc] init];
     
     NSInteger tag = 0;
     for ( VNavigationMenuItem *menuItem in accessoryMenuItems )
     {
-        /**/
-        
-        id<VAccessoryNavigationSource> source;
-        id responder = sourceViewController;
-        BOOL shouldDisplay = YES;
-        do
-        {
-            if ( [responder respondsToSelector:@selector(shouldDisplayAccessoryMenuItem:fromSource:)] )
-            {
-                source = (id<VAccessoryNavigationSource>)responder;
-                
-                // If anyone in the responder chain can and does say no, then we don't display
-                if ( ![source shouldDisplayAccessoryMenuItem:menuItem fromSource:sourceViewController] )
-                {
-                    shouldDisplay = NO;
-                    break;
-                }
-            }
-        }
-        while (( responder = [responder nextResponder] ));
-        
-        if ( !shouldDisplay )
+        if ( ![self shouldDisplayMenuItem:menuItem fromSourceViewController:sourceViewController] )
         {
             tag++;
             continue;
@@ -121,22 +110,49 @@ static const char kAssociatedObjectSourceViewControllerKey;
         
         if ( [menuItem.position isEqualToString:VDependencyManagerPositionRight] )
         {
-            [barButtonItemsRight addObject:accessoryBarItem];
+            [newBarButtonItemsRight addObject:accessoryBarItem];
         }
         else if ( ([menuItem.position isEqualToString:VDependencyManagerPositionLeft] || menuItem.position == nil) )
         {
-            [barButtonItemsLeft addObject:accessoryBarItem];
+            [newBarButtonItemsLeft addObject:accessoryBarItem];
         }
     }
     
-    navigationItem.leftBarButtonItems = barButtonItemsLeft;
-    navigationItem.rightBarButtonItems = barButtonItemsRight;
+    NSArray *existingLeftBarButtons = navigationItem.leftBarButtonItems;
+    if ( existingLeftBarButtons.count != newBarButtonItemsLeft.count )
+    {
+        [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:YES];
+    }
+    
+    NSArray *existingRightBarButtons = navigationItem.rightBarButtonItems;
+    if ( existingRightBarButtons.count != newBarButtonItemsRight.count )
+    {
+        [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:YES];
+    }
+}
+
+- (BOOL)shouldDisplayMenuItem:(VNavigationMenuItem *)menuItem fromSourceViewController:(UIViewController *)sourceViewController
+{
+    // If anyone in the responder chain can and does say no, then we don't display
+    id<VAccessoryNavigationSource> source;
+    id responder = sourceViewController;
+    do
+    {
+        if ( [responder respondsToSelector:@selector(shouldDisplayAccessoryMenuItem:fromSource:)] )
+        {
+            source = (id<VAccessoryNavigationSource>)responder;
+            if ( ![source shouldDisplayAccessoryMenuItem:menuItem fromSource:sourceViewController] )
+            {
+                return NO;
+            }
+        }
+    }
+    while (( responder = [responder nextResponder] ));
+    return YES;
 }
 
 - (NSOrderedSet *)accessoriesForSource:(UIResponder *)source
 {
-    return [[NSOrderedSet alloc] initWithArray:self.accessoryMenuItems];
-    
     // Walk the responder chain and collect accessoryMenuItems from each responders dependencyManager
     NSMutableOrderedSet *accessoryMenuItems = [[NSMutableOrderedSet alloc] init];
     UIResponder *responder = source;
@@ -210,8 +226,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
     }
 }
 
-- (void)performNavigationFromSource:(UIViewController *)sourceViewController
-                       withMenuItem:(VNavigationMenuItem *)menuItem
+- (void)performNavigationFromSource:(UIViewController *)sourceViewController withMenuItem:(VNavigationMenuItem *)menuItem
 {
     BOOL shouldNavigate = YES;
     UIResponder *responder = sourceViewController;

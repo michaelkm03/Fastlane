@@ -3,6 +3,6 @@
     "icon": {
         "imageURL": "Menu"
     },
-    "identifier": "Menu",
+    "identifier": "Accessory Menu",
     "position": "left"
 }

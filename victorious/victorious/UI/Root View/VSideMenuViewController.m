@@ -442,7 +442,7 @@
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    if ( [menuItem.position isEqualToString:@"left"] )
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] )
     {
         [self presentMenuViewController];
         return NO;
@@ -453,7 +453,7 @@
 
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
-    if ( [menuItem.position isEqualToString:@"left"] )
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] )
     {
         return source.navigationController.viewControllers.count == 1;
     }
