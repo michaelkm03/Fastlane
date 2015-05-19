@@ -14,6 +14,10 @@
 
 - (VPermissionState)permissionState
 {
+#if TARGET_IPHONE_SIMULATOR
+    return VPermissionUnsupported;
+#endif
+    
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     AVAudioSessionRecordPermission systemState = [audioSession recordPermission];
     switch (systemState)
