@@ -78,7 +78,7 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
 /**
  Subclasses should override this to display a custom message on the permissions alert view
  */
-- (NSString *)message;
+- (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  Subclasses should override this and prompt for permission appropriately

@@ -255,7 +255,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                                                @"red":@(133)
                                                                                },
                                               @"title.button1":@"Okay!",
-                                              @"title.button2":@"Maybe later"
+                                              @"title.button2":@"Maybe later",
+                                              @"cameraPermission.message":@"blah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blah"
                                               }
                                  forKeyPath:@"alertController"];
         

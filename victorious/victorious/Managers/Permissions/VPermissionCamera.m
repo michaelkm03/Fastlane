@@ -43,9 +43,9 @@
      }];
 }
 
-- (NSString *)message
+- (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *message = [self.dependencyManager stringForKey:@"cameraPermission.message"];
+    NSString *message = [dependencyManager stringForKey:@"cameraPermission.message"];
     if (message != nil && message.length > 0)
     {
         return message;

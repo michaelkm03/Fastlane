@@ -46,9 +46,9 @@
      }];
 }
 
-- (NSString *)message
+- (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *message = [self.dependencyManager stringForKey:@"microphonePermission.message"];
+    NSString *message = [dependencyManager stringForKey:@"microphonePermission.message"];
     if (message != nil && message.length > 0)
     {
         return message;

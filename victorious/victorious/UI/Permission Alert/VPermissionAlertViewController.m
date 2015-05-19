@@ -21,6 +21,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 @interface VPermissionAlertViewController () <VBackgroundContainer>
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
+
 @property (strong, nonatomic) VPermissionAlertTransitionDelegate *transitionDelegate;
 
 @property (weak, nonatomic) IBOutlet UIView *alertContainerView;

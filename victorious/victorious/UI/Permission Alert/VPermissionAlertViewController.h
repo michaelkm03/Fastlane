@@ -13,6 +13,11 @@
 @interface VPermissionAlertViewController : UIViewController <VHasManagedDependencies>
 
 /**
+ Dependency manager
+ */
+@property (strong, nonatomic, readonly) VDependencyManager *dependencyManager;
+
+/**
  Main message to display on alert view
  */
 @property (nonatomic, strong) NSString *messageText;

@@ -48,9 +48,9 @@
      }];
 }
 
-- (NSString *)message
+- (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *message = [self.dependencyManager stringForKey:@"photoLibraryPermission.message"];
+    NSString *message = [dependencyManager stringForKey:@"photoLibraryPermission.message"];
     if (message != nil && message.length > 0)
     {
         return message;

@@ -51,8 +51,8 @@
     {
         VPermissionAlertViewController *permissionAlert = [self.dependencyManager templateValueOfType:[VPermissionAlertViewController class]
                                                                                                forKey:VPermissionAlertViewControllerKey];
-        permissionAlert.messageText = [self message];
-        
+        permissionAlert.messageText = [self messageWithDependencyManager:permissionAlert.dependencyManager];
+                
         [permissionAlert setConfirmationHandler:^(VPermissionAlertViewController *alert)
          {
              [alert dismissViewControllerAnimated:YES completion:nil];
@@ -85,7 +85,7 @@
     NSAssert( NO, @"This method must be overidden in a subclass." );
 }
 
-- (NSString *)message
+- (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert( NO, @"This method must be overidden in a subclass." );
     return @"";

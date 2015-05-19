@@ -10,9 +10,9 @@
 
 @implementation VPermissionProfilePicture
 
-- (NSString *)message
+- (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *message = [self.dependencyManager stringForKey:@"profileImagePermission.message"];
+    NSString *message = [dependencyManager stringForKey:@"profileImagePermission.message"];
     if (message != nil && message.length > 0)
     {
         return message;
