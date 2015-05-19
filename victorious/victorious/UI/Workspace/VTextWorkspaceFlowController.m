@@ -27,6 +27,7 @@
 @property (nonatomic, strong) VTextToolController *textToolController;
 
 @property (nonatomic, strong) UIViewController *mediaCaptureViewController;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -57,6 +58,9 @@
         _textToolController.delegate = _textWorkspaceViewController;
         _textWorkspaceViewController.toolController = _textToolController;
         _textWorkspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
+        
+        // Set our dependency manager
+        _dependencyManager = dependencyManager;
         
         // Add tools to the tool controller
         [_textWorkspaceViewController.toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
@@ -140,6 +144,7 @@
 {
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
     cameraViewController.shouldSkipPreview = YES;
+    [cameraViewController setDependencyManager:self.dependencyManager];
     __weak typeof(self) welf = self;
     cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
