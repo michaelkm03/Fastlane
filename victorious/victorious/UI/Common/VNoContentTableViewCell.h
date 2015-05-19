@@ -17,12 +17,6 @@
 @property (nonatomic, assign) BOOL isLoading;
 
 /**
- Text that will populate the text view.  The activity indicator is hidden when
- this property is set to a non-nil value.
- */
-@property (nonatomic, weak) NSString *message;
-
-/**
  When set to YES, the textview in the cell is set to center alignment.
  When set to NO, the textview has left alignment.
  */
@@ -40,9 +34,20 @@
 + (void)registerNibWithTableView:(UITableView *)tableView;
 
 /**
+ Text that will populate the text view.  The activity indicator is hidden when
+ this is set to a non-nil value.
+ */
+- (void)setMessage:(NSString *)message;
+
+/**
  This cell has an optional action button that can be configured using this method.
  The action button is hidden by default, and will appear when this method is called.
  */
 - (void)showActionButtonWithLabel:(NSString *)label callback:(void(^)(void))callback;
+
+/**
+ Returns the necessary height to display the given message within the given width
+ */
++ (CGFloat)heightWithMessage:(NSString *)message andWidth:(CGFloat)width;
 
 @end
