@@ -57,7 +57,14 @@
     [self.backgroundImage removeFromSuperview];
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
     
-    [newBackgroundView applyExtraLightBlurAndAnimateImageWithURLToVisible:[[self.sequence initialImageURLs] firstObject]];
+    NSMutableArray *previewImages = [[self.sequence initialImageURLs] mutableCopy];
+    // Remove any empty URLs (text posts do not have a preview image)
+    [previewImages removeObject:[NSURL URLWithString:@""]];
+    
+    if (previewImages.count > 0)
+    {
+        [newBackgroundView applyExtraLightBlurAndAnimateImageWithURLToVisible:[previewImages firstObject]];
+    }
     
     self.backgroundImage = newBackgroundView;
     [self.view insertSubview:self.backgroundImage aboveSubview:self.fallbackBackground];
