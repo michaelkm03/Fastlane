@@ -44,15 +44,11 @@
 {
     [super viewDidLoad];
     
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     self.title = NSLocalizedString(@"REPOSTS", nil);
-    
-    self.navigationItem.backBarButtonItem = nil;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(goBack:)];
     
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
@@ -215,9 +211,9 @@
             noRepostersView.dependencyManager = self.dependencyManager;
         }
         self.tableView.backgroundView = noRepostersView;
-        noRepostersView.titleLabel.text = NSLocalizedString(@"NoRepostersTitle", @"");
-        noRepostersView.messageLabel.text = NSLocalizedString(@"NoRepostersMessage", @"");
-        noRepostersView.iconImageView.image = [UIImage imageNamed:@"noRepostsIcon"];
+        noRepostersView.title = NSLocalizedString(@"NoRepostersTitle", @"");
+        noRepostersView.message = NSLocalizedString(@"NoRepostersMessage", @"");
+        noRepostersView.icon = [UIImage imageNamed:@"noRepostsIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
@@ -234,13 +230,6 @@
              self.tableView.backgroundView = nil;
          }];
     }
-}
-
-#pragma mark - Actions
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -19,14 +19,12 @@
 #import "VStreamItem.h"
 #import "VUser.h"
 
-#import "VThemeManager.h"
 #import "VTimerManager.h"
 
 #import "VStream.h"
 
 #import "VAbstractMarqueeController.h"
 
-static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
 static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 
 @interface VFullscreenMarqueeCollectionCell() <UICollectionViewDelegateFlowLayout>
@@ -60,32 +58,15 @@ static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
                                                                           views:tabView]];
 }
 
-- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    _hideMarqueePosterImage = hideMarqueePosterImage;
-    if ( !self.hideMarqueePosterImage )
-    {
-        self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-        self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
-        self.tabView.tabImage = [UIImage imageNamed:@"tabIndicator"];
-        self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatio;
-        
-        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-        self.marqueeCollectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
-    }
-    else
-    {
-        self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        self.tabView.deselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-        self.tabView.tabImage = [UIImage imageNamed:@"tabIndicatorDot"];
-        self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatioC;
-        
-        self.backgroundColor = [UIColor clearColor];
-    }
-    if ( [self.marquee isKindOfClass:[VFullscreenMarqueeController class]] )
-    {
-        ((VFullscreenMarqueeController *)self.marquee).hideMarqueePosterImage = hideMarqueePosterImage;
-    }
+    [super setDependencyManager:dependencyManager];
+    
+    self.tabView.selectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.tabView.deselectedColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
+    self.tabView.tabImage = [UIImage imageNamed:@"tabIndicatorDot"];
+    self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatioC;
+    self.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setMarquee:(VFullscreenMarqueeController *)marquee
@@ -94,8 +75,6 @@ static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
     self.tabView.numberOfTabs = marquee.stream.marqueeItems.count;
     
     [super setMarquee:marquee];
-    
-    self.hideMarqueePosterImage = marquee.hideMarqueePosterImage;
 }
 
 - (void)marquee:(VAbstractMarqueeController *)marquee reloadedStreamWithItems:(NSArray *)streamItems

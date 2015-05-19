@@ -265,9 +265,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         {
             noMessageView.dependencyManager = self.dependencyManager;
         }
-        noMessageView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
-        noMessageView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
-        noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessagesIcon"];
+        noMessageView.title = NSLocalizedString(@"NoMessagesTitle", @"");
+        noMessageView.message = NSLocalizedString(@"NoMessagesMessage", @"");
+        noMessageView.icon = [UIImage imageNamed:@"noMessagesIcon"];
         self.tableView.backgroundView = noMessageView;
     }
     else

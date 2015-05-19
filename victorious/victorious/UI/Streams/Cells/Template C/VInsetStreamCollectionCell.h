@@ -6,18 +6,29 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamCollectionCell.h"
+#import "VBaseCollectionViewCell.h"
+#import "VHasManagedDependencies.h"
+#import "VBackgroundContainer.h"
+#import "VStreamCellSpecialization.h"
+#import "VStreamCellFocus.h"
 
-//Subviews should use the following cell subview height values to determine desired and actual cell height
-extern const CGFloat kInsetCellHeaderHeight;
-extern const CGFloat kInsetCellActionViewHeight;
+@class VSequence;
 
-extern const CGFloat kInsetCellTextNeighboringViewSeparatorHeight; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
+/**
+ *  VInsetStreamCollectionCell a.k.a. Template C Cell.
+ */
+@interface VInsetStreamCollectionCell : VBaseCollectionViewCell  <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus>
 
-@interface VInsetStreamCollectionCell : VStreamCollectionCell
+/**
+ *  Sizing method. All parameters are required.
+ */
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
+                                    sequence:(VSequence *)sequence
+                           dependencyManager:(VDependencyManager *)dependencyManager;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentsLeftConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentLabelBottomConstraint;
+/**
+ *  The sequence for this VSleekStreamCollectionCell to represent.
+ */
+@property (nonatomic, strong) VSequence *sequence;
 
 @end

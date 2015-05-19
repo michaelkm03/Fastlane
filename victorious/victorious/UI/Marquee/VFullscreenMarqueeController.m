@@ -22,23 +22,13 @@
 
 #import "VDependencyManager+VBackgroundContainer.h"
 
-@interface VFullscreenMarqueeController () <VFullscreenMarqueeCellDelegate>
+@interface VFullscreenMarqueeController ()
 
 @property (nonatomic, weak) IBOutlet UIView *tabContainerView;
 
 @end
 
 @implementation VFullscreenMarqueeController
-
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self = [super initWithDependencyManager:dependencyManager];
-    if ( self != nil )
-    {
-        _hideMarqueePosterImage = YES;
-    }
-    return self;
-}
 
 - (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
@@ -85,33 +75,12 @@
 {
     VFullscreenMarqueeStreamItemCell *streamItemCell = (VFullscreenMarqueeStreamItemCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    streamItemCell.hideMarqueePosterImage = self.hideMarqueePosterImage;
-    streamItemCell.delegate = self;
-    
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:streamItemCell];
     
     return streamItemCell;
 }
 
-- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
-{
-    _hideMarqueePosterImage = hideMarqueePosterImage;
-    for (VFullscreenMarqueeStreamItemCell *marqueeCell in self.collectionView.visibleCells)
-    {
-        marqueeCell.hideMarqueePosterImage = hideMarqueePosterImage;
-    }
-}
-
 #pragma mark - VMarqueeCellDelegate
-
-- (void)cell:(VFullscreenMarqueeStreamItemCell *)cell selectedUser:(VUser *)user
-{
-    if ( [self.selectionDelegate conformsToProtocol:@protocol(VFullscreenMarqueeSelectionDelegate)] )
-    {
-        [(id <VFullscreenMarqueeSelectionDelegate>)self.selectionDelegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
-        [self.autoScrollTimerManager invalidate];
-    }
-}
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
@@ -127,7 +96,6 @@
     self.tabView.currentlySelectedTab = self.currentPage;
     CGSize desiredSize = [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
-    cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
     
     [self enableTimer];
     return cell;
