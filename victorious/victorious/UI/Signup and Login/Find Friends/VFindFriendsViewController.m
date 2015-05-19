@@ -129,8 +129,7 @@
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-#warning This method of detecting destination will have to change
-    if ( !menuItem.hasValidDestination )
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemInvite] )
     {
         [self sendInvitation];
         return NO;
@@ -141,7 +140,7 @@
 
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
-    if ( !menuItem.hasValidDestination )
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemInvite] )
     {
 #warning FIX:
         return YES;

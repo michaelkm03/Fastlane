@@ -8,32 +8,16 @@
 
 #import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
+#import "VAccessoryNavigationSource.h"
 
 extern NSString * const VDependencyManagerTitleImageKey; ///< The key that specifies a title image
 
 extern NSString * const VDependencyManagerAccessoryItemMenu;
 extern NSString * const VDependencyManagerAccessoryItemCompose;
 extern NSString * const VDependencyManagerAccessoryItemInbox;
+extern NSString * const VDependencyManagerAccessoryItemInvite;
 extern NSString * const VDependencyManagerAccessoryItemFindFriends;
-extern NSString * const VDependencyManagerAccessoryItemAddContent;
-
-@protocol VAccessoryNavigationSource <NSObject>
-
-/**
- Allows a conforming object to evaluate a VNavigationMenuItem that has just been
- selected by the user and to determine if the default navigation to VNavigationMenuItem's
- destination should proceed.
- */
-- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem;
-
-/**
- Allows a conforming object to evaluate a VNavigationMenuItem that is about to be
- used to display a navigation bar button and determine whether it should be displayed
- according to its own concerns.
- */
-- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source;
-
-@end
+extern NSString * const VDependencyManagerAccessoryItemCreatePost;
 
 @interface VDependencyManager (VNavigationItem)
 

@@ -1,0 +1,9 @@
+{
+    "destination": null,
+    "title": "Create Post",
+    "icon": {
+        "imageURL": "createContentButtonC"
+    },
+    "identifier": "Accessory Create Post",
+    "position": "right"
+}

@@ -122,26 +122,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return nil;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self != nil)
-    {
-        [self userProfileSharedInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self != nil)
-    {
-        [self userProfileSharedInit];
-    }
-    return self;
-}
-
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad
@@ -276,11 +256,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 }
 
 #pragma mark -
-
-- (void)userProfileSharedInit
-{
-    self.canShowContent = NO;
-}
 
 - (BOOL)canShowMarquee
 {

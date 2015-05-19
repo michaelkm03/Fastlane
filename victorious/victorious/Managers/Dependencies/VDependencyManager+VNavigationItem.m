@@ -18,7 +18,7 @@
 
 #import <Objc/runtime.h>
 
-#define LOG_ACTIVITY 1
+#define LOG_ACTIVITY 0
 #if LOG_ACTIVITY
 #warning VDependencyManager+VNavigationItem loggin is enabled!! Turn it off before merging.
 #endif
@@ -29,7 +29,8 @@ NSString * const VDependencyManagerAccessoryItemMenu            = @"Accessory Me
 NSString * const VDependencyManagerAccessoryItemCompose         = @"Accessory Compose";
 NSString * const VDependencyManagerAccessoryItemInbox           = @"Accessory Inbox";
 NSString * const VDependencyManagerAccessoryItemFindFriends     = @"Accessory Find Friends";
-NSString * const VDependencyManagerAccessoryItemAddContent      = @"Accessory Add Content";
+NSString * const VDependencyManagerAccessoryItemInvite          = @"Accessory Invite";
+NSString * const VDependencyManagerAccessoryItemCreatePost      = @"Accessory Create Post";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 
@@ -123,12 +124,12 @@ static const char kAssociatedObjectSourceViewControllerKey;
     }
     
     {
-        NSArray *existingLeftBarButtons = navigationItem.leftBarButtonItems;
-        BOOL animated = existingLeftBarButtons.count != newBarButtonItemsLeft.count;
+        NSArray *existingItems = navigationItem.leftBarButtonItems;
+        BOOL animated = existingItems.count != newBarButtonItemsLeft.count;
         [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:animated];
     }{
-        NSArray *existingRightBarButtons = navigationItem.rightBarButtonItems;
-        BOOL animated = existingRightBarButtons.count != newBarButtonItemsRight.count;
+        NSArray *existingItems = navigationItem.rightBarButtonItems;
+        BOOL animated = existingItems.count != newBarButtonItemsRight.count;
         [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:animated];
     }
 }
@@ -201,13 +202,27 @@ static const char kAssociatedObjectSourceViewControllerKey;
         canNavigationToDestination = [destination shouldNavigateWithAlternateDestination:&destination];
     }
     
+    BOOL requiresAuthorization = NO;
+    VAuthorizationContext context;
+    
+    // First check if the source requires authorization
+    id <VAccessoryNavigationSource> source = (id <VAccessoryNavigationSource>)sourceViewController;
+    if ( [source respondsToSelector:@selector(menuItem:requiresAuthorizationWithContext:)] )
+    {
+        requiresAuthorization = [source menuItem:menuItem requiresAuthorizationWithContext:&context];
+    }
+    
+    // Then check if the desination requires authorization
     id <VAuthorizationContextProvider> authorizedDestination = (id <VAuthorizationContextProvider>)destination;
-    BOOL requiresAuthorization = [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] &&
-    authorizedDestination.requiresAuthorization;
+    if ( !requiresAuthorization &&
+         [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] )
+    {
+        requiresAuthorization = authorizedDestination.requiresAuthorization;
+        context = [authorizedDestination authorizationContext];
+    }
     
     if ( requiresAuthorization )
     {
-        VAuthorizationContext context = [authorizedDestination authorizationContext];
         VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                              dependencyManager:self];
         [authorizedAction performFromViewController:sourceViewController context:context completion:^(BOOL authorized)

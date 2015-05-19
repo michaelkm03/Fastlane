@@ -83,7 +83,6 @@ static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 
 NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
-NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 NSString * const VStreamCollectionViewControllerMarqueeComponentKey = @"marqueeCell";
 
@@ -105,7 +104,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
-@property (nonatomic, assign) BOOL canAddContent;
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
@@ -181,7 +179,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)sharedInit
 {
-    self.canShowContent = YES;
     self.canShowMarquee = YES;
 }
 
@@ -258,9 +255,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
             [(VStreamCollectionCell *)cell reloadCommentsCount];
         }
     }
-    
-    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
-    [self updateNavigationItems];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -269,6 +263,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
+    
+    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
+    [self updateNavigationItems];
 }
 
 - (BOOL)shouldAutorotate
@@ -344,12 +341,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
     
-    BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];
-    [self installCreateButtonOnNavigationItem:navigationItem
-                             initiallyVisible:userPostAllowed];
-    
-#warning FIX
-    //navigationItem.rightBarButtonItem.customView.hidden = !userPostAllowed;
+    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
 }
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
@@ -362,26 +354,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
 }
 
-- (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
-                           initiallyVisible:(BOOL)initiallyVisible
-{
-    if (!self.canShowContent)
-    {
-        return;
-    }
-    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
-    UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-    createbutton.frame = CGRectMake(0, 0, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
-    [createbutton setImage:image forState:UIControlStateNormal];
-    [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
-    createbutton.hidden = !initiallyVisible;
-    
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
-    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-    [navigationItem setRightBarButtonItem:barButton animated:NO];
-}
-
-- (void)createSequenceAction:(id)sender
+- (void)createNewPost
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     
@@ -865,6 +838,39 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)linkWithTextSelected:(NSString *)text
 {
     [self showHashtagStreamWithHashtag:text];
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemCreatePost] )
+    {
+        [self createNewPost];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemCreatePost] )
+    {
+        BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream
+                                         withDependencyManager:self.dependencyManager];
+        return userPostAllowed;
+    }
+    return YES;
+}
+
+- (BOOL)menuItem:(VNavigationMenuItem *)menuItem requiresAuthorizationWithContext:(VAuthorizationContext *)context
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemCreatePost] )
+    {
+        *context = VAuthorizationContextCreatePost;
+        return YES;
+    }
+    return NO;
 }
 
 @end
