@@ -37,7 +37,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 @property (nonatomic, strong) VWebBrowserActions *actions;
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, strong) NSTimer *progressBarAnimationTimer;
-@property (nonatomic, assign) BOOL preventsLandscapeSupport;
 
 @end
 
@@ -64,7 +63,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     {
         webBrowserViewController.templateTitle = templateTitle;
         webBrowserViewController.headerContentAlignment = VWebBrowserHeaderContentAlignmentCenter;
-        webBrowserViewController.preventsLandscapeSupport = YES;
     }
     return webBrowserViewController;
 }
@@ -145,7 +143,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if ( self.preventsLandscapeSupport )
+    if ( !self.isLandscapeOrientationSupported )
     {
         return UIInterfaceOrientationMaskPortrait;
     }

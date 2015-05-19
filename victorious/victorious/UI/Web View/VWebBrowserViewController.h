@@ -60,4 +60,9 @@
  */
 - (void)loadUrlString:(NSString *)urlString;
 
+/**
+ Set to YES to allow support for landscape orientation.  Default is NO;
+ */
+@property (nonatomic, assign) BOOL isLandscapeOrientationSupported;
+
 @end

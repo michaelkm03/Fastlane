@@ -114,6 +114,7 @@ static NSString * const kContentViewComponentKey = @"contentView";
     else
     {
         VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:self.dependencyManager];
+        viewController.isLandscapeOrientationSupported = YES;
         viewController.sequence = sequence;
         if ( url != nil )
         {
