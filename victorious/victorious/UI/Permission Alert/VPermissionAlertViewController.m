@@ -15,6 +15,8 @@
 #import "VRoundedImageView.h"
 
 static NSString * const kStoryboardName = @"PermissionAlert";
+static NSString * const kConfirmButtonTitleKey = @"title.button1";
+static NSString * const kDenyButtonTitleKey = @"title.button2";
 
 @interface VPermissionAlertViewController () <VBackgroundContainer>
 
@@ -68,15 +70,17 @@ static NSString * const kStoryboardName = @"PermissionAlert";
     self.messageLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.messageLabel.text = self.messageText;
     
+    self.confirmButtonText = [self.dependencyManager stringForKey:kConfirmButtonTitleKey];
+    self.denyButtonText = [self.dependencyManager stringForKey:kDenyButtonTitleKey];
+    
+    [self.confirmationButton setTitle:self.confirmButtonText forState:UIControlStateNormal];
     [self.confirmationButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton1FontKey]];
     [self.confirmationButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
-    [self.confirmationButton setTitle:self.confirmButtonText forState:UIControlStateNormal];
     [self.confirmationButton setEmphasisColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
-    [self.confirmationButton setTitle:self.confirmButtonText forState:UIControlStateNormal];
     
+    [self.denyButton setTitle:self.denyButtonText forState:UIControlStateNormal];
     [self.denyButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton2FontKey]];
     [self.denyButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey] forState:UIControlStateNormal];
-    [self.denyButton setTitle:self.denyButtonText forState:UIControlStateNormal];
     
     [self.iconImageView setIconImageURL:[NSURL URLWithString:[self.dependencyManager stringForKey:VDependencyManagerImageURLKey]]];
     
