@@ -198,6 +198,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{ VImageToolControllerInitialImageEditStateKey: @(VImageToolControllerInitialImageEditStateFilter) }];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;
+    workspaceFlowController.shouldUseProfileImagePermissionRequest = YES;
     [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];

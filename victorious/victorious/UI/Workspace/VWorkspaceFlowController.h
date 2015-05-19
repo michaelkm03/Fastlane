@@ -92,4 +92,10 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  */
 @property (nonatomic, assign, getter=isVideoEnabled) BOOL videoEnabled;
 
+/**
+ Whether or not the camera permission request dialogue is tailored to 
+ profile image
+ */
+@property (nonatomic, assign) BOOL shouldUseProfileImagePermissionRequest;
+
 @end

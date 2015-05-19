@@ -55,10 +55,8 @@
         
         [permissionAlert setConfirmationHandler:^(VPermissionAlertViewController *alert)
          {
-             [alert dismissViewControllerAnimated:YES completion:^
-              {
-                  [self requestForPermission:completion];
-              }];
+             [alert dismissViewControllerAnimated:YES completion:nil];
+             [self requestForPermission:completion];
          }];
         [permissionAlert setDenyHandler:^(VPermissionAlertViewController *alert)
          {

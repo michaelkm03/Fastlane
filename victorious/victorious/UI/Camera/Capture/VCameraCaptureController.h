@@ -52,6 +52,12 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
 @property (nonatomic, strong) VCameraVideoEncoder *videoEncoder;
 
 /**
+ Determines whether or not the capture session should initialize
+ audio input and video & audio outputs. This is used to control
+ permission dialogues.
+ */
+@property (nonatomic, assign) BOOL shouldInitializeVideoCapture;
+/**
  Sets the capture session quality level or bitrate
  
  @param completion Will be called on a private queue when the session has been set.

@@ -85,6 +85,11 @@ static NSString * const kCancelButtonTitleKey = @"title.button2";
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Properties
 
 - (NSString *)messageText

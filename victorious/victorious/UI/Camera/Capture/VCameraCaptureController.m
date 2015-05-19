@@ -48,6 +48,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         _sessionQueue = dispatch_queue_create("VCameraCaptureController setup", DISPATCH_QUEUE_SERIAL);
         _currentDevice = defaultCaptureDevice();
         _backgroundTaskID = UIBackgroundTaskInvalid;
+        _shouldInitializeVideoCapture = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(captureSessionWasInterrupted:) name:AVCaptureSessionWasInterruptedNotification object:_captureSession];
     }
     return self;
@@ -172,6 +173,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         
         AVAuthorizationStatus audioAuthorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
         if (!self.audioInput &&
+            self.shouldInitializeVideoCapture &&
             audioAuthorizationStatus != AVAuthorizationStatusDenied &&
             audioAuthorizationStatus != AVAuthorizationStatusRestricted)
         {
@@ -200,7 +202,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
         }
         
-        if (!self.videoOutput)
+        if (!self.videoOutput && self.shouldInitializeVideoCapture)
         {
             AVCaptureVideoDataOutput *videoOutput = [[AVCaptureVideoDataOutput alloc] init];
             if ([self.captureSession canAddOutput:videoOutput])
@@ -221,7 +223,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
         }
         
-        if (!self.audioOutput)
+        if (!self.audioOutput && self.shouldInitializeVideoCapture)
         {
             AVCaptureAudioDataOutput *audioOutput = [[AVCaptureAudioDataOutput alloc] init];
             if ([self.captureSession canAddOutput:audioOutput])

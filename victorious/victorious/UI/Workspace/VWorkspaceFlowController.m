@@ -270,6 +270,12 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     }
 }
 
+- (void)setShouldUseProfileImagePermissionRequest:(BOOL)shouldUseProfileImagePermissionRequest
+{
+    _shouldUseProfileImagePermissionRequest = shouldUseProfileImagePermissionRequest;
+    self.cameraViewController.shouldUseProfileImagePermissionRequest = shouldUseProfileImagePermissionRequest;
+}
+
 #pragma mark - Private Methods
 
 - (void)setupCapture
@@ -294,6 +300,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
             break;
     }
+    [self.cameraViewController setDependencyManager:self.dependencyManager];
     self.cameraViewController.shouldSkipPreview = YES;
     self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
     [self.flowNavigationController pushViewController:self.cameraViewController

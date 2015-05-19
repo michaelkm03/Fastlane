@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 
-@interface VCameraViewController : UIViewController
+@interface VCameraViewController : UIViewController <VHasManagedDependencies>
 
 /**
  This completion block will be called when the user finishes capturing media
@@ -32,6 +34,12 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  *  If YES, the camera will call it's completion block immediately after taking the picture/video.
  */
 @property (nonatomic, assign) BOOL shouldSkipPreview;
+
+/**
+ Whether or not the camera permission request dialogue is tailored to
+ profile image
+ */
+@property (nonatomic, assign) BOOL shouldUseProfileImagePermissionRequest;
 
 /**
  Returns an instance of this class that will initially show a video capture screen.
