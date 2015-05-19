@@ -15,8 +15,6 @@
 #import "VRoundedImageView.h"
 
 static NSString * const kStoryboardName = @"PermissionAlert";
-static NSString * const kConfirmButtonTitleKey = @"title.button1";
-static NSString * const kCancelButtonTitleKey = @"title.button2";
 
 @interface VPermissionAlertViewController () <VBackgroundContainer>
 
@@ -72,7 +70,7 @@ static NSString * const kCancelButtonTitleKey = @"title.button2";
     
     [self.confirmationButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton1FontKey]];
     [self.confirmationButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
-    [self.confirmationButton setTitle:@"Okay!" forState:UIControlStateNormal];
+    [self.confirmationButton setTitle:self.confirmButtonText forState:UIControlStateNormal];
     [self.confirmationButton setEmphasisColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
     [self.confirmationButton setTitle:self.confirmButtonText forState:UIControlStateNormal];
     
