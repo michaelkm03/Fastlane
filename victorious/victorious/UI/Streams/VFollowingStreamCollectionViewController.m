@@ -86,9 +86,9 @@
             {
                 noContentView.dependencyManager = self.dependencyManager;
             }
-            noContentView.titleLabel.text = NSLocalizedString( @"NotFollowingTitle", @"" );
-            noContentView.messageLabel.text = NSLocalizedString( @"NotFollowingMessage", @"" );
-            noContentView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+            noContentView.title = NSLocalizedString( @"NotFollowingTitle", @"" );
+            noContentView.message = NSLocalizedString( @"NotFollowingMessage", @"" );
+            noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
             self.noContentView = noContentView;
         }
         

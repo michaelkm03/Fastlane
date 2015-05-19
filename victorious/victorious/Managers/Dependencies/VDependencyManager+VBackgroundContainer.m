@@ -22,7 +22,7 @@ static const char kAssociatedBackgroundKey;
     {
         return;
     }
-
+    
     [self addBackground:[self background]
         asSubviewOfView:[backgroundHost backgroundContainerView]];
 }

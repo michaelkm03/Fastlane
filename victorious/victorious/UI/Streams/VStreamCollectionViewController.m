@@ -886,9 +886,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         noRemixView.dependencyManager = self;
     }
-    noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
-    noRemixView.messageLabel.text = NSLocalizedString(@"NoRemixersMessage", @"");
-    noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
+    noRemixView.title = NSLocalizedString(@"NoRemixersTitle", @"");
+    noRemixView.message = NSLocalizedString(@"NoRemixersMessage", @"");
+    noRemixView.icon = [UIImage imageNamed:@"noRemixIcon"];
     remixStream.noContentView = noRemixView;
     
     return remixStream;

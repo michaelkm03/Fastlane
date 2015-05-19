@@ -106,7 +106,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
     {
         _commentButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectZero];
         [_commentButton addTarget:self action:@selector(comment:) forControlEvents:UIControlEventTouchUpInside];
-        [_commentButton setImage:[UIImage imageNamed:@"D_commentIcon"] forState:UIControlStateNormal];
+        [_commentButton setImage:[[UIImage imageNamed:@"D_commentIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                        forState:UIControlStateNormal];
         [_commentButton v_addWidthConstraint:kCommentWidth];
         [_commentButton v_addHeightConstraint:kActionButtonHeight];
         _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -160,8 +161,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
     if (_dependencyManager != nil)
     {
         //Override the default tint color to always have white text in the comment label
-        [self.commentButton setTintColor:[_dependencyManager colorForKey:VDependencyManagerMainTextColorKey]];
-        [[self.commentButton titleLabel] setFont:[_dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
+        self.commentButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
+        self.commentButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
         self.commentButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
@@ -253,6 +254,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     actionButton.selected = NO;
+    actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     actionButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
