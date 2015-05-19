@@ -48,6 +48,11 @@
 
 - (NSString *)message
 {
+    NSString *message = [self.dependencyManager stringForKey:@"microphonePermission.message"];
+    if (message != nil && message.length > 0)
+    {
+        return message;
+    }
     return NSLocalizedString(@"We need permission to use your microphone", @"");
 }
 

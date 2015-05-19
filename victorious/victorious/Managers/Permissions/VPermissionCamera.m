@@ -45,7 +45,12 @@
 
 - (NSString *)message
 {
-    return NSLocalizedString(@"We need permission to use your camera.", @"");
+    NSString *message = [self.dependencyManager stringForKey:@"cameraPermission.message"];
+    if (message != nil && message.length > 0)
+    {
+        return message;
+    }
+    return NSLocalizedString(@"We need permission to use the camera.", @"");
 }
 
 @end

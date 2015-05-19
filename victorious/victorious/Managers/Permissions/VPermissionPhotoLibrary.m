@@ -50,6 +50,11 @@
 
 - (NSString *)message
 {
+    NSString *message = [self.dependencyManager stringForKey:@"photoLibraryPermission.message"];
+    if (message != nil && message.length > 0)
+    {
+        return message;
+    }
     return NSLocalizedString(@"We need permission to access your photo library", @"");
 }
 
