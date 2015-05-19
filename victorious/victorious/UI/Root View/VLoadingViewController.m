@@ -216,19 +216,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-#warning For testing store component
-        BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
-        if ( isSideNavMenu )
-        {
-            NSAssert( [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/0/2"], @"" );
-            NSAssert( [templateDecorator setTemplateValue:@"bottomNavigation" forKeyPath:@"scaffold/menu/items/0/2/destination/layout"], @"" );
-        }
-        else
-        {
-            NSAssert( [templateDecorator setComponentWithFilename:@"storeComponent" forKeyPath:@"scaffold/menu/items/4"], @"" );
-            NSAssert( [templateDecorator setTemplateValue:@"topNavigation" forKeyPath:@"scaffold/menu/items/4/destination/layout"], @"" );
-        }
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
