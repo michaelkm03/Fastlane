@@ -36,7 +36,6 @@
 
 @property (strong, nonatomic) UIImageView *backgroundImage;
 @property (strong, nonatomic) UIView *fallbackBackground;
-@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
 

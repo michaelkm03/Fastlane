@@ -12,7 +12,7 @@
 
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspace.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -385,7 +385,7 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;
     [self presentViewController:workspaceFlowController.flowRootViewController

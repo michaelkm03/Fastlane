@@ -10,9 +10,27 @@
 
 @interface UIView (AutoLayout)
 
+
+/**
+ Applies constraints necessary to fit the subview's leading, trailing space to this
+ view as its container with constant values provided.  Uses VFL like so:
+ `H:|-leading-[subview]-trailing-|`
+ */
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subview
+                                   leading:(CGFloat)leading
+                                  trailing:(CGFloat)trailing;
+/**
+ Applies constraints necessary to fit the subview's top and bottom space to this view
+ as its container with constant values provided.  Uses VFL like so:
+ `H:|-leading-[subview]-trailing-|`
+ `V:|-top-[subview]-bottom-|`
+ */
+- (void)v_addPintoTopBottomToSubview:(UIView *)subview
+                                 top:(CGFloat)top
+                              bottom:(CGFloat)bottom;
 /**
  Applies constraints necessary to fit the subview's leading, trailing, top and bottom
- space to this view as its container with constant values provided.  Uses VFL like si:
+ space to this view as its container with constant values provided.  Uses VFL like so:
  `H:|-leading-[subview]-trailing-|`
  `V:|-top-[subview]-bottom-|`
  */
@@ -36,20 +54,51 @@
 - (void)v_addFitToParentConstraintsToSubview:(UIView *)subview;
 
 /**
- Applies centering to subview of both horizontal and verticall
- directions to superview.
+ Applies left to left and right to right constraints from the container view to the
+ passed in subview.
+ */
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView;
+
+/**
+ Applies both vertical and horizontal centering constraints.
  */
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview;
 
 /**
- Applies internal width constraint to view.
+ Adds vertical centering constraints to subview.
  */
-- (void)v_addWidthConstraint:(CGFloat)width;
+- (void)v_addCenterVerticallyConstraintsToSubview:(UIView *)subview;
 
 /**
- Applies internal height constraint to view.
+ Adds horizontal centering constraints to subview.
  */
-- (void)v_addHeightConstraint:(CGFloat)height;
+- (void)v_addCenterHorizontallyConstraintsToSubview:(UIView *)subview;
+
+/**
+ Applies top to top and bottom to bottom constraints form the container view ot the
+ passed in subview.
+ */
+- (void)v_addPinToTopBottomToSubview:(UIView *)subView;
+
+/**
+ Applies top to top constraint from the container to the passed in subview.
+ */
+- (void)v_addPinToTopToSubview:(UIView *)subview;
+
+/**
+ Applies bottom to bottom constraint from the container to the passed in subview.
+ */
+- (void)v_addPinToBottomToSubview:(UIView *)subview;
+
+/**
+ Applies internal width constraint to view. Returns the added constraint
+ */
+- (NSLayoutConstraint *)v_addWidthConstraint:(CGFloat)width;
+
+/**
+ Applies internal height constraint to view. Returns the added constraint
+ */
+- (NSLayoutConstraint *)v_addHeightConstraint:(CGFloat)height;
 
 /**
  Returns the first width constraint found by enumerating constraints according
@@ -58,5 +107,13 @@
     2. firstAttribute == NSLayoutAttributeWidth
  */
 - (NSLayoutConstraint *)v_internalWidthConstraint;
+
+/**
+ Returns the first height constraint found by enumerating constraints according
+ to the following criteria:
+ 1. secondItem is nil
+ 2. firstAttribute == NSLayoutAttributeHeight
+ */
+- (NSLayoutConstraint *)v_internalHeightConstraint;
 
 @end

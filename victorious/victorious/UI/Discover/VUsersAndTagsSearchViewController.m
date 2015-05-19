@@ -409,10 +409,9 @@ static NSInteger const kVMaxSearchResults = 1000;
         self.tagsSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
 
-    noResultsFoundView.titleLabel.text = messageTitle;
-    noResultsFoundView.messageLabel.text = messageText;
-    noResultsFoundView.iconImageView.image = messageIcon;
-    noResultsFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    noResultsFoundView.title = messageTitle;
+    noResultsFoundView.message = messageText;
+    noResultsFoundView.icon = messageIcon;
     [noResultsFoundView addGestureRecognizer:self.tapGestureRecognizer];
 
 }
