@@ -62,7 +62,6 @@ static NSString * const kInitialKey = @"initial";
         _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
-        //[self.dependencyManager configureNavigationItem:self.navigationItem];
         self.navigationItem.v_supplementaryHeaderView = _selector;
         self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
         
@@ -310,21 +309,12 @@ static NSString * const kInitialKey = @"initial";
 - (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
     self.selectedIndex = index;
-    [self resetNavigationItemForIndex:index];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
     id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
     [viewController multipleContainerDidSetSelected:isDefaultSelection];
-}
-
-- (void)resetNavigationItemForIndex:(NSUInteger)index
-{
-    NSArray *screens = [self.dependencyManager templateValueOfType:[NSArray class] forKey:kScreensKey];
-    NSDictionary *childConfiguration = screens[ index ];
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
-    //[childDependencyManager configureNavigationItem:self.navigationItem forViewController:self.viewControllers[ index ]];
 }
 
 #pragma mark - UICollectionViewDelegate methods

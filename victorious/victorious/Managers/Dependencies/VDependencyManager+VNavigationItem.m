@@ -18,7 +18,10 @@
 
 #import <Objc/runtime.h>
 
-#define LOG_ACCESSRY_MENU_ITEMS_PROVIDED 0
+#define LOG_ACTIVITY 1
+#if LOG_ACTIVITY
+#warning VDependencyManager+VNavigationItem loggin is enabled!! Turn it off before merging.
+#endif
 
 NSString * const VDependencyManagerTitleImageKey                = @"titleImage";
 
@@ -61,8 +64,8 @@ static const char kAssociatedObjectSourceViewControllerKey;
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
     
-#if LOG_ACCESSRY_MENU_ITEMS_PROVIDED
-    VLog( @"accessoryMenuItems = %@", accessoryMenuItems );
+#if LOG_ACTIVITY
+    VLog( @">>>> accessoryMenuItems = %@", accessoryMenuItems );
 #endif
     
     NSMutableArray *newBarButtonItemsLeft = [[NSMutableArray alloc] init];
@@ -119,16 +122,14 @@ static const char kAssociatedObjectSourceViewControllerKey;
         }
     }
     
-    NSArray *existingLeftBarButtons = navigationItem.leftBarButtonItems;
-    if ( existingLeftBarButtons.count != newBarButtonItemsLeft.count )
     {
-        [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:YES];
-    }
-    
-    NSArray *existingRightBarButtons = navigationItem.rightBarButtonItems;
-    if ( existingRightBarButtons.count != newBarButtonItemsRight.count )
-    {
-        [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:YES];
+        NSArray *existingLeftBarButtons = navigationItem.leftBarButtonItems;
+        BOOL animated = existingLeftBarButtons.count != newBarButtonItemsLeft.count;
+        [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:animated];
+    }{
+        NSArray *existingRightBarButtons = navigationItem.rightBarButtonItems;
+        BOOL animated = existingRightBarButtons.count != newBarButtonItemsRight.count;
+        [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:animated];
     }
 }
 
@@ -225,16 +226,22 @@ static const char kAssociatedObjectSourceViewControllerKey;
 
 - (void)performNavigationFromSource:(UIViewController *)sourceViewController withMenuItem:(VNavigationMenuItem *)menuItem
 {
-    __block BOOL shouldNavigate = YES;
-    [sourceViewController v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
-     {
-         id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)responder;
-         if ( [source conformsToProtocol:@protocol(VAccessoryNavigationSource)] && ![source shouldNavigateWithAccessoryMenuItem:menuItem] )
-         {
-             shouldNavigate = NO;
-             *stop = YES;
-         }
-    }];
+#if LOG_ACTIVITY
+    VLog( @">>>> performNavigationFromSource = %@", sourceViewController );
+#endif
+    
+    BOOL shouldNavigate = YES;
+    UIResponder *responder = sourceViewController;
+    do
+    {
+        id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)responder;
+        if ( [source conformsToProtocol:@protocol(VAccessoryNavigationSource)] && ![source shouldNavigateWithAccessoryMenuItem:menuItem] )
+        {
+            shouldNavigate = NO;
+            break;
+        }
+    }
+    while (( responder = [responder nextResponder] ));
     
     BOOL isValidNavController = sourceViewController.navigationController != nil;
     if ( shouldNavigate && menuItem.hasValidDestination && isValidNavController )
