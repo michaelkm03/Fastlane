@@ -73,7 +73,9 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="uqE-hA-Enb" secondAttribute="height" multiplier="1:1" id="cWE-aX-dYa"/>
-                                            <constraint firstAttribute="height" constant="80" id="onG-Ck-C0b"/>
+                                            <constraint firstAttribute="height" constant="80" id="onG-Ck-C0b">
+                                                <variation key="heightClass=regular-widthClass=compact" constant="76"/>
+                                            </constraint>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -111,16 +113,16 @@
                                 <color key="backgroundColor" red="0.92941176470588238" green="0.0" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="UeK-9M-hrf" secondAttribute="trailing" constant="35" id="3Q6-ZC-FbG"/>
-                                    <constraint firstItem="uqE-hA-Enb" firstAttribute="top" secondItem="M6g-YF-N4q" secondAttribute="top" constant="30" id="H1g-tP-0GB"/>
+                                    <constraint firstItem="uqE-hA-Enb" firstAttribute="top" secondItem="M6g-YF-N4q" secondAttribute="top" constant="28" id="H1g-tP-0GB"/>
                                     <constraint firstAttribute="trailing" secondItem="zxv-Um-jbA" secondAttribute="trailing" id="R6l-io-HO9"/>
                                     <constraint firstItem="zxv-Um-jbA" firstAttribute="width" secondItem="M6g-YF-N4q" secondAttribute="width" multiplier="0.5" id="TTL-py-bHj"/>
                                     <constraint firstAttribute="centerX" secondItem="uqE-hA-Enb" secondAttribute="centerX" id="W82-mT-5nY"/>
                                     <constraint firstItem="Lv4-pq-CPH" firstAttribute="leading" secondItem="M6g-YF-N4q" secondAttribute="leading" id="fhD-ZP-Ztz"/>
                                     <constraint firstItem="UeK-9M-hrf" firstAttribute="leading" secondItem="M6g-YF-N4q" secondAttribute="leading" constant="35" id="j1T-Ns-DzA"/>
                                     <constraint firstAttribute="bottom" secondItem="zxv-Um-jbA" secondAttribute="bottom" id="r0h-0R-1WW"/>
-                                    <constraint firstItem="UeK-9M-hrf" firstAttribute="top" secondItem="uqE-hA-Enb" secondAttribute="bottom" constant="25" id="umF-ch-rqi"/>
+                                    <constraint firstItem="UeK-9M-hrf" firstAttribute="top" secondItem="uqE-hA-Enb" secondAttribute="bottom" constant="30" id="umF-ch-rqi"/>
                                     <constraint firstAttribute="width" secondItem="Lv4-pq-CPH" secondAttribute="width" multiplier="2" id="wEz-Uu-4NA"/>
-                                    <constraint firstItem="zxv-Um-jbA" firstAttribute="top" secondItem="UeK-9M-hrf" secondAttribute="bottom" constant="50" id="x0f-4C-x4B"/>
+                                    <constraint firstItem="zxv-Um-jbA" firstAttribute="top" secondItem="UeK-9M-hrf" secondAttribute="bottom" constant="49" id="x0f-4C-x4B"/>
                                     <constraint firstAttribute="bottom" secondItem="Lv4-pq-CPH" secondAttribute="bottom" id="yTt-IE-aku"/>
                                 </constraints>
                                 <variation key="default">
