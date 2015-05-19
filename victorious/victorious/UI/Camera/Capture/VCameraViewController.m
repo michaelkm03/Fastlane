@@ -710,27 +710,33 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
      {
          if (granted)
          {
-             UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-             
-             controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-             controller.allowsEditing = NO;
-             controller.delegate = self;
-             
-             NSMutableArray *mediaTypes  = [[NSMutableArray alloc] init];
-             if (self.allowPhotos)
+             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
              {
-                 [mediaTypes addObject:(NSString *)kUTTypeImage];
-             }
-             if (self.allowVideo)
-             {
-                 [mediaTypes addObject:(NSString *)kUTTypeMovie];
-             }
-             controller.mediaTypes = mediaTypes;
-             
-             // Update thumbnail after we present photo library
-             [self presentViewController:controller animated:YES completion:^{
-                 [self setOpenAlbumButtonImageWithLatestPhoto:YES animated:YES];
-             }];
+                 UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+                 
+                 controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                 controller.allowsEditing = NO;
+                 controller.delegate = self;
+                 
+                 NSMutableArray *mediaTypes  = [[NSMutableArray alloc] init];
+                 if (self.allowPhotos)
+                 {
+                     [mediaTypes addObject:(NSString *)kUTTypeImage];
+                 }
+                 if (self.allowVideo)
+                 {
+                     [mediaTypes addObject:(NSString *)kUTTypeMovie];
+                 }
+                 controller.mediaTypes = mediaTypes;
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^
+                 {
+                     // Update thumbnail after we present photo library
+                     [self presentViewController:controller animated:YES completion:^{
+                         [self setOpenAlbumButtonImageWithLatestPhoto:YES animated:YES];
+                     }];
+                 });
+             });
          }
      }];
 }
