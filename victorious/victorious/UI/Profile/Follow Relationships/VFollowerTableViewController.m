@@ -201,9 +201,9 @@
             noFollowersView.dependencyManager = self.dependencyManager;
         }
         self.tableView.backgroundView = noFollowersView;
-        noFollowersView.titleLabel.text = title;
-        noFollowersView.messageLabel.text = msg;
-        noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+        noFollowersView.title = title;
+        noFollowersView.message = msg;
+        noFollowersView.icon = [UIImage imageNamed:@"noFollowersIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }

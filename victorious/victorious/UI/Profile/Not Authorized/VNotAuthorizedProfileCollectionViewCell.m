@@ -13,11 +13,14 @@
 #import "VButton.h"
 #import "VDependencyManager.h"
 
+static const CGFloat kCornderRadius = 3.0f;
+
 @interface VNotAuthorizedProfileCollectionViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *noContentViewContainer;
 @property (weak, nonatomic) VNoContentView *noContentView;
 @property (weak, nonatomic) IBOutlet VButton *loginButton;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -38,16 +41,19 @@
     noContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.noContentViewContainer addSubview:noContentView];
     [self.noContentViewContainer v_addFitToParentConstraintsToSubview:noContentView];
-    noContentView.iconImageView.image = [[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    noContentView.titleLabel.text = NSLocalizedString(@"You're not logged in!", @"");
-    noContentView.messageLabel.text = NSLocalizedString(@"ProfileNotLoggedInMessage", @"User is not logged in message.");
+    noContentView.icon = [[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    noContentView.title = NSLocalizedString(@"You're not logged in!", @"");
+    noContentView.message = NSLocalizedString(@"ProfileNotLoggedInMessage", @"User is not logged in message.");
     self.noContentView = noContentView;
     
     [self.loginButton setStyle:VButtonStylePrimary];
     [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+    
+    self.noContentViewContainer.layer.cornerRadius = kCornderRadius;
+    self.noContentViewContainer.layer.masksToBounds = YES;
 }
 
-#pragma mark - Properties
+#pragma mark - VHasMangaedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -58,7 +64,6 @@
         {
             self.noContentView.dependencyManager = self.dependencyManager;
         }
-        self.noContentView.iconImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.loginButton.primaryColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.loginButton.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     }

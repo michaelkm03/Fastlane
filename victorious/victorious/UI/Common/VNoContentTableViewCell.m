@@ -11,6 +11,7 @@
 
 static NSString *const kVNoContentTableViewCellIdentifier   = @"VNoContentTableViewCell";
 static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue Light Italic";
+static const UIEdgeInsets kTextViewMargins = { 10.0f, 10.0f, 62.0f, 10.0f };
 
 @interface VNoContentTableViewCell()
 
@@ -37,6 +38,29 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     [tableView registerNib:[UINib nibWithNibName:kVNoContentTableViewCellIdentifier bundle:nil] forCellReuseIdentifier:kVNoContentTableViewCellIdentifier];
 }
 
+/**
+ Creates and returns a sample cell that can be used to calculate sizing
+ */
++ (VNoContentTableViewCell *)sampleCellForSizing
+{
+    static VNoContentTableViewCell *cell = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+    {
+        UINib *nib = [UINib nibWithNibName:kVNoContentTableViewCellIdentifier bundle:[NSBundle bundleForClass:self]];
+        NSArray *objects = [nib instantiateWithOwner:nil options:nil];
+        for (id object in objects)
+        {
+            if ([object isKindOfClass:self])
+            {
+                cell = object;
+                return;
+            }
+        }
+    });
+    return cell;
+}
+
 #pragma mark - UITableViewCell life cycle
 
 - (void)awakeFromNib
@@ -48,6 +72,7 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     [self.actionButton setTitle:@"" forState:UIControlStateNormal];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.userInteractionEnabled = YES;
+    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
 }
 
 - (void)prepareForReuse
@@ -79,11 +104,6 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     CGFloat currentSize = self.messageTextView.font.pointSize;
     UIFont *font = [UIFont fontWithName:kVNoContentMessageFontName size:currentSize];
     self.messageTextView.font = font;
-}
-
-- (NSString *)message
-{
-    return nil;
 }
 
 - (void)setIsLoading:(BOOL)isLoading
@@ -138,6 +158,25 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     {
         self.actionButtonBlock();
     }
+}
+
+#pragma mark - Sizing
+
++ (CGFloat)heightWithMessage:(NSString *)message andWidth:(CGFloat)width
+{
+    VNoContentTableViewCell *sizingCell = [self sampleCellForSizing];
+    CGFloat fontSize = sizingCell.messageTextView.font.pointSize;
+    UIFont *font = [UIFont fontWithName:kVNoContentMessageFontName size:fontSize];
+    
+    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
+    context.minimumScaleFactor = sizingCell.messageTextView.minimumZoomScale;
+    
+    CGFloat textViewWidth = width - kTextViewMargins.left - kTextViewMargins.right;
+    CGRect textRect = [message boundingRectWithSize:CGSizeMake(textViewWidth, CGFLOAT_MAX)
+                                             options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                          attributes:@{ NSFontAttributeName: font }
+                                             context:context];
+    return VCEIL(CGRectGetHeight(textRect) + kTextViewMargins.top + kTextViewMargins.bottom);
 }
 
 @end

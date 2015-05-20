@@ -78,10 +78,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         {
             notFollowingView.dependencyManager = self.dependencyManager;
         }
-        notFollowingView.titleLabel.text = NSLocalizedString( @"NoFollowingHashtagsTitle", @"");;
-        notFollowingView.messageLabel.text = NSLocalizedString( @"NoFollowingHashtagsMessage", @"");;
-        notFollowingView.iconImageView.image = [[UIImage imageNamed:@"tabIconHashtag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        notFollowingView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
+        notFollowingView.title = NSLocalizedString( @"NoFollowingHashtagsTitle", @"");;
+        notFollowingView.message = NSLocalizedString( @"NoFollowingHashtagsMessage", @"");;
+        notFollowingView.icon = [UIImage imageNamed:@"tabIconHashtag"];
         backgroundView = notFollowingView;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }

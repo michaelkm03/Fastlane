@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Error Message" translatesAutoresizingMaskIntoConstraints="NO" id="38J-lE-yW4">
-                        <rect key="frame" x="10" y="2" width="300" height="86"/>
+                        <rect key="frame" x="10" y="10" width="300" height="70"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="13"/>
@@ -43,10 +43,10 @@
                     <constraint firstItem="38J-lE-yW4" firstAttribute="centerX" secondItem="E7J-3a-EFc" secondAttribute="centerX" id="1Ys-ZM-75U"/>
                     <constraint firstAttribute="trailing" secondItem="Haa-9P-3bj" secondAttribute="trailing" constant="16" id="GXJ-OZ-QOd"/>
                     <constraint firstAttribute="trailing" secondItem="38J-lE-yW4" secondAttribute="trailing" constant="10" id="Wno-hf-EIl"/>
-                    <constraint firstItem="38J-lE-yW4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="fzV-Yg-EHR"/>
+                    <constraint firstItem="38J-lE-yW4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="fzV-Yg-EHR"/>
                     <constraint firstItem="38J-lE-yW4" firstAttribute="centerY" secondItem="E7J-3a-EFc" secondAttribute="centerY" id="h2m-W3-JGZ"/>
                     <constraint firstItem="38J-lE-yW4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="j5L-fc-pCO"/>
-                    <constraint firstItem="Haa-9P-3bj" firstAttribute="top" secondItem="38J-lE-yW4" secondAttribute="bottom" constant="8" id="phO-jg-l0V"/>
+                    <constraint firstItem="Haa-9P-3bj" firstAttribute="top" secondItem="38J-lE-yW4" secondAttribute="bottom" constant="16" id="phO-jg-l0V"/>
                     <constraint firstAttribute="bottom" secondItem="Haa-9P-3bj" secondAttribute="bottom" constant="5" id="tBe-92-Nbj"/>
                 </constraints>
             </tableViewCellContentView>

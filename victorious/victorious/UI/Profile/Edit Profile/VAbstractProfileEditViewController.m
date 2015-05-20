@@ -15,7 +15,7 @@
 #import "VContentInputAccessoryView.h"
 #import "VConstants.h"
 #import "VNavigationController.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspace.h"
 #import "VTemplateBackgroundView.h"
 #import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
@@ -195,7 +195,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 - (IBAction)takePicture:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{ VImageToolControllerInitialImageEditStateKey: @(VImageToolControllerInitialImageEditStateFilter) }];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;
     [self presentViewController:workspaceFlowController.flowRootViewController

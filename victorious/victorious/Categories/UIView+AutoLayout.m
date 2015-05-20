@@ -10,28 +10,60 @@
 
 @implementation UIView (AutoLayout)
 
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subview
+                                   leading:(CGFloat)leading
+                                  trailing:(CGFloat)trailing
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    NSDictionary *views = @{ @"subview" : subview };
+    NSDictionary *metrics = @{ @"leading" : @(leading),
+                               @"trailing" : @(trailing)
+                               };
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leading-[subview]-trailing-|"
+                                                                 options:kNilOptions
+                                                                 metrics:metrics
+                                                                   views:views]];
+}
+
+- (void)v_addPintoTopBottomToSubview:(UIView *)subview
+                                 top:(CGFloat)top
+                              bottom:(CGFloat)bottom
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    NSDictionary *views = @{ @"subview" : subview };
+    NSDictionary *metrics = @{@"top" : @(top),
+                              @"bottom" : @(bottom) };
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[subview]-bottom-|"
+                                                                 options:kNilOptions
+                                                                 metrics:metrics
+                                                                   views:views]];
+}
+
+- (void)v_addPinToLeadingTrailingToSubview:(UIView *)subView
+{
+    [self v_addPinToLeadingTrailingToSubview:subView
+                                     leading:0.0f
+                                    trailing:0.0f];
+}
+
+- (void)v_addPinToTopBottomToSubview:(UIView *)subView
+{
+    [self v_addPintoTopBottomToSubview:subView
+                                   top:0.0f
+                                bottom:0.0f];
+}
+
 - (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
                                    leading:(CGFloat)leading
                                   trailing:(CGFloat)trailing
                                        top:(CGFloat)top
                                     bottom:(CGFloat)bottom
 {
-    NSParameterAssert( [subview isDescendantOfView:self] );
-    
-    NSDictionary *views = @{ @"subview" : subview };
-    NSDictionary *metrics = @{ @"leading" : @(leading),
-                               @"trailing" : @(trailing),
-                               @"top" : @(top),
-                               @"bottom" : @(bottom) };
-    subview.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leading-[subview]-trailing-|"
-                                                                 options:kNilOptions
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[subview]-bottom-|"
-                                                                 options:kNilOptions
-                                                                 metrics:metrics
-                                                                   views:views]];
+    [self v_addPinToLeadingTrailingToSubview:subview leading:leading trailing:trailing];
+    [self v_addPintoTopBottomToSubview:subview top:top bottom:bottom];
 }
 
 - (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
@@ -55,6 +87,27 @@
 
 - (void)v_addCenterToParentContraintsToSubview:(UIView *)subview
 {
+    [self v_addCenterHorizontallyConstraintsToSubview:subview];
+    [self v_addCenterVerticallyConstraintsToSubview:subview];
+}
+
+- (void)v_addCenterVerticallyConstraintsToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+}
+
+- (void)v_addCenterHorizontallyConstraintsToSubview:(UIView *)subview
+{
     NSParameterAssert( [subview isDescendantOfView:self] );
     
     subview.translatesAutoresizingMaskIntoConstraints = NO;
@@ -66,36 +119,56 @@
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1.0f
                                                       constant:0.0f]];
+}
+
+- (NSLayoutConstraint *)v_addWidthConstraint:(CGFloat)width
+{
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1.0f
+                                                                        constant:width];
+    [self addConstraint:widthConstraint];
+    return widthConstraint;
+}
+
+- (NSLayoutConstraint *)v_addHeightConstraint:(CGFloat)height
+{
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0f
+                                                                         constant:height];
+    [self addConstraint:heightConstraint];
+    return heightConstraint;
+}
+
+- (void)v_addPinToTopToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
     
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeCenterY
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]"
+                                                                 options:kNilOptions
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(subview)]];
 }
 
-- (void)v_addWidthConstraint:(CGFloat)width
+- (void)v_addPinToBottomToSubview:(UIView *)subview
 {
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
-                                                     attribute:NSLayoutAttributeWidth
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:nil
-                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                    multiplier:1.0f
-                                                      constant:width]];
-}
-
-- (void)v_addHeightConstraint:(CGFloat)height
-{
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
-                                                     attribute:NSLayoutAttributeHeight
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:nil
-                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                    multiplier:1.0f
-                                                      constant:height]];
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[subview]|"
+                                                                 options:kNilOptions
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(subview)]];
 }
 
 - (NSLayoutConstraint *)v_internalWidthConstraint
@@ -117,6 +190,26 @@
      }];
     
     return internalWidthConstraint;
+}
+
+- (NSLayoutConstraint *)v_internalHeightConstraint
+{
+    __block NSLayoutConstraint *internalHeightConstraint;
+    
+    [self.constraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+    {
+        if (constraint.secondItem != nil)
+        {
+            return;
+        }
+        if (constraint.firstAttribute != NSLayoutAttributeHeight)
+        {
+            return;
+        }
+        internalHeightConstraint = constraint;
+        *stop = YES;
+    }];
+    return internalHeightConstraint;
 }
 
 @end

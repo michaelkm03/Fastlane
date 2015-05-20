@@ -9,10 +9,21 @@
 #import "VNode.h"
 
 @class VAsset;
+@class VAnswer;
 
 @interface VNode (Fetcher)
 
 - (NSArray *)firstAnswers;
+
+/**
+ *  Convenience for polls.
+ */
+- (VAnswer *)answerA;
+
+/**
+ *  Convenience for polls.
+ */
+- (VAnswer *)answerB;
 
 - (BOOL)isPoll;
 

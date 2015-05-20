@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSError *settingsError;
 @property (nonatomic, assign) BOOL didSettingsChange;
 @property (nonatomic, strong) VNotificationSettingsStateManager *stateManager;
+@property (nonatomic, assign) CGFloat lastKnownTableWidth;
 
 @end
 
@@ -43,6 +44,15 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    if ( CGRectGetWidth(self.tableView.frame) != self.lastKnownTableWidth )
+    {
+        self.lastKnownTableWidth = CGRectGetWidth(self.tableView.frame);
+        [self.tableView reloadData]; // to force the resizing of the no content cell, if visible
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -279,7 +289,7 @@
         VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
         if ( self.settingsError != nil )
         {
-            cell.message = self.settingsError.domain;
+            cell.message = self.settingsError.localizedDescription;
             cell.centered = YES;
             
             if ( self.settingsError.code == kErrorCodeUserNotRegistered )
@@ -328,6 +338,10 @@
 {
     if ( indexPath.section == 0 && !self.hasValidSettings )
     {
+        if ( self.settingsError != nil )
+        {
+            return [VNoContentTableViewCell heightWithMessage:self.settingsError.localizedDescription andWidth:CGRectGetWidth(self.tableView.frame)];
+        }
         return 130.0f;
     }
 
