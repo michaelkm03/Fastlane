@@ -279,8 +279,8 @@
 "DaysAgo" = "%dd";
 "LastWeek" = "1e";
 "WeeksAgo" = "%de";
-"LastMonth" = "1mo";
-"MonthsAgo" = "%dmo";
+"LastMonth" = "1 mes";
+"MonthsAgo" = "%d meses";
 "LastYear" = "1a";
 "YearsAgo" = "%da";
 
