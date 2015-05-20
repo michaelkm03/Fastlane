@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString * const VScreenIdentifierKey = @"id";
+
 @protocol VCoachmarkDisplayer <NSObject>
 
 @required

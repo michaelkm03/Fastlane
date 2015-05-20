@@ -10,7 +10,10 @@
 #import "VDependencyManager.h"
 
 #import "VWorkspaceFlowController.h"
-@interface VWorkspaceShimDestination ()
+
+#import "VCoachmarkDisplayer.h"
+
+@interface VWorkspaceShimDestination () <VCoachmarkDisplayer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) id<VNavigationDestination> workspaceDestination;
@@ -34,6 +37,13 @@
 {
     *alternateViewController = self.workspaceDestination;
     return YES;
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
 }
 
 @end

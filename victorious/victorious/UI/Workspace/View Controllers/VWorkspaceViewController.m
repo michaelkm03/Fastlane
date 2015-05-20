@@ -20,8 +20,9 @@
 #import "VVideoToolController.h"
 #import "VImageToolController.h"
 #import "VCanvasView.h"
+#import "VCoachmarkDisplayer.h"
 
-@interface VWorkspaceViewController()
+@interface VWorkspaceViewController() <VCoachmarkDisplayer>
 
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 
@@ -164,6 +165,13 @@
                                              }
                                                       otherButtonTitlesAndBlocks:nil, nil];
     [confirmExitActionSheet showInView:self.view];
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
 }
 
 @end

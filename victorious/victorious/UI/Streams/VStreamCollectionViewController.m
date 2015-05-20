@@ -93,8 +93,6 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-static NSString * const kIdKey = @"id";
-
 @interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
@@ -872,7 +870,7 @@ static NSString * const kIdKey = @"id";
 
 - (NSString *)screenIdentifier
 {
-    return [self.dependencyManager stringForKey:kIdKey];
+    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
 }
 
 - (BOOL)selectorIsVisible

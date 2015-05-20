@@ -24,6 +24,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VShowcaseDirectoryCell.h"
 #import "VCoachmarkDisplayer.h"
+#import "VCoachmarkManager.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -147,6 +148,18 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.collectionView.delegate = self;
     
     [self refresh:self.refreshControl];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[[self.dependencyManager scaffoldViewController] coachmarkManager] displayCoachmarkViewInViewController:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[[self.dependencyManager scaffoldViewController] coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -331,7 +344,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (NSString *)screenIdentifier
 {
-    return [self.dependencyManager stringForKey:@"id"];
+    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
 }
 
 @end

@@ -67,53 +67,54 @@ static const CGFloat kCoachmarkVerticalInset = 5;
 - (void)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController
 {
     NSString *identifier = [viewController screenIdentifier];
-    VCoachmark *applicableCoachmark = nil;
     for ( VCoachmark *coachmark in self.coachmarks )
     {
         if ( !coachmark.hasBeenShown && [coachmark.displayScreens containsObject:identifier] )
         {
-            applicableCoachmark = coachmark;
-            break;
-        }
-    }
-    
-    if ( applicableCoachmark != nil )
-    {
-        CGFloat maxWidth = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
-        if ( [applicableCoachmark.displayTarget isEqualToString:identifier] )
-        {
-            //Displaying as a toast
-            VCoachmarkView *coachmarkView = [VCoachmarkView toastCoachmarkViewWithCoachmark:applicableCoachmark andMaxWidth:maxWidth];
-            coachmarkView.frame = [self frameForToastCoachmarkViewWithSize:coachmarkView.frame.size andToastLocation:coachmarkView.coachmark.toastLocation inViewController:viewController];
-            [self addCoachmarkView:coachmarkView toViewController:viewController];
-        }
-        else
-        {
-            UIResponder <VCoachmarkDisplayResponder> *nextResponder = [viewController targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:self];
-            if ( nextResponder == nil )
+            CGFloat maxWidth = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
+            if ( [coachmark.displayTarget isEqualToString:identifier] )
             {
-                NSAssert(false, @"Need a responder for findOnScreenMenuItemWithIdentifier:andCompletion:");
-                return;
+                //Displaying as a toast
+                VCoachmarkView *coachmarkView = [VCoachmarkView toastCoachmarkViewWithCoachmark:coachmark andMaxWidth:maxWidth];
+                coachmarkView.frame = [self frameForToastCoachmarkViewWithSize:coachmarkView.frame.size andToastLocation:coachmarkView.coachmark.toastLocation inViewController:viewController];
+                [self addCoachmarkView:coachmarkView toViewController:viewController];
+                break;
             }
-            
-            [nextResponder findOnScreenMenuItemWithIdentifier:applicableCoachmark.displayTarget andCompletion:^(BOOL found, CGRect location)
+            else
             {
-                if ( found )
+                UIResponder <VCoachmarkDisplayResponder> *nextResponder = [viewController targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:self];
+                if ( nextResponder == nil )
                 {
-                    CGFloat arrowCenter = CGRectGetMidX(location) - kCoachmarkHorizontalInset;
-                    CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
-                    VCoachmarkArrowDirection direction = CGRectGetMidY(location) > viewHeight / 2 ? VCoachmarkArrowDirectionDown : VCoachmarkArrowDirectionUp;
-                    VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:applicableCoachmark
-                                                                                             maxWidth:maxWidth
-                                                                                arrowHorizontalOffset:arrowCenter
-                                                                                    andArrowDirection:direction];
-                    coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
-                                                                      arrowDirection:direction
-                                                                   andTargetLocation:location
-                                                                    inViewController:viewController];
-                    [self addCoachmarkView:coachmarkView toViewController:viewController];
+                    NSAssert(false, @"Need a responder for findOnScreenMenuItemWithIdentifier:andCompletion:");
+                    return;
                 }
-            }];
+                
+                __block BOOL foundDisplayableCoachmark = NO;
+                [nextResponder findOnScreenMenuItemWithIdentifier:coachmark.displayTarget andCompletion:^(BOOL found, CGRect location)
+                 {
+                     foundDisplayableCoachmark = found;
+                     if ( found )
+                     {
+                         CGFloat arrowCenter = CGRectGetMidX(location) - kCoachmarkHorizontalInset;
+                         CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
+                         VCoachmarkArrowDirection direction = CGRectGetMidY(location) > viewHeight / 2 ? VCoachmarkArrowDirectionDown : VCoachmarkArrowDirectionUp;
+                         VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
+                                                                                                  maxWidth:maxWidth
+                                                                                     arrowHorizontalOffset:arrowCenter
+                                                                                         andArrowDirection:direction];
+                         coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
+                                                                           arrowDirection:direction
+                                                                        andTargetLocation:location
+                                                                         inViewController:viewController];
+                         [self addCoachmarkView:coachmarkView toViewController:viewController];
+                     }
+                 }];
+                
+                if ( foundDisplayableCoachmark )
+                {
+                    break;
+                }
+            }
         }
     }
 }
