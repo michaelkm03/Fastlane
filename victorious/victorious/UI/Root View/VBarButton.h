@@ -19,6 +19,8 @@
 
 @property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 
+@property (nonatomic, copy) NSString *menuItemIdentifier;
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager; ///< Loads a new instance of VHamburgerButton from a nib file
 
 /**

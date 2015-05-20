@@ -9,6 +9,7 @@
 #import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
 #import "VAccessoryNavigationSource.h"
+#import "VBarButton.h"
 
 extern NSString * const VDependencyManagerTitleImageKey; ///< The key that specifies a title image
 
@@ -38,5 +39,18 @@ extern NSString * const VDependencyManagerAccessoryItemFollowHashtag;
  
  */
 - (void)configureNavigationItem:(UINavigationItem *)navigationItem forViewController:(UIViewController *)sourceViewController;
+
+/**
+ Returns a UIBarButtonItem according that was created from the provided identifier, if it exists,
+ for the provided navigation item.  Will return nil if no matching bar button item was found.
+ */
+- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier;
+
+- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier;
+
+/**
+ Returns a reference to the menu item that contains the provided identifier.
+ */
+- (VNavigationMenuItem *)menuItemWithIdentifier:(NSString *)identifier;
 
 @end

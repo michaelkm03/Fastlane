@@ -396,6 +396,7 @@
 		A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */; };
 		A74B430D1B0BB8AC003C19A0 /* UIResponder+VResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = A74B430C1B0BB8AC003C19A0 /* UIResponder+VResponderChain.m */; };
 		A74B430F1B0BDC17003C19A0 /* postAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A74B430E1B0BDC17003C19A0 /* postAccessory.json */; };
+		A74B43121B0D2244003C19A0 /* followAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A74B43111B0D2243003C19A0 /* followAccessory.json */; };
 		A74C87FA1ABA5859004D2E16 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C10331A65DE6F00439809 /* VCommentHighlighter.m */; };
@@ -1594,6 +1595,7 @@
 		A74B430C1B0BB8AC003C19A0 /* UIResponder+VResponderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+VResponderChain.m"; sourceTree = "<group>"; };
 		A74B430E1B0BDC17003C19A0 /* postAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = postAccessory.json; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
+		A74B43111B0D2243003C19A0 /* followAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = followAccessory.json; sourceTree = "<group>"; };
 		A74C87F81ABA5859004D2E16 /* VCreatorInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatorInfoHelper.h; sourceTree = "<group>"; };
 		A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatorInfoHelper.m; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFirstInstallManager.h; path = "First Install/VFirstInstallManager.h"; sourceTree = "<group>"; };
@@ -3600,6 +3602,7 @@
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
 				A7BB9C781AFD9934005B4596 /* inboxAccessory.json */,
 				A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */,
+				A74B43111B0D2243003C19A0 /* followAccessory.json */,
 				A74B430E1B0BDC17003C19A0 /* postAccessory.json */,
 				A7BB9C811B019B4F005B4596 /* findFriendsAccessory.json */,
 				A79291611B054AF0000763BF /* hamburgerAccessory.json */,
@@ -6021,6 +6024,7 @@
 				DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */,
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
+				A74B43121B0D2244003C19A0 /* followAccessory.json in Resources */,
 				BE88FF801A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib in Resources */,
 				D8E39BE019CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib in Resources */,
 				A7AEF9A61A83F1C300A3D3A0 /* VStreamCellHeaderView.xib in Resources */,

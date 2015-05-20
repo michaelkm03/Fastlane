@@ -53,19 +53,8 @@
 {
     _enabled = enabled;
     
-    [UIView animateWithDuration:0.2f
-                          delay:0.0
-         usingSpringWithDamping:0.6f
-          initialSpringVelocity:0.5f
-                        options:kNilOptions
-                     animations:^void
-     {
-         CGFloat scale = enabled ? 1.0f : 0.8f;
-         self.button.transform = CGAffineTransformMakeScale( scale, scale );
-         self.button.enabled = enabled;
-         self.button.alpha = enabled ? 1.0f : 0.5f;
-     }
-                     completion:nil];
+    self.button.enabled = enabled;
+    self.button.alpha = enabled ? 1.0f : 0.5f;
 }
 
 - (NSInteger)badgeNumber

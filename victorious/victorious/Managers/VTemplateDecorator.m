@@ -34,11 +34,9 @@ static NSString * const kKeyPathDelimiter = @"/";
     {
         return nil;
     }
+    
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-    if ( dictionary == nil )
-    {
-        return nil;
-    }
+    NSAssert( dictionary != nil, @"Error parsing JSON file \"%@\": %@", filename, error );
     
     return dictionary;
 }

@@ -26,14 +26,13 @@
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
 static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
-static NSString * const kFollowedHashtagIcon = @"followedHashtag";
-static NSString * const kFollowHashtagIcon = @"streamFollowHashtag";
 
 @interface VHashtagStreamCollectionViewController () <VAccessoryNavigationSource>
 
 @property (nonatomic, assign, getter=isFollowingSelectedHashtag) BOOL followingSelectedHashtag;
 @property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
+@property (nonatomic, readonly) UIBarButtonItem *followBarButton;
 @property (nonatomic, assign, getter=isFollowingEnabled) BOOL followingEnabled;
 
 @end
@@ -44,17 +43,6 @@ static NSString * const kFollowHashtagIcon = @"streamFollowHashtag";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    
-    NSDictionary *followButtonAccessory = @{ @"accessoryScreens" : @[
-                                                     @{ @"title": @"Follow Hashtag",
-                                                        @"icon": @{ @"imageURL": kFollowHashtagIcon },
-                                                        @"icon_selected": @{ @"imageURL": @"followedHashtag" },
-                                                        @"identifier": @"Accessory Follow Hashtag",
-                                                        @"position": @"right"
-                                                     }
-                                                 ]
-                                             };
-    dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:followButtonAccessory];
     
     NSAssert([NSThread isMainThread], @"This method needs to be called on the main thread");
     NSString *hashtag = [dependencyManager stringForKey:kHashtagKey];
@@ -107,6 +95,14 @@ static NSString * const kFollowHashtagIcon = @"streamFollowHashtag";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self updateUserFollowingStatus];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Must also call here since navigation items are set after viewDidAppear:
     [self updateUserFollowingStatus];
 }
 
@@ -272,36 +268,38 @@ static NSString * const kFollowHashtagIcon = @"streamFollowHashtag";
     [self updateFollowingStatus];
 }
 
-- (VBarButton *)rightBarButton
+- (VBarButton *)followBarButton
 {
-    VBarButton *barButton = (VBarButton *)self.navigationItem.rightBarButtonItem.customView;
-    if ( [barButton isKindOfClass:[VBarButton class]] )
-    {
-        return barButton;
-    }
-    return nil;
+    return [self.dependencyManager barButtonFromNavigationItem:self.navigationItem
+                                                 forIdentifier:VDependencyManagerAccessoryItemFollowHashtag];
 }
 
 - (void)updateFollowingStatus
 {
-    if ( self.streamDataSource.count == 0 )
+    VNavigationMenuItem *menuItem = [self.dependencyManager menuItemWithIdentifier:VDependencyManagerAccessoryItemFollowHashtag];
+    
+    if ( self.streamDataSource.count == 0 || menuItem == nil )
     {
-        [self.rightBarButton setImage:nil];
-    }
-    else if ( self.isFollowingSelectedHashtag )
-    {
-        [self.rightBarButton setImage:[UIImage imageNamed:kFollowedHashtagIcon]];
+        self.followingEnabled = NO;
     }
     else
     {
-        [self.rightBarButton setImage:[UIImage imageNamed:kFollowHashtagIcon]];
+        self.followingEnabled = YES;
+        if ( self.isFollowingSelectedHashtag )
+        {
+            [self.followBarButton setImage:menuItem.selectedIcon];
+        }
+        else
+        {
+            [self.followBarButton setImage:menuItem.icon];
+        }
     }
 }
 
 - (void)setFollowingEnabled:(BOOL)followingEnabled
 {
     _followingEnabled = followingEnabled;
-    self.navigationItem.rightBarButtonItem.enabled = followingEnabled;
+    self.followBarButton.enabled = followingEnabled;
 }
 
 #pragma mark - VAccessoryNavigationSource
@@ -318,7 +316,11 @@ static NSString * const kFollowHashtagIcon = @"streamFollowHashtag";
 
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
-    return YES;
+    // Becase the backend doesn't assign text posts to hashtags based on tags in the text,
+    // Text posts will allow you to view a hastag stream for hashtag that doesn't exist.
+    // If you're viewing a hashtag stream with no items, the backend returns an error if you
+    // attempt to follow it. This prevents showing the button in that case.
+    return self.streamDataSource.count > 0;
 }
 
 - (BOOL)menuItem:(VNavigationMenuItem *)menuItem requiresAuthorizationWithContext:(VAuthorizationContext *)context

@@ -218,7 +218,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         //NSLog( @"%@", [templateDecorator keyPathsForValue:@"stream.screen"] );
-        NSLog( @"%@", [templateDecorator keyPathsForKey:@"canAddContent"] );
+        //NSLog( @"%@", [templateDecorator keyPathsForKey:@"canAddContent"] );
+        NSLog( @"%@", [templateDecorator keyPathsForValue:@"hashtagStream.screen"] );
         
         BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
         if ( isSideNavMenu )
@@ -269,6 +270,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/userProfileView/accessoryScreens"] );
         NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
                                                             forKeyPath:@"scaffold/userProfileView/accessoryScreens/0"] );
+        
+        
+        // Add Follow/Unfollow button to hashtag stream screen in scaffold
+        NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/hashtagStream/accessoryScreens"] );
+        NSParameterAssert( [templateDecorator setComponentWithFilename:@"followAccessory"
+                                                            forKeyPath:@"scaffold/hashtagStream/accessoryScreens/0"] );
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
