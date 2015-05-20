@@ -59,7 +59,7 @@
 "jhx-0Z-CyE.normalTitle" = "Annuler";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
-"pDv-b6-X4m.placeholder" = "Emplacement";
+"pDv-b6-X4m.placeholder" = "Ville";
 
 /* Class = "UIButton"; normalTitle = "Update"; ObjectID = "pg3-qh-eDX"; */
 "pg3-qh-eDX.normalTitle" = "Mise à jour";
