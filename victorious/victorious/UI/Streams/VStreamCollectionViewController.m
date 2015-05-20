@@ -272,7 +272,7 @@ static NSString * const kIdKey = @"id";
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
-    [[[self.dependencyManager scaffoldViewController] coachmarkManager] displayCoachmarkViewInViewController:self withIdentifier:[self.dependencyManager stringForKey:kIdKey]];
+    [[[self.dependencyManager scaffoldViewController] coachmarkManager] displayCoachmarkViewInViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VCoachmarkDisplayer.h"
+
+#warning TESTS INCOMPLETE
 
 @class VDependencyManager;
 
 @interface VCoachmarkManager : NSObject
-
-#warning DOCS INCOMPLETE
 
 /**
     Creates a new coachmark manager with the provided dependency manager.
@@ -27,13 +28,20 @@
 
 /**
     Displays a coachmark in the provided view controller if possible.
+    This method uses the viewController's responder chain to find a suitable menu item to point to
+    when appropriate. To support this, this method must be called at or after viewDidAppear.
  
     @param viewController The view controller that will house the coachmark
  */
-- (void)displayCoachmarkViewInViewController:(UIViewController *)viewController withIdentifier:(NSString *)identifier;
+- (void)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController;
 
+/**
+    Hides the coachmark view associated with the provided view controller.
+    This method should be called from viewWillDisappear.
+ 
+    @param viewController The view controller that is currently displaying a coachmark.
+    @param animated Whether or not the coachmark should dismiss with a fade animation.
+ */
 - (void)hideCoachmarkViewInViewController:(UIViewController *)viewController animated:(BOOL)animated;
-
-- (void)saveStateOfCoachmarks;
 
 @end

@@ -30,27 +30,6 @@
     return CGRectZero;
 }
 
-- (CGRect)absoluteFrameOfView:(UIView *)view
-{
-    CGRect frame = view.frame;
-    frame.origin = [self absoluteOriginOfView:view];
-    return frame;
-}
-
-- (CGPoint)absoluteOriginOfView:(UIView *)view
-{
-    UIView *currentView = view;
-    CGRect frame = currentView.frame;
-    currentView = currentView.superview;
-    while ( currentView != nil )
-    {
-        frame.origin.x += CGRectGetMinX(currentView.frame);
-        frame.origin.y += CGRectGetMinY(currentView.frame);
-        currentView = currentView.superview;
-    }
-    return frame.origin;
-}
-
 #pragma mark - Properties
 
 - (NSUInteger)activeViewControllerIndex

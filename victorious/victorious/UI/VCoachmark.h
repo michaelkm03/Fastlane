@@ -11,6 +11,8 @@
 
 @class VBackground;
 
+#warning DOCS, TESTS INCOMPLETE
+
 typedef NS_ENUM( NSUInteger, VToastLocation )
 {
     VToastLocationTop,
@@ -19,7 +21,7 @@ typedef NS_ENUM( NSUInteger, VToastLocation )
     VToastLocationInvalid
 };
 
-@interface VCoachmark : NSObject <VHasManagedDependencies, NSCoding>
+@interface VCoachmark : NSObject <VHasManagedDependencies>
 
 @property (nonatomic, strong) NSString *currentScreenText;
 @property (nonatomic, strong) NSString *relatedScreenText;
@@ -30,6 +32,7 @@ typedef NS_ENUM( NSUInteger, VToastLocation )
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, assign) VToastLocation toastLocation;
 @property (nonatomic, strong) NSString *remoteId;
+@property (nonatomic, readonly) NSUInteger displayDuration;
 @property (nonatomic, assign) BOOL hasBeenShown;
 
 @end

@@ -29,11 +29,11 @@
                            "color": {
                            "red": 217,
                            "green": 83,
-                           "blue": 0,
+                           "blue": 200,
                            "alpha": 255
                            }
                            },
-                    "toastLocation" : "top",
+                    "toastVerticalLocation" : "top",
                     "color.text": {
                         "red": 255,
                         "green": 255,
@@ -45,14 +45,15 @@
                         "fontSize": 11
                     },
                     "currentScreenText": "current screen text",
-                    "relatedScreenText": "related screen text",
-                    "displayTarget": "55562838ddabf",
+                    "relatedScreenText": "Point to Channels!",
+                    "displayTarget": "55562838dd825",
                     "displayScreens": [
                         "55562838dda04"
                     ],
                     "id": "10",
                     "name": "standard.coachmark",
-                    "hasBeenDisplayed": 0
+                    "hasBeenDisplayed": 0,
+                    "displayDuration": 0
                 },
                            {
                            "background": {
@@ -60,11 +61,11 @@
                            "color": {
                            "red": 217,
                            "green": 83,
-                           "blue": 0,
+                           "blue": 200,
                            "alpha": 255
                            }
                            },
-                           "toastLocation" : "middle",
+                           "toastVerticalLocation" : "top",
                            "color.text": {
                            "red": 255,
                            "green": 255,
@@ -75,15 +76,16 @@
                            "fontName": "STHeitiSC-Light",
                            "fontSize": 11
                            },
-                           "currentScreenText": "current screen text",
+                           "currentScreenText": "Top of Recent!",
                            "relatedScreenText": "related screen text",
                            "displayTarget": "55562838ddabf",
                            "displayScreens": [
-                                              "55562838dda04"
+                                              "55562838ddabf"
                                               ],
                            "id": "11",
                            "name": "standard.coachmark",
-                           "hasBeenDisplayed": 0
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 1
                            },
                            {
                            "background": {
@@ -91,11 +93,75 @@
                            "color": {
                            "red": 217,
                            "green": 83,
-                           "blue": 0,
+                           "blue": 200,
                            "alpha": 255
                            }
                            },
-                           "toastLocation" : "bottom",
+                           "toastVerticalLocation" : "middle",
+                           "color.text": {
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
+                           "alpha": 1
+                           },
+                           "font.label3": {
+                           "fontName": "STHeitiSC-Light",
+                           "fontSize": 11
+                           },
+                           "currentScreenText": "Middle of Recent!",
+                           "relatedScreenText": "related screen text",
+                           "displayTarget": "55562838ddabf",
+                           "displayScreens": [
+                                              "55562838ddabf"
+                                              ],
+                           "id": "12",
+                           "name": "standard.coachmark",
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 5
+                           },
+                           {
+                           "background": {
+                           "name": "solidColor.background",
+                           "color": {
+                           "red": 217,
+                           "green": 83,
+                           "blue": 200,
+                           "alpha": 255
+                           }
+                           },
+                           "toastVerticalLocation" : "bottom",
+                           "color.text": {
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
+                           "alpha": 1
+                           },
+                           "font.label3": {
+                           "fontName": "STHeitiSC-Light",
+                           "fontSize": 11
+                           },
+                           "currentScreenText": "Bottom of Recent!",
+                           "relatedScreenText": "related screen text",
+                           "displayTarget": "55562838ddabf",
+                           "displayScreens": [
+                                              "55562838ddabf"
+                                              ],
+                           "id": "13",
+                           "name": "standard.coachmark",
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 5
+                           },
+                           {
+                           "background": {
+                           "name": "solidColor.background",
+                           "color": {
+                           "red": 217,
+                           "green": 83,
+                           "blue": 200,
+                           "alpha": 255
+                           }
+                           },
+                           "toastVerticalLocation" : "bottom",
                            "color.text": {
                            "red": 255,
                            "green": 255,
@@ -107,19 +173,85 @@
                            "fontSize": 11
                            },
                            "currentScreenText": "current screen text",
-                           "relatedScreenText": "related screen text",
+                           "relatedScreenText": "Point to recent!",
                            "displayTarget": "55562838ddabf",
                            "displayScreens": [
                                               "55562838dda04"
                                               ],
-                           "id": "12",
+                           "id": "14",
                            "name": "standard.coachmark",
-                           "hasBeenDisplayed": 0
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 5
+                           },
+                           {
+                           "background": {
+                           "name": "solidColor.background",
+                           "color": {
+                           "red": 217,
+                           "green": 83,
+                           "blue": 200,
+                           "alpha": 255
+                           }
+                           },
+                           "toastVerticalLocation" : "bottom",
+                           "color.text": {
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
+                           "alpha": 1
+                           },
+                           "font.label3": {
+                           "fontName": "STHeitiSC-Light",
+                           "fontSize": 11
+                           },
+                           "currentScreenText": "current screen text",
+                           "relatedScreenText": "Point to Profile!",
+                           "displayTarget": "Profile",
+                           "displayScreens": [
+                                              "55562838dda04"
+                                              ],
+                           "id": "15",
+                           "name": "standard.coachmark",
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 5
+                           },
+                           {
+                           "background": {
+                           "name": "solidColor.background",
+                           "color": {
+                           "red": 217,
+                           "green": 83,
+                           "blue": 200,
+                           "alpha": 255
+                           }
+                           },
+                           "toastVerticalLocation" : "middle",
+                           "color.text": {
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
+                           "alpha": 1
+                           },
+                           "font.label3": {
+                           "fontName": "STHeitiSC-Light",
+                           "fontSize": 11
+                           },
+                           "currentScreenText": "IN CONTENT VIEW!!!",
+                           "relatedScreenText": "related screen text",
+                           "displayTarget": "contentView",
+                           "displayScreens": [
+                                              "contentView"
+                                              ],
+                           "id": "16",
+                           "name": "standard.coachmark",
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 5
                            }
             ],
             "name": "tabMenu.scaffold",
             "contentView": {
                 "name": "standard.contentView",
+                "id": "contentView",
                 "histogram_enabled": false,
                 "remixStream": {
                     "background": {
@@ -1359,7 +1491,8 @@
                                     "blue": 241,
                                     "alpha": 255
                                 }
-                            }
+                            },
+                            "id": "Profile"
                         },
                         "icon": {
                             "imageURL": "A_profile"

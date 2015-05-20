@@ -9,6 +9,7 @@
 #import "VTextbarSelectorView.h"
 #import "NSArray+VMap.h"
 #import "VDependencyManager.h"
+#import "UIView+AbsoluteFrame.h"
 
 static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVTrackLineHeight = 1.0f;

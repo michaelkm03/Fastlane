@@ -10,17 +10,6 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackground.h"
 
-static NSString * const kRelatedScreenTextKey = @"relatedScreenText";
-static NSString * const kCurrentScreenTextKey = @"currentScreenText";
-static NSString * const kTextColorKey = @"color.text";
-static NSString * const kFontKey = @"font.paragraph";
-static NSString * const kBackgroundKey = @"background";
-static NSString * const kDisplayTargetKey = @"displayTarget";
-static NSString * const kDisplayScreensKey = @"displayScreens";
-static NSString * const kIdKey = @"id";
-static NSString * const kHasBeenShownKey = @"hasBeenShown";
-static NSString * const kToastLocationKey = @"toastLocation";
-
 @implementation VCoachmark
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -28,37 +17,19 @@ static NSString * const kToastLocationKey = @"toastLocation";
     self = [super init];
     if ( self != nil )
     {
-        _relatedScreenText = [dependencyManager stringForKey:kRelatedScreenTextKey];
-        _currentScreenText = [dependencyManager stringForKey:kCurrentScreenTextKey];
+        _relatedScreenText = [dependencyManager stringForKey:@"relatedScreenText"];
+        _currentScreenText = [dependencyManager stringForKey:@"currentScreenText"];
         _textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         _font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
         _background = [dependencyManager background];
-        _displayTarget = [dependencyManager stringForKey:kDisplayTargetKey];
-        _displayScreens = [dependencyManager arrayOfValuesOfType:[NSString class] forKey:kDisplayScreensKey];
-        _remoteId = [dependencyManager stringForKey:kIdKey];
-        _toastLocation = [self toastLocationFromString:[dependencyManager stringForKey:kToastLocationKey]];
-        
-        //Initialize default shown state to NO
+        _displayTarget = [dependencyManager stringForKey:@"displayTarget"];
+        _displayScreens = [dependencyManager arrayOfValuesOfType:[NSString class] forKey:@"displayScreens"];
+        _remoteId = [dependencyManager stringForKey:@"id"];
+        _toastLocation = [self toastLocationFromString:[dependencyManager stringForKey:@"toastVerticalLocation"]];
+        _displayDuration = [[dependencyManager numberForKey:@"displayDuration"] unsignedIntegerValue];
         _hasBeenShown = NO;
     }
     return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super init];
-    if ( self != nil )
-    {
-        _remoteId = [aDecoder decodeObjectForKey:kIdKey];
-        _hasBeenShown = [aDecoder decodeBoolForKey:kHasBeenShownKey];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:_remoteId forKey:kIdKey];
-    [aCoder encodeBool:_hasBeenShown forKey:kHasBeenShownKey];
 }
 
 - (VToastLocation)toastLocationFromString:(NSString *)locationString
@@ -82,29 +53,6 @@ static NSString * const kToastLocationKey = @"toastLocation";
     }
     
     return location;
-}
-
-- (BOOL)isEqualToCoachmark:(VCoachmark *)coachmark
-{
-    return [coachmark.remoteId isEqualToString:self.remoteId];
-}
-
-- (BOOL)isEqual:(id)object
-{
-    if ( object == self )
-    {
-        return YES;
-    }
-    if ( ![object isKindOfClass:[VCoachmark class]] )
-    {
-        return NO;
-    }
-    return [self isEqualToCoachmark:object];
-}
-
-- (NSUInteger)hash
-{
-    return [self.remoteId hash];
 }
 
 @end

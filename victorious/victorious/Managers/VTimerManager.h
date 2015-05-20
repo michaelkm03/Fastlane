@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#warning TESTS INCOMPLETE
+
 @interface VTimerManager : NSObject
 
 /**
@@ -16,7 +18,7 @@
  @param timeInterval The number of seconds between firings of the timer. If seconds is less than or equal to 0.0, this method chooses the nonnegative value of 0.1 milliseconds instead.
  @param aTarget The object to which to send the message specified by aSelector when the timer fires. The timer manager maintains a weak reference to target.
  @param aSelector The message to send to target when the internal timer fires. The selector should have one of the following signatures: timerFired, timerFired: . All other signatures are invalid and will cause an assertion failure.
- @param Custom user info for the internal timer. The internal timer maintains a strong reference to this object until the internal timer is invalidated (which occurs after the provided selector is called on the provided target). This parameter may be nil.
+ @param userInfo Custom user info for the internal timer. The internal timer maintains a strong reference to this object until the internal timer is invalidated (which occurs after the provided selector is called on the provided target). This parameter may be nil.
  @param repeats If YES, the internal timer will repeatedly reschedule itself until invalidated. If NO, the timer will be invalidated after it fires.
  
  @return A new timerManager instance containing a scheduled NSTimer and a weak reference to the supplied target.
@@ -32,7 +34,7 @@
  @param timeInterval The number of seconds between firings of the timer. If seconds is less than or equal to 0.0, this method chooses the nonnegative value of 0.1 milliseconds instead.
  @param aTarget The object to which to send the message specified by aSelector when the timer fires. The timer manager maintains a weak reference to target.
  @param aSelector The message to send to target when the internal timer fires. The selector should have one of the following signatures: timerFired, timerFired: . All other signatures are invalid and will cause an assertion failure.
- @param Custom user info for the internal timer. The internal timer maintains a strong reference to this object until the internal timer is invalidated (which occurs after the provided selector is called on the provided target). This parameter may be nil.
+ @param userInfo Custom user info for the internal timer. The internal timer maintains a strong reference to this object until the internal timer is invalidated (which occurs after the provided selector is called on the provided target). This parameter may be nil.
  @param repeats If YES, the internal timer will repeatedly reschedule itself until invalidated. If NO, the timer will be invalidated after it fires.
  @param runLoop The runLoop that should have the timer added to it
  @param runMode The runMode The mode in which to add aTimer. You may specify a custom mode or use one of the modes listed in Run Loop Modes.
@@ -55,5 +57,10 @@
  Equivalent to calling -isValid on an NSTimer, indicates if the timer is valid or not
  */
 - (BOOL)isValid;
+
+/**
+    The userInfo dictionary provided to the timer manager from one of it's class methods
+ */
+@property (nonatomic, readonly) NSDictionary *userInfo;
 
 @end

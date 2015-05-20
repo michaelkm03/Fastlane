@@ -416,7 +416,7 @@ static NSString * const kInitialKey = @"initial";
             }
             
             //View controller can display a coachmark
-            NSString *screenIdenifier = [(UIViewController <VCoachmarkDisplayer> *)viewController screenIdentifier];
+            NSString *screenIdenifier = [coachmarkDisplayer screenIdentifier];
             if ( [identifier isEqualToString:screenIdenifier] )
             {
                 //Found the screen that we're supposed to point out

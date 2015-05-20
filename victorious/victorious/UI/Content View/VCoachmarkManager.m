@@ -14,8 +14,13 @@
 #import "VCoachmarkDisplayResponder.h"
 #import "VNavigationController.h"
 #import "UIViewController+VLayoutInsets.h"
+#import "VTimerManager.h"
 
-static NSString * const kCoachmarksKey = @"coachmarks";
+#define CLEAR_SHOWN_COACHMARKS 1
+
+static NSString * const kShownCoachmarksKey = @"shownCoachmarks";
+static NSString * const kReturnedCoachmarksKey = @"coachmarks";
+static NSString * const kPassthroughContainerViewKey = @"passthroughContainerView";
 static const CGFloat kAnimationDuration = 0.2f;
 static const char kPassthroughViewKey;
 static const CGFloat kCoachmarkHorizontalInset = 24;
@@ -24,6 +29,7 @@ static const CGFloat kCoachmarkVerticalInset = 5;
 @interface VCoachmarkManager () <VPassthroughContainerViewDelegate>
 
 @property (nonatomic, strong) NSArray *coachmarks;
+@property (nonatomic, strong) NSMutableArray *hideTimers;
 
 @end
 
@@ -34,39 +40,33 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     self = [super init];
     if ( self != nil )
     {
-        NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:kCoachmarksKey];
-        if ( data != nil )
-        {
-            _coachmarks = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        }
-        else
-        {
-            _coachmarks = @[];
-        }
         
-        NSArray *returnedCoachmarks = [dependencyManager arrayOfValuesOfType:[VCoachmark class] forKey:kCoachmarksKey];
+#if CLEAR_SHOWN_COACHMARKS
+#warning CLEARING SHOWN COACHMARKS
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kShownCoachmarksKey];
+#endif
+        
+        NSArray *shownCoachmarkIds = [[NSUserDefaults standardUserDefaults] objectForKey:kShownCoachmarksKey];
+        NSArray *returnedCoachmarks = [dependencyManager arrayOfValuesOfType:[VCoachmark class] forKey:kReturnedCoachmarksKey];
         NSMutableArray *validCoachmarks = [[NSMutableArray alloc] init];
         for ( VCoachmark *coachmark in returnedCoachmarks )
         {
-            NSInteger indexOfCoachmark = [_coachmarks indexOfObject:coachmark];
-            if ( indexOfCoachmark != NSNotFound )
+            if ( ![shownCoachmarkIds containsObject:coachmark.remoteId] )
             {
-#warning FOR TESTING ONLY
-                //We already had this coachmark in our array, import its shown state onto the new coachmark
-                VCoachmark *oldCoachmark = [_coachmarks objectAtIndex:indexOfCoachmark];
-                coachmark.hasBeenShown = NO;//oldCoachmark.hasBeenShown;
+                //We haven't already shown this coachmark, add it to our new coachmarks array
+                [validCoachmarks addObject:coachmark];
             }
-            [validCoachmarks addObject:coachmark];
         }
         
         _coachmarks = [validCoachmarks copy];
-        [self saveStateOfCoachmarks];
+        [self saveShownStateOfCoachmarks];
     }
     return self;
 }
 
-- (void)displayCoachmarkViewInViewController:(UIViewController *)viewController withIdentifier:(NSString *)identifier
+- (void)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController
 {
+    NSString *identifier = [viewController screenIdentifier];
     VCoachmark *applicableCoachmark = nil;
     for ( VCoachmark *coachmark in self.coachmarks )
     {
@@ -124,12 +124,6 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     [self removePassthroughContainerView:passthroughContainer animated:animated];
 }
 
-- (void)saveStateOfCoachmarks
-{
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:self.coachmarks] forKey:kCoachmarksKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 #pragma mark - VPassthroughContainerViewDelegate
 
 - (void)passthroughViewRecievedTouch:(VPassthroughContainerView *)passthroughContainerView
@@ -158,6 +152,7 @@ static const CGFloat kCoachmarkVerticalInset = 5;
 
 - (void)addCoachmarkView:(VCoachmarkView *)coachmarkView toViewController:(UIViewController *)viewController
 {
+    UIView *keyView = viewController.view;
     VNavigationController *navigationController = [viewController v_navigationController];
     if ( navigationController != nil )
     {
@@ -172,10 +167,27 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     [view addSubview:passthroughOverlay];
     [self animateOverlayView:passthroughOverlay toVisible:YES animated:YES withCompletion:^(BOOL finished)
     {
+        [self addHideTimerForCoachmarkView:coachmarkView inPassthroughContainerView:passthroughOverlay];
         [coachmarkView setHasBeenShown:YES];
-        objc_setAssociatedObject(view, &kPassthroughViewKey, passthroughOverlay, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        [self saveStateOfCoachmarks];
+        objc_setAssociatedObject(keyView, &kPassthroughViewKey, passthroughOverlay, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [self saveShownStateOfCoachmarks];
     }];
+}
+
+- (void)addHideTimerForCoachmarkView:(VCoachmarkView *)coachmarkView inPassthroughContainerView:(VPassthroughContainerView *)passthroughContainerView
+{
+    NSUInteger displayDuration = coachmarkView.coachmark.displayDuration;
+    if ( displayDuration != 0 )
+    {
+        VTimerManager *hideTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:displayDuration target:self selector:@selector(hideTimerFired:) userInfo:@{ kPassthroughContainerViewKey : passthroughContainerView } repeats:NO];
+        [self.hideTimers addObject:hideTimer];
+    }
+}
+
+- (void)hideTimerFired:(VTimerManager *)timerManager
+{
+    [self removePassthroughContainerView:[timerManager.userInfo objectForKey:kPassthroughContainerViewKey] animated:YES];
+    [self.hideTimers removeObject:timerManager];
 }
 
 - (CGRect)frameForTooltipCoachmarkViewWithSize:(CGSize)size arrowDirection:(VCoachmarkArrowDirection)arrowDirection andTargetLocation:(CGRect)targetLocation inViewController:(UIViewController *)viewController
@@ -189,7 +201,7 @@ static const CGFloat kCoachmarkVerticalInset = 5;
             break;
             
         case VCoachmarkArrowDirectionDown:
-            yOrigin = CGRectGetMinY(targetLocation) - kCoachmarkVerticalInset;
+            yOrigin = CGRectGetMinY(targetLocation) - CGRectGetHeight(frame) - kCoachmarkVerticalInset;
             break;
             
         default:
@@ -251,7 +263,29 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     else
     {
         overlayView.alpha = targetAlpha;
+        completion(YES);
     }
+}
+
+#pragma mark - Shown coachmark storage
+
+- (void)saveShownStateOfCoachmarks
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[self shownCoachmarkIds] forKey:kShownCoachmarksKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSArray *)shownCoachmarkIds
+{
+    NSMutableArray *shownCoachmarkIds = [[NSMutableArray alloc] init];
+    for (VCoachmark *coachmark in self.coachmarks )
+    {
+        if ( coachmark.hasBeenShown )
+        {
+            [shownCoachmarkIds addObject:coachmark.remoteId];
+        }
+    }
+    return [shownCoachmarkIds copy];
 }
 
 @end

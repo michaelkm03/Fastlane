@@ -9,6 +9,7 @@
 #import "NSArray+VMap.h"
 #import "VDependencyManager.h"
 #import "VSegmentedSelectorView.h"
+#import "UIView+AbsoluteFrame.h"
 
 @interface VSegmentedSelectorView ()
 

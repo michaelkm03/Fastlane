@@ -19,7 +19,6 @@ static const CGFloat kVerticalLabelInset = 15;
 
 @interface VCoachmarkView ()
 
-@property (nonatomic, strong) UIView *backgroundContainerView;
 @property (nonatomic, strong) VCoachmark *coachmark;
 @property (nonatomic, strong) UILabel *captionLabel;
 @property (nonatomic, readwrite) VCoachmarkArrowDirection arrowDirection;

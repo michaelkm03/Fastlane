@@ -12,6 +12,8 @@
 
 @required
 - (NSString *)screenIdentifier;
+
+@optional
 - (BOOL)selectorIsVisible;
 
 @end

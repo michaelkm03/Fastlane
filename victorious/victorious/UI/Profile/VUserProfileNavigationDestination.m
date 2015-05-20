@@ -13,8 +13,9 @@
 #import "VUserProfileViewController.h"
 #import "VUser.h"
 #import "VProfileDeeplinkHandler.h"
+#import "VCoachmarkDisplayer.h"
 
-@interface VUserProfileNavigationDestination ()
+@interface VUserProfileNavigationDestination () <VCoachmarkDisplayer>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 
@@ -66,6 +67,13 @@
 - (id<VDeeplinkHandler>)deepLinkHandler
 {
     return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:@"id"];
 }
 
 @end
