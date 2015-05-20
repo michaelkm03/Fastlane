@@ -5,7 +5,7 @@
 "3pO-cP-eTE.placeholder" = "Mot de passe";
 
 /* Class = "UILabel"; text = "Connect with Twitter"; ObjectID = "3q4-yP-lYm"; */
-"3q4-yP-lYm.text" = "Se connecter avec Twitter";
+"3q4-yP-lYm.text" = "Se connecter via Twitter";
 
 /* Class = "UIButton"; normalTitle = "Log In"; ObjectID = "5AW-ID-rMK"; */
 "5AW-ID-rMK.normalTitle" = "Se connecter";
@@ -59,7 +59,7 @@
 "jhx-0Z-CyE.normalTitle" = "Annuler";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
-"pDv-b6-X4m.placeholder" = "Emplacement";
+"pDv-b6-X4m.placeholder" = "Ville";
 
 /* Class = "UIButton"; normalTitle = "Update"; ObjectID = "pg3-qh-eDX"; */
 "pg3-qh-eDX.normalTitle" = "Mise à jour";

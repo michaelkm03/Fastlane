@@ -14,7 +14,7 @@
 "Channels" = "Canaux";
 "Community" = "Communauté";
 "Owner" = "Propriétaire";
-"Inbox" = "Boîte de réception";
+"Inbox" = "Messages";
 "Messages" = "Messages";
 "Notifications" = "Notifications";
 "Comments" = "Commentaires";
@@ -411,7 +411,7 @@
 
 "RTCUserPostedAtSyntax" = "%@ à %@";//e.g. "Username at 0:04"
 
-"Report/Flag" = "Signaler/Marquer comme inapproprié";
+"Report/Flag" = "Signaler un contenu";
 "CreatedBy" = "CRÉÉ PAR";
 "RemixVerb" = "Remixer";
 "Reposts" = "Republications";
