@@ -10,8 +10,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString * const VHamburgerButtonIconKey; ///< The key that identifies the menu icon in VDependencyManager
-
 /**
  A bar button to be displayed in the navigation bar. Includes a numerical badge, too.
  */
@@ -19,11 +17,15 @@ extern NSString * const VHamburgerButtonIconKey; ///< The key that identifies th
 
 @property (nonatomic) NSInteger badgeNumber; ///< The number to display in the badge
 
+@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager; ///< Loads a new instance of VHamburgerButton from a nib file
 
 /**
  Adds a target/action for a particular event.
  */
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;
+
+- (void)setImage:(UIImage *)image;
 
 @end

@@ -20,12 +20,16 @@
 #import "VNoContentView.h"
 #import "VAuthorizedAction.h"
 #import <FBKVOController.h>
+#import "VDependencyManager+VNavigationItem.h"
+#import "VBarButton.h"
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
 static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
+static NSString * const kFollowedHashtagIcon = @"followedHashtag";
+static NSString * const kFollowHashtagIcon = @"streamFollowHashtag";
 
-@interface VHashtagStreamCollectionViewController ()
+@interface VHashtagStreamCollectionViewController () <VAccessoryNavigationSource>
 
 @property (nonatomic, assign, getter=isFollowingSelectedHashtag) BOOL followingSelectedHashtag;
 @property (nonatomic, strong) NSString *selectedHashtag;
@@ -40,6 +44,18 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    
+    NSDictionary *followButtonAccessory = @{ @"accessoryScreens" : @[
+                                                     @{ @"title": @"Follow Hashtag",
+                                                        @"icon": @{ @"imageURL": kFollowHashtagIcon },
+                                                        @"icon_selected": @{ @"imageURL": @"followedHashtag" },
+                                                        @"identifier": @"Accessory Follow Hashtag",
+                                                        @"position": @"right"
+                                                     }
+                                                 ]
+                                             };
+    dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:followButtonAccessory];
+    
     NSAssert([NSThread isMainThread], @"This method needs to be called on the main thread");
     NSString *hashtag = [dependencyManager stringForKey:kHashtagKey];
     NSString *streamURL = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
@@ -74,6 +90,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     [super viewDidLoad];
     
+    self.followingEnabled = NO;
+    
     [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -95,6 +113,11 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)hashtagsUpdated
 {
     [self updateUserFollowingStatus];
+}
+
+- (void)updateNavigationItems
+{
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
 }
 
 #pragma mark - Fetch Users Tags
@@ -249,32 +272,63 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     [self updateFollowingStatus];
 }
 
-- (UIImage *)followButtonImage
+- (VBarButton *)rightBarButton
 {
-    NSString *imageName = self.isFollowingSelectedHashtag ? @"followedHashtag" : @"streamFollowHashtag";
-    return [UIImage imageNamed:imageName];
+    VBarButton *barButton = (VBarButton *)self.navigationItem.rightBarButtonItem.customView;
+    if ( [barButton isKindOfClass:[VBarButton class]] )
+    {
+        return barButton;
+    }
+    return nil;
 }
 
 - (void)updateFollowingStatus
 {
     if ( self.streamDataSource.count == 0 )
     {
-        self.navigationItem.rightBarButtonItem = nil;
-        return;
+        [self.rightBarButton setImage:nil];
     }
-    
-    // Reset the hashtag button image
-    UIImage *hashtagButtonImage = [[self followButtonImage] imageWithRenderingMode:UIImageRenderingModeAutomatic];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:hashtagButtonImage
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(toggleFollowHashtag)];
+    else if ( self.isFollowingSelectedHashtag )
+    {
+        [self.rightBarButton setImage:[UIImage imageNamed:kFollowedHashtagIcon]];
+    }
+    else
+    {
+        [self.rightBarButton setImage:[UIImage imageNamed:kFollowHashtagIcon]];
+    }
 }
 
 - (void)setFollowingEnabled:(BOOL)followingEnabled
 {
     _followingEnabled = followingEnabled;
     self.navigationItem.rightBarButtonItem.enabled = followingEnabled;
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemFollowHashtag] )
+    {
+        [self toggleFollowHashtag];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    return YES;
+}
+
+- (BOOL)menuItem:(VNavigationMenuItem *)menuItem requiresAuthorizationWithContext:(VAuthorizationContext *)context
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemFollowHashtag] )
+    {
+        *context = VAuthorizationContextFollowHashtag;
+        return YES;
+    }
+    return NO;
 }
 
 @end

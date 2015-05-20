@@ -11,8 +11,6 @@
 #import "VBarButton.h"
 #import "VNumericalBadgeView.h"
 
-NSString * const VHamburgerButtonIconKey = @"menuIcon";
-
 @interface VBarButton ()
 
 @property (nonatomic, weak) IBOutlet UIButton *button;
@@ -46,6 +44,30 @@ NSString * const VHamburgerButtonIconKey = @"menuIcon";
 
 #pragma mark - Properties
 
+- (void)setImage:(UIImage *)image
+{
+    [self.button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    _enabled = enabled;
+    
+    [UIView animateWithDuration:0.2f
+                          delay:0.0
+         usingSpringWithDamping:0.6f
+          initialSpringVelocity:0.5f
+                        options:kNilOptions
+                     animations:^void
+     {
+         CGFloat scale = enabled ? 1.0f : 0.8f;
+         self.button.transform = CGAffineTransformMakeScale( scale, scale );
+         self.button.enabled = enabled;
+         self.button.alpha = enabled ? 1.0f : 0.5f;
+     }
+                     completion:nil];
+}
+
 - (NSInteger)badgeNumber
 {
     return self.badgeView.badgeNumber;
@@ -65,14 +87,9 @@ NSString * const VHamburgerButtonIconKey = @"menuIcon";
     }
     _dependencyManager = dependencyManager;
     
-    UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    
-    self.button.tintColor = tintColor;
+    self.button.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];;
     self.badgeBorder.color = self.backgroundColor;
     self.badgeNumber = 0;
-    
-    UIImage *image = [[self.dependencyManager imageForKey:VHamburgerButtonIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.button setImage:image forState:UIControlStateNormal];
     
     self.badgeView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.badgeView.font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];

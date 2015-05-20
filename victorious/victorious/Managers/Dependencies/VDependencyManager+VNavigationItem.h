@@ -18,6 +18,7 @@ extern NSString * const VDependencyManagerAccessoryItemInbox;
 extern NSString * const VDependencyManagerAccessoryItemInvite;
 extern NSString * const VDependencyManagerAccessoryItemFindFriends;
 extern NSString * const VDependencyManagerAccessoryItemCreatePost;
+extern NSString * const VDependencyManagerAccessoryItemFollowHashtag;
 
 @interface VDependencyManager (VNavigationItem)
 

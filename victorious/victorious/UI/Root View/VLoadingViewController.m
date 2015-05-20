@@ -217,7 +217,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSLog( @"%@", [templateDecorator keyPathsForValue:@"stream.screen"] );
+        //NSLog( @"%@", [templateDecorator keyPathsForValue:@"stream.screen"] );
+        NSLog( @"%@", [templateDecorator keyPathsForKey:@"canAddContent"] );
         
         BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
         if ( isSideNavMenu )
@@ -245,6 +246,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                         forKeyPath:@"scaffold/menu/items/0/0/destination/screens/2/accessoryScreens"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"postAccessory"
                                                                 forKeyPath:@"scaffold/menu/items/0/0/destination/screens/2/accessoryScreens/0"] );
+            // Change template permissions for testing
+            NSParameterAssert( [templateDecorator setTemplateValue:@1
+                                                        forKeyPath:@"scaffold/menu/items/0/0/destination/screens/2/canAddContent"] );
         }
         else
         {

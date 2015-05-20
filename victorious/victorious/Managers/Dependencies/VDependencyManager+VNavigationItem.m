@@ -31,6 +31,7 @@ NSString * const VDependencyManagerAccessoryItemInbox           = @"Accessory In
 NSString * const VDependencyManagerAccessoryItemFindFriends     = @"Accessory Find Friends";
 NSString * const VDependencyManagerAccessoryItemInvite          = @"Accessory Invite";
 NSString * const VDependencyManagerAccessoryItemCreatePost      = @"Accessory Create Post";
+NSString * const VDependencyManagerAccessoryItemFollowHashtag   = @"Accessory Follow Hashtag";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 
@@ -85,10 +86,9 @@ static const char kAssociatedObjectSourceViewControllerKey;
         if ( menuItem.icon != nil )
         {
             // If an icon is provided, a badge
-            NSDictionary *configuration = @{ VHamburgerButtonIconKey : menuItem.icon };
-            VBarButton *barButton = [VBarButton newWithDependencyManager:[self childDependencyManagerWithAddedConfiguration:configuration]];
-            [barButton addTarget:self action:@selector(accessoryMenuItemSelected:)
-                forControlEvents:UIControlEventTouchUpInside];
+            VBarButton *barButton = [VBarButton newWithDependencyManager:self];
+            [barButton setImage:menuItem.icon];
+            [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
             
             id<VNavigationDestination> destination = (id<VNavigationDestination>)menuItem.destination;
             if ( [destination respondsToSelector:@selector(badgeNumber)] )
