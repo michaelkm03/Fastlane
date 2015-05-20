@@ -18,6 +18,9 @@
 #import "NSURL+MediaType.h"
 #import "VImageAsset+Fetcher.h"
 
+static const CGFloat kMinimumAspectRatio = 0.5f;
+static const CGFloat kMaximumAspectRatio = 2.0f;
+
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
     VSequencePermissionOptionsNone        = 0,
@@ -202,8 +205,8 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     if (previewAsset != nil)
     {
         CGFloat aspectRatio = [previewAsset.width floatValue] / [previewAsset.height floatValue];
-        // Make sure width is bigger than height before returning aspect ratio
-        if (aspectRatio > 1)
+        // Make sure aspect ratio is within bounds
+        if (aspectRatio >= kMinimumAspectRatio || aspectRatio <= kMaximumAspectRatio)
         {
             return aspectRatio;
         }
