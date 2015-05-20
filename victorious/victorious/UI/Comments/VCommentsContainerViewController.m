@@ -29,6 +29,8 @@
 #import "VBackground.h"
 #import "UIView+AutoLayout.h"
 
+static const CGFloat kNoPreviewBackgroundTransparency = 0.75f;
+
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
@@ -72,7 +74,7 @@
     {
         newBackgroundView = [[UIView alloc] initWithFrame:self.view.bounds];
         newBackgroundView.backgroundColor = [UIColor whiteColor];
-        newBackgroundView.alpha = 0.75f;
+        newBackgroundView.alpha = kNoPreviewBackgroundTransparency;
     }
     
     self.backgroundImage = newBackgroundView;
