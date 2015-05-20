@@ -9,12 +9,27 @@
 #import "VPassthroughContainerView.h"
 #import "VBackgroundContainer.h"
 
+typedef NS_ENUM( NSUInteger, VCoachmarkArrowDirection )
+{
+    VCoachmarkArrowDirectionUp,
+    VCoachmarkArrowDirectionDown,
+    VCoachmarkArrowDirectionInvalid
+};
+
 @class VCoachmark;
 
 @interface VCoachmarkView : VPassthroughContainerView <VBackgroundContainer>
 
-+ (instancetype)coachmarkViewWithCoachmark:(VCoachmark *)coachmark
-                                    center:(CGPoint)center
-                               targetPoint:(CGPoint)targetPoint;
++ (instancetype)toastCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
+                                    andMaxWidth:(CGFloat)maxWidth;
+
++ (instancetype)tooltipCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
+                                         maxWidth:(CGFloat)maxWidth
+                            arrowHorizontalOffset:(CGFloat)horizontalOffset
+                                andArrowDirection:(VCoachmarkArrowDirection)arrowDirection;
+
+@property (nonatomic, readonly) VCoachmark *coachmark;
+@property (nonatomic, readonly) VCoachmarkArrowDirection arrowDirection;
+@property (nonatomic, assign) BOOL hasBeenShown;
 
 @end

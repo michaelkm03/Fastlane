@@ -7,6 +7,19 @@
 //
 
 #import "VCoachmark.h"
+#import "VDependencyManager.h"
+#import "VDependencyManager+VBackground.h"
+
+static NSString * const kRelatedScreenTextKey = @"relatedScreenText";
+static NSString * const kCurrentScreenTextKey = @"currentScreenText";
+static NSString * const kTextColorKey = @"color.text";
+static NSString * const kFontKey = @"font.paragraph";
+static NSString * const kBackgroundKey = @"background";
+static NSString * const kDisplayTargetKey = @"displayTarget";
+static NSString * const kDisplayScreensKey = @"displayScreens";
+static NSString * const kIdKey = @"id";
+static NSString * const kHasBeenShownKey = @"hasBeenShown";
+static NSString * const kToastLocationKey = @"toastLocation";
 
 @implementation VCoachmark
 
@@ -15,21 +28,60 @@
     self = [super init];
     if ( self != nil )
     {
-#warning DO the dance
+        _relatedScreenText = [dependencyManager stringForKey:kRelatedScreenTextKey];
+        _currentScreenText = [dependencyManager stringForKey:kCurrentScreenTextKey];
+        _textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        _font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+        _background = [dependencyManager background];
+        _displayTarget = [dependencyManager stringForKey:kDisplayTargetKey];
+        _displayScreens = [dependencyManager arrayOfValuesOfType:[NSString class] forKey:kDisplayScreensKey];
+        _remoteId = [dependencyManager stringForKey:kIdKey];
+        _toastLocation = [self toastLocationFromString:[dependencyManager stringForKey:kToastLocationKey]];
+        
+        //Initialize default shown state to NO
+        _hasBeenShown = NO;
     }
     return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-#warning COMPLETE
     self = [super init];
+    if ( self != nil )
+    {
+        _remoteId = [aDecoder decodeObjectForKey:kIdKey];
+        _hasBeenShown = [aDecoder decodeBoolForKey:kHasBeenShownKey];
+    }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-#warning COMPLETE
+    [aCoder encodeObject:_remoteId forKey:kIdKey];
+    [aCoder encodeBool:_hasBeenShown forKey:kHasBeenShownKey];
+}
+
+- (VToastLocation)toastLocationFromString:(NSString *)locationString
+{
+    VToastLocation location = VToastLocationTop;
+    if ( [locationString isEqualToString:@"bottom"] )
+    {
+        location = VToastLocationBottom;
+    }
+    else if ( [locationString isEqualToString:@"middle"] )
+    {
+        location = VToastLocationMiddle;
+    }
+    else if ( [locationString isEqualToString:@"top"] )
+    {
+        location = VToastLocationTop;
+    }
+    else
+    {
+        NSAssert(false, @"Recieved invalid locationString value");
+    }
+    
+    return location;
 }
 
 - (BOOL)isEqualToCoachmark:(VCoachmark *)coachmark

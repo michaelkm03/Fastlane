@@ -34,4 +34,6 @@
 
 - (void)hideCoachmarkViewInViewController:(UIViewController *)viewController animated:(BOOL)animated;
 
+- (void)saveStateOfCoachmarks;
+
 @end

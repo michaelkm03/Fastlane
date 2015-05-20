@@ -2562,6 +2562,8 @@
 		F0B390C21A88502D00EE70C7 /* VTagDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionary.m; sourceTree = "<group>"; };
 		F0B390C41A8850CF00EE70C7 /* VTagStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagStringFormatter.h; sourceTree = "<group>"; };
 		F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatter.m; sourceTree = "<group>"; };
+		F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayResponder.h; sourceTree = "<group>"; };
+		F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayer.h; sourceTree = "<group>"; };
 		F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryViewTests.m; sourceTree = "<group>"; };
 		F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLaunchScreenProvider.h; sourceTree = "<group>"; };
 		F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProvider.m; sourceTree = "<group>"; };
@@ -5827,6 +5829,8 @@
 				F07409741B05876200C44623 /* VCoachmarkView.m */,
 				F07409821B059FEA00C44623 /* VCoachmark.h */,
 				F07409831B059FEA00C44623 /* VCoachmark.m */,
+				F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */,
+				F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */,
 				F07409811B059E9600C44623 /* VPassthroughContainerViewDelegate.h */,
 				F07409851B069BF100C44623 /* coachmarks.json */,
 			);

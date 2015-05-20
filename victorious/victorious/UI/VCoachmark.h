@@ -11,6 +11,14 @@
 
 @class VBackground;
 
+typedef NS_ENUM( NSUInteger, VToastLocation )
+{
+    VToastLocationTop,
+    VToastLocationMiddle,
+    VToastLocationBottom,
+    VToastLocationInvalid
+};
+
 @interface VCoachmark : NSObject <VHasManagedDependencies, NSCoding>
 
 @property (nonatomic, strong) NSString *currentScreenText;
@@ -20,6 +28,7 @@
 @property (nonatomic, strong) VBackground *background;
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIFont *font;
+@property (nonatomic, assign) VToastLocation toastLocation;
 @property (nonatomic, strong) NSString *remoteId;
 @property (nonatomic, assign) BOOL hasBeenShown;
 

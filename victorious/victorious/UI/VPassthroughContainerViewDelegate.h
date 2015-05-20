@@ -12,6 +12,7 @@
 
 @protocol VPassthroughContainerViewDelegate <NSObject>
 
+@required
 - (void)passthroughViewRecievedTouch:(VPassthroughContainerView *)passthroughContainerView;
 
 @end

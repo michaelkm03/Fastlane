@@ -43,4 +43,10 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+- (CGRect)frameOfButtonAtIndex:(NSUInteger)index;
+
+- (CGPoint)absoluteOriginOfView:(UIView *)view;
+
+- (CGRect)absoluteFrameOfView:(UIView *)view;
+
 @end

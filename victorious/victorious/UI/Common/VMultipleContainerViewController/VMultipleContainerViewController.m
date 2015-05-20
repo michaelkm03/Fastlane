@@ -18,8 +18,10 @@
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "UIView+AutoLayout.h"
+#import "VCoachmarkDisplayResponder.h"
+#import "VCoachmarkDisplayer.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge, VCoachmarkDisplayResponder>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
@@ -395,6 +397,45 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
 {
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
+}
+
+#pragma mark - VCoachmarkViewResponderChain
+
+- (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion
+{
+    for ( NSUInteger index = 0; index < self.viewControllers.count; index++ )
+    {
+        UIViewController *viewController = self.viewControllers[index];
+        if ( [viewController conformsToProtocol:@protocol(VCoachmarkDisplayer)] )
+        {
+            UIViewController <VCoachmarkDisplayer> *coachmarkDisplayer = (UIViewController <VCoachmarkDisplayer> *)viewController;
+            if ( ![coachmarkDisplayer selectorIsVisible] )
+            {
+                //The current displayer doesn't have a visible selector, stop looking for coachmarks it can display
+                break;
+            }
+            
+            //View controller can display a coachmark
+            NSString *screenIdenifier = [(UIViewController <VCoachmarkDisplayer> *)viewController screenIdentifier];
+            if ( [identifier isEqualToString:screenIdenifier] )
+            {
+                //Found the screen that we're supposed to point out
+                CGRect frame = [self.selector frameOfButtonAtIndex:index];
+                completion(YES, frame);
+                return;
+            }
+        }
+    }
+    
+    UIResponder <VCoachmarkDisplayResponder> *nextResponder = [self.nextResponder targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:nil];
+    if ( nextResponder == nil )
+    {
+        completion(NO, CGRectZero);
+    }
+    else
+    {
+        [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
+    }
 }
 
 @end
