@@ -43,7 +43,7 @@
         return;
     }
     
-    if (self.shouldShowInitialPrompt == NO)
+    if (!self.shouldShowInitialPrompt)
     {
         [self requestForPermission:completion];
     }
