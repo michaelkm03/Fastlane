@@ -108,7 +108,7 @@
 	<string>VBlurredMarqueeController</string>
 	<key>inset.marqueeCell</key>
 	<string>VInsetMarqueeController</string>
-	<key>default.alertController</key>
+	<key>standard.permissionsAlert</key>
 	<string>VPermissionAlertViewController</string>
 </dict>
 </plist>

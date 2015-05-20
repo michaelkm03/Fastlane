@@ -216,7 +216,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        [templateDecorator setTemplateValue:@{@"name":@"default.alertController",
+        [templateDecorator setTemplateValue:@{@"name":@"standard.permissionsAlert",
                                               VDependencyManagerImageURLKey:@"http://aceshightattooshop.com/wp-content/uploads/2014/06/profile-placeholder.jpg",
                                               VDependencyManagerAccentColorKey:@{@"alpha":@(255),
                                                                                  @"blue":@(236),
@@ -258,7 +258,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                               @"title.button2":@"Maybe later",
                                               @"cameraPermission.message":@"blah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blahblah blah blah"
                                               }
-                                 forKeyPath:@"alertController"];
+                                 forKeyPath:@"permissionsAlert"];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

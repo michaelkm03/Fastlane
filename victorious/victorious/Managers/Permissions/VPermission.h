@@ -11,7 +11,7 @@
 #import "VDependencyManager.h"
 #import "VPermissionAlertViewController.h"
 
-static NSString * const VPermissionAlertViewControllerKey = @"alertController";
+static NSString * const VPermissionAlertViewControllerKey = @"permissionsAlert";
 
 /**
  *  Enum representing permission states
