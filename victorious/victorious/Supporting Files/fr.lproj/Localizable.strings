@@ -491,6 +491,7 @@
 "ErrorPushNotificationsNotSaved" = "Erreur de sauvegarde des préférences";
 "ErrorPushNotificationsNotSavedMessage" = "Veuillez réessayer ultérieurement.";
 
+"RestorePurchaseDescription" = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle" = "Erreur lors de la finalisation de l'achat";
 "PurchaseErrorProductNotAvailable" = "Désolés, ce produit n'est actuellement pas disponible. Veuillez réessayer ultérieurement.";
 "PurchaseErrorTransaction" = "Échec de finalisation de la transaction. Veuillez réessayer ultérieurement.";

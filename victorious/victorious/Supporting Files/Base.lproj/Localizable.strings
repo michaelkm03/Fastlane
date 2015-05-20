@@ -496,6 +496,7 @@
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
 "ErrorPushNotificationsNotSavedMessage" = "Please try again later.";
 
+"RestorePurchaseDescription"            = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle"                    = "Error Making Purchase";
 "PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available. Please try again later.";
 "PurchaseErrorTransaction"              = "Unable to complete transaction. Please try again later.";

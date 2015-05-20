@@ -491,6 +491,7 @@
 "ErrorPushNotificationsNotSaved" = "Error al guardar las preferencias";
 "ErrorPushNotificationsNotSavedMessage" = "Por favor, intentar más tarde.";
 
+"RestorePurchaseDescription" = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle" = "Error al hacer la comora";
 "PurchaseErrorProductNotAvailable" = "Lo sentimos, error en las compras";
 "PurchaseErrorTransaction" = "No puede completarse la transsación. Por favor, intentar más tarde.t";
