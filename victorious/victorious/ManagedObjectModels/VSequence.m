@@ -49,5 +49,6 @@
 @dynamic endCard;
 @dynamic parentEndCard;
 @dynamic hasReposted;
+@dynamic previewAssets;
 
 @end

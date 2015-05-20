@@ -16,6 +16,7 @@
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
 #import "NSURL+MediaType.h"
+#import "VImageAsset+Fetcher.h"
 
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
@@ -193,6 +194,22 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
      }];
     
     return primaryAsset;
+}
+
+- (CGFloat)previewAssetAspectRatio
+{
+    VImageAsset *previewAsset = [VImageAsset largestAssetFromAssets:self.previewAssets];
+    if (previewAsset != nil)
+    {
+        CGFloat aspectRatio = [previewAsset.width floatValue] / [previewAsset.height floatValue];
+        // Make sure width is bigger than height before returning aspect ratio
+        if (aspectRatio > 1)
+        {
+            return aspectRatio;
+        }
+    }
+    
+    return 1.0f;
 }
 
 - (NSArray *)initialImageURLs

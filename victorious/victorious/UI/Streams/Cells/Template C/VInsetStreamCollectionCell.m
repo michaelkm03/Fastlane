@@ -14,6 +14,7 @@
 
 // Stream Support
 #import "VSequence+Fetcher.h"
+#import "VImageAsset+Fetcher.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -26,6 +27,8 @@
 #import "VHashTagTextView.h"
 #import "VStreamHeaderTimeSince.h"
 #import "VCompatibility.h"
+
+#define ARC4RANDOM_MAX 0x100000000
 
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
 static const CGFloat kInsetCellHeaderHeight = 50.0f;
@@ -45,6 +48,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 @property (nonatomic, strong) NSArray *captionConstraints;
 @property (nonatomic, strong) NSArray *noCaptionConstraints;
+@property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
 
 @end
 
@@ -96,6 +100,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
                                                                     multiplier:1.0f
                                                                       constant:0.0f];
     [self.contentView addConstraint:heightToWidth];
+    _previewViewHeightConstraint = heightToWidth;
 
     // Now the caption text view
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
@@ -185,7 +190,19 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         // CaptionTextView sometimes screws with layout with compression resistance.
         [self.captionTextView removeConstraint:[self.captionTextView v_internalHeightConstraint]];
     }
-
+    
+    // Add new height constraint for preview container to account for aspect ratio of preview asset
+    CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
+    NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.previewContainer
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:(1 / aspectRatio)
+                                                                      constant:0.0f];
+    [self.contentView addConstraint:heightToWidth];
+    self.previewViewHeightConstraint = heightToWidth;
+    
     [super updateConstraints];
 }
 
@@ -214,12 +231,14 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    
+        
     [self updatePreviewViewForSequence:sequence];
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
     [self reloadCommentsCountForSequence:sequence];
     self.actionView.sequence = sequence;
+    // Remove current height constraint on preview view to account for potential new aspect ratio
+    [self.contentView removeConstraint:self.previewViewHeightConstraint];
     [self setNeedsUpdateConstraints];
 }
 
@@ -232,7 +251,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         [self.previewView setSequence:sequence];
         return;
     }
-    
+
     [self.previewView removeFromSuperview];
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.previewContainer addSubview:self.previewView];
@@ -343,9 +362,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
     // Add header
     actualSize.height = actualSize.height + kInsetCellHeaderHeight;
-    
-    // Add 1:1 preivew view
-    actualSize.height = actualSize.height + actualSize.width;
 
     // Text size
     actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize
@@ -354,6 +370,9 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Action View
     actualSize.height = actualSize.height + kInsetCellActionViewHeight;
+    
+    // Add 1:1 preview view
+    actualSize.height = actualSize.height + actualSize.width * (1 / [sequence previewAssetAspectRatio]);
     
     return actualSize;
 }

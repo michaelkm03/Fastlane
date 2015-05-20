@@ -46,6 +46,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
 
 @end
 
@@ -94,9 +95,28 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.headerView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
+    [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
+    [self setNeedsUpdateConstraints];
 }
 
 #pragma mark - Internal Methods
+
+- (void)updateConstraints
+{
+    // Add new height constraint for preview container to account for aspect ratio of preview asset
+    CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
+    NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.previewContainer
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:(1 / aspectRatio)
+                                                                      constant:0.0f];
+    [self.previewContainer addConstraint:heightToWidth];
+    self.previewContainerHeightConstraint = heightToWidth;
+    
+    [super updateConstraints];
+}
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
@@ -202,8 +222,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
                                              sequence:sequence
                                     dependencyManager:dependencyManager];
     
-    // Add 1:1 preivew view
-    actualSize.height = actualSize.height + actualSize.width;
+    // Add 1:1 preview view
+    actualSize.height = actualSize.height + actualSize.width * (1 / [sequence previewAssetAspectRatio]);
     
     // Action View
     actualSize.height = actualSize.height + kPreviewToActionViewSpacing;

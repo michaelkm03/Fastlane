@@ -15,6 +15,7 @@
 #import "VAdBreak+RestKit.h"
 #import "VEndCard+RestKit.h"
 #import "VStream+RestKit.h"
+#import "VImageAsset+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -57,6 +58,11 @@
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                              toKeyPath:VSelectorName(previewAssets)
+                                                                                            withMapping:[VImageAsset entityMapping]];
+    [mapping addPropertyMapping:previewAssetsMapping];
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];

@@ -39,6 +39,13 @@
 
 - (VAsset *)primaryAssetWithPreferredMimeType:(NSString *)mimeType;
 
+/**
+ Retrieves the aspect ratio of the highest resolution
+ preview asset for this sequence. If no preview assets
+ are found, 1.0f is returned.
+ */
+- (CGFloat)previewAssetAspectRatio;
+
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
 

@@ -76,6 +76,7 @@
                 <outlet property="headerView" destination="21k-Mb-C9q" id="qKP-yg-aYp"/>
                 <outlet property="loadingBackgroundContainer" destination="JB7-zc-ces" id="dXU-4M-ad5"/>
                 <outlet property="previewContainer" destination="0yG-Rl-S8H" id="cof-z2-mUe"/>
+                <outlet property="previewContainerHeightConstraint" destination="Gk5-tf-7Rn" id="T1y-x4-adB"/>
                 <outlet property="sleekActionView" destination="gyd-x0-d0C" id="rlD-Xe-d2Y"/>
             </connections>
             <point key="canvasLocation" x="193" y="223"/>
