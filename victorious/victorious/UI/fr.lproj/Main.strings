@@ -41,7 +41,7 @@
 "aHa-OF-GOS.text" = "Voter pour cela";
 
 /* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "gHQ-c1-wpe"; */
-"gHQ-c1-wpe.title" = "Boîte de réception";
+"gHQ-c1-wpe.title" = "Messages";
 
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "Saisir une réponse...";

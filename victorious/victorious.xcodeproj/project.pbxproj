@@ -118,7 +118,6 @@
 		032954A71A9FFD9100698119 /* VURLMacroReplacementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A61A9FFD9100698119 /* VURLMacroReplacementTests.m */; };
 		032954AB1AA0FDB800698119 /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954AA1AA0FDB800698119 /* NSCharacterSet+VURLParts.m */; };
 		0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
-		0329B9B71ACFBEA6003BBCC5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0329B9B91ACFBEA6003BBCC5 /* InfoPlist.strings */; };
 		0330D42B1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */; };
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
@@ -219,6 +218,7 @@
 		037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */; };
 		03803DE11B0C270300B63F05 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03803DE31B0C270300B63F05 /* Purchases.storyboard */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
+		03848F951B0A41090092C660 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03848F971B0A41090092C660 /* InfoPlist.strings */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
 		0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */; };
 		0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386E1FF1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m */; };
@@ -1156,7 +1156,6 @@
 		032954A91AA0FDB800698119 /* NSCharacterSet+VURLParts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+VURLParts.h"; sourceTree = "<group>"; };
 		032954AA1AA0FDB800698119 /* NSCharacterSet+VURLParts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+VURLParts.m"; sourceTree = "<group>"; };
 		0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewFactoryTests.m; sourceTree = "<group>"; };
-		0329B9BA1ACFBF3D003BBCC5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0330D4281A6ED98D007EEEE4 /* VNavigationDestinationsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationsProvider.h; sourceTree = "<group>"; };
 		0330D4291A6F5BAE007EEEE4 /* NSURL+VPathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VPathHelper.h"; sourceTree = "<group>"; };
 		0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VPathHelper.m"; sourceTree = "<group>"; };
@@ -1301,6 +1300,10 @@
 		03803DE91B0C272300B63F05 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Purchases.strings; sourceTree = "<group>"; };
 		03811D3219353486005687FF /* VAlertViewBlockDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlertViewBlockDelegate.h; sourceTree = "<group>"; };
 		03811D3319353486005687FF /* VAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertViewBlockDelegate.m; sourceTree = "<group>"; };
+		03848F961B0A41090092C660 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03848F981B0A410C0092C660 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03848F991B0A410C0092C660 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03848F9A1B0A410D0092C660 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResult.h; sourceTree = "<group>"; };
 		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
 		0386E1FE1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VNavigationItem.h"; sourceTree = "<group>"; };
@@ -4782,6 +4785,7 @@
 		BE171D821868BE64004E5202 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				03848F971B0A41090092C660 /* InfoPlist.strings */,
 				DB2A48F919DF2D1000CB687B /* Localizable.strings */,
 				03C185C519B42FD600E27D05 /* main.m */,
 				03C185C619B42FD600E27D05 /* victorious-Prefix.pch */,
@@ -5185,7 +5189,6 @@
 				0314D07F19B4688E00FA363C /* Icon-40@2x.png */,
 				0314D08019B4688E00FA363C /* Icon-60@2x.png */,
 				0314D08119B4688E00FA363C /* Info.plist */,
-				0329B9B91ACFBEA6003BBCC5 /* InfoPlist.strings */,
 				DB81FB621AAE49FE00EA4E3C /* LaunchImage@2x.png */,
 			);
 			path = AppSpecific;
@@ -6040,11 +6043,11 @@
 				036F38941A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf in Resources */,
 				036F388E1A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf in Resources */,
 				036F38911A0C4DEA0014DF66 /* Signika-Light.ttf in Resources */,
-				0329B9B71ACFBEA6003BBCC5 /* InfoPlist.strings in Resources */,
 				03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */,
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */,
+				03848F951B0A41090092C660 /* InfoPlist.strings in Resources */,
 				F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */,
 				036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */,
 				036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */,
@@ -7088,14 +7091,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		0329B9B91ACFBEA6003BBCC5 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0329B9BA1ACFBF3D003BBCC5 /* es */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -7127,6 +7122,15 @@
 			);
 			name = Purchases.storyboard;
 			path = Purchases;
+		03848F971B0A41090092C660 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03848F961B0A41090092C660 /* Base */,
+				03848F981B0A410C0092C660 /* es */,
+				03848F991B0A410C0092C660 /* fr */,
+				03848F9A1B0A410D0092C660 /* de */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		0390084819F37B1E00FD7EDF /* Camera.storyboard */ = {

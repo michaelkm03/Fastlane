@@ -8,7 +8,7 @@
 "QIL-B4-Htr.title" = "Follower";
 
 /* Class = "UILabel"; text = "Tell us about yourself..."; ObjectID = "Trt-Yx-Qae"; */
-"Trt-Yx-Qae.text" = "Erzähle uns ein wenig über dich selbst:";
+"Trt-Yx-Qae.text" = "Erzähle uns etwas von dir:";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "bcg-p6-c76"; */
 "bcg-p6-c76.placeholder" = "Ort";
