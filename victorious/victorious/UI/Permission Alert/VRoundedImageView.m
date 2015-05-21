@@ -33,14 +33,15 @@
 
 - (void)commonInit
 {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     self.clipsToBounds = YES;
     self.contentMode = UIViewContentModeScaleAspectFill;
+    self.image = [self placeholderImage];
 }
 
 - (void)setIconImageURL:(NSURL *)url
 {
-    [self sd_setImageWithURL:url placeholderImage:nil];
+    [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
 }
 
 - (void)layoutSubviews
@@ -48,6 +49,17 @@
     [super layoutSubviews];
     // Update corner radius after we've been laid out
     self.layer.cornerRadius = CGRectGetHeight(self.bounds) / 2;
+}
+
+- (UIImage *)placeholderImage
+{
+    UIImage *image = [UIImage imageNamed:@"profile_thumb"];
+    if (CGRectGetHeight(self.bounds) > image.size.height)
+    {
+        image = [UIImage imageNamed:@"profile_full"];
+    }
+    
+    return image;
 }
 
 @end

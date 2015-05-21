@@ -13,6 +13,7 @@
 #import "VButtonWithCircularEmphasis.h"
 #import "VPermissionAlertAnimator.h"
 #import "VRoundedImageView.h"
+#import "VAppInfo.h"
 
 static NSString * const kStoryboardName = @"PermissionAlert";
 static NSString * const kConfirmButtonTitleKey = @"title.button1";
@@ -83,7 +84,8 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     [self.denyButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton2FontKey]];
     [self.denyButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey] forState:UIControlStateNormal];
     
-    [self.iconImageView setIconImageURL:[NSURL URLWithString:[self.dependencyManager stringForKey:VDependencyManagerImageURLKey]]];
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    [self.iconImageView setIconImageURL:appInfo.profileImageURL];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }

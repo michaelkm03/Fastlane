@@ -7,6 +7,7 @@
 //
 
 #import "VPermissionProfilePicture.h"
+#import "VAppInfo.h"
 
 @implementation VPermissionProfilePicture
 
@@ -17,7 +18,9 @@
     {
         return message;
     }
-    return NSLocalizedString(@"We hope to connect and communicate with our fans. By having a profile picture, we will be able to recognize you!\n\nWould you like to take a profile picture?", @"");
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:dependencyManager];
+    NSString *finalString = [NSString stringWithFormat:NSLocalizedString(@"In order to be recognized by %@ and other fans, you need to set a profile picture.\n\n Would you like to set one now?", nil), appInfo.ownerName];
+    return finalString;
 }
 
 @end
