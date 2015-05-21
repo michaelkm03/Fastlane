@@ -69,7 +69,7 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
  permission has been determined.
  */
 - (void)requestPermissionIfNecessaryInViewController:(UIViewController *)viewController
-                    withCompletionHandler:(VPermissionRequestCompletionHandler)completion;
+                               withCompletionHandler:(VPermissionRequestCompletionHandler)completion;
 /**
  Subclasses should override this and return the status of the specific permission
  */
