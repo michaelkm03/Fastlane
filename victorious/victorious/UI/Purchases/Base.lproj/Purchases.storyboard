@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1Tg-SP-Xjz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1Tg-SP-Xjz">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -44,10 +44,10 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="292" height="110"/>
                                             </imageView>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXE-MY-9if" userLabel="Restore Description">
-                                                <rect key="frame" x="13" y="14" width="262" height="43"/>
+                                                <rect key="frame" x="13" y="14" width="262" height="69"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <string key="text">Already purchased on another device?
-Tap below to restore all of your purchases.</string>
+                                                <string key="text">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. </string>
                                                 <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -265,6 +265,7 @@ Description</string>
                         <outlet property="productImageView" destination="qgr-Qe-uXK" id="n7R-bg-P3C"/>
                         <outlet property="productTitleLabel" destination="o0J-m2-6MN" id="TEP-A4-p1R"/>
                         <outlet property="restoreButton" destination="0ps-Lu-6Wn" id="rIk-wI-lEx"/>
+                        <outlet property="restoreDescriptionTextView" destination="wXE-MY-9if" id="0fZ-yf-k4W"/>
                         <outlet property="restoreLoadingLabel" destination="guM-k2-DxG" id="d27-DE-Pnz"/>
                         <outlet property="restoreLoadingView" destination="00e-9v-Yhy" id="Us1-SF-mvg"/>
                         <outlet property="unlockButton" destination="sdg-KR-qfg" id="yGJ-4g-LrW"/>

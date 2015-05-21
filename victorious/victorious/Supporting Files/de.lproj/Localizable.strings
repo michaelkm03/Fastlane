@@ -491,6 +491,7 @@
 "ErrorPushNotificationsNotSaved" = "Fehler beim Speichern der Einstellungen";
 "ErrorPushNotificationsNotSavedMessage" = "Bitte versuche es später erneut.";
 
+"RestorePurchaseDescription" = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle" = "Fehler beim Kauf";
 "PurchaseErrorProductNotAvailable" = "Dieses Produkt ist derzeit leider nicht verfügbar. Bitte versuche es später erneut.";
 "PurchaseErrorTransaction" = "Transaktion konnte nicht abgeschlossen werden. Bitte versuche es später erneut.";
