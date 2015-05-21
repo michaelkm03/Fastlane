@@ -31,7 +31,7 @@
     }
 }
 
-- (void)requestForPermission:(VPermissionRequestCompletionHandler)completion
+- (void)requestSystemPermission:(VPermissionRequestCompletionHandler)completion
 {
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession requestRecordPermission:^(BOOL granted)

@@ -21,8 +21,8 @@
     return self;
 }
 
-- (void)requestPermissionIfNecessaryInViewController:(UIViewController *)viewController
-                               withCompletionHandler:(VPermissionRequestCompletionHandler)completion
+- (void)requestPermissionInViewController:(UIViewController *)viewController
+                    withCompletionHandler:(VPermissionRequestCompletionHandler)completion
 {
     VPermissionState state = [self permissionState];
     if (state == VPermissionStateAuthorized)
@@ -45,7 +45,7 @@
     
     if (!self.shouldShowInitialPrompt)
     {
-        [self requestForPermission:completion];
+        [self requestSystemPermission:completion];
     }
     else
     {
@@ -56,7 +56,7 @@
         [permissionAlert setConfirmationHandler:^(VPermissionAlertViewController *alert)
          {
              [alert dismissViewControllerAnimated:YES completion:nil];
-             [self requestForPermission:completion];
+             [self requestSystemPermission:completion];
          }];
         [permissionAlert setDenyHandler:^(VPermissionAlertViewController *alert)
          {
@@ -80,7 +80,7 @@
     return VPermissionStateUnknown;
 }
 
-- (void)requestForPermission:(VPermissionRequestCompletionHandler)completion
+- (void)requestSystemPermission:(VPermissionRequestCompletionHandler)completion
 {
     NSAssert( NO, @"This method must be overidden in a subclass." );
 }

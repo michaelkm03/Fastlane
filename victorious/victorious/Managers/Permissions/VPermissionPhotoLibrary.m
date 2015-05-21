@@ -27,7 +27,7 @@
     }
 }
 
-- (void)requestForPermission:(VPermissionRequestCompletionHandler)completion
+- (void)requestSystemPermission:(VPermissionRequestCompletionHandler)completion
 {
     ALAssetsLibrary *assetsLibrary = [ALAssetsLibrary new];
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop)

@@ -68,8 +68,8 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
  @param completion A completion block that will be called as soon as the status of the
  permission has been determined.
  */
-- (void)requestPermissionIfNecessaryInViewController:(UIViewController *)viewController
-                               withCompletionHandler:(VPermissionRequestCompletionHandler)completion;
+- (void)requestPermissionInViewController:(UIViewController *)viewController
+                    withCompletionHandler:(VPermissionRequestCompletionHandler)completion;
 /**
  Subclasses should override this and return the status of the specific permission
  */
@@ -83,6 +83,6 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
 /**
  Subclasses should override this and prompt for permission appropriately
  */
-- (void)requestForPermission:(VPermissionRequestCompletionHandler)completion;
+- (void)requestSystemPermission:(VPermissionRequestCompletionHandler)completion;
 
 @end

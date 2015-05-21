@@ -281,8 +281,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
     }
     
-    [cameraPermission requestPermissionIfNecessaryInViewController:self
-                                             withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+    [cameraPermission requestPermissionInViewController:self
+                                  withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
      {
          if (granted)
          {
@@ -326,8 +326,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              else
              {
                  VPermissionMicrophone *micPermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
-                 [micPermission requestPermissionIfNecessaryInViewController:self
-                                                       withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+                 [micPermission requestPermissionInViewController:self
+                                            withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
                   {
                       startCapture(granted, state);
                   }];
@@ -705,8 +705,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     VPermissionPhotoLibrary *libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
     libraryPermission.shouldShowInitialPrompt = NO;
-    [libraryPermission requestPermissionIfNecessaryInViewController:self
-                                              withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+    [libraryPermission requestPermissionInViewController:self
+                                   withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
      {
          if (granted)
          {
