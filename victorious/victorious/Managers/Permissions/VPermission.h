@@ -83,6 +83,6 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
 /**
  Subclasses should override this and prompt for permission appropriately
  */
-- (void)requestSystemPermission:(VPermissionRequestCompletionHandler)completion;
+- (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion;
 
 @end

@@ -45,7 +45,7 @@
     
     if (!self.shouldShowInitialPrompt)
     {
-        [self requestSystemPermission:completion];
+        [self requestSystemPermissionWithCompletion:completion];
     }
     else
     {
@@ -56,7 +56,7 @@
         [permissionAlert setConfirmationHandler:^(VPermissionAlertViewController *alert)
          {
              [alert dismissViewControllerAnimated:YES completion:nil];
-             [self requestSystemPermission:completion];
+             [self requestSystemPermissionWithCompletion:completion];
          }];
         [permissionAlert setDenyHandler:^(VPermissionAlertViewController *alert)
          {
@@ -80,15 +80,15 @@
     return VPermissionStateUnknown;
 }
 
-- (void)requestSystemPermission:(VPermissionRequestCompletionHandler)completion
-{
-    NSAssert( NO, @"This method must be overidden in a subclass." );
-}
-
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert( NO, @"This method must be overidden in a subclass." );
     return @"";
+}
+
+- (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
+{
+    NSAssert( NO, @"This method must be overidden in a subclass." );
 }
 
 @end

@@ -29,7 +29,7 @@
     }
 }
 
-- (void)requestSystemPermission:(VPermissionRequestCompletionHandler)completion
+- (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
 {
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
      {
