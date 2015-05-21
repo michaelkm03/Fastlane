@@ -204,6 +204,13 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     VImageAsset *previewAsset = [VImageAsset largestAssetFromAssets:self.previewAssets];
     if (previewAsset != nil)
     {
+        // Make sure we have a valid width and height
+        if (previewAsset.width <= 0 || previewAsset.height <= 0)
+        {
+            return 1.0f;
+        }
+        
+        // Get aspect ratio of preview asset
         CGFloat aspectRatio = [previewAsset.width floatValue] / [previewAsset.height floatValue];
         // Make sure aspect ratio is within bounds
         if (aspectRatio >= kMinimumAspectRatio || aspectRatio <= kMaximumAspectRatio)
