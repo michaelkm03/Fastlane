@@ -271,83 +271,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
     [self.coachMarkAnimator fadeIn];
-    
-    VWorkspaceFlowControllerContext initialContext = VWorkspaceFlowControllerContextContentCreation;
-    NSNumber *injectedContext = [self.dependencyManager numberForKey:VWorkspaceFlowControllerContextKey];
-    initialContext = (injectedContext != nil) ? [injectedContext integerValue] : initialContext;
-    
-    VPermission *cameraPermission;
-    if (initialContext == VWorkspaceFlowControllerContextContentCreation)
-    {
-        cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    else
-    {
-        cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    
-    [cameraPermission requestPermissionInViewController:self
-                                  withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
-     {
-         if (granted)
-         {
-             // Block to be called to start the capture session
-             void (^startCapture)(BOOL micAllowed, VPermissionState state) = ^(BOOL micAllowed, VPermissionState state)
-             {
-                 self.videoEnabled = micAllowed;
-                 [self.captureController startRunningWithVideoEnabled:self.videoEnabled andCompletion:^(NSError *error)
-                  {
-                      dispatch_async(dispatch_get_main_queue(), ^(void)
-                                     {
-                                         [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
-                                         if (error)
-                                         {
-                                             VLog(@"Error starting capture session: %@", error);
-                                             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-                                             hud.mode = MBProgressHUDModeText;
-                                             hud.labelText = NSLocalizedString(@"CameraFailed", @"");
-                                             [hud hide:YES afterDelay:kErrorMessageDisplayDurationLong];
-                                             self.openAlbumButton.enabled = YES;
-                                         }
-                                         else
-                                         {
-                                             self.state = VCameraViewControllerStateDefault;
-                                             if (!self.videoEnabled && ![self.captureController.captureSession.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto] && state != VPermissionStatePromptDenied)
-                                             {
-                                                 [self notifyUserOfFailedMicPermission];
-                                             }
-                                             [self updateOrientation];
-                                         }
-                                     });
-                  }];
-             };
-             
-             // If we don't need mic permission, call the capture start block right away
-             if (initialContext == VWorkspaceFlowControllerContextProfileImage)
-             {
-                 startCapture(NO, VPermissionStatePromptDenied);
-             }
-             else
-             {
-                 VPermissionMicrophone *micPermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
-                 [micPermission requestPermissionInViewController:self
-                                            withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
-                  {
-                      startCapture(granted, state);
-                  }];
-             }
-         }
-         else
-         {
-             [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
-             self.openAlbumButton.enabled = YES;
-             
-             if (state == VPermissionStateSystemDenied)
-             {
-                 [self notifyUserOfFailedCameraPermission];
-             }
-         }
-     }];
+    [self startCaptureSession];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -391,6 +315,94 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     {
         [self.captureController setVideoOrientation:[[UIDevice currentDevice] orientation]];
     }
+}
+
+- (void)startCaptureSession
+{
+    VWorkspaceFlowControllerContext initialContext = VWorkspaceFlowControllerContextContentCreation;
+    NSNumber *injectedContext = [self.dependencyManager numberForKey:VWorkspaceFlowControllerContextKey];
+    initialContext = (injectedContext != nil) ? [injectedContext integerValue] : initialContext;
+    
+    VPermission *cameraPermission;
+    if (initialContext == VWorkspaceFlowControllerContextContentCreation)
+    {
+        cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
+    }
+    else
+    {
+        cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
+    }
+    
+    [cameraPermission requestPermissionInViewController:self
+                                  withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+     {
+         if (granted)
+         {
+             void (^startCapture)(BOOL micAllowed, VPermissionState state) = [self startCaptureBlock];
+             
+             // If we don't need mic permission, call the capture start block right away
+             if (initialContext == VWorkspaceFlowControllerContextProfileImage || !self.allowVideo)
+             {
+                 startCapture(NO, VPermissionStatePromptDenied);
+             }
+             else
+             {
+                 VPermissionMicrophone *micPermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
+                 [micPermission requestPermissionInViewController:self
+                                            withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+                  {
+                      startCapture(granted, state);
+                  }];
+             }
+         }
+         else
+         {
+             [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
+             self.openAlbumButton.enabled = YES;
+             
+             if (state == VPermissionStateSystemDenied)
+             {
+                 [self notifyUserOfFailedCameraPermission];
+             }
+         }
+     }];
+}
+
+- (void (^)(BOOL micAllowed, VPermissionState state))startCaptureBlock
+{
+    // Block to be called to start the capture session
+    void (^startCapture)(BOOL micAllowed, VPermissionState state) = ^(BOOL micAllowed, VPermissionState state)
+    {
+        self.videoEnabled = micAllowed;
+        [self.captureController startRunningWithVideoEnabled:self.videoEnabled andCompletion:^(NSError *error)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^(void)
+                            {
+                                [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
+                                if (error)
+                                {
+                                    VLog(@"Error starting capture session: %@", error);
+                                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+                                    hud.mode = MBProgressHUDModeText;
+                                    hud.labelText = NSLocalizedString(@"CameraFailed", @"");
+                                    [hud hide:YES afterDelay:kErrorMessageDisplayDurationLong];
+                                    self.openAlbumButton.enabled = YES;
+                                }
+                                else
+                                {
+                                    self.state = VCameraViewControllerStateDefault;
+                                    if (!self.videoEnabled &&
+                                        ![self.captureController.captureSession.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto] && state != VPermissionStatePromptDenied)
+                                    {
+                                        [self notifyUserOfFailedMicPermission];
+                                    }
+                                    [self updateOrientation];
+                                }
+                            });
+         }];
+    };
+    
+    return startCapture;
 }
 
 #pragma mark - Property Accessors
