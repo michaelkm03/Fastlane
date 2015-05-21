@@ -80,6 +80,10 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *
  *  - The preview image for the workspace. This will be the image that is used during editing.
  *  Use VWorkspaceFlowControllerPreloadedImageKey with a UIImage.
+ * 
+ *  - The context in which the workspace is being opened can be injected with
+ *  the VWorkspaceFlowControllerContextKey. This used currently to control
+ *  which message shows when requesting camera permissions.
  *
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
  */
