@@ -54,6 +54,16 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
     VWorkspaceFlowControllerInitialCaptureStateVideo,
 };
 
+// The context in which we're opening the workspace
+typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerContext)
+{
+    VWorkspaceFlowControllerContextProfileImage,
+    VWorkspaceFlowControllerContextContentCreation,
+};
+
+// For determining how to ask for camera permissions
+extern NSString * const VWorkspaceFlowControllerContextKey;
+
 // Remix
 extern NSString * const VWorkspaceFlowControllerSequenceToRemixKey;
 
@@ -91,11 +101,5 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *  Whether or not the user should be able to select or record video.
  */
 @property (nonatomic, assign, getter=isVideoEnabled) BOOL videoEnabled;
-
-/**
- Whether or not the camera permission request dialogue is tailored to 
- profile image
- */
-@property (nonatomic, assign) BOOL shouldUseProfileImagePermissionRequest;
 
 @end

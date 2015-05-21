@@ -51,6 +51,7 @@
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
 NSString * const VWorkspaceFlowControllerPreloadedImageKey = @"preloadedImageKey";
+NSString * const VWorkspaceFlowControllerContextKey = @"workspaceContext";
 
 static const char kAssociatedObjectKey;
 
@@ -268,12 +269,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         [self.flowNavigationController popViewControllerAnimated:NO];
         [self setupCapture];
     }
-}
-
-- (void)setShouldUseProfileImagePermissionRequest:(BOOL)shouldUseProfileImagePermissionRequest
-{
-    _shouldUseProfileImagePermissionRequest = shouldUseProfileImagePermissionRequest;
-    self.cameraViewController.shouldUseProfileImagePermissionRequest = shouldUseProfileImagePermissionRequest;
 }
 
 #pragma mark - Private Methods

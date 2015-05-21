@@ -36,12 +36,6 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
 @property (nonatomic, assign) BOOL shouldSkipPreview;
 
 /**
- Whether or not the camera permission request dialogue is tailored to
- profile image
- */
-@property (nonatomic, assign) BOOL shouldUseProfileImagePermissionRequest;
-
-/**
  Returns an instance of this class that will initially show a video capture screen.
  */
 + (VCameraViewController *)cameraViewController;

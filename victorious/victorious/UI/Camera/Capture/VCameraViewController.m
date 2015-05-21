@@ -29,6 +29,7 @@
 #import "VPermissionPhotoLibrary.h"
 #import "VPermissionMicrophone.h"
 #import "VPermissionProfilePicture.h"
+#import "VWorkspaceFlowController.h"
 
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
@@ -271,8 +272,12 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
     [self.coachMarkAnimator fadeIn];
     
+    VWorkspaceFlowControllerContext initialContext = VWorkspaceFlowControllerContextContentCreation;
+    NSNumber *injectedContext = [self.dependencyManager numberForKey:VWorkspaceFlowControllerContextKey];
+    initialContext = (injectedContext != nil) ? [injectedContext integerValue] : initialContext;
+    
     VPermission *cameraPermission;
-    if (!self.shouldUseProfileImagePermissionRequest)
+    if (initialContext == VWorkspaceFlowControllerContextContentCreation)
     {
         cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
     }
@@ -318,7 +323,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              };
              
              // If we don't need mic permission, call the capture start block right away
-             if (self.shouldUseProfileImagePermissionRequest)
+             if (initialContext == VWorkspaceFlowControllerContextProfileImage)
              {
                  startCapture(NO, VPermissionStatePromptDenied);
              }

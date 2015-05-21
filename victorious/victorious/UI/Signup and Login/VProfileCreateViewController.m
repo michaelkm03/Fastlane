@@ -385,10 +385,11 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
+    NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
+                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImage) };
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;
-    workspaceFlowController.shouldUseProfileImagePermissionRequest = YES;
     [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
