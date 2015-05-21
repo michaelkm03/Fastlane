@@ -19,16 +19,16 @@
 #import "VConversation.h"
 #import "VUser.h"
 #import "NSString+VParseHelp.h"
-
 #import "UIActionSheet+VBlocks.h"
 #import "VUserTaggingTextStorage.h"
-
 #import "MBProgressHUD.h"
 #import "VLaunchScreenProvider.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VAccessoryNavigationSource.h"
 
 static const NSUInteger kCharacterLimit = 1024;
 
-@interface VMessageContainerViewController ()
+@interface VMessageContainerViewController () <VAccessoryNavigationSource>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
@@ -72,23 +72,29 @@ static const NSUInteger kCharacterLimit = 1024;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
-    messageVC.shouldRefreshOnAppearance = YES;
     [self setEdgesForExtendedLayout:UIRectEdgeAll];
-    NSString *name =  messageVC.otherUser.name ?: @"Message";
-    if ( !self.presentingFromProfile )
-    {
-        self.navigationItem.title = name;
-    }
-    else
-    {
-        self.navigationItem.title = nil;
-    }
-    
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(onMoreSelected:)]];
+    [self updateTitle];
 }
 
-- (IBAction)onMoreSelected:(id)sender
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self updateTitle];
+}
+
+- (void)updateTitle
+{
+    if ( !self.presentingFromProfile )
+    {
+        VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
+        messageVC.shouldRefreshOnAppearance = YES;
+        self.navigationItem.title = messageVC.otherUser.name;
+    }
+}
+
+- (void)showMoreOptions
 {
     NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueMessage };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:params];
@@ -241,6 +247,23 @@ static const NSUInteger kCharacterLimit = 1024;
 - (VAuthorizationContext)authorizationContext
 {
     return VAuthorizationContextInbox;
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMore] )
+    {
+        [self showMoreOptions];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    return YES;
 }
 
 @end

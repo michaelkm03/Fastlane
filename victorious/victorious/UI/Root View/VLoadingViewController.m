@@ -217,10 +217,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        //NSLog( @"%@", [templateDecorator keyPathsForValue:@"stream.screen"] );
-        //NSLog( @"%@", [templateDecorator keyPathsForKey:@"canAddContent"] );
-        NSLog( @"%@", [templateDecorator keyPathsForValue:@"hashtagStream.screen"] );
-        
         BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
         if ( isSideNavMenu )
         {

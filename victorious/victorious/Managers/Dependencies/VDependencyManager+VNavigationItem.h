@@ -13,6 +13,11 @@
 
 extern NSString * const VDependencyManagerTitleImageKey; ///< The key that specifies a title image
 
+/**
+ The following constants are used for identifying unique accessory screen behavior, i.e. not the
+ default behavior in which the `destionation` screen provided is pushed onto the nav stack
+ when the accessory button is selected.
+ */
 extern NSString * const VDependencyManagerAccessoryItemMenu;
 extern NSString * const VDependencyManagerAccessoryItemCompose;
 extern NSString * const VDependencyManagerAccessoryItemInbox;
@@ -20,6 +25,7 @@ extern NSString * const VDependencyManagerAccessoryItemInvite;
 extern NSString * const VDependencyManagerAccessoryItemFindFriends;
 extern NSString * const VDependencyManagerAccessoryItemCreatePost;
 extern NSString * const VDependencyManagerAccessoryItemFollowHashtag;
+extern NSString * const VDependencyManagerAccessoryItemMore;
 
 @interface VDependencyManager (VNavigationItem)
 
@@ -36,7 +42,6 @@ extern NSString * const VDependencyManagerAccessoryItemFollowHashtag;
  
  @param navigationItem The navigation item to configure
  @param sourceViewController The view controller currently being displayed that is requesting configuration
- 
  */
 - (void)configureNavigationItem:(UINavigationItem *)navigationItem forViewController:(UIViewController *)sourceViewController;
 
@@ -52,5 +57,10 @@ extern NSString * const VDependencyManagerAccessoryItemFollowHashtag;
  Returns a reference to the menu item that contains the provided identifier.
  */
 - (VNavigationMenuItem *)menuItemWithIdentifier:(NSString *)identifier;
+
+/**
+ Perform a navigation as if the menu item for the corresponding identifier was selected.
+ */
+- (BOOL)navigateToDestinationForMenuItemIdentifier:(NSString *)menuItemIdentifier;
 
 @end

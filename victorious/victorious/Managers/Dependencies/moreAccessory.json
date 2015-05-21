@@ -1,0 +1,9 @@
+{
+    "destination": null,
+    "title": "More",
+    "icon": {
+        "imageURL": "More"
+    },
+    "identifier": "Accessory More",
+    "position": "right"
+}

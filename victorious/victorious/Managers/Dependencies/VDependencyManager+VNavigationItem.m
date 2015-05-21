@@ -43,6 +43,7 @@ NSString * const VDependencyManagerAccessoryItemFindFriends     = @"Accessory Fi
 NSString * const VDependencyManagerAccessoryItemInvite          = @"Accessory Invite";
 NSString * const VDependencyManagerAccessoryItemCreatePost      = @"Accessory Create Post";
 NSString * const VDependencyManagerAccessoryItemFollowHashtag   = @"Accessory Follow Hashtag";
+NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory More";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 
@@ -244,21 +245,21 @@ static const char kAssociatedObjectSourceViewControllerKey;
 
 - (void)accessoryMenuItemSelected:(id)sender
 {
-    UINavigationController *sourceViewController = objc_getAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey );
-    
     NSString *selectMenuItemIdentifier = [self identifierForAccessoryBarButton:sender];
-    if ( selectMenuItemIdentifier == nil )
-    {
-        return;
-    }
-    
-    VNavigationMenuItem *menuItem = [self menuItemWithIdentifier:selectMenuItemIdentifier];
+    NSAssert( selectMenuItemIdentifier != nil, @"Cannot find navigation menu item from selected bar item." );
+    [self navigateToDestinationForMenuItemIdentifier:selectMenuItemIdentifier];
+}
+
+- (BOOL)navigateToDestinationForMenuItemIdentifier:(NSString *)menuItemIdentifier
+{
+    VNavigationMenuItem *menuItem = [self menuItemWithIdentifier:menuItemIdentifier];
     if ( menuItem == nil )
     {
-        return;
+        return NO;
     }
     
     UIViewController<VNavigationDestination> *destination = menuItem.destination;
+    UINavigationController *sourceViewController = objc_getAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey );
     
     BOOL canNavigationToDestination = YES;
     if ( [destination conformsToProtocol:@protocol(VNavigationDestination)] )
@@ -301,6 +302,8 @@ static const char kAssociatedObjectSourceViewControllerKey;
     {
         [self performNavigationFromSource:sourceViewController withMenuItem:menuItem];
     }
+    
+    return YES;
 }
 
 - (void)performNavigationFromSource:(UIViewController *)sourceViewController withMenuItem:(VNavigationMenuItem *)menuItem

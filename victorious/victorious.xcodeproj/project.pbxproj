@@ -397,6 +397,7 @@
 		A74B430D1B0BB8AC003C19A0 /* UIResponder+VResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = A74B430C1B0BB8AC003C19A0 /* UIResponder+VResponderChain.m */; };
 		A74B430F1B0BDC17003C19A0 /* postAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A74B430E1B0BDC17003C19A0 /* postAccessory.json */; };
 		A74B43121B0D2244003C19A0 /* followAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A74B43111B0D2243003C19A0 /* followAccessory.json */; };
+		A74B43161B0D6379003C19A0 /* moreAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A74B43151B0D6379003C19A0 /* moreAccessory.json */; };
 		A74C87FA1ABA5859004D2E16 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */; };
 		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C10331A65DE6F00439809 /* VCommentHighlighter.m */; };
@@ -1596,6 +1597,7 @@
 		A74B430E1B0BDC17003C19A0 /* postAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = postAccessory.json; sourceTree = "<group>"; };
 		A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessoryNavigationSource.h; sourceTree = "<group>"; };
 		A74B43111B0D2243003C19A0 /* followAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = followAccessory.json; sourceTree = "<group>"; };
+		A74B43151B0D6379003C19A0 /* moreAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = moreAccessory.json; sourceTree = "<group>"; };
 		A74C87F81ABA5859004D2E16 /* VCreatorInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatorInfoHelper.h; sourceTree = "<group>"; };
 		A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatorInfoHelper.m; sourceTree = "<group>"; };
 		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFirstInstallManager.h; path = "First Install/VFirstInstallManager.h"; sourceTree = "<group>"; };
@@ -3601,6 +3603,7 @@
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
 				A7BB9C781AFD9934005B4596 /* inboxAccessory.json */,
+				A74B43151B0D6379003C19A0 /* moreAccessory.json */,
 				A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */,
 				A74B43111B0D2243003C19A0 /* followAccessory.json */,
 				A74B430E1B0BDC17003C19A0 /* postAccessory.json */,
@@ -6017,6 +6020,7 @@
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
 				A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */,
+				A74B43161B0D6379003C19A0 /* moreAccessory.json in Resources */,
 				03FD87D919F96FB700D93BAA /* VSuggestedPersonCollectionViewCell.xib in Resources */,
 				036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,

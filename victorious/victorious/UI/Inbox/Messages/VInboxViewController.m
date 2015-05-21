@@ -34,6 +34,8 @@
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
 #import "VNavigationController.h"
+#import "VTemplateDecorator.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -239,7 +241,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     if ( messageViewController == nil )
     {
-        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:self.dependencyManager];
+        NSDictionary *moreAcessory = [VTemplateDecorator dictionaryFromJSONFile:@"moreAccessory"];
+        NSDictionary *childCondifuration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
+        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childCondifuration];
+        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser
+                                                                            dependencyManager:childDependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }
     [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];

@@ -1,7 +1,16 @@
 {
     "destination": {
         "title": "New Message",
-        "name": "message.screen"
+        "name": "message.screen",
+        "accessoryScreens" : [{
+            "destination": null,
+            "title": "More",
+            "icon": {
+                "imageURL": "More"
+            },
+            "identifier": "Accessory More",
+            "position": "right"
+        }]
     },
     "title": "New Message",
     "icon": {

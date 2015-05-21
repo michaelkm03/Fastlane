@@ -41,7 +41,6 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     title = NSLocalizedString(title, "");
     NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
-#warning TODO Optimize this to not loading images until added to navigation bar
     UIImage *icon = [dependencyManager imageForKey:kIconKey];
     UIImage *selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
     id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
