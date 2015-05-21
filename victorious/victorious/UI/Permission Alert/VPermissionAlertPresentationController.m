@@ -25,7 +25,7 @@
     if (self)
     {
         _dimmingView = [UIView new];
-        _dimmingView.backgroundColor = [UIColor darkGrayColor];
+        _dimmingView.backgroundColor = [UIColor blackColor];
         _dimmingView.alpha = 0.0f;
     }
     return self;
@@ -43,7 +43,7 @@
     [self.presentingViewController.transitionCoordinator
      animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
-        self.dimmingView.alpha = 0.8f;
+        self.dimmingView.alpha = 0.7f;
     } completion:nil];
 }
 
