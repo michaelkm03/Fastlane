@@ -9,6 +9,8 @@
 #import "VPermissionAlertPresentationController.h"
 #import "UIView+AutoLayout.h"
 
+static const CGFloat kDimmingViewAlpha = 0.7f;
+
 @interface VPermissionAlertPresentationController ()
 
 @property (nonatomic, strong) UIView *dimmingView;
@@ -22,7 +24,7 @@
                                          source:(UIViewController *)source
 {
     self = [super initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
-    if (self)
+    if (self != nil)
     {
         _dimmingView = [UIView new];
         _dimmingView.backgroundColor = [UIColor blackColor];
@@ -43,7 +45,7 @@
     [self.presentingViewController.transitionCoordinator
      animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
     {
-        self.dimmingView.alpha = 0.7f;
+        self.dimmingView.alpha = kDimmingViewAlpha;
     } completion:nil];
 }
 
