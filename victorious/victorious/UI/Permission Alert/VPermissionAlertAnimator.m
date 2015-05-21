@@ -9,11 +9,15 @@
 #import "VPermissionAlertAnimator.h"
 #import "VPermissionAlertPresentationController.h"
 
+static const NSTimeInterval kScaleUpTimeInterval = 0.2;
+static const CGFloat kScaleUpMultipier = 1.05f;
+static const CGFloat kScaleDownMultiplier = 0.7f;
+
 @implementation VPermissionAlertAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return [self isPresentation] ? 0.3 : 0.2;
+    return [self isPresentation] ? 0.3 : 0.3;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -24,14 +28,14 @@
     
     BOOL isPresentation = [self isPresentation];
     
-    UIView *animatingView = isPresentation ? toViewController.view : fromViewController.view;
+    CGAffineTransform scaleDownTransform = CGAffineTransformMakeScale(kScaleDownMultiplier, kScaleDownMultiplier);
     
-    CGAffineTransform scaleTransform = CGAffineTransformMakeScale(0.7f, 0.7f);
+    UIView *animatingView = isPresentation ? toViewController.view : fromViewController.view;
     
     if (isPresentation)
     {
-        animatingView.alpha = 0;
-        animatingView.transform = scaleTransform;
+        animatingView.alpha = 0.0f;
+        animatingView.transform = scaleDownTransform;
         [containerView addSubview:animatingView];
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
@@ -50,13 +54,24 @@
     }
     else
     {
-        [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^
-         {
-             animatingView.alpha = 0.0f;
-         } completion:^(BOOL finished)
-         {
-             [transitionContext completeTransition:YES];
-         }];
+        CGAffineTransform scaleUpTransform = CGAffineTransformMakeScale(kScaleUpMultipier, kScaleUpMultipier);
+        
+        [UIView animateWithDuration:kScaleUpTimeInterval
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+                             animatingView.transform = scaleUpTransform;
+                         } completion:^(BOOL finished) {
+                             [UIView animateWithDuration:([self transitionDuration:transitionContext] - kScaleUpTimeInterval)
+                                                   delay:0
+                                                 options:UIViewAnimationOptionCurveEaseIn
+                                              animations:^{
+                                                  animatingView.transform = scaleDownTransform;
+                                                  animatingView.alpha = 0;
+                                              } completion:^(BOOL finished) {
+                                                  [transitionContext completeTransition:YES];
+                                              }];
+                         }];
     }
 }
 

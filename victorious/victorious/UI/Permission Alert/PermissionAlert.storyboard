@@ -19,6 +19,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lfg-Od-daB" userLabel="Dismiss">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedBackground:" destination="LzK-NH-MgN" eventType="touchUpInside" id="Gl7-cW-anH"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M6g-YF-N4q" userLabel="Alert">
                                 <rect key="frame" x="20" y="50" width="560" height="500"/>
                                 <subviews>
@@ -176,11 +185,22 @@
                             <constraint firstAttribute="trailingMargin" secondItem="M6g-YF-N4q" secondAttribute="trailing" constant="4" id="6j4-Z1-icj"/>
                             <constraint firstAttribute="centerY" secondItem="M6g-YF-N4q" secondAttribute="centerY" constant="25" id="C9D-y9-Nvi"/>
                             <constraint firstItem="M6g-YF-N4q" firstAttribute="leading" secondItem="z7L-g3-1BX" secondAttribute="leadingMargin" constant="4" id="CzJ-6k-LBk"/>
+                            <constraint firstAttribute="centerY" secondItem="lfg-Od-daB" secondAttribute="centerY" id="Iov-dy-Qqj"/>
+                            <constraint firstAttribute="centerX" secondItem="lfg-Od-daB" secondAttribute="centerX" id="KYc-bh-yPf"/>
+                            <constraint firstAttribute="height" secondItem="lfg-Od-daB" secondAttribute="height" id="fwX-at-TQL"/>
                             <constraint firstAttribute="centerX" secondItem="M6g-YF-N4q" secondAttribute="centerX" id="hQk-Lx-BQx"/>
                             <constraint firstItem="M6g-YF-N4q" firstAttribute="height" relation="lessThanOrEqual" secondItem="z7L-g3-1BX" secondAttribute="height" constant="-100" id="u5c-vQ-1QM"/>
+                            <constraint firstAttribute="width" secondItem="lfg-Od-daB" secondAttribute="width" id="y1n-Q2-Q3B"/>
                         </constraints>
                         <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="lfg-Od-daB"/>
+                            </mask>
                             <mask key="constraints">
+                                <exclude reference="Iov-dy-Qqj"/>
+                                <exclude reference="KYc-bh-yPf"/>
+                                <exclude reference="fwX-at-TQL"/>
+                                <exclude reference="y1n-Q2-Q3B"/>
                                 <exclude reference="6j4-Z1-icj"/>
                                 <exclude reference="C9D-y9-Nvi"/>
                                 <exclude reference="CzJ-6k-LBk"/>
@@ -189,7 +209,14 @@
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="lfg-Od-daB"/>
+                            </mask>
                             <mask key="constraints">
+                                <include reference="Iov-dy-Qqj"/>
+                                <include reference="KYc-bh-yPf"/>
+                                <include reference="fwX-at-TQL"/>
+                                <include reference="y1n-Q2-Q3B"/>
                                 <include reference="6j4-Z1-icj"/>
                                 <include reference="C9D-y9-Nvi"/>
                                 <include reference="CzJ-6k-LBk"/>

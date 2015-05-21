@@ -145,6 +145,14 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     }
 }
 
+- (IBAction)pressedBackground:(id)sender
+{
+    if (self.denyHandler != nil)
+    {
+        self.denyHandler(self);
+    }
+}
+
 #pragma mark - Background
 
 - (UIView *)backgroundContainerView
