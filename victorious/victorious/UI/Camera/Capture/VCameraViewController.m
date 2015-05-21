@@ -395,11 +395,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 #pragma mark - Property Accessors
 
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-}
-
 - (void)setToolbarHidden:(BOOL)toolsHidden
 {
     [self setToolbarHidden:toolsHidden

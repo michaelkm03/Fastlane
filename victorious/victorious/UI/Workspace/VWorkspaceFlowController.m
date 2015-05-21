@@ -295,7 +295,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
             break;
     }
-    [self.cameraViewController setDependencyManager:self.dependencyManager];
+    if ([self.cameraViewController respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.cameraViewController setDependencyManager:self.dependencyManager];
+    }
     self.cameraViewController.shouldSkipPreview = YES;
     self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
     [self.flowNavigationController pushViewController:self.cameraViewController

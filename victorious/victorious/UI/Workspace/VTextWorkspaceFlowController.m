@@ -144,7 +144,10 @@
 {
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
     cameraViewController.shouldSkipPreview = YES;
-    [cameraViewController setDependencyManager:self.dependencyManager];
+    if ([cameraViewController respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [cameraViewController setDependencyManager:self.dependencyManager];
+    }
     __weak typeof(self) welf = self;
     cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
