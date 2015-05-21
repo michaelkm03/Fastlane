@@ -29,6 +29,9 @@
 
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
 {
+    // Completion handler is required
+    NSParameterAssert(completion != nil);
+    
     ALAssetsLibrary *assetsLibrary = [ALAssetsLibrary new];
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop)
      {

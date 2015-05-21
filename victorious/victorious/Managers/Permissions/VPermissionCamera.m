@@ -31,14 +31,14 @@
 
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
 {
+    // Completion handler is required
+    NSParameterAssert(completion != nil);
+    
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            if (completion)
-                            {
-                                completion(granted, granted ? VPermissionStateAuthorized : VPermissionStateSystemDenied, nil);
-                            }
+                            completion(granted, granted ? VPermissionStateAuthorized : VPermissionStateSystemDenied, nil);
                         });
      }];
 }

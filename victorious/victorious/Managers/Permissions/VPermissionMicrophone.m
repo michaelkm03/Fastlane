@@ -33,15 +33,15 @@
 
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
 {
+    // Completion handler is required
+    NSParameterAssert(completion != nil);
+    
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     [audioSession requestRecordPermission:^(BOOL granted)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            if (completion)
-                            {
-                                completion(granted, granted ? VPermissionStateAuthorized : VPermissionStateSystemDenied, nil);
-                            }
+                            completion(granted, granted ? VPermissionStateAuthorized : VPermissionStateSystemDenied, nil);
                         });
      }];
 }
