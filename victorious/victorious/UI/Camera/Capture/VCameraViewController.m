@@ -290,8 +290,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              void (^startCapture)(BOOL micAllowed, VPermissionState state) = ^(BOOL micAllowed, VPermissionState state)
              {
                  self.videoEnabled = micAllowed;
-                 self.captureController.shouldInitializeVideoCapture = micAllowed;
-                 [self.captureController startRunningWithCompletion:^(NSError *error)
+                 [self.captureController startRunningWithVideoEnabled:self.videoEnabled andCompletion:^(NSError *error)
                   {
                       dispatch_async(dispatch_get_main_queue(), ^(void)
                                      {
