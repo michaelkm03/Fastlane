@@ -27,7 +27,7 @@
     VPermissionState state = [self permissionState];
     if (state == VPermissionStateAuthorized)
     {
-        if (completion)
+        if (completion != nil)
         {
             completion(YES, state, nil);
         }
@@ -36,7 +36,7 @@
     
     if (state == VPermissionStateSystemDenied || state == VPermissionUnsupported)
     {
-        if (completion)
+        if (completion != nil)
         {
             completion(NO, state, nil);
         }
@@ -62,7 +62,7 @@
          {
              [alert dismissViewControllerAnimated:YES completion:^
               {
-                  if (completion)
+                  if (completion != nil)
                   {
                       completion(NO, VPermissionStatePromptDenied, nil);
                   }
