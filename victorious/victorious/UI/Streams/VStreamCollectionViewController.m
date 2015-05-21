@@ -76,6 +76,7 @@
 
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
+#import "VDependencyManager+VCoachmarkManager.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -270,13 +271,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
-    [[[self.dependencyManager scaffoldViewController] coachmarkManager] displayCoachmarkViewInViewController:self];
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[[self.dependencyManager scaffoldViewController] coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
 - (BOOL)shouldAutorotate

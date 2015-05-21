@@ -905,6 +905,8 @@
 		F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C21A88502D00EE70C7 /* VTagDictionary.m */; };
 		F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */; };
 		F0C83A271B0D06B600A6EC1A /* UIView+AbsoluteFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A261B0D06B600A6EC1A /* UIView+AbsoluteFrame.m */; };
+		F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A291B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m */; };
+		F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */; };
 		F0D3CFB71A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */; };
 		F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */; };
 		F0E0F1AC1AE8A4B900143CBF /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
@@ -2505,7 +2507,7 @@
 		F07409741B05876200C44623 /* VCoachmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCoachmarkView.m; path = "Create Poll/VCoachmarkView.m"; sourceTree = "<group>"; };
 		F074097D1B059CA200C44623 /* VCoachmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCoachmarkManager.h; path = "Content View/VCoachmarkManager.h"; sourceTree = "<group>"; };
 		F074097E1B059CA200C44623 /* VCoachmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCoachmarkManager.m; path = "Content View/VCoachmarkManager.m"; sourceTree = "<group>"; };
-		F07409811B059E9600C44623 /* VPassthroughContainerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPassthroughContainerViewDelegate.h; sourceTree = "<group>"; };
+		F07409811B059E9600C44623 /* VCoachmarkPassthroughContainerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkPassthroughContainerViewDelegate.h; sourceTree = "<group>"; };
 		F07409821B059FEA00C44623 /* VCoachmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmark.h; sourceTree = "<group>"; };
 		F07409831B059FEA00C44623 /* VCoachmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmark.m; sourceTree = "<group>"; };
 		F07409851B069BF100C44623 /* coachmarks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = coachmarks.json; sourceTree = "<group>"; };
@@ -2567,6 +2569,10 @@
 		F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayer.h; sourceTree = "<group>"; };
 		F0C83A251B0D06B600A6EC1A /* UIView+AbsoluteFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AbsoluteFrame.h"; sourceTree = "<group>"; };
 		F0C83A261B0D06B600A6EC1A /* UIView+AbsoluteFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AbsoluteFrame.m"; sourceTree = "<group>"; };
+		F0C83A281B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VCoachmarkManager.h"; sourceTree = "<group>"; };
+		F0C83A291B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VCoachmarkManager.m"; sourceTree = "<group>"; };
+		F0C83A2B1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCoachmarkPassthroughContainerView.h; path = Common/VCoachmarkPassthroughContainerView.h; sourceTree = "<group>"; };
+		F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCoachmarkPassthroughContainerView.m; path = Common/VCoachmarkPassthroughContainerView.m; sourceTree = "<group>"; };
 		F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryViewTests.m; sourceTree = "<group>"; };
 		F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLaunchScreenProvider.h; sourceTree = "<group>"; };
 		F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProvider.m; sourceTree = "<group>"; };
@@ -2866,6 +2872,8 @@
 				0314D35419B46B5E00FA363C /* VNoContentView.h */,
 				0314D35519B46B5E00FA363C /* VNoContentView.m */,
 				DB2A491D19DF437D00CB687B /* VNoContentView.xib */,
+				A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */,
+				A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */,
 				D8FC09051A51DBC100E5FBE4 /* VPlaceholderTextView.h */,
 				D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */,
 				D80C615919D0F692006AE41A /* VProgressBarView.h */,
@@ -2880,8 +2888,6 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
-				A7D378301AEF3CC8007FF197 /* VPassthroughContainerView.h */,
-				A7D378311AEF3CC9007FF197 /* VPassthroughContainerView.m */,
 				F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */,
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
@@ -3593,6 +3599,8 @@
 				D8F8B1E81AC4C27600AA2DB7 /* VDependencyManager+VBackground.m */,
 				D8F8B1F11AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.h */,
 				D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */,
+				F0C83A281B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.h */,
+				F0C83A291B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m */,
 				035ABE7A1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.h */,
 				035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */,
 				0386E1FE1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.h */,
@@ -5828,15 +5836,17 @@
 		F07409801B059CAD00C44623 /* Coachmarks */ = {
 			isa = PBXGroup;
 			children = (
-				F074097D1B059CA200C44623 /* VCoachmarkManager.h */,
-				F074097E1B059CA200C44623 /* VCoachmarkManager.m */,
-				F07409731B05876200C44623 /* VCoachmarkView.h */,
-				F07409741B05876200C44623 /* VCoachmarkView.m */,
 				F07409821B059FEA00C44623 /* VCoachmark.h */,
 				F07409831B059FEA00C44623 /* VCoachmark.m */,
+				F074097D1B059CA200C44623 /* VCoachmarkManager.h */,
+				F074097E1B059CA200C44623 /* VCoachmarkManager.m */,
+				F0C83A2B1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.h */,
+				F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */,
+				F07409731B05876200C44623 /* VCoachmarkView.h */,
+				F07409741B05876200C44623 /* VCoachmarkView.m */,
 				F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */,
 				F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */,
-				F07409811B059E9600C44623 /* VPassthroughContainerViewDelegate.h */,
+				F07409811B059E9600C44623 /* VCoachmarkPassthroughContainerViewDelegate.h */,
 				F07409851B069BF100C44623 /* coachmarks.json */,
 			);
 			name = Coachmarks;
@@ -6724,12 +6734,14 @@
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				D8C8F5761A0403D4006BE3E8 /* VStream.m in Sources */,
+				F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				D89F1CDA1ABE747000AF14A5 /* VRoundedBackgroundButton.m in Sources */,
 				0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */,
 				A7ECC1D81AD6178F0003E00A /* VPublishViewController.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
+				F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */,
 				A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */,
@@ -7502,6 +7514,7 @@
 					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
 					"V_SHOW_BUILD_NUMBER_IN_SETTINGS=1",
 					"V_ALLOW_VIDEO_DOWNLOADS=1",
+					"V_SHOW_COACHMARK_RESET=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;

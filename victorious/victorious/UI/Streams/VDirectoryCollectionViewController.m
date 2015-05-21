@@ -25,6 +25,7 @@
 #import "VShowcaseDirectoryCell.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
+#import "VDependencyManager+VCoachmarkManager.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -153,13 +154,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[[self.dependencyManager scaffoldViewController] coachmarkManager] displayCoachmarkViewInViewController:self];
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[[self.dependencyManager scaffoldViewController] coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated

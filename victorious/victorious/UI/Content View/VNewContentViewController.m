@@ -103,7 +103,7 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VContentViewFactory.h"
 #import "VCoachmarkDisplayer.h"
-#import "VScaffoldViewController.h"
+#import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 
 #define HANDOFFENABLED 0
@@ -561,7 +561,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
     [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
     
-    [[[self.dependencyManager scaffoldViewController] coachmarkManager] displayCoachmarkViewInViewController:self];
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
 #if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
@@ -590,7 +590,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
     
     if ( self.isBeingDismissed )

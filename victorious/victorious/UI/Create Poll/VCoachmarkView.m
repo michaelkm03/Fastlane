@@ -11,14 +11,19 @@
 #import "UIView+AutoLayout.h"
 #import "VBackground.h"
 
-static const CGFloat kTooltipArrowHeight = 14;
-static const CGFloat kTooltipArrowWidth = 26;
+static const CGFloat kTooltipArrowHeight = 14.0f;
+static const CGFloat kTooltipArrowWidth = 26.0f;
 
-static const CGFloat kHorizontalLabelInset = 20;
-static const CGFloat kVerticalLabelInset = 15;
+static const CGFloat kHorizontalLabelInset = 20.0f;
+static const CGFloat kVerticalLabelInset = 15.0f;
+
+static const CGFloat kShadowOpacity = 0.35f;
+static const CGFloat kShadowRadius = 1.0f;
+static const CGSize kShadowOffset = { 0.0f, 1.0f };
 
 @interface VCoachmarkView ()
 
+@property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) VCoachmark *coachmark;
 @property (nonatomic, strong) UILabel *captionLabel;
 @property (nonatomic, readwrite) VCoachmarkArrowDirection arrowDirection;
@@ -37,6 +42,7 @@ static const CGFloat kVerticalLabelInset = 15;
         _captionLabel.textAlignment = NSTextAlignmentCenter;
         _captionLabel.font = coachmark.font;
         _captionLabel.textColor = coachmark.textColor;
+        _backgroundView = [_coachmark.background viewForBackground];
     }
     return self;
 }
@@ -45,9 +51,8 @@ static const CGFloat kVerticalLabelInset = 15;
 {
     [super layoutSubviews];
     
-    UIView *background = [self.coachmark.background viewForBackground];
-    [self addSubview:background];
-    [self v_addFitToParentConstraintsToSubview:background];
+    [self addSubview:self.backgroundView];
+    [self v_addFitToParentConstraintsToSubview:self.backgroundView];
     
     [self addSubview:self.captionLabel];
     UIEdgeInsets insets = UIEdgeInsetsMake(kVerticalLabelInset, kHorizontalLabelInset, kVerticalLabelInset, kHorizontalLabelInset);
@@ -60,6 +65,12 @@ static const CGFloat kVerticalLabelInset = 15;
         insets.bottom += kTooltipArrowHeight;
     }
     [self v_addFitToParentConstraintsToSubview:self.captionLabel leading:insets.left trailing:insets.right top:insets.top bottom:insets.bottom];
+    
+    //Add a shadow to the coachmark
+    self.layer.shadowRadius = kShadowRadius;
+    self.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.layer.shadowOpacity = kShadowOpacity;
+    self.layer.shadowOffset = kShadowOffset;
 }
 
 + (instancetype)toastCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
@@ -89,11 +100,28 @@ static const CGFloat kVerticalLabelInset = 15;
     coachmarkView.arrowDirection = arrowDirection;
     
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    UIBezierPath *tooltipPath = [UIBezierPath bezierPath];
     CGFloat width = CGRectGetWidth(frame);
     CGFloat fullHeight = CGRectGetHeight(frame);
+    UIBezierPath *tooltipPath = [self tooltipPathWithArrowDirection:arrowDirection
+                                                          boxHeight:boxHeight
+                                                        totalHeight:fullHeight
+                                              arrowHorizontalOffset:horizontalOffset
+                                                           andWidth:width];
+    maskLayer.fillColor = [[UIColor whiteColor] CGColor];
+    maskLayer.backgroundColor = [[UIColor clearColor] CGColor];
+    maskLayer.path = [tooltipPath CGPath];
+    coachmarkView.backgroundView.layer.mask = maskLayer;
     
-    //Draw the tooltipPath
+    return coachmarkView;
+}
+
++ (UIBezierPath *)tooltipPathWithArrowDirection:(VCoachmarkArrowDirection)arrowDirection
+                                      boxHeight:(CGFloat)boxHeight
+                                    totalHeight:(CGFloat)totalHeight
+                          arrowHorizontalOffset:(CGFloat)horizontalOffset
+                                       andWidth:(CGFloat)width
+{
+    UIBezierPath *tooltipPath = [UIBezierPath bezierPath];
     if ( arrowDirection == VCoachmarkArrowDirectionDown )
     {
         //Start at top left corner of box and draw to bottom left corner
@@ -104,7 +132,7 @@ static const CGFloat kVerticalLabelInset = 15;
         [tooltipPath addLineToPoint:CGPointMake(horizontalOffset - kTooltipArrowWidth / 2, boxHeight)];
         
         //Draw to top of arrow
-        [tooltipPath addLineToPoint:CGPointMake(horizontalOffset, fullHeight)];
+        [tooltipPath addLineToPoint:CGPointMake(horizontalOffset, totalHeight)];
         
         //Draw back to box
         [tooltipPath addLineToPoint:CGPointMake(horizontalOffset + kTooltipArrowWidth / 2, boxHeight)];
@@ -118,10 +146,10 @@ static const CGFloat kVerticalLabelInset = 15;
     {
         //Start below height of arrow and draw the left, bottom, and right sides of the box
         [tooltipPath moveToPoint:CGPointMake(0, kTooltipArrowHeight)];
-        [tooltipPath addLineToPoint:CGPointMake(0, fullHeight)];
-        [tooltipPath addLineToPoint:CGPointMake(width, fullHeight)];
+        [tooltipPath addLineToPoint:CGPointMake(0, totalHeight)];
+        [tooltipPath addLineToPoint:CGPointMake(width, totalHeight)];
         [tooltipPath addLineToPoint:CGPointMake(width, kTooltipArrowHeight)];
-
+        
         //Draw from top right corner to half the arrow's width of the arrow point
         [tooltipPath addLineToPoint:CGPointMake(horizontalOffset + kTooltipArrowWidth / 2, kTooltipArrowHeight)];
         
@@ -134,12 +162,7 @@ static const CGFloat kVerticalLabelInset = 15;
         //Finish drawing the box
         [tooltipPath closePath];
     }
-    maskLayer.fillColor = [[UIColor whiteColor] CGColor];
-    maskLayer.backgroundColor = [[UIColor clearColor] CGColor];
-    maskLayer.path = [tooltipPath CGPath];
-    coachmarkView.layer.mask = maskLayer;
-    
-    return coachmarkView;
+    return tooltipPath;
 }
 
 - (CGRect)frameForText:(NSString *)text withMaxWidth:(CGFloat)maxWidth
@@ -158,13 +181,6 @@ static const CGFloat kVerticalLabelInset = 15;
 - (void)setHasBeenShown:(BOOL)hasBeenShown
 {
     self.coachmark.hasBeenShown = YES;
-}
-
-#pragma mark - VBackgroundContainer
-
-- (UIView *)backgroundContainerView
-{
-    return self;
 }
 
 @end

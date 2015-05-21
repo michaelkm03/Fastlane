@@ -27,6 +27,8 @@
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
+#import "VDependencyManager+VCoachmarkManager.h"
+#import "VCoachmarkManager.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -36,6 +38,7 @@ static const NSInteger kPushNotificationsButtonIndex = 3;
 static const NSInteger kResetPurchasesButtonIndex    = 4;
 static const NSInteger kServerEnvironmentButtonIndex = 5;
 static const NSInteger kTrackingButtonIndex          = 6;
+static const NSInteger kResetCoachmarksIndex         = 7;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kSupportEmailKey = @"email.support";
@@ -54,6 +57,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
 @property (nonatomic, assign) BOOL showChangePassword;
+@property (nonatomic, assign) BOOL showResetCoachmarks;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -128,6 +132,12 @@ static NSString * const kSupportEmailKey = @"email.support";
     self.showTrackingAlertSetting = YES;
 #endif
     
+#ifdef V_SHOW_COACHMARK_RESET
+    self.showResetCoachmarks = YES;
+#else
+    self.showResetCoachmarks = NO;
+#endif
+    
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     self.showPushNotificationSettings = YES;
     
@@ -185,6 +195,14 @@ static NSString * const kSupportEmailKey = @"email.support";
         NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
     }
+    
+    if ( indexPath.row == kResetCoachmarksIndex )
+    {
+        //Reset coachmarks
+        [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)loginStatusDidChange:(NSNotification *)note
@@ -274,6 +292,17 @@ static NSString * const kSupportEmailKey = @"email.support";
             return 0;
         }
     }
+    else if (kSettingsSectionIndex == indexPath.section && kResetCoachmarksIndex == indexPath.row)
+    {
+        if ( self.showResetCoachmarks )
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
     {
         if ( self.showChangePassword )
@@ -309,7 +338,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     }
     else if (kSettingsSectionIndex == indexPath.section && kTrackingButtonIndex == indexPath.row)
     {
-        if (self.showEnvironmentSetting)
+        if (self.showTrackingAlertSetting)
         {
             return self.tableView.rowHeight;
         }

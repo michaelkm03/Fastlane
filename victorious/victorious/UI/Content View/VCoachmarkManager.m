@@ -15,21 +15,25 @@
 #import "VNavigationController.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VTimerManager.h"
+#import "VCoachmarkPassthroughContainerView.h"
 
 #define CLEAR_SHOWN_COACHMARKS 1
 
 static NSString * const kShownCoachmarksKey = @"shownCoachmarks";
 static NSString * const kReturnedCoachmarksKey = @"coachmarks";
 static NSString * const kPassthroughContainerViewKey = @"passthroughContainerView";
-static const CGFloat kAnimationDuration = 0.2f;
+static const CGFloat kAnimationDuration = 0.4f;
 static const char kPassthroughViewKey;
-static const CGFloat kCoachmarkHorizontalInset = 24;
-static const CGFloat kCoachmarkVerticalInset = 5;
+static const CGFloat kCoachmarkHorizontalInset = 24.0f;
+static const CGFloat kCoachmarkVerticalInset = 5.0f;
+static const CGFloat kAnimationVerticalOffset = 10.0f;
+static const CGFloat kAnimationDelay = 1.0f;
 
-@interface VCoachmarkManager () <VPassthroughContainerViewDelegate>
+@interface VCoachmarkManager () <VCoachmarkPassthroughContainerViewDelegate>
 
 @property (nonatomic, strong) NSArray *coachmarks;
 @property (nonatomic, strong) NSMutableArray *hideTimers;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -40,28 +44,15 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     self = [super init];
     if ( self != nil )
     {
-        
-#if CLEAR_SHOWN_COACHMARKS
-#warning CLEARING SHOWN COACHMARKS
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kShownCoachmarksKey];
-#endif
-        
-        NSArray *shownCoachmarkIds = [[NSUserDefaults standardUserDefaults] objectForKey:kShownCoachmarksKey];
-        NSArray *returnedCoachmarks = [dependencyManager arrayOfValuesOfType:[VCoachmark class] forKey:kReturnedCoachmarksKey];
-        NSMutableArray *validCoachmarks = [[NSMutableArray alloc] init];
-        for ( VCoachmark *coachmark in returnedCoachmarks )
-        {
-            if ( ![shownCoachmarkIds containsObject:coachmark.remoteId] )
-            {
-                //We haven't already shown this coachmark, add it to our new coachmarks array
-                [validCoachmarks addObject:coachmark];
-            }
-        }
-        
-        _coachmarks = [validCoachmarks copy];
-        [self saveShownStateOfCoachmarks];
+        [self setupWithDependencyManager:dependencyManager];
     }
     return self;
+}
+
+- (void)resetShownCoachmarks
+{
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kShownCoachmarksKey];
+    [self setupWithDependencyManager:self.dependencyManager];
 }
 
 - (void)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController
@@ -121,20 +112,40 @@ static const CGFloat kCoachmarkVerticalInset = 5;
 
 - (void)hideCoachmarkViewInViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    VPassthroughContainerView *passthroughContainer = objc_getAssociatedObject(viewController.view, &kPassthroughViewKey);
-    [self removePassthroughContainerView:passthroughContainer animated:animated];
+    [self removePassthroughContainerView:objc_getAssociatedObject(viewController.view, &kPassthroughViewKey) animated:animated];
+}
+
+#pragma mark - setup
+
+- (void)setupWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    NSArray *shownCoachmarkIds = [self savedShownStatesOfCoachmarks];
+    NSArray *returnedCoachmarks = [dependencyManager arrayOfValuesOfType:[VCoachmark class] forKey:kReturnedCoachmarksKey];
+    NSMutableArray *validCoachmarks = [[NSMutableArray alloc] init];
+    for ( VCoachmark *coachmark in returnedCoachmarks )
+    {
+        if ( ![shownCoachmarkIds containsObject:coachmark.remoteId] )
+        {
+            //We haven't already shown this coachmark, add it to our new coachmarks array
+            [validCoachmarks addObject:coachmark];
+        }
+    }
+    
+    _coachmarks = [validCoachmarks copy];
+    [self saveShownStateOfCoachmarks];
 }
 
 #pragma mark - VPassthroughContainerViewDelegate
 
-- (void)passthroughViewRecievedTouch:(VPassthroughContainerView *)passthroughContainerView
+- (void)passthroughViewRecievedTouch:(VCoachmarkPassthroughContainerView *)passthroughContainerView
 {
     [self removePassthroughContainerView:passthroughContainerView animated:YES];
 }
 
 #pragma mark - Adding and removing coachmark views
 
-- (void)removePassthroughContainerView:(VPassthroughContainerView *)passthroughContainerView animated:(BOOL)animated
+- (void)removePassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView animated:(BOOL)animated
 {
     if ( passthroughContainerView != nil )
     {
@@ -161,12 +172,14 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     }
     
     UIView *view = viewController.view;
-    VPassthroughContainerView *passthroughOverlay = [[VPassthroughContainerView alloc] initWithFrame:view.bounds];
-    passthroughOverlay.delegate = self;
+    VCoachmarkPassthroughContainerView *passthroughOverlay = [VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:coachmarkView frame:view.bounds andDelegate:self];
     [passthroughOverlay addSubview:coachmarkView];
     passthroughOverlay.alpha = 0.0f;
     [view addSubview:passthroughOverlay];
-    [self animateOverlayView:passthroughOverlay toVisible:YES animated:YES withCompletion:^(BOOL finished)
+    [self animateOverlayView:passthroughOverlay
+                   toVisible:YES
+                    animated:YES
+              withCompletion:^(BOOL finished)
     {
         [self addHideTimerForCoachmarkView:coachmarkView inPassthroughContainerView:passthroughOverlay];
         [coachmarkView setHasBeenShown:YES];
@@ -175,7 +188,7 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     }];
 }
 
-- (void)addHideTimerForCoachmarkView:(VCoachmarkView *)coachmarkView inPassthroughContainerView:(VPassthroughContainerView *)passthroughContainerView
+- (void)addHideTimerForCoachmarkView:(VCoachmarkView *)coachmarkView inPassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView
 {
     NSUInteger displayDuration = coachmarkView.coachmark.displayDuration;
     if ( displayDuration != 0 )
@@ -198,7 +211,7 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     switch (arrowDirection)
     {
         case VCoachmarkArrowDirectionUp:
-            yOrigin = CGRectGetMaxY(targetLocation);
+            yOrigin = CGRectGetMaxY(targetLocation) + kCoachmarkVerticalInset;
             break;
             
         case VCoachmarkArrowDirectionDown:
@@ -246,26 +259,54 @@ static const CGFloat kCoachmarkVerticalInset = 5;
     return frame;
 }
 
-- (void)animateOverlayView:(UIView *)overlayView
+- (void)animateOverlayView:(VCoachmarkPassthroughContainerView *)passthroughContainerView
                  toVisible:(BOOL)visible
                   animated:(BOOL)animated
             withCompletion:(void (^)(BOOL))completion
 {
+    VCoachmarkView *coachmarkView = passthroughContainerView.coachmarkView;
+    CGRect targetFrame = coachmarkView.frame;
+    if ( visible )
+    {
+        //Set the coachmarkView to an appropriate start frame so that it appears to move to its destination
+        coachmarkView.frame = [self frameForAnimatingCoachmarkView:coachmarkView];
+    }
+    else
+    {
+        //Set the targetFrame to an approrpriate end frame so that it appears to move from its destination
+        targetFrame = [self frameForAnimatingCoachmarkView:coachmarkView];
+    }
+    
     CGFloat targetAlpha = visible ? 1.0f : 0.0f;
+    CGFloat animationDelay = visible ? kAnimationDelay : 0.0f;
+    
     if ( animated )
     {
         [UIView animateWithDuration:kAnimationDuration
+                              delay:animationDelay
+                            options:UIViewAnimationOptionCurveEaseInOut
                          animations:^
          {
-             overlayView.alpha = targetAlpha;
+             passthroughContainerView.alpha = targetAlpha;
+             coachmarkView.frame = targetFrame;
          }
                          completion:completion];
     }
     else
     {
-        overlayView.alpha = targetAlpha;
+        passthroughContainerView.alpha = targetAlpha;
+        coachmarkView.frame = targetFrame;
         completion(YES);
     }
+}
+
+- (CGRect)frameForAnimatingCoachmarkView:(VCoachmarkView *)coachmarkView
+{
+    BOOL isTooltip = coachmarkView.arrowDirection != VCoachmarkArrowDirectionInvalid;
+    BOOL shouldSlideUp = (!isTooltip && coachmarkView.coachmark.toastLocation == VToastLocationTop) || coachmarkView.arrowDirection == VCoachmarkArrowDirectionUp;
+    CGRect frame = coachmarkView.frame;
+    frame.origin.y += shouldSlideUp ? kAnimationVerticalOffset : -kAnimationVerticalOffset;
+    return frame;
 }
 
 #pragma mark - Shown coachmark storage
@@ -278,7 +319,7 @@ static const CGFloat kCoachmarkVerticalInset = 5;
 
 - (NSArray *)shownCoachmarkIds
 {
-    NSMutableArray *shownCoachmarkIds = [[NSMutableArray alloc] init];
+    NSMutableArray *shownCoachmarkIds = [[NSMutableArray alloc] initWithArray:[self savedShownStatesOfCoachmarks]];
     for (VCoachmark *coachmark in self.coachmarks )
     {
         if ( coachmark.hasBeenShown )
@@ -287,6 +328,11 @@ static const CGFloat kCoachmarkVerticalInset = 5;
         }
     }
     return [shownCoachmarkIds copy];
+}
+
+- (NSArray *)savedShownStatesOfCoachmarks
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kShownCoachmarksKey];
 }
 
 @end

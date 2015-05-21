@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#warning DOCS INCOMPLETE
+
 typedef void (^VMenuItemDiscoveryBlock) (BOOL found, CGRect location);
 
 @protocol VCoachmarkDisplayResponder <NSObject>

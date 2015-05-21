@@ -409,12 +409,15 @@ static NSString * const kInitialKey = @"initial";
         if ( [viewController conformsToProtocol:@protocol(VCoachmarkDisplayer)] )
         {
             UIViewController <VCoachmarkDisplayer> *coachmarkDisplayer = (UIViewController <VCoachmarkDisplayer> *)viewController;
-            if ( ![coachmarkDisplayer selectorIsVisible] )
+            if ( [coachmarkDisplayer respondsToSelector:@selector(selectorIsVisible)] )
             {
-                //The current displayer doesn't have a visible selector, stop looking for coachmarks it can display
-                break;
+                if ( ![coachmarkDisplayer selectorIsVisible] )
+                {
+                    //The current displayer doesn't have a visible selector, stop looking for coachmarks it can display
+                    break;
+                }
             }
-            
+
             //View controller can display a coachmark
             NSString *screenIdenifier = [coachmarkDisplayer screenIdentifier];
             if ( [identifier isEqualToString:screenIdenifier] )

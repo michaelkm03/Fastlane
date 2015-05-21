@@ -27,6 +27,11 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
+    Clears shown states of coachmarks from NSUserDefaults
+ */
+- (void)resetShownCoachmarks;
+
+/**
     Displays a coachmark in the provided view controller if possible.
     This method uses the viewController's responder chain to find a suitable menu item to point to
     when appropriate. To support this, this method must be called at or after viewDidAppear.
