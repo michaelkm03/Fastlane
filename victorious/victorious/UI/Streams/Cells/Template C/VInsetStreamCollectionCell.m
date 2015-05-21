@@ -231,7 +231,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-        
     [self updatePreviewViewForSequence:sequence];
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
