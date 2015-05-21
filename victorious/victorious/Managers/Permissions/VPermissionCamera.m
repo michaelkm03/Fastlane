@@ -50,7 +50,7 @@
     {
         return message;
     }
-    return NSLocalizedString(@"We need permission to use the camera.", @"");
+    return NSLocalizedString(@"In order to post content, we need access to your camera. Allow access?", @"");
 }
 
 @end

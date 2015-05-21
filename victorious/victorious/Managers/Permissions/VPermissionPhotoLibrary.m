@@ -58,7 +58,7 @@
     {
         return message;
     }
-    return NSLocalizedString(@"We need permission to access your photo library", @"");
+    return NSLocalizedString(@"We need permission to access your photo library.", @"");
 }
 
 @end

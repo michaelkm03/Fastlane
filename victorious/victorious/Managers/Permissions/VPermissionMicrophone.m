@@ -53,7 +53,7 @@
     {
         return message;
     }
-    return NSLocalizedString(@"We need permission to use your microphone.", @"");
+    return NSLocalizedString(@"In order to record videos, we need access to your microphone. Allow access?", @"");
 }
 
 @end

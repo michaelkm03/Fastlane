@@ -256,7 +256,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                                                },
                                               @"title.button1":@"Okay!",
                                               @"title.button2":@"Maybe later",
-                                              @"cameraPermission.message":@"We need access to your camera."
                                               }
                                  forKeyPath:@"permissionsAlert"];
         
