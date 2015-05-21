@@ -28,8 +28,6 @@
 #import "VStreamHeaderTimeSince.h"
 #import "VCompatibility.h"
 
-#define ARC4RANDOM_MAX 0x100000000
-
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
 static const CGFloat kInsetCellHeaderHeight = 50.0f;
 static const CGFloat kInsetCellActionViewHeight = 41.0f;
