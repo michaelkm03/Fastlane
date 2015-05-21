@@ -177,6 +177,7 @@
                             <constraint firstAttribute="centerY" secondItem="M6g-YF-N4q" secondAttribute="centerY" constant="25" id="C9D-y9-Nvi"/>
                             <constraint firstItem="M6g-YF-N4q" firstAttribute="leading" secondItem="z7L-g3-1BX" secondAttribute="leadingMargin" constant="4" id="CzJ-6k-LBk"/>
                             <constraint firstAttribute="centerX" secondItem="M6g-YF-N4q" secondAttribute="centerX" id="hQk-Lx-BQx"/>
+                            <constraint firstItem="M6g-YF-N4q" firstAttribute="height" relation="lessThanOrEqual" secondItem="z7L-g3-1BX" secondAttribute="height" constant="-100" id="u5c-vQ-1QM"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -184,6 +185,7 @@
                                 <exclude reference="C9D-y9-Nvi"/>
                                 <exclude reference="CzJ-6k-LBk"/>
                                 <exclude reference="hQk-Lx-BQx"/>
+                                <exclude reference="u5c-vQ-1QM"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -192,6 +194,7 @@
                                 <include reference="C9D-y9-Nvi"/>
                                 <include reference="CzJ-6k-LBk"/>
                                 <include reference="hQk-Lx-BQx"/>
+                                <include reference="u5c-vQ-1QM"/>
                             </mask>
                         </variation>
                     </view>
