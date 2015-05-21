@@ -19,7 +19,7 @@
         return message;
     }
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:dependencyManager];
-    NSString *finalString = [NSString stringWithFormat:NSLocalizedString(@"In order to be recognized by %@ and other fans, you need to set a profile picture.\n\n Would you like to set one now?", nil), appInfo.ownerName];
+    NSString *finalString = [NSString stringWithFormat:NSLocalizedString(@"In order to be recognized by %@ and other fans, you need to set a profile picture.\n\nWould you like to set one now?", nil), appInfo.ownerName];
     return finalString;
 }
 
