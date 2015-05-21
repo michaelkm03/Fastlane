@@ -11,6 +11,9 @@
 // Libraries
 #import <FBKVOController.h>
 
+// Dependencies
+#import "VDependencyManager.h"
+
 // Views + Helpers
 #import "VSequenceActionsDelegate.h"
 #import "VFlexBar.h"
@@ -158,6 +161,7 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
     {
         [self.timeSinceWidget setDependencyManager:dependencyManager];
     }
+    self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 #pragma mark - Observers
