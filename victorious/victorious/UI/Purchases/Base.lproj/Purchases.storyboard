@@ -44,7 +44,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="292" height="110"/>
                                             </imageView>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXE-MY-9if" userLabel="Restore Description">
-                                                <rect key="frame" x="13" y="14" width="262" height="68.5"/>
+                                                <rect key="frame" x="13" y="14" width="262" height="69"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <string key="text">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
 Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. </string>

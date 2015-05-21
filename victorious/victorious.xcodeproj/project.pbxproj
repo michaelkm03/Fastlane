@@ -7122,6 +7122,8 @@
 			);
 			name = Purchases.storyboard;
 			path = Purchases;
+			sourceTree = "<group>";
+		};
 		03848F971B0A41090092C660 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
