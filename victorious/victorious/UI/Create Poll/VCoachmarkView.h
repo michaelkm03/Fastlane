@@ -30,8 +30,20 @@ typedef NS_ENUM( NSUInteger, VCoachmarkArrowDirection )
                             arrowHorizontalOffset:(CGFloat)horizontalOffset
                                 andArrowDirection:(VCoachmarkArrowDirection)arrowDirection;
 
+/**
+    The coachmark provided by one of the class methods used to create this view.
+ */
 @property (nonatomic, readonly) VCoachmark *coachmark;
+
+/**
+    The arrow direction of the tooltip. This value is VCoachmarkArrowDirectionInvalid
+    when the coachmark view is shown as a toast.
+ */
 @property (nonatomic, readonly) VCoachmarkArrowDirection arrowDirection;
+
+/**
+    Allows the reading and setting of the hasBeenShown bool on this instance's coachmark.
+ */
 @property (nonatomic, assign) BOOL hasBeenShown;
 
 @end

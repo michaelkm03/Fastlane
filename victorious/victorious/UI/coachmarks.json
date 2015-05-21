@@ -45,7 +45,7 @@
                            "fontSize": 11
                            },
                            "currentScreenText": "current screen text",
-                           "relatedScreenText": "Point to Channels!",
+                           "relatedScreenText": "Point to Channels with a bunch of really silly text to make sure that multiple lines works nicely. So, yeah, keep going, a bunch more just for good measure: Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you this case, it don't belong to me. Besides, I've already been through too much shit this morning over this case to hand it over to your dumb ass.",
                            "displayTarget": "55562838dd825",
                            "displayScreens": [
                                               "55562838dda04"
@@ -340,6 +340,38 @@
                                               "55562838dda04"
                                               ],
                            "id": "19",
+                           "name": "standard.coachmark",
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 5
+                           },
+                           {
+                           "background": {
+                           "name": "solidColor.background",
+                           "color": {
+                           "red": 217,
+                           "green": 83,
+                           "blue": 200,
+                           "alpha": 255
+                           }
+                           },
+                           "toastVerticalLocation": "top",
+                           "color.text": {
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
+                           "alpha": 1
+                           },
+                           "font.label3": {
+                           "fontName": "STHeitiSC-Light",
+                           "fontSize": 11
+                           },
+                           "currentScreenText": "In discover!",
+                           "relatedScreenText": "Point to Discover!",
+                           "displayTarget": "Discover",
+                           "displayScreens": [
+                                              "Discover"
+                                              ],
+                           "id": "20",
                            "name": "standard.coachmark",
                            "hasBeenDisplayed": 0,
                            "displayDuration": 5
@@ -763,7 +795,8 @@
                                       },
                                       {
                                       "name": "discover.screen",
-                                      "title": "Discover"
+                                      "title": "Discover",
+                                      "id": "Discover"
                                       },
                                       {
                                       "background": {

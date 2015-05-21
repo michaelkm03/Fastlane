@@ -25,27 +25,27 @@
         _displayTarget = [dependencyManager stringForKey:@"displayTarget"];
         _displayScreens = [dependencyManager arrayOfValuesOfType:[NSString class] forKey:@"displayScreens"];
         _remoteId = [dependencyManager stringForKey:@"id"];
-        _toastLocation = [self toastLocationFromString:[dependencyManager stringForKey:@"toastVerticalLocation"]];
+        _toastLocation = [self toastVerticalLocationFromString:[dependencyManager stringForKey:@"toastVerticalLocation"]];
         _displayDuration = [[dependencyManager numberForKey:@"displayDuration"] unsignedIntegerValue];
         _hasBeenShown = NO;
     }
     return self;
 }
 
-- (VToastLocation)toastLocationFromString:(NSString *)locationString
+- (VToastVerticalLocation)toastVerticalLocationFromString:(NSString *)locationString
 {
-    VToastLocation location = VToastLocationTop;
+    VToastVerticalLocation location = VToastVerticalLocationTop;
     if ( [locationString isEqualToString:@"bottom"] )
     {
-        location = VToastLocationBottom;
+        location = VToastVerticalLocationBottom;
     }
     else if ( [locationString isEqualToString:@"middle"] )
     {
-        location = VToastLocationMiddle;
+        location = VToastVerticalLocationMiddle;
     }
     else if ( [locationString isEqualToString:@"top"] )
     {
-        location = VToastLocationTop;
+        location = VToastVerticalLocationTop;
     }
     else
     {

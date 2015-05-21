@@ -28,12 +28,16 @@
 #import "VDependencyManager.h"
 #import "VAuthorizedAction.h"
 #import <KVOController/FBKVOController.h>
+#import "VDependencyManager+VCoachmarkManager.h"
+#import "VCoachmarkManager.h"
+#import "VCoachmarkDisplayer.h"
+#import "UIViewController+VLayoutInsets.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
 static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
-@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate>
+@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate, VCoachmarkDisplayer>
 
 @property (nonatomic, strong) VSuggestedPeopleCollectionViewController *suggestedPeopleViewController;
 
@@ -93,6 +97,18 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     {
         [self.tableView reloadData];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -497,6 +513,23 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             return;
         }
     }
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
+}
+
+- (BOOL)selectorIsVisible
+{
+    return !self.navigationController.navigationBarHidden;
+}
+
+- (UIEdgeInsets)v_layoutInsets
+{
+    return [self.parentViewController v_layoutInsets];
 }
 
 @end

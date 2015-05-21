@@ -42,6 +42,7 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
         _captionLabel.textAlignment = NSTextAlignmentCenter;
         _captionLabel.font = coachmark.font;
         _captionLabel.textColor = coachmark.textColor;
+        _captionLabel.numberOfLines = 0;
         _backgroundView = [_coachmark.background viewForBackground];
     }
     return self;

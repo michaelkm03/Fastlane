@@ -225,22 +225,22 @@ static const CGFloat kAnimationDelay = 1.0f;
     return frame;
 }
 
-- (CGRect)frameForToastCoachmarkViewWithSize:(CGSize)size andToastLocation:(VToastLocation)toastLocation inViewController:(UIViewController *)viewController
+- (CGRect)frameForToastCoachmarkViewWithSize:(CGSize)size andToastLocation:(VToastVerticalLocation)toastLocation inViewController:(UIViewController *)viewController
 {
     CGRect frame = [self centeredCoachmarkViewFrameWithSize:size inViewController:viewController];
     CGFloat yOrigin = 0;
     CGFloat topBarHeight = [viewController v_layoutInsets].top;
     switch (toastLocation)
     {
-        case VToastLocationTop:
+        case VToastVerticalLocationTop:
             yOrigin = topBarHeight + kCoachmarkVerticalInset;
             break;
             
-        case VToastLocationMiddle:
+        case VToastVerticalLocationMiddle:
             yOrigin = ( CGRectGetHeight(viewController.view.bounds) + topBarHeight - size.height ) / 2;
             break;
             
-        case VToastLocationBottom:
+        case VToastVerticalLocationBottom:
             yOrigin = CGRectGetHeight(viewController.view.bounds) - size.height - kCoachmarkVerticalInset;
             break;
             
@@ -303,7 +303,7 @@ static const CGFloat kAnimationDelay = 1.0f;
 - (CGRect)frameForAnimatingCoachmarkView:(VCoachmarkView *)coachmarkView
 {
     BOOL isTooltip = coachmarkView.arrowDirection != VCoachmarkArrowDirectionInvalid;
-    BOOL shouldSlideUp = (!isTooltip && coachmarkView.coachmark.toastLocation == VToastLocationTop) || coachmarkView.arrowDirection == VCoachmarkArrowDirectionUp;
+    BOOL shouldSlideUp = (!isTooltip && coachmarkView.coachmark.toastLocation == VToastVerticalLocationTop) || coachmarkView.arrowDirection == VCoachmarkArrowDirectionUp;
     CGRect frame = coachmarkView.frame;
     frame.origin.y += shouldSlideUp ? kAnimationVerticalOffset : -kAnimationVerticalOffset;
     return frame;
