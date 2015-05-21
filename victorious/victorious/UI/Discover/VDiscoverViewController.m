@@ -26,6 +26,7 @@
 #import "VConstants.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
+#import "VHasManagedDependencies.h"
 #import "VAuthorizedAction.h"
 #import <KVOController/FBKVOController.h>
 #import "VDependencyManager+VCoachmarkManager.h"
@@ -114,17 +115,12 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.tableView.backgroundColor = [UIColor clearColor];
     self.suggestedPeopleViewController.dependencyManager = dependencyManager;
     for ( UITableViewCell *cell in self.tableView.visibleCells )
     {
-        if ( [cell isKindOfClass:[VTrendingTagCell class]] )
+        if ( [cell respondsToSelector:@selector(setDependencyManager:)] )
         {
-            ((VTrendingTagCell *)cell).dependencyManager = self.dependencyManager;
-        }
-        else if ( [cell isKindOfClass:[VSuggestedPeopleCell class]] )
-        {
-            [cell.contentView setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
+            [(id<VHasManagedDependencies>)cell setDependencyManager:dependencyManager];
         }
     }
 }
@@ -312,7 +308,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
             }
             
-            cell.contentView.backgroundColor = [UIColor clearColor];
+            customCell.backgroundColor = [UIColor clearColor];
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }
@@ -372,9 +368,13 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                      }
                  }];
             };
-            customCell.dependencyManager = self.dependencyManager;
             cell = customCell;
         }
+    }
+    
+    if ([cell respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [(id <VHasManagedDependencies>)cell setDependencyManager:self.dependencyManager];
     }
     
     return cell;

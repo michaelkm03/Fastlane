@@ -167,9 +167,9 @@ static int const kNotificationFetchBatchSize = 50;
         {
             noNotificationsView.dependencyManager = self.dependencyManager;
         }
-        noNotificationsView.titleLabel.text = NSLocalizedString(@"NoNotificationsTitle", @"");
-        noNotificationsView.messageLabel.text = NSLocalizedString(@"NoNotificationsMessage", @"");
-        noNotificationsView.iconImageView.image = [UIImage imageNamed:@"noNotificationsIcon"];
+        noNotificationsView.title = NSLocalizedString(@"NoNotificationsTitle", @"");
+        noNotificationsView.message = NSLocalizedString(@"NoNotificationsMessage", @"");
+        noNotificationsView.icon = [UIImage imageNamed:@"noNotificationsIcon"];
         self.tableView.backgroundView = noNotificationsView;
     }
     else

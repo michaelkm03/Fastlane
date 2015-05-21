@@ -120,7 +120,7 @@
 "LeaveAComment" = "Hinterlasse einen Kommentar";
 
 "NoFollowersTitle" = "UI UI! ES FOLGT DIR NOCH NIEMAND";
-"NoFollowersMessage" = "Baue deine eigene Gefolgschaft auf, indem du mit der Gemeinschaft in der Form von Kommentaren, wiederverwerteten oder neuen Inhalten interagierst.";
+"NoFollowersMessage" = "Baue deine eigene Gefolgschaft auf, indem du mit der Gemeinschaft in der Form von Kommentaren, wiederverwenten oder neuen Inhalten interagierst.";
 
 "NotFollowingTitle" = "OH JE! DU FOLGST NOCH NIEMANDEM";
 "NotFollowingMessage" = "Folge anderen Leuten, damit deren Inhalte in deinem Stream angezeigt werden. Dies ist eine gute Möglichkeit, neue Inhalte oder neue Freunde zu finden.";
@@ -486,11 +486,12 @@
 "NotificationSettingSectionPeople" = "Leute";
 "Open Settings" = "Einstellungen öffnen";
 
-"ErrorPushNotificationsNotEnabled" = "Push-Benachrichtigungen sind für dein Gerät nicht aktiviert.\nBitte erlaube Benachrichtiigungen in den Einstellungen deines Gerätes, um sie zu aktivieren.";
+"ErrorPushNotificationsNotEnabled" = "Push-Benachrichtigungen sind für dein Gerät nicht aktiviert.\nBitte erlaube Benachrichtigungen in den Einstellungen deines Gerätes, um sie zu aktivieren.";
 "ErrorPushNotificationsUnknown" = "Fehler beim Laden der Benachrichtigungseinstellungen.\nBitte versuche es später erneut.";
 "ErrorPushNotificationsNotSaved" = "Fehler beim Speichern der Einstellungen";
 "ErrorPushNotificationsNotSavedMessage" = "Bitte versuche es später erneut.";
 
+"RestorePurchaseDescription" = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle" = "Fehler beim Kauf";
 "PurchaseErrorProductNotAvailable" = "Dieses Produkt ist derzeit leider nicht verfügbar. Bitte versuche es später erneut.";
 "PurchaseErrorTransaction" = "Transaktion konnte nicht abgeschlossen werden. Bitte versuche es später erneut.";

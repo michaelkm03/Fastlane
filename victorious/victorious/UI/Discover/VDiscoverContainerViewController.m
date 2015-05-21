@@ -19,6 +19,7 @@
 // Dependency Manager
 #import "VDependencyManager.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VNavigationItem.h"
 
 // Users and Tags Search
@@ -30,10 +31,12 @@
 #import "VDiscoverDeepLinkHandler.h"
 #import "VCoachmarkDisplayer.h"
 
-@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VCoachmarkDisplayer>
+@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer, VCoachmarkDisplayer>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
+@property (nonatomic, strong) IBOutletCollection(UIView) NSArray *horizontalRules;
+@property (nonatomic, weak) IBOutlet UIImageView *searchIconImageView;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
@@ -73,6 +76,7 @@
     [super viewDidLoad];
 
     self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
+    self.searchField.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     self.searchField.delegate = self;
 
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
@@ -80,6 +84,14 @@
 
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.edgesForExtendedLayout = UIRectEdgeAll;
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
+    [self.horizontalRules enumerateObjectsUsingBlock:^(UIView *horizontalRule, NSUInteger idx, BOOL *stop)
+    {
+        horizontalRule.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    }];
+    self.searchIconImageView.image = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.searchIconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -242,6 +254,13 @@
 - (BOOL)selectorIsVisible
 {
     return !self.navigationController.navigationBarHidden;
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
 }
 
 @end

@@ -22,7 +22,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NJf-vn-jIU" id="aLC-a7-A4E">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="TITLE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Fn-0A-Ctn">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="TITLE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Fn-0A-Ctn">
                                             <rect key="frame" x="15" y="0.0" width="240" height="44"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -42,6 +42,10 @@
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="BWr-Jv-6Ld" secondAttribute="trailing" constant="6" id="KXe-Gm-wCO"/>
                                         <constraint firstItem="BWr-Jv-6Ld" firstAttribute="top" secondItem="aLC-a7-A4E" secondAttribute="topMargin" constant="-3" id="V0U-nt-gZO"/>
+                                        <constraint firstItem="BWr-Jv-6Ld" firstAttribute="leading" secondItem="8Fn-0A-Ctn" secondAttribute="trailing" constant="2" id="Zb0-3k-Kg0"/>
+                                        <constraint firstAttribute="bottom" secondItem="8Fn-0A-Ctn" secondAttribute="bottom" constant="-1" id="uDm-88-TqD"/>
+                                        <constraint firstItem="8Fn-0A-Ctn" firstAttribute="top" secondItem="aLC-a7-A4E" secondAttribute="top" id="wOc-Xn-fvC"/>
+                                        <constraint firstItem="8Fn-0A-Ctn" firstAttribute="leading" secondItem="aLC-a7-A4E" secondAttribute="leading" constant="15" id="ygV-qA-46c"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

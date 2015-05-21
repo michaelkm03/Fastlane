@@ -10,6 +10,7 @@
 #import "VStreamItem+Fetcher.h"
 
 @class VAsset;
+@class VUser;
 
 @interface VSequence (Fetcher)
 
@@ -20,6 +21,7 @@
 - (BOOL)isOwnerContent;
 - (BOOL)isWebContent;
 - (BOOL)isPreviewWebContent;
+- (BOOL)isPreviewImageContent;
 - (BOOL)isAnnouncement;
 - (BOOL)canDelete;
 - (BOOL)canRemix;
@@ -39,5 +41,14 @@
 
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
+
+/**
+ *  displayOriginalPoster and displayParentUser can be used to show the creator and parent
+ *  user with respect to reposted state.
+ */
+- (VUser *)displayOriginalPoster;
+- (VUser *)displayParentUser;
+
+- (NSURL *)inStreamPreviewImageURL;
 
 @end

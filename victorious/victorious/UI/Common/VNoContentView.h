@@ -11,10 +11,24 @@
 
 @interface VNoContentView : UIView <VHasManagedDependencies>
 
-@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
-@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
-@property (nonatomic, weak) IBOutlet UILabel *messageLabel;
-
+/**
+ *  Use this factory method to create VNoContentViews.
+ */
 + (instancetype)noContentViewWithFrame:(CGRect)frame;
+
+/**
+ *  The title to display to inform the user of no content.
+ */
+@property (nonatomic, strong) NSString *title;
+
+/**
+ *  The message to display to inform the user why there is no content.
+ */
+@property (nonatomic, strong) NSString *message;
+
+/**
+ *  An icon to display about the missing content.
+ */
+@property (nonatomic, strong) UIImage *icon;
 
 @end

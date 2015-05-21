@@ -11,7 +11,7 @@
 #import "VCanvasView.h"
 
 #import "VDependencyManager.h"
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 
 #import "VCropToolViewController.h"
 

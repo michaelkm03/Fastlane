@@ -216,7 +216,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         templateConfiguration = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"coachmarks" ofType:@"json"]] options:0 error:nil][@"payload"];
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
-        
+
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

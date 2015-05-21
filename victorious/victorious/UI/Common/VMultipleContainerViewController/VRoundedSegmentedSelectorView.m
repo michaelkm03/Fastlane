@@ -114,7 +114,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     __weak VRoundedSegmentedSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
     CGFloat cornerRadius = [self pillButtonInset];
-    UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     NSDictionary *buttonHorizontalInsetMetrics = @{ @"inset" : @(cornerRadius) };
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
      {

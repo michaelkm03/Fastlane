@@ -43,7 +43,8 @@
     self.objectManagerMock = [OCMockObject niceMockForClass:[VObjectManager class]];
     [[[self.objectManagerMock stub] andReturnValue:@(YES)] authorized];
     
-    self.uploadManager = [[VUploadManager alloc] initWithObjectManager:self.objectManagerMock];
+    self.uploadManager = [[VUploadManager alloc] init];
+    self.uploadManager.objectManager = self.objectManagerMock;
     self.uploadManager.useBackgroundSession = NO;
     
     NSString *taskSaveFilename = [[NSUUID UUID] UUIDString];

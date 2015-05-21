@@ -14,7 +14,7 @@
 "Channels" = "Canaux";
 "Community" = "Communauté";
 "Owner" = "Propriétaire";
-"Inbox" = "Boîte de réception";
+"Inbox" = "Messages";
 "Messages" = "Messages";
 "Notifications" = "Notifications";
 "Comments" = "Commentaires";
@@ -411,7 +411,7 @@
 
 "RTCUserPostedAtSyntax" = "%@ à %@";//e.g. "Username at 0:04"
 
-"Report/Flag" = "Signaler/Marquer comme inapproprié";
+"Report/Flag" = "Signaler un contenu";
 "CreatedBy" = "CRÉÉ PAR";
 "RemixVerb" = "Remixer";
 "Reposts" = "Republications";
@@ -491,6 +491,7 @@
 "ErrorPushNotificationsNotSaved" = "Erreur de sauvegarde des préférences";
 "ErrorPushNotificationsNotSavedMessage" = "Veuillez réessayer ultérieurement.";
 
+"RestorePurchaseDescription" = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle" = "Erreur lors de la finalisation de l'achat";
 "PurchaseErrorProductNotAvailable" = "Désolés, ce produit n'est actuellement pas disponible. Veuillez réessayer ultérieurement.";
 "PurchaseErrorTransaction" = "Échec de finalisation de la transaction. Veuillez réessayer ultérieurement.";

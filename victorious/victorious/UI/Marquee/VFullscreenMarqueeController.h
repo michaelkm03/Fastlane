@@ -14,6 +14,5 @@
 @interface VFullscreenMarqueeController : VAbstractMarqueeController
 
 @property (nonatomic, weak) VFullscreenMarqueeTabIndicatorView *tabView; ///< The Marquee tab view to update
-@property (nonatomic, assign) BOOL hideMarqueePosterImage; ///< Toggles display of poster's profile image in the center of the marquee content
 
 @end
