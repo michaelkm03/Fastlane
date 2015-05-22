@@ -237,7 +237,7 @@
         <attribute name="doneButtonTap" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="firstBoot" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="getStartedTap" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="registeRbuttonTap" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="registeButtonTap" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="registrationEnd" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="registrationStart" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="share" optional="YES" attributeType="Transformable" syncable="YES"/>

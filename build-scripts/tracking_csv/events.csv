@@ -211,3 +211,15 @@ UserDidSelectSetting,User tapped one of the options in the settings section. Par
 UserDidSelectReplayVideo,
 UserDidSelectPlayNextVideo,
 NextVideoDidAutoPlay,
+,
+// First Time User Experience (FTUE),
+UserDidStartCreateProfile,The create profile view is presented to the user during registration flow.  Backend mapping: create_profile_start
+ApplicationDidBoot,"The application was opened by the user, just as a ""cold start"" event in other contexts.  Backend mapping: first_boot"
+UserDidStartRegistration,"The user selected one of the registration options (sing up with email, connect with FB, etc.) to begin the registration process.  Backend mapping: registration_start"
+UserDidFinishRegistration,"The registration process was completed by the user, who is now a bonafide regsistered user.  Backend mapping: registration_end"
+UserDidSelectRegistrationDone,"The user selected the ""Done"" button on the final screen of the registration process.  Backend mapping: done_button_tap"
+UserDidSelectRegistrationGetStarted,"The user selected the ""Get Started"" button to begin the registration process.  Backend mapping: get_started_tap"
+UserDidSelectRegistrationSignUp,"The user selected the ""Sign up with Email"" option (as opposed to connecting through a social account).  Backend mapping: sign_up_button_tap"
+WelcomeVideoDidStart,The welcome video did begin playing in the first time welcome view.  Backend mapping: welcome_video_start
+WelcomeVideoDidEnd,The welcome video did play through its complete duration and stop in the first time welcome view.  Backend mapping: welcome_video_end
+WelcomeDidStart,The first time welcome did present to the user.  Backend mapping: welcome_start

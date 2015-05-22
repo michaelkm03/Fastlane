@@ -41,7 +41,7 @@
                                   @"registration_start"     :   VSelectorName(registrationStart),
                                   @"get_started_tap"        :   VSelectorName(getStartedTap),
                                   @"done_button_tap"        :   VSelectorName(doneButtonTap),
-                                  @"register_button_tap"    :   VSelectorName(registeRbuttonTap),
+                                  @"register_button_tap"    :   VSelectorName(registeButtonTap),
                                   @"sign_up_button_tap"     :   VSelectorName(signUpButtonTap),
                                   @"welcome_video_start"    :   VSelectorName(welcomeVideoStart),
                                   @"welcome_video_end"      :   VSelectorName(welcomeVideoEnd),

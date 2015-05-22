@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 04/24/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 05/22/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -222,6 +222,18 @@ extern NSString * const VTrackingEventUserDidSelectReplayVideo;
 extern NSString * const VTrackingEventUserDidSelectPlayNextVideo; 
 extern NSString * const VTrackingEventNextVideoDidAutoPlay; 
 
+// First Time User Experience (FTUE)
+extern NSString * const VTrackingEventUserDidStartCreateProfile; //< The create profile view is presented to the user during registration flow.  Backend mapping: create_profile_start
+extern NSString * const VTrackingEventApplicationDidBoot; //< "The application was opened by the user, just as a ""cold start"" event in other contexts.  Backend mapping: first_boot"
+extern NSString * const VTrackingEventUserDidStartRegistration; //< "The user selected one of the registration options (sing up with email, connect with FB, etc.) to begin the registration process.  Backend mapping: registration_start"
+extern NSString * const VTrackingEventUserDidFinishRegistration; //< "The registration process was completed by the user, who is now a bonafide regsistered user.  Backend mapping: registration_end"
+extern NSString * const VTrackingEventUserDidSelectRegistrationDone; //< "The user selected the ""Done"" button on the final screen of the registration process.  Backend mapping: done_button_tap"
+extern NSString * const VTrackingEventUserDidSelectRegistrationGetStarted; //< "The user selected the ""Get Started"" button to begin the registration process.  Backend mapping: get_started_tap"
+extern NSString * const VTrackingEventUserDidSelectRegistrationSignUp; //< "The user selected the ""Sign up with Email"" option (as opposed to connecting through a social account).  Backend mapping: sign_up_button_tap"
+extern NSString * const VTrackingEventWelcomeVideoDidStart; //< The welcome video did begin playing in the first time welcome view.  Backend mapping: welcome_video_start
+extern NSString * const VTrackingEventWelcomeVideoDidEnd; //< The welcome video did play through its complete duration and stop in the first time welcome view.  Backend mapping: welcome_video_end
+extern NSString * const VTrackingEventWelcomeDidStart; //< The first time welcome did present to the user.  Backend mapping: welcome_start
+
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc.",
 extern NSString * const VTrackingKeySection; //< The section of the app that is being selected (not the CurrentSection).
@@ -259,6 +271,7 @@ extern NSString * const VTrackingKeyRemoteId; //< "Generic, to indicate backend 
 extern NSString * const VTrackingKeyIndex; //< "Generic, to indicate selected item in a list or group.",
 extern NSString * const VTrackingKeyUserLoggedIn; //< "0 if user is logged out, 1 if user is logged in",
 extern NSString * const VTrackingKeyLoadTime; //< The amount of time between requesting something from the backend and receiving the first byte of the response.
+extern NSString * const VTrackingKeyTimeSinceBoot; //< The amount of time since the ApplicationDidBoot (first_boot) event was called (milliseconds).  Backend mapping: %%TIME_SINCE_BOOT%%
 
 // Tracking Event Values
 // ContentType values

@@ -87,4 +87,14 @@
  */
 @property (nonatomic, assign) BOOL showTrackingStartEndAlerts;
 
+/**
+ The date that the application was launched.
+ */
+@property (nonatomic, readonly) NSDate *applicationLaunchDate;
+
+/**
+ The time since the app was first launched in milliseconds.
+ */
+@property (nonatomic, readonly) NSUInteger timeSinceLaunch;
+
 @end

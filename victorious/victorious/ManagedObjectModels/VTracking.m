@@ -35,7 +35,7 @@
 @dynamic registrationStart;
 @dynamic getStartedTap;
 @dynamic doneButtonTap;
-@dynamic registeRbuttonTap;
+@dynamic registeButtonTap;
 @dynamic signUpButtonTap;
 @dynamic welcomeVideoStart;
 @dynamic welcomeVideoEnd;

@@ -36,7 +36,7 @@
 @property (nonatomic, retain) id registrationStart;
 @property (nonatomic, retain) id getStartedTap;
 @property (nonatomic, retain) id doneButtonTap;
-@property (nonatomic, retain) id registeRbuttonTap;
+@property (nonatomic, retain) id registeButtonTap;
 @property (nonatomic, retain) id signUpButtonTap;
 @property (nonatomic, retain) id welcomeVideoStart;
 @property (nonatomic, retain) id welcomeVideoEnd;

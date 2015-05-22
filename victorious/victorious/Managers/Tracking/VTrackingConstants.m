@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 04/24/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 05/22/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -222,6 +222,18 @@ NSString * const VTrackingEventUserDidSelectReplayVideo = @"UserDidSelectReplayV
 NSString * const VTrackingEventUserDidSelectPlayNextVideo = @"UserDidSelectPlayNextVideo";
 NSString * const VTrackingEventNextVideoDidAutoPlay = @"NextVideoDidAutoPlay";
 
+// First Time User Experience (FTUE)
+NSString * const VTrackingEventUserDidStartCreateProfile = @"UserDidStartCreateProfile";
+NSString * const VTrackingEventApplicationDidBoot = @"ApplicationDidBoot";
+NSString * const VTrackingEventUserDidStartRegistration = @"UserDidStartRegistration";
+NSString * const VTrackingEventUserDidFinishRegistration = @"UserDidFinishRegistration";
+NSString * const VTrackingEventUserDidSelectRegistrationDone = @"UserDidSelectRegistrationDone";
+NSString * const VTrackingEventUserDidSelectRegistrationGetStarted = @"UserDidSelectRegistrationGetStarted";
+NSString * const VTrackingEventUserDidSelectRegistrationSignUp = @"UserDidSelectRegistrationSignUp";
+NSString * const VTrackingEventWelcomeVideoDidStart = @"WelcomeVideoDidStart";
+NSString * const VTrackingEventWelcomeVideoDidEnd = @"WelcomeVideoDidEnd";
+NSString * const VTrackingEventWelcomeDidStart = @"WelcomeDidStart";
+
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
 NSString * const VTrackingKeySection = @"Section";
@@ -259,6 +271,7 @@ NSString * const VTrackingKeyRemoteId = @"RemoteId";
 NSString * const VTrackingKeyIndex = @"Index";
 NSString * const VTrackingKeyUserLoggedIn = @"UserLoggedIn";
 NSString * const VTrackingKeyLoadTime = @"LoadTime";
+NSString * const VTrackingKeyTimeSinceBoot = @"TimeSinceBoot";
 
 // Tracking Event Values
 // ContentType values
