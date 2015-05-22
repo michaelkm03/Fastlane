@@ -15,7 +15,6 @@
 #import "VMenuController.h"
 #import "VNavigationMenuItem.h"
 
-#import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VScaffoldViewController.h"
 

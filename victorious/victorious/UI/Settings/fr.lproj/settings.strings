@@ -68,7 +68,7 @@
 "WVz-KR-Hhr.title" = "Notifications push";
 
 /* Class = "UILabel"; text = "Feedback/Help"; ObjectID = "Ywp-Nm-FQ2"; */
-"Ywp-Nm-FQ2.text" = "Commentaires/Aide";
+"Ywp-Nm-FQ2.text" = "Suggestions/Aide";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "bDt-FM-3G4"; */
 "bDt-FM-3G4.title" = "Environnement du serveur";
@@ -116,5 +116,5 @@
 "xmy-by-M88.text" = "Modifier le mot de passe";
 
 /* Class = "UILabel"; text = "Autoplay Next Video"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "Lecture automatique de la vidéo suivante";
+"yLq-Ze-kTh.text" = "Lecture automatique vidéo";
 

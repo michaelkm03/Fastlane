@@ -15,6 +15,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Login.h"
+#import "VPaginationManager.h"
 #import "VRootViewController.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VObjectManager.h"
@@ -100,6 +101,7 @@ static int const kNotificationFetchBatchSize = 50;
 {
     [super viewWillAppear:animated];
     [self.refreshControl beginRefreshing];
+    [self.tableView setContentOffset:CGPointZero];
     [self refresh:nil];
 }
 
@@ -129,7 +131,7 @@ static int const kNotificationFetchBatchSize = 50;
     NSFetchRequest *fetchRequest = nil;
     
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(displayOrder)) ascending:YES];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(createdAt)) ascending:NO];
     
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:kNotificationFetchBatchSize];
@@ -149,7 +151,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self setHasNotifications:self.fetchedResultsController.fetchedObjects.count];
+    [self setHasNotifications:self.fetchedResultsController.fetchedObjects.count != 0];
     
     [super controllerDidChangeContent:controller];
 }
@@ -164,9 +166,9 @@ static int const kNotificationFetchBatchSize = 50;
         {
             noNotificationsView.dependencyManager = self.dependencyManager;
         }
-        noNotificationsView.titleLabel.text = NSLocalizedString(@"NoNotificationsTitle", @"");
-        noNotificationsView.messageLabel.text = NSLocalizedString(@"NoNotificationsMessage", @"");
-        noNotificationsView.iconImageView.image = [UIImage imageNamed:@"noNotificationsIcon"];
+        noNotificationsView.title = NSLocalizedString(@"NoNotificationsTitle", @"");
+        noNotificationsView.message = NSLocalizedString(@"NoNotificationsMessage", @"");
+        noNotificationsView.icon = [UIImage imageNamed:@"noNotificationsIcon"];
         self.tableView.backgroundView = noNotificationsView;
     }
     else
@@ -210,6 +212,11 @@ static int const kNotificationFetchBatchSize = 50;
     }
 }
 
+- (void)markAllNotificationsRead
+{
+    [[VObjectManager sharedManager] markAllNotificationsRead:nil failBlock:nil];
+}
+
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     if (self.refreshRequest != nil)
@@ -239,32 +246,38 @@ static int const kNotificationFetchBatchSize = 50;
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [self.refreshControl endRefreshing];
+        
+        //Clear all notifications from table except for those returned from the first page call
+        NSManagedObjectContext *managedObjectContext = self.fetchedResultsController.managedObjectContext;
+        for (NSManagedObject *managedObject in self.fetchedResultsController.fetchedObjects)
+        {
+            if ( ![resultObjects containsObject:managedObject] )
+            {
+                [managedObjectContext deleteObject:managedObject];
+            }
+        }
+        [managedObjectContext save:NULL];
+        
         if (self.refreshRequest == nil)
         {
-            [self.refreshControl endRefreshing];
             return;
         }
         self.refreshRequest = nil;
-        [self.refreshControl endRefreshing];
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
-        VFailBlock fail = ^(NSOperation *operation, NSError *error)
-        {
-        };
-        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-        {
-            [self.tableView reloadData];
-        };
-        [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
+        [self markAllNotificationsRead];
     };
     
     self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-                                                                               successBlock:success failBlock:fail];
+                                                                               successBlock:success
+                                                                                  failBlock:fail];
 }
 
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeNext
-                                                        successBlock:nil failBlock:nil];
+                                                         successBlock:nil
+                                                            failBlock:nil];
 }
 
 #pragma mark - NSNotification handlers
@@ -316,6 +329,19 @@ static int const kNotificationFetchBatchSize = 50;
     else
     {
         self.badgeNumber = 0;
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+    VAbstractFilter *filter = [[VObjectManager sharedManager] notificationFilterForCurrentUserFromManagedObjectContext:context];
+    
+    if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter] )
+    {
+        [self loadNextPageAction];
     }
 }
 

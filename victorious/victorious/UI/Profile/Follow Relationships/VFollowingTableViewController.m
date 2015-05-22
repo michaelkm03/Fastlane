@@ -16,17 +16,14 @@
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
 #import "VConstants.h"
-#import "VThemeManager.h"
 #import "MBProgressHUD.h"
 #import "VDependencyManager.h"
-#import "VFollowerEventResponder.h"
 #import "VDependencyManager+VUserProfile.h"
 
 @interface VFollowingTableViewController ()
 
 @property (nonatomic, strong)   NSArray    *following;
 @property (nonatomic) BOOL isMe;
-@property (nonatomic, strong) VFollowerEventResponder *followCommandHandler;
 
 @end
 
@@ -40,17 +37,6 @@
         _dependencyManager = dependencyManager;
     }
     return self;
-}
-
-#pragma mark - UIResponder
-
-- (UIResponder *)nextResponder
-{
-    self.followCommandHandler = [[VFollowerEventResponder alloc] initWithNextResponder:[super nextResponder]];
-    self.followCommandHandler.viewControllerToPresentAuthorizationOn = self;
-    self.followCommandHandler.dependencyManager = self.dependencyManager;
-    
-    return self.followCommandHandler;
 }
 
 #pragma mark - View Lifecycle
@@ -243,9 +229,9 @@
             notFollowingView.dependencyManager = self.dependencyManager;
         }
         self.tableView.backgroundView = notFollowingView;
-        notFollowingView.titleLabel.text = title;
-        notFollowingView.messageLabel.text = msg;
-        notFollowingView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+        notFollowingView.title = title;
+        notFollowingView.message = msg;
+        notFollowingView.icon = [UIImage imageNamed:@"noFollowersIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }

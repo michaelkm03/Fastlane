@@ -114,6 +114,7 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
     {
         _keyboardBarViewController = [self.storyboard instantiateViewControllerWithIdentifier:kKeyboardBarStoryboardID];
         _keyboardBarViewController.delegate = self;
+        _keyboardBarViewController.dependencyManager = self.dependencyManager;
     }
 
     return _keyboardBarViewController;

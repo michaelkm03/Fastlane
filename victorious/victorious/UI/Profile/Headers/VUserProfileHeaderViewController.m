@@ -11,7 +11,6 @@
 #import "VDependencyManager.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
-#import "VThemeManager.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 
@@ -228,6 +227,7 @@
                           block:^(id observer, id object, NSDictionary *change)
      {
          [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+         [welf updateProfileImage];
      }];
     
     [self.KVOController observe:user

@@ -99,12 +99,11 @@
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="reE-xi-zdS" userLabel="Edit/Follow/Unfollow Action Button" customClass="VButton">
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="reE-xi-zdS" userLabel="Edit/Follow/Unfollow Action Button" customClass="VButton">
                             <rect key="frame" x="240" y="11" width="120" height="38"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="38" id="MKj-WW-1cl"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="ed5-dn-BUg"/>
-                                <constraint firstAttribute="width" priority="999" constant="100" id="lnz-N8-tw3"/>
                             </constraints>
                             <state key="normal" title="Edit Button">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

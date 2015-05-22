@@ -12,7 +12,7 @@
 
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspace.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -27,6 +27,7 @@
 #import "UIAlertView+VBlocks.h"
 #import "VAutomation.h"
 #import "VButton.h"
+#import "VDefaultProfileImageView.h"
 
 #import "VLocationManager.h"
 
@@ -37,7 +38,7 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *locationTextField;
-@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet VButton *doneButton;
 
 @property (nonatomic, strong) VLocationManager *locationManager;
@@ -384,7 +385,7 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;
     [self presentViewController:workspaceFlowController.flowRootViewController

@@ -36,4 +36,9 @@
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view;
 
+/**
+ *  Shows any reposters for the given sequence.
+ */
+- (void)showRepostersForSequence:(VSequence *)sequence;
+
 @end

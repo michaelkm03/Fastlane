@@ -167,9 +167,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
             {
                 noContentView.dependencyManager = self.dependencyManager;
             }
-            noContentView.titleLabel.text = NSLocalizedString( @"NoHashtagsTitle", @"" );
-            noContentView.messageLabel.text = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
-            noContentView.iconImageView.image = [UIImage imageNamed:@"tabIconHashtag"];
+            noContentView.title = NSLocalizedString( @"NoHashtagsTitle", @"" );
+            noContentView.message = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
+            noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
             self.noContentView = noContentView;
         }
         

@@ -8,8 +8,6 @@
 
 #import "VContentPollQuestionCell.h"
 
-#import "VThemeManager.h"
-
 static CGFloat const kMinimumCellHeight = 90.0f;
 static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
 
@@ -54,17 +52,11 @@ static UIEdgeInsets kLabelInset = { 8, 8, 8, 8};
                                               attributes:attributes
                                                  context:[[NSStringDrawingContext alloc] init]];
     
-    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, CGRectGetHeight(boundingRect) + kLabelInset.top + kLabelInset.bottom));
+    CGSize sizedPoll = CGSizeMake(maxSize.width, MAX(kMinimumCellHeight, VCEIL((CGRectGetHeight(boundingRect))) + kLabelInset.top + kLabelInset.bottom));
 
     [[self sizingCache] setObject:[NSValue valueWithCGSize:sizedPoll]
                            forKey:keyForQuestionBoundsAndAttribute];
     return sizedPoll;
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    self.questionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
 - (void)setQuestion:(NSAttributedString *)question

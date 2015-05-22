@@ -11,7 +11,7 @@
 #import "VHasManagedDependencies.h"
 
 /**
- *  An VAbstractActionView for sleek cells
+ *  An VAbstractActionView for sleek cells.
  */
 @interface VSleekActionView : VAbstractActionView <VHasManagedDependencies>
 
