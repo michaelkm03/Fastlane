@@ -88,6 +88,7 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
         [button v_addWidthConstraint:kAvatarSize];
         [button addTarget:self action:@selector(selectedUserButton:) forControlEvents:UIControlEventTouchUpInside];
         self.profileButton = button;
+        self.profileButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
         creationContainer.translatesAutoresizingMaskIntoConstraints = NO;
