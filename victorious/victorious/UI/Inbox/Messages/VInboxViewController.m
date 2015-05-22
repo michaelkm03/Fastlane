@@ -183,17 +183,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         self.badgeNumberUpdateBlock( badgeNumber );
     }
-    
-    /*[__block NSInteger total = 0;
-    self v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
-    {
-        id<VProvidesNavigationMenuItemBadge> provider = [responder targetForAction:@selector(badgeNumberUpdateBlock) withSender:self];
-        if ( provider.badgeNumberUpdateBlock != nil )
-        {
-            total += provider.badgeNumber;
-            provider.badgeNumberUpdateBlock( total );
-        }
-    }];*/
 }
 
 #pragma mark - VAuthorizationContextProvider

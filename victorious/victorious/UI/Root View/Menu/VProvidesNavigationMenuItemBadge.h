@@ -18,15 +18,15 @@ typedef void (^VNavigationMenuItemBadgeNumberUpdateBlock)(NSInteger badgeNumber)
 @protocol VProvidesNavigationMenuItemBadge <NSObject>
 
 /**
- Returns a number to badge the navigation menu item.
- */
-- (NSInteger)badgeNumber;
-
-/**
  A block to be called whenever the badge number changes.
  Receivers should keep a strong reference to this block and
  call it whenever the badge number needs to change.
  */
 @property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+
+/**
+ Returns a number to badge the navigation menu item.
+ */
+- (NSInteger)badgeNumber;
 
 @end

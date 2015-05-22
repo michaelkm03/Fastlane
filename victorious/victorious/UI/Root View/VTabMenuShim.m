@@ -106,7 +106,7 @@
     __block NSInteger applicationBadge = 0;
     [self.badgeProviders enumerateObjectsUsingBlock:^(id <VProvidesNavigationMenuItemBadge> obj, NSUInteger idx, BOOL *stop)
     {
-        applicationBadge += [obj badgeNumber];
+        applicationBadge += [obj respondsToSelector:@selector(badgeNumber)] ? [obj badgeNumber] : 0;
     }];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:applicationBadge];
 }

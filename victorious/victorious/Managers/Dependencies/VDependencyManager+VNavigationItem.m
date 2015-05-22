@@ -91,7 +91,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
             [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
             barButton.menuItemIdentifier = menuItem.identifier;
             
-            [self registerBadgeUpdateBlockWithButton:barButton destination:menuItem.destination];
+            [self registerBadgeUpdateBlockWithButton:barButton destination:menuItem.destination origin:sourceViewController];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItemIdentifier = menuItem.identifier;
@@ -124,15 +124,22 @@ static const char kAssociatedObjectSourceViewControllerKey;
     [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:YES];
 }
 
-- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton destination:(id)destination
+- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton destination:(id)destination origin:(id)origin
 {
     __weak typeof (barButton) weakBarButton = barButton;
+    
+    VNavigationMenuItemBadgeNumberUpdateBlock originBadgeNumberUpdateBlock;
+    
     id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)destination;
     if ( [badgeProvider conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
     {
         VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
         {
             [weakBarButton setBadgeNumber:badgeNumber];
+            if ( originBadgeNumberUpdateBlock != nil )
+            {
+                originBadgeNumberUpdateBlock( badgeNumber );
+            }
             [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
         };
         
