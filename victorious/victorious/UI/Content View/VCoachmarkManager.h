@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "VCoachmarkDisplayer.h"
 
-#warning TESTS INCOMPLETE
-
 @class VDependencyManager;
 
 @interface VCoachmarkManager : NSObject
