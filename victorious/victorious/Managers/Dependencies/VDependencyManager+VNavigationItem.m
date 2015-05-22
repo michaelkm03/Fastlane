@@ -17,9 +17,13 @@
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 
+/**
+ A UIBarButtonItem subclass used primarily to attach the `menuItemIdentifier` property
+ so that the same instance can be retreived from the navigation item when selected by the user.
+ */
 @interface VBarButtonItem : UIBarButtonItem
 
-@property (nonatomic, copy) NSString *menuItemIdentifier;
+@property (nonatomic, copy) NSString *menuItemIdentifier; ///< The identifier from the VNavigationMenuItem used to create this instance
 
 @end
 

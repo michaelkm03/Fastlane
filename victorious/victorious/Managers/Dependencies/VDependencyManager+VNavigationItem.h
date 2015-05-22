@@ -51,6 +51,10 @@ extern NSString * const VDependencyManagerAccessoryItemMore;
  */
 - (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier;
 
+/**
+ Returns a VBarButton (a custom view designed for navivation items) that was created based
+ on a menu item that matches the provider identifier.  Will return nilif no matching bar button was found.
+ */
 - (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier;
 
 /**

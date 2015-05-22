@@ -51,7 +51,6 @@ static int const kNotificationFetchBatchSize = 50;
     if (viewController)
     {
         viewController.dependencyManager = dependencyManager;
-        //[dependencyManager configureNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
@@ -292,7 +291,7 @@ static int const kNotificationFetchBatchSize = 50;
     
     if ( self.badgeNumberUpdateBlock != nil )
     {
-        //self.badgeNumberUpdateBlock(self.badgeNumber);
+        self.badgeNumberUpdateBlock(self.badgeNumber);
     }
 }
 

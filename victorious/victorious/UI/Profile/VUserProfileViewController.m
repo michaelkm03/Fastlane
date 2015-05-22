@@ -788,7 +788,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         return isCurrentUser;
     }
-    
     return YES;
 }
 
@@ -807,7 +806,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             ((VMessageContainerViewController *)menuItem.destination).otherUser = self.user;
         }
     }
-    
+    if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
+    }
     return YES;
 }
 
