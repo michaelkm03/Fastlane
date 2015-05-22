@@ -166,10 +166,8 @@ static const CGFloat kAnimationDelay = 1.0f;
 {
     if ( passthroughContainerView != nil )
     {
-        NSLog(@"not nil");
         if ( !passthroughContainerView.coachmarkView.hasBeenShown )
         {
-            NSLog(@"hasn't been shown");
             //The coachmarkView associated with this passthrough view hasn't shown yet,
             //add it to the removed overlays array to cancel showing it
             [self.removedPassthroughOverlays addObject:passthroughContainerView];
