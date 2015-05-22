@@ -61,6 +61,7 @@
 #endif
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
+    [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
     
     uploadManager.objectManager = manager;
