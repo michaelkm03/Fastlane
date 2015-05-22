@@ -167,6 +167,9 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     [self.contentView addConstraints:self.noCaptionConstraints];
     [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
     [NSLayoutConstraint deactivateConstraints:self.noCaptionConstraints];
+    
+    // Fixes constraint errors when resizing for certain aspect ratios
+    self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
 }
 
 #pragma mark - UIView
@@ -182,11 +185,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     {
         [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
         [NSLayoutConstraint activateConstraints:self.noCaptionConstraints];
-    }
-    if ([self.captionTextView v_internalHeightConstraint] != nil)
-    {
-        // CaptionTextView sometimes screws with layout with compression resistance.
-        [self.captionTextView removeConstraint:[self.captionTextView v_internalHeightConstraint]];
     }
     
     // Add new height constraint for preview container to account for aspect ratio of preview asset
@@ -234,6 +232,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     [self updateCaptionViewForSequence:sequence];
     [self reloadCommentsCountForSequence:sequence];
     self.actionView.sequence = sequence;
+    if ([self.captionTextView v_internalHeightConstraint] != nil)
+    {
+        // CaptionTextView sometimes screws with layout with compression resistance.
+        [self.captionTextView removeConstraint:[self.captionTextView v_internalHeightConstraint]];
+    }
     // Remove current height constraint on preview view to account for potential new aspect ratio
     [self.contentView removeConstraint:self.previewViewHeightConstraint];
     [self setNeedsUpdateConstraints];
