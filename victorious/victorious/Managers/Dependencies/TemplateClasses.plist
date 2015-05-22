@@ -22,6 +22,8 @@
 	<string>VSolidColorBackground</string>
 	<key>tilePattern.background</key>
 	<string>VTilePatternBackground</string>
+	<key>video.background</key>
+	<string>VVideoBackground</string>
 	<key>trim.video.tool</key>
 	<string>VTrimVideoTool</string>
 	<key>snapshot.video.tool</key>

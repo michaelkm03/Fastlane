@@ -10,22 +10,27 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VDependencyManager+VBackgroundContainer.h"
+
+// Views + Helpers
+#import "VBackgroundContainer.h"
 
 // Responder Chain
 #import "VLoginFlowControllerResponder.h"
 
 static NSString *kRegistrationScreens = @"registrationScreens";
 static NSString *kLoginScreens = @"loginScreens";
+static NSString *kLandingScreen = @"landingScreen";
 
-@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder>
+@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer>
 
 @property (nonatomic, assign) VAuthorizationContext authorizationContext;
 @property (nonatomic, strong) VLoginFlowCompletionBlock completionBlock;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) UIViewController *landingScreen;
 @property (nonatomic, strong) NSArray *registrationScreens;
 @property (nonatomic, strong) NSArray *loginScreens;
-
 
 @end
 
@@ -37,13 +42,26 @@ static NSString *kLoginScreens = @"loginScreens";
     if (self)
     {
         _dependencyManager = dependencyManager;
+        
+        // Landing
+        _landingScreen = [dependencyManager templateValueOfType:[UIViewController class]
+                                                         forKey:kLandingScreen];
+        [self setViewControllers:@[_landingScreen]];
+        
+        // Login + Registration
         _registrationScreens = [dependencyManager arrayOfValuesOfType:[UIViewController class]
                                                                forKey:kRegistrationScreens];
         _loginScreens = [dependencyManager arrayOfValuesOfType:[UIViewController class]
                                                         forKey:kLoginScreens];
-        [self setViewControllers:@[[_registrationScreens firstObject]]];
     }
     return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -52,6 +70,19 @@ static NSString *kLoginScreens = @"loginScreens";
     
     // Setup login
     self.view.backgroundColor = [UIColor lightGrayColor];
+}
+
+#pragma mark - VHasManagedDependencies
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    // We only care about a new dependency manager if we don't already have one. Shoudl use initWithDependencyManager:
+    if (_dependencyManager)
+    {
+        return;
+    }
+    
+    _dependencyManager = dependencyManager;
 }
 
 #pragma mark - VLoginFlowControllerResponder
@@ -78,12 +109,24 @@ static NSString *kLoginScreens = @"loginScreens";
 
 - (UIViewController *)nextScreenAfterCurrentInArray:(NSArray *)array
 {
+    if (![array containsObject:self.topViewController])
+    {
+        return [array firstObject];
+    }
+    
     NSUInteger currentIndex = [array indexOfObject:self.topViewController];
     if ((currentIndex+1) <= array.count)
     {
         return [array objectAtIndex:currentIndex+1];
     }
     return [array objectAtIndex:currentIndex];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
 }
 
 @end

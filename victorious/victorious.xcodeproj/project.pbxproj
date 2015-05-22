@@ -705,6 +705,7 @@
 		D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */; };
 		D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */; };
 		D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B709A1B0EF0520038CA5B /* VModernRegisterViewController.m */; };
+		D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B709D1B0FA6340038CA5B /* VVideoBackground.m */; };
 		D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */; };
 		D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */; };
 		D85E42841AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42831AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m */; };
@@ -2205,6 +2206,8 @@
 		D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLoginViewController.m; sourceTree = "<group>"; };
 		D85B70991B0EF0520038CA5B /* VModernRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernRegisterViewController.h; sourceTree = "<group>"; };
 		D85B709A1B0EF0520038CA5B /* VModernRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernRegisterViewController.m; sourceTree = "<group>"; };
+		D85B709C1B0FA6340038CA5B /* VVideoBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoBackground.h; sourceTree = "<group>"; };
+		D85B709D1B0FA6340038CA5B /* VVideoBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoBackground.m; sourceTree = "<group>"; };
 		D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewView.h; sourceTree = "<group>"; };
 		D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequencePreviewView.m; sourceTree = "<group>"; };
 		D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSequencePreviewView.h; sourceTree = "<group>"; };
@@ -5415,6 +5418,8 @@
 				D876E1FA1A9DA685002CAA29 /* VBackground.h */,
 				D876E1FB1A9DA685002CAA29 /* VBackground.m */,
 				D876E2001A9DA6DD002CAA29 /* VBlurredImageBackground.h */,
+				D85B709C1B0FA6340038CA5B /* VVideoBackground.h */,
+				D85B709D1B0FA6340038CA5B /* VVideoBackground.m */,
 				D876E2011A9DA6DD002CAA29 /* VBlurredImageBackground.m */,
 				D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */,
 				D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */,
@@ -6580,6 +6585,7 @@
 				A77AD4F11A1FD8B600142F24 /* VAlertControllerAdvanced.m in Sources */,
 				035FA78D1AE6C4E20002EE63 /* VInboxViewController.m in Sources */,
 				0330D42B1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m in Sources */,
+				D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */,
 				D85B707B1B0EAF3F0038CA5B /* VTabBarViewController.m in Sources */,
 				DB51C54219F86971005AA7B6 /* VAdBreakFallback+RestKit.m in Sources */,
 				A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */,

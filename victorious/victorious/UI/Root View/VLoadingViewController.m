@@ -230,11 +230,17 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         // Modern
         loginComponent = @{
                            @"name":@"modernLoginAndRegistration.screen",
+                           @"background":
+                               @{
+                                   @"name":@"video.background",
+                                   @"sequenceURL":@"http://dev.getvictorious.com/api/sequence/fetch/12318",
+                                   },
+                           @"landingScreen":
+                               @{
+                                   @"name":@"modernLanding.screen",
+                                   },
                            @"registrationScreens":
                                @[
-                                   @{
-                                       @"name":@"modernLanding.screen",
-                                       },
                                    @{
                                        @"name":@"modernRegisterEmailAndPassword.screen",
                                        },
