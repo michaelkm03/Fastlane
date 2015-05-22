@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VHasManagedDependencies.h"
 
-@interface VModernLandingViewController : UIViewController
+/**
+ *  The modern LandingViewController provides UI for the user to login or register with 
+ *  various social and email options.
+ */
+@interface VModernLandingViewController : UIViewController <VHasManagedDependencies>
 
 @end

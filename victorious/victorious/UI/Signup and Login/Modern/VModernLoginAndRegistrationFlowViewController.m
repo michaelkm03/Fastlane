@@ -11,6 +11,7 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VStatusBarStyle.h"
 
 // Views + Helpers
 #import "VBackgroundContainer.h"
@@ -21,6 +22,7 @@
 static NSString *kRegistrationScreens = @"registrationScreens";
 static NSString *kLoginScreens = @"loginScreens";
 static NSString *kLandingScreen = @"landingScreen";
+static NSString *kStatusBarStyleKey = @"statusBarStyle";
 
 @interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer>
 
@@ -60,16 +62,21 @@ static NSString *kLandingScreen = @"landingScreen";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
+    self.view.backgroundColor = [UIColor blackColor];
+    [self.navigationBar setBackgroundImage:[[UIImage alloc] init]
+                             forBarMetrics:UIBarMetricsDefault];
+    self.navigationBar.shadowImage = [[UIImage alloc] init];
+    self.navigationBar.translucent = YES;
+    self.navigationBar.backgroundColor = [UIColor clearColor];
+    self.navigationBar.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    [super viewWillAppear:animated];
-    
-    // Setup login
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
 }
 
 #pragma mark - VHasManagedDependencies

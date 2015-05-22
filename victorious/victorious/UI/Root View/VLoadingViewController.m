@@ -230,19 +230,44 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         // Modern
         loginComponent = @{
                            @"name":@"modernLoginAndRegistration.screen",
+                           @"logo":@{
+                                   @"imageURL":@"homeHeaderImage",
+                                   },
                            @"background":
                                @{
                                    @"name":@"video.background",
                                    @"sequenceURL":@"http://dev.getvictorious.com/api/sequence/fetch/12318",
                                    },
+                           @"statusBarStyle":@"light",
+                           @"color.text.secondary":
+                               @{
+                                   @"red":@255,
+                                   @"green":@255,
+                                   @"blue":@255,
+                                   @"alpha":@255
+                                   },
                            @"landingScreen":
                                @{
                                    @"name":@"modernLanding.screen",
+                                   @"color.text.content":
+                                       @{
+                                           @"red":@255,
+                                           @"green":@255,
+                                           @"blue":@255,
+                                           @"alpha":@255
+                                           },
                                    },
                            @"registrationScreens":
                                @[
                                    @{
                                        @"name":@"modernRegisterEmailAndPassword.screen",
+                                       @"color.text.content":
+                                           @{
+                                               @"red":@255,
+                                               @"green":@255,
+                                               @"blue":@255,
+                                               @"alpha":@255
+                                               },
                                        },
                                    ],
                            @"loginScreens":

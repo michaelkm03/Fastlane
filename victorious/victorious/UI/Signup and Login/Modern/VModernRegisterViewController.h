@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VHasManagedDependencies.h"
 
-@interface VModernRegisterViewController : UIViewController
+/**
+ *  The Register ViewController provides UI for the user to register a new email based account.
+ */
+@interface VModernRegisterViewController : UIViewController <VHasManagedDependencies>
 
 @end

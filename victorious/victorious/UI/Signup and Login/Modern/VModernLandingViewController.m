@@ -10,37 +10,60 @@
 #import "VLoginFlowControllerResponder.h"
 #import "UIView+AutoLayout.h"
 
+#import "VDependencyManager.h"
+
+static NSString *kLogoKey = @"logo";
+static NSString *kStatusBarStyle = @"statusBarStyle";
+
 @interface VModernLandingViewController ()
 
-@property (nonatomic, strong) UIButton *registerButton;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, weak) IBOutlet UITextView *legalTextView;
 
 @end
 
 @implementation VModernLandingViewController
 
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VModernLandingViewController *landingViewContorller = [[UIStoryboard storyboardWithName:NSStringFromClass(self)
+                                                                                     bundle:[NSBundle bundleForClass:self]] instantiateInitialViewController];
+    landingViewContorller.dependencyManager = dependencyManager;
+    return landingViewContorller;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.registerButton setTitle:@"Register" forState:UIControlStateNormal];
-    [self.registerButton addTarget:self action:@selector(toRegsiter) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.registerButton];
-    [self.view v_addCenterToParentContraintsToSubview:self.registerButton];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                   target:self
                                                                                   action:@selector(selectedCancel)];
     self.navigationItem.leftBarButtonItem = cancelButton;
     
-    UIImageView *headerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"homeHeaderImage"]];
+    UIImage *headerImage = [self.dependencyManager imageForKey:kLogoKey];
+    UIImageView *headerImageView = [[UIImageView alloc] initWithImage:headerImage];
     self.navigationItem.titleView = headerImageView;
     
     UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login"
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self
                                                                    action:@selector(login)];
+    [loginButton setTitleTextAttributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
+                                          NSForegroundColorAttributeName:[self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey]}
+                               forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = loginButton;
+
+    self.legalTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.legalTextView.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    // Text was scrolled out of frame without this.
+    self.legalTextView.contentOffset = CGPointZero;
 }
 
 #pragma mark - Target/Action
@@ -67,7 +90,7 @@
     [flowControllerResponder selectedLogin];
 }
 
-- (void)toRegsiter
+- (IBAction)toRegsiter:(id)sender
 {
     id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedRegister)
                                                                            withSender:self];

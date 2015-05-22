@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="yjK-eD-rfp">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <scenes>
+        <!--Modern Landing View Controller-->
+        <scene sceneID="7ZZ-hX-JXu">
+            <objects>
+                <viewController id="yjK-eD-rfp" customClass="VModernLandingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6rv-rt-0vz"/>
+                        <viewControllerLayoutGuide type="bottom" id="R8Q-wg-c7I"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bwi-3a-TBY">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" text="By signing up you are agreeing to our ToS and privacy policy." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qk2-es-3aq">
+                                <rect key="frame" x="20" y="409" width="560" height="33"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xpp-jF-2DP">
+                                <rect key="frame" x="0.0" y="450" width="600" height="50"/>
+                                <color key="backgroundColor" red="0.33333333333333331" green="0.67450980392156867" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="bUJ-ZK-J2u"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="Login with Twitter">
+                                    <color key="titleColor" red="0.96078431372549022" green="0.97254901960784312" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6q7-og-v17">
+                                <rect key="frame" x="0.0" y="500" width="600" height="50"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="0.70000000000000007" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="aHQ-05-g6y"/>
+                                    <constraint firstAttribute="height" constant="50" id="lkl-fJ-LYN"/>
+                                </constraints>
+                                <state key="normal" title="Sign up with Email">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toRegsiter:" destination="yjK-eD-rfp" eventType="touchUpInside" id="Fh0-f9-aIo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTi-xz-WY3" userLabel="Facebook">
+                                <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                                <color key="backgroundColor" red="0.23921568627450979" green="0.3529411764705882" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="ygi-E7-03h"/>
+                                </constraints>
+                                <state key="normal" title="Login with Facebook">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Xpp-jF-2DP" secondAttribute="trailing" id="4eG-18-DV1"/>
+                            <constraint firstItem="6q7-og-v17" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="5GP-bt-SoD"/>
+                            <constraint firstItem="Xpp-jF-2DP" firstAttribute="top" secondItem="Qk2-es-3aq" secondAttribute="bottom" constant="8" id="63G-nR-SpL"/>
+                            <constraint firstItem="Xpp-jF-2DP" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="9og-sv-Cmz"/>
+                            <constraint firstAttribute="trailing" secondItem="Qk2-es-3aq" secondAttribute="trailing" constant="20" id="ArL-nb-2Ab"/>
+                            <constraint firstItem="R8Q-wg-c7I" firstAttribute="top" secondItem="tTi-xz-WY3" secondAttribute="bottom" id="NYh-Mb-kKo"/>
+                            <constraint firstItem="tTi-xz-WY3" firstAttribute="top" secondItem="6q7-og-v17" secondAttribute="bottom" id="UUz-vt-WrB"/>
+                            <constraint firstAttribute="trailing" secondItem="6q7-og-v17" secondAttribute="trailing" id="Y17-1w-Ndp"/>
+                            <constraint firstItem="Qk2-es-3aq" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" constant="20" id="aqr-VG-W3P"/>
+                            <constraint firstItem="6q7-og-v17" firstAttribute="top" secondItem="Xpp-jF-2DP" secondAttribute="bottom" id="b0S-dn-b8h"/>
+                            <constraint firstAttribute="trailing" secondItem="tTi-xz-WY3" secondAttribute="trailing" id="ebi-gO-TKo"/>
+                            <constraint firstItem="tTi-xz-WY3" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="gac-P8-3A4"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="legalTextView" destination="Qk2-es-3aq" id="Ln6-in-YmU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OH9-m2-xuT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="656" y="546"/>
+        </scene>
+    </scenes>
+</document>

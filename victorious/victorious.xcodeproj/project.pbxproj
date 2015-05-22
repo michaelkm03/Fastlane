@@ -719,6 +719,10 @@
 		D86BF35C1A42683E00C9F420 /* VPublishBlurOverAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF35B1A42683E00C9F420 /* VPublishBlurOverAnimator.m */; };
 		D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
 		D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351871A3120F5006D97B2 /* VCanvasView.m */; };
+		D8758D1A1B0FAD64008C6C0D /* VModernLandingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8758D191B0FAD64008C6C0D /* VModernLandingViewController.storyboard */; };
+		D8758D1C1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8758D1B1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard */; };
+		D8758D1F1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D8758D1E1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m */; };
+		D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = D8758D211B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m */; };
 		D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E1FB1A9DA685002CAA29 /* VBackground.m */; };
 		D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */; };
 		D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E2011A9DA6DD002CAA29 /* VBlurredImageBackground.m */; };
@@ -2233,6 +2237,12 @@
 		D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVRTCUserPostedAtFormatterTests.m; sourceTree = "<group>"; };
 		D87351861A3120F5006D97B2 /* VCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCanvasView.h; sourceTree = "<group>"; };
 		D87351871A3120F5006D97B2 /* VCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCanvasView.m; sourceTree = "<group>"; };
+		D8758D191B0FAD64008C6C0D /* VModernLandingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VModernLandingViewController.storyboard; sourceTree = "<group>"; };
+		D8758D1B1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VModernRegisterViewController.storyboard; sourceTree = "<group>"; };
+		D8758D1D1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VStatusBarStyle.h"; sourceTree = "<group>"; };
+		D8758D1E1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VStatusBarStyle.m"; sourceTree = "<group>"; };
+		D8758D201B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VKeyboardStyle.h"; sourceTree = "<group>"; };
+		D8758D211B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VKeyboardStyle.m"; sourceTree = "<group>"; };
 		D876E1FA1A9DA685002CAA29 /* VBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBackground.h; sourceTree = "<group>"; };
 		D876E1FB1A9DA685002CAA29 /* VBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBackground.m; sourceTree = "<group>"; };
 		D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSolidColorBackground.h; sourceTree = "<group>"; };
@@ -3587,6 +3597,10 @@
 				03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
+				D8758D1D1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.h */,
+				D8758D1E1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m */,
+				D8758D201B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.h */,
+				D8758D211B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -5256,15 +5270,17 @@
 		D85B702B1B0EAF3F0038CA5B /* Modern */ = {
 			isa = PBXGroup;
 			children = (
+				D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */,
 				D85B708D1B0ECC6D0038CA5B /* VModernLandingViewController.h */,
 				D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */,
+				D8758D191B0FAD64008C6C0D /* VModernLandingViewController.storyboard */,
 				D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */,
 				D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */,
-				D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */,
 				D85B70961B0EED0D0038CA5B /* VModernLoginViewController.h */,
 				D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */,
 				D85B70991B0EF0520038CA5B /* VModernRegisterViewController.h */,
 				D85B709A1B0EF0520038CA5B /* VModernRegisterViewController.m */,
+				D8758D1B1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard */,
 			);
 			path = Modern;
 			sourceTree = "<group>";
@@ -6109,6 +6125,7 @@
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
 				DB7460381A93A5BE006C2245 /* VInlineUserTableViewCell.xib in Resources */,
+				D8758D1C1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
 				036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */,
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
@@ -6134,6 +6151,7 @@
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
+				D8758D1A1B0FAD64008C6C0D /* VModernLandingViewController.storyboard in Resources */,
 				A7D378421AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.xib in Resources */,
 				DB81FB631AAE49FE00EA4E3C /* LaunchImage@2x.png in Resources */,
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
@@ -6751,6 +6769,7 @@
 				D85B70791B0EAF3F0038CA5B /* VInviteFriendTableViewCell.m in Sources */,
 				D85E42871AFA9A2F00A13BD3 /* VPollSequencePreviewView.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
+				D8758D1F1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m in Sources */,
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
 				D85B70751B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.m in Sources */,
@@ -6895,6 +6914,7 @@
 				F028F3BE1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
+				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
 				D8DF71F11AFD987B002EA7A5 /* VFollowingHelper.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,
