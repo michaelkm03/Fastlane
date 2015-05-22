@@ -218,6 +218,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         [templateDecorator setTemplateValue:@{@"name":@"standard.permissionsAlert",
+                                              @"profileImagePermission.message":@"In order to be recognized in the community, you need to set a profile picture.\n\nWould you like to set one now?",
+                                              @"cameraPermission.message":@"In order to post content, we need access to your camera. Allow access?",
+                                              @"microphonePermission.message":@"In order to record videos, we need access to your microphone. Allow access?",
                                               VDependencyManagerAccentColorKey:@{@"alpha":@(255),
                                                                                  @"blue":@(236),
                                                                                  @"green":@(158),

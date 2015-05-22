@@ -49,11 +49,7 @@
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *message = [dependencyManager stringForKey:@"microphonePermission.message"];
-    if (message != nil && message.length > 0)
-    {
-        return message;
-    }
-    return NSLocalizedString(@"In order to record videos, we need access to your microphone. Allow access?", @"");
+    return NSLocalizedString(message, @"");
 }
 
 @end

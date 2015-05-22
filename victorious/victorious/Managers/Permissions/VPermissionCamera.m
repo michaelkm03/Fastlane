@@ -46,11 +46,7 @@
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *message = [dependencyManager stringForKey:@"cameraPermission.message"];
-    if (message != nil && message.length > 0)
-    {
-        return message;
-    }
-    return NSLocalizedString(@"In order to post content, we need access to your camera. Allow access?", @"");
+    return NSLocalizedString(message, @"");
 }
 
 @end
