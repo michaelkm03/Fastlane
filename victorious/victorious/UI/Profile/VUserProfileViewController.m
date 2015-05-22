@@ -37,6 +37,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VStreamNavigationViewFloatingController.h"
 #import "VNavigationController.h"
+#import "VAuthorizedAction.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -853,10 +854,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource
 {
-    VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    VAuthorizedAction *authorizationAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager] dependencyManager:self.dependencyManager];
+    [authorizationAction performFromViewController:self
+                                           context:VAuthorizationContextUserProfile
+                                        completion:^(BOOL authorized) { }];
+//    VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+//    viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+//    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - VNavigationViewFloatingControllerDelegate

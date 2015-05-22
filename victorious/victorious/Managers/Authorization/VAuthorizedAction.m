@@ -8,15 +8,12 @@
 
 #import "VAuthorizedAction.h"
 #import "VObjectManager+Login.h"
-#import "VLoginViewController.h"
 #import "VProfileCreateViewController.h"
-#import "VPresentWithBlurTransition.h"
-#import "VTransitionDelegate.h"
 #import "VDependencyManager.h"
+#import "VStandardLoginFlowViewController.h"
 
 @interface VAuthorizedAction()
 
-@property (nonatomic, strong) VTransitionDelegate *transition;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) VObjectManager *objectManager;
 
@@ -35,7 +32,6 @@
     {
         _objectManager = objectManager;
         _dependencyManager = dependencyManager;
-        _transition = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
     }
     return self;
 }
@@ -60,13 +56,14 @@
     }
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
-        VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
-        viewController.authorizationContextType = authorizationContext;
-        [viewController setAuthorizedAction:completionActionBlock];
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-        viewController.transitionDelegate = self.transition;
-        [presentingViewController presentViewController:navigationController animated:YES completion:nil];
+        VStandardLoginFlowViewController *loginFlowController = [[VStandardLoginFlowViewController alloc] initWithAuthorizationContext:authorizationContext
+                                                                                                                         ObjectManager:self.objectManager
+                                                                                                                     dependencyManager:self.dependencyManager
+                                                                                                                            completion:completionActionBlock];
+
+        [presentingViewController presentViewController:loginFlowController
+                                               animated:YES
+                                             completion:nil];
         return NO;
     }
     else

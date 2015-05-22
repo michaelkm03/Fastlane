@@ -216,6 +216,19 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
 
+        // Standard
+        NSDictionary *standardLoginComponent = @{
+                                                 @"name":@"standard.loginAndRegistrationView",
+                                                 @"forceRegistration":@YES
+                                                 };
+
+        // Auto-Show Login
+        [templateDecorator setTemplateValue:@YES
+                                 forKeyPath:@"scaffold/showLoginOnStartup"];
+        
+        [templateDecorator setTemplateValue:standardLoginComponent
+                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

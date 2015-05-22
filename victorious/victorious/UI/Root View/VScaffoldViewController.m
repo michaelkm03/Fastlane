@@ -59,6 +59,19 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - Lifecyle Methods
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:@"showLoginOnStartup"] boolValue];
+    if (shouldShowLogin && !self.hasBeenShown )
+    {
+        [self.authorizedAction performFromViewController:self
+                                                 context:VAuthorizationContextDefault
+                                              completion:^(BOOL authorized) {}];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

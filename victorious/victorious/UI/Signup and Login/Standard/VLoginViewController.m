@@ -187,21 +187,6 @@
     return UIStatusBarStyleLightContent;
 }
 
-#pragma mark - VPresentWithBlurViewController
-
-- (void)setTransitionDelegate:(VTransitionDelegate *)transitionDelegate
-{
-    _transitionDelegate = transitionDelegate;
-    
-    UIViewController *viewController = self;
-    if ( self.navigationController != nil )
-    {
-        viewController = self.navigationController;
-    }
-    
-    viewController.transitioningDelegate = transitionDelegate;
-}
-
 #pragma mark - CCHLinkTextViewDelegate
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
