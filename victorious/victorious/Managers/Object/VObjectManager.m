@@ -487,8 +487,14 @@
         [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
     }
     
+    NSString *locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
+    if ( locale != nil )
+    {
+        [request addValue:locale forHTTPHeaderField:@"Accept-Language"];
+    }
+    
     // Add location data to request if we have permission to collect it
-    dispatch_async(dispatch_get_main_queue(), ^
+    if ( [NSThread isMainThread] ) // locationManager can only be used from the main thread
     {
         VLocationManager *locationManager = [VLocationManager sharedInstance];
         NSString *locationString = [locationManager httpFormattedLocationString];
@@ -496,7 +502,7 @@
         {
             [request addValue:locationString forHTTPHeaderField:@"X-Geo-Location"];
         }
-    });
+    }
 }
 
 - (NSString *)rFC2822DateTimeString

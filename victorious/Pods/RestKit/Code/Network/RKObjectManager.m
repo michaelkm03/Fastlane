@@ -385,6 +385,7 @@ static NSString *RKMIMETypeFromAFHTTPClientParameterEncoding(AFHTTPClientParamet
     [manager.HTTPClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
     [manager setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
     manager.requestSerializationMIMEType = RKMIMETypeFormURLEncoded;
+    [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     return manager;
 }
 
