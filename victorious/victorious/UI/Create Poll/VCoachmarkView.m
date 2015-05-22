@@ -13,9 +13,13 @@
 
 static const CGFloat kTooltipArrowHeight = 14.0f;
 static const CGFloat kTooltipArrowWidth = 26.0f;
+static const CGFloat kMinimumTooltipArrowInset = 8.0f;
+const CGFloat VMinimumTooltipArrowLocation = kTooltipArrowWidth / 2 + kMinimumTooltipArrowInset;
 
 static const CGFloat kHorizontalLabelInset = 20.0f;
 static const CGFloat kVerticalLabelInset = 15.0f;
+
+static const CGFloat kCoachmarkMinimumWidth = VMinimumTooltipArrowLocation + kMinimumTooltipArrowInset + kHorizontalLabelInset * 2;
 
 static const CGFloat kShadowOpacity = 0.35f;
 static const CGFloat kShadowRadius = 1.0f;
@@ -26,7 +30,7 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) VCoachmark *coachmark;
 @property (nonatomic, strong) UILabel *captionLabel;
-@property (nonatomic, readwrite) VCoachmarkArrowDirection arrowDirection;
+@property (nonatomic, readwrite) VTooltipArrowDirection arrowDirection;
 
 @end
 
@@ -57,11 +61,11 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
     
     [self addSubview:self.captionLabel];
     UIEdgeInsets insets = UIEdgeInsetsMake(kVerticalLabelInset, kHorizontalLabelInset, kVerticalLabelInset, kHorizontalLabelInset);
-    if ( self.arrowDirection == VCoachmarkArrowDirectionUp )
+    if ( self.arrowDirection == VTooltipArrowDirectionUp )
     {
         insets.top += kTooltipArrowHeight;
     }
-    else if ( self.arrowDirection == VCoachmarkArrowDirectionDown )
+    else if ( self.arrowDirection == VTooltipArrowDirectionDown )
     {
         insets.bottom += kTooltipArrowHeight;
     }
@@ -84,17 +88,17 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
     coachmarkView.captionLabel.text = text;
     CGRect frame = [coachmarkView frameForText:text withWidth:width];
     coachmarkView.frame = frame;
-    coachmarkView.arrowDirection = VCoachmarkArrowDirectionInvalid;
+    coachmarkView.arrowDirection = VTooltipArrowDirectionInvalid;
     return coachmarkView;
 }
 
 + (instancetype)tooltipCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
                                             width:(CGFloat)width
                             arrowHorizontalOffset:(CGFloat)horizontalOffset
-                                andArrowDirection:(VCoachmarkArrowDirection)arrowDirection
+                                andArrowDirection:(VTooltipArrowDirection)arrowDirection
 {
     NSParameterAssert(coachmark != nil);
-    NSParameterAssert(arrowDirection != VCoachmarkArrowDirectionInvalid);
+    NSParameterAssert(arrowDirection != VTooltipArrowDirectionInvalid);
    
     VCoachmarkView *coachmarkView = [[VCoachmarkView alloc] initWithCoachmark:coachmark];
     NSString *text = coachmark.relatedScreenText;
@@ -120,14 +124,14 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
     return coachmarkView;
 }
 
-+ (UIBezierPath *)tooltipPathWithArrowDirection:(VCoachmarkArrowDirection)arrowDirection
++ (UIBezierPath *)tooltipPathWithArrowDirection:(VTooltipArrowDirection)arrowDirection
                                       boxHeight:(CGFloat)boxHeight
                                     totalHeight:(CGFloat)totalHeight
                           arrowHorizontalOffset:(CGFloat)horizontalOffset
                                        andWidth:(CGFloat)width
 {
     UIBezierPath *tooltipPath = [UIBezierPath bezierPath];
-    if ( arrowDirection == VCoachmarkArrowDirectionDown )
+    if ( arrowDirection == VTooltipArrowDirectionDown )
     {
         //Start at top left corner of box and draw to bottom left corner
         [tooltipPath moveToPoint:CGPointZero];
@@ -147,7 +151,7 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
         [tooltipPath addLineToPoint:CGPointMake(width, 0)];
         [tooltipPath closePath];
     }
-    else if ( arrowDirection == VCoachmarkArrowDirectionUp )
+    else if ( arrowDirection == VTooltipArrowDirectionUp )
     {
         //Start below height of arrow and draw the left, bottom, and right sides of the box
         [tooltipPath moveToPoint:CGPointMake(0, kTooltipArrowHeight)];
@@ -172,7 +176,8 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
 
 - (CGRect)frameForText:(NSString *)text withWidth:(CGFloat)width
 {
-    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(width - kHorizontalLabelInset * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName : self.coachmark.font } context:nil];
+    UIFont *font = self.coachmark.font ?: [UIFont systemFontOfSize:18.0f];
+    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(MAX(width, kCoachmarkMinimumWidth) - kHorizontalLabelInset * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName : font } context:nil];
     minimumFrame = CGRectInset(minimumFrame, 0, -kVerticalLabelInset);
     minimumFrame.size.width = width;
     return minimumFrame;

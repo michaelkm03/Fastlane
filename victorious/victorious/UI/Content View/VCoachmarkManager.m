@@ -17,8 +17,6 @@
 #import "VTimerManager.h"
 #import "VCoachmarkPassthroughContainerView.h"
 
-#define CLEAR_SHOWN_COACHMARKS 1
-
 static NSString * const kShownCoachmarksKey = @"shownCoachmarks";
 static NSString * const kReturnedCoachmarksKey = @"coachmarks";
 static NSString * const kPassthroughContainerViewKey = @"passthroughContainerView";
@@ -57,7 +55,7 @@ static const CGFloat kAnimationDelay = 1.0f;
     [self setupWithDependencyManager:self.dependencyManager];
 }
 
-- (void)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController
+- (BOOL)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController
 {
     NSString *identifier = [viewController screenIdentifier];
     for ( VCoachmark *coachmark in self.coachmarks )
@@ -72,46 +70,18 @@ static const CGFloat kAnimationDelay = 1.0f;
                                                                                        andWidth:width];
                 coachmarkView.frame = [self frameForToastCoachmarkViewWithSize:coachmarkView.frame.size andToastLocation:coachmarkView.coachmark.toastLocation inViewController:viewController];
                 [self addCoachmarkView:coachmarkView toViewController:viewController];
-                break;
+                return YES;
             }
             else
             {
-                UIResponder <VCoachmarkDisplayResponder> *nextResponder = [viewController targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:self];
-                if ( nextResponder == nil )
+                if ( [self addTooltipCoachmark:coachmark withWidth:width toViewController:viewController] )
                 {
-                    //There is nobody in the responder chain that responds to
-                    //findOnScreenMenuItemWithIdentifier:andCompletion:, so there
-                    //is no way to find out where to point. Look for the next coachmark.
-                    continue;
-                }
-                
-                __block BOOL foundDisplayableCoachmark = NO;
-                __block CGRect menuItemLocation = CGRectZero;
-                [nextResponder findOnScreenMenuItemWithIdentifier:coachmark.displayTarget andCompletion:^(BOOL found, CGRect location)
-                 {
-                     foundDisplayableCoachmark = found;
-                     menuItemLocation = location;
-                 }];
-                
-                if ( foundDisplayableCoachmark )
-                {
-                    CGFloat arrowCenter = CGRectGetMidX(menuItemLocation) - kCoachmarkHorizontalInset;
-                    CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
-                    VCoachmarkArrowDirection direction = CGRectGetMidY(menuItemLocation) > viewHeight / 2 ? VCoachmarkArrowDirectionDown : VCoachmarkArrowDirectionUp;
-                    VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
-                                                                                                width:width
-                                                                                arrowHorizontalOffset:arrowCenter
-                                                                                    andArrowDirection:direction];
-                    coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
-                                                                      arrowDirection:direction
-                                                                   andTargetLocation:menuItemLocation
-                                                                    inViewController:viewController];
-                    [self addCoachmarkView:coachmarkView toViewController:viewController];
-                    break;
+                    return YES;
                 }
             }
         }
     }
+    return NO;
 }
 
 - (void)hideCoachmarkViewInViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -119,10 +89,11 @@ static const CGFloat kAnimationDelay = 1.0f;
     [self removePassthroughContainerView:objc_getAssociatedObject(viewController.view, &kPassthroughViewKey) animated:animated];
 }
 
-#pragma mark - setup
+#pragma mark - Setup
 
 - (void)setupWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSParameterAssert(dependencyManager != nil);
     _dependencyManager = dependencyManager;
     NSArray *shownCoachmarkIds = [self savedShownStatesOfCoachmarks];
     NSArray *returnedCoachmarks = [dependencyManager arrayOfValuesOfType:[VCoachmark class] forKey:kReturnedCoachmarksKey];
@@ -149,12 +120,56 @@ static const CGFloat kAnimationDelay = 1.0f;
 
 #pragma mark - Adding and removing coachmark views
 
+- (BOOL)addTooltipCoachmark:(VCoachmark *)coachmark withWidth:(CGFloat)width toViewController:(UIViewController *)viewController
+{
+    UIResponder <VCoachmarkDisplayResponder> *nextResponder = [viewController targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:self];
+    if ( nextResponder == nil )
+    {
+        //There is nobody in the responder chain that responds to
+        //findOnScreenMenuItemWithIdentifier:andCompletion:, so there
+        //is no way to find out where to point. Look for the next coachmark.
+        return NO;
+    }
+    
+    __block BOOL foundDisplayableCoachmark = NO;
+    __block CGRect menuItemLocation = CGRectZero;
+    [nextResponder findOnScreenMenuItemWithIdentifier:coachmark.displayTarget andCompletion:^(BOOL found, CGRect location)
+     {
+         foundDisplayableCoachmark = found;
+         menuItemLocation = location;
+     }];
+    
+    if ( foundDisplayableCoachmark )
+    {
+        CGFloat arrowCenter = CGRectGetMidX(menuItemLocation) - kCoachmarkHorizontalInset;
+        CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
+        VTooltipArrowDirection direction = CGRectGetMidY(menuItemLocation) > viewHeight / 2 ? VTooltipArrowDirectionDown : VTooltipArrowDirectionUp;
+        
+        //Enforce min and max arrow center values
+        arrowCenter = MAX(arrowCenter, VMinimumTooltipArrowLocation);
+        arrowCenter = MIN(arrowCenter, width - VMinimumTooltipArrowLocation);
+        
+        VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
+                                                                                    width:width
+                                                                    arrowHorizontalOffset:arrowCenter
+                                                                        andArrowDirection:direction];
+        coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
+                                                          arrowDirection:direction
+                                                       andTargetLocation:menuItemLocation
+                                                        inViewController:viewController];
+        [self addCoachmarkView:coachmarkView toViewController:viewController];
+    }
+    return foundDisplayableCoachmark;
+}
+
 - (void)removePassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView animated:(BOOL)animated
 {
     if ( passthroughContainerView != nil )
     {
+        NSLog(@"not nil");
         if ( !passthroughContainerView.coachmarkView.hasBeenShown )
         {
+            NSLog(@"hasn't been shown");
             //The coachmarkView associated with this passthrough view hasn't shown yet,
             //add it to the removed overlays array to cancel showing it
             [self.removedPassthroughOverlays addObject:passthroughContainerView];
@@ -224,17 +239,32 @@ static const CGFloat kAnimationDelay = 1.0f;
     [self.hideTimers removeObject:timerManager];
 }
 
-- (CGRect)frameForTooltipCoachmarkViewWithSize:(CGSize)size arrowDirection:(VCoachmarkArrowDirection)arrowDirection andTargetLocation:(CGRect)targetLocation inViewController:(UIViewController *)viewController
+- (CGRect)frameForTooltipCoachmarkViewWithSize:(CGSize)size arrowDirection:(VTooltipArrowDirection)arrowDirection andTargetLocation:(CGRect)targetLocation inViewController:(UIViewController *)viewController
 {
     CGRect frame = [self centeredCoachmarkViewFrameWithSize:size inViewController:viewController];
+    
+    //Check to see that we can properly point to the intended location
+    CGFloat horizontalLocation = CGRectGetMidX(targetLocation);
+    CGFloat minimumLocation = CGRectGetMinX(frame) + VMinimumTooltipArrowLocation;
+    CGFloat maximumLocation = CGRectGetMaxX(frame) - VMinimumTooltipArrowLocation;
+    CGFloat xOffset = 0;
+    if ( horizontalLocation < minimumLocation )
+    {
+        xOffset = horizontalLocation - minimumLocation;
+    }
+    else if ( horizontalLocation > maximumLocation)
+    {
+        xOffset = horizontalLocation - maximumLocation;
+    }
+    frame.origin.x += xOffset;
     CGFloat yOrigin = 0;
     switch (arrowDirection)
     {
-        case VCoachmarkArrowDirectionUp:
+        case VTooltipArrowDirectionUp:
             yOrigin = CGRectGetMaxY(targetLocation) + kCoachmarkVerticalInset;
             break;
             
-        case VCoachmarkArrowDirectionDown:
+        case VTooltipArrowDirectionDown:
             yOrigin = CGRectGetMinY(targetLocation) - CGRectGetHeight(frame) - kCoachmarkVerticalInset;
             break;
             
@@ -321,8 +351,8 @@ static const CGFloat kAnimationDelay = 1.0f;
 
 - (CGRect)frameForAnimatingCoachmarkView:(VCoachmarkView *)coachmarkView
 {
-    BOOL isTooltip = coachmarkView.arrowDirection != VCoachmarkArrowDirectionInvalid;
-    BOOL shouldSlideUp = (!isTooltip && coachmarkView.coachmark.toastLocation == VToastVerticalLocationTop) || coachmarkView.arrowDirection == VCoachmarkArrowDirectionUp;
+    BOOL isTooltip = coachmarkView.arrowDirection != VTooltipArrowDirectionInvalid;
+    BOOL shouldSlideUp = (!isTooltip && coachmarkView.coachmark.toastLocation == VToastVerticalLocationTop) || coachmarkView.arrowDirection == VTooltipArrowDirectionUp;
     CGRect frame = coachmarkView.frame;
     frame.origin.y += shouldSlideUp ? kAnimationVerticalOffset : -kAnimationVerticalOffset;
     return frame;

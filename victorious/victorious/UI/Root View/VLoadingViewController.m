@@ -213,7 +213,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 {
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
-        templateConfiguration = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"coachmarks" ofType:@"json"]] options:0 error:nil][@"payload"];
+        templateConfiguration = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"coachmarksTabBar" ofType:@"json"]] options:0 error:nil][@"payload"];
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
 

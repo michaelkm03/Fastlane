@@ -37,8 +37,10 @@
     when appropriate. To support this, this method must be called at or after viewDidAppear.
  
     @param viewController The view controller that will house the coachmark
+ 
+    @return YES when a coachmark will attempt to display after a delay, NO otherwise
  */
-- (void)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController;
+- (BOOL)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController;
 
 /**
     Hides the coachmark view associated with the provided view controller.

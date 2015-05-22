@@ -9,13 +9,13 @@
 #import "VPassthroughContainerView.h"
 #import "VBackgroundContainer.h"
 
-#warning TESTS INCOMPLETE
+extern const CGFloat VMinimumTooltipArrowLocation;
 
-typedef NS_ENUM( NSUInteger, VCoachmarkArrowDirection )
+typedef NS_ENUM( NSUInteger, VTooltipArrowDirection )
 {
-    VCoachmarkArrowDirectionUp,
-    VCoachmarkArrowDirectionDown,
-    VCoachmarkArrowDirectionInvalid
+    VTooltipArrowDirectionUp,
+    VTooltipArrowDirectionDown,
+    VTooltipArrowDirectionInvalid
 };
 
 @class VCoachmark;
@@ -49,7 +49,7 @@ typedef NS_ENUM( NSUInteger, VCoachmarkArrowDirection )
 + (instancetype)tooltipCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
                                             width:(CGFloat)width
                             arrowHorizontalOffset:(CGFloat)horizontalOffset
-                                andArrowDirection:(VCoachmarkArrowDirection)arrowDirection;
+                                andArrowDirection:(VTooltipArrowDirection)arrowDirection;
 
 /**
     The coachmark provided by one of the class methods used to create this view.
@@ -60,7 +60,7 @@ typedef NS_ENUM( NSUInteger, VCoachmarkArrowDirection )
     The arrow direction of the tooltip. This value is VCoachmarkArrowDirectionInvalid
     when the coachmark view is shown as a toast.
  */
-@property (nonatomic, readonly) VCoachmarkArrowDirection arrowDirection;
+@property (nonatomic, readonly) VTooltipArrowDirection arrowDirection;
 
 /**
     Allows the reading and setting of the hasBeenShown bool on this instance's coachmark.
