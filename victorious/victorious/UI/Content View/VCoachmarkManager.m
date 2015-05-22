@@ -34,6 +34,7 @@ static const CGFloat kAnimationDelay = 1.0f;
 @property (nonatomic, strong) NSArray *coachmarks;
 @property (nonatomic, strong) NSMutableArray *hideTimers;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (atomic, strong) NSMutableArray *removedPassthroughOverlays;
 
 @end
 
@@ -45,6 +46,7 @@ static const CGFloat kAnimationDelay = 1.0f;
     if ( self != nil )
     {
         [self setupWithDependencyManager:dependencyManager];
+        _removedPassthroughOverlays = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -62,11 +64,12 @@ static const CGFloat kAnimationDelay = 1.0f;
     {
         if ( !coachmark.hasBeenShown && [coachmark.displayScreens containsObject:identifier] )
         {
-            CGFloat maxWidth = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
+            CGFloat width = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
             if ( [coachmark.displayTarget isEqualToString:identifier] )
             {
                 //Displaying as a toast
-                VCoachmarkView *coachmarkView = [VCoachmarkView toastCoachmarkViewWithCoachmark:coachmark andMaxWidth:maxWidth];
+                VCoachmarkView *coachmarkView = [VCoachmarkView toastCoachmarkViewWithCoachmark:coachmark
+                                                                                       andWidth:width];
                 coachmarkView.frame = [self frameForToastCoachmarkViewWithSize:coachmarkView.frame.size andToastLocation:coachmarkView.coachmark.toastLocation inViewController:viewController];
                 [self addCoachmarkView:coachmarkView toViewController:viewController];
                 break;
@@ -76,33 +79,34 @@ static const CGFloat kAnimationDelay = 1.0f;
                 UIResponder <VCoachmarkDisplayResponder> *nextResponder = [viewController targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:self];
                 if ( nextResponder == nil )
                 {
-                    NSAssert(false, @"Need a responder for findOnScreenMenuItemWithIdentifier:andCompletion:");
-                    return;
+                    //There is nobody in the responder chain that responds to
+                    //findOnScreenMenuItemWithIdentifier:andCompletion:, so there
+                    //is no way to find out where to point. Look for the next coachmark.
+                    continue;
                 }
                 
                 __block BOOL foundDisplayableCoachmark = NO;
+                __block CGRect menuItemLocation = CGRectZero;
                 [nextResponder findOnScreenMenuItemWithIdentifier:coachmark.displayTarget andCompletion:^(BOOL found, CGRect location)
                  {
                      foundDisplayableCoachmark = found;
-                     if ( found )
-                     {
-                         CGFloat arrowCenter = CGRectGetMidX(location) - kCoachmarkHorizontalInset;
-                         CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
-                         VCoachmarkArrowDirection direction = CGRectGetMidY(location) > viewHeight / 2 ? VCoachmarkArrowDirectionDown : VCoachmarkArrowDirectionUp;
-                         VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
-                                                                                                  maxWidth:maxWidth
-                                                                                     arrowHorizontalOffset:arrowCenter
-                                                                                         andArrowDirection:direction];
-                         coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
-                                                                           arrowDirection:direction
-                                                                        andTargetLocation:location
-                                                                         inViewController:viewController];
-                         [self addCoachmarkView:coachmarkView toViewController:viewController];
-                     }
+                     menuItemLocation = location;
                  }];
                 
                 if ( foundDisplayableCoachmark )
                 {
+                    CGFloat arrowCenter = CGRectGetMidX(menuItemLocation) - kCoachmarkHorizontalInset;
+                    CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
+                    VCoachmarkArrowDirection direction = CGRectGetMidY(menuItemLocation) > viewHeight / 2 ? VCoachmarkArrowDirectionDown : VCoachmarkArrowDirectionUp;
+                    VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
+                                                                                                width:width
+                                                                                arrowHorizontalOffset:arrowCenter
+                                                                                    andArrowDirection:direction];
+                    coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
+                                                                      arrowDirection:direction
+                                                                   andTargetLocation:menuItemLocation
+                                                                    inViewController:viewController];
+                    [self addCoachmarkView:coachmarkView toViewController:viewController];
                     break;
                 }
             }
@@ -149,6 +153,12 @@ static const CGFloat kAnimationDelay = 1.0f;
 {
     if ( passthroughContainerView != nil )
     {
+        if ( !passthroughContainerView.coachmarkView.hasBeenShown )
+        {
+            //The coachmarkView associated with this passthrough view hasn't shown yet,
+            //add it to the removed overlays array to cancel showing it
+            [self.removedPassthroughOverlays addObject:passthroughContainerView];
+        }
         objc_setAssociatedObject(passthroughContainerView, &kPassthroughViewKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         passthroughContainerView.delegate = nil;
         passthroughContainerView.userInteractionEnabled = NO;
@@ -173,19 +183,29 @@ static const CGFloat kAnimationDelay = 1.0f;
     
     UIView *view = viewController.view;
     VCoachmarkPassthroughContainerView *passthroughOverlay = [VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:coachmarkView frame:view.bounds andDelegate:self];
-    [passthroughOverlay addSubview:coachmarkView];
-    passthroughOverlay.alpha = 0.0f;
-    [view addSubview:passthroughOverlay];
-    [self animateOverlayView:passthroughOverlay
-                   toVisible:YES
-                    animated:YES
-              withCompletion:^(BOOL finished)
-    {
-        [self addHideTimerForCoachmarkView:coachmarkView inPassthroughContainerView:passthroughOverlay];
-        [coachmarkView setHasBeenShown:YES];
-        objc_setAssociatedObject(keyView, &kPassthroughViewKey, passthroughOverlay, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        [self saveShownStateOfCoachmarks];
-    }];
+    objc_setAssociatedObject(keyView, &kPassthroughViewKey, passthroughOverlay, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       if ( [self.removedPassthroughOverlays containsObject:passthroughOverlay] )
+                       {
+                           //Abort! The user navigated offscreen before the overlay view had a chance to display
+                           [self.removedPassthroughOverlays removeObject:passthroughOverlay];
+                           return;
+                       }
+                       
+                       passthroughOverlay.alpha = 0.0f;
+                       [view addSubview:passthroughOverlay];
+                       [coachmarkView setHasBeenShown:YES];
+                       [self saveShownStateOfCoachmarks];
+                       [self animateOverlayView:passthroughOverlay
+                                      toVisible:YES
+                                       animated:YES
+                                 withCompletion:^(BOOL finished)
+                        {
+                            [self addHideTimerForCoachmarkView:coachmarkView inPassthroughContainerView:passthroughOverlay];
+                        }];
+                   });
 }
 
 - (void)addHideTimerForCoachmarkView:(VCoachmarkView *)coachmarkView inPassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView
@@ -278,12 +298,11 @@ static const CGFloat kAnimationDelay = 1.0f;
     }
     
     CGFloat targetAlpha = visible ? 1.0f : 0.0f;
-    CGFloat animationDelay = visible ? kAnimationDelay : 0.0f;
     
     if ( animated )
     {
         [UIView animateWithDuration:kAnimationDuration
-                              delay:animationDelay
+                              delay:0.0f
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^
          {

@@ -10,10 +10,12 @@
 
 @class VCoachmarkPassthroughContainerView;
 
-#warning DOCS INCOMPLETE
-
 @protocol VCoachmarkPassthroughContainerViewDelegate <NSObject>
 
+/**
+    This method is called when the provided Coachmark
+    Passthrough Container View recieves a touch.
+ */
 @required
 - (void)passthroughViewRecievedTouch:(VCoachmarkPassthroughContainerView *)passthroughContainerView;
 

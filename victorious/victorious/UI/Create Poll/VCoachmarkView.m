@@ -75,33 +75,37 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
 }
 
 + (instancetype)toastCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
-                                    andMaxWidth:(CGFloat)maxWidth
+                                       andWidth:(CGFloat)width
 {
+    NSParameterAssert(coachmark != nil);
+    
     VCoachmarkView *coachmarkView = [[VCoachmarkView alloc] initWithCoachmark:coachmark];
     NSString *text = coachmark.currentScreenText;
     coachmarkView.captionLabel.text = text;
-    CGRect frame = [coachmarkView frameForText:text withMaxWidth:maxWidth];
+    CGRect frame = [coachmarkView frameForText:text withWidth:width];
     coachmarkView.frame = frame;
     coachmarkView.arrowDirection = VCoachmarkArrowDirectionInvalid;
     return coachmarkView;
 }
 
 + (instancetype)tooltipCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
-                                         maxWidth:(CGFloat)maxWidth
+                                            width:(CGFloat)width
                             arrowHorizontalOffset:(CGFloat)horizontalOffset
                                 andArrowDirection:(VCoachmarkArrowDirection)arrowDirection
 {
+    NSParameterAssert(coachmark != nil);
+    NSParameterAssert(arrowDirection != VCoachmarkArrowDirectionInvalid);
+   
     VCoachmarkView *coachmarkView = [[VCoachmarkView alloc] initWithCoachmark:coachmark];
     NSString *text = coachmark.relatedScreenText;
     coachmarkView.captionLabel.text = text;
-    CGRect frame = [coachmarkView frameForText:text withMaxWidth:maxWidth];
+    CGRect frame = [coachmarkView frameForText:text withWidth:width];
     CGFloat boxHeight = CGRectGetHeight(frame);
     frame.size.height += kTooltipArrowHeight;
     coachmarkView.frame = frame;
     coachmarkView.arrowDirection = arrowDirection;
     
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    CGFloat width = CGRectGetWidth(frame);
     CGFloat fullHeight = CGRectGetHeight(frame);
     UIBezierPath *tooltipPath = [self tooltipPathWithArrowDirection:arrowDirection
                                                           boxHeight:boxHeight
@@ -166,11 +170,11 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
     return tooltipPath;
 }
 
-- (CGRect)frameForText:(NSString *)text withMaxWidth:(CGFloat)maxWidth
+- (CGRect)frameForText:(NSString *)text withWidth:(CGFloat)width
 {
-    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(maxWidth - kHorizontalLabelInset * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName : self.coachmark.font } context:nil];
+    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(width - kHorizontalLabelInset * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName : self.coachmark.font } context:nil];
     minimumFrame = CGRectInset(minimumFrame, 0, -kVerticalLabelInset);
-    minimumFrame.size.width = maxWidth;
+    minimumFrame.size.width = width;
     return minimumFrame;
 }
 

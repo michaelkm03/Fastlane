@@ -9,7 +9,7 @@
 #import "VPassthroughContainerView.h"
 #import "VBackgroundContainer.h"
 
-#warning DOCS, TESTS INCOMPLETE
+#warning TESTS INCOMPLETE
 
 typedef NS_ENUM( NSUInteger, VCoachmarkArrowDirection )
 {
@@ -22,11 +22,32 @@ typedef NS_ENUM( NSUInteger, VCoachmarkArrowDirection )
 
 @interface VCoachmarkView : VPassthroughContainerView <VBackgroundContainer>
 
+/**
+    Creates a new toast Coachmark View.
+ 
+    @param coachmark The coachmark that should be represented by the toast.
+    @param width The width of the Coachmark View.
+ 
+    @return A new Coachmark View of the provided width that is displaying
+            the currentScreenText of the provided coachmark.
+ */
 + (instancetype)toastCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
-                                    andMaxWidth:(CGFloat)maxWidth;
+                                       andWidth:(CGFloat)width;
 
+/**
+    Creates a new tooltip Coachmark View.
+ 
+    @param coachmark The coachmark that should be represented by the tooltip.
+    @param width The width of the Coachmark View.
+    @param horizontalOffset The horizontal offset of the tooltip arrow.
+           This value is relative to the x origin of the Coachmark View, not the screen.
+    @param arrowDirection The direction that the tooltip arrow should point.
+ 
+    @return A new Coachmark View of the provided width and appropriately located tooltip
+            arrow that is displaying the relatedScreenText of the provided coachmark.
+ */
 + (instancetype)tooltipCoachmarkViewWithCoachmark:(VCoachmark *)coachmark
-                                         maxWidth:(CGFloat)maxWidth
+                                            width:(CGFloat)width
                             arrowHorizontalOffset:(CGFloat)horizontalOffset
                                 andArrowDirection:(VCoachmarkArrowDirection)arrowDirection;
 

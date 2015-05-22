@@ -38,7 +38,7 @@
     }
     
     CGRect segmentFrame = self.segmentedControl.frame;
-    segmentFrame.origin = [self absoluteOriginOfView:self.segmentedControl];
+    segmentFrame.origin = [self.segmentedControl absoluteOrigin];
     CGFloat segmentWidth = CGRectGetWidth(segmentFrame) / numberOfSegments;
     segmentFrame.size.width = segmentWidth;
     segmentFrame.origin.x += segmentWidth * index;

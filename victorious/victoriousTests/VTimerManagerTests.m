@@ -318,4 +318,15 @@
     XCTAssertTrue([timerManager isValid], @"timer should be valid");
 }
 
+- (void)testUserInfo
+{
+    NSDictionary *userInfoDict = @{ @"user" : @"info" };
+    VTimerManager *timerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:self.timerInterval
+                                                                                target:self
+                                                                              selector:@selector(selectorWithNoParams)
+                                                                              userInfo:userInfoDict
+                                                                               repeats:NO];
+    XCTAssertTrue(userInfoDict == timerManager.userInfo, @"userInfo dictionary should be the same object passed in during timer creation");
+}
+
 @end

@@ -10,16 +10,16 @@
 
 @implementation UIView (AbsoluteFrame)
 
-- (CGRect)absoluteFrameOfView:(UIView *)view
+- (CGRect)absoluteFrame
 {
-    CGRect frame = view.frame;
-    frame.origin = [self absoluteOriginOfView:view];
+    CGRect frame = self.frame;
+    frame.origin = [self absoluteOrigin];
     return frame;
 }
 
-- (CGPoint)absoluteOriginOfView:(UIView *)view
+- (CGPoint)absoluteOrigin
 {
-    UIView *currentView = view;
+    UIView *currentView = self;
     CGRect frame = currentView.frame;
     currentView = currentView.superview;
     while ( currentView != nil )

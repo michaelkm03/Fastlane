@@ -53,7 +53,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     }
     
     UIButton *button = self.buttons[index];
-    return [self absoluteFrameOfView:button];
+    return [button absoluteFrame];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers

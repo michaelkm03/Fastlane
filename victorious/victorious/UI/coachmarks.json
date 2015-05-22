@@ -375,6 +375,72 @@
                            "name": "standard.coachmark",
                            "hasBeenDisplayed": 0,
                            "displayDuration": 5
+                           },
+                           {
+                           "background": {
+                           "name": "solidColor.background",
+                           "color": {
+                           "red": 217,
+                           "green": 83,
+                           "blue": 200,
+                           "alpha": 255
+                           }
+                           },
+                           "toastVerticalLocation": "top",
+                           "color.text": {
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
+                           "alpha": 1
+                           },
+                           "font.label3": {
+                           "fontName": "STHeitiSC-Light",
+                           "fontSize": 11
+                           },
+                           "currentScreenText": "Should never get seen!",
+                           "relatedScreenText": "Point to Messages!",
+                           "displayTarget": "Inbox",
+                           "displayScreens": [
+                                              "Discover",
+                                              "55562838dda04"
+                                              ],
+                           "id": "21",
+                           "name": "standard.coachmark",
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 5
+                           },
+                           {
+                           "background": {
+                           "name": "solidColor.background",
+                           "color": {
+                           "red": 217,
+                           "green": 83,
+                           "blue": 200,
+                           "alpha": 255
+                           }
+                           },
+                           "toastVerticalLocation": "top",
+                           "color.text": {
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
+                           "alpha": 1
+                           },
+                           "font.label3": {
+                           "fontName": "STHeitiSC-Light",
+                           "fontSize": 11
+                           },
+                           "currentScreenText": "Never get seen!",
+                           "relatedScreenText": "Point to Home!",
+                           "displayTarget": "55562838ddb73",
+                           "displayScreens": [
+                                              "Discover",
+                                              "55562838dda04"
+                                              ],
+                           "id": "22",
+                           "name": "standard.coachmark",
+                           "hasBeenDisplayed": 0,
+                           "displayDuration": 5
                            }
                            ],
             "name": "tabMenu.scaffold",
@@ -1678,7 +1744,8 @@
                           "blue": 241,
                           "alpha": 255
                           }
-                          }
+                          },
+                          "id": "Inbox"
                           },
                           "icon": {
                           "imageURL": "A_inbox"

@@ -909,6 +909,8 @@
 		F0C83A271B0D06B600A6EC1A /* UIView+AbsoluteFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A261B0D06B600A6EC1A /* UIView+AbsoluteFrame.m */; };
 		F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A291B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m */; };
 		F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */; };
+		F0C83A2F1B0EC93F00A6EC1A /* VUIView+AbsoluteFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A2E1B0EC93F00A6EC1A /* VUIView+AbsoluteFrame.m */; };
+		F0C83A331B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */; };
 		F0D3CFB71A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */; };
 		F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */; };
 		F0E0F1AC1AE8A4B900143CBF /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
@@ -2596,6 +2598,8 @@
 		F0C83A291B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VCoachmarkManager.m"; sourceTree = "<group>"; };
 		F0C83A2B1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCoachmarkPassthroughContainerView.h; path = Common/VCoachmarkPassthroughContainerView.h; sourceTree = "<group>"; };
 		F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCoachmarkPassthroughContainerView.m; path = Common/VCoachmarkPassthroughContainerView.m; sourceTree = "<group>"; };
+		F0C83A2E1B0EC93F00A6EC1A /* VUIView+AbsoluteFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUIView+AbsoluteFrame.m"; sourceTree = "<group>"; };
+		F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkPassthroughContainerViewTests.m; sourceTree = "<group>"; };
 		F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryViewTests.m; sourceTree = "<group>"; };
 		F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLaunchScreenProvider.h; sourceTree = "<group>"; };
 		F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProvider.m; sourceTree = "<group>"; };
@@ -4842,6 +4846,7 @@
 				F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */,
 				A709640419F0738200CE6633 /* VApplicationTrackingTests.m */,
 				A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */,
+				F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */,
 				0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */,
 				035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */,
 				035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */,
@@ -4893,6 +4898,7 @@
 				F0140BC31AA9468500B95642 /* VTimerManagerTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
 				BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */,
+				F0C83A2E1B0EC93F00A6EC1A /* VUIView+AbsoluteFrame.m */,
 				BE9674FE19E335060072E87A /* VUploadManagerTests.m */,
 				BE9674FF19E335060072E87A /* VUploadManagerURLSessionTests.m */,
 				BE96750019E335060072E87A /* VUploadTaskCreatorTests.m */,
@@ -5567,16 +5573,6 @@
 				D8DCE58F1ADD835B0004B782 /* VFlexBar.m */,
 			);
 			path = "Action Bar";
-			sourceTree = "<group>";
-		};
-		D8DF71ED1AFD987B002EA7A5 /* Following */ = {
-			isa = PBXGroup;
-			children = (
-				D8DF71EE1AFD987B002EA7A5 /* VFollowResponder.h */,
-				D8DF71EF1AFD987B002EA7A5 /* VFollowingHelper.h */,
-				D8DF71F01AFD987B002EA7A5 /* VFollowingHelper.m */,
-			);
-			path = Following;
 			sourceTree = "<group>";
 		};
 		D8DF71DA1AFBDF81002EA7A5 /* Headers */ = {
@@ -7081,6 +7077,7 @@
 				A72005341A03073B00285A9C /* VUploadTaskCreatorTests.m in Sources */,
 				A73EAEC51A41F7BD0021BB31 /* NSString+Unicode.swift in Sources */,
 				D8AF00F21A129FB000B147C4 /* VHashTagTextView.m in Sources */,
+				F0C83A2F1B0EC93F00A6EC1A /* VUIView+AbsoluteFrame.m in Sources */,
 				A7792FDE1AE8497200E2ECC1 /* VTemplateDecoratorTests.m in Sources */,
 				D8AF00F11A129CD100B147C4 /* VHashTagTextViewTests.m in Sources */,
 				A72005381A03073B00285A9C /* VFileCacheTests.m in Sources */,
@@ -7134,6 +7131,7 @@
 				A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */,
 				A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */,
 				A77AD4F71A1FDABA00142F24 /* VAlertControllerTests.m in Sources */,
+				F0C83A331B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m in Sources */,
 				A72005401A03073B00285A9C /* VSuggestedPeopleTests.m in Sources */,
 				A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */,
 				0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */,

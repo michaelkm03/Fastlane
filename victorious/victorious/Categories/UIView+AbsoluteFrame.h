@@ -8,11 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
-#warning DOCS, TESTS INCOMPLETE
-
 @interface UIView (AbsoluteFrame)
 
-- (CGRect)absoluteFrameOfView:(UIView *)view;
-- (CGPoint)absoluteOriginOfView:(UIView *)view;
+/**
+    Traverses the subviews of this view to provide an "absolute" frame,
+    a frame of a view in relation to the entire screen.
+    Internally calls absoluteOriginOfView to find the origin of this view.
+ 
+    @return The frame of the provided view in relation to the entire screen.
+ */
+- (CGRect)absoluteFrame;
+
+/**
+ Traverses the subviews of this view to provide an "absolute" origin,
+ the origin of a view in relation to the entire screen.
+ 
+ @return The origin of the provided view in relation to the entire screen.
+ */
+- (CGPoint)absoluteOrigin;
 
 @end

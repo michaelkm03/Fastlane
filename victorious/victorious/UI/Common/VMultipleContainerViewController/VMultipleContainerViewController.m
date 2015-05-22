@@ -21,7 +21,7 @@
 #import "VCoachmarkDisplayResponder.h"
 #import "VCoachmarkDisplayer.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge, VCoachmarkDisplayResponder>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge, VCoachmarkDisplayResponder, VCoachmarkDisplayer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
@@ -399,7 +399,7 @@ static NSString * const kInitialKey = @"initial";
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
 }
 
-#pragma mark - VCoachmarkViewResponderChain
+#pragma mark - VCoachmarkViewResponder
 
 - (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion
 {
@@ -439,6 +439,13 @@ static NSString * const kInitialKey = @"initial";
     {
         [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
     }
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
 }
 
 @end

@@ -10,8 +10,6 @@
 
 #import <UIKit/UIKit.h>
 
-#warning DOCS, TESTS INCOMPLETE
-
 @class VSelectorViewBase;
 
 @protocol VSelectorViewDelegate <NSObject>
@@ -45,6 +43,14 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+/**
+ Returns the frame of a button at the provided index.
+ This method must be overridden by subclasses of this class.
+
+ @param index The index of the button whose frame should be returned.
+ 
+ @return The frame of the button at the provided index.
+ */
 - (CGRect)frameOfButtonAtIndex:(NSUInteger)index;
 
 @end

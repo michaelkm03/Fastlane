@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#warning TESTS INCOMPLETE
-
 @interface VTimerManager : NSObject
 
 /**
