@@ -11,9 +11,14 @@
 #import "VTransitionDelegate.h"
 #import "VLoginViewController.h"
 
+@class VObjectManager, VDependencyManager;
+
 @interface VStandardLoginFlowViewController ()
 
 @property (nonatomic, strong) VTransitionDelegate *vTransitioninDelegate;
+@property (nonatomic, assign) VAuthorizationContext authorizationContext;
+@property (nonatomic, strong) VLoginFlowCompletionBlock completionBlock;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -21,37 +26,54 @@
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
-    NSAssert(false, @"Must use: initWithAuthorizationContext:objectManager:dependencyManager:");
+    NSAssert(false, @"This navigation controller manages its own nav stack.");
     return nil;
 }
 
 - (instancetype)init
 {
-    NSAssert(false, @"Must use: initWithAuthorizationContext:objectManager:dependencyManager:");
-    return nil;
+    self = [super init];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    NSAssert(false, @"Must use: initWithAuthorizationContext:objectManager:dependencyManager:");
-    return nil;
-}
-
-- (instancetype)initWithAuthorizationContext:(VAuthorizationContext)authorizationContext
-                               ObjectManager:(VObjectManager *)objectManager
-                           dependencyManager:(VDependencyManager *)dependencyManager
-                                  completion:(void(^)(BOOL authorized))completionActionBlock
-{
-    VLoginViewController *loginViewController = [VLoginViewController newWithDependencyManager:dependencyManager];
-    loginViewController.authorizedAction = completionActionBlock;
-    loginViewController.authorizationContextType = authorizationContext;
-    self = [super initWithRootViewController:loginViewController];
+    self = [super initWithCoder:aDecoder];
     if (self)
     {
-        _vTransitioninDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
-        [self setTransitioningDelegate:_vTransitioninDelegate];
+        [self sharedInit];
     }
     return self;
+}
+
+- (instancetype)initWithNavigationBarClass:(Class)navigationBarClass toolbarClass:(Class)toolbarClass
+{
+    self = [super initWithNavigationBarClass:navigationBarClass toolbarClass:toolbarClass];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    _vTransitioninDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+    [self setTransitioningDelegate:_vTransitioninDelegate];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    VLoginViewController *loginViewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+    loginViewController.authorizedAction = self.completionBlock;
+    loginViewController.authorizationContextType = self.authorizationContext;
+    self.viewControllers = @[loginViewController];
 }
 
 @end

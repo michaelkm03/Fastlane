@@ -2191,6 +2191,7 @@
 		D85B706A1B0EAF3F0038CA5B /* VSignupWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSignupWithEmailViewController.m; sourceTree = "<group>"; };
 		D85B70861B0EB3350038CA5B /* VStandardLoginFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStandardLoginFlowViewController.h; sourceTree = "<group>"; };
 		D85B70871B0EB3350038CA5B /* VStandardLoginFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStandardLoginFlowViewController.m; sourceTree = "<group>"; };
+		D85B70891B0EBF090038CA5B /* VLoginRegistrationFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginRegistrationFlow.h; sourceTree = "<group>"; };
 		D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewView.h; sourceTree = "<group>"; };
 		D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequencePreviewView.m; sourceTree = "<group>"; };
 		D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSequencePreviewView.h; sourceTree = "<group>"; };
@@ -3181,6 +3182,7 @@
 			children = (
 				D85B702B1B0EAF3F0038CA5B /* Modern */,
 				D85B702C1B0EAF3F0038CA5B /* Standard */,
+				D85B70891B0EBF090038CA5B /* VLoginRegistrationFlow.h */,
 			);
 			path = "Signup and Login";
 			sourceTree = "<group>";

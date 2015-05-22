@@ -10,7 +10,10 @@
 #import "VObjectManager+Login.h"
 #import "VProfileCreateViewController.h"
 #import "VDependencyManager.h"
-#import "VStandardLoginFlowViewController.h"
+#import "VHasManagedDependencies.h"
+#import "VLoginRegistrationFlow.h"
+
+static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationView";
 
 @interface VAuthorizedAction()
 
@@ -56,10 +59,17 @@
     }
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
-        VStandardLoginFlowViewController *loginFlowController = [[VStandardLoginFlowViewController alloc] initWithAuthorizationContext:authorizationContext
-                                                                                                                         ObjectManager:self.objectManager
-                                                                                                                     dependencyManager:self.dependencyManager
-                                                                                                                            completion:completionActionBlock];
+        UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
+                                                                                                                           forKey:kLoginAndRegistrationViewKey];
+        if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
+        {
+            [loginFlowController setAuthorizationContext:authorizationContext];
+        }
+        [loginFlowController setCompletionBlock:completionActionBlock];
+        if ([loginFlowController respondsToSelector:@selector(setDependencyManager:)])
+        {
+            [(id<VHasManagedDependencies>)loginFlowController setDependencyManager:self.dependencyManager];
+        }
 
         [presentingViewController presentViewController:loginFlowController
                                                animated:YES

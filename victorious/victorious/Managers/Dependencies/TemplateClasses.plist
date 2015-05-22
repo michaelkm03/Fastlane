@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>standard.loginAndRegistrationView</key>
+	<string>VStandardLoginFlowViewController</string>
 	<key>hiddenWorkspace</key>
 	<string>VWorkspaceFlowController</string>
 	<key>translucent.background</key>

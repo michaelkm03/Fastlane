@@ -7,16 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VLoginRegistrationFlow.h"
+#import "VHasManagedDependencies.h"
 
-#import "VAuthorizationContext.h"
-
-@class VObjectManager, VDependencyManager;
-
-@interface VStandardLoginFlowViewController : UINavigationController
-
-- (instancetype)initWithAuthorizationContext:(VAuthorizationContext)authorizationContext
-                               ObjectManager:(VObjectManager *)objectManager
-                           dependencyManager:(VDependencyManager *)dependencyManager
-                                  completion:(void(^)(BOOL authorized))completionActionBlock;;
+/**
+ *  VStandardLoginFlowViewController provides UI for a login and registration flow.
+ */
+@interface VStandardLoginFlowViewController : UINavigationController <VLoginRegistrationFlow, VHasManagedDependencies>
 
 @end
