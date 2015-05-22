@@ -216,17 +216,38 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
 
-        // Standard
-        NSDictionary *standardLoginComponent = @{
-                                                 @"name":@"standard.loginAndRegistrationView",
-                                                 @"forceRegistration":@YES
-                                                 };
-
         // Auto-Show Login
         [templateDecorator setTemplateValue:@YES
                                  forKeyPath:@"scaffold/showLoginOnStartup"];
         
-        [templateDecorator setTemplateValue:standardLoginComponent
+        NSDictionary *loginComponent;
+        
+        // Standard
+//        loginComponent = @{
+//                           @"name":@"standard.loginAndRegistrationView",
+//                           @"forceRegistration":@YES
+//                           };
+        // Modern
+        loginComponent = @{
+                           @"name":@"modernLoginAndRegistration.screen",
+                           @"registrationScreens":
+                               @[
+                                   @{
+                                       @"name":@"modernLanding.screen",
+                                       },
+                                   @{
+                                       @"name":@"modernRegisterEmailAndPassword.screen",
+                                       },
+                                   ],
+                           @"loginScreens":
+                               @[
+                                   @{
+                                       @"name":@"modernLoginEmailAndPassword.screen",
+                                       },
+                                   ],
+                           };
+        
+        [templateDecorator setTemplateValue:loginComponent
                                  forKeyPath:@"scaffold/loginAndRegistrationView"];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager

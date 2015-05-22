@@ -701,6 +701,10 @@
 		D85B70841B0EAF3F0038CA5B /* VResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70681B0EAF3F0038CA5B /* VResetPasswordViewController.m */; };
 		D85B70851B0EAF3F0038CA5B /* VSignupWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B706A1B0EAF3F0038CA5B /* VSignupWithEmailViewController.m */; };
 		D85B70881B0EB3350038CA5B /* VStandardLoginFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70871B0EB3350038CA5B /* VStandardLoginFlowViewController.m */; };
+		D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */; };
+		D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */; };
+		D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */; };
+		D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B709A1B0EF0520038CA5B /* VModernRegisterViewController.m */; };
 		D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */; };
 		D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */; };
 		D85E42841AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42831AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m */; };
@@ -2192,6 +2196,15 @@
 		D85B70861B0EB3350038CA5B /* VStandardLoginFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStandardLoginFlowViewController.h; sourceTree = "<group>"; };
 		D85B70871B0EB3350038CA5B /* VStandardLoginFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStandardLoginFlowViewController.m; sourceTree = "<group>"; };
 		D85B70891B0EBF090038CA5B /* VLoginRegistrationFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginRegistrationFlow.h; sourceTree = "<group>"; };
+		D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernLoginAndRegistrationFlowViewController.h; sourceTree = "<group>"; };
+		D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLoginAndRegistrationFlowViewController.m; sourceTree = "<group>"; };
+		D85B708D1B0ECC6D0038CA5B /* VModernLandingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernLandingViewController.h; sourceTree = "<group>"; };
+		D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLandingViewController.m; sourceTree = "<group>"; };
+		D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginFlowControllerResponder.h; sourceTree = "<group>"; };
+		D85B70961B0EED0D0038CA5B /* VModernLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernLoginViewController.h; sourceTree = "<group>"; };
+		D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLoginViewController.m; sourceTree = "<group>"; };
+		D85B70991B0EF0520038CA5B /* VModernRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernRegisterViewController.h; sourceTree = "<group>"; };
+		D85B709A1B0EF0520038CA5B /* VModernRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernRegisterViewController.m; sourceTree = "<group>"; };
 		D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequencePreviewView.h; sourceTree = "<group>"; };
 		D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequencePreviewView.m; sourceTree = "<group>"; };
 		D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSequencePreviewView.h; sourceTree = "<group>"; };
@@ -5240,6 +5253,15 @@
 		D85B702B1B0EAF3F0038CA5B /* Modern */ = {
 			isa = PBXGroup;
 			children = (
+				D85B708D1B0ECC6D0038CA5B /* VModernLandingViewController.h */,
+				D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */,
+				D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */,
+				D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */,
+				D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */,
+				D85B70961B0EED0D0038CA5B /* VModernLoginViewController.h */,
+				D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */,
+				D85B70991B0EF0520038CA5B /* VModernRegisterViewController.h */,
+				D85B709A1B0EF0520038CA5B /* VModernRegisterViewController.m */,
 			);
 			path = Modern;
 			sourceTree = "<group>";
@@ -6512,6 +6534,7 @@
 				0314D07119B4670A00FA363C /* UIImage+Masking.m in Sources */,
 				D86528F61AE838F1003832AC /* VAnswer+Fetcher.m in Sources */,
 				A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */,
+				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
 				A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */,
 				BE88FF7F1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m in Sources */,
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
@@ -6539,6 +6562,7 @@
 				D85B70761B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.m in Sources */,
 				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
 				D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */,
+				D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */,
 				A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */,
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
@@ -6642,6 +6666,7 @@
 				A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */,
 				A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
+				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
 				A7ECC1C11AD60ECE0003E00A /* UIColor+VHex.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
@@ -6878,6 +6903,7 @@
 				03A058BA1AED7FB600CF39D1 /* VTemplateSerialization.m in Sources */,
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				D8E39BDC19CB7C80007FD86A /* VContentPollCell.m in Sources */,
+				D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
 				A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
