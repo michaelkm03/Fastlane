@@ -213,14 +213,26 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
         // Get aspect ratio of preview asset
         CGFloat aspectRatio = [previewAsset.width floatValue] / [previewAsset.height floatValue];
         // Make sure aspect ratio is within bounds
-        if (aspectRatio >= kMinimumAspectRatio || aspectRatio <= kMaximumAspectRatio)
-        {
-            return aspectRatio;
-        }
+        return [self clamp:aspectRatio max:kMaximumAspectRatio min:kMinimumAspectRatio];
     }
     
     return 1.0f;
 }
+
+- (CGFloat)clamp:(CGFloat)value max:(CGFloat)max min:(CGFloat)min
+{
+    if (value > max)
+    {
+        return max;
+    }
+    else if (value < min)
+    {
+        return min;
+    }
+    
+    return value;
+}
+
 
 - (NSArray *)initialImageURLs
 {
