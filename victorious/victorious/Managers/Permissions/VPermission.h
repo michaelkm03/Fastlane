@@ -40,6 +40,16 @@ typedef NS_ENUM( NSInteger, VPermissionState )
     VPermissionStateAuthorized
 };
 
+/**
+ A completion block that gets executed after requesting a certain iOS permission.
+ This should be called if the user denies the pre-prompt, accepts or denies
+ the system prompt, if they've already accepted or denied the system prompt,
+ or if the permission is unsupported.
+ 
+ @param granted Whether or not the permission was granted by the user.
+ @param state The state of the permission.
+ @param error An error if there was an issue requesting the permission.
+ */
 typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionState state, NSError *error);
 
 /**
