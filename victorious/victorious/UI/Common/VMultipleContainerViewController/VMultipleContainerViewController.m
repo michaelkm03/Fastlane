@@ -28,7 +28,6 @@
 @property (nonatomic) BOOL didShowInitial;
 @property (nonatomic) NSUInteger selectedIndex;
 @property (nonatomic) NSInteger badgeNumber;
-@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -64,20 +63,6 @@ static NSString * const kInitialKey = @"initial";
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
         self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
-        
-        __weak typeof(self) weakSelf = self;
-        VNavigationMenuItemBadgeNumberUpdateBlock block = ^(NSInteger badgeNumber)
-        {
-            [weakSelf updateBadge];
-        };
-        for (UIViewController *vc in _viewControllers)
-        {
-            if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-            {
-                UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
-                viewController.badgeNumberUpdateBlock = block;
-            }
-        }
     }
     return self;
 }
@@ -221,36 +206,6 @@ static NSString * const kInitialKey = @"initial";
     }];
 }
 
-#pragma mark - Badges
-
-- (void)setBadgeNumber:(NSInteger)badgeNumber
-{
-    if ( badgeNumber == _badgeNumber )
-    {
-        return;
-    }
-    _badgeNumber = badgeNumber;
-    
-    if ( self.badgeNumberUpdateBlock != nil )
-    {
-        self.badgeNumberUpdateBlock(self.badgeNumber);
-    }
-}
-
-- (void)updateBadge
-{
-    NSInteger count = 0;
-    for (UIViewController *vc in _viewControllers)
-    {
-        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-        {
-            UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
-            count += viewController.badgeNumber;
-        }
-    }
-    self.badgeNumber = count;
-}
-
 #pragma mark - VMultipleContainer
 
 - (NSArray *)children
@@ -375,6 +330,23 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
 {
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
+}
+
+#pragma mark - VProvidesNavigationMenuItemBadge
+
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
+{
+    _badgeNumberUpdateBlock = nil;
+    for (UIViewController *vc in _viewControllers)
+    {
+        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
+            viewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+        }
+    }
 }
 
 @end

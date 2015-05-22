@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <Objc/runtime.h>
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VNavigationMenuItem.h"
@@ -14,9 +15,7 @@
 #import "VAuthorizedAction.h"
 #import "VObjectManager.h"
 #import "UIResponder+VResponderChain.h"
-
-#import <Objc/runtime.h>
-
+#import "VProvidesNavigationMenuItemBadge.h"
 
 @interface VBarButtonItem : UIBarButtonItem
 
@@ -27,12 +26,6 @@
 @implementation VBarButtonItem
 
 @end
-
-
-#define LOG_ACTIVITY 0
-#if LOG_ACTIVITY
-#warning VDependencyManager+VNavigationItem loggin is enabled!! Turn it off before merging.
-#endif
 
 NSString * const VDependencyManagerTitleImageKey                = @"titleImage";
 
@@ -78,16 +71,13 @@ static const char kAssociatedObjectSourceViewControllerKey;
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
     
-#if LOG_ACTIVITY
-    VLog( @">>>> accessoryMenuItems = %@", accessoryMenuItems );
-#endif
-    
-    NSMutableArray *newBarButtonItemsLeft = [[NSMutableArray alloc] init];
-    NSMutableArray *newBarButtonItemsRight = [[NSMutableArray alloc] init];
+    NSMutableArray *newBarButtonItemsLeft = [[NSMutableArray alloc] initWithArray:navigationItem.leftBarButtonItems];
+    NSMutableArray *newBarButtonItemsRight = [[NSMutableArray alloc] initWithArray:navigationItem.rightBarButtonItems];
     
     for ( VNavigationMenuItem *menuItem in accessoryMenuItems )
     {
-        if ( ![self shouldDisplayMenuItem:menuItem fromSourceViewController:sourceViewController] )
+        if ( [self barButtonItemFromNavigationItem:navigationItem forIdentifier:menuItem.identifier] != nil ||
+             ![self shouldDisplayMenuItem:menuItem fromSourceViewController:sourceViewController] )
         {
             continue;
         }
@@ -99,15 +89,11 @@ static const char kAssociatedObjectSourceViewControllerKey;
             VBarButton *barButton = [VBarButton newWithDependencyManager:self];
             [barButton setImage:menuItem.icon];
             [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
+            barButton.menuItemIdentifier = menuItem.identifier;
             
-            id<VNavigationDestination> destination = (id<VNavigationDestination>)menuItem.destination;
-            if ( [destination respondsToSelector:@selector(badgeNumber)] )
-            {
-                barButton.badgeNumber = [destination badgeNumber];
-            }
+            [self registerBadgeUpdateBlockWithButton:barButton destination:menuItem.destination];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
-            barButton.menuItemIdentifier = menuItem.identifier;
             accessoryBarItem.menuItemIdentifier = menuItem.identifier;
         }
         else if ( menuItem.title != nil )
@@ -134,14 +120,25 @@ static const char kAssociatedObjectSourceViewControllerKey;
         }
     }
     
+    [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:YES];
+    [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:YES];
+}
+
+- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton destination:(id)destination
+{
+    __weak typeof (barButton) weakBarButton = barButton;
+    id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)destination;
+    if ( [badgeProvider conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
     {
-        NSArray *existingItems = navigationItem.leftBarButtonItems;
-        BOOL animated = existingItems.count != newBarButtonItemsLeft.count;
-        [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:animated];
-    }{
-        NSArray *existingItems = navigationItem.rightBarButtonItems;
-        BOOL animated = existingItems.count != newBarButtonItemsRight.count;
-        [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:animated];
+        VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
+        {
+            [weakBarButton setBadgeNumber:badgeNumber];
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
+        };
+        
+        [badgeProvider setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
+        NSInteger badgeNumber = [badgeProvider badgeNumber];
+        badgeNumberUpdateBlock( badgeNumber );
     }
 }
 
@@ -210,19 +207,18 @@ static const char kAssociatedObjectSourceViewControllerKey;
 
 - (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier
 {
-    for ( VBarButtonItem *item in navigationItme.leftBarButtonItems )
+    __block VBarButtonItem *foundItem = nil;
+    NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(VBarButtonItem *item, NSDictionary *bindings)
     {
-        if ( [item isKindOfClass:[VBarButtonItem class]] )
-        {
-            return item;
-        }
+        return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItemIdentifier isEqualToString:identifier];
+    }];
+    if (( foundItem = [navigationItme.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject ))
+    {
+        return foundItem;
     }
-    for ( VBarButtonItem *item in navigationItme.rightBarButtonItems )
+    if (( foundItem = [navigationItme.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject ))
     {
-        if ( [item isKindOfClass:[VBarButtonItem class]] )
-        {
-            return item;
-        }
+        return foundItem;
     }
     return nil;
 }
@@ -232,14 +228,13 @@ static const char kAssociatedObjectSourceViewControllerKey;
     UINavigationController *sourceViewController = objc_getAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey );
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
     
-    for ( VNavigationMenuItem *menuITem in accessoryMenuItems )
+    for ( VNavigationMenuItem *menuItem in accessoryMenuItems )
     {
-        if ( [menuITem.identifier isEqualToString:identifier] )
+        if ( [menuItem.identifier isEqualToString:identifier] )
         {
-            return menuITem;
+            return menuItem;
         }
     }
-    
     return nil;
 }
 
@@ -308,10 +303,6 @@ static const char kAssociatedObjectSourceViewControllerKey;
 
 - (void)performNavigationFromSource:(UIViewController *)sourceViewController withMenuItem:(VNavigationMenuItem *)menuItem
 {
-#if LOG_ACTIVITY
-    VLog( @">>>> performNavigationFromSource = %@", sourceViewController );
-#endif
-    
     BOOL shouldNavigate = YES;
     UIResponder *responder = sourceViewController;
     do

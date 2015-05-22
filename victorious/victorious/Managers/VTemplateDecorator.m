@@ -103,10 +103,23 @@ static NSString * const kKeyPathDelimiter = @"/";
 
 - (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath
 {
+    NSParameterAssert( templateValue != nil );
     NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimiter]];
     BOOL didSetTemplateValue = NO;
     self.workingTemplate = [self collectionFromCollection:self.workingTemplate
                                    bySettingTemplateValue:templateValue
+                                           forKeyPathKeys:keyPathKeys
+                                                   didSet:&didSetTemplateValue];
+    
+    return didSetTemplateValue;
+}
+
+- (BOOL)removeTemplateValueForKeyPath:(NSString *)keyPath
+{
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimiter]];
+    BOOL didSetTemplateValue = NO;
+    self.workingTemplate = [self collectionFromCollection:self.workingTemplate
+                                   bySettingTemplateValue:nil
                                            forKeyPathKeys:keyPathKeys
                                                    didSet:&didSetTemplateValue];
     
@@ -137,7 +150,11 @@ static NSString * const kKeyPathDelimiter = @"/";
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    destination[i] = templateValue;
+                    // If tempalteValue is nil, it will be skipped, thereby removing that value for the index
+                    if ( templateValue != nil )
+                    {
+                        destination[i] = templateValue;
+                    }
                     *didSetTemplateValue = YES;
                 }
                 else
@@ -172,7 +189,11 @@ static NSString * const kKeyPathDelimiter = @"/";
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    destination[ currentKey ] = templateValue;
+                    // If tempalteValue is nil, it will be skipped, thereby removing that value for the index
+                    if ( templateValue != nil )
+                    {
+                        destination[ currentKey ] = templateValue;
+                    }
                     *didSetTemplateValue = YES;
                 }
                 else

@@ -55,32 +55,8 @@
         _bouncesHorizontally = YES;
         
         _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
-        
-        [self registerBadgeUpdateBlock];
     }
     return self;
-}
-
-- (void)registerBadgeUpdateBlock
-{
-    __weak typeof(self) weakSelf = self;
-    VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
-    {
-#warning FIX!
-        //[weakSelf.hamburgerButton setBadgeNumber:badgeNumber];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
-    };
-    
-    if ( [self.menuViewController respondsToSelector:@selector(setBadgeNumberUpdateBlock:)] )
-    {
-        [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
-    }
-    
-    if ( [self.menuViewController respondsToSelector:@selector(badgeNumber)] )
-    {
-        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController badgeNumber];
-        badgeNumberUpdateBlock(badgeNumber);
-    }
 }
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager

@@ -61,39 +61,39 @@
         {
             continue;
         }
+        
         VNavigationDestinationContainerViewController *shimViewController = [[VNavigationDestinationContainerViewController alloc] initWithNavigationDestination:menuItem.destination];
         VNavigationController *containedNavigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
         
         if ([menuItem.destination isKindOfClass:[UIViewController class]])
         {
-            [containedNavigationController.innerNavigationController pushViewController:(UIViewController *)menuItem.destination
-                                                                               animated:NO];
+            UIViewController *viewController = (UIViewController *)menuItem.destination;
+            [containedNavigationController.innerNavigationController pushViewController:viewController animated:NO];
             shimViewController.containedViewController = containedNavigationController;
-            
-            if ([menuItem.destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge) ])
-            {
-                id <VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
-                __weak typeof(self) welf = self;
-                __weak VNavigationDestinationContainerViewController *weakShim = shimViewController;
-                [badgeProvider setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
-                {
-                    [welf updateApplicationBadge];
-                    if (badgeNumber > 0)
-                    {
-                        weakShim.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
-                    }
-                    else
-                    {
-                        weakShim.tabBarItem.badgeValue = nil;
-                    }
-                }];
-                [badgeProviders addObject:badgeProvider];
-            }
         }
         
-        shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
-                                                                      image:[[menuItem.icon v_imageByMaskingImageWithColor:self.unselectedIconColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                                                              selectedImage:menuItem.selectedIcon];
+        if ([menuItem.destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge) ])
+        {
+            id <VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
+            __weak typeof(self) welf = self;
+            __weak VNavigationDestinationContainerViewController *weakShim = shimViewController;
+            badgeProvider.badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
+            {
+                [welf updateApplicationBadge];
+                if (badgeNumber > 0)
+                {
+                    weakShim.tabBarItem.badgeValue = [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+                }
+                else
+                {
+                    weakShim.tabBarItem.badgeValue = nil;
+                }
+            };
+            [badgeProviders addObject:badgeProvider];
+        }
+        
+        UIImage *image = [[menuItem.icon v_imageByMaskingImageWithColor:self.unselectedIconColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil image:image selectedImage:menuItem.selectedIcon];
         shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         [wrappedMenuItems addObject:shimViewController];
     }

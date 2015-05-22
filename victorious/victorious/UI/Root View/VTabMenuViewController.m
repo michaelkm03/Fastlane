@@ -26,6 +26,7 @@
 #import "NSArray+VMap.h"
 
 #import "VInitialViewController.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
 NSString * const kMenuKey = @"menu";
 

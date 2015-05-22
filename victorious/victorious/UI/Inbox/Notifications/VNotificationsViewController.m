@@ -34,7 +34,6 @@ static int const kNotificationFetchBatchSize = 50;
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
-@property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
@@ -43,6 +42,7 @@ static int const kNotificationFetchBatchSize = 50;
 @implementation VNotificationsViewController
 
 @synthesize multipleContainerChildDelegate;
+@synthesize badgeNumberUpdateBlock;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -279,7 +279,7 @@ static int const kNotificationFetchBatchSize = 50;
     
     if ( self.badgeNumberUpdateBlock != nil )
     {
-        self.badgeNumberUpdateBlock(self.badgeNumber);
+        //self.badgeNumberUpdateBlock(self.badgeNumber);
     }
 }
 

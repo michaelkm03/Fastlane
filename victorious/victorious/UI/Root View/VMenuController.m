@@ -39,15 +39,13 @@ static char kKVOContext;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VMenuCollectionViewDataSource *collectionViewDataSource;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-#pragma mark properties for VProvidesNavigationMenuItemBadge compliance
-
 @property (nonatomic) NSInteger badgeNumber;
-@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
 @implementation VMenuController
+
+@synthesize badgeNumberUpdateBlock;
 
 #pragma mark VHasManagedDependencies conforming initializer
 

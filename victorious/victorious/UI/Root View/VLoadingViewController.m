@@ -260,6 +260,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                         forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
                                                                 forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens/0"] );
+            
+            //NSParameterAssert( [templateDecorator removeTemplateValueForKeyPath:@"scaffold/menu/items/4"] );
         }
         
         // Add Compose to messages screen in inbox main menu item

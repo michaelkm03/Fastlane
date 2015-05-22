@@ -87,6 +87,8 @@
  */
 - (void)setValue:(id)templateValue forAllOccurencesOfKey:(NSString *)key;
 
+- (BOOL)removeTemplateValueForKeyPath:(NSString *)keyPath;
+
 /**
  Searches recursively for all instances of the specified key and returns the complete key paths
  for each one.  These key paths are in the format that this class accepts in the

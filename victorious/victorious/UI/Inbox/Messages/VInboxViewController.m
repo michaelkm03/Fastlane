@@ -36,15 +36,16 @@
 #import "VNavigationController.h"
 #import "VTemplateDecorator.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
+#import "VProvidesNavigationMenuItemBadge.h"
+#import "UIResponder+VResponderChain.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
-@interface VInboxViewController () <VUserSearchViewControllerDelegate>
+@interface VInboxViewController () <VUserSearchViewControllerDelegate, VProvidesNavigationMenuItemBadge>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic) NSInteger badgeNumber;
-@property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
@@ -57,6 +58,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 @implementation VInboxViewController
 
 @synthesize multipleContainerChildDelegate;
+@synthesize badgeNumberUpdateBlock;
 
 + (instancetype)inboxViewController
 {
@@ -123,6 +125,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
     
     [self updateNavigationItem];
+    
+    self.badgeNumber = [self.messageCountCoordinator unreadMessageCount];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -173,16 +177,23 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-    if ( badgeNumber == _badgeNumber )
-    {
-        return;
-    }
     _badgeNumber = badgeNumber;
     
     if ( self.badgeNumberUpdateBlock != nil )
     {
-        self.badgeNumberUpdateBlock(self.badgeNumber);
+        self.badgeNumberUpdateBlock( badgeNumber );
     }
+    
+    /*[__block NSInteger total = 0;
+    self v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
+    {
+        id<VProvidesNavigationMenuItemBadge> provider = [responder targetForAction:@selector(badgeNumberUpdateBlock) withSender:self];
+        if ( provider.badgeNumberUpdateBlock != nil )
+        {
+            total += provider.badgeNumber;
+            provider.badgeNumberUpdateBlock( total );
+        }
+    }];*/
 }
 
 #pragma mark - VAuthorizationContextProvider
