@@ -133,23 +133,30 @@
 
 - (void)setImageURL:(NSURL *)imageURL
 {
-    if ( _imageURL == imageURL && imageURL != nil )
+    if ( _imageURL == imageURL )
     {
         return;
     }
     
     _imageURL = imageURL;
     
-    [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
-                          options:0
-                         progress:nil
-                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
-     {
-         if ( image != nil )
+    if ( imageURL == nil )
+    {
+        self.backgroundImage = nil;
+    }
+    else
+    {
+        [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
+                                                        options:0
+                                                       progress:nil
+                                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
          {
-             self.backgroundImage = image;
-         }
-     }];
+             if ( image != nil )
+             {
+                 self.backgroundImage = image;
+             }
+         }];
+    }
 }
 
 - (VTextPostTextView *)textView
