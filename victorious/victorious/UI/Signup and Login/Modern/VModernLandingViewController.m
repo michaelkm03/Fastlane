@@ -10,12 +10,14 @@
 #import "VLoginFlowControllerResponder.h"
 #import "UIView+AutoLayout.h"
 
+// Dependencies
 #import "VDependencyManager.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 static NSString *kLogoKey = @"logo";
 static NSString *kStatusBarStyle = @"statusBarStyle";
 
-@interface VModernLandingViewController ()
+@interface VModernLandingViewController () <VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -57,6 +59,8 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 
     self.legalTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     self.legalTextView.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -99,6 +103,24 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
         NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
     }
     [flowControllerResponder selectedRegister];
+}
+
+- (IBAction)loginWithTwitter:(id)sender
+{
+    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(loginWithTwitter)
+                                                                           withSender:self];
+    if (flowControllerResponder == nil)
+    {
+        NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
+    }
+    [flowControllerResponder loginWithTwitter];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
 }
 
 @end

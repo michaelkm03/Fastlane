@@ -16,4 +16,6 @@
 
 - (void)selectedRegister;
 
+- (void)loginWithTwitter;
+
 @end

@@ -15,7 +15,6 @@
 #import "UIImage+ImageCreation.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
-#import "VSelectorViewController.h"
 #import "VLoginWithEmailViewController.h"
 #import "VSignupWithEmailViewController.h"
 #import "VObjectManager.h"
@@ -31,11 +30,12 @@
 #import "VDependencyManager.h"
 #import "VCreatorInfoHelper.h"
 #import "UIAlertView+VBlocks.h"
+#import "VTwitterAccountsHelper.h"
 
 @import Accounts;
 @import Social;
 
-@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate, VRegistrationStepDelegate>
+@interface VLoginViewController ()  <UINavigationControllerDelegate, CCHLinkTextViewDelegate, VRegistrationStepDelegate>
 
 @property (nonatomic, strong) VUser *profile;
 
@@ -310,71 +310,14 @@
 - (IBAction)twitterClicked:(id)sender
 {
     [self showLoginProgress];
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
-    ACAccountStore *account = [[ACAccountStore alloc] init];
-    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
-    {
-        if (!granted)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-                           {
-                               NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
-                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
-                               
-                               [self hideLoginProgress];
-                               [self twitterAccessDidFail:error];
-                           });
-        }
-        else
-        {
-            NSArray *twitterAccounts = [account accountsWithAccountType:accountType];
-            if (!twitterAccounts.count)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^(void)
-                {
-                    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts parameters:params];
-                    
-                    [self hideLoginProgress];
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
-                                                                    message:NSLocalizedString(@"NoTwitterMessage", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                          otherButtonTitles:nil];
-                    [alert show];
-                });
-            }
-            else
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
-                    ACAccountStore *account = [[ACAccountStore alloc] init];
-                    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-                    NSArray *accounts = [account accountsWithAccountType:accountType];
-                    
-                    if (accounts.count == 1)
-                    {
-                        [self attemptLoginWithTwitterAccount:[accounts firstObject]];
-                        return;
-                    }
-                    
-                    // Select from n twitter accounts
-                    VSelectorViewController *selectorVC = [VSelectorViewController selectorViewControllerWithItemsToSelectFrom:accounts
-                                                                                                            withConfigureBlock:^(UITableViewCell *cell, ACAccount *account) {
-                                                                                                                cell.textLabel.text = account.username;
-                                                                                                                cell.detailTextLabel.text = account.accountDescription;
-                                                                                                            }];
-                    selectorVC.delegate = self;
-                    selectorVC.navigationItem.prompt = NSLocalizedString(@"SelectTwitter", @"");
-                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectorVC];
-                    [self presentViewController:navController
-                                       animated:YES
-                                     completion:nil];
-                });
-            }
-        }
-    }];
+    VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
+    
+    [twitterHelper selectTwitterAccountWithViewControler:self
+                                           completion:^(ACAccount *twitterAccount)
+     {
+         [self hideLoginProgress];
+         [self attemptLoginWithTwitterAccount:twitterAccount];
+     }];
 }
 
 - (void)showLoginProgress
@@ -447,20 +390,6 @@
         viewController.registrationStepDelegate = self;
         viewController.dependencyManager = self.dependencyManager;
     }
-}
-
-#pragma mark - VSelectorViewControllerDelegate
-
-- (void)vSelectorViewController:(VSelectorViewController *)selectorViewController didSelectItem:(id)selectedItem
-{
-    [self attemptLoginWithTwitterAccount:selectedItem];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)vSelectorViewControllerDidCancel:(VSelectorViewController *)selectorViewController
-{
-    [self hideLoginProgress];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)attemptLoginWithTwitterAccount:(ACAccount *)twitterAccount

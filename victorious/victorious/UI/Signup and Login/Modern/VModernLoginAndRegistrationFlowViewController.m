@@ -19,6 +19,9 @@
 // Responder Chain
 #import "VLoginFlowControllerResponder.h"
 
+// API
+#import "VTwitterAccountsHelper.h"
+
 static NSString *kRegistrationScreens = @"registrationScreens";
 static NSString *kLoginScreens = @"loginScreens";
 static NSString *kLandingScreen = @"landingScreen";
@@ -79,6 +82,11 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
     return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - VHasManagedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -110,6 +118,16 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
 {
     [self pushViewController:[self nextScreenAfterCurrentInArray:self.registrationScreens]
                     animated:YES];
+}
+
+- (void)loginWithTwitter
+{
+    VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
+    [twitterHelper selectTwitterAccountWithViewControler:self
+                                           completion:^(ACAccount *twitterAccount)
+     {
+         
+     }];
 }
 
 #pragma mark - Internal Methods

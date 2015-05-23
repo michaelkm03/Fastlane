@@ -230,7 +230,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         // Modern
         loginComponent = @{
                            @"name":@"modernLoginAndRegistration.screen",
-                           @"logo":@{
+                           @"logo":
+                               @{
                                    @"imageURL":@"homeHeaderImage",
                                    },
                            @"background":
@@ -256,6 +257,17 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                            @"blue":@255,
                                            @"alpha":@255
                                            },
+                                   @"background":
+                                       @{
+                                           @"name":@"solidColor.background",
+                                           @"color":
+                                               @{
+                                                   @"red":@255,
+                                                   @"green":@25,
+                                                   @"blue":@25,
+                                                   @"alpha":@0
+                                               },
+                                           }
                                    },
                            @"registrationScreens":
                                @[
@@ -263,11 +275,22 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                        @"name":@"modernRegisterEmailAndPassword.screen",
                                        @"color.text.content":
                                            @{
-                                               @"red":@255,
+                                               @"red":@258,
                                                @"green":@255,
                                                @"blue":@255,
                                                @"alpha":@255
                                                },
+                                       @"background":
+                                           @{
+                                               @"name":@"solidColor.background",
+                                               @"color":
+                                                   @{
+                                                       @"red":@25,
+                                                       @"green":@25,
+                                                       @"blue":@150,
+                                                       @"alpha":@200
+                                                       },
+                                               }
                                        },
                                    ],
                            @"loginScreens":
