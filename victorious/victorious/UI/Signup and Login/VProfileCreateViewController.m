@@ -190,6 +190,9 @@
 {
     [super viewDidAppear:animated];
     
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.dependencyManager arrayForKey:@"create_profile_start"] };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile parameters:params];
+    
     if (!self.registrationModel.username)
     {
         [self.usernameTextField becomeFirstResponder];

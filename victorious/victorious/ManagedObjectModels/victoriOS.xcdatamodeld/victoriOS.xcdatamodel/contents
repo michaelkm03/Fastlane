@@ -226,22 +226,9 @@
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItems" inverseEntity="Stream" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
-        <attribute name="appEnterBackground" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="appEnterForeground" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="appInstall" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="appLaunch" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="ballisticCount" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="createProfileStart" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="doneButtonTap" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="firstBoot" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="getStartedTap" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="registeButtonTap" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="registrationEnd" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="registrationStart" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="share" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="signUpButtonTap" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete25" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete50" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete75" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -250,9 +237,6 @@
         <attribute name="videoSkip" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoStall" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="viewStart" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="welcomeStart" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="welcomeVideoEnd" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="welcomeVideoStart" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="tracking" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="VUser" syncable="YES">
@@ -313,7 +297,7 @@
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="510"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
-        <element name="Tracking" positionX="828" positionY="-630" width="128" height="465"/>
+        <element name="Tracking" positionX="828" positionY="-630" width="128" height="225"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="450"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
     </elements>

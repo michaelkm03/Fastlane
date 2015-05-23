@@ -22,25 +22,7 @@
 @dynamic videoSkip;
 @dynamic videoStall;
 @dynamic viewStart;
-@dynamic ballisticCount;
-@dynamic appEnterForeground;
-@dynamic appLaunch;
-@dynamic appInstall;
-@dynamic appEnterBackground;
 @dynamic share;
-
-@dynamic createProfileStart;
-@dynamic firstBoot;
-@dynamic registrationEnd;
-@dynamic registrationStart;
-@dynamic getStartedTap;
-@dynamic doneButtonTap;
-@dynamic registeButtonTap;
-@dynamic signUpButtonTap;
-@dynamic welcomeVideoStart;
-@dynamic welcomeVideoEnd;
-@dynamic welcomeStart;
-
 @dynamic sequence;
 @dynamic voteType;
 

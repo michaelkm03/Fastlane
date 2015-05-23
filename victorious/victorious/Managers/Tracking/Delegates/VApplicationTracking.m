@@ -25,7 +25,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
 
-#define APPLICATION_TRACKING_LOGGING_ENABLED 0
+#define APPLICATION_TRACKING_LOGGING_ENABLED 1
 
 #if APPLICATION_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
@@ -35,6 +35,8 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
+@property (nonatomic, readonly) NSDate *applicationLaunchDate;
+@property (nonatomic, readonly) NSUInteger timeSinceLaunch;
 
 @end
 
@@ -61,8 +63,14 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
                                     VTrackingKeyLoadTime           : kMacroLoadTime,
                                     VTrackingKeyTimeSinceBoot      : kMacroTimeSinceBoot };
         _macroReplacement = [[VURLMacroReplacement alloc] init];
+        _applicationLaunchDate = [NSDate date];
     }
     return self;
+}
+
+- (NSUInteger)timeSinceLaunch
+{
+    return (NSUInteger)(ABS( [self.applicationLaunchDate timeIntervalSinceNow] ) * 1000.0f);
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -111,9 +119,12 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
         return NO;
     }
     
+    NSMutableDictionary *allParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
+    allParameters[ VTrackingKeyTimeSinceBoot ] = @(self.timeSinceLaunch);
+    
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:url
-                                        withCorrespondingParameters:parameters];
+                                        withCorrespondingParameters:[allParameters copy]];
     if ( !urlWithMacrosReplaced )
     {
         return NO;

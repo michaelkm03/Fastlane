@@ -23,7 +23,6 @@
 
 @interface VTrackingManager ()
 
-@property (nonatomic, readwrite) NSDate *applicationLaunchDate;
 @property (nonatomic, readwrite) NSMutableArray *queuedEvents;
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 @property (nonatomic, strong) NSMutableArray *delegates;
@@ -55,7 +54,6 @@
         _queuedEvents = [[NSMutableArray alloc] init];
         _durationEvents = [[NSMutableDictionary alloc] init];
         _sessionParameters = [[NSMutableDictionary alloc] init];
-        _applicationLaunchDate = [NSDate date];
         
 #ifndef V_NO_TRACKING_ALERTS
         _eventLog = [[VTrackingEventLog alloc] init];
@@ -63,11 +61,6 @@
 #endif
     }
     return self;
-}
-
-- (NSUInteger)timeSinceLaunch
-{
-    return (NSUInteger)(ABS( [self.applicationLaunchDate timeIntervalSinceNow] ) * 1000.0f);
 }
 
 - (NSString *)stringFromDictionary:(NSDictionary *)dictionary
@@ -149,12 +142,13 @@
 
 #pragma mark - Public tracking methods
 
+- (void)trackEventWithParameters:(NSDictionary *)parameters
+{
+    [self trackEvent:nil parameters:parameters];
+}
+
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
-    if ( eventName == nil || eventName.length == 0 )
-    {
-        return;
-    }
 #ifndef V_NO_TRACKING_ALERTS
     [self.eventLog logEvent:eventName parameters:parameters];
 #endif

@@ -51,6 +51,8 @@
  */
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters;
 
+- (void)trackEventWithParameters:(NSDictionary *)parameters;
+
 /**
  Captures an event to be sent later or prevent another event from being sent.
  @param eventId An ID to test the event's uniqueness to prevent duplicates in the queue.
@@ -86,15 +88,5 @@
  Shows alerts track events sent with `startEvent:parameters:` and `endEvent:` methods.  ** NON-PRODUCTION BUILDS ONLY **
  */
 @property (nonatomic, assign) BOOL showTrackingStartEndAlerts;
-
-/**
- The date that the application was launched.
- */
-@property (nonatomic, readonly) NSDate *applicationLaunchDate;
-
-/**
- The time since the app was first launched in milliseconds.
- */
-@property (nonatomic, readonly) NSUInteger timeSinceLaunch;
 
 @end

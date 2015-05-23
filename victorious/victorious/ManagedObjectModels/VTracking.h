@@ -23,25 +23,7 @@
 @property (nonatomic, retain) id videoSkip;
 @property (nonatomic, retain) id videoStall;
 @property (nonatomic, retain) id viewStart;
-@property (nonatomic, retain) id ballisticCount;
-@property (nonatomic, retain) id appEnterForeground;
-@property (nonatomic, retain) id appLaunch;
-@property (nonatomic, retain) id appInstall;
-@property (nonatomic, retain) id appEnterBackground;
 @property (nonatomic, retain) id share;
-
-@property (nonatomic, retain) id createProfileStart;
-@property (nonatomic, retain) id firstBoot;
-@property (nonatomic, retain) id registrationEnd;
-@property (nonatomic, retain) id registrationStart;
-@property (nonatomic, retain) id getStartedTap;
-@property (nonatomic, retain) id doneButtonTap;
-@property (nonatomic, retain) id registeButtonTap;
-@property (nonatomic, retain) id signUpButtonTap;
-@property (nonatomic, retain) id welcomeVideoStart;
-@property (nonatomic, retain) id welcomeVideoEnd;
-@property (nonatomic, retain) id welcomeStart;
-
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VVoteType *voteType;
 

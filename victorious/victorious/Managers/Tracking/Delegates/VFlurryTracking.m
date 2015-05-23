@@ -87,6 +87,11 @@
         return;
     }
     
+    if ( eventName == nil || eventName.length == 0 )
+    {
+        return;
+    }
+    
     // Because Flurry only allows up to 10 parameters, this allows us to filter out ones
     // that we don't care about to ensure that others get used
     NSDictionary *filteredParameters = [self filteredDictionaryExcludingKeys:self.unwantedParameterKeys fromDictionary:parameters];

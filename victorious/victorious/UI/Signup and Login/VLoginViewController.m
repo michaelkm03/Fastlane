@@ -31,6 +31,7 @@
 #import "VDependencyManager.h"
 #import "VCreatorInfoHelper.h"
 #import "UIAlertView+VBlocks.h"
+#import "VDependencyManager+VTracking.h"
 
 @import Accounts;
 @import Social;
@@ -134,6 +135,9 @@
     self.authorizationContextTextView.attributedText = [[NSAttributedString alloc] initWithString:authorizationContextText attributes:attributes];
     
     [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
+    
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.dependencyManager trackingURLsForKey:VTrackingRegistrationStart] };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartRegistration parameters:params];
 }
 
 - (void)dealloc
