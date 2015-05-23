@@ -26,10 +26,14 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 @property (strong, nonatomic) VPermissionAlertTransitionDelegate *transitionDelegate;
 
 @property (weak, nonatomic) IBOutlet UIView *alertContainerView;
-@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property (weak, nonatomic) IBOutlet VButtonWithCircularEmphasis *confirmationButton;
 @property (weak, nonatomic) IBOutlet UIButton *denyButton;
 @property (weak, nonatomic) IBOutlet VRoundedImageView *iconImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 
 @end
 
@@ -68,9 +72,9 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     self.alertContainerView.layer.cornerRadius = 24.0f;
     self.alertContainerView.clipsToBounds = YES;
     
-    self.messageLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    self.messageLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.messageLabel.text = self.messageText;
+    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.messageTextView.text = self.messageText;
     
     self.confirmButtonText = [self.dependencyManager stringForKey:kConfirmButtonTitleKey];
     self.denyButtonText = [self.dependencyManager stringForKey:kDenyButtonTitleKey];
@@ -88,11 +92,54 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     [self.iconImageView setIconImageURL:appInfo.profileImageURL];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+        
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+- (void)updateViewConstraints
+{
+    // Get total height of all other views
+    CGFloat totalHeight = self.topConstraint.constant;
+    totalHeight += CGRectGetHeight(self.iconImageView.bounds);
+    totalHeight += self.middleConstraint.constant;
+    totalHeight += self.bottomConstraint.constant;
+    totalHeight += CGRectGetHeight(self.confirmationButton.bounds);
+    
+    // Get the maximum height of the alert view
+    CGFloat maxHeight = CGRectGetHeight(self.view.bounds) - 100;
+    
+    // Get the bounding rect of the text using font from dependency manager
+    CGFloat boundingWidth = CGRectGetWidth(self.messageTextView.bounds) - self.messageTextView.textContainerInset.left - self.messageTextView.textContainerInset.right;
+    CGRect textRect = [self.messageText boundingRectWithSize:CGSizeMake(boundingWidth, CGFLOAT_MAX)
+                                                     options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
+                                                  attributes:@{NSFontAttributeName:self.messageTextView.font}
+                                                     context:nil];
+    
+    // Calculate text height. add 20 to make sure we get all the lines
+    CGFloat textHeight = ceilf(CGRectGetHeight(textRect)) + self.messageTextView.textContainerInset.top + self.messageTextView.textContainerInset.bottom;
+    
+    // Find out how high the text view should be
+    CGFloat newTextViewConstant = 0;
+    if (textHeight + totalHeight < maxHeight)
+    {
+        newTextViewConstant = textHeight;
+        self.messageTextView.scrollEnabled = NO;
+    }
+    else
+    {
+        newTextViewConstant = maxHeight - totalHeight;
+        self.messageTextView.scrollEnabled = YES;
+    }
+    
+    // Set the text view height
+    self.textViewHeightConstraint.constant = newTextViewConstant;
+    
+    [super updateViewConstraints];
 }
 
 #pragma mark - Properties

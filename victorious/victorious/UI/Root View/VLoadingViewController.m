@@ -213,12 +213,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 {
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
-#warning Testing, remove this
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         [templateDecorator setTemplateValue:@{@"name":@"standard.permissionsAlert",
-                                              @"profileImagePermission.message":@"In order to be recognized in the community, you need to set a profile picture.\n\nWould you like to set one now?",
+                                              @"profileImagePermission.message":@"In order to post content, we need access to your camera. Allow access? In order to post content, we need access to your camera. Allow access? In order to post content, we need access to your camera. Allow access? In order to post content, we need access to your camera. Allow access? In order to post content, we need access to your camera. Allow access? In order to post content, we need access to your camera. Allow access? In order to post content, we need access to your camera. Allow access?",
                                               @"cameraPermission.message":@"In order to post content, we need access to your camera. Allow access?",
                                               @"microphonePermission.message":@"In order to record videos, we need access to your microphone. Allow access?",
                                               VDependencyManagerAccentColorKey:@{@"alpha":@(255),
@@ -234,7 +233,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                                                            }
                                                                                 },
                                               VDependencyManagerLabel1FontKey:@{@"fontName": @"PTSans-Narrow",
-                                                                                @"fontSize":@(22)
+                                                                                @"fontSize":@(30)
                                                                                 },
                                               VDependencyManagerMainTextColorKey:@{@"alpha":@(255),
                                                                                    @"blue":@(255),
@@ -253,10 +252,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                                                  @"fontSize":@(20)
                                                                                  },
                                               VDependencyManagerSecondaryLinkColorKey:@{@"alpha":@(255),
-                                                                               @"blue":@(135),
-                                                                               @"green":@(134),
-                                                                               @"red":@(133)
-                                                                               },
+                                                                                        @"blue":@(135),
+                                                                                        @"green":@(134),
+                                                                                        @"red":@(133)
+                                                                                        },
                                               @"title.button1":@"Okay!",
                                               @"title.button2":@"Maybe later",
                                               }
