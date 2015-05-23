@@ -12,23 +12,12 @@
 
 - (CGRect)absoluteFrame
 {
-    CGRect frame = self.frame;
-    frame.origin = [self absoluteOrigin];
-    return frame;
+    return [self.superview convertRect:self.frame toView:nil];
 }
 
 - (CGPoint)absoluteOrigin
 {
-    UIView *currentView = self;
-    CGRect frame = currentView.frame;
-    currentView = currentView.superview;
-    while ( currentView != nil )
-    {
-        frame.origin.x += CGRectGetMinX(currentView.frame);
-        frame.origin.y += CGRectGetMinY(currentView.frame);
-        currentView = currentView.superview;
-    }
-    return frame.origin;
+    return [self.superview convertPoint:self.frame.origin toView:nil];
 }
 
 @end

@@ -10,6 +10,9 @@
 
 @class VCoachmarkPassthroughContainerView;
 
+/**
+    A simple delegate for recieving touch messages from the passthrough view.
+ */
 @protocol VCoachmarkPassthroughContainerViewDelegate <NSObject>
 
 /**

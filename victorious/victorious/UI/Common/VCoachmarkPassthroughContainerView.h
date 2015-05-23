@@ -11,6 +11,11 @@
 
 @class VCoachmarkView;
 
+/**
+    A view that sends allows touches to pass through it
+    while sending a message to its delegate, can be thought
+    of much like an insvisible button.
+ */
 @interface VCoachmarkPassthroughContainerView : UIView
 
 /**

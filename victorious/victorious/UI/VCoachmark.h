@@ -19,54 +19,58 @@ typedef NS_ENUM( NSUInteger, VToastVerticalLocation )
     VToastVerticalLocationInvalid
 };
 
+/**
+    A model represting a coachmark that is used to determine the appearance,
+    location, and message of a coachmark view.
+ */
 @interface VCoachmark : NSObject <VHasManagedDependencies>
 
 /**
     The text that should display when this coachmark is shown as a toast,
     describing the screen that is currently displayed
  */
-@property (nonatomic, strong) NSString *currentScreenText;
+@property (nonatomic, readonly) NSString *currentScreenText;
 
 /**
     The text that should display when this coachmark is shown as a tooltip,
     describing a screen that is not currently displayed
  */
-@property (nonatomic, strong) NSString *relatedScreenText;
+@property (nonatomic, readonly) NSString *relatedScreenText;
 
 /**
     The id of the screen that this coachmark is describing.
  */
-@property (nonatomic, strong) NSString *displayTarget;
+@property (nonatomic, readonly) NSString *displayTarget;
 
 /**
     An array of ids of screens where this coachmark can appear. Can include the displayTarget.
  */
-@property (nonatomic, strong) NSArray *displayScreens;
+@property (nonatomic, readonly) NSArray *displayScreens;
 
 /**
     The background of the coachmark view. This will be masked into a tooltip shape if necessary.
  */
-@property (nonatomic, strong) VBackground *background;
+@property (nonatomic, readonly) VBackground *background;
 
 /**
     The color of the displayed text.
  */
-@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, readonly) UIColor *textColor;
 
 /**
     The font of the displayed text.
  */
-@property (nonatomic, strong) UIFont *font;
+@property (nonatomic, readonly) UIFont *font;
 
 /**
     The vertical location of the coachmark when it is shown as a toast.
  */
-@property (nonatomic, assign) VToastVerticalLocation toastLocation;
+@property (nonatomic, readonly) VToastVerticalLocation toastLocation;
 
 /**
     The identifier of this coachmark. This id is consistent across sessions.
  */
-@property (nonatomic, strong) NSString *remoteId;
+@property (nonatomic, readonly) NSString *remoteId;
 
 /**
     The length this coachmark should stay on screen if the user does not interact with the screen.

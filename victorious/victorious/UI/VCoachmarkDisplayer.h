@@ -13,6 +13,10 @@
  */
 static NSString * const VScreenIdentifierKey = @"id";
 
+/**
+    Conformance to this protocol allows conformers to the VCoachmarkDisplayResponder
+    to locate this screen or menu item on screen.
+ */
 @protocol VCoachmarkDisplayer <NSObject>
 
 /**

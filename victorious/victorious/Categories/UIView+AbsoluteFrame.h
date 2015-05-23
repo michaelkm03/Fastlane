@@ -8,20 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+    Convenience methods for getting the frame of a UI element
+    in relation to the window that contains it
+ */
 @interface UIView (AbsoluteFrame)
 
 /**
-    Traverses the subviews of this view to provide an "absolute" frame,
-    a frame of a view in relation to the entire screen.
-    Internally calls absoluteOriginOfView to find the origin of this view.
+    Internally calls convertRect:toView:
  
     @return The frame of the provided view in relation to the entire screen.
  */
 - (CGRect)absoluteFrame;
 
 /**
- Traverses the subviews of this view to provide an "absolute" origin,
- the origin of a view in relation to the entire screen.
+ Internally calls convertPoint:toView:
  
  @return The origin of the provided view in relation to the entire screen.
  */
