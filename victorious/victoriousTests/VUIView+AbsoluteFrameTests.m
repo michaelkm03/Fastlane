@@ -1,5 +1,5 @@
 //
-//  VUIView+AbsoluteFrame.m
+//  VUIView+AbsoluteFrameTests.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 5/21/15.
@@ -10,7 +10,7 @@
 #import <XCTest/XCTest.h>
 #import "UIView+AbsoluteFrame.h"
 
-@interface VUIView_AbsoluteFrame : XCTestCase
+@interface VUIView_AbsoluteFrameTests : XCTestCase
 
 @property (nonatomic, strong) UIView *view1;
 @property (nonatomic, strong) UIView *view2;
@@ -19,16 +19,19 @@
 
 @end
 
-@implementation VUIView_AbsoluteFrame
+@implementation VUIView_AbsoluteFrameTests
 
 - (void)setUp
 {
+    UIWindow *window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, 500, 500)];
+    [[[UIApplication sharedApplication] delegate] setWindow:window];
     self.frame1 = CGRectMake(100, 20, 30, 200);
     self.frame2 = CGRectMake(300, 40, 50, 500);
     self.view1 = [[UIView alloc] initWithFrame:self.frame1];
     self.view2 = [[UIView alloc] initWithFrame:self.frame2];
     
     [self.view1 addSubview:self.view2];
+    [window addSubview:self.view1];
 }
 
 - (void)tearDown

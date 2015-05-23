@@ -12,12 +12,30 @@
 
 - (CGRect)absoluteFrame
 {
-    return [self.superview convertRect:self.frame toView:nil];
+    UIView *superview = self.superview;
+    if ( superview == nil )
+    {
+        return self.frame;
+    }
+    while ( superview.superview != nil )
+    {
+        superview = superview.superview;
+    }
+    return [self.superview convertRect:self.frame toView:superview];
 }
 
 - (CGPoint)absoluteOrigin
 {
-    return [self.superview convertPoint:self.frame.origin toView:nil];
+    UIView *superview = self.superview;
+    if ( superview == nil )
+    {
+        return self.frame.origin;
+    }
+    while ( superview.superview != nil )
+    {
+        superview = superview.superview;
+    }
+    return [self.superview convertPoint:self.frame.origin toView:superview];
 }
 
 @end
