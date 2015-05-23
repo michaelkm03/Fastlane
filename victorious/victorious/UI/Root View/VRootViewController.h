@@ -34,11 +34,11 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  */
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo;
 
-- (void)presentForceUpgradeScreen;
-
 /**
- An object that receives deep links and forwads to appropriate handlers
+ Opens a deeplink URL
  */
-@property (nonatomic, readonly) VDeeplinkReceiver *deepLinkReceiver;
+- (void)openURL:(NSURL *)url;
+
+- (void)presentForceUpgradeScreen;
 
 @end

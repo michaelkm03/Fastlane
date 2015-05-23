@@ -103,6 +103,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 {
     self.firstLaunch = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
+    [[VTrackingManager sharedInstance] clearSessionParameters];
 }
 
 #pragma mark - Tracking
@@ -144,8 +145,8 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
-    [self sessionDidEnd];
     [self trackApplicationBackground];
+    [self sessionDidEnd];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
