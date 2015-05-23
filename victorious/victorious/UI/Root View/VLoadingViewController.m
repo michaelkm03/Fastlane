@@ -233,7 +233,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                                                            }
                                                                                 },
                                               VDependencyManagerLabel1FontKey:@{@"fontName": @"PTSans-Narrow",
-                                                                                @"fontSize":@(30)
+                                                                                @"fontSize":@(22)
                                                                                 },
                                               VDependencyManagerMainTextColorKey:@{@"alpha":@(255),
                                                                                    @"blue":@(255),
