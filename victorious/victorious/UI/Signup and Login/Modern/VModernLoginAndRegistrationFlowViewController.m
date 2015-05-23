@@ -37,6 +37,9 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
 @property (nonatomic, strong) NSArray *registrationScreens;
 @property (nonatomic, strong) NSArray *loginScreens;
 
+// Use this as a semaphore around asynchronous user interaction (navigation pushes, social logins, etc.)
+@property (nonatomic, assign) BOOL actionsDisabled;
+
 @end
 
 @implementation VModernLoginAndRegistrationFlowViewController
@@ -104,29 +107,50 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
 
 - (void)cancelLoginAndRegistration
 {
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
 }
 
 - (void)selectedLogin
 {
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     [self pushViewController:[self.loginScreens firstObject]
                     animated:YES];
 }
 
 - (void)selectedRegister
 {
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     [self pushViewController:[self nextScreenAfterCurrentInArray:self.registrationScreens]
                     animated:YES];
 }
 
 - (void)loginWithTwitter
 {
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+
+    self.actionsDisabled = YES;
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     [twitterHelper selectTwitterAccountWithViewControler:self
                                            completion:^(ACAccount *twitterAccount)
      {
-         
+         self.actionsDisabled = NO;
      }];
 }
 
