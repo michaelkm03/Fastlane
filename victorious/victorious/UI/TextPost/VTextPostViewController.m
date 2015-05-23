@@ -11,7 +11,7 @@
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
-#import <SDWebImageManager.h>
+#import "UIImageView+WebCache.h"
 #import "CCHLinkTextViewDelegate.h"
 #import "VHashtagSelectionResponder.h"
 #import "VURLSelectionResponder.h"
@@ -126,8 +126,6 @@
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
-    _backgroundImage = backgroundImage;
-    
     self.backgroundImageView.image = backgroundImage;
 }
 
@@ -140,23 +138,8 @@
     
     _imageURL = imageURL;
     
-    if ( imageURL == nil )
-    {
-        self.backgroundImage = nil;
-    }
-    else
-    {
-        [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
-                                                        options:0
-                                                       progress:nil
-                                                      completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
-         {
-             if ( image != nil )
-             {
-                 self.backgroundImage = image;
-             }
-         }];
-    }
+    self.backgroundImageView.image = nil;
+    [self.backgroundImageView sd_setImageWithURL:_imageURL];
 }
 
 - (VTextPostTextView *)textView
