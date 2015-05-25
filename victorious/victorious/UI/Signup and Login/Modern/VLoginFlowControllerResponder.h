@@ -18,4 +18,12 @@
 
 - (void)selectedTwitterAuthorizationWithCompletion:(void(^)(BOOL success))completion;
 
+- (void)loginWithEmail:(NSString *)email
+              password:(NSString *)password
+            completion:(void(^)(BOOL success, NSError *error))completion;
+
+- (void)registerWithEmail:(NSString *)email
+                 password:(NSString *)password
+               completion:(void(^)(BOOL success, NSError *error))completion;
+
 @end

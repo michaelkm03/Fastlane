@@ -107,7 +107,6 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
             NSAssert(false, @"We need a flow controller in the responder chain for logging in.");
         }
         [flowControllerResponder selectedLogin];
-
     }];
 }
 

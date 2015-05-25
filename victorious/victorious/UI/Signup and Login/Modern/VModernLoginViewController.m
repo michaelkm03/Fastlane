@@ -12,16 +12,18 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VConstants.h"
 
 // Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VEmailValidator.h"
 #import "VPasswordValidator.h"
+#import "VLoginFlowControllerResponder.h"
 
 static NSString *kPromptKey = @"prompt";
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernLoginViewController () <UITextFieldDelegate ,VBackgroundContainer>
+@interface VModernLoginViewController () <UITextFieldDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -29,9 +31,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VPasswordValidator *passwordValidator;
 
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
-@property (weak, nonatomic) IBOutlet VInlineValidationTextField *emailField;
-@property (weak, nonatomic) IBOutlet VInlineValidationTextField *passwordField;
-@property (weak, nonatomic) IBOutlet UILabel *forgotPasswordLabel;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordField;
+@property (nonatomic, weak) IBOutlet UILabel *forgotPasswordLabel;
 
 @end
 
@@ -103,6 +105,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.forgotPasswordLabel.font = textFieldAttributes[NSFontAttributeName];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
+    // So the keyboard slides in from the right
+    [self.emailField becomeFirstResponder];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -116,7 +121,19 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     [super viewWillDisappear:animated];
     
-    [self.emailField resignFirstResponder];
+    [self.view endEditing:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // Cleanup
+//    [self.view endEditing:YES];
+    self.emailField.text = nil;
+    self.passwordField.text = nil;
+    [self.emailField clearValidation];
+    [self.passwordField clearValidation];
 }
 
 #pragma mark - Notifications
@@ -198,16 +215,45 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-
 #pragma mark - Validation
 
 - (void)login:(id)sender
 {
     if ([self shouldLogin])
     {
-#warning FIXME
-//        [self performLoginWithUsername:self.emailField.text
-//                              password:self.passwordField.text];
+        id <VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(loginWithEmail:password:completion:)
+                                                                                withSender:self];
+        if (flowControllerResponder == nil)
+        {
+            NSAssert(false, @"We need a flow controller in the responder chain for logging in.");
+        }
+        [flowControllerResponder loginWithEmail:self.emailField.text
+                                       password:self.passwordField.text
+                                     completion:^(BOOL success, NSError *error)
+         {
+             if (success)
+             {
+                 [self.view endEditing:YES];
+             }
+             else
+             {
+                 if (error.code != kVUserBannedError)
+                 {
+                     NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
+                     
+                     if ( error.code == kVUserOrPasswordInvalidError )
+                     {
+                         message = NSLocalizedString(@"Invalid email address or password", @"");
+                     }
+                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                     message:message
+                                                                    delegate:nil
+                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                           otherButtonTitles:nil];
+                     [alert show];
+                 }
+             }
+         }];
     }
 }
 

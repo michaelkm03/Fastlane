@@ -304,6 +304,17 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @"green":@255,
                                                @"blue":@255,
                                                @"alpha":@255
+                                               },
+                                       @"background":
+                                           @{
+                                               @"name":@"solidColor.background",
+                                               @"color":
+                                                   @{
+                                                       @"red":@25,
+                                                       @"green":@50,
+                                                       @"blue":@25,
+                                                       @"alpha":@200
+                                                       },
                                                }
                                        },
                                    ],

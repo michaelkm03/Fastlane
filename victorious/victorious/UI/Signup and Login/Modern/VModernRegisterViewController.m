@@ -8,9 +8,6 @@
 
 #import "VModernRegisterViewController.h"
 
-// Libraries
-#import <MBProgressHUD/MBProgressHUD.h>
-
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
@@ -21,6 +18,7 @@
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VBackgroundContainer.h"
+#import "VLoginFlowControllerResponder.h"
 
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
@@ -107,6 +105,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.navigationItem.rightBarButtonItem = self.nextButton;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
+    // So the keyboard slides in from the right
+    [self.emailField becomeFirstResponder];
 }
 
 - (void)viewDidLayoutSubviews
@@ -250,11 +251,19 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     if ([self shouldSignUp])
     {
-#warning Do signup stuff
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view
-                                                  animated:YES];
-        hud.labelText = @"signing up....";
+        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(registerWithEmail:password:completion:)
+                                                                               withSender:self];
+        if (flowControllerResponder == nil)
+        {
+            NSAssert(false, @"We need a flow controller responder in the responder chain for registering.");
+        }
         
+        [flowControllerResponder registerWithEmail:self.emailField.text
+                                          password:self.passwordField.text
+                                        completion:^(BOOL success, NSError *error)
+         {
+             //
+         }];
     }
 }
 

@@ -45,4 +45,9 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
  */
 - (void)applyTextFieldStyle:(VTextFieldStyle)textFieldStyle;
 
+/**
+ *  Hides any validation text and clears any internal validation state.
+ */
+- (void)clearValidation;
+
 @end

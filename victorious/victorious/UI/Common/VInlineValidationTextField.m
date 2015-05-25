@@ -208,4 +208,10 @@ static const CGFloat kBottomClearInset = 2.0f;
     }
 }
 
+- (void)clearValidation
+{
+    self.hasResignedFirstResponder = NO;
+    self.inlineValidationView.hidden = YES;
+}
+
 @end

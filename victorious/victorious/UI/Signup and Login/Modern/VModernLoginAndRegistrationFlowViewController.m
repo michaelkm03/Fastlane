@@ -8,7 +8,11 @@
 
 #import "VModernLoginAndRegistrationFlowViewController.h"
 
+// Frameworks
 @import Accounts;
+
+// Pods
+#import <MBProgressHUD/MBProgressHUD.h>
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -179,6 +183,63 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
               self.actionsDisabled = NO;
           }];
      }];
+}
+
+- (void)loginWithEmail:(NSString *)email
+              password:(NSString *)password
+            completion:(void(^)(BOOL success, NSError *error))completion
+{
+    NSParameterAssert(completion != nil);
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
+                                              animated:YES];
+    hud.dimBackground = YES;
+    
+    [[VUserManager sharedInstance] loginViaEmail:email
+                                        password:password
+                                    onCompletion:^(VUser *user, BOOL created)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            [hud hide:YES];
+                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
+                            completion(YES, nil);
+                            [self onLoginFinishedWithSuccess:YES];
+                        });
+     }
+                                         onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            [hud hide:YES];
+                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
+                            completion(NO, error);
+                        });
+     }];
+}
+
+- (void)registerWithEmail:(NSString *)email
+                 password:(NSString *)password
+               completion:(void (^)(BOOL, NSError *))completion
+{
+    NSParameterAssert(completion != nil);
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.dimBackground = YES;
+    
+    [[VUserManager sharedInstance] createEmailAccount:email
+                                             password:password
+                                             userName:nil
+                                         onCompletion:^(VUser *user, BOOL created)
+    {
+        [hud hide:YES];
+        completion(YES, nil);
+    }
+                                              onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+    {
+        [hud hide:YES];
+        completion(NO, error);
+    }];
 }
 
 #pragma mark - Internal Methods
