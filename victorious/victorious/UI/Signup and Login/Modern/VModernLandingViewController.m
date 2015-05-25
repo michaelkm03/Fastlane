@@ -22,6 +22,7 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UITextView *legalTextView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceFacebookToContainer;
 
 @end
 
@@ -34,6 +35,8 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
     landingViewContorller.dependencyManager = dependencyManager;
     return landingViewContorller;
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -70,50 +73,76 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
     self.legalTextView.contentOffset = CGPointZero;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.bottomSpaceFacebookToContainer.constant = 0.0f;
+}
+
 #pragma mark - Target/Action
 
 - (void)selectedCancel
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(cancelLoginAndRegistration)
-                                                                           withSender:self];
-    if (flowControllerResponder == nil)
+    [self animateOutWithCompletion:^
     {
-        NSAssert(false, @"We need a flow controller in the responder chain for cancelling.");
-    }
-    [flowControllerResponder cancelLoginAndRegistration];
+        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(cancelLoginAndRegistration)
+                                                                               withSender:self];
+        if (flowControllerResponder == nil)
+        {
+            NSAssert(false, @"We need a flow controller in the responder chain for cancelling.");
+        }
+        [flowControllerResponder cancelLoginAndRegistration];
+    }];
 }
 
 - (void)login
 {
-    id <VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedLogin)
-                                                                            withSender:self];
-    if (flowControllerResponder == nil)
+    [self animateOutWithCompletion:^
     {
-        NSAssert(false, @"We need a flow controller in the responder chain for logging in.");
-    }
-    [flowControllerResponder selectedLogin];
+        id <VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedLogin)
+                                                                                withSender:self];
+        if (flowControllerResponder == nil)
+        {
+            NSAssert(false, @"We need a flow controller in the responder chain for logging in.");
+        }
+        [flowControllerResponder selectedLogin];
+
+    }];
 }
 
 - (IBAction)toRegsiter:(id)sender
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedRegister)
-                                                                           withSender:self];
-    if (flowControllerResponder == nil)
+    [self animateOutWithCompletion:^
     {
-        NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
-    }
-    [flowControllerResponder selectedRegister];
+        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedRegister)
+                                                                               withSender:self];
+        if (flowControllerResponder == nil)
+        {
+            NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
+        }
+        [flowControllerResponder selectedRegister];
+    }];
 }
 
 - (IBAction)loginWithTwitter:(id)sender
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(loginWithTwitter)
-                                                                           withSender:self];
-    if (flowControllerResponder == nil)
+    [self animateOutWithCompletion:^
     {
-        NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
-    }
-    [flowControllerResponder loginWithTwitter];
+        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedTwitterAuthorizationWithCompletion:)
+                                                                               withSender:self];
+        if (flowControllerResponder == nil)
+        {
+            NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
+        }
+        [flowControllerResponder selectedTwitterAuthorizationWithCompletion:^(BOOL success)
+        {
+            if (!success)
+            {
+                self.bottomSpaceFacebookToContainer.constant = 0.0f;
+            }
+        }];
+    }];
 }
 
 #pragma mark - VBackgroundContainer
@@ -121,6 +150,29 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 - (UIView *)backgroundContainerView
 {
     return self.view;
+}
+
+#pragma mark - Animation
+
+- (void)animateOutWithCompletion:(void(^)())completion
+{
+    NSParameterAssert(completion != nil);
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0f
+         usingSpringWithDamping:0.7f
+          initialSpringVelocity:0.0f
+                        options:kNilOptions
+                     animations:^
+     {
+         //
+         self.bottomSpaceFacebookToContainer.constant = -200.0f;
+         [self.view layoutIfNeeded];
+     }
+                     completion:^(BOOL finished)
+     {
+         completion();
+     }];
 }
 
 @end

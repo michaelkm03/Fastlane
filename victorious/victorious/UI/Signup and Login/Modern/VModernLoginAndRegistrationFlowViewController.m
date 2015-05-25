@@ -8,6 +8,8 @@
 
 #import "VModernLoginAndRegistrationFlowViewController.h"
 
+@import Accounts;
+
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
@@ -21,6 +23,7 @@
 
 // API
 #import "VTwitterAccountsHelper.h"
+#import "VUserManager.h"
 
 static NSString *kRegistrationScreens = @"registrationScreens";
 static NSString *kLoginScreens = @"loginScreens";
@@ -138,23 +141,59 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
                     animated:YES];
 }
 
-- (void)loginWithTwitter
+- (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL))completion
 {
+    NSParameterAssert(completion != nil);
+    
+    // Not accepting request right now.
     if (self.actionsDisabled)
     {
+        completion(NO);
         return;
     }
-
+    
     self.actionsDisabled = YES;
+    
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     [twitterHelper selectTwitterAccountWithViewControler:self
-                                           completion:^(ACAccount *twitterAccount)
+                                              completion:^(ACAccount *twitterAccount)
      {
-         self.actionsDisabled = NO;
+         if (!twitterAccount)
+         {
+             // Either no twitter permissions or no account was selected
+             completion(NO);
+             self.actionsDisabled = NO;
+             return;
+         }
+         
+         [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
+                                                        OnCompletion:^(VUser *user, BOOL created)
+          {
+              completion(YES);
+              self.actionsDisabled = NO;
+              [self onLoginFinishedWithSuccess:YES];
+          }
+                                                             onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+          {
+              completion(NO);
+              self.actionsDisabled = NO;
+          }];
      }];
 }
 
 #pragma mark - Internal Methods
+
+- (void)onLoginFinishedWithSuccess:(BOOL)success
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:^
+     {
+         if (self.completionBlock != nil)
+         {
+             self.completionBlock(success);
+         }
+     }];
+}
 
 - (UIViewController *)nextScreenAfterCurrentInArray:(NSArray *)array
 {

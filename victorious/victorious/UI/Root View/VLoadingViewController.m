@@ -297,6 +297,14 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                @[
                                    @{
                                        @"name":@"modernLoginEmailAndPassword.screen",
+                                       @"prompt":@"This is the kind voice of login. Welcoming you back in to the app.",
+                                       @"color.text.content":
+                                           @{
+                                               @"red":@255,
+                                               @"green":@255,
+                                               @"blue":@255,
+                                               @"alpha":@255
+                                               }
                                        },
                                    ],
                            };

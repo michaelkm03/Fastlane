@@ -82,6 +82,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomSpaceFacebookToContainer" destination="NYh-Mb-kKo" id="KpF-s7-JLP"/>
                         <outlet property="legalTextView" destination="Qk2-es-3aq" id="Ln6-in-YmU"/>
                     </connections>
                 </viewController>

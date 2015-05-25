@@ -16,6 +16,6 @@
 
 - (void)selectedRegister;
 
-- (void)loginWithTwitter;
+- (void)selectedTwitterAuthorizationWithCompletion:(void(^)(BOOL success))completion;
 
 @end

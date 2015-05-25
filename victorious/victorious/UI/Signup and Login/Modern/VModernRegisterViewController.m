@@ -50,6 +50,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     return registerViewController;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,8 +64,16 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.emailValidator = [[VEmailValidator alloc] init];
     self.passwordValidator = [[VPasswordValidator alloc] init];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.emailField];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.passwordField];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChange:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:self.emailField];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChange:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:self.passwordField];
     
     self.promptTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.promptTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
@@ -69,14 +84,15 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                           };
     self.emailField.font = textFieldAttributes[NSFontAttributeName];
     self.emailField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    [self.emailField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Email", nil)
-                                                                              attributes:textFieldAttributes]];
-    [self.emailField setKeyboardAppearance:[self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey]];
-    [self.passwordField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
-                                                                                 attributes:textFieldAttributes]];
+    self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Email", nil)
+                                                                            attributes:textFieldAttributes];
+    self.emailField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
+
+    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
+                                                                               attributes:textFieldAttributes];
     self.passwordField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    [self.passwordField setKeyboardAppearance:[self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey]];
+    self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     self.nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"")
                                                        style:UIBarButtonItemStylePlain
@@ -91,7 +107,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.navigationItem.rightBarButtonItem = self.nextButton;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
-    
 }
 
 - (void)viewDidLayoutSubviews
