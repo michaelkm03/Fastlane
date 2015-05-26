@@ -65,6 +65,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.scaffoldViewController.view animated:YES];
     
     NSString *sequenceID = [url v_firstNonSlashPathComponent];
+    NSString *streamId = [url v_nonSlashPathComponentAtIndex:1];
     
     NSNumber *commentId = nil;
     NSString *commentIDString = [url v_pathComponentAtIndex:2];
@@ -74,11 +75,12 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
     
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
+                                               inStreamWithID:streamId
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          [hud hide:YES];
          VSequence *sequence = (VSequence *)[resultObjects firstObject];
-         [self.scaffoldViewController showContentViewWithSequence:sequence commentId:commentId placeHolderImage:nil];
+         [self.scaffoldViewController showContentViewWithSequence:sequence streamID:streamId commentId:commentId placeHolderImage:nil];
          completion( YES, nil );
      }
                                                     failBlock:^(NSOperation *operation, NSError *error)

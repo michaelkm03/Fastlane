@@ -47,29 +47,37 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
+                                        inStreamWithID:(NSString *)streamId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
 {
     return [self fetchSequenceByID:sequenceId
+                    inStreamWithID:streamId
                       successBlock:success
                          failBlock:fail
                        loadAttempt:0];
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceID
+                                        inStreamWithID:(NSString *)streamId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
                                            loadAttempt:(NSInteger)attemptCount
 {
-    if (!sequenceID)
+    if ( sequenceID == nil )
     {
-        if (fail)
+        if ( fail != nil )
         {
             fail(nil, nil);
         }
         return nil;
     }
     NSString *path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID];
+    
+    if ( streamId != nil )
+    {
+        path = [path stringByAppendingString:[NSString stringWithFormat:@"/%@", streamId]];
+    }
     
     VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
     {
@@ -80,6 +88,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 [self fetchSequenceByID:sequenceID
+                         inStreamWithID:streamId
                             successBlock:success
                                failBlock:fail
                              loadAttempt:(attemptCount+1)];

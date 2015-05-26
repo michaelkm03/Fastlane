@@ -35,7 +35,7 @@ static NSString * const kContentViewComponentKey = @"contentView";
     return self;
 }
 
-- (UIViewController *)contentViewForSequence:(VSequence *)sequence commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage
+- (UIViewController *)contentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage
 {
     if ( [sequence isWebContent] )
     {
@@ -43,7 +43,7 @@ static NSString * const kContentViewComponentKey = @"contentView";
         return [self webContentViewControllerWithURL:sequenceContentURL sequence:sequence];
     }
     
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence depenencyManager:self.dependencyManager];
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence streamID:streamId depenencyManager:self.dependencyManager];
     contentViewModel.deepLinkCommentId = commentID;
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:self.dependencyManager];
     contentViewController.placeholderImage = placeholderImage;

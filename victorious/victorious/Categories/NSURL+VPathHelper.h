@@ -16,6 +16,13 @@
  */
 - (NSString *)v_firstNonSlashPathComponent;
 
+
+/**
+ Returns a pathComponent at the specified index that is not equal to "/" or nil if no
+ such pathComponent exists. This ignores slashes like the method `v_firstNonSlashPathComponent`.
+ */
+- (NSString *)v_nonSlashPathComponentAtIndex:(NSUInteger)index;
+
 /**
  Returns a pathComponent at the specified index or nil if no such pathComponent exists.
  This does not ignore slashes like the method `v_firstNonSlashPathComponent`.

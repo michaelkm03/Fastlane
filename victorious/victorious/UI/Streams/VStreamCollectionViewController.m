@@ -138,7 +138,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     NSString *path = [url v_pathComponent];
     
-    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    VStream *stream = [VStream streamForPath:path withID:sequenceID inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
@@ -398,7 +398,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        [self showContentViewForSequence:(VSequence *)streamItem withPreviewImage:image];
+        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marquee.stream.remoteId withPreviewImage:image];
     }
     else if ( [streamItem isSingleStream] )
     {
@@ -455,7 +455,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    [self showContentViewForSequence:sequence withPreviewImage:nil];
+    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.remoteId withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -613,13 +613,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForSequence:(VSequence *)sequence withPreviewImage:(UIImage *)previewImage
+- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage
 {
     NSParameterAssert(sequence != nil);
     NSParameterAssert(self.currentStream != nil);
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
-    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence commentId:nil placeHolderImage:previewImage];
+    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence streamID:streamId commentId:nil placeHolderImage:previewImage];
 }
 
 #pragma mark - Upload Progress View

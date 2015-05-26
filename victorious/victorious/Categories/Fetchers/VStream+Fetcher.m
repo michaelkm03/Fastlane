@@ -29,13 +29,15 @@
 
 + (VStream *)streamForUser:(VUser *)user
 {
-    NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *streamID = user.remoteId.stringValue ?: @"0";
+    NSString *escapedRemoteId = [streamID stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
     NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
                          escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
-    return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    return [self streamForPath:apiPath withID:streamID inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
 + (VStream *)streamForPath:(NSString *)apiPath
+                    withID:(NSString *)streamID
                  inContext:(NSManagedObjectContext *)context
 {
     static NSCache *streamCache;
@@ -81,6 +83,10 @@
         object.apiPath = apiPath;
         object.name = @"";
         object.previewImagesObject = @"";
+        if ( streamID != nil )
+        {
+            object.remoteId = streamID;
+        }
         [object.managedObjectContext saveToPersistentStore:nil];
         
         [streamCache setObject:object forKey:apiPath];
