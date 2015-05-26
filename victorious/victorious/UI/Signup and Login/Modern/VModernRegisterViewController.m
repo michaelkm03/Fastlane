@@ -12,6 +12,7 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VConstants.h"
 
 // Views + Helpers
 #import "VInlineValidationTextField.h"
@@ -228,9 +229,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         shouldSignup = NO;
         [self.emailField becomeFirstResponder];
     }
-    
-    [self.passwordValidator setConfirmationObject:nil
-                                      withKeyPath:nil];
+
     if (![self.passwordValidator validateString:self.passwordField.text andError:&validationError] && shouldSignup)
     {
         [self.passwordField showInvalidText:validationError.localizedDescription
@@ -262,9 +261,31 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                           password:self.passwordField.text
                                         completion:^(BOOL success, NSError *error)
          {
-             //
+             if (!success)
+             {
+                 [self failedWithError:error];
+             }
          }];
     }
+}
+
+- (void)failedWithError:(NSError *)error
+{
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidFail parameters:params];
+    
+    NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
+    
+    if ( error.code == kVAccountAlreadyExistsError)
+    {
+        message = NSLocalizedString(@"User already exists", @"");
+    }
+    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
+                                                           message:message
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - VBackgroundContainer

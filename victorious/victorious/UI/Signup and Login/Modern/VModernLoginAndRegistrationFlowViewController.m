@@ -28,6 +28,7 @@
 // API
 #import "VTwitterAccountsHelper.h"
 #import "VUserManager.h"
+#import "VObjectManager+Login.h"
 
 static NSString *kRegistrationScreens = @"registrationScreens";
 static NSString *kLoginScreens = @"loginScreens";
@@ -193,8 +194,6 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
                                               animated:YES];
-    hud.dimBackground = YES;
-    
     [[VUserManager sharedInstance] loginViaEmail:email
                                         password:password
                                     onCompletion:^(VUser *user, BOOL created)
@@ -225,24 +224,65 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
     NSParameterAssert(completion != nil);
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.dimBackground = YES;
-    
     [[VUserManager sharedInstance] createEmailAccount:email
                                              password:password
                                              userName:nil
                                          onCompletion:^(VUser *user, BOOL created)
     {
-        [hud hide:YES];
-        completion(YES, nil);
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           [hud hide:YES];
+                           completion(YES, nil);
+                           
+                           [self continueRegistrationFlow];
+                       });
     }
                                               onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-    {
-        [hud hide:YES];
-        completion(NO, error);
+     {
+         dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            [hud hide:YES];
+                            completion(NO, error);
+                        });
     }];
 }
 
+- (void)setUsername:(NSString *)username
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                     password:nil
+                                                         name:username
+                                              profileImageURL:nil
+                                                     location:nil
+                                                      tagline:nil
+                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [hud hide:YES];
+         [self continueRegistrationFlow];
+     }
+                                                    failBlock:^(NSOperation *operation, NSError *error)
+     {
+         [hud hide:YES];
+     }];
+
+}
+
 #pragma mark - Internal Methods
+
+- (void)continueRegistrationFlow
+{
+    UIViewController *nextRegisterViewController = [self nextScreenAfterCurrentInArray:self.registrationScreens];
+    if (nextRegisterViewController == self.topViewController)
+    {
+        [self onLoginFinishedWithSuccess:YES];
+    }
+    else
+    {
+        [self pushViewController:nextRegisterViewController
+                        animated:YES];
+    }
+}
 
 - (void)onLoginFinishedWithSuccess:(BOOL)success
 {
@@ -264,7 +304,7 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
     }
     
     NSUInteger currentIndex = [array indexOfObject:self.topViewController];
-    if ((currentIndex+1) <= array.count)
+    if ((currentIndex+1) < array.count)
     {
         return [array objectAtIndex:currentIndex+1];
     }

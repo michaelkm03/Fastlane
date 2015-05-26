@@ -292,6 +292,27 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                        },
                                                }
                                        },
+                                   @{
+                                       @"name":@"modernEnterNameScreen.screen",
+                                       @"color.text.content":
+                                           @{
+                                               @"red":@258,
+                                               @"green":@255,
+                                               @"blue":@255,
+                                               @"alpha":@255
+                                               },
+                                       @"background":
+                                           @{
+                                               @"name":@"solidColor.background",
+                                               @"color":
+                                                   @{
+                                                       @"red":@150,
+                                                       @"green":@25,
+                                                       @"blue":@25,
+                                                       @"alpha":@200
+                                                       },
+                                               }
+                                       },
                                    ],
                            @"loginScreens":
                                @[

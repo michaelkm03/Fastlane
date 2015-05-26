@@ -26,4 +26,6 @@
                  password:(NSString *)password
                completion:(void(^)(BOOL success, NSError *error))completion;
 
+- (void)setUsername:(NSString *)username;
+
 @end
