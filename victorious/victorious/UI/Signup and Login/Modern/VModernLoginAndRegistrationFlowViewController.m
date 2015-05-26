@@ -8,32 +8,24 @@
 
 #import "VModernLoginAndRegistrationFlowViewController.h"
 
-// Frameworks
-@import Accounts;
-
-// Pods
-#import <MBProgressHUD/MBProgressHUD.h>
-
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VStatusBarStyle.h"
+#import "VDependencyManager+VKeyboardStyle.h"
 
 // Views + Helpers
 #import "VBackgroundContainer.h"
+#import "VLoginFlowAPIHelper.h"
 
 // Responder Chain
 #import "VLoginFlowControllerResponder.h"
-
-// API
-#import "VTwitterAccountsHelper.h"
-#import "VUserManager.h"
-#import "VObjectManager+Login.h"
 
 static NSString *kRegistrationScreens = @"registrationScreens";
 static NSString *kLoginScreens = @"loginScreens";
 static NSString *kLandingScreen = @"landingScreen";
 static NSString *kStatusBarStyleKey = @"statusBarStyle";
+static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer>
 
@@ -47,6 +39,7 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
 
 // Use this as a semaphore around asynchronous user interaction (navigation pushes, social logins, etc.)
 @property (nonatomic, assign) BOOL actionsDisabled;
+@property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 
 @end
 
@@ -69,6 +62,8 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
                                                                forKey:kRegistrationScreens];
         _loginScreens = [dependencyManager arrayOfValuesOfType:[UIViewController class]
                                                         forKey:kLoginScreens];
+        _loginFlowHelper = [[VLoginFlowAPIHelper alloc] initWithViewControllerToPresentOn:self
+                                                                        dependencyManager:dependencyManager];
     }
     return self;
 }
@@ -159,113 +154,75 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
     
     self.actionsDisabled = YES;
     
-    VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
-    [twitterHelper selectTwitterAccountWithViewControler:self
-                                              completion:^(ACAccount *twitterAccount)
-     {
-         if (!twitterAccount)
-         {
-             // Either no twitter permissions or no account was selected
-             completion(NO);
-             self.actionsDisabled = NO;
-             return;
-         }
-         
-         [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
-                                                        OnCompletion:^(VUser *user, BOOL created)
-          {
-              completion(YES);
-              self.actionsDisabled = NO;
-              [self onLoginFinishedWithSuccess:YES];
-          }
-                                                             onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-          {
-              completion(NO);
-              self.actionsDisabled = NO;
-          }];
-     }];
+    [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success)
+    {
+        self.actionsDisabled = NO;
+        completion(success);
+        if (success)
+        {
+            [self onLoginFinishedWithSuccess:success];
+        }
+    }];
 }
 
 - (void)loginWithEmail:(NSString *)email
               password:(NSString *)password
             completion:(void(^)(BOOL success, NSError *error))completion
 {
-    NSParameterAssert(completion != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
-                                              animated:YES];
-    [[VUserManager sharedInstance] loginViaEmail:email
-                                        password:password
-                                    onCompletion:^(VUser *user, BOOL created)
+    [self.loginFlowHelper loginWithEmail:email
+                                password:password
+                              completion:^(BOOL success, NSError *error)
      {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
-                            completion(YES, nil);
-                            [self onLoginFinishedWithSuccess:YES];
-                        });
-     }
-                                         onError:^(NSError *error, BOOL thirdPartyAPIFailure)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
-                            completion(NO, error);
-                        });
-     }];
+         completion(success, error);
+         if (success)
+         {
+             [self onLoginFinishedWithSuccess:YES];
+         }
+     }];;
 }
 
 - (void)registerWithEmail:(NSString *)email
                  password:(NSString *)password
                completion:(void (^)(BOOL, NSError *))completion
 {
-    NSParameterAssert(completion != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [[VUserManager sharedInstance] createEmailAccount:email
-                                             password:password
-                                             userName:nil
-                                         onCompletion:^(VUser *user, BOOL created)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           [hud hide:YES];
-                           completion(YES, nil);
-                           
-                           [self continueRegistrationFlow];
-                       });
-    }
-                                              onError:^(NSError *error, BOOL thirdPartyAPIFailure)
+    [self.loginFlowHelper registerWithEmail:email
+                                   password:password
+                                 completion:^(BOOL success, NSError *error)
      {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            [hud hide:YES];
-                            completion(NO, error);
-                        });
-    }];
+         completion(success, error);
+         if (success)
+         {
+             [self continueRegistrationFlow];
+         }
+     }];
 }
 
 - (void)setUsername:(NSString *)username
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:username
-                                              profileImageURL:nil
-                                                     location:nil
-                                                      tagline:nil
-                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [hud hide:YES];
-         [self continueRegistrationFlow];
-     }
-                                                    failBlock:^(NSOperation *operation, NSError *error)
-     {
-         [hud hide:YES];
-     }];
+    __weak typeof(self) welf = self;
+    [self.loginFlowHelper setUsername:username
+                           completion:^(BOOL success, NSError *error)
+    {
+        if (success)
+        {
+            [welf continueRegistrationFlow];
+        }
+    }];
+}
 
+- (void)forgotPassword
+{
+    [self.loginFlowHelper forgotPasswordWithCompletion:^(BOOL success, NSError *error)
+    {
+        if (success)
+        {
+            UIViewController *resetTokenScreen = [self.dependencyManager viewControllerForKey:@"resetTokenScreen"];
+            [self pushViewController:resetTokenScreen
+                            animated:YES];
+        }
+    }];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectResetPassword];
 }
 
 #pragma mark - Internal Methods

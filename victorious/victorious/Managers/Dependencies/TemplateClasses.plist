@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>modernResetPassword.screen</key>
+	<string>VModernResetPasswordViewController</string>
+	<key>modernResetToken.screen</key>
+	<string>VModernResetTokenViewController</string>
 	<key>modernEnterNameScreen.screen</key>
 	<string>VModernEnterNameViewController</string>
 	<key>modernRegisterEmailAndPassword.screen</key>

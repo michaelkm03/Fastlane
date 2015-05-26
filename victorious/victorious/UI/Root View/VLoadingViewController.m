@@ -339,6 +339,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                }
                                        },
                                    ],
+                           @"resetTokenScreen":
+                               @{
+                                   @"name":@"modernResetToken.screen",
+                                   
+                                   },
                            };
         
         [templateDecorator setTemplateValue:loginComponent
