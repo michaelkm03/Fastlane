@@ -13,17 +13,17 @@ extern NSString * const VTrackingStopKey;
 extern NSString * const VTrackingInitKey;
 extern NSString * const VTrackingInstallKey;
 extern NSString * const VTrackingBallisticCountKey;
-extern NSString * const VTrackingCreateProfileStart;
-extern NSString * const VTrackingFirstBoot;
-extern NSString * const VTrackingRegistrationEnd;
-extern NSString * const VTrackingRegistrationStart;
-extern NSString * const VTrackingGetStartedTap;
-extern NSString * const VTrackingDoneButtonTap ;
-extern NSString * const VTrackingRegisteButtonTap;
-extern NSString * const VTrackingSignUpButtonTap;
-extern NSString * const VTrackingWelcomeVideoStart;
-extern NSString * const VTrackingWelcomeVideoEnd;
-extern NSString * const VTrackingWelcomeStart;
+extern NSString * const VTrackingCreateProfileStartKey;
+extern NSString * const VTrackingFirstBootKey;
+extern NSString * const VTrackingRegistrationEndKey;
+extern NSString * const VTrackingRegistrationStartKey;
+extern NSString * const VTrackingGetStartedTapKey;
+extern NSString * const VTrackingDoneButtonTapKey;
+extern NSString * const VTrackingRegisteButtonTapKey;
+extern NSString * const VTrackingSignUpButtonTapKey;
+extern NSString * const VTrackingWelcomeVideoStartKey;
+extern NSString * const VTrackingWelcomeVideoEndKey;
+extern NSString * const VTrackingWelcomeStartKey;
 
 extern NSString * const VTrackingBallisticCountKey;
 

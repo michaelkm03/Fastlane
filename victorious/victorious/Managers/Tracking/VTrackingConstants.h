@@ -132,7 +132,6 @@ extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend m
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidViewHashtagStream; //< Params: Hashtag
 extern NSString * const VTrackingEventUserDidViewStream; //< "Params: StreamName, Context, StreamId, CurrentSection"
-extern NSString * const VTrackingEventFirstTimeUserVideoPlayed; 
 
 extern NSString * const VTrackingEventUserDidVoteSequence; 
 extern NSString * const VTrackingEventUserDidRepost; //< "Params: SequenceId, TimeCurrent"
@@ -228,8 +227,7 @@ extern NSString * const VTrackingEventApplicationDidBoot; //< "The application w
 extern NSString * const VTrackingEventUserDidStartRegistration; //< "The user selected one of the registration options (sing up with email, connect with FB, etc.) to begin the registration process.  Backend mapping: registration_start"
 extern NSString * const VTrackingEventUserDidFinishRegistration; //< "The registration process was completed by the user, who is now a bonafide regsistered user.  Backend mapping: registration_end"
 extern NSString * const VTrackingEventUserDidSelectRegistrationDone; //< "The user selected the ""Done"" button on the final screen of the registration process.  Backend mapping: done_button_tap"
-extern NSString * const VTrackingEventUserDidSelectRegistrationGetStarted; //< "The user selected the ""Get Started"" button to begin the registration process.  Backend mapping: get_started_tap"
-extern NSString * const VTrackingEventUserDidSelectRegistrationSignUp; //< "The user selected the ""Sign up with Email"" option (as opposed to connecting through a social account).  Backend mapping: sign_up_button_tap"
+extern NSString * const VTrackingEventUserDidSelectWelcomeGetStarted; //< "The user selected the ""Get Started"" button to begin the registration process.  Backend mapping: get_started_tap"
 extern NSString * const VTrackingEventWelcomeVideoDidStart; //< The welcome video did begin playing in the first time welcome view.  Backend mapping: welcome_video_start
 extern NSString * const VTrackingEventWelcomeVideoDidEnd; //< The welcome video did play through its complete duration and stop in the first time welcome view.  Backend mapping: welcome_video_end
 extern NSString * const VTrackingEventWelcomeDidStart; //< The first time welcome did present to the user.  Backend mapping: welcome_start

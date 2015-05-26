@@ -25,7 +25,6 @@
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
-#import "VApplicationTracking.h"
 #import "VFlurryTracking.h"
 #import "VGoogleAnalyticsTracking.h"
 #import "VPurchaseManager.h"
@@ -62,7 +61,6 @@ static BOOL isRunningTests(void) __attribute__((const));
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
-    [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
     VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];

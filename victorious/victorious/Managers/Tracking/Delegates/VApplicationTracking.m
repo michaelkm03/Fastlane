@@ -11,6 +11,7 @@
 #import "VTrackingURLRequest.h"
 #import "VURLMacroReplacement.h"
 #import "NSCharacterSet+VURLParts.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
@@ -25,7 +26,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
 
-#define APPLICATION_TRACKING_LOGGING_ENABLED 1
+#define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
 #if APPLICATION_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
@@ -35,8 +36,8 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
-@property (nonatomic, readonly) NSDate *applicationLaunchDate;
-@property (nonatomic, readonly) NSUInteger timeSinceLaunch;
+@property (nonatomic, readonly) NSDate *applicationBootDate;
+@property (nonatomic, readonly) NSUInteger timeSinceBoot;
 
 @end
 
@@ -63,14 +64,20 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
                                     VTrackingKeyLoadTime           : kMacroLoadTime,
                                     VTrackingKeyTimeSinceBoot      : kMacroTimeSinceBoot };
         _macroReplacement = [[VURLMacroReplacement alloc] init];
-        _applicationLaunchDate = [NSDate date];
+        
+        [self resetBootDate];
     }
     return self;
 }
 
-- (NSUInteger)timeSinceLaunch
+- (void)resetBootDate
 {
-    return (NSUInteger)(ABS( [self.applicationLaunchDate timeIntervalSinceNow] ) * 1000.0f);
+    _applicationBootDate = [NSDate date];
+}
+
+- (NSUInteger)timeSinceBoot
+{
+    return (NSUInteger)(ABS( [self.applicationBootDate timeIntervalSinceNow] ) * 1000.0f);
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -120,7 +127,7 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
     }
     
     NSMutableDictionary *allParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    allParameters[ VTrackingKeyTimeSinceBoot ] = @(self.timeSinceLaunch);
+    allParameters[ VTrackingKeyTimeSinceBoot ] = @(self.timeSinceBoot);
     
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:url
@@ -241,16 +248,61 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
     return request;
 }
 
+// Adds template-driven tracking URLs that are not context-specific and read from dependency manager
+- (NSArray *)templateURLsWithEventName:(NSString *)eventName eventParameters:(NSDictionary *)eventParams
+{
+    if ( self.dependencyManager == nil )
+    {
+        VLog( @"A dependency manager instance must be set before events can be properly tracked." );
+        return nil;
+    }
+    
+    static NSDictionary *keyForEventMapping = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
+                                VTrackingEventApplicationDidBoot                  : VTrackingFirstBootKey,
+                                VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
+                                VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
+                                VTrackingEventUserDidSelectRegistrationDone       : VTrackingDoneButtonTapKey,
+                                VTrackingEventUserDidSelectWelcomeGetStarted      : VTrackingGetStartedTapKey,
+                                VTrackingEventUserDidSelectSignupWithEmail        : VTrackingSignUpButtonTapKey,
+                                VTrackingEventWelcomeVideoDidStart                : VTrackingWelcomeVideoStartKey,
+                                VTrackingEventWelcomeVideoDidEnd                  : VTrackingWelcomeVideoEndKey,
+                                VTrackingEventWelcomeDidStart                     : VTrackingWelcomeStartKey };
+    });
+    NSString *key = keyForEventMapping[ eventName ];
+    NSArray *urls = [self.dependencyManager trackingURLsForKey:key];
+    
+#if APPLICATION_TRACKING_LOGGING_ENABLED
+    if ( urls.count > 0 )
+    {
+        VLog( @"Applicaiton Tracking :: Adding Template URLS to event: %@\n%@.", eventName, urls );
+    }
+#endif
+    
+    return urls;
+}
+
 #pragma mark - VTrackingDelegate
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
+    if ( [eventName isEqualToString:VTrackingEventApplicationDidBoot] )
+    {
+        [self resetBootDate];
+    }
+    
+    NSArray *templateURLs = [self templateURLsWithEventName:eventName eventParameters:parameters];
+    NSArray *eventURLs = parameters[ VTrackingKeyUrls ];
+    NSArray *allURLs = [eventURLs ?: @[] arrayByAddingObjectsFromArray:templateURLs];
+    
     // Application tracking works by replacing macros in supplied URLs
     // If calling code doesn't supply any URLs, we can't proceed any further
-    NSArray *urls = parameters[ VTrackingKeyUrls ];
-    if ( urls != nil && urls.count > 0 )
+    if ( allURLs != nil && allURLs.count > 0 )
     {
-        [self trackEventWithUrls:urls andParameters:parameters];
+        [self trackEventWithUrls:allURLs andParameters:parameters];
     }
 }
 

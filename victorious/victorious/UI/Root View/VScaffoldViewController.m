@@ -10,7 +10,6 @@
 
 #import "VContentViewFactory.h"
 #import "VDeeplinkHandler.h"
-#import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -102,20 +101,6 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     return NO;
 }
 
-- (void)trackFirstTimeContentView
-{
-    // Tracking
-    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
-    
-    NSArray *trackingUrlArray = [childDependencyManager trackingURLsForKey:VTrackingStartKey];
-    if ( trackingUrlArray != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
-    }
-}
-
 #pragma mark - Content View
 
 - (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
@@ -144,8 +129,20 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - VLightweightContentViewControllerDelegate
 
+- (void)trackFirstTimeContentView
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeDidStart];
+}
+
+- (void)videoHasStartedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeVideoDidStart];
+}
+
 - (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeVideoDidEnd];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -156,6 +153,8 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 - (void)userWantsToDismissLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWelcomeGetStarted];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

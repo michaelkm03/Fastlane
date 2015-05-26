@@ -136,8 +136,7 @@
     
     [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
     
-    NSDictionary *params = @{ VTrackingKeyUrls : [self.dependencyManager trackingURLsForKey:VTrackingRegistrationStart] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartRegistration parameters:params];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartRegistration];
 }
 
 - (void)dealloc
@@ -219,6 +218,11 @@
 
 - (void)didFinishRegistrationStepWithSuccess:(BOOL)success
 {
+    if ( success )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishRegistration];
+    }
+    
     [self loginDidFinishWithSuccess:success];
 }
 

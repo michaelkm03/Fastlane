@@ -190,8 +190,10 @@
 {
     [super viewDidAppear:animated];
     
-    NSDictionary *params = @{ VTrackingKeyUrls : [self.dependencyManager arrayForKey:@"create_profile_start"] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile parameters:params];
+    if ( self.isBeingPresented )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile];
+    }
     
     if (!self.registrationModel.username)
     {
@@ -353,6 +355,8 @@
 - (IBAction)done:(id)sender
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
 
     if ([self shouldCreateProfile])
     {
