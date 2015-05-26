@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
 #import "VUserTaggingTextStorageDelegate.h"
 
 @class VKeyboardBarViewController;
@@ -24,15 +25,16 @@
 
 @end
 
-@interface VKeyboardBarViewController : UIViewController
+@interface VKeyboardBarViewController : UIViewController <VHasManagedDependencies>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong, readonly) UITextView *textView;
 @property (nonatomic, weak)   id<VKeyboardBarDelegate>  delegate;
 @property (nonatomic, strong) NSAttributedString       *textViewText;
 @property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;
 @property (nonatomic)         BOOL                      sendButtonEnabled;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
-@property (nonatomic, assign, readonly) NSInteger       characterLimit;
+@property (nonatomic, assign) NSUInteger               characterLimit; ///< Defaults to 0, no limit
 
 /**
  If YES (default), text and media will be cleared automatically after the 

@@ -23,12 +23,6 @@
 	<string>NNKPKLfaXsA3KPAJiKeUmxIWz</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
 	<string>XAAUzQaB3CX6s1sSlt5dOSKPSfZOCz4ZFdbTwzFtjy0r3VKuDQ</string>
-	<key>TestflightReleaseAppToken</key>
-	<string>02101c7d-4a01-4a44-8e8a-26dca03554aa</string>
-	<key>TestflightQAAppToken</key>
-	<string>553ddcc2-00e7-4c93-987b-f552eba89273</string>
-	<key>TestflightStagingAppToken</key>
-	<string>cabc9a4e-9385-49a7-8d5f-bedd539b60d6</string>
 	<key>VictoriousAppID</key>
 	<integer>18</integer>
 	<key>StagingAppID</key>
@@ -40,6 +34,6 @@
 	<key>CreatorSalutation</key>
 	<string>What’s Trending</string>
 	<key>FlurryAPIKey</key>
-	<string>XXXXXXXXXX</string>
+	<string>JM5VJT2BH6NDH6NFQHSC</string>
 </dict>
 </plist>

@@ -17,7 +17,7 @@
 {
     NSParameterAssert(uploadManager != nil);
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _uploadManager = uploadManager;
     }

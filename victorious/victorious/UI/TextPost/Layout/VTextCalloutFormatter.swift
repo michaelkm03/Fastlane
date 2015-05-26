@@ -16,12 +16,14 @@ Some helper methods for formatting callout text using NSAttributedStrings
     /**
     Applies attributes to mutable attributed string within the specified callout ranges
     */
-    func applyAttributes( attributes: NSDictionary, toText string: NSMutableAttributedString, inCalloutRanges calloutRanges: NSArray )
+    func applyAttributes( attributes: NSDictionary, toText attributedString: NSMutableAttributedString, inCalloutRanges calloutRanges: NSArray )
     {
         for rangeObject in calloutRanges
         {
             let range: NSRange = rangeObject.rangeValue
-            string.addAttributes( attributes as [NSObject : AnyObject], range: range )
+            attributedString.addAttributes( attributes as [NSObject : AnyObject], range: range )
+            let calloutLinkValue = (attributedString.string as NSString).substringWithRange( range )
+            attributedString.addAttribute( CCHLinkAttributeName, value: calloutLinkValue, range: range )
         }
     }
     

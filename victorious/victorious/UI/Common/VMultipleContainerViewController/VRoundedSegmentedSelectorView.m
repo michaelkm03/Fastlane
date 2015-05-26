@@ -101,7 +101,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     __weak VRoundedSegmentedSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
     CGFloat cornerRadius = [self pillButtonInset];
-    UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     NSDictionary *buttonHorizontalInsetMetrics = @{ @"inset" : @(cornerRadius) };
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
      {
@@ -112,7 +112,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
          }
          
          //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
-         UIButton *button = [self newButtonWithTitle:viewController.title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
+         UIButton *button = [self newButtonWithTitle:viewController.navigationItem.title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
          button.tag = idx;
          [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
          

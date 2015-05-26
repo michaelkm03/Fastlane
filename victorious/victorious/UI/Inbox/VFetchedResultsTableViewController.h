@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class VAbstractFilter;
+
 @interface VFetchedResultsTableViewController : UITableViewController   <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (nonatomic, strong)   NSFetchedResultsController     *fetchedResultsController;
@@ -22,5 +24,8 @@
 
 - (void)registerCells;
 - (IBAction)refresh:(UIRefreshControl *)sender;
+
+- (BOOL)scrollView:(UIScrollView *)scrollView shouldLoadNextPageOfFilter:(VAbstractFilter *)filter;
+- (BOOL)scrollView:(UIScrollView *)scrollView shouldLoadNextPageOfFilter:(VAbstractFilter *)filter forScrollThreshold:(CGFloat)threshold;
 
 @end

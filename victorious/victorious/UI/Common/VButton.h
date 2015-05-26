@@ -15,6 +15,13 @@
 typedef NS_ENUM( NSInteger, VButtonStyle )
 {
     /**
+     Colors, borders and other visual attributes will be unchanged, as in 
+     a normal UIBUtton.  Use this value if you just want to show the scaling
+     animations.
+     */
+    VButtonStyleNone,
+    
+    /**
      A solid background color, colored by `primaryColor`,
      with white text and rounded corners.  This style indicates
      a primary action, such as `submit` on a form.

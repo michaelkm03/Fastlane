@@ -39,18 +39,6 @@ static const CGFloat kShadowOpacity = 0.4f;
     self.imageViewContainer.layer.shadowOpacity = kShadowOpacity;
 }
 
-- (void)setStreamItem:(VStreamItem *)streamItem
-{
-    [super setStreamItem:streamItem];
-    if ( [streamItem isKindOfClass:[VSequence class]] )
-    {
-        VSequence *sequence = (VSequence *)streamItem;
-        
-        self.pollOrImageView.hidden = ![sequence isPoll];
-        
-    }
-}
-
 - (void)updateToImage:(UIImage *)image animated:(BOOL)animated
 {
     if ( !animated )

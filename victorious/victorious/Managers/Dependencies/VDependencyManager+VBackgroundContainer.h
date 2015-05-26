@@ -10,7 +10,8 @@
 #import "VBackgroundContainer.h"
 
 /**
- *  Convenience category to safely add backgrounds to background hosts.
+ *  Convenience category to safely add backgrounds to background hosts. Can only host one 
+ *  type of background either background or loading background.
  */
 @interface VDependencyManager (VBackgroundContainer)
 
@@ -23,7 +24,9 @@
 - (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundContainer;
 
 /**
- *  Adds a loading background to background hosts that provide a loading backgroundContainer.
+ *  Adds a loading background to background hosts that provide a loading backgroundContainer. 
+ *  Only adds the background if the viewForBackground has no VBackground subviews. Will send 
+ *  the background view to the bottom of the subviews stack.
  *
  *  @param backgroundHost An object that conforms to <VBackgroundContainer>
  */

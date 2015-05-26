@@ -26,7 +26,7 @@
 
 - (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view;
 
-- (void)selectedUser:(VUser*)user onSequence:(VSequence *)sequence fromView:(UIView *)view;
+- (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)view;
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit;
 
@@ -35,5 +35,10 @@
 - (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view;
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view;
+
+/**
+ *  Shows any reposters for the given sequence.
+ */
+- (void)showRepostersForSequence:(VSequence *)sequence;
 
 @end

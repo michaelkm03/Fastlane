@@ -10,7 +10,7 @@
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 #import "CIImage+VImage.h"
 #import "NSURL+MediaType.h"
 #import "UIImageView+Blurring.h"

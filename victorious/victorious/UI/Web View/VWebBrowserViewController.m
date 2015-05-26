@@ -11,7 +11,6 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderViewController.h"
-#import "VSettingManager.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
@@ -93,11 +92,14 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewDidAppear:animated];
     
-    // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.sequence.remoteId,
-                              VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    if ( self.sequence != nil )
+    {
+        // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                  VTrackingKeySequenceId : self.sequence.remoteId,
+                                  VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -188,7 +190,13 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     self.currentURL = url;
     if ( self.webView != nil )
     {
-        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+        if ( url.scheme == nil ) //< WKWebView won't load a URL without a scheme
+        {
+            NSString *defaultScheme = @"http://";
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", defaultScheme, url.absoluteString]];
+        }
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [self.webView loadRequest:request];
     }
 }
 

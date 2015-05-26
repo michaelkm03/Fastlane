@@ -9,7 +9,7 @@
 #import "VAbstractStreamCollectionViewController.h"
 
 #import "VStreamCollectionViewDataSource.h"
-#import "VDirectoryItemCell.h"
+#import "VCardDirectoryCell.h"
 
 #import "MBProgressHUD.h"
 
@@ -28,7 +28,6 @@
 #import "VSequence.h"
 #import "VAbstractFilter.h"
 
-#import "VSettingManager.h"
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
@@ -413,6 +412,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [self.scrollPaginator scrollViewDidScroll:scrollView];
     [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
+    
+    [self.navigationViewfloatingController updateContentOffsetOnScroll:scrollView.contentOffset];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

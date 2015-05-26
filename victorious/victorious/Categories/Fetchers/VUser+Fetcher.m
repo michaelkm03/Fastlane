@@ -7,7 +7,6 @@
 //
 
 #import "VUser+Fetcher.h"
-
 #import "VConstants.h"
 
 @implementation VUser (Fetcher)
@@ -15,11 +14,6 @@
 - (BOOL)isOwner
 {
     return [self.accessLevel isEqualToString:kOwnerAccessLevel];
-}
-
-- (BOOL)isUser
-{
-    return [self.accessLevel isEqualToString:kUserAccessLevel];
 }
 
 @end

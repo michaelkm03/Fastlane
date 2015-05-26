@@ -70,7 +70,7 @@
 "PasswordNotMatching" = "La contraseña no coincide";
 "PollAlreadyAnswered" = "El resultado de la encuesta ya fue dado";
 "LoginFail" = "Error al ingresar";
-"LoginFailMessage" = "¡Ups! Algo salió mal.";
+"GenericFailMessage" = "¡Ups! Algo salió mal.";
 "NotLoggedInMessage" = "¡Ups! parece que no has ingresado";
 "SignupFail" = "Error al crear la cuenta";
 "AccountUpdateFail" = "Error al actualizar la cuenta";
@@ -89,6 +89,7 @@
 "Profile load failed!" = "Error al cargar el perfil";
 
 "User already exists" = "El usuario ya existe";
+"Invalid email address or password" = "Email o contraseña inválidos";
 "Sorry, I can't display that right now" = "Lo sentimos, no podemos mostrar eso ahora";
 
 "WereSorry" = "Lo sentimos";
@@ -167,6 +168,7 @@
 
 "TwitterDeniedTitle" = "No pudimos acceder a tu cuenta de Twitter";
 "TwitterDenied" = "Por favor, permite el acceso a tu cuenta de Twitter en Configuración -> Privacidad -> Twitter";
+"TwitterTroubleshooting" = "Trata de quitar y volver a añadir tu cuenta de twitter en configuración";
 
 "CameraRollDeniedTitle" = "No se pudo acceder a las fotos";
 "CameraRollDenied" = "Por favor, permite el acceso a tus fotos en Configuración -> Privacidad.";
@@ -175,6 +177,7 @@
 "StillCaptureFailed" = "No se pudo tomar la foto";
 "VideoCaptureFailed" = "No se pudo grabar el video";
 "VideoSaveFailed" = "No se pudo guardar el video";
+"VideoCoachMessage" = "Para grabar, presiona y mantén";
 
 "NoTwitterTitle" = "¡No se pudo encontrar una cuenta de Twitter";
 "NoTwitterMessage" = "Por favor, abre tu configuración y añade una nueva cuenta de Twitter";
@@ -193,7 +196,7 @@
 "BlockUser" = "Usuario bloqueado";
 "CopyProfileURL" = "Copiar la URL del perfil";
 
-"Create a Video Post" = "Crea una publicación sobre el video";
+"Create a Video Post" = "Crear una publicación sobre el vídeo";
 "Create an Image Post" = "Crea una publicación sobre la imagen";
 "Create a Poll" = "Crea una encuesta";
 "Create a Text Post" = "Crea una publicación de texto";
@@ -216,7 +219,7 @@
 "Uploading" = "Tu contenido se está cargando...";
 "UploadFinalizing" = "Estamos por terminar tu publicación, pronto la verás.";
 "UploadFailed" = "Lo sentimos, tu carga tuvo un error. Por favor, comprueba la conexión y vuelve a intentarlo.";
-"UploadSuccess" = "¡Lo logramos! tu publicación ya se cargó.";
+"UploadSuccess" = "¡Lo logramos! Tu publicación ya se cargó.";
 "UploadError" = "Error al cargar";
 "UploadErrorBody" = "Algo salió mal y no podemos completar la carga en este momento.";
 "UploadCancelAreYouSure" = "¿Seguro que deseas cancelar esta carga?";
@@ -273,11 +276,11 @@
 "HourAgo" = "1h";
 "HoursAgo" = "%dh";
 "Yesterday" = "1d";
-"DaysAgo" = "%d";
+"DaysAgo" = "%dd";
 "LastWeek" = "1e";
 "WeeksAgo" = "%de";
-"LastMonth" = "1mo";
-"MonthsAgo" = "%dmo";
+"LastMonth" = "1 mes";
+"MonthsAgo" = "%d meses";
 "LastYear" = "1a";
 "YearsAgo" = "%da";
 
@@ -408,14 +411,10 @@
 
 "RTCUserPostedAtSyntax" = "%@ a %@";//e.g. "Username at 0:04"
 
-"Report/Flag" = "Reporar/señalar";
+"Report/Flag" = "Reportar/Señalar";
 "CreatedBy" = "CREADO POR";
-"remixes" = "remixes";
-"Remix" = "Remix";
 "RemixVerb" = "Remezclar";
-"reposts" = "Republicaciones";
-"REPOSTS" = "Vueltos a publicar";
-"REMIXES" = "Remixes";
+"Reposts" = "Vueltos a publicar";
 "Repost" = "Volver a publicar";
 "Reposted" = "Vuelto a publicar";
 "RepostContentView" = " REPUBLICACIÓN";
@@ -482,16 +481,17 @@
 
 "Always" = "Siempre";
 "Never" = "Nunca";
-"Only on Wifi" = "Solo en Wifi";
+"Only on Wifi" = "Sólo en Wifi";
 "NotificationSettingSectionFeeds" = "Alimentación";
 "NotificationSettingSectionPeople" = "Persona";
-"Open Settings" = "Abrir configuraciónPersonas";
+"Open Settings" = "Abrir configuración";
 
 "ErrorPushNotificationsNotEnabled" = "Las notificaciones de empuje no están habilitadas para su dispositivo.\n";
 "ErrorPushNotificationsUnknown" = "Error al cargar las notificaciones .\nPor favor, intentar más tarde.";
 "ErrorPushNotificationsNotSaved" = "Error al guardar las preferencias";
 "ErrorPushNotificationsNotSavedMessage" = "Por favor, intentar más tarde.";
 
+"RestorePurchaseDescription" = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle" = "Error al hacer la comora";
 "PurchaseErrorProductNotAvailable" = "Lo sentimos, error en las compras";
 "PurchaseErrorTransaction" = "No puede completarse la transsación. Por favor, intentar más tarde.t";
@@ -543,6 +543,8 @@
 
 "This will discard any content from the camera" = "Esto desechtará todo el contenido de la cámara";
 "Discard" = "Desechar";
+"Video failed to load" = "Error al cargar el video";
+"We encountered an error trying to edit this video." = "Detectamos un error al intentar editar este video.";
 
 "#nofilter" = "#nohayfiltro";
 "create a meme" = "crear meme";

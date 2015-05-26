@@ -26,6 +26,10 @@
         "fontName": "STHeitiSC-Light",
         "fontSize": 24
     },
+    "font.heading2": {
+        "fontName": "STHeitiSC-Light",
+        "fontSize": 20
+    },
     "app_store_url": "https:\/\/itunes.apple.com\/us\/app\/id889351747",
     "ivc": {
         "name": "testInitMethod",

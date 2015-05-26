@@ -33,7 +33,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Sequence.h"
-#import "VThemeManager.h"
 
 #pragma mark - Categories
 #import "NSString+VParseHelp.h"
@@ -49,6 +48,7 @@
 #import "VAuthorizedAction.h"
 
 #import "VAppInfo.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -87,7 +87,7 @@
     }
     
     if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
-        [((VUserProfileViewController *)viewController).profile isEqual:user] )
+        [((VUserProfileViewController *)viewController).user isEqual:user] )
     {
         return NO;
     }

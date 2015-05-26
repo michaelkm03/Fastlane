@@ -6,10 +6,15 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "CCHLinkTextView.h"
+#import "VHasManagedDependencies.h"
 
-@interface VLinkTextViewHelper : NSObject
+#import <Foundation/Foundation.h>
+
+@class CCHLinkTextView;
+
+@interface VLinkTextViewHelper : NSObject <VHasManagedDependencies>
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 - (void)setupLinkTextView:(CCHLinkTextView *)linkTextView withText:(NSString *)text range:(NSRange)range;
 

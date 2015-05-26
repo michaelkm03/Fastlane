@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VHasManagedDependencies.h"
 
-@interface VChangePasswordViewController : UIViewController
+@interface VChangePasswordViewController : UIViewController <VHasManagedDependencies>
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

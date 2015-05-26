@@ -41,6 +41,13 @@
 + (NSString *)stringWithPrependedHashmarkFromString:(NSString *)string;
 
 /**
+ Creates a copy of the input string with a prepended hash mark (#) removed.  If there is no prepended
+ hashtag, an unmodified copy is returned.
+ @param string The string with which to copy and remove the prepended hash mark.
+ */
++ (NSString *)stringByRemovingPrependingHashmarkFromString:(NSString *)string;
+
+/**
  *  Find all hash tags within a given string and return the text of each one in an array.
  *
  *  @param fieldText The string to detect hash tags in.

@@ -17,6 +17,11 @@
 @property (nonatomic, readonly) NSURL    *baseURL;
 @property (nonatomic, readonly) NSNumber *appID;
 
-- (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID;
+- (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID NS_DESIGNATED_INITIALIZER;
+
+/**
+ Initializes a VEnvironment object with the name, baseURL, and appID read from a dictionary
+ */
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

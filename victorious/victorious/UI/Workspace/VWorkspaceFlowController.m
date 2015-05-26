@@ -84,23 +84,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @implementation VWorkspaceFlowController
 
-+ (instancetype)workspaceFlowControllerWithoutADependencyMangerWithInjection:(NSDictionary *)injectedDependencies
-{
-    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:@"defaultWorkspaceDestination"
-                                                                               withAddedDependencies:injectedDependencies];
-    return workspaceFlowController;
-}
-
-+ (instancetype)workspaceFlowControllerWithoutADependencyManger
-{
-    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:VDependencyManagerWorkspaceFlowKey];
-    return workspaceFlowController;
-}
-
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
@@ -259,7 +242,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]];
+    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]
+                                                                                 dependencyManager:self.dependencyManager];
     [self.workspacePresenter present];
     return NO;
 }
@@ -554,6 +538,23 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                           toState:VWorkspaceFlowControllerStatePublish];
     };
     [self.flowNavigationController pushViewController:imageWorkspaceViewController animated:YES];
+}
+
+- (void)videoToolControllerDidFail:(VVideoToolController *)videoToolController
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Video failed to load", @"")
+                                                                             message:NSLocalizedString(@"We encountered an error trying to edit this video.", @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    [self notifyDelegateOfCancel];
+                                }]];
+    [self.flowRootViewController presentViewController:alertController
+                                              animated:YES
+                                            completion:nil];
+
 }
 
 @end

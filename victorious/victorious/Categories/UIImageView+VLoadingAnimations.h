@@ -10,6 +10,10 @@
 
 @interface UIImageView (VLoadingAnimations)
 
+/**
+ *  Internally calls "fadeInImageAtURL:placeholderImage:" with nil placeholder image.
+ */
+- (void)fadeInImageAtURL:(NSURL *)url;
 - (void)fadeInImageAtURL:(NSURL *)url
         placeholderImage:(UIImage *)image;
 - (void)fadeInImage:(UIImage *)image;

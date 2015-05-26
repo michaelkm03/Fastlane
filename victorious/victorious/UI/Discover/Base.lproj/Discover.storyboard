@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -29,6 +29,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ATX-2M-yRs" userLabel="Search Icon Button">
                                         <rect key="frame" x="8" y="7" width="304" height="37"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -52,6 +53,7 @@
                                     </view>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search people" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RxD-Py-mcF" userLabel="Search Field">
                                         <rect key="frame" x="43" y="4" width="269" height="43"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="43" id="GCH-OE-VL1"/>
@@ -73,6 +75,7 @@
                                     </imageView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-RO-Azu" userLabel="Cancel Button">
                                         <rect key="frame" x="270" y="2" width="50" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="HUZ-OI-jhn"/>
                                             <constraint firstAttribute="width" constant="50" id="ouv-d1-CWu"/>
@@ -101,7 +104,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EwB-Hd-HRW" firstAttribute="leading" secondItem="00k-Lh-ofH" secondAttribute="leading" id="Di4-2i-6JX"/>
                             <constraint firstItem="J1F-4E-CYS" firstAttribute="leading" secondItem="00k-Lh-ofH" secondAttribute="leading" id="E2C-qz-Luq"/>
@@ -119,6 +122,9 @@
                         <outlet property="searchBarHeightConstraint" destination="kyv-Ne-LMK" id="Ogb-9H-fsw"/>
                         <outlet property="searchField" destination="RxD-Py-mcF" id="def-r2-cZo"/>
                         <outlet property="searchIconButton" destination="ATX-2M-yRs" id="6gS-8b-g3Y"/>
+                        <outlet property="searchIconImageView" destination="GKA-TH-tHo" id="Mpc-Sp-E3m"/>
+                        <outletCollection property="horizontalRules" destination="YDu-Qa-a39" id="YTz-Cu-5f4"/>
+                        <outletCollection property="horizontalRules" destination="Yw3-DS-7gm" id="zNL-Ft-TUt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="40O-oo-gld" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -248,7 +254,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="ZdI-Zr-sBo" secondAttribute="trailing" constant="-1" id="6N7-5B-TzW"/>
                                     <constraint firstAttribute="centerY" secondItem="VBj-A0-3vt" secondAttribute="centerY" constant="2" id="BgA-Kg-enI"/>
@@ -316,7 +322,7 @@
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="RlL-qC-es1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Qgk-63-R0T">
                             <size key="itemSize" width="95" height="155"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>

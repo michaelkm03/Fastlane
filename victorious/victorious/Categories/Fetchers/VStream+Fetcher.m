@@ -11,7 +11,6 @@
 
 #import "VSequence.h"
 #import "VObjectManager.h"
-#import "VThemeManager.h"
 #import "VUser.h"
 #import "VPaginationManager.h"
 #import "NSCharacterSet+VURLParts.h"

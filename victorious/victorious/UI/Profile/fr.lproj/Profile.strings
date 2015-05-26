@@ -11,7 +11,7 @@
 "Trt-Yx-Qae.text" = "Parlez-nous de vous...";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "bcg-p6-c76"; */
-"bcg-p6-c76.placeholder" = "Emplacement";
+"bcg-p6-c76.placeholder" = "Ville";
 
 /* Class = "UINavigationItem"; title = "Following"; ObjectID = "lH8-cc-I2G"; */
 "lH8-cc-I2G.title" = "Abonnements";

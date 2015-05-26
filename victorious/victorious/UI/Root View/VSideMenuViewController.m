@@ -13,10 +13,8 @@
 #import "VNavigationController.h"
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
-#import "VSettingManager.h"
 #import "VSideMenuViewController.h"
 #import "VStreamCollectionViewController.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VLaunchScreenProvider.h"
@@ -141,7 +139,11 @@
     }
     
     [self addMenuViewControllerMotionEffects];
+}
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
     if (initialVC != nil)
     {

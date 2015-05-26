@@ -50,8 +50,8 @@
  Creates a new VUploadTaskCreator instance
  
  @param uploadManager The instance of VUploadManager that will
-                      ultimately be responsible for uploading
-                      the task that we are creating.
+ ultimately be responsible for uploading
+ the task that we are creating.
  */
 - (instancetype)initWithUploadManager:(VUploadManager *)uploadManager;
 

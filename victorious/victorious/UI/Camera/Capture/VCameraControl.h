@@ -16,6 +16,7 @@ enum
     VCameraControlEventWantsStillImage = 0x01000000,
     VCameraControlEventStartRecordingVideo = 0x02000000,
     VCameraControlEventEndRecordingVideo = 0x04000000,
+    VCameraControlEventFailedRecordingVideo = 0x08000000, // Send when mode is video only and didn't hold for video threshold
 };
 
 

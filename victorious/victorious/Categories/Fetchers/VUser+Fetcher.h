@@ -10,7 +10,9 @@
 
 @interface VUser (Fetcher)
 
+/**
+ Returns whether or not this user is the owner (creator) of the this app.
+ */
 - (BOOL)isOwner;
-- (BOOL)isUser;
 
 @end

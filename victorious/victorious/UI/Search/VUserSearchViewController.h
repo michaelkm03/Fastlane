@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDependencyManager, VUser;
+@class VDependencyManager, VUser, VUserSearchViewController;
 
 @protocol VUserSearchViewControllerDelegate <NSObject>
 
 @required
 
-- (void)userSelectedFromMessageSearch:(VUser *)user;
+- (void)didSelectUser:(VUser *)user inUserSearchViewController:(VUserSearchViewController *)userSearchViewController;
 
 @end
 

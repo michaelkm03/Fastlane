@@ -12,12 +12,6 @@
 #import "VSolidColorBackground.h"
 #import "VURLMacroReplacement.h"
 
-#if CGFLOAT_IS_DOUBLE
-#define CGFLOAT_VALUE doubleValue
-#else
-#define CGFLOAT_VALUE floatValue
-#endif
-
 typedef BOOL (^TypeTest)(Class);
 
 static NSString * const kTemplateClassesFilename = @"TemplateClasses";
@@ -32,6 +26,7 @@ NSString * const VDependencyManagerImageURLKey = @"imageURL";
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
 NSString * const VDependencyManagerMainTextColorKey = @"color.text";
 NSString * const VDependencyManagerContentTextColorKey = @"color.text.content";
+NSString * const VDependencyManagerSecondaryTextColorKey = @"color.text.secondary";
 NSString * const VDependencyManagerAccentColorKey = @"color.accent";
 NSString * const VDependencyManagerSecondaryAccentColorKey = @"color.accent.secondary";
 NSString * const VDependencyManagerLinkColorKey = @"color.link";
@@ -67,6 +62,7 @@ static NSString * const kImageURLKey = @"imageURL";
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
 NSString * const VDependencyManagerProfileImageRequiredKey = @"require_profile_image";
+NSString * const VDependencyManagerPauseVideoWhenCommentingKey = @"pause_video_when_commenting";
 
 // Keys for view controllers
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
@@ -192,29 +188,35 @@ static NSString * const kMacroReplacement = @"XXXXX";
         return nil;
     }
     
-    UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] / 255.0f
-                                     green:[green CGFLOAT_VALUE] / 255.0f
-                                      blue:[blue CGFLOAT_VALUE] / 255.0f
-                                     alpha:[alpha CGFLOAT_VALUE] / 255.0f];
+    UIColor *color = [UIColor colorWithRed:[red VCGFLOAT_VALUE] / 255.0f
+                                     green:[green VCGFLOAT_VALUE] / 255.0f
+                                      blue:[blue VCGFLOAT_VALUE] / 255.0f
+                                     alpha:[alpha VCGFLOAT_VALUE] / 255.0f];
     return color;
 }
 
 - (UIFont *)fontForKey:(NSString *)key
 {
+    UIFont *font = nil;
     NSDictionary *fontDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     VJSONHelper *helper = [[VJSONHelper alloc] init];
     NSString *fontName = fontDictionary[kFontNameKey];
     NSNumber *fontSize = [helper numberFromJSONValue:fontDictionary[kFontSizeKey]];
     
-    if (![fontName isKindOfClass:[NSString class]] ||
-        ![fontSize isKindOfClass:[NSNumber class]])
+    if ([fontName isKindOfClass:[NSString class]] &&
+        [fontSize isKindOfClass:[NSNumber class]])
+    {
+        font = [UIFont fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
+    }
+    if ( font == nil )
     {
         return [self.parentManager fontForKey:key];
     }
-    
-    UIFont *font = [UIFont fontWithName:fontName size:[fontSize CGFLOAT_VALUE]];
-    return font;
+    else
+    {
+        return font;
+    }
 }
 
 - (NSString *)stringForKey:(NSString *)key

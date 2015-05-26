@@ -6,18 +6,30 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamCollectionCell.h"
-#import "VSequenceActionsDelegate.h"
+#import "VBaseCollectionViewCell.h"
+#import "VHasManagedDependencies.h"
+#import "VBackgroundContainer.h"
+#import "VStreamCellSpecialization.h"
+#import "VStreamCellFocus.h"
 
-//Subviews should use the following cell subview height values to determine desired and actual cell height
-extern const CGFloat kSleekCellHeaderHeight;
-extern const CGFloat kSleekCellActionViewHeight;
-extern const CGFloat kSleekCellActionViewBottomConstraintHeight; ///< The space between bottom of actionView and bottom of cell
+@class VSequence;
 
-extern const CGFloat kSleekCellTextNeighboringViewSeparatorHeight; ///< The space between the top of the textView and the content and between the bottom of the comment label and the actionView
-extern const CGFloat kSleekCellActionViewTopConstraintHeight;
+/**
+ * VSleekStreamCollectionCell is a stream cell component more commonly known as 
+ *  template D or Hera. It represents a sequence.
+ */
+@interface VSleekStreamCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus>
 
+/**
+ *  Sizing method. All parameters are required.
+ */
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
+                                    sequence:(VSequence *)sequence
+                           dependencyManager:(VDependencyManager *)dependencyManager;
 
-@interface VSleekStreamCollectionCell : VStreamCollectionCell
+/**
+ *  The sequence for this VSleekStreamCollectionCell to represent.
+ */
+@property (nonatomic, strong) VSequence *sequence;
 
 @end

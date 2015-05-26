@@ -5,17 +5,6 @@
 
 #import "UIImage+Resize.h"
 
-// Private helper methods
-@interface UIImage (Resize_Private)
-
-- (UIImage *)resizedImage:(CGSize)newSize
-                transform:(CGAffineTransform)transform
-           drawTransposed:(BOOL)transpose
-     interpolationQuality:(CGInterpolationQuality)quality;
-- (CGAffineTransform)transformForOrientation:(CGSize)newSize;
-
-@end
-
 @implementation UIImage (Resize)
 
 // Returns a copy of this image that is cropped to the given bounds.
@@ -166,7 +155,7 @@
     }
     
     return [self resizedImage:newSize
-                    transform:[self transformForOrientation:newSize]
+                    transform:[self transformForCurrentOrientationWithSize:newSize]
                drawTransposed:drawTransposed
          interpolationQuality:quality];
 }
@@ -198,12 +187,6 @@
     
     return [self resizedImage:newSize interpolationQuality:quality];
 }
-
-@end
-
-#pragma mark - Private helper methods
-
-@implementation UIImage (Resize_Private)
 
 // Returns a copy of the image that has been transformed using the given affine transform and scaled to the new size
 // The new image's orientation will be UIImageOrientationUp, regardless of the current image's orientation
@@ -263,7 +246,7 @@
 }
 
 // Returns an affine transform that takes into account the image orientation when drawing a scaled image
-- (CGAffineTransform)transformForOrientation:(CGSize)newSize
+- (CGAffineTransform)transformForCurrentOrientationWithSize:(CGSize)newSize
 {
     CGAffineTransform transform = CGAffineTransformIdentity;
     

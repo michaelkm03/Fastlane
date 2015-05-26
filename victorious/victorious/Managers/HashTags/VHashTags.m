@@ -104,6 +104,25 @@
     }
 }
 
++ (NSString *)stringByRemovingPrependingHashmarkFromString:(NSString *)string
+{
+    // Check invalid input
+    if ( string == nil || string.length == 0 )
+    {
+        return string;
+    }
+    
+    NSRange rangeOfHashmark = [string rangeOfString:@"#"];
+    if ( rangeOfHashmark.location == 0 && rangeOfHashmark.length == 1 )
+    {
+        return [string substringFromIndex:1];
+    }
+    else
+    {
+        return [string copy];
+    }
+}
+
 + (NSArray *)getHashTags:(NSString *)fieldText includeHashMark:(BOOL)includeHashMark
 {
     NSMutableArray *container = [[NSMutableArray alloc] init];

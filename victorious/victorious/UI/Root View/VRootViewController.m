@@ -18,16 +18,15 @@
 #import "VRootViewController.h"
 #import "VScaffoldViewController.h"
 #import "VSessionTimer.h"
-#import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VTracking.h"
 #import "TremorVideoAd.h"
 #import "VConstants.h"
-#import "VTemplateGenerator.h"
 #import "VLocationManager.h"
 #import "VVoteSettings.h"
 #import "VVoteType.h"
 #import "VAppInfo.h"
+#import "VUploadManager.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -47,11 +46,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
-@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VVoteSettings *voteSettings;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
+@property (nonatomic, strong) VLoadingViewController *loadingViewController;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
@@ -85,6 +85,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)commonInit
 {
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
+    
+    [[VObjectManager sharedManager] resetSessionID];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
@@ -213,10 +215,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)showLoadingViewController
 {
     self.launchState = VAppLaunchStateWaiting;
-    VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
-    loadingViewController.delegate = self;
-    loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
-    [self showViewController:loadingViewController animated:NO completion:nil];
+    self.loadingViewController = [VLoadingViewController loadingViewController];
+    self.loadingViewController.delegate = self;
+    self.loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
+    [self showViewController:self.loadingViewController animated:NO completion:nil];
 }
 
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -229,7 +231,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     self.sessionTimer.dependencyManager = self.dependencyManager;
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
-    [[VSettingManager sharedManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
     self.voteSettings = [[VVoteSettings alloc] init];
@@ -402,7 +403,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     [self showViewController:nil animated:NO completion:nil];
     [RKObjectManager setSharedManager:nil];
-    [VObjectManager setupObjectManager];
+    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
     [self showLoadingViewController];
 }
 

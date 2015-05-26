@@ -3,10 +3,10 @@
 # Generates the appropriate app ID for the build scheme and app configuration.
 ###########
 
-CONFIG=$1
+FOLDER=$1
 SCHEME=$2
 
-if [ "$CONFIG" == "" ]; then
+if [ "$FOLDER" == "" ]; then
     exit 0
 fi
 
@@ -21,6 +21,6 @@ else
     DEFAULT_APP_ID_KEY="VictoriousAppID"
 fi
 
-DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist" 2> /dev/null)
+DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$FOLDER/Info.plist" 2> /dev/null)
 
 echo $DEFAULT_APP_ID

@@ -28,11 +28,14 @@
 /* Class = "UILabel"; text = "Tracking"; ObjectID = "A70-cw-6uE"; */
 "A70-cw-6uE.text" = "Rastreando";
 
-/* Class = "UITextField"; placeholder = "New Password"; ObjectID = "AVA-KF-9I3"; */
-"AVA-KF-9I3.placeholder" = "Al menos 8 caracteres";
-
 /* Class = "UINavigationItem"; title = "Tracking"; ObjectID = "Er4-Xd-8gm"; */
 "Er4-Xd-8gm.title" = "Rastreando";
+
+/* Class = "UITextField"; placeholder = "New Password"; ObjectID = "FC0-A4-y0n"; */
+"FC0-A4-y0n.placeholder" = "Nueva contraseña";
+
+/* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
+"Hdx-TS-3uZ.placeholder" = "Confirmar contraseña";
 
 /* Class = "UILabel"; text = "Product"; ObjectID = "IJf-ZD-6J8"; */
 "IJf-ZD-6J8.text" = "Producto";
@@ -42,6 +45,9 @@
 
 /* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
 "LM5-sK-eej.normalTitle" = "Salir";
+
+/* Class = "UITextField"; placeholder = "Your Current Password"; ObjectID = "LgC-0q-Axl"; */
+"LgC-0q-Axl.placeholder" = "Tu contraseña actual";
 
 /* Class = "UINavigationItem"; title = "Autoplay"; ObjectID = "MMO-h3-iOL"; */
 "MMO-h3-iOL.title" = "Reproducción automática";
@@ -64,9 +70,6 @@
 /* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
 "WVz-KR-Hhr.title" = "Sacar notificaciones";
 
-/* Class = "UITextField"; placeholder = "Confirm New Password"; ObjectID = "YiX-cN-FLE"; */
-"YiX-cN-FLE.placeholder" = "Confirmar nueva contraseña";
-
 /* Class = "UILabel"; text = "Feedback/Help"; ObjectID = "Ywp-Nm-FQ2"; */
 "Ywp-Nm-FQ2.text" = "Comentarios/ayuda";
 
@@ -82,6 +85,9 @@
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "Siempre";
 
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "jLQ-YW-sES"; */
+"jLQ-YW-sES.normalTitle" = "Guardar";
+
 /* Class = "UILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
 "jjo-ti-snK.text" = "Entorno de servidor";
 
@@ -96,9 +102,6 @@
 
 /* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "Términos del servicio";
-
-/* Class = "UITextField"; placeholder = "Your Current Password"; ObjectID = "oCZ-Jb-QHR"; */
-"oCZ-Jb-QHR.placeholder" = "Tu contraseña actual";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "p5c-fI-FBT"; */
 "p5c-fI-FBT.title" = "Entorno de servidor";

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Jenna Marbles</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}jennamarbles</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}JennaMarbles</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb916848365002414</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>916848365002414</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>XYmdFV6HYk3ZKXu1anVHwOXCM</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>X5xoGP6AFgdGhROgTra1P8baNqjckNL3gFEMtjv5CuOmKH1c1y</string>
+	<key>VictoriousAppID</key>
+	<integer>48</integer>
+	<key>StagingAppID</key>
+	<integer>62</integer>
+	<key>QAAppID</key>
+	<integer>45</integer>
+	<key>CreatorSalutation</key>
+	<string>Jenna Marbles</string>
+	<key>FlurryAPIKey</key>
+	<string>3QB9TPXFNSYQ8CJG68B8</string>
+</dict>
+</plist>

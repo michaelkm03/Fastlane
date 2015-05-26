@@ -39,22 +39,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     self = [super init];
     if ( self != nil )
     {
-        NSString *url = [dependencyManager stringForKey:kStreamURLKey];
-        
-        NSString *sequenceID = [dependencyManager stringForKey:kSequenceIDKey];
-        if ( sequenceID != nil )
-        {
-            VURLMacroReplacement *urlMacroReplacement = [[VURLMacroReplacement alloc] init];
-            url = [urlMacroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kSequenceIDMacro: sequenceID }
-                                                                       inURLString:url];
-        }
-        NSString *path = [url v_pathComponent];
-        
-        if ( path != nil )
-        {
-            _stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-            [self setupWithStream:_stream];
-        }
         _dependencyManager = dependencyManager;
     }
     return self;
@@ -199,8 +183,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     VAbstractMarqueeStreamItemCell *cell;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[self cellSuggestedReuseIdentifier] forIndexPath:indexPath];
-    cell.streamItem = item;
     cell.dependencyManager = self.dependencyManager;
+    cell.streamItem = item;
     
     return cell;
 }

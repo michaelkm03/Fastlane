@@ -10,7 +10,6 @@
 #import "VExperienceEnhancer.h"
 #import "VSequence.h"
 #import "VVoteType.h"
-#import "VSettingManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
 #import "VFileCache.h"
