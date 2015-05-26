@@ -142,8 +142,6 @@
 {
     if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemInvite] )
     {
-#warning FIX:
-        return YES;
         return [self shouldShowInvite];
     }
     
