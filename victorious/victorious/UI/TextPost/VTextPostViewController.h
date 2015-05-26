@@ -33,6 +33,13 @@
 @property (nonatomic, copy) NSURL *imageURL;
 
 /**
+ Sets the background iamge URL, which will load asynchronously and then
+ display with or without animation.
+ @param animated Whether or not the image should animate (fade in) when loading completes.
+ */
+- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated;
+
+/**
  Sets the background color.
  */
 @property (nonatomic, strong) UIColor *color;

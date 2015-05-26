@@ -131,6 +131,11 @@
 
 - (void)setImageURL:(NSURL *)imageURL
 {
+    [self setImageURL:imageURL animated:NO];
+}
+
+- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated
+{
     if ( _imageURL == imageURL )
     {
         return;
@@ -139,7 +144,26 @@
     _imageURL = imageURL;
     
     self.backgroundImageView.image = nil;
-    [self.backgroundImageView sd_setImageWithURL:_imageURL];
+    self.backgroundImageView.alpha = 0.0f;
+    
+    void (^onImageLoaded)() = ^void
+    {
+        self.backgroundImageView.alpha = 1.0f;
+    };
+    
+    [self.backgroundImageView sd_setImageWithURL:_imageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        // Only fade in if there was a delay from downloading
+        const BOOL wasDownloaded = cacheType == SDImageCacheTypeNone;
+        if ( animated && wasDownloaded )
+        {
+            [UIView animateWithDuration:.35f animations:onImageLoaded];
+        }
+        else
+        {
+            onImageLoaded();
+        }
+    }];
 }
 
 - (VTextPostTextView *)textView
