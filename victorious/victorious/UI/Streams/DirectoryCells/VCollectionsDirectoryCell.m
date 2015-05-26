@@ -14,7 +14,9 @@
 #import "UIView+MotionEffects.h"
 
 static const CGFloat kParallaxScrollMovementAmount = 30.0f;
-static const CGFloat kParallaxTiltMovementAmount = 10.0f;
+static const CGFloat kParallaxTiltMovementAmount = 20.0f;
+static const CGFloat kHorizontalInset = - kParallaxTiltMovementAmount / 2;
+static const CGFloat kVerticalInset = - ( kParallaxScrollMovementAmount + kParallaxTiltMovementAmount ) / 2;
 static const CGFloat kContentRatio = 0.4375; //140 / 320 (from spec)
 
 //Animation constants
@@ -52,7 +54,7 @@ static const CGFloat kStartAnimationScale = 0.8f;
     self.previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
     self.previewImageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
     
-    [self.previewImageView v_addMotionEffectsWithMagnitude:kParallaxTiltMovementAmount];
+    [self.previewImageView v_addMotionEffectsWithMagnitude:kParallaxTiltMovementAmount / 2];
 }
 
 - (void)animate:(BOOL)animate toVisible:(BOOL)visible afterDelay:(CGFloat)delay
@@ -98,25 +100,34 @@ static const CGFloat kStartAnimationScale = 0.8f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    CGRect parallaxViewFrame = CGRectInset( self.bounds, - kParallaxTiltMovementAmount, - ( kParallaxScrollMovementAmount + kParallaxTiltMovementAmount ) );
-    [self updateParallaxEffectForFrame:parallaxViewFrame];
+    [self updateParallaxEffectForFrame:[self parallaxEffectFrame]];
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    [self updateParallaxEffectForFrame:[self parallaxEffectFrame]];
 }
 
 - (void)setParallaxYOffset:(CGFloat)parallaxYOffset
 {
     _parallaxYOffset = parallaxYOffset;
-    [self updateParallaxEffectForFrame:self.previewImageView.frame];
+    [self updateParallaxEffectForFrame:[self parallaxEffectFrame]];
 }
 
 - (void)updateParallaxEffectForFrame:(CGRect)frame
 {
-    frame.origin.y = ( self.parallaxYOffset * ( kParallaxScrollMovementAmount / 2 ) ) - ( kParallaxScrollMovementAmount / 2 );
+    frame.origin.y = ( self.parallaxYOffset * ( kParallaxScrollMovementAmount / 2 ) ) + kVerticalInset;
     if ( !CGRectEqualToRect(self.previewImageView.frame, frame) )
     {
         self.previewImageView.frame = frame;
         [self layoutIfNeeded];
     }
+}
+
+- (CGRect)parallaxEffectFrame
+{
+    return CGRectInset( self.bounds, kHorizontalInset, kVerticalInset);
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
