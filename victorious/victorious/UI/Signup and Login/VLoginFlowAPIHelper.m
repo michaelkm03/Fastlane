@@ -23,12 +23,19 @@
 #import "VUserManager.h"
 #import "VObjectManager+Login.h"
 
+// Validator
+#import "VEmailValidator.h"
+
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VLoginFlowAPIHelper ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
+
+// For forgot password
+@property (nonatomic, strong) VEmailValidator *emailValidator;
+@property (nonatomic, strong) NSString *deviceToken;
 
 @end
 
@@ -37,10 +44,15 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewController
                                 dependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSParameterAssert(viewController != nil);
+    NSParameterAssert(dependencyManager != nil);
+    
     self = [super init];
     if (self != nil)
     {
         _viewControllerToPresentOn = viewController;
+        _dependencyManager = dependencyManager;
+        _emailValidator = [[VEmailValidator alloc] init];
     }
     return self;
 }
@@ -171,7 +183,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
-- (void)forgotPasswordWithCompletion:(void (^)(BOOL success, NSError *error))completion
+- (void)forgotPasswordWithStartingEmail:(NSString *)startingEmail
+                             completion:(void (^)(BOOL success, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
@@ -180,6 +193,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
      {
+         textField.text = startingEmail;
          textField.keyboardType = UIKeyboardTypeEmailAddress;
          textField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
      }];
@@ -213,35 +227,106 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     NSParameterAssert(completion != nil);
     
-    completion(YES, nil);
-//    NSString *emailEntered = [alertView textFieldAtIndex:0].text;
-//    if ( emailEntered == nil || emailEntered.length == 0 )
-//    {
-//        NSString *message = NSLocalizedString(@"EmailNotValid", @"");
-//        NSString *title = NSLocalizedString(@"EmailValidation", @"");
-//        [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
-//
-//        NSDictionary *params = @{ VTrackingKeyErrorMessage : message ?: @"" };
-//        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordValidationDidFail parameters:params];
-//        return;
-//    }
-//
-//    [[VObjectManager sharedManager] requestPasswordResetForEmail:emailEntered
-//                                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-//     {
-//         self.deviceToken = resultObjects[0];
-//         [self performSegueWithIdentifier:@"toEnterResetToken" sender:self];
-//     }
-//                                                       failBlock:^(NSOperation *operation, NSError *error)
-//     {
-//         NSString *message = NSLocalizedString(@"EmailNotFound", @"");
-//         NSString *title = NSLocalizedString(@"EmailValidation", @"");
-//
-//         NSDictionary *params = @{ VTrackingKeyErrorMessage : message ?: @"" };
-//         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidFail parameters:params];
-//
-//         [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
-//     }];
+    NSError *emailError = nil;
+    if (![self.emailValidator validateString:email andError:&emailError])
+    {
+        NSString *message = NSLocalizedString(@"EmailNotValid", @"");
+        NSString *title = NSLocalizedString(@"EmailValidation", @"");
+        UIAlertController *invalidEmailAlert = [UIAlertController alertControllerWithTitle:title
+                                                                                   message:emailError.localizedDescription
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:nil];
+        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry?", nil)
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction *action)
+                                      {
+                                          [self forgotPasswordWithStartingEmail:nil
+                                                                     completion:completion];
+                                      }];
+        [invalidEmailAlert addAction:cancelAction];
+        [invalidEmailAlert addAction:retryAction];
+        completion(NO, nil);
+        [self.viewControllerToPresentOn presentViewController:invalidEmailAlert
+                                                     animated:YES
+                                                   completion:nil];
+
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : message ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordValidationDidFail parameters:params];
+        return;
+    }
+
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+                                              animated:YES];
+    [[VObjectManager sharedManager] requestPasswordResetForEmail:email
+                                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+     {
+         [hud hide:YES];
+         self.deviceToken = resultObjects[0];
+         completion(YES, nil);
+     }
+                                                       failBlock:^(NSOperation *operation, NSError *error)
+     {
+         [hud hide:YES];
+         NSString *message = NSLocalizedString(@"EmailNotFound", @"");
+         NSString *title = NSLocalizedString(@"EmailValidation", @"");
+
+         NSDictionary *params = @{ VTrackingKeyErrorMessage : message ?: @"" };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidFail parameters:params];
+
+         UIAlertController *invalidEmailAlert = [UIAlertController alertControllerWithTitle:title
+                                                                                    message:emailError.localizedDescription
+                                                                             preferredStyle:UIAlertControllerStyleAlert];
+         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                style:UIAlertActionStyleCancel
+                                                              handler:^(UIAlertAction *action)
+                                        {
+                                            dispatch_async(dispatch_get_main_queue(), ^
+                                                           {
+                                                               completion(NO, error);
+                                                           });
+                                        }];
+         UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry?", nil)
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction *action)
+                                       {
+                                           [self forgotPasswordWithStartingEmail:nil
+                                                                      completion:completion];
+                                       }];
+
+         [invalidEmailAlert addAction:cancelAction];
+         [invalidEmailAlert addAction:retryAction];
+         [self.viewControllerToPresentOn presentViewController:invalidEmailAlert
+                                                      animated:YES
+                                                    completion:nil];
+     }];
+}
+
+- (void)setResetToken:(NSString *)resetToken
+           completion:(void (^)(BOOL success, NSError *error))completion
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+                                              animated:YES];
+    [[VObjectManager sharedManager] resetPasswordWithUserToken:resetToken
+                                                   deviceToken:self.deviceToken
+                                                   newPassword:nil
+                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^
+         {
+             [hud hide:YES];
+             completion(YES, nil);
+         });
+     }
+                                                     failBlock:^(NSOperation *operation, NSError *error)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^
+         {
+             [hud hide:YES];
+             completion(NO, error);
+         });
+     }];
 }
 
 @end

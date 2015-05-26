@@ -17,6 +17,7 @@
 // Views + Helpers
 #import "VBackgroundContainer.h"
 #import "VLoginFlowAPIHelper.h"
+#import "VModernResetTokenViewController.h"
 
 // Responder Chain
 #import "VLoginFlowControllerResponder.h"
@@ -210,19 +211,36 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     }];
 }
 
-- (void)forgotPassword
+- (void)forgotPasswordWithInitialEmail:(NSString *)initialEmail
 {
-    [self.loginFlowHelper forgotPasswordWithCompletion:^(BOOL success, NSError *error)
+    [self.loginFlowHelper forgotPasswordWithStartingEmail:initialEmail
+                                               completion:^(BOOL success, NSError *error)
     {
         if (success)
         {
-            UIViewController *resetTokenScreen = [self.dependencyManager viewControllerForKey:@"resetTokenScreen"];
-            [self pushViewController:resetTokenScreen
-                            animated:YES];
+            if (![self.topViewController isKindOfClass:[VModernResetTokenViewController class]])
+            {
+                UIViewController *resetTokenScreen = [self.dependencyManager viewControllerForKey:@"resetTokenScreen"];
+                [self pushViewController:resetTokenScreen
+                                animated:YES];
+            }
         }
     }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectResetPassword];
+}
+
+- (void)setResetToken:(NSString *)resetToken
+{
+    [self.loginFlowHelper setResetToken:resetToken
+                             completion:^(BOOL success, NSError *error)
+    {
+        if (success)
+        {
+            // show change password screen.
+            
+        }
+    }];
 }
 
 #pragma mark - Internal Methods

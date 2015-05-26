@@ -54,6 +54,13 @@
 /**
  *  The user has forgot their password and would like a reset.
  */
-- (void)forgotPasswordWithCompletion:(void (^)(BOOL success, NSError *error))completion;
+- (void)forgotPasswordWithStartingEmail:(NSString *)startingEmail
+                             completion:(void (^)(BOOL success, NSError *error))completion;
+
+/**
+ *  The user has entered their reset token and is requesting verificaiton.
+ */
+- (void)setResetToken:(NSString *)resetToken
+           completion:(void (^)(BOOL success, NSError *error))completion;
 
 @end

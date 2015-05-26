@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VModernResetPasswordViewController : UIViewController
+#import "VHasManagedDependencies.h"
+
+@interface VModernResetPasswordViewController : UIViewController <VHasManagedDependencies>
 
 @end

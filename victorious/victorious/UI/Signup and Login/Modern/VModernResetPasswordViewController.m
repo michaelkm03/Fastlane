@@ -10,8 +10,20 @@
 
 @interface VModernResetPasswordViewController ()
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VModernResetPasswordViewController
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self)
+                                                         bundle:bundleForClass];
+    VModernResetPasswordViewController *resetPasswordViewController = [storyboard instantiateInitialViewController];
+    resetPasswordViewController.dependencyManager = dependencyManager;
+    return resetPasswordViewController;
+}
 
 @end

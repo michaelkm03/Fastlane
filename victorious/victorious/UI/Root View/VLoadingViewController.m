@@ -240,6 +240,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                    @"sequenceURL":@"http://dev.getvictorious.com/api/sequence/fetch/12318",
                                    },
                            @"statusBarStyle":@"light",
+                           @"keyboardStyle": @"dark",
                            @"color.text.secondary":
                                @{
                                    @"red":@255,
@@ -342,7 +343,25 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                            @"resetTokenScreen":
                                @{
                                    @"name":@"modernResetToken.screen",
-                                   
+                                   @"prompt": @"An email was sent to this address containing reset password instructions.",
+                                   @"color.text.content":
+                                       @{
+                                           @"red":@258,
+                                           @"green":@255,
+                                           @"blue":@255,
+                                           @"alpha":@255
+                                           },
+                                   @"background":
+                                       @{
+                                           @"name":@"solidColor.background",
+                                           @"color":
+                                               @{
+                                                   @"red":@25,
+                                                   @"green":@50,
+                                                   @"blue":@25,
+                                                   @"alpha":@0
+                                                   },
+                                           }
                                    },
                            };
         

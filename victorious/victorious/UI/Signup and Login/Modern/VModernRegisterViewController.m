@@ -118,6 +118,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.promptTextView.contentOffset = CGPointZero;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.emailField becomeFirstResponder];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -128,6 +135,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.emailField clearValidation];
+    [self.passwordField clearValidation];
     
     [self.view endEditing:YES];
 }

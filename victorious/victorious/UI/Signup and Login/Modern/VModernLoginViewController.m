@@ -191,14 +191,14 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
-    id<VLoginFlowControllerResponder> loginFlowController = [self targetForAction:@selector(forgotPassword)
+    id<VLoginFlowControllerResponder> loginFlowController = [self targetForAction:@selector(forgotPasswordWithInitialEmail:)
                                                                        withSender:self];
     if (loginFlowController == nil)
     {
         NSAssert(false, @"We need a responder for forgotPassword!");
     }
     
-    [loginFlowController forgotPassword];
+    [loginFlowController forgotPasswordWithInitialEmail:self.emailField.text];
     
     return YES;
 }

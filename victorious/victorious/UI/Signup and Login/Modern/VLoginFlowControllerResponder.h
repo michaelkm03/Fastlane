@@ -28,6 +28,8 @@
 
 - (void)setUsername:(NSString *)username;
 
-- (void)forgotPassword;
+- (void)forgotPasswordWithInitialEmail:(NSString *)initialEmail;
+
+- (void)setResetToken:(NSString *)resetToken;
 
 @end
