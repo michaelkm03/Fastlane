@@ -216,6 +216,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+#warning For testing only: Remove this once the backed has tracking URLs in proper place (top level of template)
         NSDictionary *tracking = templateConfiguration[ @"scaffold" ][ @"firstTimeContent" ][ @"tracking" ];
         NSParameterAssert( [templateDecorator setTemplateValue:tracking forKeyPath:@"tracking"] );
         
