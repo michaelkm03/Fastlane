@@ -20,10 +20,12 @@
 #import "VPasswordValidator.h"
 #import "VLoginFlowControllerResponder.h"
 
+@import CoreText;
+
 static NSString *kPromptKey = @"prompt";
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernLoginViewController () <UITextFieldDelegate, VBackgroundContainer>
+@interface VModernLoginViewController () <UITextFieldDelegate, UITextViewDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -33,7 +35,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailField;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordField;
-@property (nonatomic, weak) IBOutlet UILabel *forgotPasswordLabel;
+@property (nonatomic, weak) IBOutlet UITextView *forgotpasswordTextView;
 
 @end
 
@@ -100,8 +102,21 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                                                attributes:textFieldAttributes];
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
-    self.forgotPasswordLabel.textColor = textFieldAttributes[NSForegroundColorAttributeName];
-    self.forgotPasswordLabel.font = textFieldAttributes[NSFontAttributeName];
+    NSString *forgotPasswordText = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Forgot your password?", nil), NSLocalizedString(@"Click Here", nil)];
+    NSDictionary *forgotPasswordAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel4FontKey],
+                                               NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]};
+    NSMutableAttributedString *mutableForgotPasswordText = [[NSMutableAttributedString alloc] initWithString:forgotPasswordText
+                                                                                                  attributes:forgotPasswordAttributes];
+    NSRange clickHereRange = [forgotPasswordText rangeOfString:NSLocalizedString(@"Click Here", nil)];
+    [mutableForgotPasswordText addAttribute:NSLinkAttributeName
+                                      value:@"forgotPasswordLink"
+                                      range:clickHereRange];
+    [mutableForgotPasswordText addAttribute:(NSString *)kCTUnderlineStyleAttributeName
+                                      value:[NSNumber numberWithInt:kCTUnderlineStyleSingle]
+                                      range:clickHereRange];
+    [self.forgotpasswordTextView setAttributedText:[mutableForgotPasswordText copy]];
+    self.forgotpasswordTextView.textAlignment = NSTextAlignmentCenter;
+    self.forgotpasswordTextView.linkTextAttributes = forgotPasswordAttributes;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
@@ -168,6 +183,14 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         //TODO: TRACKING User pressed enter on password
         [self login:textField];
     }
+    
+    return YES;
+}
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
     
     return YES;
 }
