@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}ImJennim</string>
+	<string>${ProductPrefix}ImJennIm</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.getvictorious.${ProductPrefix}imjennim</string>
 	<key>CFBundleName</key>
-	<string>${ProductPrefix}ImJennim</string>
+	<string>${ProductPrefix}ImJennIm</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -30,7 +30,7 @@
 	<key>QAAppID</key>
 	<integer>53</integer>
 	<key>CreatorSalutation</key>
-	<string>ImJennim</string>
+	<string>ImJennIm</string>
 	<key>FlurryAPIKey</key>
 	<string>3P3FRJ49TY45FCNYMJ22</string>
 </dict>
