@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 05/22/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 05/26/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -132,6 +132,7 @@ NSString * const VTrackingEventUserDidSelectItemFromStream = @"UserDidSelectItem
 NSString * const VTrackingEventUserDidSelectItemFromMarquee = @"UserDidSelectItemFromMarquee";
 NSString * const VTrackingEventUserDidViewHashtagStream = @"UserDidViewHashtagStream";
 NSString * const VTrackingEventUserDidViewStream = @"UserDidViewStream";
+NSString * const VTrackingEventFirstTimeUserVideoPlayed = @"FirstTimeUserVideoPlayed";
 
 NSString * const VTrackingEventUserDidVoteSequence = @"UserDidVoteSequence";
 NSString * const VTrackingEventUserDidRepost = @"UserDidRepost";
@@ -231,6 +232,7 @@ NSString * const VTrackingEventUserDidSelectWelcomeGetStarted = @"UserDidSelectW
 NSString * const VTrackingEventWelcomeVideoDidStart = @"WelcomeVideoDidStart";
 NSString * const VTrackingEventWelcomeVideoDidEnd = @"WelcomeVideoDidEnd";
 NSString * const VTrackingEventWelcomeDidStart = @"WelcomeDidStart";
+NSString * const VTrackingEventUserDidSelectRegister = @"UserDidSelectRegister";
 
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
