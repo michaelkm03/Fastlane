@@ -777,11 +777,26 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         if ( isCurrentUserLoggedIn )
         {
-            return !isCurrentUser && !self.user.isDirectMessagingDisabled;
+            return !isCurrentUser;
         }
         else
         {
-            return self.user != nil;
+        }
+        
+        if ( isCurrentUser )
+        {
+            return NO;
+        }
+        else
+        {
+            if ( isCurrentUserLoggedIn )
+            {
+                return !self.user.isDirectMessagingDisabled.boolValue;
+            }
+            else
+            {
+                return NO;
+            }
         }
     }
     else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
