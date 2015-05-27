@@ -134,7 +134,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     
 #ifdef V_SHOW_COACHMARK_RESET
     self.showResetCoachmarks = YES;
-    [self updateResetCoachmarksLabelAppearance];
+    [self updateResetCoachmarksCell];
 #else
     self.showResetCoachmarks = NO;
 #endif
@@ -154,7 +154,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
 }
 
-- (void)updateResetCoachmarksLabelAppearance
+- (void)updateResetCoachmarksCell
 {
     if ( self.showResetCoachmarks )
     {
@@ -163,6 +163,7 @@ static NSString * const kSupportEmailKey = @"email.support";
         NSArray *shownCoachmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"shownCoachmarks"];
         BOOL canResetCoachmarks = shownCoachmarks != nil && shownCoachmarks.count > 0;
         label.textColor = canResetCoachmarks ? [UIColor blueColor] : [UIColor lightGrayColor];
+        tableViewCell.userInteractionEnabled = canResetCoachmarks;
     }
 }
 
@@ -213,7 +214,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     {
         //Reset coachmarks
         [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
-        [self updateResetCoachmarksLabelAppearance];
+        [self updateResetCoachmarksCell];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
