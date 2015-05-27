@@ -276,7 +276,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
-    [self.coachMarkAnimator fadeIn];
+    [self.coachMarkAnimator fadeIn:1.0f];
     [self checkPermissionsAndStartCaptureSession];
 }
 
@@ -525,7 +525,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             // Fade in coach marks
             if (self.allowVideo && self.videoEnabled)
             {
-                [self.coachMarkAnimator fadeIn];
+                [self.coachMarkAnimator fadeIn:1.0f];
             }
         }
             break;
@@ -552,7 +552,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.cameraControl.captureMode = VCameraControlCaptureModeImage;
             
             // Hide coachmark
-            [self.coachMarkAnimator fadeOut];
+            [self.coachMarkAnimator fadeOut:0.2f];
             
             break;
         }
@@ -577,7 +577,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             [self updateProgressForSecond:0.0f];
             
             // Hide coachmark
-            [self.coachMarkAnimator fadeOut];
+            [self.coachMarkAnimator fadeOut:0.2f];
             
             break;
         }
@@ -988,7 +988,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         self.captureController.videoEncoder.recording = YES;
     }
     self.state = VCameraViewControllerStateRecording;
-    [self.coachMarkAnimator fadeOut];
+    [self.coachMarkAnimator fadeOut:1.0f];
 }
 
 - (void)stopRecording
