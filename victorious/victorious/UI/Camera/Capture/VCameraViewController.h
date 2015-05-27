@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 
-@interface VCameraViewController : UIViewController
+@interface VCameraViewController : UIViewController <VHasManagedDependencies>
 
 /**
  This completion block will be called when the user finishes capturing media
