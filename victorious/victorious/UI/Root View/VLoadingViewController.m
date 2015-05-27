@@ -363,6 +363,29 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                    },
                                            }
                                    },
+                           @"changePasswordScreen":
+                               @{
+                                   @"name":@"modernResetPassword.screen",
+                                   @"prompt": @"Create a new password.",
+                                   @"color.text.content":
+                                       @{
+                                           @"red":@258,
+                                           @"green":@255,
+                                           @"blue":@255,
+                                           @"alpha":@255
+                                           },
+                                   @"background":
+                                       @{
+                                           @"name":@"solidColor.background",
+                                           @"color":
+                                               @{
+                                                   @"red":@25,
+                                                   @"green":@50,
+                                                   @"blue":@25,
+                                                   @"alpha":@0
+                                                   },
+                                           },
+                                   }
                            };
         
         [templateDecorator setTemplateValue:loginComponent

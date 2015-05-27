@@ -161,7 +161,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         completion(success);
         if (success)
         {
-            [self onLoginFinishedWithSuccess:success];
+            [self onAuthenticationFinishedWithSuccess:success];
         }
     }];
 }
@@ -177,7 +177,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          completion(success, error);
          if (success)
          {
-             [self onLoginFinishedWithSuccess:YES];
+             [self onAuthenticationFinishedWithSuccess:YES];
          }
      }];;
 }
@@ -232,13 +232,28 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)setResetToken:(NSString *)resetToken
 {
+    __weak typeof(self) welf = self;
     [self.loginFlowHelper setResetToken:resetToken
                              completion:^(BOOL success, NSError *error)
     {
         if (success)
         {
             // show change password screen.
-            
+            UIViewController *changePasswordScreen = [welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
+            [welf pushViewController:changePasswordScreen
+                            animated:YES];
+        }
+    }];
+}
+
+- (void)updateWithNewPassword:(NSString *)newPassword
+{
+    [self.loginFlowHelper updatePassword:newPassword
+                              completion:^(BOOL success, NSError *error)
+    {
+        if (success)
+        {
+            [self onAuthenticationFinishedWithSuccess:YES];
         }
     }];
 }
@@ -250,7 +265,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     UIViewController *nextRegisterViewController = [self nextScreenAfterCurrentInArray:self.registrationScreens];
     if (nextRegisterViewController == self.topViewController)
     {
-        [self onLoginFinishedWithSuccess:YES];
+        [self onAuthenticationFinishedWithSuccess:YES];
     }
     else
     {
@@ -259,7 +274,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-- (void)onLoginFinishedWithSuccess:(BOOL)success
+- (void)onAuthenticationFinishedWithSuccess:(BOOL)success
 {
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:^

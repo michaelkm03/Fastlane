@@ -63,4 +63,7 @@
 - (void)setResetToken:(NSString *)resetToken
            completion:(void (^)(BOOL success, NSError *error))completion;
 
+
+- (void)updatePassword:(NSString *)password
+           completion:(void (^)(BOOL success, NSError *error))completion;
 @end

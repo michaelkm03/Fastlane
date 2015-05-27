@@ -36,6 +36,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 // For forgot password
 @property (nonatomic, strong) VEmailValidator *emailValidator;
 @property (nonatomic, strong) NSString *deviceToken;
+@property (nonatomic, strong) NSString *userToken;
 
 @end
 
@@ -306,6 +307,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)setResetToken:(NSString *)resetToken
            completion:(void (^)(BOOL success, NSError *error))completion
 {
+    self.userToken = resetToken;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[VObjectManager sharedManager] resetPasswordWithUserToken:resetToken
@@ -326,6 +328,26 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
              [hud hide:YES];
              completion(NO, error);
          });
+     }];
+}
+
+- (void)updatePassword:(NSString *)password
+           completion:(void (^)(BOOL success, NSError *error))completion
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+                                              animated:YES];
+    [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
+                                                   deviceToken:self.deviceToken
+                                                   newPassword:password
+                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [hud hide:YES];
+         completion(YES, nil);
+     }
+                                                     failBlock:^(NSOperation *operation, NSError *error)
+     {
+         [hud hide:YES];
+         completion(NO, error);
      }];
 }
 

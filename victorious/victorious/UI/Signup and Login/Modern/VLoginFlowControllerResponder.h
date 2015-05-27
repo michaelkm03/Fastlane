@@ -32,4 +32,6 @@
 
 - (void)setResetToken:(NSString *)resetToken;
 
+- (void)updateWithNewPassword:(NSString *)newPassword;
+
 @end
