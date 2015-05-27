@@ -41,6 +41,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     VCameraViewControllerStateDefault,
+    VCameraViewControllerStatePrePromptDenied,
+    VCameraViewControllerStateSystemPromptDenied,
     VCameraViewControllerStateInitializingHardware,
     VCameraViewControllerStateWaitingOnHardwareImageCapture,
     VCameraViewControllerStateRecording,
@@ -95,6 +97,10 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong) VCameraCoachMarkAnimator *coachMarkAnimator;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+// We need to track of this as we don't want to pre-prompt for
+// a permission more than once per session
+@property (nonatomic, assign) BOOL userDeniedPermissionsPrePrompt;
 
 @end
 
@@ -271,7 +277,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
     [self.coachMarkAnimator fadeIn];
-    [self startCaptureSession];
+    [self checkPermissionsAndStartCaptureSession];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -317,8 +323,18 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
 }
 
-- (void)startCaptureSession
+- (void)checkPermissionsAndStartCaptureSession
 {
+    // Set state back to initialization
+    self.state = VCameraViewControllerStateInitializingHardware;
+    
+    // If we try to start session after user has already denied prompt, dont recheck for permissions
+    if (self.userDeniedPermissionsPrePrompt)
+    {
+        self.state = VCameraViewControllerStatePrePromptDenied;
+        return;
+    }
+    
     VWorkspaceFlowControllerContext initialContext = VWorkspaceFlowControllerContextContentCreation;
     NSNumber *injectedContext = [self.dependencyManager numberForKey:VWorkspaceFlowControllerContextKey];
     initialContext = (injectedContext != nil) ? [injectedContext integerValue] : initialContext;
@@ -333,47 +349,73 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
     }
     
+    // Request camera permission
     [cameraPermission requestPermissionInViewController:self
                                   withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
      {
          if (granted)
          {
-             void (^startCapture)(BOOL micAllowed, VPermissionState state) = [self startCaptureBlock];
+             void (^startCapture)(BOOL videoEnabled) = [self startCaptureBlock];
              
              // If we don't need mic permission, call the capture start block right away
              if (initialContext == VWorkspaceFlowControllerContextProfileImage || !self.allowVideo)
              {
-                 startCapture(NO, VPermissionStatePromptDenied);
+                 self.userDeniedPermissionsPrePrompt = NO;
+                 startCapture(NO);
              }
              else
              {
+                 // Request microphone permission
                  VPermissionMicrophone *micPermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
                  [micPermission requestPermissionInViewController:self
                                             withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
                   {
-                      startCapture(granted, state);
+                      if (granted)
+                      {
+                          // Set capture mode back to video so we can hold to record
+                          self.cameraControl.captureMode = VCameraControlCaptureModeVideo;
+                          self.userDeniedPermissionsPrePrompt = NO;
+                          startCapture(YES);
+                      }
+                      else
+                      {
+                          if (state != VPermissionStatePromptDenied)
+                          {
+                              [self notifyUserOfFailedMicPermission];
+                              self.state = VCameraViewControllerStateSystemPromptDenied;
+                          }
+                          else
+                          {
+                              self.userDeniedPermissionsPrePrompt = YES;
+                              self.state = VCameraViewControllerStatePrePromptDenied;
+                          }
+                      }
+                      
                   }];
              }
          }
          else
          {
-             [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
-             self.openAlbumButton.enabled = YES;
-             
-             if (state == VPermissionStateSystemDenied)
+             if (state != VPermissionStatePromptDenied)
              {
                  [self notifyUserOfFailedCameraPermission];
+                 self.state = VCameraViewControllerStateSystemPromptDenied;
+             }
+             else
+             {
+                 self.userDeniedPermissionsPrePrompt = YES;
+                 self.state = VCameraViewControllerStatePrePromptDenied;
              }
          }
      }];
 }
 
-- (void (^)(BOOL micAllowed, VPermissionState state))startCaptureBlock
+- (void (^)(BOOL videoEnabled))startCaptureBlock
 {
     // Block to be called to start the capture session
-    void (^startCapture)(BOOL micAllowed, VPermissionState state) = ^(BOOL micAllowed, VPermissionState state)
+    void (^startCapture)(BOOL videoEnabled) = ^(BOOL videoEnabled)
     {
-        self.videoEnabled = micAllowed;
+        self.videoEnabled = videoEnabled;
         [self.captureController startRunningWithVideoEnabled:self.videoEnabled andCompletion:^(NSError *error)
          {
              dispatch_async(dispatch_get_main_queue(), ^(void)
@@ -391,11 +433,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                                 else
                                 {
                                     self.state = VCameraViewControllerStateDefault;
-                                    if (!self.videoEnabled &&
-                                        ![self.captureController.captureSession.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto] && state != VPermissionStatePromptDenied)
-                                    {
-                                        [self notifyUserOfFailedMicPermission];
-                                    }
                                     [self updateOrientation];
                                 }
                             });
@@ -460,13 +497,9 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             
             self.searchButton.enabled = YES;
             self.searchButton.hidden = !self.allowPhotos;
-            
-            VPermissionPhotoLibrary *libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
-            if ([libraryPermission permissionState] == VPermissionStateAuthorized)
-            {
-                [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
+           
+            [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
                                                     animated:NO];
-            }
             
             self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
             self.flashButton.hidden = NO;
@@ -480,15 +513,74 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.openAlbumButton.enabled = YES;
             
             self.deleteButton.hidden = YES;
-
+            
             self.cameraControl.enabled = YES;
             self.cameraControl.alpha = 1.0f;
             [self updateProgressForSecond:0.0f];
+            [self.cameraControl restoreCameraControlToDefault];
             
             self.switchCameraButton.enabled = YES;
             self.switchCameraButton.hidden = self.captureController.devices.count <= 1;
+            
+            // Fade in coach marks
+            if (self.allowVideo && self.videoEnabled)
+            {
+                [self.coachMarkAnimator fadeIn];
+            }
         }
             break;
+        case VCameraViewControllerStatePrePromptDenied:
+        {
+            [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
+
+            [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
+                                                animated:NO];
+            
+            self.closeButton.enabled = YES;
+            
+            self.searchButton.enabled = YES;
+            
+            self.openAlbumButton.hidden = NO;
+            self.openAlbumButton.enabled = YES;
+            
+            self.cameraControl.enabled = YES;
+            self.cameraControl.alpha = 1.0f;
+            [self updateProgressForSecond:0.0f];
+            [self.cameraControl restoreCameraControlToDefault];
+            
+            // Disable tap and hold on camera control so user can trigger the pre prompt again
+            self.cameraControl.captureMode = VCameraControlCaptureModeImage;
+            
+            // Hide coachmark
+            [self.coachMarkAnimator fadeOut];
+            
+            break;
+        }
+        case VCameraViewControllerStateSystemPromptDenied:
+        {
+            [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
+
+            [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
+                                                animated:NO];
+            
+            self.closeButton.enabled = YES;
+            
+            self.searchButton.enabled = YES;
+            
+            self.openAlbumButton.hidden = NO;
+            self.openAlbumButton.enabled = YES;
+            
+            self.deleteButton.hidden = YES;
+            
+            self.cameraControl.enabled = NO;
+            self.cameraControl.alpha = 1.0f;
+            [self updateProgressForSecond:0.0f];
+            
+            // Hide coachmark
+            [self.coachMarkAnimator fadeOut];
+            
+            break;
+        }
         case VCameraViewControllerStateInitializingHardware:
         {
             self.flashButton.enabled = NO;
@@ -744,7 +836,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                  {
                      // Update thumbnail after we present photo library
                      [self presentViewController:controller animated:YES completion:^{
-                         [self setOpenAlbumButtonImageWithLatestPhoto:YES animated:YES];
+                         [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos animated:YES];
                      }];
                  });
              });
@@ -754,6 +846,14 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 - (void)capturePhoto:(id)sender
 {
+    // If user has denied the pre-prompt, reshow it
+    if (self.userDeniedPermissionsPrePrompt)
+    {
+        self.userDeniedPermissionsPrePrompt = NO;
+        [self checkPermissionsAndStartCaptureSession];
+        return;
+    }
+    
     self.animationCompleted = NO;
     __weak typeof(self) welf = self;
     [self.KVOController unobserve:self.captureController.imageOutput
@@ -945,6 +1045,12 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
  */
 - (void)setOpenAlbumButtonImageWithLatestPhoto:(BOOL)photo animated:(BOOL)animated
 {
+    VPermissionPhotoLibrary *libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
+    if ([libraryPermission permissionState] != VPermissionStateAuthorized)
+    {
+        return;
+    }
+    
     void (^animations)(void) = ^(void)
     {
         self.deleteButton.hidden = YES;
