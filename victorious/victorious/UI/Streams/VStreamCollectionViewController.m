@@ -138,7 +138,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     NSString *path = [url v_pathComponent];
     
-    VStream *stream = [VStream streamForPath:path withID:sequenceID inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
@@ -398,7 +398,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marquee.stream.remoteId withPreviewImage:image];
+        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marquee.stream.streamId withPreviewImage:image];
     }
     else if ( [streamItem isSingleStream] )
     {
@@ -455,7 +455,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.remoteId withPreviewImage:nil];
+    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView

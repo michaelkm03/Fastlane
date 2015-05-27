@@ -29,15 +29,13 @@
 
 + (VStream *)streamForUser:(VUser *)user
 {
-    NSString *streamID = user.remoteId.stringValue ?: @"0";
-    NSString *escapedRemoteId = [streamID stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
     NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
                          escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
-    return [self streamForPath:apiPath withID:streamID inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
 + (VStream *)streamForPath:(NSString *)apiPath
-                    withID:(NSString *)streamID
                  inContext:(NSManagedObjectContext *)context
 {
     static NSCache *streamCache;
@@ -48,7 +46,7 @@
                   });
     
     VStream *object = [streamCache objectForKey:apiPath];
-    if (object)
+    if ( object != nil )
     {
         if (object.managedObjectContext != context)
         {
@@ -71,7 +69,7 @@
         VLog(@"Error occured in commentForId: %@", error);
     }
     
-    if (object)
+    if ( object != nil )
     {
         [streamCache setObject:object forKey:apiPath];
     }
@@ -83,10 +81,6 @@
         object.apiPath = apiPath;
         object.name = @"";
         object.previewImagesObject = @"";
-        if ( streamID != nil )
-        {
-            object.remoteId = streamID;
-        }
         [object.managedObjectContext saveToPersistentStore:nil];
         
         [streamCache setObject:object forKey:apiPath];

@@ -108,7 +108,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
     
     NSString *path = [url v_pathComponent];
-    VStream *stream = [VStream streamForPath:path withID:sequenceID inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     NSObject <VDirectoryCellFactory> *cellFactory = [dependencyManager templateValueConformingToProtocol:@protocol(VDirectoryCellFactory) forKey:kDirectoryCellFactoryKey];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];

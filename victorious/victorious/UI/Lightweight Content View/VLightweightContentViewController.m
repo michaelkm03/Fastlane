@@ -191,7 +191,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     if (sequenceId != nil)
     {
         [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
-                                           inStreamWithID:nil
+                                     inStreamWithStreamID:nil
                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
              VSequence *sequence = (VSequence *)resultObjects.firstObject;

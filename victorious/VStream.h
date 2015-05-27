@@ -14,15 +14,16 @@
 
 @interface VStream : VStreamItem
 
-@property (nonatomic, retain) NSString * apiPath;
-@property (nonatomic, retain) NSNumber * count;
-@property (nonatomic, retain) NSString * filterName;
-@property (nonatomic, retain) NSString * hashtag;
-@property (nonatomic, retain) NSNumber * isUserPostAllowed;
-@property (nonatomic, retain) NSString * trackingIdentifier;
-@property (nonatomic, retain) NSString * streamId;
+@property (nonatomic, retain) NSString *apiPath;
+@property (nonatomic, retain) NSNumber *count;
+@property (nonatomic, retain) NSString *filterName;
+@property (nonatomic, retain) NSString *hashtag;
+@property (nonatomic, retain) NSNumber *isUserPostAllowed;
+@property (nonatomic, retain) NSString *trackingIdentifier;
+@property (nonatomic, retain) NSString *streamId;
 @property (nonatomic, retain) NSOrderedSet *marqueeItems;
 @property (nonatomic, retain) NSOrderedSet *streamItems;
+
 @end
 
 @interface VStream (CoreDataGeneratedAccessors)
@@ -47,4 +48,5 @@
 - (void)removeStreamItemsObject:(VStreamItem *)value;
 - (void)addStreamItems:(NSOrderedSet *)values;
 - (void)removeStreamItems:(NSOrderedSet *)values;
+
 @end

@@ -15,6 +15,8 @@
 #import "VAsset.h"
 #import "VPollResult.h"
 
+#import "NSCharacterSet+VURLParts.h"
+
 NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
 @implementation VObjectManager (Sequence)
@@ -47,19 +49,19 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
-                                        inStreamWithID:(NSString *)streamId
+                                  inStreamWithStreamID:(NSString *)streamId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
 {
     return [self fetchSequenceByID:sequenceId
-                    inStreamWithID:streamId
+              inStreamWithStreamID:streamId
                       successBlock:success
                          failBlock:fail
                        loadAttempt:0];
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceID
-                                        inStreamWithID:(NSString *)streamId
+                                  inStreamWithStreamID:(NSString *)streamId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
                                            loadAttempt:(NSInteger)attemptCount
@@ -76,7 +78,8 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     
     if ( streamId != nil )
     {
-        path = [path stringByAppendingString:[NSString stringWithFormat:@"/%@", streamId]];
+        NSString *percentEncodedStreamId = [streamId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+        path = [path stringByAppendingString:[NSString stringWithFormat:@"/%@", percentEncodedStreamId]];
     }
     
     VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
@@ -88,7 +91,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 [self fetchSequenceByID:sequenceID
-                         inStreamWithID:streamId
+                   inStreamWithStreamID:streamId
                             successBlock:success
                                failBlock:fail
                              loadAttempt:(attemptCount+1)];

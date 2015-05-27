@@ -226,7 +226,7 @@
 #endif
     
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
-                                       inStreamWithID:self.streamId
+                                 inStreamWithStreamID:self.streamId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          // This is here to update the vote counts
@@ -253,7 +253,7 @@
     }
     
     [[VObjectManager sharedManager] fetchSequenceByID:nextSequenceId
-                                       inStreamWithID:self.streamId
+                                 inStreamWithStreamID:self.streamId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          VSequence *nextSequence = resultObjects.firstObject;

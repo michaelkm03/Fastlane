@@ -49,7 +49,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         streamURL = [macroReplacement urlByPartiallyReplacingMacrosFromDictionary:@{ kHashtagURLMacro: hashtag } inURLString:streamURL];
     }
     
-    VStream *stream = [VStream streamForPath:[streamURL v_pathComponent] withID:nil inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [VStream streamForPath:[streamURL v_pathComponent] inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
     stream.hashtag = hashtag;
     stream.name = [NSString stringWithFormat:@"#%@", hashtag];
     
