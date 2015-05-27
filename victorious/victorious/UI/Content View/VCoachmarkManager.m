@@ -57,14 +57,15 @@ static const CGFloat kAnimationDelay = 1.0f;
 - (BOOL)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController
 {
     NSString *identifier = [viewController screenIdentifier];
+    NSMutableArray *validTooltips = [[NSMutableArray alloc] init];
+    CGFloat width = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
     for ( VCoachmark *coachmark in self.coachmarks )
     {
         if ( !coachmark.hasBeenShown && [coachmark.displayScreens containsObject:identifier] )
         {
-            CGFloat width = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
             if ( [coachmark.displayTarget isEqualToString:identifier] )
             {
-                //Displaying as a toast
+                //Found a toast to display, display it!
                 VCoachmarkView *coachmarkView = [VCoachmarkView toastCoachmarkViewWithCoachmark:coachmark
                                                                                        andWidth:width];
                 coachmarkView.frame = [self frameForToastCoachmarkViewWithSize:coachmarkView.frame.size andToastLocation:coachmarkView.coachmark.toastLocation inViewController:viewController];
@@ -73,11 +74,18 @@ static const CGFloat kAnimationDelay = 1.0f;
             }
             else
             {
-                if ( [self addTooltipCoachmark:coachmark withWidth:width toViewController:viewController] )
-                {
-                    return YES;
-                }
+                //Found a tooltip, add it to our list of valid tooltips so we don't miss an opportunity to show a toast first
+                [validTooltips addObject:coachmark];
             }
+        }
+    }
+    
+    for ( VCoachmark *tooltip in validTooltips )
+    {
+        //Didn't have a toast to show, try to show the possible tooltips
+        if ( [self addTooltipCoachmark:tooltip withWidth:width toViewController:viewController] )
+        {
+            return YES;
         }
     }
     return NO;

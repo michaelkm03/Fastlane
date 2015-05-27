@@ -238,6 +238,27 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
 }
 
+- (void)testDisplayToastBeforeTooltip
+{
+    CoachmarkDisplayerViewController *viewController = [[CoachmarkDisplayerViewController alloc] init];
+    viewController.screenIdentifier = @"2"; //Has 2 valid coachmarks to display, with a tooltip BEFORE a toast
+    [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       for ( UIView *subview in viewController.view.subviews )
+                       {
+                           if ( [subview isKindOfClass:[VCoachmarkPassthroughContainerView class]] )
+                           {
+                               NSString *coachmarkId = ((VCoachmarkPassthroughContainerView *)subview).coachmarkView.coachmark.remoteId;
+                               XCTAssertEqualObjects(coachmarkId, @"11", @"displayCoachmarkViewInViewController: should display toast before tooltip coachmarks");
+                               break;
+                           }
+                       }
+                    });
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+}
+
 - (void)testDisplayCoachmarkInViewControllerViewUniqueness
 {
     CoachmarkDisplayerViewController *viewController = [[CoachmarkDisplayerViewController alloc] init];
