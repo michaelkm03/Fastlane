@@ -15,9 +15,9 @@
 #import "VRoundedImageView.h"
 #import "VAppInfo.h"
 
-@import CoreText;
-
 static const CGFloat kMaxAlertHeightDifferenceFromSuperview = 100.0f;
+static const CGFloat kTextSizeAddedPadding = 10.0f;
+static const CGFloat kTextViewCornerRadius = 24.0f;
 
 static NSString * const kStoryboardName = @"PermissionAlert";
 static NSString * const kConfirmButtonTitleKey = @"title.button1";
@@ -73,7 +73,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     
     self.view.backgroundColor = [UIColor clearColor];
     
-    self.alertContainerView.layer.cornerRadius = 24.0f;
+    self.alertContainerView.layer.cornerRadius = kTextViewCornerRadius;
     self.alertContainerView.clipsToBounds = YES;
     
     self.messageTextView.editable = NO;
@@ -124,8 +124,8 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     temporary.text = self.messageText;
     [temporary sizeToFit];
     
-    // Calculate text height. add 15 to make sure custom fonts dont get clipped
-    CGFloat textHeight = ceil(CGRectGetHeight(temporary.bounds)) + 15;
+    // Calculate text height. add padding to make sure custom fonts dont get clipped
+    CGFloat textHeight = ceil(CGRectGetHeight(temporary.bounds)) + kTextSizeAddedPadding;
     
     // Find out how high the text view should be
     CGFloat newTextViewConstant = 0;
