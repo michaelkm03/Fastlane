@@ -73,11 +73,6 @@ static const char kAssociatedObjectSourceViewControllerKey;
     }
     
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
-    id<VAccessoryNavigationSource> source = nil;
-    if ( [sourceViewController conformsToProtocol:@protocol(VAccessoryNavigationSource) ] )
-    {
-        source = (id<VAccessoryNavigationSource>)sourceViewController;
-    }
     
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
     
@@ -101,9 +96,13 @@ static const char kAssociatedObjectSourceViewControllerKey;
             barButton.menuItem = menuItem;
             
             id<VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
-            if ( [source respondsToSelector:@selector(customBadgeProvider)] )
+            id customBadgeSource = [sourceViewController targetForAction:@selector(customBadgeProviderForMenuItem:) withSender:self];
             {
-                badgeProvider = [source customBadgeProvider];
+                id<VProvidesNavigationMenuItemBadge> customBadgeProvider = [customBadgeSource customBadgeProviderForMenuItem:menuItem];
+                if ( customBadgeProvider != nil && [customBadgeProvider conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+                {
+                    badgeProvider = customBadgeProvider;
+                }
             }
             [self registerBadgeUpdateBlockWithButton:barButton badgeProvider:badgeProvider];
             

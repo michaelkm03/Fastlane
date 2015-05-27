@@ -19,7 +19,7 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VLaunchScreenProvider.h"
 
-@interface VSideMenuViewController () <VProvidesNavigationMenuItemBadge>
+@interface VSideMenuViewController ()
 
 @property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
 @property (assign, readwrite, nonatomic) BOOL visible;
@@ -439,23 +439,14 @@
     return YES;
 }
                             
-- (id<VProvidesNavigationMenuItemBadge>)customBadgeProvider
+- (id<VProvidesNavigationMenuItemBadge>)customBadgeProviderForMenuItem:(VNavigationMenuItem *)menuItem
 {
-    return self;
-}
-                            
-#pragma mark - VProvidesNavigationMenuItemBadge
-
-@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
-
-- (NSInteger)badgeNumber
-{
-    return 5;
-}
-
-- (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
-{
-    _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] )
+    {
+        return self.menuViewController;
+    }
+    
+    return nil;
 }
 
 @end

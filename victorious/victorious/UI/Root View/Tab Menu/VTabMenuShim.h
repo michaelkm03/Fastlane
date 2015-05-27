@@ -30,8 +30,6 @@
  */
 - (void)willNavigateToIndex:(NSInteger)index;
 
-- (void)updateApplicationBadge;
-
 /**
  *  A Background to use for this tab menu.
  */

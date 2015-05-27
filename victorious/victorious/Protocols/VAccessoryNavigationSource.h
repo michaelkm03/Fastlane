@@ -38,7 +38,7 @@
 
 @optional
 
-- (id<VProvidesNavigationMenuItemBadge>)customBadgeProvider;
+- (id<VProvidesNavigationMenuItemBadge>)customBadgeProviderForMenuItem:(VNavigationMenuItem *)menuItem;
 
 /**
  Allows a conforming object to evaluate a VNavigationItem that has just been selected
