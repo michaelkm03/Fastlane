@@ -77,6 +77,11 @@ static BOOL isRunningTests(void) __attribute__((const));
     return YES;
 }
 
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
 - (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     [[VRootViewController rootViewController] applicationDidReceiveRemoteNotification:userInfo];
@@ -101,7 +106,7 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:url];
+    [[VRootViewController rootViewController] applicationOpenURL:url sourceApplication:sourceApplication annotation:annotation];
     return YES;
 }
 

@@ -441,6 +441,8 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     switch ([UIDevice currentDevice].orientation)
     {
         case UIDeviceOrientationPortrait:
+        case UIDeviceOrientationFaceUp:
+        case UIDeviceOrientationFaceDown:
             orientation = AVCaptureVideoOrientationPortrait;
             break;
         case UIDeviceOrientationLandscapeRight:

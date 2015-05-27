@@ -519,7 +519,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (NSString *)screenIdentifier
 {
-    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 - (BOOL)selectorIsVisible

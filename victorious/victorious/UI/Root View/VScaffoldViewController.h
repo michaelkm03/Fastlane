@@ -72,7 +72,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
                 is being presented when the app is launched with a deep link URL.  If there
                 is no comment, simply pass `nil`.
  */
-- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage;
+- (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage;
 
 /**
  Subclasses should override this and return a list of navigation destinations

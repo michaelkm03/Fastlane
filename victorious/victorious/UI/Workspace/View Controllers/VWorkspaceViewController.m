@@ -171,7 +171,7 @@
 
 - (NSString *)screenIdentifier
 {
-    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 @end

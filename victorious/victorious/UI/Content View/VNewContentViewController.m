@@ -1760,6 +1760,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)showNextSequence:(VSequence *)nextSequence
 {
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence
+                                                                                     streamID:self.viewModel.streamId
                                                                              depenencyManager:self.dependencyManager];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
@@ -1854,7 +1855,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (NSString *)screenIdentifier
 {
-    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 @end

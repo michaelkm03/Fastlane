@@ -445,7 +445,7 @@ static NSString * const kInitialKey = @"initial";
 
 - (NSString *)screenIdentifier
 {
-    return [self.dependencyManager stringForKey:VScreenIdentifierKey];
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 @end

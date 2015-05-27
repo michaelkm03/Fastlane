@@ -9,11 +9,6 @@
 #import <Foundation/Foundation.h>
 
 /**
-    The key used to access the id of a screen from a dependency manager
- */
-static NSString * const VScreenIdentifierKey = @"id";
-
-/**
     Conformance to this protocol allows conformers to the VCoachmarkDisplayResponder
     to locate this screen or menu item on screen.
  */
@@ -25,7 +20,7 @@ static NSString * const VScreenIdentifierKey = @"id";
  
     - (NSString *)screenIdentifier
     {
-        return [self.dependencyManager stringForKey:VScreenIdentifierKey];
+        return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
     }
  */
 @required
