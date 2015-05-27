@@ -41,8 +41,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     VCameraViewControllerStateDefault,
-    VCameraViewControllerStatePrePromptDenied,
-    VCameraViewControllerStateSystemPromptDenied,
+    VCameraViewControllerStatePermissionDenied,
     VCameraViewControllerStateInitializingHardware,
     VCameraViewControllerStateWaitingOnHardwareImageCapture,
     VCameraViewControllerStateRecording,
@@ -338,7 +337,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     // If we try to start session after user has already denied prompt, dont recheck for permissions
     if (self.userDeniedPermissionsPrePrompt)
     {
-        self.state = VCameraViewControllerStatePrePromptDenied;
+        self.state = VCameraViewControllerStatePermissionDenied;
         return;
     }
     
@@ -386,15 +385,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                       }
                       else
                       {
+                          self.userDeniedPermissionsPrePrompt = YES;
+                          self.state = VCameraViewControllerStatePermissionDenied;
                           if (state != VPermissionStatePromptDenied)
                           {
                               [self notifyUserOfFailedMicPermission];
-                              self.state = VCameraViewControllerStateSystemPromptDenied;
-                          }
-                          else
-                          {
-                              self.userDeniedPermissionsPrePrompt = YES;
-                              self.state = VCameraViewControllerStatePrePromptDenied;
                           }
                       }
                       
@@ -403,15 +398,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
          }
          else
          {
+             self.userDeniedPermissionsPrePrompt = YES;
+             self.state = VCameraViewControllerStatePermissionDenied;
              if (state != VPermissionStatePromptDenied)
              {
                  [self notifyUserOfFailedCameraPermission];
-                 self.state = VCameraViewControllerStateSystemPromptDenied;
-             }
-             else
-             {
-                 self.userDeniedPermissionsPrePrompt = YES;
-                 self.state = VCameraViewControllerStatePrePromptDenied;
              }
          }
      }];
@@ -536,7 +527,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             }
         }
             break;
-        case VCameraViewControllerStatePrePromptDenied:
+        case VCameraViewControllerStatePermissionDenied:
         {
             [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
 
@@ -553,35 +544,10 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.cameraControl.enabled = YES;
             self.cameraControl.alpha = 1.0f;
             [self updateProgressForSecond:0.0f];
-            [self.cameraControl restoreCameraControlToDefault];
             
             // Disable tap and hold on camera control so user can trigger the pre prompt again
             self.cameraControl.captureMode = VCameraControlCaptureModeImage;
-            
-            // Hide coachmark
-            [self.coachMarkAnimator fadeOut:0.2f];
-            
-            break;
-        }
-        case VCameraViewControllerStateSystemPromptDenied:
-        {
-            [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
-
-            [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
-                                                animated:NO];
-            
-            self.closeButton.enabled = YES;
-            
-            self.searchButton.enabled = YES;
-            
-            self.openAlbumButton.hidden = NO;
-            self.openAlbumButton.enabled = YES;
-            
-            self.deleteButton.hidden = YES;
-            
-            self.cameraControl.enabled = NO;
-            self.cameraControl.alpha = 1.0f;
-            [self updateProgressForSecond:0.0f];
+            [self.cameraControl restoreCameraControlToDefault];
             
             // Hide coachmark
             [self.coachMarkAnimator fadeOut:0.2f];

@@ -200,8 +200,8 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
         }
         case VCameraControlStateCapturingImage:
         {
-            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
             _cameraControlState = cameraControlState;
+            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
             return;
             break;
         }
