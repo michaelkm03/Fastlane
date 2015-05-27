@@ -20,6 +20,9 @@ typedef NS_ENUM( NSUInteger, VTooltipArrowDirection )
 
 @class VCoachmark;
 
+/**
+    A view for visually representing a coachmark object.
+ */
 @interface VCoachmarkView : VPassthroughContainerView <VBackgroundContainer>
 
 /**

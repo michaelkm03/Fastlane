@@ -11,6 +11,10 @@
 
 @class VDependencyManager;
 
+/**
+    An object that manages the retrieval, displaying,
+    and hiding of coachmarks in view controllers.
+ */
 @interface VCoachmarkManager : NSObject
 
 /**
