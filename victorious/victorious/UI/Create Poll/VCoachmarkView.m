@@ -192,6 +192,8 @@ static const CGFloat kBezierRadius = 10.0f;
 {
     UIFont *font = self.coachmark.font ?: [UIFont systemFontOfSize:18.0f];
     CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(MAX(width, kCoachmarkMinimumWidth) - kHorizontalLabelInset * 2, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName : font } context:nil];
+    minimumFrame.size.width = VCEIL(minimumFrame.size.width);
+    minimumFrame.size.height = VCEIL(minimumFrame.size.height);
     minimumFrame = CGRectInset(minimumFrame, 0, -kVerticalLabelInset);
     minimumFrame.size.width = width;
     return minimumFrame;
