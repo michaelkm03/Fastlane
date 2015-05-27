@@ -17,7 +17,7 @@ static const CGFloat kScaleDownMultiplier = 0.7f;
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return [self isPresentation] ? 0.3 : 0.3;
+    return [self isPresentation] ? 0.4 : 0.3;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -40,7 +40,7 @@ static const CGFloat kScaleDownMultiplier = 0.7f;
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0.0f
-             usingSpringWithDamping:0.6f
+             usingSpringWithDamping:0.75f
               initialSpringVelocity:0.0f
                             options:0
                          animations:^
