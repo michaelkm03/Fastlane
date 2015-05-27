@@ -230,6 +230,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         // Modern
         loginComponent = @{
                            @"name":@"modernLoginAndRegistration.screen",
+                           @"forceRegistration": @YES,
                            @"logo":
                                @{
                                    @"imageURL":@"homeHeaderImage",

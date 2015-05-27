@@ -44,11 +44,6 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(selectedCancel)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    
     UIImage *headerImage = [self.dependencyManager imageForKey:kLogoKey];
     UIImageView *headerImageView = [[UIImageView alloc] initWithImage:headerImage];
     self.navigationItem.titleView = headerImageView;
@@ -100,17 +95,6 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 }
 
 #pragma mark - Target/Action
-
-- (void)selectedCancel
-{
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(cancelLoginAndRegistration)
-                                                                           withSender:self];
-    if (flowControllerResponder == nil)
-    {
-        NSAssert(false, @"We need a flow controller in the responder chain for cancelling.");
-    }
-    [flowControllerResponder cancelLoginAndRegistration];
-}
 
 - (void)login
 {

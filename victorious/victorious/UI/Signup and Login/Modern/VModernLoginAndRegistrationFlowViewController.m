@@ -64,6 +64,18 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                          forKey:kLandingScreen];
         [self setViewControllers:@[_landingScreen]];
         
+        NSNumber *shouldForce = [dependencyManager numberForKey:@"forceRegistration"];
+        if (shouldForce != nil)
+        {
+            if (![shouldForce boolValue])
+            {
+                UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                              target:self
+                                                                                              action:@selector(cancelLoginAndRegistration)];
+                _landingScreen.navigationItem.leftBarButtonItem = cancelButton;
+            }
+        }
+        
         // Login + Registration
         _registrationScreens = [dependencyManager arrayOfValuesOfType:[UIViewController class]
                                                                forKey:kRegistrationScreens];
