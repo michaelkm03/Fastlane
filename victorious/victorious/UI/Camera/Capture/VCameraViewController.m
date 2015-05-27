@@ -252,11 +252,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [self.cameraControl restoreCameraControlToDefault];
     
     self.navigationController.navigationBarHidden = YES;
-    
-    if (self.previewSnapshot)
-    {
-        [self restoreLivePreview];
-    }
 
     if (!self.didSelectAssetFromLibrary)
     {
@@ -265,7 +260,18 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     
     self.captureController.videoEncoder = nil;
     
-    [MBProgressHUD showHUDAddedTo:self.previewView animated:NO];
+    if (![self.captureController.captureSession isRunning])
+    {
+        if (!self.userDeniedPermissionsPrePrompt || self.previewSnapshot)
+        {
+            [MBProgressHUD showHUDAddedTo:self.previewView animated:NO];
+        }
+    }
+    
+    if (self.previewSnapshot)
+    {
+        [self restoreLivePreview];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
