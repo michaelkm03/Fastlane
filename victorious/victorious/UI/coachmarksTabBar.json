@@ -27,18 +27,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "top",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -59,18 +59,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "top",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -91,18 +91,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "middle",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -123,18 +123,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "bottom",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -155,18 +155,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "bottom",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -187,18 +187,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "bottom",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -220,18 +220,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "middle",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -252,18 +252,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "top",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -284,18 +284,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "top",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -316,18 +316,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "top",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -348,18 +348,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "top",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -380,18 +380,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "top",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",
@@ -413,18 +413,18 @@
                            "background": {
                            "name": "solidColor.background",
                            "color": {
-                           "red": 217,
-                           "green": 83,
-                           "blue": 200,
+                           "red": 255,
+                           "green": 255,
+                           "blue": 255,
                            "alpha": 255
                            }
                            },
                            "toastVerticalLocation": "top",
                            "color.text": {
-                           "red": 255,
-                           "green": 255,
-                           "blue": 255,
-                           "alpha": 1
+                           "red": 0,
+                           "green": 0,
+                           "blue": 0,
+                           "alpha": 255
                            },
                            "font.label3": {
                            "fontName": "STHeitiSC-Light",

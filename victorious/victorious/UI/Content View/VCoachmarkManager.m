@@ -195,7 +195,8 @@ static const CGFloat kAnimationDelay = 1.0f;
     }
     
     UIView *view = viewController.view;
-    VCoachmarkPassthroughContainerView *passthroughOverlay = [VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:coachmarkView frame:view.bounds andDelegate:self];
+    VCoachmarkPassthroughContainerView *passthroughOverlay = [VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:coachmarkView andDelegate:self];
+    passthroughOverlay.frame = view.bounds;
     objc_setAssociatedObject(keyView, &kPassthroughViewKey, passthroughOverlay, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -226,14 +227,17 @@ static const CGFloat kAnimationDelay = 1.0f;
     NSUInteger displayDuration = coachmarkView.coachmark.displayDuration;
     if ( displayDuration != 0 )
     {
-        VTimerManager *hideTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:displayDuration target:self selector:@selector(hideTimerFired:) userInfo:@{ kPassthroughContainerViewKey : passthroughContainerView } repeats:NO];
+        VTimerManager *hideTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:displayDuration target:self selector:@selector(hideTimerFired:) userInfo:passthroughContainerView repeats:NO];
         [self.hideTimers addObject:hideTimer];
     }
 }
 
 - (void)hideTimerFired:(VTimerManager *)timerManager
 {
-    [self removePassthroughContainerView:[timerManager.userInfo objectForKey:kPassthroughContainerViewKey] animated:YES];
+    if ( [timerManager.userInfo isKindOfClass:[VCoachmarkPassthroughContainerView class]] )
+    {
+        [self removePassthroughContainerView:(VCoachmarkPassthroughContainerView *)timerManager.userInfo animated:YES];
+    }
     [self.hideTimers removeObject:timerManager];
 }
 

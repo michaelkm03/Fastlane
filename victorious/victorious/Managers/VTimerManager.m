@@ -125,7 +125,7 @@ static const NSUInteger VMaxArgs = 3; //3 is the 1 maximum parameter + the selec
     return [self.timer isValid];
 }
 
-- (NSDictionary *)userInfo
+- (id)userInfo
 {
     return self.timer.userInfo;
 }

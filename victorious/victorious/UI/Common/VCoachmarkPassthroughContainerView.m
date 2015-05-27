@@ -17,13 +17,12 @@
 
 @implementation VCoachmarkPassthroughContainerView
 
-+ (instancetype)coachmarkPassthroughContainerViewWithCoachmarkView:(VCoachmarkView *)coachmarkView frame:(CGRect)frame andDelegate:(id <VCoachmarkPassthroughContainerViewDelegate>)delegate
++ (instancetype)coachmarkPassthroughContainerViewWithCoachmarkView:(VCoachmarkView *)coachmarkView andDelegate:(id <VCoachmarkPassthroughContainerViewDelegate>)delegate
 {
     NSParameterAssert(coachmarkView != nil);
     
     VCoachmarkPassthroughContainerView *coachmarkPassthroughContainerView = [[VCoachmarkPassthroughContainerView alloc] init];
     coachmarkPassthroughContainerView.coachmarkView = coachmarkView;
-    coachmarkPassthroughContainerView.frame = frame;
     coachmarkPassthroughContainerView.delegate = delegate;
     return coachmarkPassthroughContainerView;
 }

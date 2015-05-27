@@ -36,8 +36,8 @@
 - (void)testClassInit
 {
     VCoachmarkPassthroughContainerView *coachmarkPassthroughContainerView = [VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:self.coachmarkView
-                                                                                                                                                             frame:self.coachmarkPassthroughContainerViewFrame
                                                                                                                                                        andDelegate:self];
+    coachmarkPassthroughContainerView.frame = self.coachmarkPassthroughContainerViewFrame;
     XCTAssert(CGRectEqualToRect(coachmarkPassthroughContainerView.frame, self.coachmarkPassthroughContainerViewFrame), @"The coachmark passthough container view's frame should be equivalent to the one provided via the class init");
     XCTAssertEqual(coachmarkPassthroughContainerView.delegate, self, @"The coachmark passthough container view's delegate should be equivalent to the one provided via the class init");
     XCTAssertEqual(self.coachmarkView, coachmarkPassthroughContainerView.coachmarkView, @"The coachmark passthough container view's coachmark view should be equivalent to the one provided via the class init");
@@ -46,14 +46,9 @@
 - (void)testClassInitBadParams
 {
     XCTAssertThrows([VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:nil
-                                                                                                     frame:self.coachmarkPassthroughContainerViewFrame
                                                                                                andDelegate:self], @"The coachmark passthrough container view's class init method should assert that the provided coachmark view be non-nil");
     XCTAssertNoThrow([VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:self.coachmarkView
-                                                                                                      frame:self.coachmarkPassthroughContainerViewFrame
                                                                                                 andDelegate:nil], @"The coachmark passthrough container view's class init method should not throw an exception if the provided delegate is nil");
-    XCTAssertNoThrow([VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:self.coachmarkView
-                                                                                                      frame:CGRectZero
-                                                                                                andDelegate:self], @"The coachmark passthrough container view's class init method should not throw an exception if the provided frame is CGRectZero");
 }
 
 #pragma mark - Silencing compiler warnings

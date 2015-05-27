@@ -57,8 +57,8 @@
 - (BOOL)isValid;
 
 /**
-    The userInfo dictionary provided to the timer manager from one of it's class methods
+    The userInfo object provided to the timer manager from one of it's class methods
  */
-@property (nonatomic, readonly) NSDictionary *userInfo;
+@property (nonatomic, readonly) id userInfo;
 
 @end
