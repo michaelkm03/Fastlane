@@ -74,7 +74,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
     
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
     
-    NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController withNavigationItem:navigationItem];
+    NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
     
     NSMutableArray *newBarButtonItemsLeft = [[NSMutableArray alloc] init];
     NSMutableArray *newBarButtonItemsRight = [[NSMutableArray alloc] init];
@@ -179,31 +179,17 @@ static const char kAssociatedObjectSourceViewControllerKey;
 
 - (NSOrderedSet *)accessoriesForSource:(UIResponder *)source
 {
-    return [self accessoriesForSource:source withNavigationItem:nil];
-}
-
-- (NSOrderedSet *)accessoriesForSource:(UIResponder *)source withNavigationItem:(UINavigationItem *)navigationItem
-{
-     __block NSMutableOrderedSet *accessoryMenuItems = [[NSMutableOrderedSet alloc] init];
-    
-    // Collect any existing menu items from bar button items already present in the navigation item
-    for ( VBarButtonItem *barButtonItem in [navigationItem.leftBarButtonItems arrayByAddingObjectsFromArray:navigationItem.rightBarButtonItems] )
-    {
-        if ( [barButtonItem isKindOfClass:[VBarButtonItem class]] )
-        {
-            [accessoryMenuItems addObject:barButtonItem.menuItem];
-        }
-    }
+    __block NSMutableOrderedSet *accessoryMenuItems = [[NSMutableOrderedSet alloc] init];
     
     // Walk the responder chain and collect accessoryMenuItems from each responders dependencyManager
     [source v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
-    {
-        id<VHasManagedDependencies> dependenyOwner = (id<VHasManagedDependencies>)responder;
-        if ( [dependenyOwner respondsToSelector:@selector(dependencyManager)] )
-        {
-            [accessoryMenuItems addObjectsFromArray:[dependenyOwner dependencyManager].accessoryMenuItems];
-        }
-    }];
+     {
+         id<VHasManagedDependencies> dependenyOwner = (id<VHasManagedDependencies>)responder;
+         if ( [dependenyOwner respondsToSelector:@selector(dependencyManager)] )
+         {
+             [accessoryMenuItems addObjectsFromArray:[dependenyOwner dependencyManager].accessoryMenuItems];
+         }
+     }];
 
     return [[NSOrderedSet alloc] initWithOrderedSet:accessoryMenuItems];
 }

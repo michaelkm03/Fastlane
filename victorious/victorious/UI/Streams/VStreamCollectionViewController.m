@@ -347,12 +347,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
 }
 
 - (void)createNewPost
