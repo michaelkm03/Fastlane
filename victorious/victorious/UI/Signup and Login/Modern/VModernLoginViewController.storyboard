@@ -17,12 +17,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the login prompt." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIE-Rh-mcu" userLabel="Prompt Label">
-                                <rect key="frame" x="40" y="94" width="520" height="21"/>
+                                <rect key="frame" x="40" y="84" width="520" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KEN-3x-wE2" userLabel="Email Field" customClass="VInlineValidationTextField">
-                                <rect key="frame" x="40" y="145" width="520" height="50"/>
+                                <rect key="frame" x="40" y="125" width="520" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="7zR-VX-7QY"/>
                                 </constraints>
@@ -33,7 +33,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="A9F-Dh-mvC" userLabel="Password Field" customClass="VInlineValidationTextField">
-                                <rect key="frame" x="40" y="205" width="520" height="50"/>
+                                <rect key="frame" x="40" y="185" width="520" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="sKr-Q7-qOc"/>
                                 </constraints>
@@ -44,7 +44,7 @@
                                 </connections>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Forgot your password? Click Here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vZF-5p-8fb">
-                                <rect key="frame" x="20" y="275" width="560" height="33"/>
+                                <rect key="frame" x="20" y="245" width="560" height="33"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -60,12 +60,12 @@
                             <constraint firstItem="tIE-Rh-mcu" firstAttribute="leading" secondItem="Oek-85-xTq" secondAttribute="leading" constant="40" id="BlR-a0-5eZ"/>
                             <constraint firstAttribute="centerX" secondItem="tIE-Rh-mcu" secondAttribute="centerX" id="G9l-ZH-cb2"/>
                             <constraint firstItem="KEN-3x-wE2" firstAttribute="leading" secondItem="Oek-85-xTq" secondAttribute="leading" constant="40" id="JVa-fR-H4h"/>
-                            <constraint firstItem="KEN-3x-wE2" firstAttribute="top" secondItem="tIE-Rh-mcu" secondAttribute="bottom" constant="30" id="SN6-a8-vyV"/>
+                            <constraint firstItem="KEN-3x-wE2" firstAttribute="top" secondItem="tIE-Rh-mcu" secondAttribute="bottom" constant="20" id="SN6-a8-vyV"/>
                             <constraint firstItem="A9F-Dh-mvC" firstAttribute="leading" secondItem="Oek-85-xTq" secondAttribute="leading" constant="40" id="VUc-h2-FZU"/>
                             <constraint firstAttribute="trailing" secondItem="KEN-3x-wE2" secondAttribute="trailing" constant="40" id="bbO-AX-ss8"/>
                             <constraint firstItem="vZF-5p-8fb" firstAttribute="leading" secondItem="Oek-85-xTq" secondAttribute="leading" constant="20" id="eKO-pV-C8h"/>
-                            <constraint firstItem="tIE-Rh-mcu" firstAttribute="top" secondItem="C8V-ra-unV" secondAttribute="bottom" constant="30" id="jK4-Yk-c8U"/>
-                            <constraint firstItem="vZF-5p-8fb" firstAttribute="top" secondItem="A9F-Dh-mvC" secondAttribute="bottom" constant="20" id="pee-J2-JJe"/>
+                            <constraint firstItem="tIE-Rh-mcu" firstAttribute="top" secondItem="C8V-ra-unV" secondAttribute="bottom" constant="20" id="jK4-Yk-c8U"/>
+                            <constraint firstItem="vZF-5p-8fb" firstAttribute="top" secondItem="A9F-Dh-mvC" secondAttribute="bottom" constant="10" id="pee-J2-JJe"/>
                             <constraint firstItem="A9F-Dh-mvC" firstAttribute="top" secondItem="KEN-3x-wE2" secondAttribute="bottom" constant="10" id="vKN-r5-cS2"/>
                             <constraint firstAttribute="trailing" secondItem="A9F-Dh-mvC" secondAttribute="trailing" constant="40" id="xR3-s6-ASE"/>
                         </constraints>
