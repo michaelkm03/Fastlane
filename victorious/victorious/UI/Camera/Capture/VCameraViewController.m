@@ -260,15 +260,16 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     
     self.captureController.videoEncoder = nil;
     
+    // Only add activity indicator if needed
     if (![self.captureController.captureSession isRunning])
     {
-        if (!self.userDeniedPermissionsPrePrompt || self.previewSnapshot)
+        if (!self.userDeniedPermissionsPrePrompt || self.previewSnapshot != nil)
         {
             [MBProgressHUD showHUDAddedTo:self.previewView animated:NO];
         }
     }
     
-    if (self.previewSnapshot)
+    if (self.previewSnapshot != nil)
     {
         [self restoreLivePreview];
     }
