@@ -17,11 +17,7 @@
     {
         return self.frame;
     }
-    while ( superview.superview != nil )
-    {
-        superview = superview.superview;
-    }
-    return [self.superview convertRect:self.frame toView:superview];
+    return [superview convertRect:self.frame toView:self.window];
 }
 
 - (CGPoint)absoluteOrigin
@@ -31,11 +27,7 @@
     {
         return self.frame.origin;
     }
-    while ( superview.superview != nil )
-    {
-        superview = superview.superview;
-    }
-    return [self.superview convertPoint:self.frame.origin toView:superview];
+    return [superview convertPoint:self.frame.origin toView:self.window];
 }
 
 @end
