@@ -10,6 +10,7 @@
 
 #import "VNavigationMenuItem.h"
 #import "VAuthorizationContext.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
 /**
  This protocol is intended to be implemented by view controllers who are using template-driven
@@ -36,6 +37,8 @@
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source;
 
 @optional
+
+- (id<VProvidesNavigationMenuItemBadge>)customBadgeProvider;
 
 /**
  Allows a conforming object to evaluate a VNavigationItem that has just been selected

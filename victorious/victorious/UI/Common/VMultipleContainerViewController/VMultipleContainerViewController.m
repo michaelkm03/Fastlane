@@ -27,7 +27,6 @@
 @property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
 @property (nonatomic) NSUInteger selectedIndex;
-@property (nonatomic) NSInteger badgeNumber;
 
 @end
 
@@ -347,6 +346,20 @@ static NSString * const kInitialKey = @"initial";
             viewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
         }
     }
+}
+
+- (NSInteger)badgeNumber
+{
+    NSInteger total = 0;
+    for (UIViewController *vc in _viewControllers)
+    {
+        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)vc;
+            total += [badgeProvider badgeNumber];
+        }
+    }
+    return total;
 }
 
 @end

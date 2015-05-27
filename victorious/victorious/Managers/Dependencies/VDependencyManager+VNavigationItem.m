@@ -73,6 +73,11 @@ static const char kAssociatedObjectSourceViewControllerKey;
     }
     
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
+    id<VAccessoryNavigationSource> source = nil;
+    if ( [sourceViewController conformsToProtocol:@protocol(VAccessoryNavigationSource) ] )
+    {
+        source = (id<VAccessoryNavigationSource>)sourceViewController;
+    }
     
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
     
@@ -95,7 +100,12 @@ static const char kAssociatedObjectSourceViewControllerKey;
             [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
             barButton.menuItem = menuItem;
             
-            [self registerBadgeUpdateBlockWithButton:barButton destination:menuItem.destination origin:sourceViewController];
+            id<VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
+            if ( [source respondsToSelector:@selector(customBadgeProvider)] )
+            {
+                badgeProvider = [source customBadgeProvider];
+            }
+            [self registerBadgeUpdateBlockWithButton:barButton badgeProvider:badgeProvider];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
@@ -133,22 +143,15 @@ static const char kAssociatedObjectSourceViewControllerKey;
     [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:shouldAnimate];
 }
 
-- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton destination:(id)destination origin:(id)origin
+- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton badgeProvider:(id<VProvidesNavigationMenuItemBadge>)badgeProvider
 {
     __weak typeof (barButton) weakBarButton = barButton;
     
-    VNavigationMenuItemBadgeNumberUpdateBlock originBadgeNumberUpdateBlock;
-    
-    id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)destination;
     if ( [badgeProvider conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
     {
         VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
         {
             [weakBarButton setBadgeNumber:badgeNumber];
-            if ( originBadgeNumberUpdateBlock != nil )
-            {
-                originBadgeNumberUpdateBlock( badgeNumber );
-            }
             [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
         };
         

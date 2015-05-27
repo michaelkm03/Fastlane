@@ -19,13 +19,13 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VLaunchScreenProvider.h"
 
-@interface VSideMenuViewController ()
+@interface VSideMenuViewController () <VProvidesNavigationMenuItemBadge>
 
 @property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
-@property (strong, readwrite, nonatomic) UIViewController *menuViewController;
+@property (strong, readwrite, nonatomic) UIViewController<VProvidesNavigationMenuItemBadge> *menuViewController;
 
 @end
 
@@ -53,7 +53,10 @@
         
         _bouncesHorizontally = YES;
         
-        _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
+        id viewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
+        NSParameterAssert( [viewController isKindOfClass:[VMenuController class]] );
+        NSParameterAssert( [viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] );
+        _menuViewController = (UIViewController<VProvidesNavigationMenuItemBadge> *)viewController;
     }
     return self;
 }
@@ -434,6 +437,25 @@
     }
     
     return YES;
+}
+                            
+- (id<VProvidesNavigationMenuItemBadge>)customBadgeProvider
+{
+    return self;
+}
+                            
+#pragma mark - VProvidesNavigationMenuItemBadge
+
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (NSInteger)badgeNumber
+{
+    return 5;
+}
+
+- (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
+{
+    _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end

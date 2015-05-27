@@ -44,8 +44,6 @@ static char kKVOContext;
 
 @implementation VMenuController
 
-@synthesize badgeNumberUpdateBlock;
-
 #pragma mark VHasManagedDependencies conforming initializer
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -171,10 +169,19 @@ static char kKVOContext;
             
             if ( self.badgeNumberUpdateBlock != nil )
             {
-                self.badgeNumberUpdateBlock(self.badgeNumber);
+                self.badgeNumberUpdateBlock( self.badgeNumber );
             }
         }
     }
+}
+
+#pragma mark - VProvidesNavigationMenuItemBadge
+
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
+{
+    _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end
