@@ -57,8 +57,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 @implementation VInboxViewController
 
-@synthesize multipleContainerChildDelegate;
-@synthesize badgeNumberUpdateBlock;
+@synthesize multipleContainerChildDelegate = _multipleContainerChildDelegate;
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
 
 + (instancetype)inboxViewController
 {
