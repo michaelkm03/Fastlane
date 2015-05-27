@@ -370,6 +370,7 @@
 
 "AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
 "AccessMicrophoneRestricted" = "Unable to access your microphone due to restrictions on your device.";
+"AccessLibraryRestricted" = "To access media from your camera roll, please grant access by going to Settings -> Privacy -> Photos";
 "AccessCameraDenied"    =   "To record video from your device, please grant access by going to Settings -> Privacy";
 "AccessCameraRestricted" =  "Unable to access your camera due to restrictions on your device.";
 "UnableSelectVideo"     = "Unable to select video.";

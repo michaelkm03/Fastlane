@@ -690,6 +690,17 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [alert show];
 }
 
+- (void)notifyUserOfFailedLibraryPermission
+{
+    NSString *errorMessage = NSLocalizedString(@"AccessLibraryRestricted", @"");
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:errorMessage
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 #pragma mark - Actions
 
 - (IBAction)closeAction:(id)sender
@@ -840,6 +851,10 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                      }];
                  });
              });
+         }
+         else
+         {
+             [self notifyUserOfFailedLibraryPermission];
          }
      }];
 }
