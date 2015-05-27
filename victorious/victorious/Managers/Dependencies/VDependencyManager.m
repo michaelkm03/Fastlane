@@ -204,17 +204,6 @@ static NSString * const kMacroReplacement = @"XXXXX";
     return color;
 }
 
-+ (NSDictionary *)dictionaryFromColor:(UIColor *)color
-{
-    CGFloat red, green, blue, alpha;
-    if ( [color getRed:&red green:&green blue:&blue alpha:&alpha] )
-    {
-        return @{ kRedKey : @(red), kGreenKey : @(green), kBlueKey : @(blue), kAlphaKey : @(alpha) };
-    }
-    
-    return nil;
-}
-
 - (UIFont *)fontForKey:(NSString *)key
 {
     UIFont *font = nil;

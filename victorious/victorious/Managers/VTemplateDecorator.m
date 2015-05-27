@@ -150,7 +150,7 @@ static NSString * const kKeyPathDelimiter = @"/";
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    // If tempalteValue is nil, it will be skipped, thereby removing that value for the index
+                    // If templateValue is nil, it will be skipped, thereby removing that value for the index
                     if ( templateValue != nil )
                     {
                         destination[i] = templateValue;
@@ -189,7 +189,7 @@ static NSString * const kKeyPathDelimiter = @"/";
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    // If tempalteValue is nil, it will be skipped, thereby removing that value for the index
+                    // If templateValue is nil, it will be skipped, thereby removing that value for the index
                     if ( templateValue != nil )
                     {
                         destination[ currentKey ] = templateValue;

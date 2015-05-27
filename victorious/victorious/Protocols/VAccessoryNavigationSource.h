@@ -11,6 +11,14 @@
 #import "VNavigationMenuItem.h"
 #import "VAuthorizationContext.h"
 
+/**
+ This protocol is intended to be implemented by view controllers who are using template-driven
+ navigation bar button items through the `accessoryMenuItems` property of their dependency manager.
+ This is done primarily through VDependencyManager+VNavivationItem.  The methods in the
+ protocol are called while navigation bar button items are being created and interacted with so
+ that the view controller has a change to override, extend or inject dependencies in the default
+ behavior.
+ */
 @protocol VAccessoryNavigationSource <NSObject>
 
 /**

@@ -223,14 +223,19 @@ static const char kAssociatedObjectSourceViewControllerKey;
     {
         return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItemIdentifier isEqualToString:identifier];
     }];
-    if (( foundItem = [navigationItme.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject ))
+    
+    foundItem = [navigationItme.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
+    if ( foundItem != nil )
     {
         return foundItem;
     }
-    if (( foundItem = [navigationItme.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject ))
+    
+    foundItem = [navigationItme.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
+    if ( foundItem != nil )
     {
         return foundItem;
     }
+    
     return nil;
 }
 

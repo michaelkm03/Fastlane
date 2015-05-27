@@ -46,27 +46,18 @@
                                                     inRange:NSMakeRange(0, [self string].length)];
 }
 
-- (void)replaceCharactersInRange:(NSRange)range
-                      withString:(NSString *)str
+- (void)replaceCharactersInRange:(NSRange)range  withString:(NSString *)str
 {
-    [self.enteredText replaceCharactersInRange:range
-                                    withString:str];
-    [self.capitalizedText replaceCharactersInRange:range
-                                        withString:[str uppercaseString]];
-    [self edited:NSTextStorageEditedCharacters
-           range:range
-  changeInLength:str.length - (NSInteger)range.length];
+    [self.enteredText replaceCharactersInRange:range withString:str];
+    [self.capitalizedText replaceCharactersInRange:range withString:[str uppercaseString]];
+    [self edited:NSTextStorageEditedCharacters range:range changeInLength:str.length - (NSInteger)range.length];
 }
 
 - (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range
 {
-    [self.enteredText setAttributes:attrs
-                              range:range];
-    [self.capitalizedText setAttributes:attrs
-                                  range:range];
-    [self edited:NSTextStorageEditedAttributes
-           range:range
-  changeInLength:0];
+    [self.enteredText setAttributes:attrs range:range];
+    [self.capitalizedText setAttributes:attrs range:range];
+    [self edited:NSTextStorageEditedAttributes range:range changeInLength:0];
 }
 
 #pragma mark - Property Accessors

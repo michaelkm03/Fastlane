@@ -53,7 +53,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     if ( [object isKindOfClass:[VNavigationMenuItem class]] )
     {
         VNavigationMenuItem *menuItem = object;
-        return [self.identifier isEqualToString:menuItem.identifier] && [self.position isEqualToString:menuItem.position];
+        return [self.identifier isEqualToString:menuItem.identifier];
     }
     
     return [super isEqual:object];

@@ -255,10 +255,4 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  */
 + (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary;
 
-/**
- Marshalls a UIColor to the expected format.
- Returns nil if failed.
- */
-+ (NSDictionary *)dictionaryFromColor:(UIColor *)color;
-
 @end

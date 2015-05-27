@@ -39,8 +39,14 @@
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
-@property (nonatomic, strong) id dependency;
-
+/**
+ Tests whether the template-provided destination on this navigation item is in
+ fact a valid view controller or other navigation desitnation, and not some 
+ other kind of invalid or placeholder value.  The latter may be the case if the
+ behavior is intended to be overriden.  A value of YES generally indicates
+ that the default navigation behavior for this navigation item can and will be
+ successful.
+ */
 @property (nonatomic, assign, readonly) BOOL hasValidDestination;
 
 @end
