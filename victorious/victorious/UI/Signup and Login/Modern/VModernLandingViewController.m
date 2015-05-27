@@ -125,16 +125,13 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 
 - (IBAction)toRegsiter:(id)sender
 {
-    [self animateOutWithCompletion:^
+    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedRegister)
+                                                                           withSender:self];
+    if (flowControllerResponder == nil)
     {
-        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedRegister)
-                                                                               withSender:self];
-        if (flowControllerResponder == nil)
-        {
-            NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
-        }
-        [flowControllerResponder selectedRegister];
-    }];
+        NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
+    }
+    [flowControllerResponder selectedRegister];
 }
 
 - (IBAction)loginWithTwitter:(id)sender
@@ -164,29 +161,6 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 - (UIView *)backgroundContainerView
 {
     return self.view;
-}
-
-#pragma mark - Animation
-
-- (void)animateOutWithCompletion:(void(^)())completion
-{
-    NSParameterAssert(completion != nil);
-    
-    [UIView animateWithDuration:0.5
-                          delay:0.0f
-         usingSpringWithDamping:0.7f
-          initialSpringVelocity:0.0f
-                        options:kNilOptions
-                     animations:^
-     {
-         //
-         self.bottomSpaceFacebookToContainer.constant = -200.0f;
-         [self.view layoutIfNeeded];
-     }
-                     completion:^(BOOL finished)
-     {
-         completion();
-     }];
 }
 
 #pragma mark - UITextViewDelegate

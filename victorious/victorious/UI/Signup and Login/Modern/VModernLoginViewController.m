@@ -36,6 +36,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailField;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordField;
 @property (nonatomic, weak) IBOutlet UITextView *forgotpasswordTextView;
+@property (nonatomic, strong) UIBarButtonItem *nextButton;
 
 @end
 
@@ -120,6 +121,18 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"")
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(login:)];
+    NSDictionary *nextButtonAttributes = @{
+                                           NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
+                                           NSForegroundColorAttributeName:[self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey]
+                                           };
+    [self.nextButton setTitleTextAttributes:nextButtonAttributes
+                                   forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItem = self.nextButton;
+
     // So the keyboard slides in from the right
     [self.emailField becomeFirstResponder];
 }

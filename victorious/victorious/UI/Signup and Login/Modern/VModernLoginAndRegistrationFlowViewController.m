@@ -132,7 +132,14 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         }
             break;
         case UIGestureRecognizerStateEnded:
-            [self.percentDrivenInteraction finishInteractiveTransition];
+            if ([gestureRecognizer velocityInView:gestureRecognizer.view].x > 0)
+            {
+                [self.percentDrivenInteraction finishInteractiveTransition];
+            }
+            else
+            {
+                [self.percentDrivenInteraction cancelInteractiveTransition];
+            }
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateFailed:
             break;

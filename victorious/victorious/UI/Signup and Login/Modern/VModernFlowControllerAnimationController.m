@@ -40,12 +40,14 @@
     if (self.popping)
     {
         fromViewController.view.transform = CGAffineTransformIdentity;
+        fromViewController.view.alpha = 1.0f;
         toViewController.view.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth([transitionContext containerView].bounds), 0.0f);;
     }
     else
     {
         fromViewController.view.transform = CGAffineTransformIdentity;
-        toViewController.view.transform = CGAffineTransformMakeScale(0.001f, 0.00f);
+        toViewController.view.transform = CGAffineTransformMakeScale(0.5f, 0.5f);
+        toViewController.view.alpha = 0.0f;
     }
 
     
@@ -55,21 +57,26 @@
          
          if (self.popping)
          {
-             VLog(@"%@", [transitionContext isInteractive] ? @"YES" : @"NO");
-             fromViewController.view.transform = CGAffineTransformMakeScale(0.001f, 0.001f);
+
+             fromViewController.view.alpha = 0.0f;
+             fromViewController.view.transform = CGAffineTransformMakeScale(0.5f, 0.5f);
              toViewController.view.transform = CGAffineTransformIdentity;
          }
          else
          {
              fromViewController.view.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth([transitionContext containerView].bounds), 0.0f);
              toViewController.view.transform = CGAffineTransformIdentity;
+             toViewController.view.alpha = 1.0f;
          }
      }
                      completion:^(BOOL finished)
      {
-         [transitionContext completeTransition:YES];
+         VLog(@"%@", [transitionContext transitionWasCancelled] ? @"YES" : @"NO");
+         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
          fromViewController.view.transform = CGAffineTransformIdentity;
          toViewController.view.transform = CGAffineTransformIdentity;
+         fromViewController.view.alpha = 1.0f;
+         toViewController.view.alpha = 1.0f;
      }];
 }
 
