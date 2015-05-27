@@ -35,10 +35,22 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  */
 @interface VScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
 
+/**
+ A dependency manager that contains appearance data
+ and various high level components including the menu
+ */
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
+/**
+ Set to YES after the scaffold has appeared on screen once,
+ used to determine whether or not FTUE should display
+ */
 @property (nonatomic, assign, readonly) BOOL hasBeenShown;
 
+/**
+ An object that manages the display of coachmarks in
+ view controllers managed by this scaffold
+ */
 @property (nonatomic, readonly) VCoachmarkManager *coachmarkManager;
 
 /**

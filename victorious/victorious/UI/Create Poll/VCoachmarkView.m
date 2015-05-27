@@ -25,6 +25,8 @@ static const CGFloat kShadowOpacity = 0.35f;
 static const CGFloat kShadowRadius = 1.0f;
 static const CGSize kShadowOffset = { 0.0f, 1.0f };
 
+static const CGFloat kBezierRadius = 10.0f;
+
 @interface VCoachmarkView ()
 
 @property (nonatomic, strong) UIView *backgroundView;
@@ -131,9 +133,12 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
                           arrowHorizontalOffset:(CGFloat)horizontalOffset
                                        andWidth:(CGFloat)width
 {
+    CGFloat roundedPointHeight = kBezierRadius / 2;
     UIBezierPath *tooltipPath = [UIBezierPath bezierPath];
     if ( arrowDirection == VTooltipArrowDirectionDown )
     {
+        CGPoint arrowPoint = CGPointMake(horizontalOffset, totalHeight);
+        
         //Start at top left corner of box and draw to bottom left corner
         [tooltipPath moveToPoint:CGPointZero];
         [tooltipPath addLineToPoint:CGPointMake(0, boxHeight)];
@@ -141,8 +146,11 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
         //Draw from bottom left corner to half the arrow's width of the arrow point
         [tooltipPath addLineToPoint:CGPointMake(horizontalOffset - kTooltipArrowWidth / 2, boxHeight)];
         
-        //Draw to top of arrow
-        [tooltipPath addLineToPoint:CGPointMake(horizontalOffset, totalHeight)];
+        //Draw to start of rounded top
+        [tooltipPath addLineToPoint:CGPointMake(horizontalOffset - roundedPointHeight, totalHeight - roundedPointHeight)];
+        
+        //Draw rounded top
+        [tooltipPath addCurveToPoint:CGPointMake(horizontalOffset + roundedPointHeight, totalHeight - roundedPointHeight) controlPoint1:arrowPoint controlPoint2:arrowPoint];
         
         //Draw back to box
         [tooltipPath addLineToPoint:CGPointMake(horizontalOffset + kTooltipArrowWidth / 2, boxHeight)];
@@ -154,6 +162,8 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
     }
     else if ( arrowDirection == VTooltipArrowDirectionUp )
     {
+        CGPoint arrowPoint = CGPointMake(horizontalOffset, 0);
+        
         //Start below height of arrow and draw the left, bottom, and right sides of the box
         [tooltipPath moveToPoint:CGPointMake(0, kTooltipArrowHeight)];
         [tooltipPath addLineToPoint:CGPointMake(0, totalHeight)];
@@ -163,8 +173,11 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
         //Draw from top right corner to half the arrow's width of the arrow point
         [tooltipPath addLineToPoint:CGPointMake(horizontalOffset + kTooltipArrowWidth / 2, kTooltipArrowHeight)];
         
-        //Draw to top of arrow
-        [tooltipPath addLineToPoint:CGPointMake(horizontalOffset, 0)];
+        //Draw halfway up to top of arrow
+        [tooltipPath addLineToPoint:CGPointMake(horizontalOffset + roundedPointHeight, roundedPointHeight)];
+        
+        //Draw rounded top
+        [tooltipPath addCurveToPoint:CGPointMake(horizontalOffset - roundedPointHeight, roundedPointHeight) controlPoint1:arrowPoint controlPoint2:arrowPoint];
         
         //Draw back to box
         [tooltipPath addLineToPoint:CGPointMake(horizontalOffset - kTooltipArrowWidth / 2, kTooltipArrowHeight)];
