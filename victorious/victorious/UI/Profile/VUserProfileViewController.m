@@ -777,7 +777,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         if ( isCurrentUserLoggedIn )
         {
-            return !isCurrentUser;
+            return !isCurrentUser && !self.user.isDirectMessagingDisabled;
         }
         else
         {
