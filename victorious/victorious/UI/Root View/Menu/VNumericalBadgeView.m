@@ -157,7 +157,7 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
     }
     _badgeNumber = badgeNumber;
     
-    self.label.text = badgeNumber == VBadgeEmptyValue ? @"" : [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+    self.label.text = badgeNumber == 0 ? @"" : [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
     [self invalidateIntrinsicContentSize];
 }
 

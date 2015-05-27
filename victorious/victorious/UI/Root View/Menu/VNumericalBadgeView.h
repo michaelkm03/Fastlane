@@ -6,11 +6,6 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
-enum
-{
-    VBadgeEmptyValue = NSIntegerMax ///< Displays an empty badge without any content
-};
-
 IB_DESIGNABLE
 
 /**
