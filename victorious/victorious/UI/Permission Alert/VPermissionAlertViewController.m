@@ -15,6 +15,8 @@
 #import "VRoundedImageView.h"
 #import "VAppInfo.h"
 
+static const CGFloat kMaxAlertHeightDifferenceFromSuperview = 100.0f;
+
 static NSString * const kStoryboardName = @"PermissionAlert";
 static NSString * const kConfirmButtonTitleKey = @"title.button1";
 static NSString * const kDenyButtonTitleKey = @"title.button2";
@@ -111,7 +113,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     totalHeight += CGRectGetHeight(self.confirmationButton.bounds);
     
     // Get the maximum height of the alert view
-    CGFloat maxHeight = CGRectGetHeight(self.view.bounds) - 100;
+    CGFloat maxHeight = CGRectGetHeight(self.view.bounds) - kMaxAlertHeightDifferenceFromSuperview;
     
     // Get the bounding rect of the text using font from dependency manager
     CGFloat boundingWidth = CGRectGetWidth(self.messageTextView.bounds) - self.messageTextView.textContainerInset.left - self.messageTextView.textContainerInset.right;
