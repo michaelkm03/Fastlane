@@ -15,6 +15,8 @@
 #import "VRoundedImageView.h"
 #import "VAppInfo.h"
 
+@import CoreText;
+
 static const CGFloat kMaxAlertHeightDifferenceFromSuperview = 100.0f;
 
 static NSString * const kStoryboardName = @"PermissionAlert";
@@ -74,6 +76,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     self.alertContainerView.layer.cornerRadius = 24.0f;
     self.alertContainerView.clipsToBounds = YES;
     
+    self.messageTextView.editable = NO;
     self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.messageTextView.text = self.messageText;
@@ -94,7 +97,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     [self.iconImageView setIconImageURL:appInfo.profileImageURL];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
-        
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -115,15 +118,14 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     // Get the maximum height of the alert view
     CGFloat maxHeight = CGRectGetHeight(self.view.bounds) - kMaxAlertHeightDifferenceFromSuperview;
     
-    // Get the bounding rect of the text using font from dependency manager
-    CGFloat boundingWidth = CGRectGetWidth(self.messageTextView.bounds) - self.messageTextView.textContainerInset.left - self.messageTextView.textContainerInset.right;
-    CGRect textRect = [self.messageText boundingRectWithSize:CGSizeMake(boundingWidth, CGFLOAT_MAX)
-                                                     options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
-                                                  attributes:@{NSFontAttributeName:self.messageTextView.font}
-                                                     context:nil];
+    // Create temporary text view and size to fit the text
+    UITextView *temporary = [[UITextView alloc] initWithFrame:self.messageTextView.bounds];
+    temporary.font = self.messageTextView.font;
+    temporary.text = self.messageText;
+    [temporary sizeToFit];
     
-    // Calculate text height. add 20 to make sure we get all the lines
-    CGFloat textHeight = ceilf(CGRectGetHeight(textRect)) + self.messageTextView.textContainerInset.top + self.messageTextView.textContainerInset.bottom;
+    // Calculate text height. add 15 to make sure custom fonts dont get clipped
+    CGFloat textHeight = ceil(CGRectGetHeight(temporary.bounds)) + 15;
     
     // Find out how high the text view should be
     CGFloat newTextViewConstant = 0;
@@ -140,6 +142,8 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     
     // Set the text view height
     self.textViewHeightConstraint.constant = newTextViewConstant;
+    
+    [self.messageTextView setContentOffset:CGPointZero];
     
     [super updateViewConstraints];
 }

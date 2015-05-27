@@ -120,7 +120,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.92941176470588238" green="0.0" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="zxv-Um-jbA" firstAttribute="top" secondItem="cMw-dh-B3Z" secondAttribute="bottom" constant="49" id="8OP-sT-sPV"/>
+                                    <constraint firstItem="zxv-Um-jbA" firstAttribute="top" secondItem="cMw-dh-B3Z" secondAttribute="bottom" constant="30" id="8OP-sT-sPV"/>
                                     <constraint firstItem="uqE-hA-Enb" firstAttribute="top" secondItem="M6g-YF-N4q" secondAttribute="top" constant="28" id="H1g-tP-0GB"/>
                                     <constraint firstAttribute="trailing" secondItem="zxv-Um-jbA" secondAttribute="trailing" id="R6l-io-HO9"/>
                                     <constraint firstItem="cMw-dh-B3Z" firstAttribute="top" secondItem="uqE-hA-Enb" secondAttribute="bottom" constant="30" id="Re7-mg-hli"/>
@@ -141,11 +141,6 @@
                                         <exclude reference="cMw-dh-B3Z"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="Re7-mg-hli"/>
-                                        <exclude reference="Zz6-Ak-8Hb"/>
-                                        <exclude reference="uKY-QR-yEg"/>
-                                        <exclude reference="H1g-tP-0GB"/>
-                                        <exclude reference="W82-mT-5nY"/>
                                         <exclude reference="fhD-ZP-Ztz"/>
                                         <exclude reference="wEz-Uu-4NA"/>
                                         <exclude reference="yTt-IE-aku"/>
@@ -153,6 +148,11 @@
                                         <exclude reference="R6l-io-HO9"/>
                                         <exclude reference="TTL-py-bHj"/>
                                         <exclude reference="r0h-0R-1WW"/>
+                                        <exclude reference="Re7-mg-hli"/>
+                                        <exclude reference="Zz6-Ak-8Hb"/>
+                                        <exclude reference="uKY-QR-yEg"/>
+                                        <exclude reference="H1g-tP-0GB"/>
+                                        <exclude reference="W82-mT-5nY"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -163,11 +163,6 @@
                                         <include reference="cMw-dh-B3Z"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="Re7-mg-hli"/>
-                                        <include reference="Zz6-Ak-8Hb"/>
-                                        <include reference="uKY-QR-yEg"/>
-                                        <include reference="H1g-tP-0GB"/>
-                                        <include reference="W82-mT-5nY"/>
                                         <include reference="fhD-ZP-Ztz"/>
                                         <include reference="wEz-Uu-4NA"/>
                                         <include reference="yTt-IE-aku"/>
@@ -175,6 +170,11 @@
                                         <include reference="R6l-io-HO9"/>
                                         <include reference="TTL-py-bHj"/>
                                         <include reference="r0h-0R-1WW"/>
+                                        <include reference="Re7-mg-hli"/>
+                                        <include reference="Zz6-Ak-8Hb"/>
+                                        <include reference="uKY-QR-yEg"/>
+                                        <include reference="H1g-tP-0GB"/>
+                                        <include reference="W82-mT-5nY"/>
                                     </mask>
                                 </variation>
                             </view>
