@@ -10,18 +10,17 @@
 #import "VCoachmark.h"
 #import "VCoachmarkView.h"
 #import "VDependencyManager+VScaffoldViewController.h"
-#import <objc/runtime.h>
 #import "VCoachmarkDisplayResponder.h"
 #import "VNavigationController.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VTimerManager.h"
 #import "VCoachmarkPassthroughContainerView.h"
+#import "VCoachmarkManager+VObjectAssociation.h"
 
 static NSString * const kShownCoachmarksKey = @"shownCoachmarks";
 static NSString * const kReturnedCoachmarksKey = @"coachmarks";
 static NSString * const kPassthroughContainerViewKey = @"passthroughContainerView";
 static const CGFloat kAnimationDuration = 0.4f;
-static const char kPassthroughViewKey;
 static const CGFloat kCoachmarkHorizontalInset = 24.0f;
 static const CGFloat kCoachmarkVerticalInset = 5.0f;
 static const CGFloat kAnimationVerticalOffset = 10.0f;
@@ -86,7 +85,7 @@ static const CGFloat kAnimationDelay = 1.0f;
 
 - (void)hideCoachmarkViewInViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [self removePassthroughContainerView:objc_getAssociatedObject(viewController.view, &kPassthroughViewKey) animated:animated];
+    [self removePassthroughContainerView:[self coachmarkPassthroughContainerViewAssociatedWithView:viewController.view] animated:animated];
 }
 
 #pragma mark - Setup
@@ -172,7 +171,7 @@ static const CGFloat kAnimationDelay = 1.0f;
             //add it to the removed overlays array to cancel showing it
             [self.removedPassthroughOverlays addObject:passthroughContainerView];
         }
-        objc_setAssociatedObject(passthroughContainerView, &kPassthroughViewKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [self removeAssociationForCoachmarkPassthroughContainerView:passthroughContainerView];
         passthroughContainerView.delegate = nil;
         passthroughContainerView.userInteractionEnabled = NO;
         [self animateOverlayView:passthroughContainerView
@@ -197,7 +196,7 @@ static const CGFloat kAnimationDelay = 1.0f;
     UIView *view = viewController.view;
     VCoachmarkPassthroughContainerView *passthroughOverlay = [VCoachmarkPassthroughContainerView coachmarkPassthroughContainerViewWithCoachmarkView:coachmarkView andDelegate:self];
     passthroughOverlay.frame = view.bounds;
-    objc_setAssociatedObject(keyView, &kPassthroughViewKey, passthroughOverlay, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [self associateView:keyView withCoachmarkPassthroughContainerView:passthroughOverlay];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {

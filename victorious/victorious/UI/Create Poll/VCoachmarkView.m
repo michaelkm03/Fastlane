@@ -57,6 +57,7 @@ static const CGSize kShadowOffset = { 0.0f, 1.0f };
     [super layoutSubviews];
     
     [self addSubview:self.backgroundView];
+    self.backgroundView.userInteractionEnabled = NO;
     [self v_addFitToParentConstraintsToSubview:self.backgroundView];
     
     [self addSubview:self.captionLabel];
