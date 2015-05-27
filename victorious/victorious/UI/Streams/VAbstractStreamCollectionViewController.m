@@ -260,7 +260,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
         return;
     }
     
-    const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed;
+    const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
          [self.refreshControl endRefreshing];
