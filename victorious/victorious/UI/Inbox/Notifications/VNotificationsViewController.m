@@ -42,8 +42,8 @@ static int const kNotificationFetchBatchSize = 50;
 
 @implementation VNotificationsViewController
 
-@synthesize multipleContainerChildDelegate;
-@synthesize badgeNumberUpdateBlock;
+@synthesize multipleContainerChildDelegate = _multipleContainerChildDelegate;
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
