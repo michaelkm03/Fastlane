@@ -65,7 +65,6 @@ static NSString * const kContentViewComponentKey = @"contentView";
         NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
         if ( [sequenceContentURL v_isThisAppGenericScheme] )
         {
-            [[VRootViewController rootViewController] openURL:sequenceContentURL];
             return YES;
         }
         else if ( [sequenceContentURL v_hasCustomScheme] )

@@ -35,6 +35,11 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo;
 
 /**
+ Please call this method from UIApplicationDelegate's method of the same name.
+ */
+- (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
+
+/**
  Opens a deeplink URL
  */
 - (void)openURL:(NSURL *)url;

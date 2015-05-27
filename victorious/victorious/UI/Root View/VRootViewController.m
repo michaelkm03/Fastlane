@@ -327,36 +327,46 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeepLinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
+    
+    [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
+}
 
+- (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [self openURL:url fromExternalSourceWithOptionalNotificationID:nil];
+}
+
+/**
+ This version of -openURL: should be called when the request to open a URL comes from a place outside of the app, usually
+ a push notification, but maybe mobile safari or another application calling -[UIApplication openURL:]
+ */
+- (void)openURL:(NSURL *)deepLink fromExternalSourceWithOptionalNotificationID:(NSString *)notificationID
+{
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && self.properlyBackgrounded )
     {
-        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
-        [self openURL:deepLink withNotificationID:notificationID];
+        if ( notificationID != nil )
+        {
+            [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
+        }
+        if ( [self.sessionTimer shouldNewSessionStartNow] )
+        {
+            [self.deepLinkReceiver queueDeeplink:deepLink];
+            self.queuedNotificationID = notificationID;
+        }
+        else
+        {
+            [self openURL:deepLink];
+        }
     }
     else if ( [deepLink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
     }
 }
+
 - (void)openURL:(NSURL *)url
 {
-    [self openURL:url withNotificationID:nil];
-}
-
-- (void)openURL:(NSURL *)url withNotificationID:(NSString *)notificationID
-{
-    if ( [self.sessionTimer shouldNewSessionStartNow] )
-    {
-        [self.deepLinkReceiver queueDeeplink:url];
-        if ( notificationID != nil )
-        {
-            self.queuedNotificationID = notificationID;
-        }
-    }
-    else
-    {
-        [self.deepLinkReceiver receiveDeeplink:url];
-    }
+    [self.deepLinkReceiver receiveDeeplink:url];
 }
 
 #pragma mark - Ad Networks
