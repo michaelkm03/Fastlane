@@ -41,9 +41,11 @@
 
 /**
  Retrieves the aspect ratio of the highest resolution
- preview asset for this sequence. 1.0f is returned if
- no preview asset is found, or if the aspect ratio
- is not within range (0.5-2.0). Will never be 0.
+ preview asset for this sequence as a width/height float value. 
+ 1.0f is returned if no preview asset is found, or if the aspect 
+ ratio is not within range (0.5-2.0).
+ 
+ @note Will never be 0.
  */
 - (CGFloat)previewAssetAspectRatio;
 
