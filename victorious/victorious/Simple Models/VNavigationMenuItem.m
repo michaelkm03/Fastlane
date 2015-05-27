@@ -66,10 +66,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 
 - (NSUInteger)hash
 {
-    NSUInteger hash = 0;
-    hash += [self.identifier hash];
-    hash += [self.position hash];
-    return hash;
+    return [self.identifier hash];
 }
 
 - (BOOL)hasValidDestination
