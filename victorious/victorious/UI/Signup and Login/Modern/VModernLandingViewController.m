@@ -14,10 +14,12 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 
+@import CoreText;
+
 static NSString *kLogoKey = @"logo";
 static NSString *kStatusBarStyle = @"statusBarStyle";
 
-@interface VModernLandingViewController () <VBackgroundContainer>
+@interface VModernLandingViewController () <UITextViewDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -60,8 +62,25 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
                                forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = loginButton;
 
-    self.legalTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.legalTextView.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    // Legal Text
+    NSString *legalTextBeginnning = NSLocalizedString(@"By signing up you are agreeing to our ", nil);
+    NSString *termsOfServiceLinkText = NSLocalizedString(@"terms of service and privacy policy.", nil);
+    NSDictionary *legalTextAttributes = @{
+                                          NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
+                                          NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
+                                          };
+    NSMutableAttributedString *attributedLegalText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", legalTextBeginnning, termsOfServiceLinkText]
+                                                                                            attributes:legalTextAttributes];
+    NSRange rangeOfLink = [attributedLegalText.string rangeOfString:termsOfServiceLinkText];
+    [attributedLegalText addAttribute:NSLinkAttributeName
+                                value:@"tos"
+                                range:rangeOfLink];
+    [attributedLegalText addAttribute:(NSString *)kCTUnderlineStyleAttributeName
+                                value:[NSNumber numberWithInt:kCTUnderlineStyleSingle]
+                                range:rangeOfLink];
+    self.legalTextView.attributedText = attributedLegalText;
+    self.legalTextView.textAlignment = NSTextAlignmentCenter;
+    self.legalTextView.linkTextAttributes = legalTextAttributes;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
@@ -95,16 +114,13 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 
 - (void)login
 {
-    [self animateOutWithCompletion:^
+    id <VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedLogin)
+                                                                            withSender:self];
+    if (flowControllerResponder == nil)
     {
-        id <VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedLogin)
-                                                                                withSender:self];
-        if (flowControllerResponder == nil)
-        {
-            NSAssert(false, @"We need a flow controller in the responder chain for logging in.");
-        }
-        [flowControllerResponder selectedLogin];
-    }];
+        NSAssert(false, @"We need a flow controller in the responder chain for logging in.");
+    }
+    [flowControllerResponder selectedLogin];
 }
 
 - (IBAction)toRegsiter:(id)sender
@@ -138,7 +154,7 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
                                                                            withSender:self];
     if (flowControllerResponder == nil)
     {
-        NSAssert(false, @"We need a flow controller in teh respodner chain for facebok.");
+        NSAssert(false, @"We need a flow controller in teh respodner chain for facebook.");
     }
     [flowControllerResponder selectedFacebookAuthorization];
 }
@@ -171,6 +187,20 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
      {
          completion();
      }];
+}
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(showTermsOfService)
+                                                                           withSender:self];
+    if (flowControllerResponder == nil)
+    {
+        NSAssert(false, @"We need a flow controller in teh respodner chain for terms of service.");
+    }
+    [flowControllerResponder showTermsOfService];
+    return YES;
 }
 
 @end

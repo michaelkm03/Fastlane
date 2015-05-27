@@ -10,6 +10,10 @@
 #import "VLoginRegistrationFlow.h"
 #import "VHasManagedDependencies.h"
 
+
+/**
+ *  ATTENTION: Do not modify the navigation controller's delegate.
+ */
 @interface VModernLoginAndRegistrationFlowViewController : UINavigationController <VLoginRegistrationFlow, VHasManagedDependencies>
 
 @end

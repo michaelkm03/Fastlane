@@ -71,4 +71,9 @@
  */
 - (void)updateWithNewPassword:(NSString *)newPassword;
 
+/**
+ *  The user would like to see the terms of service.
+ */
+- (void)showTermsOfService;
+
 @end

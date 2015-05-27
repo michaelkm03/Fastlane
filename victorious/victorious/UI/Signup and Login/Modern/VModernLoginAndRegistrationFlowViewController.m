@@ -18,6 +18,8 @@
 #import "VBackgroundContainer.h"
 #import "VLoginFlowAPIHelper.h"
 #import "VModernResetTokenViewController.h"
+#import "VModernFlowControllerAnimationController.h"
+#import "VTOSViewController.h"
 
 // Responder Chain
 #import "VLoginFlowControllerResponder.h"
@@ -28,7 +30,11 @@ static NSString *kLandingScreen = @"landingScreen";
 static NSString *kStatusBarStyleKey = @"statusBarStyle";
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer>
+@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer, UINavigationControllerDelegate>
+
+@property (nonatomic, strong) VModernFlowControllerAnimationController *animator;
+@property (nonatomic, strong) UIPercentDrivenInteractiveTransition *percentDrivenInteraction;
+@property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *popGestureRecognizer;
 
 @property (nonatomic, assign) VAuthorizationContext authorizationContext;
 @property (nonatomic, strong) VLoginFlowCompletionBlock completionBlock;
@@ -65,6 +71,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                         forKey:kLoginScreens];
         _loginFlowHelper = [[VLoginFlowAPIHelper alloc] initWithViewControllerToPresentOn:self
                                                                         dependencyManager:dependencyManager];
+        
+        _animator = [[VModernFlowControllerAnimationController alloc] init];
+        _percentDrivenInteraction = [[UIPercentDrivenInteractiveTransition alloc] init];
     }
     return self;
 }
@@ -72,6 +81,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
+    UIScreenEdgePanGestureRecognizer *backGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(pannedFromLeftSideOfScreen:)];
+    backGesture.edges = UIRectEdgeLeft;
+    self.popGestureRecognizer = backGesture;
+    [self.view addGestureRecognizer:backGesture];
+    
+    self.delegate = self;
  
     self.view.backgroundColor = [UIColor blackColor];
     [self.navigationBar setBackgroundImage:[[UIImage alloc] init]
@@ -92,6 +108,35 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - Gesture Target
+
+- (void)pannedFromLeftSideOfScreen:(UIScreenEdgePanGestureRecognizer *)gestureRecognizer
+{
+    CGPoint translation = [gestureRecognizer translationInView:self.view];
+    switch (gestureRecognizer.state)
+    {
+        case UIGestureRecognizerStatePossible:
+            break;
+        case UIGestureRecognizerStateBegan:
+            if (!self.topViewController.navigationItem.hidesBackButton)
+            {
+                [self popViewControllerAnimated:YES];
+            }
+            break;
+        case UIGestureRecognizerStateChanged:
+        {
+            CGFloat percentThrough = (translation.x / CGRectGetWidth(self.view.bounds));
+            [self.percentDrivenInteraction updateInteractiveTransition:percentThrough];
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+            [self.percentDrivenInteraction finishInteractiveTransition];
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
+            break;
+    }
 }
 
 #pragma mark - VHasManagedDependencies
@@ -274,6 +319,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     }];
 }
 
+- (void)showTermsOfService
+{
+    [self presentViewController:[VTOSViewController presentableTermsOfServiceViewController]
+                       animated:YES
+                     completion:nil];
+}
+
 #pragma mark - Internal Methods
 
 - (void)continueRegistrationFlow
@@ -322,6 +374,32 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (UIView *)backgroundContainerView
 {
     return self.view;
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
+{
+    self.animator.popping = (operation == UINavigationControllerOperationPop);
+    return self.animator;
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
+                         interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController
+{
+    VModernFlowControllerAnimationController *modernAnimationController = (VModernFlowControllerAnimationController *)animationController;
+    if (!modernAnimationController.popping)
+    {
+        return nil;
+    }
+    if (self.popGestureRecognizer.state == UIGestureRecognizerStatePossible)
+    {
+        return nil;
+    }
+    return self.percentDrivenInteraction;
 }
 
 @end

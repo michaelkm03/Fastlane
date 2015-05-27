@@ -788,6 +788,7 @@
 		D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */; };
 		D8D812B21B14EAB200E93B37 /* VModernResetTokenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D812B11B14EAB200E93B37 /* VModernResetTokenViewController.storyboard */; };
 		D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812B41B14FE5B00E93B37 /* VLoginFlowAPIHelper.m */; };
+		D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812B71B15819600E93B37 /* VModernFlowControllerAnimationController.m */; };
 		D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */; };
 		D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */; };
 		D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE58F1ADD835B0004B782 /* VFlexBar.m */; };
@@ -2373,6 +2374,8 @@
 		D8D812B11B14EAB200E93B37 /* VModernResetTokenViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VModernResetTokenViewController.storyboard; sourceTree = "<group>"; };
 		D8D812B31B14FE5B00E93B37 /* VLoginFlowAPIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginFlowAPIHelper.h; sourceTree = "<group>"; };
 		D8D812B41B14FE5B00E93B37 /* VLoginFlowAPIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginFlowAPIHelper.m; sourceTree = "<group>"; };
+		D8D812B61B15819600E93B37 /* VModernFlowControllerAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernFlowControllerAnimationController.h; sourceTree = "<group>"; };
+		D8D812B71B15819600E93B37 /* VModernFlowControllerAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernFlowControllerAnimationController.m; sourceTree = "<group>"; };
 		D8D8958719E88C2100632663 /* VExperienceEnhancerBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperienceEnhancerBarCell.h; sourceTree = "<group>"; };
 		D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerBarCell.m; sourceTree = "<group>"; };
 		D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VExperienceEnhancerBarCell.xib; sourceTree = "<group>"; };
@@ -5301,6 +5304,8 @@
 				D8D8129F1B13CB9300E93B37 /* VModernEnterNameViewController.h */,
 				D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */,
 				D8D812A21B13CBA000E93B37 /* VModernEnterNameViewController.storyboard */,
+				D8D812B61B15819600E93B37 /* VModernFlowControllerAnimationController.h */,
+				D8D812B71B15819600E93B37 /* VModernFlowControllerAnimationController.m */,
 				D85B708D1B0ECC6D0038CA5B /* VModernLandingViewController.h */,
 				D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */,
 				D8758D191B0FAD64008C6C0D /* VModernLandingViewController.storyboard */,
@@ -6858,6 +6863,7 @@
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */,
+				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
