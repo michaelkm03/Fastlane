@@ -289,7 +289,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                        @"red":@25,
                                                        @"green":@25,
                                                        @"blue":@150,
-                                                       @"alpha":@200
+                                                       @"alpha":@0
                                                        },
                                                }
                                        },
@@ -310,7 +310,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                        @"red":@150,
                                                        @"green":@25,
                                                        @"blue":@25,
-                                                       @"alpha":@200
+                                                       @"alpha":@0
                                                        },
                                                }
                                        },
@@ -335,7 +335,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                        @"red":@25,
                                                        @"green":@50,
                                                        @"blue":@25,
-                                                       @"alpha":@200
+                                                       @"alpha":@0
                                                        },
                                                }
                                        },
@@ -358,8 +358,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @{
                                                    @"red":@25,
                                                    @"green":@50,
-                                                   @"blue":@25,
-                                                   @"alpha":@0
+                                                   @"blue":@255,
+                                                   @"alpha":@200
                                                    },
                                            }
                                    },

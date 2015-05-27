@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" text="By signing up you are agreeing to our ToS and privacy policy." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qk2-es-3aq">
-                                <rect key="frame" x="20" y="409" width="560" height="33"/>
+                                <rect key="frame" x="20" y="459" width="560" height="33"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -26,11 +26,11 @@
                                     <outlet property="delegate" destination="yjK-eD-rfp" id="0Cl-fg-CMm"/>
                                 </connections>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xpp-jF-2DP">
-                                <rect key="frame" x="0.0" y="450" width="600" height="50"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xpp-jF-2DP">
+                                <rect key="frame" x="0.0" y="500" width="600" height="0.0"/>
                                 <color key="backgroundColor" red="0.33333333333333331" green="0.67450980392156867" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="bUJ-ZK-J2u"/>
+                                    <constraint firstAttribute="height" id="bUJ-ZK-J2u"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                 <state key="normal" title="Login with Twitter">
