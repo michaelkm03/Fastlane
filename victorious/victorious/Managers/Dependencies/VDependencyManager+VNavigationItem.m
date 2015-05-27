@@ -186,10 +186,10 @@ static const char kAssociatedObjectSourceViewControllerKey;
     // Walk the responder chain and collect accessoryMenuItems from each responders dependencyManager
     [source v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
      {
-         id<VHasManagedDependencies> dependenyOwner = (id<VHasManagedDependencies>)responder;
-         if ( [dependenyOwner respondsToSelector:@selector(dependencyManager)] )
+         id<VNavigationDestination> destination = (id<VNavigationDestination>)responder;
+         if ( [destination respondsToSelector:@selector(dependencyManager)] )
          {
-             [accessoryMenuItems addObjectsFromArray:[dependenyOwner dependencyManager].accessoryMenuItems];
+             [accessoryMenuItems addObjectsFromArray:[destination dependencyManager].accessoryMenuItems];
          }
      }];
 
