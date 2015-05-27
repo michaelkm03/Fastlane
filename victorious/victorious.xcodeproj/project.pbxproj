@@ -5558,10 +5558,10 @@
 		D8DF71E11AFC3476002EA7A5 /* Template A */ = {
 			isa = PBXGroup;
 			children = (
-				D8DF71E51AFC3784002EA7A5 /* VTileOverlayCollectionCell.h */,
-				D8DF71E61AFC3784002EA7A5 /* VTileOverlayCollectionCell.m */,
 				D8DF71E21AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.h */,
 				D8DF71E31AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m */,
+				D8DF71E51AFC3784002EA7A5 /* VTileOverlayCollectionCell.h */,
+				D8DF71E61AFC3784002EA7A5 /* VTileOverlayCollectionCell.m */,
 			);
 			path = "Template A";
 			sourceTree = "<group>";
