@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:VStream.h">
-   </FileRef>
-   <FileRef
-      location = "group:VStream.m">
-   </FileRef>
-   <FileRef
       location = "group:victorious.xcodeproj">
    </FileRef>
    <FileRef
