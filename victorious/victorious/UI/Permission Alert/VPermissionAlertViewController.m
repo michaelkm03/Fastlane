@@ -142,9 +142,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     
     // Set the text view height
     self.textViewHeightConstraint.constant = newTextViewConstant;
-    
-    [self.messageTextView setContentOffset:CGPointZero];
-    
+        
     [super updateViewConstraints];
 }
 
