@@ -260,6 +260,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
         return;
     }
     
+    const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
          [self.refreshControl endRefreshing];
@@ -268,7 +269,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
          BOOL viewIsVisible = self.parentViewController != nil;
          if ( viewIsVisible )
          {
-             [self updateNavigationItems];
+             if ( wasUserPostAllowed != self.currentStream.isUserPostAllowed.boolValue )
+             {
+                 [self updateNavigationItems];
+             }
          }
          
          if (completionBlock)
