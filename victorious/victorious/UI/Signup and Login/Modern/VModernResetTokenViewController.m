@@ -79,6 +79,19 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                       forState:UIControlStateNormal];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"")
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(resetPasswordWithTextFieldToken)];
+    NSDictionary *nextButtonAttributes = @{
+                                           NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
+                                           NSForegroundColorAttributeName:[self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey]
+                                           };
+    [nextButton setTitleTextAttributes:nextButtonAttributes
+                                   forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItem = nextButton;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,9 +114,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [flowController forgotPasswordWithInitialEmail:nil];
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - Internal Methods
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void)resetPasswordWithTextFieldToken
 {
     id<VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(setResetToken:)
                                                                   withSender:self];
@@ -111,8 +124,14 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     {
         NSAssert(false, @"We need a flow controller for reset tokens.");
     }
-    [flowController setResetToken:textField.text];
-    
+    [flowController setResetToken:self.codeTextField.text];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self resetPasswordWithTextFieldToken];
     return YES;
 }
 
