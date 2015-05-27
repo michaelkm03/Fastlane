@@ -244,7 +244,7 @@
                                             <segue destination="p5c-fI-FBT" kind="push" id="bje-i4-g0X"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="FNb-Ni-uJN" style="IBUITableViewCellStyleDefault" id="rci-iZ-Ffn" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="FNb-Ni-uJN" style="IBUITableViewCellStyleDefault" id="rci-iZ-Ffn" customClass="VSettingsTableViewCell">
                                         <rect key="frame" x="0.0" y="99" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rci-iZ-Ffn" id="6Tf-Sd-nW1">
