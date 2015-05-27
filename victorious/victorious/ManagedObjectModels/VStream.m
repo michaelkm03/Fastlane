@@ -1,9 +1,9 @@
 //
 //  VStream.m
-//  victorious
+//  
 //
-//  Created by Michael Sena on 10/31/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 5/26/15.
+//
 //
 
 #import "VStream.h"
@@ -15,10 +15,11 @@
 @dynamic apiPath;
 @dynamic count;
 @dynamic filterName;
-@dynamic streamItems;
-@dynamic marqueeItems;
 @dynamic hashtag;
-@dynamic trackingIdentifier;
 @dynamic isUserPostAllowed;
+@dynamic trackingIdentifier;
+@dynamic streamId;
+@dynamic marqueeItems;
+@dynamic streamItems;
 
 @end

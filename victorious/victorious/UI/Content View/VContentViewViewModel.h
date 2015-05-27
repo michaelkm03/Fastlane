@@ -99,7 +99,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *
  *  @return An initialized VContentViewModel.
  */
-- (instancetype)initWithSequence:(VSequence *)sequence depenencyManager:(VDependencyManager *)dependencyManager;
+- (instancetype)initWithSequence:(VSequence *)sequence streamID:(NSString *)streamId depenencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)reloadData;
 
@@ -124,6 +124,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *  The corresponding sequence for this view model.
  */
 @property (nonatomic, strong, readonly) VSequence *sequence;
+
+/**
+ *  The id of the stream containing the corresponding sequence for this view model.
+ */
+@property (nonatomic, strong, readonly) NSString *streamId;
 
 /**
  *  The type of asset we are currently viewing.

@@ -28,10 +28,10 @@
     return self;
 }
 
-- (void)fadeIn
+- (void)fadeIn:(NSTimeInterval)duration
 {
     self.coachView.alpha = 0.0f;
-    [UIView animateWithDuration:1.0f
+    [UIView animateWithDuration:duration
                           delay:1.0f
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^
@@ -41,11 +41,11 @@
                      completion:nil];
 }
 
-- (void)fadeOut
+- (void)fadeOut:(NSTimeInterval)duration
 {
     self.hasReceivedFadeOutMessage = YES;
     [self.coachView.layer removeAllAnimations];
-    [UIView animateWithDuration:1.0f
+    [UIView animateWithDuration:duration
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^

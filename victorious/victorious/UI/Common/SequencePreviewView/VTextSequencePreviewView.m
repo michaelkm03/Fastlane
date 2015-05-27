@@ -57,7 +57,7 @@
     
     self.textPostViewController.text = text;
     self.textPostViewController.color = color;
-    self.textPostViewController.imageURL = backgroundImageURL;
+    [self.textPostViewController setImageURL:backgroundImageURL animated:YES];
 }
 
 @end

@@ -278,7 +278,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
     else if ( streamItem.isContent )
     {
-        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem commentId:nil placeHolderImage:nil];
+        NSString *streamId = self.marqueeController.stream.remoteId;
+        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem streamID:streamId commentId:nil placeHolderImage:nil];
     }
     else if ( [streamItem isKindOfClass:[VStream class]] )
     {
