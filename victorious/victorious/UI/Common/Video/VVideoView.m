@@ -61,6 +61,11 @@
      {
          [self didFinishAssetCreation:playerItem];
      }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(play)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
 
 - (void)setBounds:(CGRect)bounds
