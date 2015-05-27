@@ -46,6 +46,8 @@ class VTextFragmentsBuilder: NSObject
             let isFirstCharacter = i == 0
             let isMinCalloutLength = fragmentRange.length > 2
             let calloutIndex: Int = self.indexOfCalloutRangeContainingIndex( i, calloutRanges: calloutRanges ) ?? -1
+            let isLineBreak = currentCharacter == "\n"
+            
             
             if isFirstCharacter
             {
@@ -53,7 +55,10 @@ class VTextFragmentsBuilder: NSObject
                 currentFragmentRect = fragmentRect
             }
             
-            if calloutIndex >= 0 && lastCalloutIndex != calloutIndex
+            let isStartOfCallout = calloutIndex >= 0 && lastCalloutIndex != calloutIndex && fragmentText != "\n"
+            let isEndOfCallout = calloutIndex < 0 && lastCalloutIndex >= 0 && fragmentText != "\n"
+            
+            if isStartOfCallout
             {
                 if count(fragmentText) > 0
                 {
@@ -69,14 +74,14 @@ class VTextFragmentsBuilder: NSObject
                 fragmentStartIndex = i
                 currentFragmentRect = fragmentRect
             }
-            else if calloutIndex < 0 && lastCalloutIndex >= 0
+            else if isEndOfCallout
             {
                 output.append( VTextFragment(
                     text: fragmentText,
                     rect:currentFragmentRect,
                     range: fragmentRange,
                     isCallout: calloutIndex >= 0,
-                    isNewLine: isNewLine  )
+                    isNewLine: isNewLine )
                 )
                 isNewLine = false
                 fragmentStartIndex = i
@@ -84,11 +89,13 @@ class VTextFragmentsBuilder: NSObject
             }
             else if needsNewLine
             {
-                if fragmentText != " "
+                let isValidFragment = count(fragmentText) > 0 && fragmentText != " " && fragmentText != "\n"
+                if isValidFragment
                 {
                     output.append( VTextFragment(
                         text: fragmentText,
-                        rect:currentFragmentRect, range: fragmentRange,
+                        rect: currentFragmentRect,
+                        range: fragmentRange,
                         isCallout: calloutIndex >= 0,
                         isNewLine: isNewLine )
                     )
@@ -98,19 +105,25 @@ class VTextFragmentsBuilder: NSObject
                 currentFragmentRect = fragmentRect
             }
             
-            currentFragmentRect.size.width = CGRectGetMaxX( fragmentRect ) - currentFragmentRect.origin.x
+            if !isLineBreak
+            {
+                currentFragmentRect.size.width = CGRectGetMaxX( fragmentRect ) - currentFragmentRect.origin.x
+            }
             
             if isLastCharacter
             {
                 let lastRange = NSMakeRange( fragmentStartIndex, i - fragmentStartIndex + 1 )
                 let text = text.substringWithRange( lastRange )
-                output.append( VTextFragment(
-                    text: text,
-                    rect:currentFragmentRect,
-                    range: fragmentRange,
-                    isCallout: calloutIndex >= 0,
-                    isNewLine: isNewLine )
-                )
+                if count(text) > 0 && text != "\n"
+                {
+                    output.append( VTextFragment(
+                        text: text,
+                        rect: currentFragmentRect,
+                        range: fragmentRange,
+                        isCallout: calloutIndex >= 0,
+                        isNewLine: isNewLine )
+                    )
+                }
             }
             
             lastCalloutIndex = calloutIndex
@@ -144,12 +157,13 @@ class VTextFragmentsBuilder: NSObject
             {
                 if nextFragment.isNewLine
                 {
-                    fragment.rect.size.width += horizontalOffset
+                    let multipler: CGFloat = fragment.isCallout ? 1.0 : 2.0
+                    fragment.rect.size.width += horizontalOffset * multipler
                 }
             }
             else
             {
-                fragment.rect.size.width += horizontalOffset * 2
+                fragment.rect.size.width += horizontalOffset
             }
         }
     }
