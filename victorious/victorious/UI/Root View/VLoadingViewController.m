@@ -359,7 +359,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                    @"red":@25,
                                                    @"green":@50,
                                                    @"blue":@255,
-                                                   @"alpha":@200
+                                                   @"alpha":@0
                                                    },
                                            }
                                    },

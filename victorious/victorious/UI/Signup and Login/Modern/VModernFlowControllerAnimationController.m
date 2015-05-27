@@ -71,7 +71,6 @@
      }
                      completion:^(BOOL finished)
      {
-         VLog(@"%@", [transitionContext transitionWasCancelled] ? @"YES" : @"NO");
          [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
          fromViewController.view.transform = CGAffineTransformIdentity;
          toViewController.view.transform = CGAffineTransformIdentity;

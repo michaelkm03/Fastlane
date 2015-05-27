@@ -100,6 +100,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.actionsDisabled = NO;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
@@ -238,6 +245,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
               password:(NSString *)password
             completion:(void(^)(BOOL success, NSError *error))completion
 {
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     [self.loginFlowHelper loginWithEmail:email
                                 password:password
                               completion:^(BOOL success, NSError *error)
@@ -254,6 +267,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                  password:(NSString *)password
                completion:(void (^)(BOOL, NSError *))completion
 {
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     [self.loginFlowHelper registerWithEmail:email
                                    password:password
                                  completion:^(BOOL success, NSError *error)
@@ -268,6 +287,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)setUsername:(NSString *)username
 {
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     __weak typeof(self) welf = self;
     [self.loginFlowHelper setUsername:username
                            completion:^(BOOL success, NSError *error)
@@ -281,6 +306,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)forgotPasswordWithInitialEmail:(NSString *)initialEmail
 {
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     [self.loginFlowHelper forgotPasswordWithStartingEmail:initialEmail
                                                completion:^(BOOL success, NSError *error)
     {
@@ -300,6 +331,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)setResetToken:(NSString *)resetToken
 {
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     __weak typeof(self) welf = self;
     [self.loginFlowHelper setResetToken:resetToken
                              completion:^(BOOL success, NSError *error)
@@ -316,6 +353,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)updateWithNewPassword:(NSString *)newPassword
 {
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     [self.loginFlowHelper updatePassword:newPassword
                               completion:^(BOOL success, NSError *error)
     {
@@ -328,6 +371,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)showTermsOfService
 {
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     [self presentViewController:[VTOSViewController presentableTermsOfServiceViewController]
                        animated:YES
                      completion:nil];
@@ -337,6 +386,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)continueRegistrationFlow
 {
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
     UIViewController *nextRegisterViewController = [self nextScreenAfterCurrentInArray:self.registrationScreens];
     if (nextRegisterViewController == self.topViewController)
     {
@@ -402,11 +457,22 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     {
         return nil;
     }
-    if (self.popGestureRecognizer.state == UIGestureRecognizerStatePossible)
+    if (self.popGestureRecognizer.state == UIGestureRecognizerStatePossible ||
+        self.popGestureRecognizer.state == UIGestureRecognizerStateFailed)
     {
         return nil;
     }
     return self.percentDrivenInteraction;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    self.actionsDisabled = YES;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    self.actionsDisabled = NO;
 }
 
 @end
