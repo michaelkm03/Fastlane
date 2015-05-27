@@ -32,6 +32,11 @@
 - (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL))completion;
 
 /**
+ *  The user has selected facebook authorization.
+ */
+- (void)selectedFacebookAuthorizationWithCompletion:(void (^)(BOOL))completion;
+
+/**
  *  The user has entered the passed email nad password and requested login.
  */
 - (void)loginWithEmail:(NSString *)email
@@ -63,7 +68,10 @@
 - (void)setResetToken:(NSString *)resetToken
            completion:(void (^)(BOOL success, NSError *error))completion;
 
-
+/**
+ *  The user wants to change their password to the given password.
+ */
 - (void)updatePassword:(NSString *)password
-           completion:(void (^)(BOOL success, NSError *error))completion;
+            completion:(void (^)(BOOL success, NSError *error))completion;
+
 @end

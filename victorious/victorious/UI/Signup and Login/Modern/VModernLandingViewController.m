@@ -84,16 +84,13 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 
 - (void)selectedCancel
 {
-    [self animateOutWithCompletion:^
+    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(cancelLoginAndRegistration)
+                                                                           withSender:self];
+    if (flowControllerResponder == nil)
     {
-        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(cancelLoginAndRegistration)
-                                                                               withSender:self];
-        if (flowControllerResponder == nil)
-        {
-            NSAssert(false, @"We need a flow controller in the responder chain for cancelling.");
-        }
-        [flowControllerResponder cancelLoginAndRegistration];
-    }];
+        NSAssert(false, @"We need a flow controller in the responder chain for cancelling.");
+    }
+    [flowControllerResponder cancelLoginAndRegistration];
 }
 
 - (void)login
@@ -126,22 +123,24 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 
 - (IBAction)loginWithTwitter:(id)sender
 {
-    [self animateOutWithCompletion:^
+    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedTwitterAuthorization)
+                                                                           withSender:self];
+    if (flowControllerResponder == nil)
     {
-        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedTwitterAuthorizationWithCompletion:)
-                                                                               withSender:self];
-        if (flowControllerResponder == nil)
-        {
-            NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
-        }
-        [flowControllerResponder selectedTwitterAuthorizationWithCompletion:^(BOOL success)
-        {
-            if (!success)
-            {
-                self.bottomSpaceFacebookToContainer.constant = 0.0f;
-            }
-        }];
-    }];
+        NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
+    }
+    [flowControllerResponder selectedTwitterAuthorization];
+}
+
+- (IBAction)loginWithFacebook:(id)sender
+{
+    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedFacebookAuthorization)
+                                                                           withSender:self];
+    if (flowControllerResponder == nil)
+    {
+        NSAssert(false, @"We need a flow controller in teh respodner chain for facebok.");
+    }
+    [flowControllerResponder selectedFacebookAuthorization];
 }
 
 #pragma mark - VBackgroundContainer

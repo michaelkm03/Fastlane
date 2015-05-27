@@ -142,14 +142,11 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                     animated:YES];
 }
 
-- (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL))completion
+- (void)selectedTwitterAuthorization
 {
-    NSParameterAssert(completion != nil);
-    
     // Not accepting request right now.
     if (self.actionsDisabled)
     {
-        completion(NO);
         return;
     }
     
@@ -158,7 +155,26 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success)
     {
         self.actionsDisabled = NO;
-        completion(success);
+        if (success)
+        {
+            [self onAuthenticationFinishedWithSuccess:success];
+        }
+    }];
+}
+
+- (void)selectedFacebookAuthorization
+{
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
+    self.actionsDisabled = YES;
+    
+    [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success)
+    {
+        self.actionsDisabled = NO;
         if (success)
         {
             [self onAuthenticationFinishedWithSuccess:success];

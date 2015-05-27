@@ -63,7 +63,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL))completion
 {
     NSParameterAssert(completion != nil);
-
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+                                              animated:YES];
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     [twitterHelper selectTwitterAccountWithViewControler:self.viewControllerToPresentOn
                                               completion:^(ACAccount *twitterAccount)
@@ -71,6 +73,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          if (!twitterAccount)
          {
              // Either no twitter permissions or no account was selected
+             [hud hide:YES];
              completion(NO);
              return;
          }
@@ -80,6 +83,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
           {
               dispatch_async(dispatch_get_main_queue(), ^
                              {
+                                 [hud hide:YES];
                                  completion(YES);
                              });
 
@@ -88,9 +92,35 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
           {
               dispatch_async(dispatch_get_main_queue(), ^
                              {
+                                 [hud hide:YES];
                                  completion(NO);
                              });
           }];
+     }];
+}
+
+- (void)selectedFacebookAuthorizationWithCompletion:(void (^)(BOOL))completion
+{
+    NSParameterAssert(completion != nil);
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
+                                              animated:YES];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
+    [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            [hud hide:YES];
+                            completion(YES);
+                        });
+     }
+                                                        onError:^(NSError *error, BOOL thirdPartyAPIFailed)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            [hud hide:YES];
+                            completion(NO);
+                        });
      }];
 }
 
