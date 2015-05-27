@@ -197,12 +197,29 @@
     }
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:message.sender];
-        [self.navigationController pushViewController:profileViewController animated:YES];
+        if ( [self navigationHistoryContainsUserProfileForUser:message.sender] )
+        {
+            VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:message.sender];
+            [self.navigationController pushViewController:profileViewController animated:YES];
+        }
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
+}
+
+- (BOOL)navigationHistoryContainsUserProfileForUser:(VUser *)user
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings)
+                              {
+                                  if ( [evaluatedObject isKindOfClass:[VUserProfileViewController class]] )
+                                  {
+                                      VUserProfileViewController *userProfile = evaluatedObject;
+                                      return [userProfile.user isEqual:user];
+                                  }
+                                  return NO;
+                              }];
+    return [self.navigationController.viewControllers filteredArrayUsingPredicate:predicate].count > 0;
 }
 
 #pragma mark - UITableViewDelegate methods

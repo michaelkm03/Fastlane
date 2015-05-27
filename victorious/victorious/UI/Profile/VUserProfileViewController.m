@@ -697,6 +697,25 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
+- (BOOL)array:(NSArray *)array containsObjectOfClass:(Class)objectClass
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings)
+    {
+        if ( [evaluatedObject conformsToProtocol:@protocol(VMultipleContainer)] )
+        {
+            id<VMultipleContainer> multipleContainer = evaluatedObject;
+            return [self array:multipleContainer.children containsObjectOfClass:objectClass];
+        }
+        return [evaluatedObject isKindOfClass:objectClass];
+    }];
+    return [array filteredArrayUsingPredicate:predicate].count > 0;
+}
+
+- (BOOL)navigationHistoryContainsInbox
+{
+    return [self array:self.navigationController.viewControllers containsObjectOfClass:[VInboxViewController class]];
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -770,20 +789,17 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
 {
+    const BOOL didNavigateFromInbox = [self navigationHistoryContainsInbox];
     const BOOL isCurrentUserLoggedIn = [VObjectManager sharedManager].authorized;
     const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
     
     if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
     {
-        if ( isCurrentUserLoggedIn )
+        if ( didNavigateFromInbox )
         {
-            return !isCurrentUser;
+            return NO;
         }
-        else
-        {
-        }
-        
-        if ( isCurrentUser )
+        else if ( isCurrentUser )
         {
             return NO;
         }
