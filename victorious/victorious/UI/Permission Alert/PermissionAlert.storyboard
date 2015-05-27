@@ -99,7 +99,7 @@
                                             </mask>
                                         </variation>
                                     </imageView>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Permissions Message" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cMw-dh-B3Z" userLabel="permission message">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Permissions Message" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cMw-dh-B3Z" userLabel="permission message" customClass="VPermissionAlertTextView">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="IR4-Ag-oI2"/>
@@ -120,7 +120,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.92941176470588238" green="0.0" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="zxv-Um-jbA" firstAttribute="top" secondItem="cMw-dh-B3Z" secondAttribute="bottom" constant="30" id="8OP-sT-sPV"/>
+                                    <constraint firstItem="zxv-Um-jbA" firstAttribute="top" secondItem="cMw-dh-B3Z" secondAttribute="bottom" constant="49" id="8OP-sT-sPV"/>
                                     <constraint firstItem="uqE-hA-Enb" firstAttribute="top" secondItem="M6g-YF-N4q" secondAttribute="top" constant="28" id="H1g-tP-0GB"/>
                                     <constraint firstAttribute="trailing" secondItem="zxv-Um-jbA" secondAttribute="trailing" id="R6l-io-HO9"/>
                                     <constraint firstItem="cMw-dh-B3Z" firstAttribute="top" secondItem="uqE-hA-Enb" secondAttribute="bottom" constant="30" id="Re7-mg-hli"/>
@@ -155,7 +155,8 @@
                                         <exclude reference="W82-mT-5nY"/>
                                     </mask>
                                 </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="20" y="226" width="360" height="300"/>
                                     <mask key="subviews">
                                         <include reference="Lv4-pq-CPH"/>
                                         <include reference="zxv-Um-jbA"/>

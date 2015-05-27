@@ -16,7 +16,6 @@
 #import "VAppInfo.h"
 
 static const CGFloat kMaxAlertHeightDifferenceFromSuperview = 100.0f;
-static const CGFloat kTextSizeAddedPadding = 10.0f;
 static const CGFloat kTextViewCornerRadius = 24.0f;
 
 static NSString * const kStoryboardName = @"PermissionAlert";
@@ -118,14 +117,12 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     // Get the maximum height of the alert view
     CGFloat maxHeight = CGRectGetHeight(self.view.bounds) - kMaxAlertHeightDifferenceFromSuperview;
     
-    // Create temporary text view and size to fit the text
-    UITextView *temporary = [[UITextView alloc] initWithFrame:self.messageTextView.bounds];
-    temporary.font = self.messageTextView.font;
-    temporary.text = self.messageText;
-    [temporary sizeToFit];
+    // Get bounds for glyphs
+    CGRect textBounds = [self boundingRectForCharacterRange:NSMakeRange(0, self.messageText.length)];
     
-    // Calculate text height. add padding to make sure custom fonts dont get clipped
-    CGFloat textHeight = ceil(CGRectGetHeight(temporary.bounds)) + kTextSizeAddedPadding;
+    // Account for text view insets and calculate total text view height
+    CGFloat insetsTotal = self.messageTextView.textContainerInset.top + self.messageTextView.textContainerInset.bottom;
+    CGFloat textHeight = ceil(CGRectGetHeight(textBounds)) + insetsTotal;
     
     // Find out how high the text view should be
     CGFloat newTextViewConstant = 0;
@@ -142,8 +139,28 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     
     // Set the text view height
     self.textViewHeightConstraint.constant = newTextViewConstant;
-        
+    
     [super updateViewConstraints];
+}
+
+#pragma mark - Helpers
+
+- (CGRect)boundingRectForCharacterRange:(NSRange)range
+{
+    NSDictionary *attrsDictionary = @{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey]};
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:self.messageText attributes:attrsDictionary];
+    
+    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:attrString];
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [textStorage addLayoutManager:layoutManager];
+    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:CGSizeMake(CGRectGetWidth(self.messageTextView.frame), CGFLOAT_MAX)];
+    textContainer.lineFragmentPadding = 10.0f;
+    textContainer.lineBreakMode = NSLineBreakByWordWrapping;
+    [layoutManager addTextContainer:textContainer];
+    
+    NSRange glyphRange;
+    [layoutManager characterRangeForGlyphRange:range actualGlyphRange:&glyphRange];
+    return [layoutManager boundingRectForGlyphRange:glyphRange inTextContainer:textContainer];
 }
 
 #pragma mark - Properties
