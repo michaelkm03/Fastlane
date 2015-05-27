@@ -73,12 +73,15 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         commentId = @([commentIDString integerValue]);
     }
     
+    NSString *streamId = [url v_pathComponentAtIndex:3];
+    
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
+                                         inStreamWithStreamID:streamId
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          [hud hide:YES];
          VSequence *sequence = (VSequence *)[resultObjects firstObject];
-         [self.scaffoldViewController showContentViewWithSequence:sequence commentId:commentId placeHolderImage:nil];
+         [self.scaffoldViewController showContentViewWithSequence:sequence streamID:streamId commentId:commentId placeHolderImage:nil];
          completion( YES, nil );
      }
                                                     failBlock:^(NSOperation *operation, NSError *error)

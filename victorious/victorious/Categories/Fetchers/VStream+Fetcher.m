@@ -46,7 +46,7 @@
                   });
     
     VStream *object = [streamCache objectForKey:apiPath];
-    if (object)
+    if ( object != nil )
     {
         if (object.managedObjectContext != context)
         {
@@ -69,7 +69,7 @@
         VLog(@"Error occured in commentForId: %@", error);
     }
     
-    if (object)
+    if ( object != nil )
     {
         [streamCache setObject:object forKey:apiPath];
     }
