@@ -21,6 +21,7 @@
 @property (nonatomic, strong, readonly) UIImage *icon; ///< An icon to display next to the label in the menu
 @property (nonatomic, strong, readonly) UIImage *selectedIcon; ///< An icon to display when selected
 @property (nonatomic, strong, readonly) id destination; ///< This menu item's destination. Should be either a UIViewController subclass or an implementation of VNavigationDestination
+@property (nonatomic, strong, readonly) UIColor *tintColor; ///< Template-driven color to use for `tintColor` property of bar button
 @property (nonatomic, strong, readonly) NSString *position; ///< 'left' or 'right'
 
 /**
@@ -31,7 +32,8 @@
                          icon:(UIImage *)icon
                  selectedIcon:(UIImage *)selectedIcon
                   destination:(id)destination
-                     position:(NSString *)position NS_DESIGNATED_INITIALIZER;
+                     position:(NSString *)position
+                    tintColor:(UIColor *)tintColor NS_DESIGNATED_INITIALIZER;
 
 /**
  initializes a new instance of VNavigationMenuItem, reading 

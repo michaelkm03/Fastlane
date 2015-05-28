@@ -44,6 +44,12 @@
 
 #pragma mark - Properties
 
+- (void)setTintColor:(UIColor *)tintColor
+{
+    [super setTintColor:tintColor];
+    self.button.tintColor = tintColor;
+}
+
 - (void)setImage:(UIImage *)image
 {
     [self.button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -76,7 +82,6 @@
     }
     _dependencyManager = dependencyManager;
     
-    self.button.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];;
     self.badgeBorder.color = self.backgroundColor;
     self.badgeNumber = 0;
     

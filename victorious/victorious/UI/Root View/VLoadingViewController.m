@@ -216,8 +216,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
+        {
+            [templateDecorator setTemplateValue:@[] forKeyPath:keyPath];
+        }
         
-        /*BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
+        
+        BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
         if ( isSideNavMenu )
         {
             // Add hamburger button
@@ -273,13 +278,25 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         // Add Follow/Unfollow button to hashtag stream screen in scaffold
         NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/hashtagStream/accessoryScreens"] );
         NSParameterAssert( [templateDecorator setComponentWithFilename:@"followAccessory"
-                                                            forKeyPath:@"scaffold/hashtagStream/accessoryScreens/0"] );*/
+                                                            forKeyPath:@"scaffold/hashtagStream/accessoryScreens/0"] );
         
         
+        // Set all accessory item colors
         for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
         {
-            NSLog( @"%@ = %@", keyPath, [templateDecorator templateValueForKeyPath:keyPath] );
+            NSArray *array = [templateDecorator templateValueForKeyPath:keyPath];
+            for ( NSUInteger i = 0; i < array.count; i++ )
+            {
+                NSString *colorKeyPath = [NSString stringWithFormat:@"%@/%@/color.text", keyPath, @(i)];
+                [templateDecorator setTemplateValue:[VDependencyManager dictionaryFromColor:[UIColor redColor]] forKeyPath:colorKeyPath];
+            }
         }
+        
+        
+        /*for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
+        {
+            NSLog( @"%@ = %@", keyPath, [templateDecorator templateValueForKeyPath:keyPath] );
+        }*/
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

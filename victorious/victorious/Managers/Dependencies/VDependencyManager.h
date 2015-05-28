@@ -251,11 +251,16 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  */
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration;
 
-
 /**
  Marshalls a dictionary in the expected format into a UIColor object.
  Returns nil if failed.
  */
 + (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary;
+
+/**
+ Marshalls a UIColor into a dictionary in the expected template format.
+ Returns nil if failed.
+ */
++ (NSDictionary *)dictionaryFromColor:(UIColor *)color;
 
 @end

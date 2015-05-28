@@ -92,6 +92,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
             // If an icon is provided, a badge
             VBarButton *barButton = [VBarButton newWithDependencyManager:self];
             [barButton setImage:menuItem.icon];
+            [barButton setTintColor:menuItem.tintColor];
             [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
             barButton.menuItem = menuItem;
             
@@ -108,6 +109,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
+            accessoryBarItem.tintColor = menuItem.tintColor;
         }
         else if ( menuItem.title != nil )
         {
@@ -116,6 +118,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
                                                                target:self
                                                               action:@selector(accessoryMenuItemSelected:)];
             accessoryBarItem.menuItem = menuItem;
+            accessoryBarItem.tintColor = menuItem.tintColor;
         }
         
         if ( accessoryBarItem == nil )

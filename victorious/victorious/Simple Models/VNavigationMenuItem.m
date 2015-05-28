@@ -22,6 +22,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                  selectedIcon:(UIImage *)selectedIcon
                   destination:(id)destination
                      position:(NSString *)position
+                    tintColor:(UIColor *)tintColor
 {
     self = [super init];
     if (self)
@@ -31,6 +32,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         _icon = icon;
         _selectedIcon = selectedIcon;
         _destination = destination;
+        _tintColor = tintColor;
         _position = position;
     }
     return self;
@@ -45,7 +47,13 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     UIImage *selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
     id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
     NSString *position = [dependencyManager stringForKey:VDependencyManagerPositionKey];
-    return [self initWithTitle:title identifier:identifier icon:icon selectedIcon:selectedIcon destination:destination position:position];
+    UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    return [self initWithTitle:title
+                    identifier:identifier
+                          icon:icon
+                  selectedIcon:selectedIcon
+                   destination:destination
+                      position:position tintColor:tintColor];
 }
 
 - (BOOL)isEqual:(id)object
