@@ -16,14 +16,14 @@
 
 @import CoreText;
 
-static NSString *kSigninOptionsKey = @"signInOptions";
-static NSString *kLogoKey = @"logo";
-static NSString *kStatusBarStyle = @"statusBarStyle";
-static NSString *kTermsOfServiceLinkValue = @"termsOfService";
-static NSString *kPrivacyPolicyLinkValue = @"privacyPolicy";
-static NSString *kEmailKey = @"email";
-static NSString *kFacebookKey = @"facebook";
-static NSString *kTwitterKey = @"twitter";
+static NSString * const kSigninOptionsKey = @"signInOptions";
+static NSString * const kLogoKey = @"logo";
+static NSString * const kStatusBarStyle = @"statusBarStyle";
+static NSString * const kTermsOfServiceLinkValue = @"termsOfService";
+static NSString * const kPrivacyPolicyLinkValue = @"privacyPolicy";
+static NSString * const kEmailKey = @"email";
+static NSString * const kFacebookKey = @"facebook";
+static NSString * const kTwitterKey = @"twitter";
 
 static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 

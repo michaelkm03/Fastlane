@@ -26,12 +26,12 @@
 // Responder Chain
 #import "VLoginFlowControllerResponder.h"
 
-static NSString *kRegistrationScreens = @"registrationScreens";
-static NSString *kLoginScreens = @"loginScreens";
-static NSString *kLandingScreen = @"landingScreen";
-static NSString *kStatusBarStyleKey = @"statusBarStyle";
-static NSString *kKeyboardStyleKey = @"keyboardStyle";
-static NSString *kForceRegistrationKey = @"forceRegistration";
+static NSString * const kRegistrationScreens = @"registrationScreens";
+static NSString * const kLoginScreens = @"loginScreens";
+static NSString * const kLandingScreen = @"landingScreen";
+static NSString * const kStatusBarStyleKey = @"statusBarStyle";
+static NSString * const kKeyboardStyleKey = @"keyboardStyle";
+static NSString * const kForceRegistrationKey = @"forceRegistration";
 
 @interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -49,6 +49,7 @@ static NSString *kForceRegistrationKey = @"forceRegistration";
 
 // Use this as a semaphore around asynchronous user interaction (navigation pushes, social logins, etc.)
 @property (nonatomic, assign) BOOL actionsDisabled;
+@property (nonatomic, assign) BOOL hasShownInitial;
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 
 @end
@@ -128,17 +129,6 @@ static NSString *kForceRegistrationKey = @"forceRegistration";
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-#pragma mark - Overrides
-
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    if ([self.viewControllers containsObject:viewController])
-    {
-        return;
-    }
-    [super pushViewController:viewController animated:animated];
 }
 
 #pragma mark - Gesture Target
@@ -509,8 +499,9 @@ static NSString *kForceRegistrationKey = @"forceRegistration";
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (viewController == [self.viewControllers firstObject])
+    if (viewController == [self.viewControllers firstObject] && !self.hasShownInitial)
     {
+        self.hasShownInitial = YES;
         return;
     }
     self.actionsDisabled = YES;
