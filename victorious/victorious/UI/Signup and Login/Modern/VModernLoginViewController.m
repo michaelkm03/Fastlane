@@ -8,6 +8,10 @@
 
 #import "VModernLoginViewController.h"
 
+// Libraries
+#import <CCHLinkTextView/CCHLinkTextView.h>
+#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
+
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
@@ -25,7 +29,7 @@
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernLoginViewController () <UITextFieldDelegate, UITextViewDelegate, VBackgroundContainer>
+@interface VModernLoginViewController () <UITextFieldDelegate, VBackgroundContainer, CCHLinkTextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -35,7 +39,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailField;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordField;
-@property (nonatomic, weak) IBOutlet UITextView *forgotpasswordTextView;
+@property (nonatomic, weak) IBOutlet CCHLinkTextView *forgotpasswordTextView;
 @property (nonatomic, strong) IBOutletCollection(UIView) NSArray *separators;
 
 @property (nonatomic, strong) UIBarButtonItem *nextButton;
@@ -115,12 +119,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     NSString *forgotPasswordText = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Forgot your password?", nil), NSLocalizedString(@"Click Here", nil)];
-    NSDictionary *forgotPasswordAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel4FontKey],
+    NSDictionary *forgotPasswordAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                                NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]};
+    NSDictionary *forgotHighlightedAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
+                                                  NSForegroundColorAttributeName: [[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] colorWithAlphaComponent:0.5f]};
     NSMutableAttributedString *mutableForgotPasswordText = [[NSMutableAttributedString alloc] initWithString:forgotPasswordText
                                                                                                   attributes:forgotPasswordAttributes];
     NSRange clickHereRange = [forgotPasswordText rangeOfString:NSLocalizedString(@"Click Here", nil)];
-    [mutableForgotPasswordText addAttribute:NSLinkAttributeName
+    [mutableForgotPasswordText addAttribute:CCHLinkAttributeName
                                       value:@"forgotPasswordLink"
                                       range:clickHereRange];
     [mutableForgotPasswordText addAttribute:(NSString *)kCTUnderlineStyleAttributeName
@@ -129,6 +135,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.forgotpasswordTextView setAttributedText:[mutableForgotPasswordText copy]];
     self.forgotpasswordTextView.textAlignment = NSTextAlignmentCenter;
     self.forgotpasswordTextView.linkTextAttributes = forgotPasswordAttributes;
+    self.forgotpasswordTextView.linkTextTouchAttributes = forgotHighlightedAttributes;
+    self.forgotpasswordTextView.linkDelegate = self;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
@@ -205,22 +213,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         //TODO: TRACKING User pressed enter on password
         [self login:textField];
     }
-    
-    return YES;
-}
-
-#pragma mark - UITextViewDelegate
-
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
-{
-    id<VLoginFlowControllerResponder> loginFlowController = [self targetForAction:@selector(forgotPasswordWithInitialEmail:)
-                                                                       withSender:self];
-    if (loginFlowController == nil)
-    {
-        NSAssert(false, @"We need a responder for forgotPassword!");
-    }
-    
-    [loginFlowController forgotPasswordWithInitialEmail:self.emailField.text];
     
     return YES;
 }
@@ -359,6 +351,20 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (UIView *)backgroundContainerView
 {
     return self.view;
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    id<VLoginFlowControllerResponder> loginFlowController = [self targetForAction:@selector(forgotPasswordWithInitialEmail:)
+                                                                       withSender:self];
+    if (loginFlowController == nil)
+    {
+        NSAssert(false, @"We need a responder for forgotPassword!");
+    }
+    
+    [loginFlowController forgotPasswordWithInitialEmail:self.emailField.text];
 }
 
 @end
