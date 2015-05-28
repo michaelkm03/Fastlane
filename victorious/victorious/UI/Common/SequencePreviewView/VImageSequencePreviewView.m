@@ -18,7 +18,6 @@
 @interface VImageSequencePreviewView ()
 
 @property (nonatomic, strong) UIImageView *previewImageView;
-@property (nonatomic, strong) VSequence *sequence;
 
 @end
 
@@ -43,17 +42,13 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
     
     [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
                            placeholderImage:nil
                                  completion:^(UIImage *image)
      {
          self.readyForDisplay = YES;
-         if ( self.displayReadyBlock != nil )
-         {
-             self.displayReadyBlock(image != nil, self);
-         }
      }];
 }
 

@@ -251,7 +251,8 @@ static const CGFloat maxCaptionHeight = 80.0f;
         CGFloat width = CGRectGetWidth(bounds);
         return CGSizeMake(width, width * kPollCellHeightRatio);
     }
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
+        
+    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) * (1 / [sequence previewAssetAspectRatio]));
 }
 
 #pragma mark - VBackgroundContainer

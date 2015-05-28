@@ -12,9 +12,14 @@
 
 @interface VStreamPreviewView : VStreamItemPreviewView
 
-#warning DOCS
+/**
+ *  Returns a stream preview view class for the provided stream.
+ */
 + (Class)classTypeForStream:(VStream *)stream;
 
+/**
+ *  Returns a stream preview view class for the provided stream and base identifier.
+ */
 + (NSString *)reuseIdentifierForStream:(VStream *)stream baseIdentifier:(NSString *)baseIdentifier;
 
 /**
@@ -26,7 +31,7 @@
 /**
  *  Use to update a sequence preview view for a new sequence.
  */
-- (void)setStream:(VStream *)stream;
+@property (nonatomic, strong) VStream *stream;
 
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given seuqence.

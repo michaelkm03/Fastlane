@@ -19,7 +19,6 @@
 @interface VImageStreamPreviewView ()
 
 @property (nonatomic, strong) UIImageView *previewImageView;
-@property (nonatomic, strong) VStream *stream;
 
 @end
 
@@ -43,10 +42,15 @@
 
 - (void)setStream:(VStream *)stream
 {
-    _stream = stream;
+    [super setStream:stream];
     
     NSArray *imagePaths = [stream previewImagePaths];
-    [self.previewImageView fadeInImageAtURL:[imagePaths firstObject]];
+    [self.previewImageView fadeInImageAtURL:[imagePaths firstObject]
+                           placeholderImage:nil
+                                 completion:^(UIImage *image)
+     {
+         self.readyForDisplay = YES;
+     }];
 }
 
 @end

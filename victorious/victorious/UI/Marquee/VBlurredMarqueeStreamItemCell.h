@@ -16,8 +16,9 @@
     Sets the image in the previewImageView with or without a fade animation
  
     @param image The image to display
-    @param animated Whether or not the image should be updated with a fade animation
  */
-- (void)updateToPreviewView:(VStreamItemPreviewView *)previewView animated:(BOOL)animated;
+- (void)updateToPreviewView:(VStreamItemPreviewView *)previewView;
+
++ (CGRect)frameForPreviewViewInCellWithBounds:(CGRect)bounds;
 
 @end

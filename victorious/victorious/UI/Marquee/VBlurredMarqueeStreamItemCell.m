@@ -14,20 +14,19 @@
 #import "VStreamItemPreviewView.h"
 #import "UIView+AutoLayout.h"
 
-static const CGFloat kImageTopConstraintHeight = 30.0f;
+static const CGFloat kPreviewTopConstraintHeight = 30.0f;
 static const CGFloat kLabelBottomConstraintHeight = 10.0f;
-static const CGFloat kImageHorizontalInset = 55.0f;
+static const CGFloat kPreviewHorizontalInset = 55.0f;
 static const CGFloat kLabelHeight = 70.0f;
 static const CGFloat kShadowOffsetY = 6.0f;
 static const CGFloat kShadowOpacity = 0.4f;
 
 @interface VBlurredMarqueeStreamItemCell ()
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageLeftConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageRightConstraint;
-
-@property (nonatomic, weak) VStreamItemPreviewView *previewView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewContainerTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewContainerLeftConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewContainerRightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewContainerBottomConstraint;
 
 @end
 
@@ -39,9 +38,14 @@ static const CGFloat kShadowOpacity = 0.4f;
     self.previewContainer.layer.shadowColor = [UIColor blackColor].CGColor;
     self.previewContainer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
     self.previewContainer.layer.shadowOpacity = kShadowOpacity;
+    
+    self.previewContainerTopConstraint.constant = kPreviewTopConstraintHeight;
+    self.previewContainerLeftConstraint.constant = kPreviewHorizontalInset;
+    self.previewContainerRightConstraint.constant = kPreviewHorizontalInset;
+    self.previewContainerBottomConstraint.constant = kLabelHeight + kLabelBottomConstraintHeight;
 }
 
-- (void)updateToPreviewView:(VStreamItemPreviewView *)previewView animated:(BOOL)animated
+- (void)updateToPreviewView:(VStreamItemPreviewView *)previewView
 {
     if ( previewView == nil )
     {
@@ -52,30 +56,22 @@ static const CGFloat kShadowOpacity = 0.4f;
     {
         [self.previewView removeFromSuperview];
         self.previewView = previewView;
-    }
-    
-    [self.previewContainer addSubview:self.previewView];
-    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
-    
-    if ( !animated )
-    {
-        
-    }
-    else
-    {
-        
+        [self.previewContainer addSubview:self.previewView];
+        [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     }
 }
 
-- (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
++ (CGRect)frameForPreviewViewInCellWithBounds:(CGRect)bounds
 {
-    
+    CGRect frame = CGRectInset(bounds, kPreviewHorizontalInset, (kLabelBottomConstraintHeight + kLabelHeight + kPreviewTopConstraintHeight) / 2);
+    frame.origin = CGPointZero;
+    return frame;
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = floorf(width - kImageHorizontalInset * 2 + kLabelHeight + kLabelBottomConstraintHeight + kImageTopConstraintHeight);
+    CGFloat height = floorf(width - kPreviewHorizontalInset * 2 + kLabelHeight + kLabelBottomConstraintHeight + kPreviewTopConstraintHeight);
     return CGSizeMake(width, height);
 }
 

@@ -14,6 +14,7 @@
 #import "UIImage+ImageCreation.h"
 #import <objc/runtime.h>
 #import "VStreamItemPreviewView.h"
+#import "VStreamItem.h"
 
 static const NSTimeInterval kFadeAnimationDuration = 0.3f;
 static const char kAssociatedObjectKey;
@@ -164,7 +165,7 @@ static const char kAssociatedObjectKey;
     return [NSArray arrayWithArray:visibleImageViewContainers];
 }
 
-- (void)updateBlurredImageViewForImage:(UIImage *)image fromPreviewView:(VStreamItemPreviewView *)previewView withTintColor:(UIColor *)tintColor atIndex:(NSInteger)index animated:(BOOL)animated
+- (void)updateBlurredImageViewForImage:(UIImage *)image fromPreviewView:(VStreamItemPreviewView *)previewView withTintColor:(UIColor *)tintColor atIndex:(NSInteger)index animated:(BOOL)animated withConcurrentAnimations:(void (^)(void))animations
 {
     NSInteger count = (NSInteger)self.imageViewContainers.count;
     if ( index >= count )
@@ -173,17 +174,18 @@ static const char kAssociatedObjectKey;
     }
     
     VImageViewContainer *imageViewContainer = ((VImageViewContainer *)self.imageViewContainers[index]);
-    VStreamItemPreviewView *loadedPreviewView = objc_getAssociatedObject(imageViewContainer, &kAssociatedObjectKey);
+    VStreamItem *streamItem = objc_getAssociatedObject(imageViewContainer, &kAssociatedObjectKey);
+    VStreamItem *previewViewStreamItem = previewView.streamItem;
     //Only need to update the imageViewContainer if it isn't already showing the image
-    if ( ![loadedPreviewView isEqual:previewView] )
+    if ( ![streamItem isEqual:previewViewStreamItem] )
     {
         //Check if image load failed; if so, don't associate it with the url so it retries the next time this method is called
         if ( image != nil )
         {
-            objc_setAssociatedObject(imageViewContainer, &kAssociatedObjectKey, loadedPreviewView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            objc_setAssociatedObject(imageViewContainer, &kAssociatedObjectKey, previewViewStreamItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
         NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
-        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration];
+        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration withConcurrentAnimations:animations];
     }
 }
 

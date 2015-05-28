@@ -12,6 +12,8 @@
 #import "UIImage+ImageCreation.h"
 #import "VDependencyManager.h"
 #import <objc/runtime.h>
+#import "VStreamItemPreviewView.h"
+#import "UIView+AutoLayout.h"
 
 static const CGFloat kOverlayOpacity = 0.2f;
 static const CGFloat kOverlayWhiteAmount = 0.0f;
@@ -50,11 +52,6 @@ static const CGFloat kShadowOpacity = 0.4f;
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     [super setStreamItem:streamItem];
-    
-    if ( streamItem == nil )
-    {
-        return;
-    }
     
     if ( [self.titleLabel.text isEqualToString:streamItem.name] )
     {

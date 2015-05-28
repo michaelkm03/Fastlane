@@ -21,7 +21,6 @@
 @interface VTextSequencePreviewView ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
@@ -32,7 +31,7 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
     
     VAsset *textAsset = [self.sequence.firstNode textAsset];
     if ( textAsset.data != nil )
@@ -57,7 +56,18 @@
     
     self.textPostViewController.text = text;
     self.textPostViewController.color = color;
-    self.textPostViewController.imageURL = backgroundImageURL;
+    __weak VTextSequencePreviewView *weakSelf = self;
+    [self.textPostViewController setImageURL:backgroundImageURL animated:YES completed:^(UIImage *image)
+    {
+        __strong VTextSequencePreviewView *strongSelf = weakSelf;
+        if ( strongSelf == nil )
+        {
+            return;
+        }
+        
+        strongSelf.readyForDisplay = YES;
+        
+    }];
 }
 
 @end

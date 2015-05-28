@@ -46,11 +46,6 @@
     return [[[self classTypeForStreamItem:streamItem] alloc] initWithFrame:CGRectZero];
 }
 
-- (void)setStreamItem:(VStreamItem *)streamItem
-{
-    NSAssert(false, @"Override in subclasses!");
-}
-
 - (BOOL)canHandleStreamItem:(VStreamItem *)streamItem
 {
     if ([self class] == [[self class] classTypeForStreamItem:streamItem])
@@ -60,12 +55,21 @@
     return NO;
 }
 
+- (void)setReadyForDisplay:(BOOL)readyForDisplay
+{
+    _readyForDisplay = readyForDisplay;
+    if ( _readyForDisplay && self.displayReadyBlock != nil )
+    {
+        self.displayReadyBlock(self);
+    }
+}
+
 - (void)setDisplayReadyBlock:(VPreviewViewDisplayReadyBlock)displayReadyBlock
 {
     _displayReadyBlock = displayReadyBlock;
     if ( self.readyForDisplay && _displayReadyBlock != nil )
     {
-        _displayReadyBlock(YES, self);
+        _displayReadyBlock(self);
     }
 }
 

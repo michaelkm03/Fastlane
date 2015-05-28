@@ -16,8 +16,6 @@
 
 @interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, VStreamCellComponentSpecialization>
 
-@property (nonatomic, strong) VStreamItemPreviewView *previewView;
-
 @end
 
 @implementation VAbstractMarqueeStreamItemCell
@@ -28,16 +26,6 @@
     return CGSizeZero;
 }
 
-- (void)setStreamItem:(VStreamItem *)streamItem
-{
-    _streamItem = streamItem;
-    if ( streamItem != nil )
-    {
-        [self updatePreviewViewForStreamItem:streamItem];
-    }
-    self.previewView.hidden = streamItem == nil;
-}
-
 - (void)prepareForReuse
 {
     [super prepareForReuse];
@@ -45,10 +33,19 @@
     self.streamItem = nil;
 }
 
-#pragma mark - VPreviewView updating
+- (void)setStreamItem:(VStreamItem *)streamItem
+{
+    _streamItem = streamItem;
+    [self updatePreviewViewForStreamItem:streamItem];
+}
 
 - (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
 {
+    if ( streamItem == nil )
+    {
+        return;
+    }
+    
     if ( [self.previewView canHandleStreamItem:streamItem] )
     {
         [self.previewView setStreamItem:streamItem];

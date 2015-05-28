@@ -11,7 +11,7 @@
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
-#import <SDWebImageManager.h>
+#import "UIImageView+WebCache.h"
 #import "CCHLinkTextViewDelegate.h"
 #import "VHashtagSelectionResponder.h"
 #import "VURLSelectionResponder.h"
@@ -126,30 +126,55 @@
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
-    _backgroundImage = backgroundImage;
-    
     self.backgroundImageView.image = backgroundImage;
 }
 
 - (void)setImageURL:(NSURL *)imageURL
 {
-    if ( _imageURL == imageURL && imageURL != nil )
+    [self setImageURL:imageURL animated:NO completed:nil];
+}
+
+- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated completed:(void (^)(UIImage *))completionBlock
+{
+    if ( _imageURL == imageURL )
     {
+        if ( completionBlock != nil )
+        {
+            completionBlock(nil);
+        }
         return;
     }
     
     _imageURL = imageURL;
     
-    [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
-                          options:0
-                         progress:nil
-                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
-     {
-         if ( image != nil )
-         {
-             self.backgroundImage = image;
-         }
-     }];
+    self.backgroundImageView.image = nil;
+    self.backgroundImageView.alpha = 0.0f;
+    
+    void (^onImageLoaded)(UIImage *) = ^void(UIImage *image)
+    {
+        self.backgroundImageView.alpha = 1.0f;
+        if ( completionBlock != nil )
+        {
+            completionBlock(image);
+        }
+    };
+    
+    [self.backgroundImageView sd_setImageWithURL:_imageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        // Only fade in if there was a delay from downloading
+        const BOOL wasDownloaded = cacheType == SDImageCacheTypeNone;
+        if ( animated && wasDownloaded )
+        {
+            [UIView animateWithDuration:.35f animations:^
+            {
+                onImageLoaded(image);
+            }];
+        }
+        else
+        {
+            onImageLoaded(image);
+        }
+    }];
 }
 
 - (VTextPostTextView *)textView

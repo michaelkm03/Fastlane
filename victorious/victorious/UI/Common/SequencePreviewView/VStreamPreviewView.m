@@ -49,9 +49,9 @@
     }
 }
 
-- (void)setStream:(VStream *)stream
+- (VStreamItem *)streamItem
 {
-    NSAssert(false, @"Override in subclasses!");
+    return self.stream;
 }
 
 - (BOOL)canHandleStream:(VStream *)stream

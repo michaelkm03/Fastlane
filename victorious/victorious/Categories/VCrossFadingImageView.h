@@ -10,8 +10,6 @@
 
 @class VStreamItemPreviewView;
 
-#warning DOCS
-
 /**
     A view that loads, blurs, and crossfades between images from the provided imageURLs. The alpha of these images
         can be manipulated by the "offset" property
@@ -29,7 +27,7 @@
     Blurs and applies the provided image to the imageView at the provided index
  
     @param image The image to blur, tint, and set in the imageView at the provided index
-    @param url The url that was used to fetch the image. This is used to prevent the view from reloading unnecessarily.
+    @param previewView The previewView that was used to generate the image. This is used to prevent the view from reloading unnecessarily.
     @param tintColor The color that will be shown on top of the blurred image.
     @param index The index of the imageView that should be updated with the provided image. If the index is
             out of count from the created imageViews, this function does nothing.
@@ -39,7 +37,9 @@
                        fromPreviewView:(VStreamItemPreviewView *)previewView
                          withTintColor:(UIColor *)tintColor
                                atIndex:(NSInteger)index
-                              animated:(BOOL)animated;
+                              animated:(BOOL)animated
+              withConcurrentAnimations:(void (^)(void))animations;
+
 
 /**
     Determines how much of each image retrieved from each imageURL is shown based on the image's position in the imageURLs array.

@@ -35,8 +35,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 @property (nonatomic, assign) BOOL showedInitialDisplayAnimation;
 @property (nonatomic, assign) BOOL firstImageLoaded;
 @property (nonatomic, assign) BOOL backgroundCellIsVisible;
-@property (nonatomic, strong) NSMutableDictionary *loadedPreviewViews;
-@property (nonatomic, strong) NSMutableArray *renderedPreviewViews;
+@property (nonatomic, strong) NSMutableArray *loadingPreviewViews;
 
 @end
 
@@ -60,10 +59,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 - (void)animateToVisible
 {
     self.backgroundCellIsVisible = YES;
-    if ( self.collectionView.hidden )
-    {
-        self.collectionView.hidden = NO;
-    }
     [self attemptToPerformInitialDisplayAnimation];
 }
 
@@ -99,6 +94,11 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         return;
     }
     
+    if ( self.loadingPreviewViews == nil )
+    {
+        self.loadingPreviewViews = [[NSMutableArray alloc] init];
+    }
+    
     [self.collectionView.collectionViewLayout invalidateLayout];
     
     NSMutableArray *contentNames = [[NSMutableArray alloc] init];
@@ -109,14 +109,13 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         [self.crossfadingBlurredImageView setupWithNumberOfImageViews:marqueeItemsCount];
     }
     
-    self.loadedPreviewViews = [[NSMutableDictionary alloc] init];
-    self.renderedPreviewViews = [[NSMutableArray alloc] init];
     self.firstImageLoaded = NO;
     
     for ( VStreamItem *streamItem in self.stream.marqueeItems )
     {
         [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[self.stream.marqueeItems indexOfObject:streamItem]];
-        [contentNames addObject:streamItem.name];
+        NSString *streamName = streamItem.name ?: @"";
+        [contentNames addObject:streamName];
     }
     
     [self.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[self labelTextAttributes]];
@@ -127,7 +126,8 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     VStreamItemPreviewView *previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
     
     __weak VBlurredMarqueeController *weakSelf = self;
-    previewView.displayReadyBlock = ^(BOOL success, VStreamItemPreviewView *loadedPreviewView)
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    previewView.displayReadyBlock = ^(VStreamItemPreviewView *loadedPreviewView)
     {
         __strong VBlurredMarqueeController *strongSelf = weakSelf;
         if ( strongSelf == nil )
@@ -135,35 +135,33 @@ static const CGFloat kOffsetOvershoot = 20.0f;
             return;
         }
         
+        loadedPreviewView.displayReadyBlock = nil;
+        
         BOOL backgroundShouldAnimate = !strongSelf.showedInitialDisplayAnimation && index == 0; //Animate if we're doing the initial display animation
         
-        /*
-         No need to animate the streamItemCell if the image failed to load, image loaded from cache, or we're doing the
-         initial display animation (where the image starts offscreen)
-         */
-        BOOL streamItemCellShouldAnimate = success && strongSelf.showedInitialDisplayAnimation;
-        
         //Populate visible subviews with the newly loaded image
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
         NSUInteger cellIndex = [[strongSelf.collectionView indexPathsForVisibleItems] indexOfObject:indexPath];
         if ( cellIndex != NSNotFound )
         {
             //The streamItemCell we need to update is already on screen, update it with animation (if it's a new image)
             VBlurredMarqueeStreamItemCell *streamItemCell = (VBlurredMarqueeStreamItemCell *)strongSelf.collectionView.visibleCells[cellIndex];
-            [streamItemCell updateToPreviewView:loadedPreviewView animated:streamItemCellShouldAnimate];
+            [streamItemCell updateToPreviewView:loadedPreviewView];
             backgroundShouldAnimate = YES; //Animate if we're the we're also animating the streamItemCell in front of it
         }
-        
-        strongSelf.loadedPreviewViews[indexPath] = loadedPreviewView;
-        [strongSelf renderPreviewView:loadedPreviewView atIndex:indexPath.row animated:backgroundShouldAnimate];
-        
-        if ( !strongSelf.showedInitialDisplayAnimation && index == 0 )
+        else
         {
-            self.firstImageLoaded = YES;
-            [self attemptToPerformInitialDisplayAnimation];
+            loadedPreviewView.frame = [VBlurredMarqueeStreamItemCell frameForPreviewViewInCellWithBounds:self.collectionView.bounds];
         }
+        
+        [strongSelf renderPreviewView:loadedPreviewView atIndex:indexPath.row animated:backgroundShouldAnimate];
+        [strongSelf.loadingPreviewViews removeObject:loadedPreviewView];
     };
     
+    [self.loadingPreviewViews addObject:previewView];
+    if ( [previewView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        [previewView setDependencyManager:self.dependencyManager];
+    }
     [previewView setStreamItem:streamItem];
 }
 
@@ -176,11 +174,18 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         //The first image has loaded and we haven't yet performed the
         self.crossfadingLabel.alpha = 0.0f;
         
-        [self.collectionView layoutIfNeeded];
-        
-        CGPoint startOffset = CGPointMake( - CGRectGetWidth(self.collectionView.bounds), 0.0f );
-        [self.collectionView setContentOffset:startOffset animated:NO];
-        [self selectNextTab];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            if ( self.collectionView.hidden && self.firstImageLoaded )
+            {
+                self.collectionView.hidden = NO;
+            }
+            
+            [self.collectionView layoutIfNeeded];
+            CGPoint startOffset = CGPointMake( - CGRectGetWidth(self.collectionView.bounds), 0.0f );
+            [self.collectionView setContentOffset:startOffset animated:NO];
+            [self selectNextTab];
+        });
     }
 }
 
@@ -255,6 +260,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     {
         [self refreshCellSubviews];
     }
+    
     return cell;
 }
 
@@ -263,28 +269,22 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     return [[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] colorWithAlphaComponent:0.4f];
 }
 
-- (VStreamItemPreviewView *)loadedPreviewViewForIndexPath:(NSIndexPath *)indexPath
-{
-    return self.loadedPreviewViews[indexPath];
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VBlurredMarqueeStreamItemCell *streamItemCell = (VBlurredMarqueeStreamItemCell *)cell;
-    VStreamItemPreviewView *previewView = [self loadedPreviewViewForIndexPath:indexPath];
-    [streamItemCell updateToPreviewView:previewView animated:NO]; //No need to animate as this will be set while cell if off-screen
-    [self renderPreviewView:previewView atIndex:indexPath.row animated:NO];
-}
-
 - (void)renderPreviewView:(VStreamItemPreviewView *)previewView atIndex:(NSUInteger)index animated:(BOOL)animated
 {
-    if ( previewView.superview != nil && ![self.renderedPreviewViews containsObject:previewView] )
+    [previewView layoutIfNeeded];
+    [previewView v_renderViewWithCompletion:^(UIImage *image)
     {
-        [self.renderedPreviewViews addObject:previewView];
-        [previewView layoutIfNeeded];
-        UIImage *image = [previewView renderedView];
-        [self.crossfadingBlurredImageView updateBlurredImageViewForImage:image fromPreviewView:previewView withTintColor:[self tintColorForCrossFadingBlurredImageView] atIndex:index animated:animated];
-    }
+        void (^animations)() = nil;
+        if ( !self.showedInitialDisplayAnimation && index == 0 )
+        {
+            self.firstImageLoaded = YES;
+            animations = ^void
+            {
+                [self animateToVisible];
+            };
+        }
+        [self.crossfadingBlurredImageView updateBlurredImageViewForImage:image fromPreviewView:previewView withTintColor:[self tintColorForCrossFadingBlurredImageView] atIndex:index animated:animated withConcurrentAnimations:animations];
+    }];
 }
 
 @end

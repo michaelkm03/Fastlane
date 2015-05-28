@@ -26,7 +26,7 @@ static NSString *kOrIconKey = @"orIcon";
 
 @property (nonatomic, strong) VPollView *pollView;
 
-@property (nonatomic, strong) VSequence *sequence;
+@property (nonatomic, assign) BOOL loadedBothPollImages;
 
 @end
 
@@ -56,14 +56,33 @@ static NSString *kOrIconKey = @"orIcon";
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
+    self.loadedBothPollImages = NO;
+    
+    __weak VPollSequencePreviewView *weakSelf = self;
+    void (^pollImageCompletionBlock)(UIImage *) = ^void(UIImage *image)
+    {
+        __strong VPollSequencePreviewView *strongSelf = weakSelf;
+        if ( strongSelf == nil )
+        {
+            return;
+        }
+        
+        if ( strongSelf.loadedBothPollImages )
+        {
+            strongSelf.readyForDisplay = YES;
+        }
+        strongSelf.loadedBothPollImages = YES;
+    };
     
     VAnswer *answerA = [self.sequence.firstNode answerA];
     VAnswer *answerB = [self.sequence.firstNode answerB];
     [self.pollView setImageURL:answerA.previewMediaURL
-                 forPollAnswer:VPollAnswerA];
+                 forPollAnswer:VPollAnswerA
+                    completion:pollImageCompletionBlock];
     [self.pollView setImageURL:answerB.previewMediaURL
-                 forPollAnswer:VPollAnswerB];
+                 forPollAnswer:VPollAnswerB
+                    completion:pollImageCompletionBlock];
 }
 
 @end

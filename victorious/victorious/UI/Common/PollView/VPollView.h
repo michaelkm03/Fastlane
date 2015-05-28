@@ -25,7 +25,8 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
  *  Sets the url to the appropriate internal imageView.
  */
 - (void)setImageURL:(NSURL *)imageURL
-      forPollAnswer:(VPollAnswer)pollAnswer;
+      forPollAnswer:(VPollAnswer)pollAnswer
+         completion:(void (^)(UIImage *))completionBlock;
 
 /**
  *  The poll icon to use. Defaults to nil.

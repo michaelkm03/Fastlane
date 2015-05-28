@@ -23,7 +23,6 @@
 @property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, strong) UIView *playIconContainerView;
 @property (nonatomic, strong) VVideoView *videoView;
-@property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, assign) BOOL hasFocus;
 
 @end
@@ -64,9 +63,21 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
     
-    [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]];
+    __weak VVideoSequencePreviewView *weakSelf = self;
+    [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
+                           placeholderImage:nil
+                                 completion:^(UIImage *image)
+     {
+         __strong VVideoSequencePreviewView *strongSelf = weakSelf;
+         if ( strongSelf == nil )
+         {
+             return;
+         }
+         
+         strongSelf.readyForDisplay = YES;
+     }];
     
     VAsset *asset = [self.sequence.firstNode mp4Asset];
     if ( asset.streamAutoplay.boolValue )

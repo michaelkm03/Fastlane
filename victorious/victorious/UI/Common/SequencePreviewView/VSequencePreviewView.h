@@ -18,9 +18,14 @@
  */
 @interface VSequencePreviewView : VStreamItemPreviewView
 
-#warning DOCS
+/**
+ *  Returns a sequence preview view class for the provided sequence.
+ */
 + (Class)classTypeForSequence:(VSequence *)sequence;
 
+/**
+ *  Returns an appropriate reuse identifier for the provided sequence and base identifier.
+ */
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier;
 
 /**
@@ -32,7 +37,7 @@
 /**
  *  Use to update a sequence preview view for a new sequence.
  */
-- (void)setSequence:(VSequence *)sequence;
+@property (nonatomic, strong) VSequence *sequence;
 
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given seuqence.

@@ -19,6 +19,7 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
 #import "VCompatibility.h"
+#import "VStreamItemPreviewView.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -50,7 +51,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     [super setStreamItem:streamItem];
-    
+        
     self.nameLabel.text = streamItem.name;
 
     //Timer for marquee details auto-hiding

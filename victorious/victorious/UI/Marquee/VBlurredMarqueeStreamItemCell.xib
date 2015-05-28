@@ -41,10 +41,11 @@
             </constraints>
             <size key="customSize" width="1011" height="1432"/>
             <connections>
-                <outlet property="foregroundImageLeftConstraint" destination="2eQ-Qc-ttf" id="fjr-2j-eeY"/>
-                <outlet property="foregroundImageRightConstraint" destination="Clw-V6-n8e" id="JxV-nQ-yWV"/>
-                <outlet property="foregroundImageTopConstraint" destination="iyZ-Bn-MUF" id="LIV-p7-v8P"/>
                 <outlet property="previewContainer" destination="1up-Eh-bZJ" id="3XM-3n-KZR"/>
+                <outlet property="previewContainerBottomConstraint" destination="5b9-uX-JqF" id="BOT-I5-NbU"/>
+                <outlet property="previewContainerLeftConstraint" destination="2eQ-Qc-ttf" id="GNs-0o-Exw"/>
+                <outlet property="previewContainerRightConstraint" destination="Clw-V6-n8e" id="4D4-MB-nLk"/>
+                <outlet property="previewContainerTopConstraint" destination="iyZ-Bn-MUF" id="2Iq-Tw-sbx"/>
             </connections>
             <point key="canvasLocation" x="514.5" y="341.5"/>
         </collectionViewCell>

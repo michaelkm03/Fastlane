@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^ViewRenderingCompletion) (UIImage *image);
+
 @interface UIView (VViewRendering)
 
-- (UIImage *)renderedView;
+- (void)v_renderViewWithCompletion:(ViewRenderingCompletion)completion;
 
 @end

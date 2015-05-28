@@ -72,9 +72,9 @@
     }
 }
 
-- (void)setSequence:(VSequence *)sequence
+- (VStreamItem *)streamItem
 {
-    NSAssert(false, @"Override in subclasses!");
+    return self.sequence;
 }
 
 - (BOOL)canHandleSequence:(VSequence *)sequence
