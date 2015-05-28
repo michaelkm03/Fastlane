@@ -238,10 +238,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                                 forKeyPath:@"scaffold/menu/items/1/0/destination/screens/0/accessoryScreens/0"] );
             
             // Add new post to recent stream
-            NSParameterAssert( [templateDecorator setTemplateValue:@[]
-                                                        forKeyPath:@"scaffold/menu/items/0/0/destination/screens/2/accessoryScreens"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"postAccessory"
-                                                                forKeyPath:@"scaffold/menu/items/0/0/destination/screens/2/accessoryScreens/0"] );
+                                                                forKeyPath:@"scaffold/streamContentAccessory"] );
             // Change template permissions for testing
             NSParameterAssert( [templateDecorator setTemplateValue:@1
                                                         forKeyPath:@"scaffold/menu/items/0/0/destination/screens/2/canAddContent"] );

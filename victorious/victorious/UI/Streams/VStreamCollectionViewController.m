@@ -126,6 +126,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
+    NSDictionary *streamContentAccessory = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"streamContentAccessory"];
+    if ( streamContentAccessory != nil )
+    {
+        NSDictionary *accessoryScreens = @{ @"accessoryScreens" : @[ streamContentAccessory ] };
+        VDependencyManager *childDependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:accessoryScreens];
+        dependencyManager = childDependencyManager;
+    }
+    
     NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
 
     NSString *sequenceID = [dependencyManager stringForKey:kSequenceIDKey];
