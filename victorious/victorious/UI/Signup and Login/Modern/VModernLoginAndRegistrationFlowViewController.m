@@ -129,6 +129,17 @@ static NSString *kForceRegistrationKey = @"forceRegistration";
     return UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - Overrides
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([self.viewControllers containsObject:viewController])
+    {
+        return;
+    }
+    [super pushViewController:viewController animated:animated];
+}
+
 #pragma mark - Gesture Target
 
 - (void)pannedFromLeftSideOfScreen:(UIScreenEdgePanGestureRecognizer *)gestureRecognizer

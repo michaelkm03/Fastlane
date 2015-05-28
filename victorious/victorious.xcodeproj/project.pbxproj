@@ -5378,6 +5378,8 @@
 		D85B702B1B0EAF3F0038CA5B /* Modern */ = {
 			isa = PBXGroup;
 			children = (
+				D839D6901B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.h */,
+				D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.m */,
 				D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */,
 				D8D8129F1B13CB9300E93B37 /* VModernEnterNameViewController.h */,
 				D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */,
@@ -5401,8 +5403,6 @@
 				D8D812AE1B14EAA200E93B37 /* VModernResetTokenViewController.h */,
 				D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */,
 				D8D812B11B14EAB200E93B37 /* VModernResetTokenViewController.storyboard */,
-				D839D6901B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.h */,
-				D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.m */,
 			);
 			path = Modern;
 			sourceTree = "<group>";

@@ -358,7 +358,20 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          dispatch_async(dispatch_get_main_queue(), ^
          {
              [hud hide:YES];
-             completion(NO, error);
+
+             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CannotVerify", nil)
+                                                                                      message:NSLocalizedString(@"IncorrectCode", nil)
+                                                                               preferredStyle:UIAlertControllerStyleAlert];
+             UIAlertAction *alertAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                   style:UIAlertActionStyleCancel
+                                                                 handler:^(UIAlertAction *action)
+                                           {
+                                               completion(NO, error);
+                                           }];
+             [alertController addAction:alertAction];
+             [self.viewControllerToPresentOn presentViewController:alertController
+                                                          animated:YES
+                                                        completion:nil];
          });
      }];
 }

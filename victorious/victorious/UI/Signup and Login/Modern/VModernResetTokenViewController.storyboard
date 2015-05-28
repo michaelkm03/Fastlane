@@ -32,7 +32,7 @@
                                     <constraint firstAttribute="height" constant="50" id="Bs8-KP-VKn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                 <connections>
                                     <outlet property="delegate" destination="h8i-hV-Q0Y" id="W83-Jb-2zz"/>
                                 </connections>
