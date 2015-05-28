@@ -12,15 +12,16 @@
 @class VCoachmarkView;
 
 /**
-    A view that sends allows touches to pass through it
-    while sending a message to its delegate, can be thought
-    of much like an insvisible button.
+    A view that allows touches to pass through it
+    while sending a message to its delegate, can be
+    thought of much like an invisible button.
  */
 @interface VCoachmarkPassthroughContainerView : UIView
 
 /**
-    Creates a new Coachmark Passthrough Container View with the provided frame.
-    This method will also add the provided coachmarkView as a subview.
+    Creates a new Coachmark Passthrough Container View and assigns
+    the coachmarkView and delegate properties to the provided values.
+    This call also adds the coachmark view as a subview.
  
     @param coachmarkView The coachmark view that this Coachmark Passthrough Container View will display.
     @param delegate The delegate that will respond to touch events.

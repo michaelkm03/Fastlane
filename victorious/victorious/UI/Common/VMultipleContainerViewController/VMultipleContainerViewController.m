@@ -403,6 +403,7 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion
 {
+    NSParameterAssert(completion != nil);
     for ( NSUInteger index = 0; index < self.viewControllers.count; index++ )
     {
         UIViewController *viewController = self.viewControllers[index];
@@ -441,7 +442,7 @@ static NSString * const kInitialKey = @"initial";
     }
 }
 
-#pragma mark - VCoachmarkDisplayer
+#pragma mark - VCoachmarkDisplayResponder
 
 - (NSString *)screenIdentifier
 {

@@ -23,14 +23,9 @@
     
     VCoachmarkPassthroughContainerView *coachmarkPassthroughContainerView = [[VCoachmarkPassthroughContainerView alloc] init];
     coachmarkPassthroughContainerView.coachmarkView = coachmarkView;
+    [coachmarkPassthroughContainerView addSubview:coachmarkView];
     coachmarkPassthroughContainerView.delegate = delegate;
     return coachmarkPassthroughContainerView;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self addSubview:self.coachmarkView];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
