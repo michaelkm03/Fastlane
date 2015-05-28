@@ -124,7 +124,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     [self.coachmarkManager resetShownCoachmarks];
     NSArray *storedCoachmarks = [userDefaults objectForKey:kShownCoachmarksKey];
     XCTAssertNotNil(storedCoachmarks, @"resetShownCoachmarks should set an array to 'shownCoachmarks' in the standard user defaults after reset");
-    XCTAssertEqual([storedCoachmarks count], (unsigned long)0, @"resetShownCoachmarks should set an array to 'shownCoachmarks' in the standard user defaults after reset");
+    XCTAssertEqual([storedCoachmarks count], 0ul, @"resetShownCoachmarks should set an array to 'shownCoachmarks' in the standard user defaults after reset");
 }
 
 #pragma mark - Display coachmark tests
