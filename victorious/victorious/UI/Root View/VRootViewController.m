@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     [super viewDidLoad];
 
-    self.sessionTimer = [[VSessionTimer alloc] init];
+    self.sessionTimer = [VSessionTimer sharedInstance];
     
     // Check if we have location services and start getting locations if we do
     if ( [VLocationManager haveLocationServicesPermission] )
