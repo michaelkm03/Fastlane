@@ -34,7 +34,7 @@
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
-static NSString * const kShouldShowLoginKey = @"showLoginOnStartup";
+static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 @interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
@@ -67,7 +67,7 @@ static NSString * const kShouldShowLoginKey = @"showLoginOnStartup";
 {
     [super viewWillAppear:animated];
     
-    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldShowLoginKey] boolValue];
+    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
     if (shouldShowLogin && !self.hasBeenShown )
     {
         [self.authorizedAction prepareInViewController:self
@@ -99,7 +99,7 @@ static NSString * const kShouldShowLoginKey = @"showLoginOnStartup";
 {
     VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
 
-    if ( ![firstTimeInstallHelper hasBeenShown] )
+    if ( ![firstTimeInstallHelper hasBeenShown] && ![[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue])
     {
         [firstTimeInstallHelper savePlaybackDefaults];
         VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]

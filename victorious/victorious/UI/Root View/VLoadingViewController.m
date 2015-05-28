@@ -216,12 +216,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
 
-        [templateDecorator setTemplateValue:@{}
-                                 forKeyPath:@"scaffold/firstTimeContent"];
+//        [templateDecorator setTemplateValue:@{}
+//                                 forKeyPath:@"scaffold/firstTimeContent"];
         
         // Auto-Show Login
-        [templateDecorator setTemplateValue:@YES
-                                 forKeyPath:@"scaffold/showLoginOnStartup"];
+//        [templateDecorator setTemplateValue:@YES
+//                                 forKeyPath:@"scaffold/showLoginOnStartup"];
         
         NSDictionary *loginComponent;
         
@@ -432,8 +432,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                    }
                            };
         
-        [templateDecorator setTemplateValue:loginComponent
-                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
+//        [templateDecorator setTemplateValue:loginComponent
+//                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
