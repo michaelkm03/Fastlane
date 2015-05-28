@@ -100,7 +100,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
             NSAssert(false, @"We need a login flow responder for updating username.");
         }
         
-        [loginFlowController setUsername:self.nameField.text];
+        [loginFlowController setUsername:[self.nameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
     }
 }
 
@@ -122,7 +122,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (BOOL)shouldSetUsername:(NSString *)name
 {
-    if (name.length == 0)
+    NSString *trimmedString = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (trimmedString.length == 0)
     {
         [self.nameField showInvalidText:NSLocalizedString(@"You must enter a name.", nil)
                                animated:YES
