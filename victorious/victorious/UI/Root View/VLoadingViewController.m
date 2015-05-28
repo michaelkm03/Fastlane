@@ -216,6 +216,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
 
+        [templateDecorator setTemplateValue:@{}
+                                 forKeyPath:@"scaffold/firstTimeContent"];
+        
         // Auto-Show Login
         [templateDecorator setTemplateValue:@YES
                                  forKeyPath:@"scaffold/showLoginOnStartup"];

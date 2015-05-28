@@ -333,7 +333,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         }
     }
     
-    if ( ![self.passwordValidator validateString:self.passwordField.text andError:&validationError])
+    if ( ![self.passwordValidator validateString:self.passwordField.text andError:&validationError] && shouldLogin)
     {
         
         [self.passwordField showInvalidText:validationError.localizedDescription
