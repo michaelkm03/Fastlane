@@ -21,6 +21,9 @@ static NSString *kLogoKey = @"logo";
 static NSString *kStatusBarStyle = @"statusBarStyle";
 static NSString *kTermsOfServiceLinkValue = @"termsOfService";
 static NSString *kPrivacyPolicyLinkValue = @"privacyPolicy";
+static NSString *kEmailKey = @"email";
+static NSString *kFacebookKey = @"facebook";
+static NSString *kTwitterKey = @"twitter";
 
 static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
@@ -166,7 +169,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
                                                                            withSender:self];
     if (flowControllerResponder == nil)
     {
-        NSAssert(false, @"We need a flow controller in teh respodner chain for terms of service.");
+        NSAssert(false, @"We need a flow controller in the responder chain for terms of service.");
     }
 
     if ([[URL absoluteString] isEqualToString:kTermsOfServiceLinkValue])
@@ -230,15 +233,15 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 - (UIButton *)buttonForLoginType:(NSString *)loginType
 {
-    if ([loginType isEqualToString:@"email"])
+    if ([loginType isEqualToString:kEmailKey])
     {
         return self.emailButton;
     }
-    else if ([loginType isEqualToString:@"facebook"])
+    else if ([loginType isEqualToString:kFacebookKey])
     {
         return self.facebookButton;
     }
-    else if ([loginType isEqualToString:@"twitter"])
+    else if ([loginType isEqualToString:kTwitterKey])
     {
         return self.twitterButton;
     }
