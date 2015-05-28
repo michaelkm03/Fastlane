@@ -20,6 +20,7 @@
 #import "VModernResetTokenViewController.h"
 #import "VModernFlowControllerAnimationController.h"
 #import "VTOSViewController.h"
+#import "VPrivacyPoliciesViewController.h"
 #import "VEnterProfilePictureCameraShimViewController.h"
 
 // Responder Chain
@@ -380,6 +381,19 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
             [self onAuthenticationFinishedWithSuccess:YES];
         }
     }];
+}
+
+- (void)showPrivacyPolicy
+{
+    // Not accepting request right now.
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
+    [self presentViewController:[VPrivacyPoliciesViewController presentableTermsOfServiceViewControllerWithDependencyManager:self.dependencyManager]
+                       animated:YES
+                     completion:nil];
 }
 
 - (void)showTermsOfService

@@ -19,6 +19,8 @@
 static NSString *kSigninOptionsKey = @"signInOptions";
 static NSString *kLogoKey = @"logo";
 static NSString *kStatusBarStyle = @"statusBarStyle";
+static NSString *kTermsOfServiceLinkValue = @"termsOfService";
+static NSString *kPrivacyPolicyLinkValue = @"privacyPolicy";
 
 static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
@@ -65,21 +67,30 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     self.navigationItem.rightBarButtonItem = loginButton;
 
     // Legal Text
-    NSString *legalTextBeginnning = NSLocalizedString(@"By signing up you are agreeing to our ", nil);
-    NSString *termsOfServiceLinkText = NSLocalizedString(@"terms of service and privacy policy.", nil);
+    NSString *legalTextBeginnning = NSLocalizedString(@"By signing up you are agreeing to our \n", nil);
+    NSString *termsOfServiceLinkText = NSLocalizedString(@"terms of service", nil);
+    NSString *andText = NSLocalizedString(@" and ", nil);
+    NSString *privacyPolicyLinkText = NSLocalizedString(@"privacy policy.", nil);
     NSDictionary *legalTextAttributes = @{
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
                                           };
-    NSMutableAttributedString *attributedLegalText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@", legalTextBeginnning, termsOfServiceLinkText]
+    NSMutableAttributedString *attributedLegalText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@", legalTextBeginnning, termsOfServiceLinkText, andText, privacyPolicyLinkText]
                                                                                             attributes:legalTextAttributes];
-    NSRange rangeOfLink = [attributedLegalText.string rangeOfString:termsOfServiceLinkText];
+    NSRange rangeOfTOSLink = [attributedLegalText.string rangeOfString:termsOfServiceLinkText];
+    NSRange rangeOfPrivacyPolicyLink = [attributedLegalText.string rangeOfString:privacyPolicyLinkText];
     [attributedLegalText addAttribute:NSLinkAttributeName
-                                value:@"tos"
-                                range:rangeOfLink];
+                                value:[NSURL URLWithString:kTermsOfServiceLinkValue]
+                                range:rangeOfTOSLink];
+    [attributedLegalText addAttribute:NSLinkAttributeName
+                                value:[NSURL URLWithString:kPrivacyPolicyLinkValue]
+                                range:rangeOfPrivacyPolicyLink];
     [attributedLegalText addAttribute:(NSString *)kCTUnderlineStyleAttributeName
                                 value:[NSNumber numberWithInt:kCTUnderlineStyleSingle]
-                                range:rangeOfLink];
+                                range:rangeOfTOSLink];
+    [attributedLegalText addAttribute:(NSString *)kCTUnderlineStyleAttributeName
+                                value:[NSNumber numberWithInt:kCTUnderlineStyleSingle]
+                                range:rangeOfPrivacyPolicyLink];
     self.legalTextView.attributedText = attributedLegalText;
     self.legalTextView.textAlignment = NSTextAlignmentCenter;
     self.legalTextView.linkTextAttributes = legalTextAttributes;
@@ -157,7 +168,16 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     {
         NSAssert(false, @"We need a flow controller in teh respodner chain for terms of service.");
     }
-    [flowControllerResponder showTermsOfService];
+
+    if ([[URL absoluteString] isEqualToString:kTermsOfServiceLinkValue])
+    {
+        [flowControllerResponder showTermsOfService];
+    }
+    else
+    {
+        [flowControllerResponder showPrivacyPolicy];
+    }
+
     return YES;
 }
 
