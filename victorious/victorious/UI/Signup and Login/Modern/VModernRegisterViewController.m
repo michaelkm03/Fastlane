@@ -30,6 +30,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, weak) IBOutlet UITextView *promptTextView;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailField;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordField;
+@property (nonatomic, strong) IBOutletCollection(UIView) NSArray *separators;
 @property (nonatomic, strong) UIBarButtonItem *nextButton;
 
 @property (nonatomic, strong) VPasswordValidator *passwordValidator;
@@ -59,6 +60,11 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    for (UIView *separator in self.separators)
+    {
+        separator.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    }
 
     self.emailValidator = [[VEmailValidator alloc] init];
     self.passwordValidator = [[VPasswordValidator alloc] init];

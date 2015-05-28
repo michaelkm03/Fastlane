@@ -21,8 +21,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hlV-7k-DNE" customClass="VInlineValidationTextField">
-                                <rect key="frame" x="20" y="144" width="560" height="50"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hlV-7k-DNE" customClass="VInlineValidationTextField">
+                                <rect key="frame" x="20" y="145" width="560" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="MQ4-EM-nDU"/>
                                 </constraints>
@@ -32,14 +32,24 @@
                                     <outlet property="delegate" destination="KmP-8J-TJv" id="upW-7v-L5e"/>
                                 </connections>
                             </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xRC-An-Psj" userLabel="Separators">
+                                <rect key="frame" x="20" y="195" width="560" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="TTr-55-6JQ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="MPh-zU-L8h" firstAttribute="top" secondItem="DUR-A7-oUL" secondAttribute="bottom" constant="30" id="4uD-km-slE"/>
+                            <constraint firstItem="xRC-An-Psj" firstAttribute="leading" secondItem="hlV-7k-DNE" secondAttribute="leading" id="Ak8-Ea-zvM"/>
                             <constraint firstItem="MPh-zU-L8h" firstAttribute="leading" secondItem="iEx-1Q-d8Q" secondAttribute="leading" constant="20" id="KaJ-Mz-abS"/>
                             <constraint firstAttribute="trailing" secondItem="MPh-zU-L8h" secondAttribute="trailing" constant="20" id="SdY-4Y-aHm"/>
                             <constraint firstAttribute="trailing" secondItem="hlV-7k-DNE" secondAttribute="trailing" constant="20" id="e9a-bZ-2Vf"/>
+                            <constraint firstItem="xRC-An-Psj" firstAttribute="trailing" secondItem="hlV-7k-DNE" secondAttribute="trailing" id="eIz-D8-Cbm"/>
                             <constraint firstItem="hlV-7k-DNE" firstAttribute="leading" secondItem="iEx-1Q-d8Q" secondAttribute="leading" constant="20" id="q9m-dq-YmB"/>
+                            <constraint firstItem="xRC-An-Psj" firstAttribute="top" secondItem="hlV-7k-DNE" secondAttribute="bottom" id="tQy-pl-V6l"/>
                             <constraint firstItem="hlV-7k-DNE" firstAttribute="top" secondItem="MPh-zU-L8h" secondAttribute="bottom" constant="30" id="vun-OV-pHs"/>
                         </constraints>
                     </view>
@@ -47,6 +57,7 @@
                     <connections>
                         <outlet property="nameField" destination="hlV-7k-DNE" id="jq4-VE-RWF"/>
                         <outlet property="promptLabel" destination="MPh-zU-L8h" id="gR2-LR-VLV"/>
+                        <outlet property="separator" destination="xRC-An-Psj" id="LD2-ek-fQj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UfL-sN-uMC" userLabel="First Responder" sceneMemberID="firstResponder"/>

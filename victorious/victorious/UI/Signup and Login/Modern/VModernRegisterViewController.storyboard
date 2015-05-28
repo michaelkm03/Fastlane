@@ -35,6 +35,13 @@
                                     <outlet property="delegate" destination="W2o-0f-vOn" id="2Fe-U8-iQR"/>
                                 </connections>
                             </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-KA-lGH" userLabel="Separator">
+                                <rect key="frame" x="20" y="207" width="560" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="knT-l0-mz7"/>
+                                </constraints>
+                            </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="edE-kN-xit" userLabel="Password Field" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="20" y="227" width="560" height="40"/>
                                 <constraints>
@@ -47,16 +54,29 @@
                                     <outlet property="delegate" destination="W2o-0f-vOn" id="4pL-9C-nhK"/>
                                 </connections>
                             </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yqg-c8-bdw" userLabel="Separator">
+                                <rect key="frame" x="20" y="267" width="560" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="o9b-iP-3j0"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="dNj-OR-i2D" firstAttribute="top" secondItem="YWP-Dc-TM2" secondAttribute="bottom" constant="50" id="1nQ-3q-Rfc"/>
                             <constraint firstAttribute="trailing" secondItem="YWP-Dc-TM2" secondAttribute="trailing" constant="20" id="5ZF-Rl-dP7"/>
                             <constraint firstItem="YWP-Dc-TM2" firstAttribute="top" secondItem="Y5I-nB-f9a" secondAttribute="bottom" constant="20" id="N7l-Uf-2Qt"/>
+                            <constraint firstItem="BTB-KA-lGH" firstAttribute="top" secondItem="dNj-OR-i2D" secondAttribute="bottom" id="O66-cZ-Wln"/>
+                            <constraint firstItem="edE-kN-xit" firstAttribute="leading" secondItem="yqg-c8-bdw" secondAttribute="leading" id="OFe-lV-pdA"/>
                             <constraint firstItem="edE-kN-xit" firstAttribute="top" secondItem="dNj-OR-i2D" secondAttribute="bottom" constant="20" id="V3y-Wo-HOq"/>
                             <constraint firstItem="edE-kN-xit" firstAttribute="leading" secondItem="jFf-dT-bih" secondAttribute="leading" constant="20" id="YWb-du-5YA"/>
+                            <constraint firstItem="dNj-OR-i2D" firstAttribute="leading" secondItem="BTB-KA-lGH" secondAttribute="leading" id="bP7-Ag-kdJ"/>
+                            <constraint firstItem="yqg-c8-bdw" firstAttribute="top" secondItem="edE-kN-xit" secondAttribute="bottom" id="c3e-sG-tEw"/>
                             <constraint firstItem="YWP-Dc-TM2" firstAttribute="leading" secondItem="jFf-dT-bih" secondAttribute="leading" constant="20" id="cfa-q3-ENx"/>
                             <constraint firstAttribute="trailing" secondItem="dNj-OR-i2D" secondAttribute="trailing" constant="20" id="cvw-Ie-1gB"/>
+                            <constraint firstItem="edE-kN-xit" firstAttribute="trailing" secondItem="yqg-c8-bdw" secondAttribute="trailing" id="jlT-TF-GtC"/>
+                            <constraint firstItem="dNj-OR-i2D" firstAttribute="trailing" secondItem="BTB-KA-lGH" secondAttribute="trailing" id="kjr-Bg-njs"/>
                             <constraint firstItem="dNj-OR-i2D" firstAttribute="leading" secondItem="jFf-dT-bih" secondAttribute="leading" constant="20" id="pyy-Dk-B2y"/>
                             <constraint firstAttribute="trailing" secondItem="edE-kN-xit" secondAttribute="trailing" constant="20" id="sFZ-DS-GJS"/>
                         </constraints>
@@ -66,6 +86,8 @@
                         <outlet property="emailField" destination="dNj-OR-i2D" id="r38-P0-M1R"/>
                         <outlet property="passwordField" destination="edE-kN-xit" id="bU8-rb-vgH"/>
                         <outlet property="promptTextView" destination="YWP-Dc-TM2" id="3CG-w5-HC0"/>
+                        <outletCollection property="separators" destination="BTB-KA-lGH" id="ekr-Tp-7Xo"/>
+                        <outletCollection property="separators" destination="yqg-c8-bdw" id="CiW-9P-22j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LYb-ON-XBN" userLabel="First Responder" sceneMemberID="firstResponder"/>

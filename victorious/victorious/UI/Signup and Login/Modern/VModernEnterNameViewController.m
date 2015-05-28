@@ -26,6 +26,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *nameField;
+@property (nonatomic, weak) IBOutlet UIView *separator;
 
 @end
 
@@ -46,6 +47,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.separator.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     
     NSDictionary *promptAttributes = @{
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
