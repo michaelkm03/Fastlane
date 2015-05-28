@@ -527,4 +527,9 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     return !self.navigationController.navigationBarHidden;
 }
 
+- (UIEdgeInsets)v_layoutInsets
+{
+    return [self.parentViewController v_layoutInsets];
+}
+
 @end
