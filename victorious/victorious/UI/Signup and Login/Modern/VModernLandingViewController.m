@@ -7,11 +7,17 @@
 //
 
 #import "VModernLandingViewController.h"
+
+// Libraries
+#import <CCHLinkTextView/CCHLinkTextView.h>
+#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
+
+// Views + Helpers
 #import "VLoginFlowControllerResponder.h"
 #import "UIView+AutoLayout.h"
 
-#import <CCHLinkTextView/CCHLinkTextView.h>
-#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
+// ViewControllers
+#import "VPromptCarouselViewController.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -115,6 +121,17 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     [super viewDidLayoutSubviews];
     // Text was scrolled out of frame without this.
     self.legalTextView.contentOffset = CGPointZero;
+}
+
+#pragma mark - Storyboard
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:NSStringFromClass([VPromptCarouselViewController class])])
+    {
+        VPromptCarouselViewController *carouselController = segue.destinationViewController;
+        [carouselController setDependencyManager:self.dependencyManager];
+    }
 }
 
 #pragma mark - Target/Action
