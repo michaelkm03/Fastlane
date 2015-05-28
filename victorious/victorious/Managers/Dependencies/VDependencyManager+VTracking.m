@@ -14,7 +14,6 @@ NSString * const VTrackingInitKey                  = @"init";
 NSString * const VTrackingInstallKey               = @"install";
 NSString * const VTrackingBallisticCountKey        = @"ballistic_count";
 NSString * const VTrackingCreateProfileStartKey    = @"create_profile_start";
-NSString * const VTrackingFirstBootKey             = @"first_boot";
 NSString * const VTrackingRegistrationEndKey       = @"registration_end";
 NSString * const VTrackingRegistrationStartKey     = @"registration_start";
 NSString * const VTrackingGetStartedTapKey         = @"get_started_tap";

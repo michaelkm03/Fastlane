@@ -27,7 +27,6 @@
 #import "VVoteType.h"
 #import "VAppInfo.h"
 #import "VUploadManager.h"
-#import "VApplicationTracking.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -58,7 +57,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
 @property (nonatomic, readwrite) VDeeplinkReceiver *deepLinkReceiver;
-@property (nonatomic, strong) VApplicationTracking *applicationTracking;
 
 @end
 
@@ -87,9 +85,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)commonInit
 {
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
-    
-    self.applicationTracking = [[VApplicationTracking alloc] init];
-    [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
     
     [[VObjectManager sharedManager] resetSessionID];
     
@@ -449,11 +444,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         self.launchState = VAppLaunchStateLaunching;
         [self startAppWithDependencyManager:dependencyManager];
-        
-        self.applicationTracking.dependencyManager = dependencyManager;
-        
-        // We know this event needs a template tracking URL so we wait to call it until after dependency manaager is set
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidBoot];
     }
 }
 

@@ -224,7 +224,6 @@ NSString * const VTrackingEventNextVideoDidAutoPlay = @"NextVideoDidAutoPlay";
 
 // First Time User Experience (FTUE)
 NSString * const VTrackingEventUserDidStartCreateProfile = @"UserDidStartCreateProfile";
-NSString * const VTrackingEventApplicationDidBoot = @"ApplicationDidBoot";
 NSString * const VTrackingEventUserDidStartRegistration = @"UserDidStartRegistration";
 NSString * const VTrackingEventUserDidFinishRegistration = @"UserDidFinishRegistration";
 NSString * const VTrackingEventUserDidSelectRegistrationDone = @"UserDidSelectRegistrationDone";

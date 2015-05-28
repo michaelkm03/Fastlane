@@ -14,7 +14,6 @@ extern NSString * const VTrackingInitKey;
 extern NSString * const VTrackingInstallKey;
 extern NSString * const VTrackingBallisticCountKey;
 extern NSString * const VTrackingCreateProfileStartKey;
-extern NSString * const VTrackingFirstBootKey;
 extern NSString * const VTrackingRegistrationEndKey;
 extern NSString * const VTrackingRegistrationStartKey;
 extern NSString * const VTrackingGetStartedTapKey;

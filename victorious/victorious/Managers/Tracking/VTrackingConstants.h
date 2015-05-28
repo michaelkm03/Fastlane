@@ -224,7 +224,6 @@ extern NSString * const VTrackingEventNextVideoDidAutoPlay;
 
 // First Time User Experience (FTUE)
 extern NSString * const VTrackingEventUserDidStartCreateProfile; //< Backend mapping: create_profile_start
-extern NSString * const VTrackingEventApplicationDidBoot; //< Backend mapping: first_boot
 extern NSString * const VTrackingEventUserDidStartRegistration; //<  Backend mapping: registration_start
 extern NSString * const VTrackingEventUserDidFinishRegistration; //< Backend mapping: registration_end
 extern NSString * const VTrackingEventUserDidSelectRegistrationDone; //< Backend mapping: done_button_tap
@@ -271,7 +270,6 @@ extern NSString * const VTrackingKeyRemoteId; //< "Generic, to indicate backend 
 extern NSString * const VTrackingKeyIndex; //< "Generic, to indicate selected item in a list or group.",
 extern NSString * const VTrackingKeyUserLoggedIn; //< "0 if user is logged out, 1 if user is logged in",
 extern NSString * const VTrackingKeyLoadTime; //< The amount of time between requesting something from the backend and receiving the first byte of the response.
-extern NSString * const VTrackingKeyTimeSinceBoot; //< The amount of time since the ApplicationDidBoot (first_boot) event was called (milliseconds).  Backend mapping: %%TIME_SINCE_BOOT%%
 
 // Tracking Event Values
 // ContentType values

@@ -24,7 +24,6 @@ static NSString * const kMacroShareDestination       = @"%%SHARE_DEST%%";
 static NSString * const kMacroNotificationID         = @"%%NOTIF_ID%%";
 static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
-static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
@@ -36,8 +35,6 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
-@property (nonatomic, readonly) NSDate *applicationBootDate;
-@property (nonatomic, readonly) NSUInteger timeSinceBoot;
 
 @end
 
@@ -61,23 +58,10 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
                                     VTrackingKeyShareDestination   : kMacroShareDestination,
                                     VTrackingKeyNotificationId     : kMacroNotificationID,
                                     VTrackingKeySessionTime        : kMacroSessionTime,
-                                    VTrackingKeyLoadTime           : kMacroLoadTime,
-                                    VTrackingKeyTimeSinceBoot      : kMacroTimeSinceBoot };
+                                    VTrackingKeyLoadTime           : kMacroLoadTime };
         _macroReplacement = [[VURLMacroReplacement alloc] init];
-        
-        [self resetBootDate];
     }
     return self;
-}
-
-- (void)resetBootDate
-{
-    _applicationBootDate = [NSDate date];
-}
-
-- (NSUInteger)timeSinceBoot
-{
-    return (NSUInteger)(ABS( [self.applicationBootDate timeIntervalSinceNow] ) * 1000.0f);
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -126,12 +110,9 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
         return NO;
     }
     
-    NSMutableDictionary *allParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    allParameters[ VTrackingKeyTimeSinceBoot ] = @(self.timeSinceBoot);
-    
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:url
-                                        withCorrespondingParameters:[allParameters copy]];
+                                        withCorrespondingParameters:parameters];
     if ( !urlWithMacrosReplaced )
     {
         return NO;
@@ -262,7 +243,6 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
     dispatch_once(&onceToken, ^
     {
         keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
-                                VTrackingEventApplicationDidBoot                  : VTrackingFirstBootKey,
                                 VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
                                 VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
                                 VTrackingEventUserDidSelectRegistrationDone       : VTrackingDoneButtonTapKey,
@@ -289,11 +269,6 @@ static NSString * const kMacroTimeSinceBoot          = @"%%TIME_SINCE_BOOT%%";
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
-    if ( [eventName isEqualToString:VTrackingEventApplicationDidBoot] )
-    {
-        [self resetBootDate];
-    }
-    
     NSArray *templateURLs = [self templateURLsWithEventName:eventName eventParameters:parameters];
     NSArray *eventURLs = parameters[ VTrackingKeyUrls ];
     NSArray *allURLs = [eventURLs ?: @[] arrayByAddingObjectsFromArray:templateURLs];
