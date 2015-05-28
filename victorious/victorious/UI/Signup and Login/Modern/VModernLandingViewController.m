@@ -94,13 +94,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     self.legalTextView.contentOffset = CGPointZero;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    self.bottomSpaceFacebookToContainer.constant = 0.0f;
-}
-
 #pragma mark - Target/Action
 
 - (void)login
