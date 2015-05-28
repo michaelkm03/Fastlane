@@ -29,8 +29,9 @@
 #import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
 #import "VDiscoverDeepLinkHandler.h"
+#import "VCoachmarkDisplayer.h"
 
-@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer>
+@interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer, VCoachmarkDisplayer>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
@@ -243,6 +244,17 @@
 }
 #endif
 
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+- (BOOL)selectorIsVisible
+{
+    return !self.navigationController.navigationBarHidden;
+}
 
 #pragma mark - VBackgroundContainer
 

@@ -102,13 +102,16 @@
 #import "VURLSelectionResponder.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VContentViewFactory.h"
+#import "VCoachmarkDisplayer.h"
+#import "VDependencyManager+VCoachmarkManager.h"
+#import "VCoachmarkManager.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -558,6 +561,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
     [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
     
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
+    
 #if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
@@ -585,7 +590,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
     
     if ( self.isBeingDismissed )
@@ -1843,6 +1849,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         [self presentViewController:webContentView animated:YES completion:nil];
     }
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 @end

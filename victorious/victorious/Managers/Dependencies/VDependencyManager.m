@@ -52,7 +52,7 @@ NSString * const VDependencyManagerButton1FontKey = @"font.button1";
 NSString * const VDependencyManagerButton2FontKey = @"font.button2";
 
 // Keys for dependency metadata
-static NSString * const kIDKey = @"id";
+NSString * const VDependencyManagerIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kClassNameKey = @"name";
 static NSString * const kFontNameKey = @"fontName";
@@ -340,7 +340,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
         }
         else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] )
         {
-            dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kIDKey]];
+            dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:VDependencyManagerIDKey]];
         }
         else if ( typeTest([templateObject class]) )
         {
@@ -430,7 +430,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     else if ( !typeTest([NSDictionary class]) && [value isKindOfClass:[NSDictionary class]] )
     {
-        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value valueForKey:kIDKey]];
+        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value valueForKey:VDependencyManagerIDKey]];
         return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
     else if ( typeTest([value class]) )
@@ -447,7 +447,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
  */
 - (id)singletonObjectWhereTypePassesTest:(TypeTest)typeTest withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *objectID = [dependencyManager stringForKey:kIDKey];
+    NSString *objectID = [dependencyManager stringForKey:VDependencyManagerIDKey];
     if ( objectID == nil )
     {
         return nil;
@@ -565,7 +565,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     else if ( [value isKindOfClass:[NSDictionary class]] && !typeTest([NSDictionary class]) )
     {
-        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:kIDKey]];
+        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:VDependencyManagerIDKey]];
         if ( dependencies != nil )
         {
             dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dependencies];
@@ -656,10 +656,10 @@ static NSString * const kMacroReplacement = @"XXXXX";
         {
             if ( value[kClassNameKey] != nil )
             {
-                if ( value[kIDKey] != nil )
+                if ( value[VDependencyManagerIDKey] != nil )
                 {
                     VDependencyManager *childDependencyManager = [self childDependencyManagerWithAddedConfiguration:value];
-                    [self setChildDependencyManager:childDependencyManager forID:value[kIDKey]];
+                    [self setChildDependencyManager:childDependencyManager forID:value[VDependencyManagerIDKey]];
                 }
             }
             else if ( value[kImageMacroKey] != nil )
@@ -691,10 +691,10 @@ static NSString * const kMacroReplacement = @"XXXXX";
         {
             if ( dictionary[kClassNameKey] != nil )
             {
-                if ( dictionary[kIDKey] != nil )
+                if ( dictionary[VDependencyManagerIDKey] != nil )
                 {
                     VDependencyManager *childDependencyManager = [self childDependencyManagerWithAddedConfiguration:dictionary];
-                    [self setChildDependencyManager:childDependencyManager forID:dictionary[kIDKey]];
+                    [self setChildDependencyManager:childDependencyManager forID:dictionary[VDependencyManagerIDKey]];
                 }
             }
             else
@@ -831,7 +831,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     if ( ![self componentHasID:component] )
     {
         NSMutableDictionary *preparedComponent = [component mutableCopy];
-        preparedComponent[kIDKey] = [[NSUUID UUID] UUIDString];
+        preparedComponent[VDependencyManagerIDKey] = [[NSUUID UUID] UUIDString];
         return preparedComponent;
     }
     else
@@ -847,7 +847,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
 
 - (BOOL)componentHasID:(NSDictionary *)component
 {
-    return component[kIDKey] != nil;
+    return component[VDependencyManagerIDKey] != nil;
 }
 
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration

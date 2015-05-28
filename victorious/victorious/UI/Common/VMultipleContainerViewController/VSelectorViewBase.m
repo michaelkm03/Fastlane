@@ -16,12 +16,18 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithFrame:CGRectZero];
-    if (self)
+    if ( self != nil )
     {
         _dependencyManager = dependencyManager;
         _foregroundColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     }
     return self;
+}
+
+- (CGRect)frameOfButtonAtIndex:(NSUInteger)index
+{
+    NSAssert(false, @"frameOfButtonAtIndex: must be overridden by subclasses of VSelectorViewBase");
+    return CGRectZero;
 }
 
 #pragma mark - Properties
