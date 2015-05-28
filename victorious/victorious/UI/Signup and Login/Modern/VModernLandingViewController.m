@@ -10,6 +10,9 @@
 #import "VLoginFlowControllerResponder.h"
 #import "UIView+AutoLayout.h"
 
+#import <CCHLinkTextView/CCHLinkTextView.h>
+#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
+
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
@@ -27,14 +30,14 @@ static NSString * const kTwitterKey = @"twitter";
 
 static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
-@interface VModernLandingViewController () <UITextViewDelegate, VBackgroundContainer>
+@interface VModernLandingViewController () <CCHLinkTextViewDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIButton *twitterButton;
 @property (nonatomic, weak) IBOutlet UIButton *emailButton;
 @property (nonatomic, weak) IBOutlet UIButton *facebookButton;
-@property (nonatomic, weak) IBOutlet UITextView *legalTextView;
+@property (nonatomic, weak) IBOutlet CCHLinkTextView *legalTextView;
 
 @end
 
@@ -78,15 +81,19 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
                                           };
+    NSDictionary *legalTextHighlightAttributes = @{
+                                                   NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
+                                                   NSForegroundColorAttributeName: [[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] colorWithAlphaComponent:0.5f],
+                                                   };
     NSMutableAttributedString *attributedLegalText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@", legalTextBeginnning, termsOfServiceLinkText, andText, privacyPolicyLinkText]
                                                                                             attributes:legalTextAttributes];
     NSRange rangeOfTOSLink = [attributedLegalText.string rangeOfString:termsOfServiceLinkText];
     NSRange rangeOfPrivacyPolicyLink = [attributedLegalText.string rangeOfString:privacyPolicyLinkText];
-    [attributedLegalText addAttribute:NSLinkAttributeName
-                                value:[NSURL URLWithString:kTermsOfServiceLinkValue]
+    [attributedLegalText addAttribute:CCHLinkAttributeName
+                                value:kTermsOfServiceLinkValue
                                 range:rangeOfTOSLink];
-    [attributedLegalText addAttribute:NSLinkAttributeName
-                                value:[NSURL URLWithString:kPrivacyPolicyLinkValue]
+    [attributedLegalText addAttribute:CCHLinkAttributeName
+                                value:kPrivacyPolicyLinkValue
                                 range:rangeOfPrivacyPolicyLink];
     [attributedLegalText addAttribute:(NSString *)kCTUnderlineStyleAttributeName
                                 value:[NSNumber numberWithInt:kCTUnderlineStyleSingle]
@@ -97,7 +104,9 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     self.legalTextView.attributedText = attributedLegalText;
     self.legalTextView.textAlignment = NSTextAlignmentCenter;
     self.legalTextView.linkTextAttributes = legalTextAttributes;
-    
+    self.legalTextView.linkDelegate = self;
+    self.legalTextView.linkTextTouchAttributes = legalTextHighlightAttributes;
+
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
@@ -161,9 +170,9 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     return self.view;
 }
 
-#pragma mark - UITextViewDelegate
+#pragma mark - CCHLinkTextViewDelegate
 
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
     id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(showTermsOfService)
                                                                            withSender:self];
@@ -171,8 +180,8 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     {
         NSAssert(false, @"We need a flow controller in the responder chain for terms of service.");
     }
-
-    if ([[URL absoluteString] isEqualToString:kTermsOfServiceLinkValue])
+    
+    if ([value isEqualToString:kTermsOfServiceLinkValue])
     {
         [flowControllerResponder showTermsOfService];
     }
@@ -180,8 +189,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     {
         [flowControllerResponder showPrivacyPolicy];
     }
-
-    return YES;
 }
 
 #pragma mark - Internal Methods
