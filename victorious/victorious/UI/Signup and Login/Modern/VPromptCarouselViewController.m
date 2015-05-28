@@ -73,7 +73,7 @@ static NSString * const kPromptsKey = @"prompts";
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                        };
-    NSAttributedString *attributedPrompt = [[NSAttributedString alloc] initWithString:promptAtIndex
+    NSAttributedString *attributedPrompt = [[NSAttributedString alloc] initWithString:NSLocalizedString(promptAtIndex, nil)
                                                                            attributes:promptAttributes];
     [cell setAttributedTitle:attributedPrompt];
     return cell;
