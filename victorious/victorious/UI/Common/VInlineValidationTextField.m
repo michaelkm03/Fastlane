@@ -92,7 +92,11 @@ static const CGFloat kBottomClearInset = 2.0f;
     {
         self.attributedPlaceholder = self.oldPlaceholder;
     }
-    self.hasResignedFirstResponder = YES;
+    if (self.isFirstResponder)
+    {
+        self.hasResignedFirstResponder = YES;
+    }
+
     return [super resignFirstResponder];
 }
 

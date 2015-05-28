@@ -87,14 +87,18 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
                                           };
+    NSDictionary *placeholderTextFieldAttributes = @{
+                                                     NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                                     NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
+                                                     };
     self.emailField.font = textFieldAttributes[NSFontAttributeName];
     self.emailField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Email", nil)
-                                                                            attributes:textFieldAttributes];
+                                                                            attributes:placeholderTextFieldAttributes];
     self.emailField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
 
     self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
-                                                                               attributes:textFieldAttributes];
+                                                                               attributes:placeholderTextFieldAttributes];
     self.passwordField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
@@ -121,13 +125,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.promptTextView.contentOffset = CGPointZero;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.emailField becomeFirstResponder];
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -138,11 +135,18 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    [self.view endEditing:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     
+    self.emailField.text = nil;
+    self.passwordField.text = nil;
     [self.emailField clearValidation];
     [self.passwordField clearValidation];
-    
-    [self.view endEditing:YES];
 }
 
 #pragma mark - Notifications

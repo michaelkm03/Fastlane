@@ -283,6 +283,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @"blue":@255,
                                                @"alpha":@255
                                                },
+                                       @"color.text.placeholder":
+                                           @{
+                                               @"red":@258,
+                                               @"green":@255,
+                                               @"blue":@255,
+                                               @"alpha":@100
+                                               },
                                        @"background":
                                            @{
                                                @"name":@"solidColor.background",
@@ -304,6 +311,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @"green":@255,
                                                @"blue":@255,
                                                @"alpha":@255
+                                               },
+                                       @"color.text.placeholder":
+                                           @{
+                                               @"red":@258,
+                                               @"green":@255,
+                                               @"blue":@255,
+                                               @"alpha":@100
                                                },
                                        @"background":
                                            @{
@@ -333,6 +347,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @"blue":@255,
                                                @"alpha":@255
                                                },
+                                       @"color.text.placeholder":
+                                           @{
+                                               @"red":@258,
+                                               @"green":@255,
+                                               @"blue":@255,
+                                               @"alpha":@100
+                                               },
                                        @"background":
                                            @{
                                                @"name":@"solidColor.background",
@@ -357,6 +378,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                            @"blue":@255,
                                            @"alpha":@255
                                            },
+                                   @"color.text.placeholder":
+                                       @{
+                                           @"red":@258,
+                                           @"green":@255,
+                                           @"blue":@255,
+                                           @"alpha":@100
+                                           },
                                    @"background":
                                        @{
                                            @"name":@"solidColor.background",
@@ -379,6 +407,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                            @"green":@255,
                                            @"blue":@255,
                                            @"alpha":@255
+                                           },
+                                   @"color.text.placeholder":
+                                       @{
+                                           @"red":@258,
+                                           @"green":@255,
+                                           @"blue":@255,
+                                           @"alpha":@100
                                            },
                                    @"background":
                                        @{

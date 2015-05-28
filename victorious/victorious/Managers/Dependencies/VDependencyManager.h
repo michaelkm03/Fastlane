@@ -19,6 +19,7 @@ extern NSString * const VDependencyManagerBackgroundColorKey;
 extern NSString * const VDependencyManagerMainTextColorKey;
 extern NSString * const VDependencyManagerContentTextColorKey;
 extern NSString * const VDependencyManagerSecondaryTextColorKey;
+extern NSString * const VDependencyManagerPlaceholderTextColorKey;
 extern NSString * const VDependencyManagerAccentColorKey;
 extern NSString * const VDependencyManagerSecondaryAccentColorKey;
 extern NSString * const VDependencyManagerLinkColorKey;

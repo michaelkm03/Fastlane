@@ -61,12 +61,16 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                       NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
                                       NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
                                       };
+    NSDictionary *placeholderTextFieldAttributes = @{
+                                                     NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                                     NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
+                                                     };
     self.nameField.font = fieldAttributes[NSFontAttributeName];
     self.nameField.textColor = fieldAttributes[NSForegroundColorAttributeName];
     self.nameField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.nameField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     self.nameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter name", nil)
-                                                                           attributes:fieldAttributes];
+                                                                           attributes:placeholderTextFieldAttributes];
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
     UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil)

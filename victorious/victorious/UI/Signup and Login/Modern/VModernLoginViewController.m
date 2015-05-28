@@ -96,18 +96,22 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                           };
+    NSDictionary *placeholderTextFieldAttributes = @{
+                                                     NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                                     NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
+                                                     };
     self.emailField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.emailField.font = textFieldAttributes[NSFontAttributeName];
     self.emailField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Email", nil)
-                                                                            attributes:textFieldAttributes];
+                                                                            attributes:placeholderTextFieldAttributes];
     self.emailField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     self.passwordField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.passwordField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
-                                                                               attributes:textFieldAttributes];
+                                                                               attributes:placeholderTextFieldAttributes];
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     NSString *forgotPasswordText = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Forgot your password?", nil), NSLocalizedString(@"Click Here", nil)];

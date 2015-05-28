@@ -27,6 +27,7 @@ NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
 NSString * const VDependencyManagerMainTextColorKey = @"color.text";
 NSString * const VDependencyManagerContentTextColorKey = @"color.text.content";
 NSString * const VDependencyManagerSecondaryTextColorKey = @"color.text.secondary";
+NSString * const VDependencyManagerPlaceholderTextColorKey = @"color.text.placeholder";
 NSString * const VDependencyManagerAccentColorKey = @"color.accent";
 NSString * const VDependencyManagerSecondaryAccentColorKey = @"color.accent.secondary";
 NSString * const VDependencyManagerLinkColorKey = @"color.link";

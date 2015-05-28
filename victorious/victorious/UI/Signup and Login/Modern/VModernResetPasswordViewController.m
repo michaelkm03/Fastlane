@@ -71,16 +71,19 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:prompt
                                                                       attributes:promptAttributes];
     
-    
     NSDictionary *textFieldAttributes = @{
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                           };
+    NSDictionary *placeholderTextFieldAttributes = @{
+                                                     NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                                     NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
+                                                     };
     self.passwordTextField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.passwordTextField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter a new Password", nil)
-                                                                                   attributes:textFieldAttributes];
+                                                                                   attributes:placeholderTextFieldAttributes];
     self.passwordTextField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     self.confirmPasswordTextField.textColor = textFieldAttributes[NSForegroundColorAttributeName];

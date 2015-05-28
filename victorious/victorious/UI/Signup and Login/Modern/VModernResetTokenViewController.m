@@ -64,11 +64,16 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                           };
+    NSDictionary *placeholderTextFieldAttributes = @{
+                                                     NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                                     NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
+                                                     };
     self.codeTextField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.codeTextField.font = textFieldAttributes[NSFontAttributeName];
     self.codeTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.codeTextField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
-    
+    self.codeTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Code", nil)
+                                                                               attributes:placeholderTextFieldAttributes];
     NSString *localizedResend = NSLocalizedString(@"Resend Email", nil);
     NSMutableAttributedString *attributedResend = [[NSMutableAttributedString alloc] initWithString:localizedResend
                                                                                          attributes:promptAttributes];
