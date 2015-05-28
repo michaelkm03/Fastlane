@@ -149,6 +149,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [super viewDidAppear:animated];
     
+    [self.emailField clearValidation];
+    [self.passwordField clearValidation];
     [self.emailField becomeFirstResponder];
 }
 
@@ -156,7 +158,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [super viewWillDisappear:animated];
     
-    [self.view endEditing:YES];
+    [self.emailField resignFirstResponder];
+    [self.passwordField resignFirstResponder];
+    [self.emailField clearValidation];
+    [self.passwordField clearValidation];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -165,8 +170,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     self.emailField.text = nil;
     self.passwordField.text = nil;
-    [self.emailField clearValidation];
-    [self.passwordField clearValidation];
 }
 
 #pragma mark - Notifications

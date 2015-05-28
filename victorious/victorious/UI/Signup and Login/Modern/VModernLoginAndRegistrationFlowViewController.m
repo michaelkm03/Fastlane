@@ -33,7 +33,7 @@ static NSString *kStatusBarStyleKey = @"statusBarStyle";
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 static NSString *kForceRegistrationKey = @"forceRegistration";
 
-@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer, UINavigationControllerDelegate>
+@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) VModernFlowControllerAnimationController *animator;
 @property (nonatomic, strong) UIPercentDrivenInteractiveTransition *percentDrivenInteraction;
@@ -95,6 +95,7 @@ static NSString *kForceRegistrationKey = @"forceRegistration";
     [super viewDidLoad];
  
     UIScreenEdgePanGestureRecognizer *backGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(pannedFromLeftSideOfScreen:)];
+    backGesture.delegate = self;
     backGesture.edges = UIRectEdgeLeft;
     self.popGestureRecognizer = backGesture;
     [self.view addGestureRecognizer:backGesture];
@@ -518,6 +519,17 @@ static NSString *kForceRegistrationKey = @"forceRegistration";
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     self.actionsDisabled = NO;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if (gestureRecognizer.numberOfTouches > 0)
+    {
+        return NO;
+    }
+    return YES;
 }
 
 @end
