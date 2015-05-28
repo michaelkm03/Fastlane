@@ -28,6 +28,22 @@
     return self;
 }
 
+- (CGRect)frameOfButtonAtIndex:(NSUInteger)index
+{
+    NSUInteger numberOfSegments = self.segmentedControl.numberOfSegments;
+    if ( index > numberOfSegments )
+    {
+        return CGRectZero;
+    }
+    
+    CGRect segmentFrame = self.segmentedControl.frame;
+    segmentFrame.origin = [self.segmentedControl convertPoint:self.bounds.origin toView:self.window];
+    CGFloat segmentWidth = CGRectGetWidth(segmentFrame) / numberOfSegments;
+    segmentFrame.size.width = segmentWidth;
+    segmentFrame.origin.x += segmentWidth * index;
+    return segmentFrame;
+}
+
 #pragma mark - Properties
 
 - (void)setViewControllers:(NSArray *)viewControllers

@@ -39,6 +39,9 @@ extern NSString * const VDependencyManagerLabel4FontKey;
 extern NSString * const VDependencyManagerButton1FontKey;
 extern NSString * const VDependencyManagerButton2FontKey;
 
+// Keys for identification
+extern NSString * const VDependencyManagerIDKey;
+
 // Keys for experiments (these should be retrieved with -numberForKey:, as a bool wrapped in an NSNumber)
 extern NSString * const VDependencyManagerHistogramEnabledKey;
 extern NSString * const VDependencyManagerProfileImageRequiredKey;

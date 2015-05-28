@@ -29,6 +29,7 @@
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
 #import "VRootViewController.h"
+#import "VCoachmarkManager.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -53,7 +54,7 @@ static NSString * const kShouldShowLoginKey = @"showLoginOnStartup";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        
+        _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
     }
