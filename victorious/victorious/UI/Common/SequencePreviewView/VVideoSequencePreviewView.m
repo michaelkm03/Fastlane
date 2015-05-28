@@ -66,11 +66,15 @@
 {
     _sequence = sequence;
     
+    // Hide video view in case we're not auto playing
+    self.videoView.hidden = YES;
+    
     [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]];
     
     VAsset *asset = [self.sequence.firstNode mp4Asset];
     if ( asset.streamAutoplay.boolValue )
     {
+        self.videoView.hidden = NO;
         self.playIconContainerView.hidden = YES;
         [self.videoView setItemURL:[NSURL URLWithString:asset.data]
                               loop:asset.loop.boolValue
@@ -78,6 +82,7 @@
     }
     else
     {
+        self.videoView.hidden = YES;
         self.playIconContainerView.hidden = NO;
     }
 }

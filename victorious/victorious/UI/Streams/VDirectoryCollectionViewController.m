@@ -23,6 +23,9 @@
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VShowcaseDirectoryCell.h"
+#import "VCoachmarkDisplayer.h"
+#import "VCoachmarkManager.h"
+#import "VDependencyManager+VCoachmarkManager.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -34,7 +37,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceNameKey = @"sequenceName";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
-@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate>
+@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VCoachmarkDisplayer>
 
 @property (nonatomic, readwrite) UICollectionView *collectionView;
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
@@ -148,6 +151,19 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self refresh:self.refreshControl];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -157,13 +173,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     //Adds the create sequence button if possible. If not called here, the button 
     [self updateNavigationItems];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
 }
 
 - (BOOL)shouldAutorotate
@@ -332,6 +341,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     {
         [self.directoryCellFactory collectionViewDidScroll:(UICollectionView *)scrollView];
     }
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 @end
