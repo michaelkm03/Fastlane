@@ -392,7 +392,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         
         [templateDecorator setTemplateValue:loginComponent
                                  forKeyPath:@"scaffold/loginAndRegistrationView"];
-        
+
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

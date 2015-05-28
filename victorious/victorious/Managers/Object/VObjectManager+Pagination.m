@@ -458,12 +458,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         stream.streamItems = streamItems;
         stream.marqueeItems = marqueeItems;
+        NSString *streamId = fullResponse[ @"stream_id" ];
+        stream.streamId = streamId;
         
         // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
-        stream.trackingIdentifier = fullResponse[ @"stream_id" ];
+        stream.trackingIdentifier = streamId;
         stream.isUserPostAllowed = fullResponse[ @"ugc_post_allowed" ];
         
-        if (success)
+        if ( success != nil )
         {
             success(operation, fullResponse, resultObjects);
         }

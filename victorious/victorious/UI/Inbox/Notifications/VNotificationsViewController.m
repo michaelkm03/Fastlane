@@ -209,7 +209,7 @@ static int const kNotificationFetchBatchSize = 50;
     if ([notification.deepLink length] > 0)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectNotification];
-        [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:[NSURL URLWithString:notification.deepLink]];
+        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:notification.deepLink]];
     }
 }
 

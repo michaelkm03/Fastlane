@@ -15,6 +15,7 @@
 #import "VAdBreak+RestKit.h"
 #import "VEndCard+RestKit.h"
 #import "VStream+RestKit.h"
+#import "VImageAsset+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -58,6 +59,11 @@
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
+    RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                              toKeyPath:VSelectorName(previewAssets)
+                                                                                            withMapping:[VImageAsset entityMapping]];
+    [mapping addPropertyMapping:previewAssetsMapping];
+    
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser entityMapping]];
@@ -93,6 +99,11 @@
               [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                            method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/fetch/:sequence_id"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/fetch/:sequence_id/:stream_id"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
               ];

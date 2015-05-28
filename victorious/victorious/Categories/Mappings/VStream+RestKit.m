@@ -21,6 +21,7 @@
 {
     return @{
              @"id"                  :   VSelectorName(remoteId),
+             @"stream_id"           :   VSelectorName(streamId),
              @"stream_content_type" :   VSelectorName(streamContentType),
              @"name"                :   VSelectorName(name),
              @"preview_image"       :   VSelectorName(previewImagesObject),
