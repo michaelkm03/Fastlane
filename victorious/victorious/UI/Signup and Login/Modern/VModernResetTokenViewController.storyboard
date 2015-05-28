@@ -26,8 +26,15 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yUb-q5-U3Q">
-                                <rect key="frame" x="20" y="171" width="560" height="50"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ab-OH-OVJ" userLabel="Separator">
+                                <rect key="frame" x="20" y="214" width="560" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="9LZ-hy-M4P"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yUb-q5-U3Q">
+                                <rect key="frame" x="20" y="172" width="560" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Bs8-KP-VKn"/>
                                 </constraints>
@@ -49,8 +56,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="5ab-OH-OVJ" firstAttribute="leading" secondItem="La3-Ik-eVI" secondAttribute="leading" id="0HH-zy-X9b"/>
                             <constraint firstItem="yUb-q5-U3Q" firstAttribute="top" secondItem="La3-Ik-eVI" secondAttribute="bottom" constant="8" id="9kn-If-4dB"/>
                             <constraint firstItem="La3-Ik-eVI" firstAttribute="top" secondItem="5BC-gw-Wf8" secondAttribute="bottom" constant="8" id="DVI-Fv-yFi"/>
+                            <constraint firstItem="5ab-OH-OVJ" firstAttribute="trailing" secondItem="La3-Ik-eVI" secondAttribute="trailing" id="FeE-vM-ugj"/>
                             <constraint firstItem="La3-Ik-eVI" firstAttribute="leading" secondItem="jHX-wp-gbM" secondAttribute="leading" constant="20" id="PF7-ic-K2F"/>
                             <constraint firstAttribute="trailing" secondItem="5BC-gw-Wf8" secondAttribute="trailing" constant="20" id="Tpx-fH-bjc"/>
                             <constraint firstAttribute="trailing" secondItem="La3-Ik-eVI" secondAttribute="trailing" constant="20" id="VSD-QC-eiS"/>
@@ -61,6 +70,7 @@
                             <constraint firstAttribute="trailing" secondItem="eDq-D3-Z26" secondAttribute="trailing" constant="20" id="sJ2-9L-Jer"/>
                             <constraint firstItem="eDq-D3-Z26" firstAttribute="leading" secondItem="jHX-wp-gbM" secondAttribute="leading" constant="20" id="uLo-6s-Uko"/>
                             <constraint firstItem="5BC-gw-Wf8" firstAttribute="top" secondItem="KPm-y9-wuh" secondAttribute="bottom" constant="30" id="yxi-jO-nAE"/>
+                            <constraint firstItem="yUb-q5-U3Q" firstAttribute="bottom" secondItem="5ab-OH-OVJ" secondAttribute="bottom" constant="7" id="yyp-6a-vc4"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -69,6 +79,7 @@
                         <outlet property="enterCodeLabel" destination="La3-Ik-eVI" id="qFQ-HI-YDH"/>
                         <outlet property="promptLabel" destination="5BC-gw-Wf8" id="HeT-bA-xa7"/>
                         <outlet property="resendEmailButton" destination="eDq-D3-Z26" id="fc8-XQ-leX"/>
+                        <outlet property="separator" destination="5ab-OH-OVJ" id="Ece-cf-EiS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jdw-Qo-smF" userLabel="First Responder" sceneMemberID="firstResponder"/>

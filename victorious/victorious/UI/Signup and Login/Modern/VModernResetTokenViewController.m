@@ -29,6 +29,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 @property (weak, nonatomic) IBOutlet UILabel *enterCodeLabel;
 @property (weak, nonatomic) IBOutlet UITextField *codeTextField;
 @property (weak, nonatomic) IBOutlet UIButton *resendEmailButton;
+@property (weak, nonatomic) IBOutlet UIView *separator;
 
 @end
 
@@ -49,6 +50,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.separator.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
     NSString *prompt = [self.dependencyManager stringForKey:kPromptKey] ?: @"";
     NSDictionary *promptAttributes = @{
