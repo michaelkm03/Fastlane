@@ -16,6 +16,8 @@ static NSString * const kVPrivacyURL = @"privacyURL";
 + (UIViewController *)presentableTermsOfServiceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VPrivacyPoliciesViewController *tosViewController = [[self alloc] initWithNibName:nil bundle:nil];
+    tosViewController.automaticallyAdjustsScrollViewInsets = NO;
+    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tosViewController];
     UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:tosViewController action:@selector(cancel)];
     tosViewController.navigationItem.leftBarButtonItem = dismissButton;
