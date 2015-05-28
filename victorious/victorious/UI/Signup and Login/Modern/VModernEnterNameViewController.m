@@ -112,7 +112,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    return [self shouldSetUsername:textField.text];
+    [self next:nil];
+    return YES;
 }
 
 #pragma mark - VBackgroundContainer
