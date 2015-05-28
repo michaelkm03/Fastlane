@@ -160,6 +160,8 @@
     self.usernameTextField.accessibilityIdentifier = VAutomationIdentifierProfileUsernameField;
     self.locationTextField.accessibilityIdentifier = VAutomationIdentifierProfileLocationField;
     self.profileImageView.accessibilityIdentifier = VAutomationIdentifierProfilSelectImage;
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -189,11 +191,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    if ( self.isBeingPresented )
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile];
-    }
     
     if (!self.registrationModel.username)
     {
@@ -355,8 +352,6 @@
 - (IBAction)done:(id)sender
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
 
     if ([self shouldCreateProfile])
     {
@@ -367,6 +362,8 @@
             [self didCreateProfile];
             return;
         }
+        
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
         
         [self performProfileCreationWithRegistrationModel:self.registrationModel];
     }

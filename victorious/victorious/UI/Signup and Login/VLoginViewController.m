@@ -299,6 +299,7 @@
 {
     [self showLoginProgress];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegister];
     [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
@@ -331,6 +332,7 @@
 {
     [self showLoginProgress];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegister];
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
@@ -414,6 +416,7 @@
 - (IBAction)signup:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegister];
     
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
