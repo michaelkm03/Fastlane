@@ -13,7 +13,6 @@
 extern NSString * const VDependencyManagerTitleKey;
 extern NSString * const VDependencyManagerBackgroundKey;
 extern NSString * const VDependencyManagerImageURLKey;
-extern NSString * const VDependencyManagerWebURLKey;
 
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;

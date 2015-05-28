@@ -22,6 +22,8 @@
 #import "VWebBrowserHeaderLayoutManager.h"
 #import "VDependencyManager+VWebBrowser.h"
 
+static NSString * const kURLKey = @"url";
+
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     VWebBrowserViewControllerStateComplete,
@@ -52,7 +54,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     webBrowserViewController.dependencyManager = dependencyManager;
     webBrowserViewController.layoutIdentifier = layoutIdentifier;
     
-    NSString *templateUrlString = [dependencyManager stringForKey:VDependencyManagerWebURLKey];
+    NSString *templateUrlString = [dependencyManager stringForKey:kURLKey];
     if ( templateUrlString != nil )
     {
         [webBrowserViewController loadUrlString:templateUrlString];
