@@ -1,7 +1,7 @@
 {
     "destination": null,
     "icon": {
-        "imageURL": "Menu"
+        "imageURL": "A_menu"
     },
     "identifier": "Accessory Menu",
     "position": "left"

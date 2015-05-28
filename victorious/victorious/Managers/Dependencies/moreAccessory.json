@@ -2,7 +2,7 @@
     "destination": null,
     "title": "More",
     "icon": {
-        "imageURL": "More"
+        "imageURL": "A_more"
     },
     "identifier": "Accessory More",
     "position": "right"

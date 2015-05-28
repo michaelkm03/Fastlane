@@ -19,8 +19,9 @@
             "position": "right"
         }]
     },
+    "title": "Find Friends",
     "icon": {
-        "imageURL": "A_findFriendsIcon"
+        "imageURL": "A_findFriends"
     },
     "identifier": "Accessory Find Friends",
     "position": "right"

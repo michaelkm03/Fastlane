@@ -6,7 +6,7 @@
             "destination": null,
             "title": "More",
             "icon": {
-                "imageURL": "More"
+                "imageURL": "A_more"
             },
             "identifier": "Accessory More",
             "position": "right"
@@ -14,7 +14,7 @@
     },
     "title": "New Message",
     "icon": {
-        "imageURL": "profileCompose"
+        "imageURL": "A_compose"
     },
     "identifier": "Accessory New Message",
     "position": "right"

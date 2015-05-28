@@ -247,10 +247,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         else
         {
             // Add Inbox and Find Friends to current user profile
+            NSParameterAssert( [templateDecorator setTemplateValue:@[]
+                                                        forKeyPath:@"scaffold/menu/items/3/destination/accessoryScreens"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"inboxAccessory"
-                                                                forKeyPath:@"scaffold/menu/items/3/accessoryScreens/1"] );
+                                                                forKeyPath:@"scaffold/menu/items/3/destination/accessoryScreens/1"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"findFriendsAccessory"
-                                                                forKeyPath:@"scaffold/menu/items/3/accessoryScreens/2"] );
+                                                                forKeyPath:@"scaffold/menu/items/3/destination/accessoryScreens/2"] );
             
             // Add Compose to messages screen in inbox main menu item
             NSParameterAssert( [templateDecorator setTemplateValue:@[]

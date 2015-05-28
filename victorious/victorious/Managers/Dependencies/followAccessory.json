@@ -1,10 +1,10 @@
 {
     "title": "Follow Hashtag",
     "icon": {
-        "imageURL": "streamFollowHashtag"
+        "imageURL": "A_follow"
     },
     "selectedIcon": {
-        "imageURL": "followedHashtag"
+        "imageURL": "A_followed"
     },
     "identifier": "Accessory Follow Hashtag",
     "position": "right"
