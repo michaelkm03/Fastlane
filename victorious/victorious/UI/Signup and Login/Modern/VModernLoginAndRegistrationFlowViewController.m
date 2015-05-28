@@ -31,6 +31,7 @@ static NSString *kLoginScreens = @"loginScreens";
 static NSString *kLandingScreen = @"landingScreen";
 static NSString *kStatusBarStyleKey = @"statusBarStyle";
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
+static NSString *kForceRegistrationKey = @"forceRegistration";
 
 @interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer, UINavigationControllerDelegate>
 
@@ -66,16 +67,13 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                          forKey:kLandingScreen];
         [self setViewControllers:@[_landingScreen]];
         
-        NSNumber *shouldForce = [dependencyManager numberForKey:@"forceRegistration"];
-        if (shouldForce != nil)
+        NSNumber *shouldForce = [dependencyManager numberForKey:kForceRegistrationKey];
+        if (!shouldForce.boolValue)
         {
-            if (![shouldForce boolValue])
-            {
-                UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                              target:self
-                                                                                              action:@selector(cancelLoginAndRegistration)];
-                _landingScreen.navigationItem.leftBarButtonItem = cancelButton;
-            }
+            UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(cancelLoginAndRegistration)];
+            _landingScreen.navigationItem.leftBarButtonItem = cancelButton;
         }
         
         // Login + Registration
@@ -167,19 +165,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-#pragma mark - VHasManagedDependencies
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    // We only care about a new dependency manager if we don't already have one. Shoudl use initWithDependencyManager:
-    if (_dependencyManager)
-    {
-        return;
-    }
-    
-    _dependencyManager = dependencyManager;
-}
-
 #pragma mark - VLoginFlowControllerResponder
 
 - (void)cancelLoginAndRegistration
@@ -217,7 +202,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)selectedTwitterAuthorization
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;
@@ -237,7 +221,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)selectedFacebookAuthorization
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;
@@ -259,7 +242,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
               password:(NSString *)password
             completion:(void(^)(BOOL success, NSError *error))completion
 {
-    // Not accepting request right now.
+    NSParameterAssert(completion != nil);
     if (self.actionsDisabled)
     {
         return;
@@ -281,7 +264,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                  password:(NSString *)password
                completion:(void (^)(BOOL, NSError *))completion
 {
-    // Not accepting request right now.
+    NSParameterAssert(completion != nil);
     if (self.actionsDisabled)
     {
         return;
@@ -301,7 +284,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)setUsername:(NSString *)username
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;
@@ -320,7 +302,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)forgotPasswordWithInitialEmail:(NSString *)initialEmail
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;
@@ -345,7 +326,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)setResetToken:(NSString *)resetToken
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;
@@ -367,7 +347,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)updateWithNewPassword:(NSString *)newPassword
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;
@@ -385,7 +364,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)showPrivacyPolicy
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;
@@ -398,7 +376,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)showTermsOfService
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;
@@ -434,7 +411,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)continueRegistrationFlow
 {
-    // Not accepting request right now.
     if (self.actionsDisabled)
     {
         return;

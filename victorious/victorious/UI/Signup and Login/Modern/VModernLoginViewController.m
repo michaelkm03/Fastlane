@@ -22,8 +22,8 @@
 
 @import CoreText;
 
-static NSString *kPromptKey = @"prompt";
-static NSString *kKeyboardStyleKey = @"keyboardStyle";
+static NSString * const kPromptKey = @"prompt";
+static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VModernLoginViewController () <UITextFieldDelegate, UITextViewDelegate, VBackgroundContainer>
 
@@ -139,9 +139,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [self.nextButton setTitleTextAttributes:nextButtonAttributes
                                    forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = self.nextButton;
-
-    // So the keyboard slides in from the right
-    [self.emailField becomeFirstResponder];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -162,8 +159,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 {
     [super viewDidDisappear:animated];
     
-    // Cleanup
-//    [self.view endEditing:YES];
     self.emailField.text = nil;
     self.passwordField.text = nil;
     [self.emailField clearValidation];

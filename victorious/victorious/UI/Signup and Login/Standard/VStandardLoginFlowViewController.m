@@ -24,46 +24,13 @@
 
 @implementation VStandardLoginFlowViewController
 
-- (instancetype)initWithRootViewController:(UIViewController *)rootViewController
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSAssert(false, @"This navigation controller manages its own nav stack.");
-    return nil;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithNavigationBarClass:(Class)navigationBarClass toolbarClass:(Class)toolbarClass
-{
-    self = [super initWithNavigationBarClass:navigationBarClass toolbarClass:toolbarClass];
-    if (self)
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (void)sharedInit
-{
-    _vTransitioninDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
-    [self setTransitioningDelegate:_vTransitioninDelegate];
+    VStandardLoginFlowViewController *standardLoginFLowController = [[VStandardLoginFlowViewController alloc] initWithNibName:nil bundle:nil];
+    standardLoginFLowController.dependencyManager = dependencyManager;
+    standardLoginFLowController.vTransitioninDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+    [standardLoginFLowController setTransitioningDelegate:standardLoginFLowController.vTransitioninDelegate];
+    return standardLoginFLowController;
 }
 
 - (void)viewWillAppear:(BOOL)animated

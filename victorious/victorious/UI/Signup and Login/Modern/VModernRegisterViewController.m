@@ -112,9 +112,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.navigationItem.rightBarButtonItem = self.nextButton;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
-    
-    // So the keyboard slides in from the right
-    [self.emailField becomeFirstResponder];
 }
 
 - (void)viewDidLayoutSubviews
@@ -296,11 +293,11 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     {
         message = NSLocalizedString(@"User already exists", @"");
     }
-    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
-                                                           message:message
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                 otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                          otherButtonTitles:nil];
     [alert show];
 }
 

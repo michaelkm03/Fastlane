@@ -71,10 +71,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
             [loginFlowController setAuthorizationContext:authorizationContext];
         }
         [loginFlowController setCompletionBlock:completionActionBlock];
-        if ([loginFlowController respondsToSelector:@selector(setDependencyManager:)])
-        {
-            [(id<VHasManagedDependencies>)loginFlowController setDependencyManager:self.dependencyManager];
-        }
 
         [presentingViewController presentViewController:loginFlowController
                                                animated:YES
@@ -104,10 +100,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
         [loginFlowController setAuthorizationContext:authorizationContext];
     }
     [loginFlowController setCompletionBlock:completionActionBlock];
-    if ([loginFlowController respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [(id<VHasManagedDependencies>)loginFlowController setDependencyManager:self.dependencyManager];
-    }
 
     self.presentingController = presentingViewController;
     self.loginController = loginFlowController;
