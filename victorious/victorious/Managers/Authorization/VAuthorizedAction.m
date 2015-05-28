@@ -50,7 +50,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 {
     NSParameterAssert( completionActionBlock != nil );
     NSParameterAssert( presentingViewController != nil );
-    
     NSAssert( self.objectManager != nil, @"Before calling, the `objectManager` property should be set directly or through `initWithObjectManager`." );
     
     if ( self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
@@ -88,6 +87,16 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
                         context:(VAuthorizationContext)authorizationContext
                      completion:(void(^)(BOOL authorized))completionActionBlock
 {
+    NSParameterAssert( completionActionBlock != nil );
+    NSParameterAssert( presentingViewController != nil );
+    NSAssert( self.objectManager != nil, @"Before calling, the `objectManager` property should be set directly or through `initWithObjectManager`." );
+    
+    if (self.objectManager.mainUserLoggedIn)
+    {
+        completionActionBlock(YES);
+        return YES;
+    }
+    
     UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
                                                                                                                        forKey:kLoginAndRegistrationViewKey];
     
@@ -123,7 +132,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
          self.presentingController = nil;
          self.replicantView = nil;
      }];
-
 }
 
 @end
