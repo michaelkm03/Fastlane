@@ -370,7 +370,8 @@
 
 "AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
 "AccessMicrophoneRestricted" = "Unable to access your microphone due to restrictions on your device.";
-"AccessCameraDenied"    =   "To record video from your device, please grant access by going to Settings -> Privacy";
+"AccessLibraryRestricted" = "To access media from your camera roll, please grant access by going to Settings -> Privacy -> Photos";
+"AccessCameraDenied"    =   "In order to use the camera, please grant access by going to Settings -> Privacy";
 "AccessCameraRestricted" =  "Unable to access your camera due to restrictions on your device.";
 "UnableSelectVideo"     = "Unable to select video.";
 
@@ -565,3 +566,8 @@
 "Render failure" = "Render failure";
 "Publishing..." = "Publishing...";
 "Upload failure" = "Upload failure";
+
+"In order to post content, we need access to your camera. Allow access?" = "In order to post content, we need access to your camera. Allow access?";
+"In order to be recognized in the community, you need to set a profile picture.\n\nWould you like to set one now?" = "In order to be recognized in the community, you need to set a profile picture.\n\nWould you like to set one now?";
+"In order to record videos, we need access to your microphone. Allow access?" = "In order to record videos, we need access to your microphone. Allow access?";
+

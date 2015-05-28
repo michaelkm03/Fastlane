@@ -103,7 +103,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - Content View
 
-- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
+- (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
     VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
     
@@ -116,7 +116,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         return;
     }
     
-    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence commentID:commentID placeholderImage:placeholderImage];
+    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence inStreamWithID:streamId commentID:commentID placeholderImage:placeholderImage];
     if ( contentView != nil )
     {
         if ( self.presentedViewController )

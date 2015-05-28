@@ -106,7 +106,7 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:url];
+    [[VRootViewController rootViewController] applicationOpenURL:url sourceApplication:sourceApplication annotation:annotation];
     return YES;
 }
 

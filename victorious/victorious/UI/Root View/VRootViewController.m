@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
-@property (nonatomic, readwrite) VDeeplinkReceiver *deepLinkReceiver;
+@property (nonatomic, strong) VDeeplinkReceiver *deepLinkReceiver;
 
 @end
 
@@ -327,10 +327,27 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeepLinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
+    
+    [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
+}
 
+- (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [self openURL:url fromExternalSourceWithOptionalNotificationID:nil];
+}
+
+/**
+ This version of -openURL: should be called when the request to open a URL comes from a place outside of the app, usually
+ a push notification, but maybe mobile safari or another application calling -[UIApplication openURL:]
+ */
+- (void)openURL:(NSURL *)deepLink fromExternalSourceWithOptionalNotificationID:(NSString *)notificationID
+{
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && self.properlyBackgrounded )
     {
-        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
+        if ( notificationID != nil )
+        {
+            [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
+        }
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
             [self.deepLinkReceiver queueDeeplink:deepLink];
@@ -338,7 +355,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         }
         else
         {
-            [self receiveDeeplink:deepLink];
+            [self openURL:deepLink];
         }
     }
     else if ( [deepLink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
@@ -346,9 +363,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
     }
 }
-- (void)receiveDeeplink:(NSURL *)deepLink
+
+- (void)openURL:(NSURL *)url
 {
-    [self.deepLinkReceiver receiveDeeplink:deepLink];
+    [self.deepLinkReceiver receiveDeeplink:url];
 }
 
 #pragma mark - Ad Networks
@@ -393,7 +411,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         return;
     }
-    [[VTrackingManager sharedInstance] clearSessionParameters];
     
     if ( self.queuedNotificationID != nil )
     {
@@ -414,7 +431,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSURL *url = notification.userInfo[UIApplicationLaunchOptionsURLKey];
     if ( url != nil )
     {
-        [self receiveDeeplink:url];
+        [self openURL:url];
         return;
     }
     

@@ -50,10 +50,10 @@
 "bMr-K0-Coy.text" = "Mot de passe oublié ? Réinitialisez-le ici";
 
 /* Class = "UINavigationItem"; title = "Login with E-mail"; ObjectID = "d29-FA-lll"; */
-"d29-FA-lll.title" = "Se connecter via une adresse e-mail";
+"d29-FA-lll.title" = "Se connecter via e-mail";
 
 /* Class = "UILabel"; text = "Sign up with Email"; ObjectID = "gWK-fr-OZX"; */
-"gWK-fr-OZX.text" = "Se connecter via une adresse e-mail";
+"gWK-fr-OZX.text" = "Se connecter via e-mail";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "jhx-0Z-CyE"; */
 "jhx-0Z-CyE.normalTitle" = "Annuler";
