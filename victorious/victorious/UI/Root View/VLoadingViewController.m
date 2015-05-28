@@ -297,6 +297,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                        },
                                    @{
                                        @"name":@"modernEnterNameScreen.screen",
+                                       @"prompt":@"Yo dawg we need your name🐕",
                                        @"color.text.content":
                                            @{
                                                @"red":@258,
