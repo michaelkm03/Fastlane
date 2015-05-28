@@ -61,16 +61,21 @@ static const CGFloat kBezierRadius = 10.0f;
         self.layer.shadowColor = [UIColor blackColor].CGColor;
         self.layer.shadowOpacity = kShadowOpacity;
         self.layer.shadowOffset = kShadowOffset;
+        
+        [self v_addFitToParentConstraintsToSubview:_backgroundView];
     }
     return self;
 }
 
-- (void)layoutSubviews
+- (void)setArrowDirection:(VTooltipArrowDirection)arrowDirection
 {
-    [super layoutSubviews];
-    
-    [self v_addFitToParentConstraintsToSubview:_backgroundView];
-    
+    _arrowDirection = arrowDirection;
+    [self updateCaptionLabelConstraints];
+}
+
+- (void)updateCaptionLabelConstraints
+{
+    [self.captionLabel removeConstraints:self.captionLabel.constraints];
     UIEdgeInsets insets = UIEdgeInsetsMake(kVerticalLabelInset, kHorizontalLabelInset, kVerticalLabelInset, kHorizontalLabelInset);
     if ( self.arrowDirection == VTooltipArrowDirectionUp )
     {

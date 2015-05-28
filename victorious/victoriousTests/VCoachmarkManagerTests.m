@@ -124,7 +124,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     [self.coachmarkManager resetShownCoachmarks];
     NSArray *storedCoachmarks = [userDefaults objectForKey:kShownCoachmarksKey];
     XCTAssertNotNil(storedCoachmarks, @"resetShownCoachmarks should set an array to 'shownCoachmarks' in the standard user defaults after reset");
-    XCTAssert([storedCoachmarks count] == 0, @"resetShownCoachmarks should set an array to 'shownCoachmarks' in the standard user defaults after reset");
+    XCTAssertEqual([storedCoachmarks count], (unsigned long)0, @"resetShownCoachmarks should set an array to 'shownCoachmarks' in the standard user defaults after reset");
 }
 
 #pragma mark - Display coachmark tests
@@ -134,7 +134,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     CoachmarkDisplayerViewController *viewController = [[CoachmarkDisplayerViewController alloc] init];
     viewController.screenIdentifier = @"0"; //Has no valid coachmarks to display
     BOOL added = [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
-    XCTAssert(!added, @"displayCoachmarkViewInViewController: should return NO when it is not going to add a coachmark view to a view controller");
+    XCTAssertFalse(added, @"displayCoachmarkViewInViewController: should return NO when it is not going to add a coachmark view to a view controller");
     
     viewController.screenIdentifier = @"1"; //Has at least 1 valid coachmark to display
     added = [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
@@ -168,7 +168,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     [self.coachmarkManager resetShownCoachmarks];
     viewController.returnNilNextResponder = YES;
     added = [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
-    XCTAssert(!added, @"displayCoachmarkViewInViewController: should not be able to add a coachmark as a tooltip if nothing in the responder chain finds the view");
+    XCTAssertFalse(added, @"displayCoachmarkViewInViewController: should not be able to add a coachmark as a tooltip if nothing in the responder chain finds the view");
 }
 
 - (void)testDisplayCoachmarkViewInViewControllerWithNavigationController
@@ -190,7 +190,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                                break;
                            }
                        }
-                       XCTAssert(!foundSubview, @"The coachmarkManager should not add a coachmark passthrough container view to the view controller's view after the animation delay");
+                       XCTAssertFalse(foundSubview, @"The coachmarkManager should not add a coachmark passthrough container view to the view controller's view after the animation delay");
                        
                        foundSubview = NO;
                        for ( UIView *subview in navigationController.view.subviews )
@@ -286,7 +286,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        BOOL added = [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
-                       XCTAssert(!added, @"displayCoachmarkViewInViewController: should not re-add the same coachmark view multiple times");
+                       XCTAssertFalse(added, @"displayCoachmarkViewInViewController: should not re-add the same coachmark view multiple times");
                        [expectation fulfill];
                    });
     [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
@@ -352,7 +352,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                            if ( [subview isKindOfClass:[VCoachmarkPassthroughContainerView class]] )
                            {
                                VCoachmarkView *coachmarkView = ((VCoachmarkPassthroughContainerView *)subview).coachmarkView;
-                               XCTAssert(coachmarkView.arrowDirection == VTooltipArrowDirectionDown, @"tooltip arrow direction should be down when the center of the target rect is more than halfway down the screen displaying it");
+                               XCTAssertEqual(coachmarkView.arrowDirection, VTooltipArrowDirectionDown, @"tooltip arrow direction should be down when the center of the target rect is more than halfway down the screen displaying it");
                                CGRect tooltipFrame = coachmarkView.frame;
                                tooltipFrame = CGRectInset(tooltipFrame, 0, - (kArrowToLocationDistance + 1.0f)); //1.0f for intersection
                                XCTAssert(CGRectIntersectsRect(tooltipFrame, kLowRect));
@@ -365,7 +365,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                            if ( [subview isKindOfClass:[VCoachmarkPassthroughContainerView class]] )
                            {
                                VCoachmarkView *coachmarkView = ((VCoachmarkPassthroughContainerView *)subview).coachmarkView;
-                               XCTAssert(coachmarkView.arrowDirection == VTooltipArrowDirectionUp, @"tooltip arrow direction should be up when the center of the target rect is less than halfway down the screen displaying it");
+                               XCTAssertEqual(coachmarkView.arrowDirection, VTooltipArrowDirectionUp, @"tooltip arrow direction should be up when the center of the target rect is less than halfway down the screen displaying it");
                                CGRect tooltipFrame = coachmarkView.frame;
                                tooltipFrame = CGRectInset(tooltipFrame, 0, - (kArrowToLocationDistance + 1.0f)); //1.0f for intersection
                                XCTAssert(CGRectIntersectsRect(tooltipFrame, kHighRect));
@@ -399,7 +399,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                                break;
                            }
                        }
-                       XCTAssert(!foundSubview, @"The coachmarkManager should not add a coachmark passthrough container view to the view controller's view if hide is called before it can display");
+                       XCTAssertFalse(foundSubview, @"The coachmarkManager should not add a coachmark passthrough container view to the view controller's view if hide is called before it can display");
                        [expectation fulfill];
                    });
     [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
@@ -437,7 +437,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                                    break;
                                }
                            }
-                           XCTAssert(!foundSubview, @"The coachmarkManager should remove the passthrough container view from the view controller's view after hideCoachmarkViewInViewController:animated: is called");
+                           XCTAssertFalse(foundSubview, @"The coachmarkManager should remove the passthrough container view from the view controller's view after hideCoachmarkViewInViewController:animated: is called");
                        }
                        [expectation fulfill];
                    });

@@ -399,7 +399,7 @@ static NSString * const kInitialKey = @"initial";
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
 }
 
-#pragma mark - VCoachmarkViewResponder
+#pragma mark - VCoachmarkDisplayResponder
 
 - (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion
 {
@@ -442,7 +442,7 @@ static NSString * const kInitialKey = @"initial";
     }
 }
 
-#pragma mark - VCoachmarkDisplayResponder
+#pragma mark - VCoachmarkDisplayer
 
 - (NSString *)screenIdentifier
 {
