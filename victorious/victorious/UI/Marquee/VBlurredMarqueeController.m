@@ -18,6 +18,9 @@
 #import "VDependencyManager.h"
 #import "UIImageView+Blurring.h"
 #import <SDWebImage/SDWebImageManager.h>
+#import <SDWebImage/SDWebImagePrefetcher.h>
+#import "VStreamItemPreviewView.h"
+#import "UIView+VViewRendering.h"
 
 #import "VDependencyManager+VBackgroundContainer.h"
 
@@ -32,7 +35,8 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 @property (nonatomic, assign) BOOL showedInitialDisplayAnimation;
 @property (nonatomic, assign) BOOL firstImageLoaded;
 @property (nonatomic, assign) BOOL backgroundCellIsVisible;
-@property (nonatomic, strong) NSMutableDictionary *loadedImages;
+@property (nonatomic, strong) NSMutableDictionary *loadedPreviewViews;
+@property (nonatomic, strong) NSMutableArray *renderedPreviewViews;
 
 @end
 
@@ -97,7 +101,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     
     [self.collectionView.collectionViewLayout invalidateLayout];
     
-    NSMutableArray *previewImages = [[NSMutableArray alloc] init];
     NSMutableArray *contentNames = [[NSMutableArray alloc] init];
     
     NSInteger marqueeItemsCount = self.stream.marqueeItems.count;
@@ -106,75 +109,62 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         [self.crossfadingBlurredImageView setupWithNumberOfImageViews:marqueeItemsCount];
     }
     
-    self.loadedImages = [[NSMutableDictionary alloc] init];
+    self.loadedPreviewViews = [[NSMutableDictionary alloc] init];
+    self.renderedPreviewViews = [[NSMutableArray alloc] init];
     self.firstImageLoaded = NO;
     
     for ( VStreamItem *streamItem in self.stream.marqueeItems )
     {
-        id previewImageURL = [NSNull null];
-        NSArray *previewImagePaths = streamItem.previewImagePaths;
-        if ( previewImagePaths.count > 0 )
-        {
-            NSURL *imageURL = [NSURL URLWithString:[previewImagePaths firstObject]];
-            if ( ![imageURL.absoluteString isEqualToString:@""] )
-            {
-                previewImageURL = imageURL;
-            }
-        }
-        
-        [self loadImageAndUpdateSubviewsForURL:previewImageURL atIndex:[self.stream.marqueeItems indexOfObject:streamItem]];
-        [previewImages addObject:previewImageURL];
+        [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[self.stream.marqueeItems indexOfObject:streamItem]];
         [contentNames addObject:streamItem.name];
     }
     
     [self.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[self labelTextAttributes]];
 }
 
-- (void)loadImageAndUpdateSubviewsForURL:(NSURL *)imageURL atIndex:(NSUInteger)index
+- (void)loadContentForStreamItem:(VStreamItem *)streamItem andUpdateSubviewsAtIndex:(NSUInteger)index
 {
+    VStreamItemPreviewView *previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
+    
     __weak VBlurredMarqueeController *weakSelf = self;
-    [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
-                                                          options:SDWebImageRetryFailed
-                                                         progress:nil
-                                                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
-     {
-         __strong VBlurredMarqueeController *strongSelf = weakSelf;
-         if ( strongSelf == nil )
-         {
-             return;
-         }
-         
-         BOOL backgroundShouldAnimate = !self.showedInitialDisplayAnimation && index == 0; //Animate if we're doing the initial display animation
-         
-         /*
-          No need to animate the streamItemCell if the image failed to load, image loaded from cache, or we're doing the
-            initial display animation (where the image starts offscreen)
-          */
-         BOOL streamItemCellShouldAnimate = image != nil && cacheType == SDImageCacheTypeNone && self.showedInitialDisplayAnimation;
-
-         //Populate visible subviews with the newly loaded image
-         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-         NSUInteger cellIndex = [[strongSelf.collectionView indexPathsForVisibleItems] indexOfObject:indexPath];
-         if ( cellIndex != NSNotFound )
-         {
-             //The streamItemCell we need to update is already on screen, update it with animation (if it's a new image)
-             VBlurredMarqueeStreamItemCell *streamItemCell = (VBlurredMarqueeStreamItemCell *)strongSelf.collectionView.visibleCells[cellIndex];
-             [streamItemCell updateToImage:image animated:streamItemCellShouldAnimate];
-             backgroundShouldAnimate = YES; //Animate if we're the we're also animating the streamItemCell in front of it
-         }
-         
-         [strongSelf.crossfadingBlurredImageView updateBlurredImageViewForImage:image fromURL:imageURL withTintColor:[strongSelf tintColorForCrossFadingBlurredImageView] atIndex:index animated:backgroundShouldAnimate];
-         if ( image != nil )
-         {
-             strongSelf.loadedImages[indexPath] = image;
-         }
-         
-         if ( !strongSelf.showedInitialDisplayAnimation && index == 0 )
-         {
-             self.firstImageLoaded = YES;
-             [self attemptToPerformInitialDisplayAnimation];
-         }
-     }];
+    previewView.displayReadyBlock = ^(BOOL success, VStreamItemPreviewView *loadedPreviewView)
+    {
+        __strong VBlurredMarqueeController *strongSelf = weakSelf;
+        if ( strongSelf == nil )
+        {
+            return;
+        }
+        
+        BOOL backgroundShouldAnimate = !strongSelf.showedInitialDisplayAnimation && index == 0; //Animate if we're doing the initial display animation
+        
+        /*
+         No need to animate the streamItemCell if the image failed to load, image loaded from cache, or we're doing the
+         initial display animation (where the image starts offscreen)
+         */
+        BOOL streamItemCellShouldAnimate = success && strongSelf.showedInitialDisplayAnimation;
+        
+        //Populate visible subviews with the newly loaded image
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        NSUInteger cellIndex = [[strongSelf.collectionView indexPathsForVisibleItems] indexOfObject:indexPath];
+        if ( cellIndex != NSNotFound )
+        {
+            //The streamItemCell we need to update is already on screen, update it with animation (if it's a new image)
+            VBlurredMarqueeStreamItemCell *streamItemCell = (VBlurredMarqueeStreamItemCell *)strongSelf.collectionView.visibleCells[cellIndex];
+            [streamItemCell updateToPreviewView:loadedPreviewView animated:streamItemCellShouldAnimate];
+            backgroundShouldAnimate = YES; //Animate if we're the we're also animating the streamItemCell in front of it
+        }
+        
+        strongSelf.loadedPreviewViews[indexPath] = loadedPreviewView;
+        [strongSelf renderPreviewView:loadedPreviewView atIndex:indexPath.row animated:backgroundShouldAnimate];
+        
+        if ( !strongSelf.showedInitialDisplayAnimation && index == 0 )
+        {
+            self.firstImageLoaded = YES;
+            [self attemptToPerformInitialDisplayAnimation];
+        }
+    };
+    
+    [previewView setStreamItem:streamItem];
 }
 
 - (void)attemptToPerformInitialDisplayAnimation
@@ -273,19 +263,28 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     return [[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] colorWithAlphaComponent:0.4f];
 }
 
-- (UIImage *)loadedImageAtIndex:(NSUInteger)index
+- (VStreamItemPreviewView *)loadedPreviewViewForIndexPath:(NSIndexPath *)indexPath
 {
-    if ( index >= self.loadedImages.count )
-    {
-        return nil;
-    }
-    return self.loadedImages[[NSIndexPath indexPathForRow:index inSection:0]];
+    return self.loadedPreviewViews[indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VBlurredMarqueeStreamItemCell *streamItemCell = (VBlurredMarqueeStreamItemCell *)cell;
-    [streamItemCell updateToImage:[self loadedImageAtIndex:indexPath.row] animated:NO]; //No need to animate as this will be set while cell if off-screen
+    VStreamItemPreviewView *previewView = [self loadedPreviewViewForIndexPath:indexPath];
+    [streamItemCell updateToPreviewView:previewView animated:NO]; //No need to animate as this will be set while cell if off-screen
+    [self renderPreviewView:previewView atIndex:indexPath.row animated:NO];
+}
+
+- (void)renderPreviewView:(VStreamItemPreviewView *)previewView atIndex:(NSUInteger)index animated:(BOOL)animated
+{
+    if ( previewView.superview != nil && ![self.renderedPreviewViews containsObject:previewView] )
+    {
+        [self.renderedPreviewViews addObject:previewView];
+        [previewView layoutIfNeeded];
+        UIImage *image = [previewView renderedView];
+        [self.crossfadingBlurredImageView updateBlurredImageViewForImage:image fromPreviewView:previewView withTintColor:[self tintColorForCrossFadingBlurredImageView] atIndex:index animated:animated];
+    }
 }
 
 @end

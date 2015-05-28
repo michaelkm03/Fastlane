@@ -279,12 +279,16 @@ static const CGFloat maxCaptionHeight = 80.0f;
 
 #pragma mark - VStreamCellComponentSpecialization
 
-+ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
-                          baseIdentifier:(NSString *)baseIdentifier
++ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
+                            baseIdentifier:(NSString *)baseIdentifier
 {
     NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
-    identifier = [VSequencePreviewView reuseIdentifierForSequence:sequence baseIdentifier:identifier];
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
+                                                       baseIdentifier:identifier];
+    }
     return identifier;
 }
 

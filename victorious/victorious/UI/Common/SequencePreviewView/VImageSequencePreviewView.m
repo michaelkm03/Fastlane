@@ -32,6 +32,7 @@
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _previewImageView.clipsToBounds = YES;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
     }
@@ -44,7 +45,16 @@
 {
     _sequence = sequence;
     
-    [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
+    [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
+                           placeholderImage:nil
+                                 completion:^(UIImage *image)
+     {
+         self.readyForDisplay = YES;
+         if ( self.displayReadyBlock != nil )
+         {
+             self.displayReadyBlock(image != nil, self);
+         }
+     }];
 }
 
 @end

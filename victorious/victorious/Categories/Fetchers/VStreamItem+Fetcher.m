@@ -8,7 +8,6 @@
 
 #import "VStreamItem+Fetcher.h"
 
-static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentTypeContent = @"content";
 static NSString * const kVStreamContentTypeStream = @"stream";
 

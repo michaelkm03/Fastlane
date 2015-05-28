@@ -23,7 +23,7 @@ static const CGFloat kShadowOpacity = 0.4f;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel; //The label displaying the title of the content
 @property (nonatomic, weak) IBOutlet UIView *gradientContainer; //The view containing the black gradient behind the titleLabel
 @property (nonatomic, strong) CAGradientLayer *gradientLayer; //The gradient displayed in the gradient container
-@property (nonatomic, strong) CALayer *darkOverlayLayer; //An overlay to apply to the imageView
+@property (nonatomic, weak) IBOutlet UIView *overlayContainer; //An overlay to apply to the imageView
 @property (nonatomic, weak) IBOutlet UIView *contentContainer; //The container for all variable cell content, will have shadow applied to it
 
 @end
@@ -37,7 +37,8 @@ static const CGFloat kShadowOpacity = 0.4f;
     self.contentContainer.layer.shadowColor = [UIColor blackColor].CGColor;
     self.contentContainer.layer.shadowOffset = CGSizeZero;
     self.contentContainer.layer.shadowOpacity = kShadowOpacity;
-    self.previewImageView.alpha = 0.0f;
+    
+    self.overlayContainer.backgroundColor = [UIColor colorWithWhite:kOverlayWhiteAmount alpha:kOverlayOpacity];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -54,10 +55,6 @@ static const CGFloat kShadowOpacity = 0.4f;
     {
         return;
     }
-    
-    NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
-    [self.previewImageView fadeInImageAtURL:previewImageUrl
-                           placeholderImage:nil];
     
     if ( [self.titleLabel.text isEqualToString:streamItem.name] )
     {
@@ -87,23 +84,6 @@ static const CGFloat kShadowOpacity = 0.4f;
                                   (id)[[UIColor blackColor] colorWithAlphaComponent:kGadientEndOpacity].CGColor
                                   ];
     [self.gradientContainer.layer insertSublayer:self.gradientLayer atIndex:0];
-}
-
-- (void)setBounds:(CGRect)bounds
-{
-    CGRect oldBounds = self.bounds;
-    [super setBounds:bounds];
-    
-    if ( !CGRectEqualToRect(oldBounds, bounds) && !CGRectEqualToRect(CGRectZero, bounds) )
-    {
-        //Updating to new valid bounds, update overlay layer
-        [self.darkOverlayLayer removeFromSuperlayer];
-        
-        self.darkOverlayLayer = [CALayer layer];
-        self.darkOverlayLayer.backgroundColor = [UIColor colorWithWhite:kOverlayWhiteAmount alpha:kOverlayOpacity].CGColor;
-        self.darkOverlayLayer.frame = bounds;
-        [self.previewImageView.layer addSublayer:self.darkOverlayLayer];
-    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

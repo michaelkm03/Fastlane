@@ -8,6 +8,8 @@
 
 #import "VAbstractMarqueeStreamItemCell.h"
 
+@class VStreamItemPreviewView;
+
 @interface VBlurredMarqueeStreamItemCell : VAbstractMarqueeStreamItemCell
 
 /**
@@ -16,6 +18,6 @@
     @param image The image to display
     @param animated Whether or not the image should be updated with a fade animation
  */
-- (void)updateToImage:(UIImage *)image animated:(BOOL)animated;
+- (void)updateToPreviewView:(VStreamItemPreviewView *)previewView animated:(BOOL)animated;
 
 @end

@@ -277,13 +277,16 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 #pragma mark - VStreamCellComponentSpecialization
 
-+ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
-                          baseIdentifier:(NSString *)baseIdentifier
++ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
+                            baseIdentifier:(NSString *)baseIdentifier
 {
     NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
-    identifier = [VSequencePreviewView reuseIdentifierForSequence:sequence
-                                                   baseIdentifier:identifier];
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        identifier = [VSequencePreviewView reuseIdentifierForStreamItem:streamItem
+                                                         baseIdentifier:identifier];
+    }
     return identifier;
 }
 

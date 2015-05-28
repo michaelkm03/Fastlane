@@ -13,8 +13,6 @@
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 
-#import "VStreamWebViewController.h"
-
 // Views + Helpers
 #import "VDefaultProfileButton.h"
 #import "UIView+Autolayout.h"
@@ -31,13 +29,11 @@ static NSTimeInterval const kVDetailHideTime = 0.2f;
 static CGFloat const kVDetailBounceHeight = 4.0f;
 static NSTimeInterval const kVDetailBounceTime = 0.35f;
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
-static NSString * const kVOrIconKey = @"orIcon";
 
 @interface VFullscreenMarqueeStreamItemCell ()
 
 @property (nonatomic, assign) BOOL detailsVisible;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
-@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainerBackdrop;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
@@ -57,10 +53,6 @@ static NSString * const kVOrIconKey = @"orIcon";
     
     self.nameLabel.text = streamItem.name;
 
-    NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
-    [self.previewImageView fadeInImageAtURL:previewImageUrl
-                           placeholderImage:nil];
-
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];
     [self restartHideTimer];
@@ -75,9 +67,6 @@ static NSString * const kVOrIconKey = @"orIcon";
         self.detailsContainerBackdrop.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-        UIImage *orIcon = [dependencyManager imageForKey:kVOrIconKey];
-        self.pollOrImageView.image = orIcon;
-        
     }
 }
 
@@ -166,7 +155,7 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 - (UIView *)loadingBackgroundContainerView
 {
-    return self.loadingBackgroundContainer;
+    return self.previewContainer;
 }
 
 @end

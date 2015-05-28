@@ -11,6 +11,8 @@
 #import "VStreamWebViewController.h"
 #import "VSequence.h"
 #import "VSequence+Fetcher.h"
+#import "VStreamItemPreviewView.h"
+#import "UIView+AutoLayout.h"
 
 static const CGFloat kImageTopConstraintHeight = 30.0f;
 static const CGFloat kLabelBottomConstraintHeight = 10.0f;
@@ -25,7 +27,7 @@ static const CGFloat kShadowOpacity = 0.4f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageLeftConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *foregroundImageRightConstraint;
 
-@property (nonatomic, weak) IBOutlet UIView *imageViewContainer;
+@property (nonatomic, weak) VStreamItemPreviewView *previewView;
 
 @end
 
@@ -34,21 +36,40 @@ static const CGFloat kShadowOpacity = 0.4f;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.imageViewContainer.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.imageViewContainer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
-    self.imageViewContainer.layer.shadowOpacity = kShadowOpacity;
+    self.previewContainer.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.previewContainer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
+    self.previewContainer.layer.shadowOpacity = kShadowOpacity;
 }
 
-- (void)updateToImage:(UIImage *)image animated:(BOOL)animated
+- (void)updateToPreviewView:(VStreamItemPreviewView *)previewView animated:(BOOL)animated
 {
+    if ( previewView == nil )
+    {
+        return;
+    }
+    
+    if ( ![self.previewView isEqual:previewView] )
+    {
+        [self.previewView removeFromSuperview];
+        self.previewView = previewView;
+    }
+    
+    [self.previewContainer addSubview:self.previewView];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
+    
     if ( !animated )
     {
-        self.previewImageView.image = image;
+        
     }
     else
     {
-        [self.previewImageView fadeInImage:image];
+        
     }
+}
+
+- (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
+{
+    
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class VStreamItemPreviewView;
+
+#warning DOCS
+
 /**
     A view that loads, blurs, and crossfades between images from the provided imageURLs. The alpha of these images
         can be manipulated by the "offset" property
@@ -32,7 +36,7 @@
     @param animated Whether or not the specified imageView should be updated with an animation.
  */
 - (void)updateBlurredImageViewForImage:(UIImage *)image
-                               fromURL:(NSURL *)url
+                       fromPreviewView:(VStreamItemPreviewView *)previewView
                          withTintColor:(UIColor *)tintColor
                                atIndex:(NSInteger)index
                               animated:(BOOL)animated;

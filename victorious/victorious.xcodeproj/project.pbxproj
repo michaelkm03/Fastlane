@@ -804,7 +804,7 @@
 		D8F8B1EF1AC4C4CF00AA2DB7 /* VTilePatternBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1EE1AC4C4CF00AA2DB7 /* VTilePatternBackground.m */; };
 		D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */; };
 		D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */; };
-		D8FFB8DF1B01AE1B0022A491 /* VFailureSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFB8DE1B01AE1B0022A491 /* VFailureSequencePreviewView.m */; };
+		D8FFB8DF1B01AE1B0022A491 /* VFailureStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFB8DE1B01AE1B0022A491 /* VFailureStreamItemPreviewView.m */; };
 		D8FFB8E21B0272540022A491 /* VStreamLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FFB8E11B0272540022A491 /* VStreamLabel.m */; };
 		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
 		DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A490119DF429700CB687B /* Main.storyboard */; };
@@ -902,6 +902,10 @@
 		F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
 		F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C21A88502D00EE70C7 /* VTagDictionary.m */; };
 		F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */; };
+		F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */; };
+		F0C83A5C1B16214C00A6EC1A /* VStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */; };
+		F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */; };
+		F0C83A6A1B168FEC00A6EC1A /* UIView+VViewRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A691B168FEC00A6EC1A /* UIView+VViewRendering.m */; };
 		F0D3CFB71A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */; };
 		F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */; };
 		F0E0F1AC1AE8A4B900143CBF /* VLaunchScreenProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */; };
@@ -2396,8 +2400,8 @@
 		D8F8B1F21AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VBackgroundContainer.m"; sourceTree = "<group>"; };
 		D8FC09051A51DBC100E5FBE4 /* VPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPlaceholderTextView.h; sourceTree = "<group>"; };
 		D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlaceholderTextView.m; sourceTree = "<group>"; };
-		D8FFB8DD1B01AE1B0022A491 /* VFailureSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureSequencePreviewView.h; sourceTree = "<group>"; };
-		D8FFB8DE1B01AE1B0022A491 /* VFailureSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureSequencePreviewView.m; sourceTree = "<group>"; };
+		D8FFB8DD1B01AE1B0022A491 /* VFailureStreamItemPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureStreamItemPreviewView.h; sourceTree = "<group>"; };
+		D8FFB8DE1B01AE1B0022A491 /* VFailureStreamItemPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureStreamItemPreviewView.m; sourceTree = "<group>"; };
 		D8FFB8E01B0272540022A491 /* VStreamLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamLabel.h; sourceTree = "<group>"; };
 		D8FFB8E11B0272540022A491 /* VStreamLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamLabel.m; sourceTree = "<group>"; };
 		D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.stable.xcconfig"; sourceTree = "<group>"; };
@@ -2573,6 +2577,14 @@
 		F0B390C21A88502D00EE70C7 /* VTagDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionary.m; sourceTree = "<group>"; };
 		F0B390C41A8850CF00EE70C7 /* VTagStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagStringFormatter.h; sourceTree = "<group>"; };
 		F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatter.m; sourceTree = "<group>"; };
+		F0C83A561B161BF500A6EC1A /* VStreamItemPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItemPreviewView.h; sourceTree = "<group>"; };
+		F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItemPreviewView.m; sourceTree = "<group>"; };
+		F0C83A5A1B16214C00A6EC1A /* VStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamPreviewView.h; sourceTree = "<group>"; };
+		F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamPreviewView.m; sourceTree = "<group>"; };
+		F0C83A611B162DE200A6EC1A /* VImageStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageStreamPreviewView.h; sourceTree = "<group>"; };
+		F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageStreamPreviewView.m; sourceTree = "<group>"; };
+		F0C83A681B168FEC00A6EC1A /* UIView+VViewRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VViewRendering.h"; sourceTree = "<group>"; };
+		F0C83A691B168FEC00A6EC1A /* UIView+VViewRendering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VViewRendering.m"; sourceTree = "<group>"; };
 		F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardInputAccessoryViewTests.m; sourceTree = "<group>"; };
 		F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLaunchScreenProvider.h; sourceTree = "<group>"; };
 		F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProvider.m; sourceTree = "<group>"; };
@@ -2832,6 +2844,8 @@
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				D86528F01AE82AAC003832AC /* PollView */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
+				F0C83A5D1B16214F00A6EC1A /* StreamPreviewView */,
+				F0C83A591B161C0100A6EC1A /* StreamItemPreviewView */,
 				A7B5144A1A4517A80074282F /* SwipeCell */,
 				A7738AFE1A4A35DF008EA973 /* Transitions */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
@@ -4974,6 +4988,8 @@
 				D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */,
 				D8E39BEF19CB9D58007FD86A /* UIView+VShadows.h */,
 				D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */,
+				F0C83A681B168FEC00A6EC1A /* UIView+VViewRendering.h */,
+				F0C83A691B168FEC00A6EC1A /* UIView+VViewRendering.m */,
 				03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */,
 				03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */,
 				037FCF1C1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.h */,
@@ -5312,8 +5328,6 @@
 		D85E427B1AFA982000A13BD3 /* SequencePreviewView */ = {
 			isa = PBXGroup;
 			children = (
-				D8FFB8DD1B01AE1B0022A491 /* VFailureSequencePreviewView.h */,
-				D8FFB8DE1B01AE1B0022A491 /* VFailureSequencePreviewView.m */,
 				D85E428B1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.h */,
 				D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */,
 				D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */,
@@ -5918,6 +5932,30 @@
 			name = NoContentCollectionViewCell;
 			sourceTree = "<group>";
 		};
+		F0C83A591B161C0100A6EC1A /* StreamItemPreviewView */ = {
+			isa = PBXGroup;
+			children = (
+				F0C83A561B161BF500A6EC1A /* VStreamItemPreviewView.h */,
+				F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */,
+				D8FFB8DD1B01AE1B0022A491 /* VFailureStreamItemPreviewView.h */,
+				D8FFB8DE1B01AE1B0022A491 /* VFailureStreamItemPreviewView.m */,
+			);
+			name = StreamItemPreviewView;
+			path = SequencePreviewView;
+			sourceTree = "<group>";
+		};
+		F0C83A5D1B16214F00A6EC1A /* StreamPreviewView */ = {
+			isa = PBXGroup;
+			children = (
+				F0C83A611B162DE200A6EC1A /* VImageStreamPreviewView.h */,
+				F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */,
+				F0C83A5A1B16214C00A6EC1A /* VStreamPreviewView.h */,
+				F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */,
+			);
+			name = StreamPreviewView;
+			path = SequencePreviewView;
+			sourceTree = "<group>";
+		};
 		F0E0F1B01AE8BFAE00143CBF /* Inset */ = {
 			isa = PBXGroup;
 			children = (
@@ -6491,6 +6529,7 @@
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				DBAD776719F7752D00B6A939 /* VAdBreak+RestKit.m in Sources */,
+				F0C83A6A1B168FEC00A6EC1A /* UIView+VViewRendering.m in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
@@ -6592,6 +6631,7 @@
 				D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
+				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				0314D4DE19B46B5E00FA363C /* VFindContactsTableViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
@@ -6618,6 +6658,7 @@
 				A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */,
 				A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
+				F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
 				A7ECC1C11AD60ECE0003E00A /* UIColor+VHex.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
@@ -6822,7 +6863,7 @@
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
 				0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
-				D8FFB8DF1B01AE1B0022A491 /* VFailureSequencePreviewView.m in Sources */,
+				D8FFB8DF1B01AE1B0022A491 /* VFailureStreamItemPreviewView.m in Sources */,
 				0314D4EF19B46B5E00FA363C /* VLoginWithEmailViewController.m in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */,
 				A716FC3D1AAE2DDB0032AA40 /* VAuthorizationContextHelper.m in Sources */,
@@ -6841,6 +6882,7 @@
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
 				A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */,
+				F0C83A5C1B16214C00A6EC1A /* VStreamPreviewView.m in Sources */,
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,

@@ -12,13 +12,11 @@
 #import "VStreamWebViewController.h"
 #import "VSequence+Fetcher.h"
 #import "UIView+AutoLayout.h"
+#import "VStreamItemPreviewView.h"
 
-static NSString * const kOrIconKey = @"orIcon";
+@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, VStreamCellComponentSpecialization>
 
-@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods>
-
-@property (nonatomic, weak) IBOutlet UIView *webViewContainer;
-@property (nonatomic, strong) VStreamWebViewController *webViewController;
+@property (nonatomic, strong) VStreamItemPreviewView *previewView;
 
 @end
 
@@ -30,59 +28,14 @@ static NSString * const kOrIconKey = @"orIcon";
     return CGSizeZero;
 }
 
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    self.pollOrImageView.image = [dependencyManager imageForKey:kOrIconKey];
-}
-
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     _streamItem = streamItem;
-    if ( [streamItem isKindOfClass:[VSequence class]] )
+    if ( streamItem != nil )
     {
-        VSequence *sequence = (VSequence *)streamItem;
-        if ( [sequence isWebContent] )
-        {
-            [self setupWebViewWithSequence:sequence];
-        }
-        else
-        {
-            [self cleanupWebView];
-        }
-        
-        self.pollOrImageView.hidden = ![sequence isPoll];
+        [self updatePreviewViewForStreamItem:streamItem];
     }
-    else
-    {
-        self.pollOrImageView.hidden = YES;
-    }
-}
-
-#pragma mark - Cell setup
-
-- (void)cleanupWebView
-{
-    if ( self.webViewController != nil )
-    {
-        [self.webViewController.view removeFromSuperview];
-        self.webViewController = nil;
-        self.previewImageView.hidden = NO;
-    }
-}
-
-- (void)setupWebViewWithSequence:(VSequence *)sequence
-{
-    if ( self.webViewController == nil )
-    {
-        self.webViewController = [[VStreamWebViewController alloc] init];
-        [self.webViewContainer addSubview:self.webViewController.view];
-        [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
-        self.previewImageView.hidden = YES;
-    }
-    
-    NSString *contentUrl = (NSString *)sequence.previewData;
-    [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
+    self.previewView.hidden = streamItem == nil;
 }
 
 - (void)prepareForReuse
@@ -90,6 +43,39 @@ static NSString * const kOrIconKey = @"orIcon";
     [super prepareForReuse];
     
     self.streamItem = nil;
+}
+
+#pragma mark - VPreviewView updating
+
+- (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
+{
+    if ( [self.previewView canHandleStreamItem:streamItem] )
+    {
+        [self.previewView setStreamItem:streamItem];
+        return;
+    }
+    
+    [self.previewView removeFromSuperview];
+    self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
+    [self.previewContainer addSubview:self.previewView];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
+    if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.previewView setDependencyManager:self.dependencyManager];
+    }
+    [self.previewView setStreamItem:streamItem];
+}
+
+#pragma mark - VStreamCellComponentSpecialization
+
++ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
+                          baseIdentifier:(NSString *)baseIdentifier
+{
+    NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
+    identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
+    identifier = [VStreamItemPreviewView reuseIdentifierForStreamItem:streamItem
+                                                       baseIdentifier:identifier];
+    return identifier;
 }
 
 @end
