@@ -27,7 +27,7 @@
                                     <constraint firstAttribute="height" constant="50" id="MQ4-EM-nDU"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="KmP-8J-TJv" id="upW-7v-L5e"/>
                                 </connections>
