@@ -18,6 +18,8 @@
 - (void)selectTwitterAccountWithViewControler:(UIViewController *)viewControllerToPresentOnIfNeeded
                                 completion:(VTwitterAccountsHelperCompletion)completion
 {
+    NSParameterAssert(completion != nil);
+    
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -35,24 +37,24 @@
          else
          {
              NSArray *twitterAccounts = [account accountsWithAccountType:accountType];
-             if (!twitterAccounts.count)
-             {
-                 [self twitterAccessGrantedWithNoAccountsCompletion:completion
-                                          viewControllerToPresentOn:viewControllerToPresentOnIfNeeded
-                                                              error:error];
-             }
-             else
+             if (twitterAccounts.count > 0)
              {
                  [self twitterAccessGrantedWithAtLeastOneAccount:completion
                                        viewControllerToPresentOn:viewControllerToPresentOnIfNeeded
                                                            error:error];
+             }
+             else
+             {
+                 [self twitterAccessGrantedWithNoAccountsCompletion:completion
+                                          viewControllerToPresentOn:viewControllerToPresentOnIfNeeded
+                                                              error:error];
              }
          }
      }];
 }
 
 - (void)twitterAccessNotGrantedWithCompletion:(VTwitterAccountsHelperCompletion)completion
-                           viewControllerToPresentOn:(UIViewController *)viewControllerToPresentOnIfNeeded
+                    viewControllerToPresentOn:(UIViewController *)viewControllerToPresentOnIfNeeded
                                         error:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
@@ -106,7 +108,6 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
         ACAccountStore *account = [[ACAccountStore alloc] init];
         ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
         NSArray *accounts = [account accountsWithAccountType:accountType];

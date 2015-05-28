@@ -337,6 +337,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)setResetToken:(NSString *)resetToken
            completion:(void (^)(BOOL success, NSError *error))completion
 {
+    NSParameterAssert(completion != nil);
+    
     self.userToken = resetToken;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
@@ -364,6 +366,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)updatePassword:(NSString *)password
            completion:(void (^)(BOOL success, NSError *error))completion
 {
+    NSParameterAssert(completion != nil);
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
@@ -384,6 +388,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
                                        completion:(void (^)(BOOL success, NSError *error))completion
 {
+    NSParameterAssert(completion != nil);
+    
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
                                                          name:nil

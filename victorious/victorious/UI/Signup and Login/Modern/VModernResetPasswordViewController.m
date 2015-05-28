@@ -18,8 +18,8 @@
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 
-static NSString *kPromptKey = @"prompt";
-static NSString *kKeyboardStyleKey = @"keyboardStyle";
+static NSString * const kPromptKey = @"prompt";
+static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VModernResetPasswordViewController () <UITextFieldDelegate, VBackgroundContainer>
 
