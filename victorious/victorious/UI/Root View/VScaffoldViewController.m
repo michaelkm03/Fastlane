@@ -28,11 +28,12 @@
 #import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "VRootViewController.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -75,8 +76,6 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self.authorizedAction execute];
     
     BOOL didShowFirstTimeUserExperience = NO;
     if ( !self.hasBeenShown )
@@ -320,6 +319,13 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         }
         [self presentViewController:contentView animated:YES completion:nil];
     }
+}
+
+#pragma mark - VRootViewControllerContainedViewController
+
+- (void)onLoadingCompletion
+{
+    [self.authorizedAction execute];
 }
 
 @end
