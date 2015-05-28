@@ -44,7 +44,6 @@
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    self.readyForDisplay = NO;
     self.webViewController.url = [NSURL URLWithString:sequence.webContentPreviewUrl];
 }
 

@@ -41,6 +41,12 @@
     return classType;
 }
 
+- (void)setStreamItem:(VStreamItem *)streamItem
+{
+    _streamItem = streamItem;
+    self.readyForDisplay = NO;
+}
+
 + (VStreamItemPreviewView *)streamItemPreviewViewWithStreamItem:(VStreamItem *)streamItem
 {
     return [[[self classTypeForStreamItem:streamItem] alloc] initWithFrame:CGRectZero];

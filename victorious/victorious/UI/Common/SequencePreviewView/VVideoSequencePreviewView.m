@@ -79,7 +79,7 @@
          strongSelf.readyForDisplay = YES;
      }];
     
-    VAsset *asset = [self.sequence.firstNode mp4Asset];
+    VAsset *asset = [sequence.firstNode mp4Asset];
     if ( asset.streamAutoplay.boolValue )
     {
         self.playIconContainerView.hidden = YES;

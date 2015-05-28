@@ -165,7 +165,7 @@ static const char kAssociatedObjectKey;
     return [NSArray arrayWithArray:visibleImageViewContainers];
 }
 
-- (void)updateBlurredImageViewForImage:(UIImage *)image fromPreviewView:(VStreamItemPreviewView *)previewView withTintColor:(UIColor *)tintColor atIndex:(NSInteger)index animated:(BOOL)animated withConcurrentAnimations:(void (^)(void))animations
+- (void)updateBlurredImageViewForImage:(UIImage *)image fromPreviewView:(VStreamItemPreviewView *)previewView withTintColor:(UIColor *)tintColor atIndex:(NSInteger)index animated:(BOOL)animated withConcurrentAnimations:(void (^)(void))concurrentAnimations
 {
     NSInteger count = (NSInteger)self.imageViewContainers.count;
     if ( index >= count )
@@ -185,7 +185,7 @@ static const char kAssociatedObjectKey;
             objc_setAssociatedObject(imageViewContainer, &kAssociatedObjectKey, previewViewStreamItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
         NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
-        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration withConcurrentAnimations:animations];
+        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
     }
 }
 

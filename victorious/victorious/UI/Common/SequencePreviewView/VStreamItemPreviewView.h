@@ -21,21 +21,28 @@
  */
 typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewView);
 
+
+/**
+ *  VStreamItemPreviewView is a class cluster for previewing a stream item. A concrete subclass is provided
+ *  from the "streamItemPreviewViewWithStreamItem:" constructor method. VStreamItemPreviewView conforms to
+ *  VStreamCellComponentSpecialization and should be reused for sequences that return the same reuse
+ *  identifier from: "reuseIdentifierForSequence:baseIdentifier:".
+ */
 @interface VStreamItemPreviewView : UIView <VHasManagedDependencies, VStreamCellComponentSpecialization>
 
 /**
  *  The factory method for the VStreamItemPreviewView, will provide a concrete subclass specialized to
- *  the given stream item.
+ *  the given streamItem.
  */
 + (VStreamItemPreviewView *)streamItemPreviewViewWithStreamItem:(VStreamItem *)streamItem;
 
 /**
- *  Use to update a sequence preview view for a new sequence.
+ *  Use to update a streamItem preview view for a new streamItem.
  */
 @property (nonatomic, strong) VStreamItem *streamItem;
 
 /**
- *  Returns YES if this instance of VStreamItemPreviewView can handle the given seuqence.
+ *  Returns YES if this instance of VStreamItemPreviewView can handle the given streamItem.
  */
 - (BOOL)canHandleStreamItem:(VStreamItem *)streamItem;
 

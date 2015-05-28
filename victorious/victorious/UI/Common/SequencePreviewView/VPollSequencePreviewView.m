@@ -28,6 +28,8 @@ static NSString *kOrIconKey = @"orIcon";
 
 @property (nonatomic, assign) BOOL loadedBothPollImages;
 
+@property (nonatomic, assign) BOOL cancelingImageLoads;
+
 @end
 
 @implementation VPollSequencePreviewView
@@ -57,6 +59,11 @@ static NSString *kOrIconKey = @"orIcon";
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
+    
+    //Cancel the prior image downloads in the pollview
+    self.cancelingImageLoads = YES;
+    [self.pollView setImageURL:nil forPollAnswer:VPollAnswerA completion:nil];
+    [self.pollView setImageURL:nil forPollAnswer:VPollAnswerB completion:nil];
     self.loadedBothPollImages = NO;
     
     __weak VPollSequencePreviewView *weakSelf = self;
@@ -68,6 +75,11 @@ static NSString *kOrIconKey = @"orIcon";
             return;
         }
         
+        if ( strongSelf.cancelingImageLoads )
+        {
+            return;
+        }
+        
         if ( strongSelf.loadedBothPollImages )
         {
             strongSelf.readyForDisplay = YES;
@@ -75,8 +87,9 @@ static NSString *kOrIconKey = @"orIcon";
         strongSelf.loadedBothPollImages = YES;
     };
     
-    VAnswer *answerA = [self.sequence.firstNode answerA];
-    VAnswer *answerB = [self.sequence.firstNode answerB];
+    VAnswer *answerA = [sequence.firstNode answerA];
+    VAnswer *answerB = [sequence.firstNode answerB];
+    self.cancelingImageLoads = NO;
     [self.pollView setImageURL:answerA.previewMediaURL
                  forPollAnswer:VPollAnswerA
                     completion:pollImageCompletionBlock];

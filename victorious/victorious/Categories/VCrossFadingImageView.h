@@ -32,13 +32,14 @@
     @param index The index of the imageView that should be updated with the provided image. If the index is
             out of count from the created imageViews, this function does nothing.
     @param animated Whether or not the specified imageView should be updated with an animation.
+    @param concurrentAnimations Animations that will be executed while the image is animating to visible.
  */
 - (void)updateBlurredImageViewForImage:(UIImage *)image
                        fromPreviewView:(VStreamItemPreviewView *)previewView
                          withTintColor:(UIColor *)tintColor
                                atIndex:(NSInteger)index
                               animated:(BOOL)animated
-              withConcurrentAnimations:(void (^)(void))animations;
+              withConcurrentAnimations:(void (^)(void))concurrentAnimations;
 
 
 /**

@@ -33,14 +33,14 @@
 {
     [super setSequence:sequence];
     
-    VAsset *textAsset = [self.sequence.firstNode textAsset];
+    VAsset *textAsset = [sequence.firstNode textAsset];
     if ( textAsset.data != nil )
     {
         NSString *text = textAsset.data;
         UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
-        VAsset *imageAsset = [self.sequence.firstNode imageAsset];
+        VAsset *imageAsset = [sequence.firstNode imageAsset];
         NSURL *imageUrl = [NSURL URLWithString:imageAsset.data];
-        [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:self.sequence.remoteId];
+        [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:sequence.remoteId];
     }
 }
 

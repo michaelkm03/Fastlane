@@ -37,7 +37,7 @@
 /**
  *  Use to update a sequence preview view for a new sequence.
  */
-@property (nonatomic, strong) VSequence *sequence;
+- (void)setSequence:(VSequence *)sequence;
 
 /**
  *  Returns YES if this instance of VSequencePreviewView can handle the given seuqence.

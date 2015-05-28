@@ -72,9 +72,9 @@
     }
 }
 
-- (VStreamItem *)streamItem
+- (void)setSequence:(VSequence *)sequence
 {
-    return self.sequence;
+    [super setStreamItem:sequence];
 }
 
 - (BOOL)canHandleSequence:(VSequence *)sequence

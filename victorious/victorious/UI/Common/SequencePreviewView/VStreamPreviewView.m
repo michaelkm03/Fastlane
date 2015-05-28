@@ -49,9 +49,9 @@
     }
 }
 
-- (VStreamItem *)streamItem
+- (void)setStream:(VStream *)stream
 {
-    return self.stream;
+    [super setStreamItem:stream];
 }
 
 - (BOOL)canHandleStream:(VStream *)stream
