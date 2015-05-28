@@ -16,7 +16,7 @@
 // synchronize with the main animation.
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return 0.35f;
+    return 0.5f;
 }
 
 // This method can only  be a nop if the transition is interactive and not a percentDriven interactive transition.
@@ -40,43 +40,52 @@
     if (self.popping)
     {
         fromViewController.view.transform = CGAffineTransformIdentity;
-        fromViewController.view.alpha = 1.0f;
         toViewController.view.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth([transitionContext containerView].bounds), 0.0f);;
     }
     else
     {
         fromViewController.view.transform = CGAffineTransformIdentity;
-        toViewController.view.transform = CGAffineTransformMakeScale(0.5f, 0.5f);
-        toViewController.view.alpha = 0.0f;
+        toViewController.view.transform = CGAffineTransformMakeTranslation(CGRectGetWidth([transitionContext containerView].bounds), 0.0f);;
     }
-
     
-    [UIView animateWithDuration:[self transitionDuration:transitionContext]
-                     animations:^
-     {
-         
-         if (self.popping)
-         {
-
-             fromViewController.view.alpha = 0.0f;
-             fromViewController.view.transform = CGAffineTransformMakeScale(0.5f, 0.5f);
-             toViewController.view.transform = CGAffineTransformIdentity;
-         }
-         else
-         {
-             fromViewController.view.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth([transitionContext containerView].bounds), 0.0f);
-             toViewController.view.transform = CGAffineTransformIdentity;
-             toViewController.view.alpha = 1.0f;
-         }
-     }
-                     completion:^(BOOL finished)
-     {
-         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-         fromViewController.view.transform = CGAffineTransformIdentity;
-         toViewController.view.transform = CGAffineTransformIdentity;
-         fromViewController.view.alpha = 1.0f;
-         toViewController.view.alpha = 1.0f;
-     }];
+    void (^animations)(void) = ^void(void)
+    {
+        if (self.popping)
+        {
+            fromViewController.view.transform = CGAffineTransformMakeTranslation(CGRectGetWidth([transitionContext containerView].bounds), 0.0f);;
+            toViewController.view.transform = CGAffineTransformIdentity;
+        }
+        else
+        {
+            fromViewController.view.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth([transitionContext containerView].bounds), 0.0f);
+            toViewController.view.transform = CGAffineTransformIdentity;
+        }
+    };
+    
+    void (^completion)(BOOL finished) = ^void(BOOL finished)
+    {
+        [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+        fromViewController.view.transform = CGAffineTransformIdentity;
+        toViewController.view.transform = CGAffineTransformIdentity;
+    };
+    
+    // Spring curve looks weird on interactive pop, it breaks the direct manipulation effect.
+    if (self.popping)
+    {
+        [UIView animateWithDuration:[self transitionDuration:transitionContext]
+                         animations:animations
+                         completion:completion];
+    }
+    else
+    {
+        [UIView animateWithDuration:[self transitionDuration:transitionContext]
+                              delay:0.0f
+             usingSpringWithDamping:0.85f
+              initialSpringVelocity:0.0f
+                            options:kNilOptions
+                         animations:animations
+                         completion:completion];
+    }
 }
 
 @end
