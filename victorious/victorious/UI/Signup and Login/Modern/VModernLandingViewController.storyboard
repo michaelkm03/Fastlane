@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" text="By signing up you are agreeing to our ToS and privacy policy." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Qk2-es-3aq">
-                                <rect key="frame" x="20" y="459" width="560" height="33"/>
+                                <rect key="frame" x="20" y="409" width="560" height="33"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -26,11 +26,11 @@
                                     <outlet property="delegate" destination="yjK-eD-rfp" id="0Cl-fg-CMm"/>
                                 </connections>
                             </textView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xpp-jF-2DP">
-                                <rect key="frame" x="0.0" y="500" width="600" height="0.0"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xpp-jF-2DP">
+                                <rect key="frame" x="0.0" y="450" width="600" height="50"/>
                                 <color key="backgroundColor" red="0.33333333333333331" green="0.67450980392156867" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" id="bUJ-ZK-J2u"/>
+                                    <constraint firstAttribute="height" constant="50" id="bUJ-ZK-J2u"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                 <state key="normal" title="Login with Twitter">
@@ -75,21 +75,23 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Xpp-jF-2DP" secondAttribute="trailing" id="4eG-18-DV1"/>
                             <constraint firstItem="6q7-og-v17" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="5GP-bt-SoD"/>
-                            <constraint firstItem="Xpp-jF-2DP" firstAttribute="top" secondItem="Qk2-es-3aq" secondAttribute="bottom" constant="8" id="63G-nR-SpL"/>
+                            <constraint firstItem="Xpp-jF-2DP" firstAttribute="top" secondItem="Qk2-es-3aq" secondAttribute="bottom" constant="8" placeholder="YES" id="63G-nR-SpL"/>
                             <constraint firstItem="Xpp-jF-2DP" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="9og-sv-Cmz"/>
                             <constraint firstAttribute="trailing" secondItem="Qk2-es-3aq" secondAttribute="trailing" constant="20" id="ArL-nb-2Ab"/>
-                            <constraint firstItem="R8Q-wg-c7I" firstAttribute="top" secondItem="tTi-xz-WY3" secondAttribute="bottom" id="NYh-Mb-kKo"/>
-                            <constraint firstItem="tTi-xz-WY3" firstAttribute="top" secondItem="6q7-og-v17" secondAttribute="bottom" id="UUz-vt-WrB"/>
+                            <constraint firstItem="R8Q-wg-c7I" firstAttribute="top" secondItem="tTi-xz-WY3" secondAttribute="bottom" placeholder="YES" id="NYh-Mb-kKo"/>
+                            <constraint firstItem="tTi-xz-WY3" firstAttribute="top" secondItem="6q7-og-v17" secondAttribute="bottom" placeholder="YES" id="UUz-vt-WrB"/>
                             <constraint firstAttribute="trailing" secondItem="6q7-og-v17" secondAttribute="trailing" id="Y17-1w-Ndp"/>
                             <constraint firstItem="Qk2-es-3aq" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" constant="20" id="aqr-VG-W3P"/>
-                            <constraint firstItem="6q7-og-v17" firstAttribute="top" secondItem="Xpp-jF-2DP" secondAttribute="bottom" id="b0S-dn-b8h"/>
+                            <constraint firstItem="6q7-og-v17" firstAttribute="top" secondItem="Xpp-jF-2DP" secondAttribute="bottom" placeholder="YES" id="b0S-dn-b8h"/>
                             <constraint firstAttribute="trailing" secondItem="tTi-xz-WY3" secondAttribute="trailing" id="ebi-gO-TKo"/>
                             <constraint firstItem="tTi-xz-WY3" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="gac-P8-3A4"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bottomSpaceFacebookToContainer" destination="NYh-Mb-kKo" id="KpF-s7-JLP"/>
+                        <outlet property="emailButton" destination="6q7-og-v17" id="fzC-B7-etD"/>
+                        <outlet property="facebookButton" destination="tTi-xz-WY3" id="jpF-fc-f4Q"/>
                         <outlet property="legalTextView" destination="Qk2-es-3aq" id="Ln6-in-YmU"/>
+                        <outlet property="twitterButton" destination="Xpp-jF-2DP" id="dfL-1P-fUF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OH9-m2-xuT" userLabel="First Responder" sceneMemberID="firstResponder"/>

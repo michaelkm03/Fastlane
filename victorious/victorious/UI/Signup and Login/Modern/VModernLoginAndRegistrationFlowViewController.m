@@ -479,6 +479,10 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    if (viewController == [self.viewControllers firstObject])
+    {
+        return;
+    }
     self.actionsDisabled = YES;
 }
 

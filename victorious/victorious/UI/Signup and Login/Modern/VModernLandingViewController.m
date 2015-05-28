@@ -16,15 +16,20 @@
 
 @import CoreText;
 
+static NSString *kSigninOptionsKey = @"signInOptions";
 static NSString *kLogoKey = @"logo";
 static NSString *kStatusBarStyle = @"statusBarStyle";
+
+static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 @interface VModernLandingViewController () <UITextViewDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, weak) IBOutlet UIButton *twitterButton;
+@property (nonatomic, weak) IBOutlet UIButton *emailButton;
+@property (nonatomic, weak) IBOutlet UIButton *facebookButton;
 @property (nonatomic, weak) IBOutlet UITextView *legalTextView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceFacebookToContainer;
 
 @end
 
@@ -43,6 +48,8 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setupSigninOptions];
     
     UIImage *headerImage = [self.dependencyManager imageForKey:kLogoKey];
     UIImageView *headerImageView = [[UIImageView alloc] initWithImage:headerImage];
@@ -159,6 +166,73 @@ static NSString *kStatusBarStyle = @"statusBarStyle";
     }
     [flowControllerResponder showTermsOfService];
     return YES;
+}
+
+#pragma mark - Internal Methods
+
+- (void)setupSigninOptions
+{
+    self.facebookButton.hidden = YES;
+    self.twitterButton.hidden = YES;
+    self.emailButton.hidden = YES;
+    
+    NSArray *options = [self.dependencyManager arrayForKey:kSigninOptionsKey];
+    
+    UIButton *firstButton = [self buttonForLoginType:[options firstObject]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.legalTextView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:firstButton
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:-kLoginButtonToTextViewSpacing]];
+    
+    for (NSUInteger idx = 0; idx < options.count; idx++)
+    {
+        NSString *currentLoginType = options[idx];
+        UIButton *currentBUtton = [self buttonForLoginType:currentLoginType];
+        currentBUtton.hidden = NO;
+        if (idx > 0)
+        {
+            NSString *previousLoginType = options[idx - 1];
+            UIButton *previousButton = [self buttonForLoginType:previousLoginType];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:previousButton
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:currentBUtton
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f]];
+        }
+    }
+    UIButton *lastButton = [self buttonForLoginType:[options lastObject]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:lastButton
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+}
+
+- (UIButton *)buttonForLoginType:(NSString *)loginType
+{
+    if ([loginType isEqualToString:@"email"])
+    {
+        return self.emailButton;
+    }
+    else if ([loginType isEqualToString:@"facebook"])
+    {
+        return self.facebookButton;
+    }
+    else if ([loginType isEqualToString:@"twitter"])
+    {
+        return self.twitterButton;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 @end

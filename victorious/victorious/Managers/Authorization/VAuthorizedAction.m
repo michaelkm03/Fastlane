@@ -13,12 +13,17 @@
 #import "VHasManagedDependencies.h"
 #import "VLoginRegistrationFlow.h"
 
+#import "UIView+AutoLayout.h"
+
 static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationView";
 
 @interface VAuthorizedAction()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) VObjectManager *objectManager;
+@property (nonatomic, strong) id presentingController;
+@property (nonatomic, strong) id loginController;
+@property (nonatomic, strong) UIView *replicant;
 
 @end
 
@@ -81,6 +86,52 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
         completionActionBlock(YES);
         return YES;
     }
+}
+
+- (BOOL)prepareInViewController:(UIViewController *)presentingViewController
+                        context:(VAuthorizationContext)authorizationContext
+                     completion:(void(^)(BOOL authorized))completionActionBlock
+{
+    UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
+                                                                                                                       forKey:kLoginAndRegistrationViewKey];
+    
+    UIView *replicant = [loginFlowController.view snapshotViewAfterScreenUpdates:YES];
+    [presentingViewController.view addSubview:replicant];
+    [presentingViewController.view v_addFitToParentConstraintsToSubview:replicant];
+    
+    if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
+    {
+        [loginFlowController setAuthorizationContext:authorizationContext];
+    }
+    [loginFlowController setCompletionBlock:completionActionBlock];
+    if ([loginFlowController respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [(id<VHasManagedDependencies>)loginFlowController setDependencyManager:self.dependencyManager];
+    }
+
+    self.presentingController = presentingViewController;
+    self.loginController = loginFlowController;
+    self.replicant = replicant;
+    
+    return NO;
+}
+
+- (void)execute
+{
+    if (self.loginController == nil)
+    {
+        return;
+    }
+    [self.presentingController presentViewController:self.loginController
+                                                                animated:NO
+                                                              completion:^
+     {
+         [self.replicant removeFromSuperview];
+         self.loginController = nil;
+         self.presentingController = nil;
+         self.replicant = nil;
+     }];
+
 }
 
 @end

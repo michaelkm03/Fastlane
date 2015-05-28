@@ -66,15 +66,17 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     BOOL shouldShowLogin = [[self.dependencyManager numberForKey:@"showLoginOnStartup"] boolValue];
     if (shouldShowLogin && !self.hasBeenShown )
     {
-        [self.authorizedAction performFromViewController:self
-                                                 context:VAuthorizationContextDefault
-                                              completion:^(BOOL authorized) {}];
+        [self.authorizedAction prepareInViewController:self
+                                               context:VAuthorizationContextDefault
+                                            completion:^(BOOL authorized) {}];
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self.authorizedAction execute];
     
     BOOL didShowFirstTimeUserExperience = NO;
     if ( !self.hasBeenShown )
