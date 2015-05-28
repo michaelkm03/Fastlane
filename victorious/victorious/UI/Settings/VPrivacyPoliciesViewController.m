@@ -22,6 +22,7 @@ static NSString * const kVPrivacyURL = @"privacyURL";
     UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:tosViewController action:@selector(cancel)];
     tosViewController.navigationItem.leftBarButtonItem = dismissButton;
     tosViewController.dependencyManager = dependencyManager;
+    tosViewController.title = NSLocalizedString(@"Privacy Policy", nil);
     return navigationController;
 }
 

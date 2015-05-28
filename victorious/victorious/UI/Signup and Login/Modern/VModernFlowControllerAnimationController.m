@@ -80,7 +80,7 @@
     {
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0.0f
-             usingSpringWithDamping:0.85f
+             usingSpringWithDamping:1.0f
               initialSpringVelocity:0.0f
                             options:kNilOptions
                          animations:animations
