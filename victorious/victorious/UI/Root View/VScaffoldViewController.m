@@ -52,7 +52,6 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     {
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
-        [_coachmarkManager resetShownCoachmarks];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
     }

@@ -52,7 +52,7 @@ static const CGFloat kBezierRadius = 10.0f;
         _backgroundView = [_coachmark.background viewForBackground];
         
         [self addSubview:_backgroundView];
-        self.backgroundView.userInteractionEnabled = NO;
+        _backgroundView.userInteractionEnabled = NO;
         
         [self addSubview:_captionLabel];
         
@@ -62,7 +62,10 @@ static const CGFloat kBezierRadius = 10.0f;
         self.layer.shadowOpacity = kShadowOpacity;
         self.layer.shadowOffset = kShadowOffset;
         
-        [self v_addFitToParentConstraintsToSubview:_backgroundView];
+        if ( _backgroundView != nil )
+        {
+            [self v_addFitToParentConstraintsToSubview:_backgroundView];
+        }
     }
     return self;
 }
@@ -75,17 +78,20 @@ static const CGFloat kBezierRadius = 10.0f;
 
 - (void)updateCaptionLabelConstraints
 {
-    [self.captionLabel removeConstraints:self.captionLabel.constraints];
-    UIEdgeInsets insets = UIEdgeInsetsMake(kVerticalLabelInset, kHorizontalLabelInset, kVerticalLabelInset, kHorizontalLabelInset);
-    if ( self.arrowDirection == VTooltipArrowDirectionUp )
+    if ( [self.captionLabel.superview isEqual:self] )
     {
-        insets.top += kTooltipArrowHeight;
+        [self.captionLabel removeConstraints:self.captionLabel.constraints];
+        UIEdgeInsets insets = UIEdgeInsetsMake(kVerticalLabelInset, kHorizontalLabelInset, kVerticalLabelInset, kHorizontalLabelInset);
+        if ( self.arrowDirection == VTooltipArrowDirectionUp )
+        {
+            insets.top += kTooltipArrowHeight;
+        }
+        else if ( self.arrowDirection == VTooltipArrowDirectionDown )
+        {
+            insets.bottom += kTooltipArrowHeight;
+        }
+        [self v_addFitToParentConstraintsToSubview:self.captionLabel leading:insets.left trailing:insets.right top:insets.top bottom:insets.bottom];
     }
-    else if ( self.arrowDirection == VTooltipArrowDirectionDown )
-    {
-        insets.bottom += kTooltipArrowHeight;
-    }
-    [self v_addFitToParentConstraintsToSubview:self.captionLabel leading:insets.left trailing:insets.right top:insets.top bottom:insets.bottom];
 }
 
 + (instancetype)toastCoachmarkViewWithCoachmark:(VCoachmark *)coachmark

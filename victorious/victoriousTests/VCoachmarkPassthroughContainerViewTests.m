@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) VCoachmarkView *coachmarkView;
 @property (nonatomic, assign) CGRect coachmarkPassthroughContainerViewFrame;
-@property (nonatomic, strong) OCMockObject <VCoachmarkPassthroughContainerViewDelegate> *mockDelegate;
+@property (nonatomic, strong) id <VCoachmarkPassthroughContainerViewDelegate> mockDelegate;
 
 @end
 
@@ -42,7 +42,7 @@
                                                                                                                                                        andDelegate:self.mockDelegate];
     coachmarkPassthroughContainerView.frame = self.coachmarkPassthroughContainerViewFrame;
     XCTAssert(CGRectEqualToRect(coachmarkPassthroughContainerView.frame, self.coachmarkPassthroughContainerViewFrame), @"The coachmark passthough container view's frame should be equivalent to the one provided via the class init");
-    XCTAssertEqual(coachmarkPassthroughContainerView.delegate, self, @"The coachmark passthough container view's delegate should be equivalent to the one provided via the class init");
+    XCTAssertEqual(coachmarkPassthroughContainerView.delegate, self.mockDelegate, @"The coachmark passthough container view's delegate should be equivalent to the one provided via the class init");
     XCTAssertEqual(self.coachmarkView, coachmarkPassthroughContainerView.coachmarkView, @"The coachmark passthough container view's coachmark view should be equivalent to the one provided via the class init");
 }
 
