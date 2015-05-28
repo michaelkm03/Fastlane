@@ -140,6 +140,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     added = [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
     XCTAssert(added, @"displayCoachmarkViewInViewController: should return YES when it is going to add a coachmark view to a view controller");
     
+    XCTestExpectation *expectation = [self expectationWithDescription:@"displayExpectation"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        BOOL foundSubview = NO;
@@ -152,8 +153,9 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                            }
                        }
                        XCTAssert(foundSubview, @"The coachmarkManager should add a coachmark passthrough container view to the view controller's view after the animation delay");
+                       [expectation fulfill];
                    });
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
 }
 
 - (void)testDisplayCoachmarkInViewControllerTooltip
@@ -176,6 +178,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     viewController.v_navigationController = navigationController;
     viewController.screenIdentifier = @"1";
     [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"navigationDisplayExpectation"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        BOOL foundSubview = NO;
@@ -199,8 +202,9 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                            }
                        }
                        XCTAssert(foundSubview, @"The coachmarkManager should add a coachmark passthrough container view to the navigation controller's view after the animation delay");
+                       [expectation fulfill];
                    });
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
 }
 
 #pragma mark - Display order and uniqueness tests
@@ -211,31 +215,42 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     viewController.screenIdentifier = @"1"; //Has 2 valid coachmarks to display
     [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
     
+    XCTestExpectation *expectation = [self expectationWithDescription:@"displayOrderExpectation"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
+                       __block UIView *firstView = nil;
                        for ( UIView *subview in viewController.view.subviews )
                        {
                            if ( [subview isKindOfClass:[VCoachmarkPassthroughContainerView class]] )
                            {
                                NSString *coachmarkId = ((VCoachmarkPassthroughContainerView *)subview).coachmarkView.coachmark.remoteId;
                                XCTAssertEqualObjects(coachmarkId, @"10", @"displayCoachmarkViewInViewController: should display available coachmarks in order");
+                               firstView = subview;
                                break;
                            }
                        }
+                       
+                       [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                                       {
                                           for ( UIView *subview in viewController.view.subviews )
                                           {
                                               if ( [subview isKindOfClass:[VCoachmarkPassthroughContainerView class]] )
                                               {
+                                                  if ( [subview isEqual:firstView] )
+                                                  {
+                                                      continue;
+                                                  }
+                                                  
                                                   NSString *coachmarkId = ((VCoachmarkPassthroughContainerView *)subview).coachmarkView.coachmark.remoteId;
                                                   XCTAssertEqualObjects(coachmarkId, @"12", @"displayCoachmarkViewInViewController: should display available coachmarks in order");
                                                   break;
                                               }
                                           }
+                                          [expectation fulfill];
                                       });
                    });
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 3 handler:nil];
 }
 
 - (void)testDisplayToastBeforeTooltip
@@ -244,6 +259,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     viewController.screenIdentifier = @"2"; //Has 2 valid coachmarks to display, with a tooltip BEFORE a toast
     [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
     
+    XCTestExpectation *expectation = [self expectationWithDescription:@"toastPreferenceExpectation"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        for ( UIView *subview in viewController.view.subviews )
@@ -255,8 +271,9 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                                break;
                            }
                        }
+                       [expectation fulfill];
                     });
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
 }
 
 - (void)testDisplayCoachmarkInViewControllerViewUniqueness
@@ -264,12 +281,15 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     CoachmarkDisplayerViewController *viewController = [[CoachmarkDisplayerViewController alloc] init];
     viewController.screenIdentifier = @"3"; //Only has 1 valid coachmark to display
     [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"uniqueCoachmarkExpectation"];
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        BOOL added = [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
                        XCTAssert(!added, @"displayCoachmarkViewInViewController: should not re-add the same coachmark view multiple times");
+                       [expectation fulfill];
                    });
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
 }
 
 #pragma mark - Display location tests
@@ -277,11 +297,12 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
 - (void)testToastLocations
 {
     NSMutableDictionary *coachmarkViews = [[NSMutableDictionary alloc] init];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"toastLocationExpectation"];
     for ( NSInteger i = 1; i < 4; i++ )
     {
         CoachmarkDisplayerViewController *viewController = [[CoachmarkDisplayerViewController alloc] init];
         viewController.view.frame = CGRectMake(0, 0, kScreenHeight, kScreenHeight);
-        NSString *screenIdentifier = [NSString stringWithFormat:@"%ld", (long)i];
+        NSString *screenIdentifier = [NSString stringWithFormat:@"%ld", i];
         viewController.screenIdentifier = screenIdentifier;
         [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -303,10 +324,11 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
 
                                XCTAssert(middleY > topY, @"Toast coachmarks with location top should be above coachmarks with location middle");
                                XCTAssert(bottomY > middleY, @"Toast coachmarks with location middle should be above coachmarks with location bottom");
+                               [expectation fulfill];
                            }
                        });
     }
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
 }
 
 - (void)testTooltipLocation
@@ -322,6 +344,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     viewController2.screenIdentifier = @"5"; //Only has a tooltip to display
     [self.coachmarkManager displayCoachmarkViewInViewController:viewController2];
     
+    XCTestExpectation *expectation = [self expectationWithDescription:@"tooltipLocationExpectation"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        for ( UIView *subview in viewController1.view.subviews )
@@ -349,8 +372,10 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                                break;
                            }
                        }
+                       
+                       [expectation fulfill];
                    });
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
 }
 
 #pragma mark - Hide coachmark tests
@@ -361,6 +386,8 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     viewController.screenIdentifier = @"1";
     [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
     [self.coachmarkManager hideCoachmarkViewInViewController:viewController animated:NO];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"displayCoachmarkCancelExpectation"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        BOOL foundSubview = NO;
@@ -373,7 +400,9 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                            }
                        }
                        XCTAssert(!foundSubview, @"The coachmarkManager should not add a coachmark passthrough container view to the view controller's view if hide is called before it can display");
+                       [expectation fulfill];
                    });
+    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
 }
 
 - (void)testHideCoachmarkViewInViewController
@@ -381,6 +410,8 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     CoachmarkDisplayerViewController *viewController = [[CoachmarkDisplayerViewController alloc] init];
     viewController.screenIdentifier = @"1";
     [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"hideCoachmarkExpectation"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        BOOL foundSubview = NO;
@@ -408,8 +439,9 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                            }
                            XCTAssert(!foundSubview, @"The coachmarkManager should remove the passthrough container view from the view controller's view after hideCoachmarkViewInViewController:animated: is called");
                        }
+                       [expectation fulfill];
                    });
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kAnimationDelay]];
+    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
 }
 
 @end

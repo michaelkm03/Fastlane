@@ -14,6 +14,8 @@
  */
 @protocol VCoachmarkDisplayer <NSObject>
 
+@required
+
 /**
     The id of the screen that conforms to this protocol.
     Under most circumstances this method should be implemented as such:
@@ -23,8 +25,9 @@
         return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
     }
  */
-@required
 - (NSString *)screenIdentifier;
+
+@optional
 
 /**
     Returns whether or not a selector is currently visible on screen.
@@ -35,9 +38,8 @@
         return !self.navigationController.navigationBarHidden;
     }
  
-    Should be implmented by screens that are represented by menu items in a multi-screen selector.
+    Should be implemented by screens that are represented by menu items in a multi-screen selector.
  */
-@optional
 - (BOOL)selectorIsVisible;
 
 @end

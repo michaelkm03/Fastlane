@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VCoachmarkDisplayer.h"
+#import "VHasManagedDependencies.h"
 
 @class VDependencyManager;
 
@@ -15,7 +16,7 @@
     An object that manages the retrieval, displaying,
     and hiding of coachmarks in view controllers.
  */
-@interface VCoachmarkManager : NSObject
+@interface VCoachmarkManager : NSObject <VHasManagedDependencies>
 
 /**
     Creates a new coachmark manager with the provided dependency manager.

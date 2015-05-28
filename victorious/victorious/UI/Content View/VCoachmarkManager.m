@@ -231,7 +231,7 @@ static const CGFloat kAnimationDelay = 1.0f;
 
 - (void)addHideTimerForCoachmarkView:(VCoachmarkView *)coachmarkView inPassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView
 {
-    NSUInteger displayDuration = coachmarkView.coachmark.displayDuration;
+    NSUInteger displayDuration = coachmarkView.coachmark.displayDuration / 1000.0f; //Converted to seconds
     if ( displayDuration != 0 )
     {
         VTimerManager *hideTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:displayDuration target:self selector:@selector(hideTimerFired:) userInfo:passthroughContainerView repeats:NO];

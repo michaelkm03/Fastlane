@@ -50,6 +50,17 @@ static const CGFloat kBezierRadius = 10.0f;
         _captionLabel.textColor = coachmark.textColor;
         _captionLabel.numberOfLines = 0;
         _backgroundView = [_coachmark.background viewForBackground];
+        
+        [self addSubview:_backgroundView];
+        self.backgroundView.userInteractionEnabled = NO;
+        
+        [self addSubview:_captionLabel];
+        
+        //Add a shadow to the coachmark
+        self.layer.shadowRadius = kShadowRadius;
+        self.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.layer.shadowOpacity = kShadowOpacity;
+        self.layer.shadowOffset = kShadowOffset;
     }
     return self;
 }
@@ -58,11 +69,8 @@ static const CGFloat kBezierRadius = 10.0f;
 {
     [super layoutSubviews];
     
-    [self addSubview:self.backgroundView];
-    self.backgroundView.userInteractionEnabled = NO;
-    [self v_addFitToParentConstraintsToSubview:self.backgroundView];
+    [self v_addFitToParentConstraintsToSubview:_backgroundView];
     
-    [self addSubview:self.captionLabel];
     UIEdgeInsets insets = UIEdgeInsetsMake(kVerticalLabelInset, kHorizontalLabelInset, kVerticalLabelInset, kHorizontalLabelInset);
     if ( self.arrowDirection == VTooltipArrowDirectionUp )
     {
@@ -73,12 +81,6 @@ static const CGFloat kBezierRadius = 10.0f;
         insets.bottom += kTooltipArrowHeight;
     }
     [self v_addFitToParentConstraintsToSubview:self.captionLabel leading:insets.left trailing:insets.right top:insets.top bottom:insets.bottom];
-    
-    //Add a shadow to the coachmark
-    self.layer.shadowRadius = kShadowRadius;
-    self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shadowOpacity = kShadowOpacity;
-    self.layer.shadowOffset = kShadowOffset;
 }
 
 + (instancetype)toastCoachmarkViewWithCoachmark:(VCoachmark *)coachmark

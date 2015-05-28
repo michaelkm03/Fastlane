@@ -10,6 +10,16 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackground.h"
 
+static NSString * const kRelatedScreenTextKey = @"relatedScreenText";
+static NSString * const kCurrentScreenTextKey = @"currentScreenText";
+static NSString * const kDisplayTargetIDKey = @"displayTarget";
+static NSString * const kDisplayScreensIDsKey = @"displayScreens";
+static NSString * const kToastVerticalLocationKey = @"toastVerticalLocation";
+static NSString * const kDisplayDurationKey = @"displayDuration";
+static NSString * const kToastVerticalLocationTopKey = @"top";
+static NSString * const kToastVerticalLocationMiddleKey = @"middle";
+static NSString * const kToastVerticalLocationBottomKey = @"bottom";
+
 @implementation VCoachmark
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -17,16 +27,16 @@
     self = [super init];
     if ( self != nil )
     {
-        _relatedScreenText = [dependencyManager stringForKey:@"relatedScreenText"];
-        _currentScreenText = [dependencyManager stringForKey:@"currentScreenText"];
+        _relatedScreenText = [dependencyManager stringForKey:kRelatedScreenTextKey];
+        _currentScreenText = [dependencyManager stringForKey:kCurrentScreenTextKey];
         _textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         _font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
         _background = [dependencyManager background];
-        _displayTarget = [dependencyManager stringForKey:@"displayTarget"];
-        _displayScreens = [dependencyManager arrayOfValuesOfType:[NSString class] forKey:@"displayScreens"];
-        _remoteId = [dependencyManager stringForKey:@"id"];
-        _toastLocation = [self toastVerticalLocationFromString:[dependencyManager stringForKey:@"toastVerticalLocation"]];
-        _displayDuration = [[dependencyManager numberForKey:@"displayDuration"] unsignedIntegerValue];
+        _displayTarget = [dependencyManager stringForKey:kDisplayTargetIDKey];
+        _displayScreens = [dependencyManager arrayOfValuesOfType:[NSString class] forKey:kDisplayScreensIDsKey];
+        _remoteId = [dependencyManager stringForKey:VDependencyManagerIDKey];
+        _toastLocation = [self toastVerticalLocationFromString:[dependencyManager stringForKey:kToastVerticalLocationKey]];
+        _displayDuration = [[dependencyManager numberForKey:kDisplayDurationKey] unsignedIntegerValue];
         _hasBeenShown = NO;
     }
     return self;
@@ -35,15 +45,15 @@
 - (VToastVerticalLocation)toastVerticalLocationFromString:(NSString *)locationString
 {
     VToastVerticalLocation location = VToastVerticalLocationTop;
-    if ( [locationString isEqualToString:@"bottom"] )
+    if ( [locationString isEqualToString:kToastVerticalLocationBottomKey] )
     {
         location = VToastVerticalLocationBottom;
     }
-    else if ( [locationString isEqualToString:@"middle"] )
+    else if ( [locationString isEqualToString:kToastVerticalLocationMiddleKey] )
     {
         location = VToastVerticalLocationMiddle;
     }
-    else if ( [locationString isEqualToString:@"top"] )
+    else if ( [locationString isEqualToString:kToastVerticalLocationTopKey] )
     {
         location = VToastVerticalLocationTop;
     }

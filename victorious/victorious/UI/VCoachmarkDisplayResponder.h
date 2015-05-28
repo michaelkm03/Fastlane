@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+    This block is intended to return if and where a menu item
+    describing a particular screen was found.
+ 
+    @param found YES when a menu item describing the screen was found. NO otherwise.
+    @param location The frame of the menu item describing the screen.
+ */
 typedef void (^VMenuItemDiscoveryBlock) (BOOL found, CGRect location);
 
 /**
@@ -19,6 +26,8 @@ typedef void (^VMenuItemDiscoveryBlock) (BOOL found, CGRect location);
  */
 @protocol VCoachmarkDisplayResponder <NSObject>
 
+@required
+
 /**
     Implementers of this method should return the absolute frame of a button
     representing the screen with the provided identifier. If the screen is not
@@ -27,7 +36,6 @@ typedef void (^VMenuItemDiscoveryBlock) (BOOL found, CGRect location);
     @param identifier The identifier of the screen whose menu button that should be located.
     @param completion The block that should be called on after a menu button is located.
  */
-@required
 - (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion;
 
 @end

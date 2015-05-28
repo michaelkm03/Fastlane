@@ -326,7 +326,7 @@
                                                                               selector:@selector(selectorWithNoParams)
                                                                               userInfo:userInfoDict
                                                                                repeats:NO];
-    XCTAssertTrue(userInfoDict == timerManager.userInfo, @"userInfo dictionary should be the same object passed in during timer creation");
+    XCTAssertEqual(userInfoDict, timerManager.userInfo, @"userInfo dictionary should be the same object passed in during timer creation");
 }
 
 @end

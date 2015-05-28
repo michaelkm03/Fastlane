@@ -73,9 +73,10 @@ typedef NS_ENUM( NSUInteger, VToastVerticalLocation )
 @property (nonatomic, readonly) NSString *remoteId;
 
 /**
-    The length this coachmark should stay on screen if the user does not interact with the screen.
+    The length this coachmark should stay on screen if the user does not
+    interact with the screen. Measured in milliseconds.
  */
-@property (nonatomic, readonly) NSUInteger displayDuration;
+@property (nonatomic, readonly) NSTimeInterval displayDuration;
 
 /**
     Whether or not this coachmark has already been shown.
