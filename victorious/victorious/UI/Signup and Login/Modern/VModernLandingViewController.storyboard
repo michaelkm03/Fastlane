@@ -119,8 +119,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="329"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kp6-JO-wGx" customClass="VLinearGradientView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="329"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E2O-F9-uLP">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="329"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="mJn-6r-rbT">
                                     <size key="itemSize" width="600" height="329"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -137,6 +142,7 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="miu-yr-MHY">
                                                     <rect key="frame" x="28" y="8" width="544" height="293"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -144,6 +150,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailingMargin" secondItem="miu-yr-MHY" secondAttribute="trailing" constant="20" id="9X5-DP-iDc"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="miu-yr-MHY" secondAttribute="bottom" constant="20" id="HLm-ag-1ab"/>
@@ -164,13 +171,17 @@
                                 <rect key="frame" x="281" y="292" width="39" height="37"/>
                             </pageControl>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="aaE-Cd-i5Z" firstAttribute="top" secondItem="c88-pr-ZJo" secondAttribute="bottom" id="3BO-D4-lvi"/>
+                            <constraint firstItem="Kp6-JO-wGx" firstAttribute="top" secondItem="uLg-nH-Awe" secondAttribute="bottom" id="7T5-Zb-0rd"/>
                             <constraint firstItem="aaE-Cd-i5Z" firstAttribute="top" secondItem="E2O-F9-uLP" secondAttribute="bottom" id="BdA-Ux-zCX"/>
+                            <constraint firstItem="Kp6-JO-wGx" firstAttribute="leading" secondItem="dWL-2Y-LP6" secondAttribute="leading" id="CKh-iq-nYu"/>
                             <constraint firstItem="E2O-F9-uLP" firstAttribute="leading" secondItem="dWL-2Y-LP6" secondAttribute="leading" id="eXk-ma-Pnl"/>
+                            <constraint firstItem="aaE-Cd-i5Z" firstAttribute="top" secondItem="Kp6-JO-wGx" secondAttribute="bottom" id="i1m-og-TX7"/>
                             <constraint firstAttribute="centerX" secondItem="c88-pr-ZJo" secondAttribute="centerX" id="p41-sz-sxn"/>
                             <constraint firstAttribute="trailing" secondItem="E2O-F9-uLP" secondAttribute="trailing" id="vkk-Rl-CMB"/>
+                            <constraint firstAttribute="trailing" secondItem="Kp6-JO-wGx" secondAttribute="trailing" id="xVR-L0-zPf"/>
                             <constraint firstItem="E2O-F9-uLP" firstAttribute="top" secondItem="uLg-nH-Awe" secondAttribute="bottom" id="ziC-m8-nRc"/>
                         </constraints>
                     </view>
@@ -178,6 +189,7 @@
                     <connections>
                         <outlet property="collectionView" destination="E2O-F9-uLP" id="WOT-AZ-QMm"/>
                         <outlet property="flowLayout" destination="mJn-6r-rbT" id="Q3I-O3-hdm"/>
+                        <outlet property="gradientMaskView" destination="Kp6-JO-wGx" id="Jij-NP-PeP"/>
                         <outlet property="pageControl" destination="c88-pr-ZJo" id="Tk3-AV-ZJu"/>
                     </connections>
                 </viewController>

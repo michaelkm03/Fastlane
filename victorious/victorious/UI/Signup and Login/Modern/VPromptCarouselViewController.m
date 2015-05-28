@@ -9,6 +9,7 @@
 #import "VPromptCarouselViewController.h"
 
 // Views + Helpers
+#import "VLinearGradientView.h"
 #import "VPromptCollectionViewCell.h"
 #import "VTimerManager.h"
 
@@ -27,6 +28,8 @@ static NSString * const kPromptsKey = @"prompts";
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
+@property (nonatomic, weak) IBOutlet VLinearGradientView *gradientMaskView;
+@property (nonatomic, strong) CAGradientLayer *maskLayer;
 
 @end
 
@@ -53,6 +56,11 @@ static NSString * const kPromptsKey = @"prompts";
 {
     [super viewDidLayoutSubviews];
     
+    [self.gradientMaskView setColors:@[[UIColor clearColor], [UIColor blackColor], [UIColor blackColor], [UIColor clearColor]]];
+    [self.gradientMaskView setLocations:@[@(0.0f), @(0.1f), @(0.9f), @(1.0f)]];
+    self.gradientMaskView.startPoint = CGPointMake(0, 0.5f);
+    self.gradientMaskView.endPoint = CGPointMake(1, 0.5f);
+    self.view.maskView = self.gradientMaskView;
     [self.flowLayout invalidateLayout];
 }
 
