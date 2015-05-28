@@ -34,11 +34,9 @@ static NSString * const kKeyPathDelimiter = @"/";
     {
         return nil;
     }
+    
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-    if ( dictionary == nil )
-    {
-        return nil;
-    }
+    NSAssert( dictionary != nil, @"Error parsing JSON file \"%@\": %@", filename, error );
     
     return dictionary;
 }
@@ -105,10 +103,23 @@ static NSString * const kKeyPathDelimiter = @"/";
 
 - (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath
 {
+    NSParameterAssert( templateValue != nil );
     NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimiter]];
     BOOL didSetTemplateValue = NO;
     self.workingTemplate = [self collectionFromCollection:self.workingTemplate
                                    bySettingTemplateValue:templateValue
+                                           forKeyPathKeys:keyPathKeys
+                                                   didSet:&didSetTemplateValue];
+    
+    return didSetTemplateValue;
+}
+
+- (BOOL)removeTemplateValueForKeyPath:(NSString *)keyPath
+{
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimiter]];
+    BOOL didSetTemplateValue = NO;
+    self.workingTemplate = [self collectionFromCollection:self.workingTemplate
+                                   bySettingTemplateValue:nil
                                            forKeyPathKeys:keyPathKeys
                                                    didSet:&didSetTemplateValue];
     
@@ -139,7 +150,11 @@ static NSString * const kKeyPathDelimiter = @"/";
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    destination[i] = templateValue;
+                    // If templateValue is nil, it will be skipped, thereby removing that value for the index
+                    if ( templateValue != nil )
+                    {
+                        destination[i] = templateValue;
+                    }
                     *didSetTemplateValue = YES;
                 }
                 else
@@ -174,7 +189,11 @@ static NSString * const kKeyPathDelimiter = @"/";
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    destination[ currentKey ] = templateValue;
+                    // If templateValue is nil, it will be skipped, thereby removing that value for the index
+                    if ( templateValue != nil )
+                    {
+                        destination[ currentKey ] = templateValue;
+                    }
                     *didSetTemplateValue = YES;
                 }
                 else
@@ -309,6 +328,74 @@ static NSString * const kKeyPathDelimiter = @"/";
     }
     
     return nil;
+}
+
+- (NSArray *)keyPathsForValue:(id)value
+{
+    NSParameterAssert( value != nil );
+    
+    NSMutableArray *completedKeyPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *workingKeyPath = [[NSMutableArray alloc] init];
+    [self searchCollection:self.workingTemplate forValue:value workingKeyPath:&workingKeyPath completedKeyPaths:&completedKeyPaths];
+    
+    NSMutableArray *output = [[NSMutableArray alloc] init];
+    for ( NSArray *keyPathArray in completedKeyPaths )
+    {
+        NSMutableString *mutableKeyPath = [[NSMutableString alloc] init];
+        for ( NSString *key in keyPathArray )
+        {
+            if ( ![mutableKeyPath isEqualToString:@""] )
+            {
+                [mutableKeyPath appendString:kKeyPathDelimiter];
+            }
+            [mutableKeyPath appendString:key];
+        }
+        [output addObject:[[NSString alloc] initWithString:mutableKeyPath]];
+    }
+    
+    return [[NSArray alloc] initWithArray:output];
+}
+
+- (void)searchCollection:(id)collection
+                forValue:(id)searchValue
+          workingKeyPath:(NSMutableArray **)workingKeyPath
+       completedKeyPaths:(NSMutableArray **)completedKeyPaths
+{
+    if ( [collection isKindOfClass:[NSArray class]] )
+    {
+        NSArray *collectionArray = (NSArray *)collection;
+        for ( NSInteger i = 0; i < (NSInteger)collectionArray.count; i++ )
+        {
+            id value = collectionArray[ i ];
+            if ( [value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]] )
+            {
+                [*workingKeyPath addObject:@(i).stringValue];
+                [self searchCollection:value forValue:searchValue workingKeyPath:workingKeyPath completedKeyPaths:completedKeyPaths];
+                [*workingKeyPath removeLastObject];
+            }
+        }
+    }
+    else if ( [collection isKindOfClass:[NSDictionary class]] )
+    {
+        NSDictionary *collectionDictionary = (NSDictionary *)collection;
+        for ( NSString *templateKey in collectionDictionary.allKeys )
+        {
+            id value = collectionDictionary[ templateKey ];
+            if ( [value isEqual:searchValue] )
+            {
+                [*workingKeyPath addObject:templateKey];
+                [*completedKeyPaths addObject:[NSArray arrayWithArray:*workingKeyPath]];
+                [*workingKeyPath removeLastObject];
+            }
+            
+            if ( [value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]] )
+            {
+                [*workingKeyPath addObject:templateKey];
+                [self searchCollection:value forValue:searchValue workingKeyPath:workingKeyPath completedKeyPaths:completedKeyPaths];
+                [*workingKeyPath removeLastObject];
+            }
+        }
+    }
 }
 
 - (NSArray *)keyPathsForKey:(NSString *)key

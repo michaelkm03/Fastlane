@@ -16,13 +16,9 @@ NSString * const VTrackingBallisticCountKey        = @"ballistic_count";
 NSString * const VTrackingCreateProfileStartKey    = @"create_profile_start";
 NSString * const VTrackingRegistrationEndKey       = @"registration_end";
 NSString * const VTrackingRegistrationStartKey     = @"registration_start";
-NSString * const VTrackingGetStartedTapKey         = @"get_started_tap";
 NSString * const VTrackingDoneButtonTapKey         = @"done_button_tap";
 NSString * const VTrackingRegisteButtonTapKey      = @"register_button_tap";
 NSString * const VTrackingSignUpButtonTapKey       = @"sign_up_button_tap";
-NSString * const VTrackingWelcomeVideoStartKey     = @"welcome_video_start";
-NSString * const VTrackingWelcomeVideoEndKey       = @"welcome_video_end";
-NSString * const VTrackingWelcomeStartKey          = @"welcome_start";
 
 static NSString * const kTrackingKey                = @"tracking";
 

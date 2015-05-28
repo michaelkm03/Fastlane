@@ -29,7 +29,6 @@
 #import "VGoogleAnalyticsTracking.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VApplicationTracking.h"
 
 @import AVFoundation;
 @import MediaPlayer;
@@ -63,7 +62,6 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
-    [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
     
     VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
     flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];

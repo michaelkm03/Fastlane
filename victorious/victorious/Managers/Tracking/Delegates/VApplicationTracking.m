@@ -27,14 +27,16 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 1
+#define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
 
-#if APPLICATION_TRACKING_LOGGING_ENABLED
+#if APPLICATION_TRACKING_LOGGING_ENABLED || APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
 @interface VApplicationTracking()
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
+@property (nonatomic, readonly) NSDictionary *keyForEventMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 
@@ -61,6 +63,14 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
                                     VTrackingKeyNotificationId     : kMacroNotificationID,
                                     VTrackingKeySessionTime        : kMacroSessionTime,
                                     VTrackingKeyLoadTime           : kMacroLoadTime };
+        
+        _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
+                                 VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
+                                 VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
+                                 VTrackingEventUserDidSelectRegistrationDone       : VTrackingDoneButtonTapKey,
+                                 VTrackingEventUserDidSelectRegister               : VTrackingRegisteButtonTapKey,
+                                 VTrackingEventUserDidSelectSignupWithEmail        : VTrackingSignUpButtonTapKey };
+        
         _macroReplacement = [[VURLMacroReplacement alloc] init];
         _sessionTimer = [VSessionTimer sharedInstance];
     }
@@ -240,28 +250,16 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 {
     if ( self.dependencyManager == nil )
     {
+#if APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
         VLog( @"A dependency manager instance must be set before events can be properly tracked." );
+#endif
         return nil;
     }
     
-    static NSDictionary *keyForEventMapping = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^
-    {
-        keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
-                                VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
-                                VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
-                                VTrackingEventUserDidSelectRegistrationDone       : VTrackingDoneButtonTapKey,
-                                VTrackingEventUserDidSelectWelcomeGetStarted      : VTrackingGetStartedTapKey,
-                                VTrackingEventUserDidSelectSignupWithEmail        : VTrackingSignUpButtonTapKey,
-                                VTrackingEventWelcomeVideoDidStart                : VTrackingWelcomeVideoStartKey,
-                                VTrackingEventWelcomeVideoDidEnd                  : VTrackingWelcomeVideoEndKey,
-                                VTrackingEventWelcomeDidStart                     : VTrackingWelcomeStartKey };
-    });
-    NSString *key = keyForEventMapping[ eventName ];
+    NSString *key = self.keyForEventMapping[ eventName ];
     NSArray *urls = [self.dependencyManager trackingURLsForKey:key];
     
-#if APPLICATION_TRACKING_LOGGING_ENABLED
+#if APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
     if ( urls.count > 0 )
     {
         VLog( @"Applicaiton Tracking :: Adding Template URLS to event: %@\n%@.", eventName, urls );

@@ -82,6 +82,8 @@
         self.navigationController.transitioningDelegate = nil;
     }
     
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishRegistration];
+    
     [self.navigationController dismissViewControllerAnimated:YES completion:^void
      {
          if ( self.authorizedAction != nil )
@@ -218,11 +220,6 @@
 
 - (void)didFinishRegistrationStepWithSuccess:(BOOL)success
 {
-    if ( success )
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishRegistration];
-    }
-    
     [self loginDidFinishWithSuccess:success];
 }
 

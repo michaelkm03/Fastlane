@@ -220,12 +220,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         NSArray *keysToMove = @[ @"create_profile_start",
                                  @"registration_end",
                                  @"registration_start",
-                                 @"get_started_tap",
                                  @"done_button_tap",
                                  @"register_button_tap",
                                  @"sign_up_button_tap" ];
-        for ( NSString *key in keysToMove )
+        for ( NSString *key in templateConfiguration[ @"scaffold" ][ @"firstTimeContent" ][ @"tracking" ] )
         {
+            NSString *keyPath = [NSString stringWithFormat:@"scaffold/firstTimeContent/tracking/%@", key];
             NSArray *URLs = templateConfiguration[ @"scaffold" ][ @"firstTimeContent" ][ @"tracking" ][ key ];
             NSMutableArray *newURLS = [[NSMutableArray alloc] init];
             for ( NSString *string in URLs )
@@ -233,8 +233,16 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                 NSString *newString = [string stringByReplacingOccurrencesOfString:@"%%TIME_SINCE_BOOT%%" withString:@"%%SESSION_TIME%%"];
                 [newURLS addObject:newString];
             }
-            NSString *fullKey = [NSString stringWithFormat:@"tracking/%@", key];
-            NSParameterAssert( [templateDecorator setTemplateValue:newURLS.copy forKeyPath:fullKey] );
+            NSParameterAssert( [templateDecorator removeTemplateValueForKeyPath:keyPath] );
+            if ( [keysToMove containsObject:key] )
+            {
+                NSString *newKeyPath = [NSString stringWithFormat:@"tracking/%@", key];
+                NSParameterAssert( [templateDecorator setTemplateValue:newURLS.copy forKeyPath:newKeyPath] );
+            }
+            else
+            {
+                NSParameterAssert( [templateDecorator setTemplateValue:newURLS.copy forKeyPath:keyPath] );
+            }
         }
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
