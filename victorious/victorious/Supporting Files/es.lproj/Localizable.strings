@@ -510,7 +510,7 @@
 "SettingsRestorePurchasesPrompt" = "No has comprado en este dispositivo.\nSi has hecho compras en otro dispositivo, haz clic en Restaurar compras para reiniciarlas.";
 
 "AuthorizationContextDefault" = "¡Estamos muy contentos de que te unas a nuestra comunidad! ¡Abre una cuenta y podrás crear, publicar y compartir!";
-"AuthorizationContextCreatePost" = "¡Sí! No podemos esperar a ver tu primera publicación. ¡Solo tienes que crear una cuenta y empezar a compartir tus ideas con la comunidad!";
+"AuthorizationContextCreatePost" = "¡Sí! No podemos esperar para ver tu primera publicación. ¡Solo tienes que crear una cuenta y empezar a compartir tus ideas con la comunidad!";
 "AuthorizationContextFollowHashtag" = "Los hashtags son lo mejor. Crea tu cuenta y ¡sigue algunas de las conversaciones increíbles que se dan aquí!";
 "AuthorizationContextFollowUser" = "Estamos muy contentos de que te unas a nuestra comunidad y sigas el contenido de otros fans. ¡Haz tu perfil para que los demás puedan seguirte!";
 "AuthorizationContextVoteBallistic" = "Estos emojis son increíbles, ¿verdad? Crea tu cuenta primero y luego envía un poco de amor. ";

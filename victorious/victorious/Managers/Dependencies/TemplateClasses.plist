@@ -110,5 +110,7 @@
 	<string>VInsetMarqueeController</string>
 	<key>standard.coachmark</key>
 	<string>VCoachmark</string>
+	<key>standard.permissionsAlert</key>
+	<string>VPermissionAlertViewController</string>
 </dict>
 </plist>
