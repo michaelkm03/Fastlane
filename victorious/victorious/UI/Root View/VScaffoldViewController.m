@@ -28,6 +28,7 @@
 #import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "VCoachmarkManager.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -50,7 +51,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        
+        _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
     }
@@ -118,7 +119,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - Content View
 
-- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
+- (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
     VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
     
@@ -131,7 +132,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         return;
     }
     
-    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence commentID:commentID placeholderImage:placeholderImage];
+    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence inStreamWithID:streamId commentID:commentID placeholderImage:placeholderImage];
     if ( contentView != nil )
     {
         if ( self.presentedViewController )

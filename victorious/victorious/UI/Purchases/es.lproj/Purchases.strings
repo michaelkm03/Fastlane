@@ -1,0 +1,24 @@
+
+/* Class = "UIButton"; normalTitle = "Restore"; ObjectID = "0ps-Lu-6Wn"; */
+"0ps-Lu-6Wn.normalTitle" = "Restore";
+
+/* Class = "UILabel"; text = "Unlocking..."; ObjectID = "Dab-jX-V18"; */
+"Dab-jX-V18.text" = "Unlocking...";
+
+/* Class = "UILabel"; text = "Creator Salutation"; ObjectID = "F6r-q3-st5"; */
+"F6r-q3-st5.text" = "Creator Salutation";
+
+/* Class = "UITextView"; text = "In-App\nPurchase\nProduct\nDescription"; ObjectID = "Yru-XK-oHK"; */
+"Yru-XK-oHK.text" = "In-App\nPurchase\nProduct\nDescription";
+
+/* Class = "UILabel"; text = "Unlocking..."; ObjectID = "guM-k2-DxG"; */
+"guM-k2-DxG.text" = "Unlocking...";
+
+/* Class = "UILabel"; text = "Product Title"; ObjectID = "o0J-m2-6MN"; */
+"o0J-m2-6MN.text" = "Product Title";
+
+/* Class = "UIButton"; normalTitle = "Unlock for %@"; ObjectID = "sdg-KR-qfg"; */
+"sdg-KR-qfg.normalTitle" = "Unlock for %@";
+
+/* Class = "UITextView"; text = "Already purchased on another device?\nTap below to restore all of your purchases."; ObjectID = "wXE-MY-9if"; */
+"wXE-MY-9if.text" = "Lorem ipsum";

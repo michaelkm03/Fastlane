@@ -51,6 +51,7 @@
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
 NSString * const VWorkspaceFlowControllerPreloadedImageKey = @"preloadedImageKey";
+NSString * const VWorkspaceFlowControllerContextKey = @"workspaceContext";
 
 static const char kAssociatedObjectKey;
 
@@ -293,6 +294,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         case VWorkspaceFlowControllerInitialCaptureStateVideo:
             self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
             break;
+    }
+    if ([self.cameraViewController respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.cameraViewController setDependencyManager:self.dependencyManager];
     }
     self.cameraViewController.shouldSkipPreview = YES;
     self.cameraViewController.completionBlock = [self mediaCaptureCompletion];

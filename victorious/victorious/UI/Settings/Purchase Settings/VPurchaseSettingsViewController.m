@@ -146,7 +146,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
         else
         {
             VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
-            cell.isCentered = YES;
+            cell.centered = YES;
             [cell setMessage:NSLocalizedString( @"SettingsRestorePurchasesPrompt", nil)];
             return cell;
         }

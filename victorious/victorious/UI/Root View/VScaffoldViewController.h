@@ -12,7 +12,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence, VAuthorization;
+@class VSequence, VAuthorization, VCoachmarkManager;
 
 /**
  The key that identifies the menu component in VDependencyManager
@@ -35,9 +35,23 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  */
 @interface VScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
 
+/**
+ A dependency manager that contains appearance data
+ and various high level components including the menu
+ */
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
+/**
+ Set to YES after the scaffold has appeared on screen once,
+ used to determine whether or not FTUE should display
+ */
 @property (nonatomic, assign, readonly) BOOL hasBeenShown;
+
+/**
+ An object that manages the display of coachmarks in
+ view controllers managed by this scaffold
+ */
+@property (nonatomic, readonly) VCoachmarkManager *coachmarkManager;
 
 /**
  Initializes the receiver with an instance of VDependencyManager
@@ -58,7 +72,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
                 is being presented when the app is launched with a deep link URL.  If there
                 is no comment, simply pass `nil`.
  */
-- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage;
+- (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage;
 
 /**
  Subclasses should override this and return a list of navigation destinations

@@ -11,6 +11,9 @@
 // Libraries
 #import <FBKVOController.h>
 
+// Dependencies
+#import "VDependencyManager.h"
+
 // Views + Helpers
 #import "VSequenceActionsDelegate.h"
 #import "VFlexBar.h"
@@ -85,6 +88,7 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
         [button v_addWidthConstraint:kAvatarSize];
         [button addTarget:self action:@selector(selectedUserButton:) forControlEvents:UIControlEventTouchUpInside];
         self.profileButton = button;
+        self.profileButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
         creationContainer.translatesAutoresizingMaskIntoConstraints = NO;
@@ -158,6 +162,7 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
     {
         [self.timeSinceWidget setDependencyManager:dependencyManager];
     }
+    self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 #pragma mark - Observers

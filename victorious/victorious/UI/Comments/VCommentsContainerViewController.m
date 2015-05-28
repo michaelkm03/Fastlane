@@ -29,12 +29,14 @@
 #import "VBackground.h"
 #import "UIView+AutoLayout.h"
 
+static const CGFloat kNoPreviewBackgroundTransparency = 0.75f;
+
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
-@property (strong, nonatomic) UIImageView *backgroundImage;
+@property (strong, nonatomic) UIView *backgroundImage;
 @property (strong, nonatomic) UIView *fallbackBackground;
 
 @end
@@ -55,9 +57,25 @@
     _sequence = sequence;
     
     [self.backgroundImage removeFromSuperview];
-    UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
     
-    [newBackgroundView applyExtraLightBlurAndAnimateImageWithURLToVisible:[[self.sequence initialImageURLs] firstObject]];
+    UIView *newBackgroundView;
+    
+    NSURL *firstPreviewURL = [[self.sequence initialImageURLs] firstObject];
+    NSString *firstPreviewURLString = [firstPreviewURL absoluteString];
+    
+    // Check if we have a preview image to blur as the background
+    if (firstPreviewURLString.length > 0)
+    {
+        newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        [(UIImageView *)newBackgroundView applyExtraLightBlurAndAnimateImageWithURLToVisible:firstPreviewURL];
+    }
+    // Add semi transparent background if we don't have a preview image
+    else
+    {
+        newBackgroundView = [[UIView alloc] initWithFrame:self.view.bounds];
+        newBackgroundView.backgroundColor = [UIColor whiteColor];
+        newBackgroundView.alpha = kNoPreviewBackgroundTransparency;
+    }
     
     self.backgroundImage = newBackgroundView;
     [self.view insertSubview:self.backgroundImage aboveSubview:self.fallbackBackground];

@@ -19,13 +19,13 @@
 /**
  *  Animates to full opacity. Should only be called on initial appearance.
  */
-- (void)fadeIn;
+- (void)fadeIn:(NSTimeInterval)duration;
 
 /**
  *  Animate to zero opacity. Switches internal state to allow calls to "-flash" to
  *  animate the opacity to zero.
  */
-- (void)fadeOut;
+- (void)fadeOut:(NSTimeInterval)duration;
 
 /**
  *  Does nothing if hasn't yet received a fadeOut message.

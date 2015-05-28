@@ -34,11 +34,16 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  */
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo;
 
-- (void)presentForceUpgradeScreen;
+/**
+ Please call this method from UIApplicationDelegate's method of the same name.
+ */
+- (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
 
 /**
- An object that receives deep links and forwads to appropriate handlers
+ Opens a deeplink URL
  */
-@property (nonatomic, readonly) VDeeplinkReceiver *deepLinkReceiver;
+- (void)openURL:(NSURL *)url;
+
+- (void)presentForceUpgradeScreen;
 
 @end
