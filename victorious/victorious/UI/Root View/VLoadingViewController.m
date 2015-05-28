@@ -216,7 +216,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
+        
+        /*BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
         if ( isSideNavMenu )
         {
             // Add hamburger button
@@ -272,7 +273,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         // Add Follow/Unfollow button to hashtag stream screen in scaffold
         NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/hashtagStream/accessoryScreens"] );
         NSParameterAssert( [templateDecorator setComponentWithFilename:@"followAccessory"
-                                                            forKeyPath:@"scaffold/hashtagStream/accessoryScreens/0"] );
+                                                            forKeyPath:@"scaffold/hashtagStream/accessoryScreens/0"] );*/
+        
+        
+        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
+        {
+            NSLog( @"%@ = %@", keyPath, [templateDecorator templateValueForKeyPath:keyPath] );
+        }
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

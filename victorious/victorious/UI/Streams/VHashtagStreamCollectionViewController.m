@@ -142,6 +142,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
      {
          [self updateUserFollowingStatus];
          [self dataSourceDidRefresh];
+         [self updateNavigationItems];
      }];
 }
 
