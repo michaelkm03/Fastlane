@@ -74,6 +74,10 @@
 #import "VHashtagSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
 
+#import "VCoachmarkManager.h"
+#import "VCoachmarkDisplayer.h"
+#import "VDependencyManager+VCoachmarkManager.h"
+
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
 static NSString * const kCanAddContentKey = @"canAddContent";
@@ -90,7 +94,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -269,6 +273,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
 - (BOOL)shouldAutorotate
@@ -863,6 +874,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)hashtagSelected:(NSString *)text
 {
     [self showHashtagStreamWithHashtag:text];
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+- (BOOL)selectorIsVisible
+{
+    return !self.navigationController.navigationBarHidden;
 }
 
 @end

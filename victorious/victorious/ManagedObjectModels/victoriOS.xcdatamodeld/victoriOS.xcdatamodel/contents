@@ -290,7 +290,7 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="240"/>
         <element name="Comment" positionX="1078" positionY="38" width="128" height="315"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="EndCard" positionX="693" positionY="-648" width="128" height="148"/>
+        <element name="EndCard" positionX="693" positionY="-648" width="128" height="150"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
         <element name="ImageAsset" positionX="423" positionY="-594" width="128" height="135"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
