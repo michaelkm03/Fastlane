@@ -23,7 +23,7 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 @property (nonatomic, weak) VObjectManager *objectManager;
 @property (nonatomic, strong) id presentingController;
 @property (nonatomic, strong) id loginController;
-@property (nonatomic, strong) UIView *replicant;
+@property (nonatomic, strong) UIView *replicantView;
 
 @end
 
@@ -111,7 +111,7 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 
     self.presentingController = presentingViewController;
     self.loginController = loginFlowController;
-    self.replicant = replicant;
+    self.replicantView = replicant;
     
     return NO;
 }
@@ -126,10 +126,10 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
                                                                 animated:NO
                                                               completion:^
      {
-         [self.replicant removeFromSuperview];
+         [self.replicantView removeFromSuperview];
          self.loginController = nil;
          self.presentingController = nil;
-         self.replicant = nil;
+         self.replicantView = nil;
      }];
 
 }

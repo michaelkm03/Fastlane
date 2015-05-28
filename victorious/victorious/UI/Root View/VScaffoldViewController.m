@@ -33,6 +33,8 @@
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
+static NSString * const kShouldShowLoginKey = @"showLoginOnStartup";
+
 @interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
@@ -64,7 +66,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 {
     [super viewWillAppear:animated];
     
-    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:@"showLoginOnStartup"] boolValue];
+    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldShowLoginKey] boolValue];
     if (shouldShowLogin && !self.hasBeenShown )
     {
         [self.authorizedAction prepareInViewController:self

@@ -8,8 +8,8 @@
 
 #import "VDependencyManager+VKeyboardStyle.h"
 
-static NSString *kLightKeyboardStyle = @"light";
-static NSString *kDarkKeyboardStyle = @"dark";
+static NSString * const kLightKeyboardStyle = @"light";
+static NSString * const kDarkKeyboardStyle = @"dark";
 
 @implementation VDependencyManager (VKeyboardStyle)
 
