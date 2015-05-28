@@ -230,7 +230,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         // Modern
         loginComponent = @{
                            @"name":@"modernLoginAndRegistration.screen",
-                           @"forceRegistration": @YES,
+                           @"forceRegistration": @NO,
                            @"signInOptions":@[@"email", @"facebook"],
                            @"logo":
                                @{
@@ -316,6 +316,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                        },
                                                }
                                        },
+                                   @{
+                                       @"name":@"modernEnterProfilePicture.screen",
+                                       }
                                    ],
                            @"loginScreens":
                                @[

@@ -381,4 +381,23 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
+- (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
+                                       completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                     password:nil
+                                                         name:nil
+                                              profileImageURL:filePath
+                                                     location:nil
+                                                      tagline:nil
+                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         completion(YES, nil);
+     }
+                                                    failBlock:^(NSOperation *operation, NSError *error)
+     {
+         completion(NO, error);
+     }];
+}
+
 @end

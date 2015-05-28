@@ -74,4 +74,10 @@
 - (void)updatePassword:(NSString *)password
             completion:(void (^)(BOOL success, NSError *error))completion;
 
+/**
+ *  The user has taken a profile picture send it to the backend.
+ */
+- (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
+                                       completion:(void (^)(BOOL success, NSError *error))completion;
+
 @end

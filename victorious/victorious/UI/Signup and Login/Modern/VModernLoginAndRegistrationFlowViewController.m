@@ -20,6 +20,7 @@
 #import "VModernResetTokenViewController.h"
 #import "VModernFlowControllerAnimationController.h"
 #import "VTOSViewController.h"
+#import "VEnterProfilePictureCameraShimViewController.h"
 
 // Responder Chain
 #import "VLoginFlowControllerResponder.h"
@@ -209,7 +210,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self pushViewController:[self nextScreenAfterCurrentInArray:self.registrationScreens]
+    [self pushViewController:[self nextScreenAfter:self.topViewController inArray:self.registrationScreens]
                     animated:YES];
 }
 
@@ -394,6 +395,27 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                      completion:nil];
 }
 
+- (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath
+{
+    if (self.actionsDisabled)
+    {
+        return;
+    }
+    
+    if (profilePictureFilePath == nil)
+    {
+        [self onAuthenticationFinishedWithSuccess:YES];
+    }
+    else
+    {
+        [self.loginFlowHelper updateProfilePictureWithPictureAtFilePath:profilePictureFilePath
+                                                             completion:^(BOOL success, NSError *error)
+         {
+             [self onAuthenticationFinishedWithSuccess:YES];
+         }];        
+    }
+}
+
 #pragma mark - Internal Methods
 
 - (void)continueRegistrationFlow
@@ -404,10 +426,15 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    UIViewController *nextRegisterViewController = [self nextScreenAfterCurrentInArray:self.registrationScreens];
+    UIViewController *nextRegisterViewController = [self nextScreenAfter:self.topViewController inArray:self.registrationScreens];
     if (nextRegisterViewController == self.topViewController)
     {
         [self onAuthenticationFinishedWithSuccess:YES];
+    }
+    else if ([nextRegisterViewController isKindOfClass:[VEnterProfilePictureCameraShimViewController class]])
+    {
+        VEnterProfilePictureCameraShimViewController *cameraViewController = (VEnterProfilePictureCameraShimViewController *)nextRegisterViewController;
+        [cameraViewController showCameraOnViewController:self];
     }
     else
     {
@@ -428,14 +455,15 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
-- (UIViewController *)nextScreenAfterCurrentInArray:(NSArray *)array
+- (UIViewController *)nextScreenAfter:(UIViewController *)viewController
+                              inArray:(NSArray *)array
 {
-    if (![array containsObject:self.topViewController])
+    if (![array containsObject:viewController])
     {
         return [array firstObject];
     }
     
-    NSUInteger currentIndex = [array indexOfObject:self.topViewController];
+    NSUInteger currentIndex = [array indexOfObject:viewController];
     if ((currentIndex+1) < array.count)
     {
         return [array objectAtIndex:currentIndex+1];

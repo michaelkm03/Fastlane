@@ -21,6 +21,10 @@ extern NSString * const kPollResultsLoaded;
                                           failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
                                   inStreamWithStreamID:(NSString *)streamId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;

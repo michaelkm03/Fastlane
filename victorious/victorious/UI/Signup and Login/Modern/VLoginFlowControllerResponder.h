@@ -76,4 +76,9 @@
  */
 - (void)showTermsOfService;
 
+/**
+ * The user has taken a picture for their profile picture and it was saved to the passed in file path.
+ */
+- (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath;
+
 @end
