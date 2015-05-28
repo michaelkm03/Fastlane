@@ -9,7 +9,6 @@
 #import "VTextbarSelectorView.h"
 #import "NSArray+VMap.h"
 #import "VDependencyManager.h"
-#import "UIView+AbsoluteFrame.h"
 
 static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVTrackLineHeight = 1.0f;
@@ -47,7 +46,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     }
     
     UIButton *button = self.buttons[index];
-    return [button absoluteFrame];
+    return [button convertRect:self.bounds toView:self.window];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers

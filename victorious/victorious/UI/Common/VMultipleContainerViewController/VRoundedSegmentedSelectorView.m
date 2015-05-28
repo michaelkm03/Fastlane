@@ -11,7 +11,6 @@
 #import "VExtendedView.h"
 #import "UIImage+ImageCreation.h"
 #import "UIView+AutoLayout.h"
-#import "UIView+AbsoluteFrame.h"
 
 static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVPillHeight = 29.0f;
@@ -53,7 +52,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     }
     
     UIButton *button = self.buttons[index];
-    return [button absoluteFrame];
+    return [button convertRect:button.bounds toView:self.window];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers

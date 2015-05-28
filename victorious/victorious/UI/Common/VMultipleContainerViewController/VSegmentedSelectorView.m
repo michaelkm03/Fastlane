@@ -9,7 +9,6 @@
 #import "NSArray+VMap.h"
 #import "VDependencyManager.h"
 #import "VSegmentedSelectorView.h"
-#import "UIView+AbsoluteFrame.h"
 
 @interface VSegmentedSelectorView ()
 
@@ -38,7 +37,7 @@
     }
     
     CGRect segmentFrame = self.segmentedControl.frame;
-    segmentFrame.origin = [self.segmentedControl absoluteOrigin];
+    segmentFrame.origin = [self.segmentedControl convertPoint:self.bounds.origin toView:self.window];
     CGFloat segmentWidth = CGRectGetWidth(segmentFrame) / numberOfSegments;
     segmentFrame.size.width = segmentWidth;
     segmentFrame.origin.x += segmentWidth * index;
