@@ -9,6 +9,14 @@
 #import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
 
+NSString * const VDependencyManagerPositionKey      = @"position";
+NSString * const VDependencyManagerDestinationKey   = @"destination";
+NSString * const VDependencyManagerIdentifierKey    = @"identifier";
+NSString * const VDependencyManagerIconKey          = @"icon";
+NSString * const VDependencyManagerSelectedIconKey  = @"selectedIcon";
+NSString * const VDependencyManagerPositionLeft     = @"left";
+NSString * const VDependencyManagerPositionRight    = @"right";
+
 @implementation VNavigationMenuItem
 
 - (instancetype)initWithTitle:(NSString *)title

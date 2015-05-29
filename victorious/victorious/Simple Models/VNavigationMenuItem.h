@@ -10,6 +10,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+extern NSString * const VDependencyManagerPositionKey;
+extern NSString * const VDependencyManagerIdentifierKey;
+extern NSString * const VDependencyManagerDestinationKey;
+extern NSString * const VDependencyManagerIconKey;
+extern NSString * const VDependencyManagerSelectedIconKey;
+extern NSString * const VDependencyManagerPositionLeft;
+extern NSString * const VDependencyManagerPositionRight;
+
 /**
  An item in a navigation menu
  */
