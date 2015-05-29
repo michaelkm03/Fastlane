@@ -158,15 +158,6 @@ static const char kAssociatedObjectSourceViewControllerKey;
         [badgeProvider setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
         NSInteger badgeNumber = [badgeProvider badgeNumber];
         badgeNumberUpdateBlock( badgeNumber );
-        
-        if ( [source conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
-        {
-            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)source;
-            if ( badgeProvider.badgeNumberUpdateBlock != nil )
-            {
-                badgeProvider.badgeNumberUpdateBlock( badgeNumber );
-            }
-        }
     }
 }
 
