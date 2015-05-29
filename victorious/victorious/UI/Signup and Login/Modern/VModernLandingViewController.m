@@ -253,6 +253,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
+    [self.view setNeedsLayout];
 }
 
 - (UIButton *)buttonForLoginType:(NSString *)loginType

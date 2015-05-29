@@ -24,7 +24,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Email" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dNj-OR-i2D" userLabel="Email Field" customClass="VInlineValidationTextField">
-                                <rect key="frame" x="20" y="167" width="560" height="40"/>
+                                <rect key="frame" x="20" y="137" width="560" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="4yd-tV-29q"/>
                                 </constraints>
@@ -36,14 +36,14 @@
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BTB-KA-lGH" userLabel="Separator">
-                                <rect key="frame" x="20" y="207" width="560" height="1"/>
+                                <rect key="frame" x="20" y="177" width="560" height="1"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="knT-l0-mz7"/>
                                 </constraints>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="edE-kN-xit" userLabel="Password Field" customClass="VInlineValidationTextField">
-                                <rect key="frame" x="20" y="227" width="560" height="40"/>
+                                <rect key="frame" x="20" y="187" width="560" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Fop-ym-eUh"/>
                                 </constraints>
@@ -55,7 +55,7 @@
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yqg-c8-bdw" userLabel="Separator">
-                                <rect key="frame" x="20" y="267" width="560" height="1"/>
+                                <rect key="frame" x="20" y="227" width="560" height="1"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="o9b-iP-3j0"/>
@@ -64,12 +64,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="dNj-OR-i2D" firstAttribute="top" secondItem="YWP-Dc-TM2" secondAttribute="bottom" constant="50" id="1nQ-3q-Rfc"/>
+                            <constraint firstItem="dNj-OR-i2D" firstAttribute="top" secondItem="YWP-Dc-TM2" secondAttribute="bottom" constant="20" id="1nQ-3q-Rfc"/>
                             <constraint firstAttribute="trailing" secondItem="YWP-Dc-TM2" secondAttribute="trailing" constant="20" id="5ZF-Rl-dP7"/>
                             <constraint firstItem="YWP-Dc-TM2" firstAttribute="top" secondItem="Y5I-nB-f9a" secondAttribute="bottom" constant="20" id="N7l-Uf-2Qt"/>
                             <constraint firstItem="BTB-KA-lGH" firstAttribute="top" secondItem="dNj-OR-i2D" secondAttribute="bottom" id="O66-cZ-Wln"/>
                             <constraint firstItem="edE-kN-xit" firstAttribute="leading" secondItem="yqg-c8-bdw" secondAttribute="leading" id="OFe-lV-pdA"/>
-                            <constraint firstItem="edE-kN-xit" firstAttribute="top" secondItem="dNj-OR-i2D" secondAttribute="bottom" constant="20" id="V3y-Wo-HOq"/>
+                            <constraint firstItem="edE-kN-xit" firstAttribute="top" secondItem="dNj-OR-i2D" secondAttribute="bottom" constant="10" id="V3y-Wo-HOq"/>
                             <constraint firstItem="edE-kN-xit" firstAttribute="leading" secondItem="jFf-dT-bih" secondAttribute="leading" constant="20" id="YWb-du-5YA"/>
                             <constraint firstItem="dNj-OR-i2D" firstAttribute="leading" secondItem="BTB-KA-lGH" secondAttribute="leading" id="bP7-Ag-kdJ"/>
                             <constraint firstItem="yqg-c8-bdw" firstAttribute="top" secondItem="edE-kN-xit" secondAttribute="bottom" id="c3e-sG-tEw"/>

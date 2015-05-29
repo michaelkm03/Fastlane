@@ -220,8 +220,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 //                                 forKeyPath:@"scaffold/firstTimeContent"];
         
         // Auto-Show Login
-//        [templateDecorator setTemplateValue:@YES
-//                                 forKeyPath:@"scaffold/showLoginOnStartup"];
+        [templateDecorator setTemplateValue:@YES
+                                 forKeyPath:@"scaffold/showLoginOnStartup"];
         
         NSDictionary *loginComponent;
         
@@ -256,6 +256,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                            @"landingScreen":
                                @{
                                    @"name":@"modernLanding.screen",
+                                   @"prompts":@[@"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!",
+                                                @"By signing up you are agreeing to the ToS and Privacy Policy",
+                                                @"Sign Up with Email",
+                                                @"Sign Up with Facebook"],
                                    @"color.text.content":
                                        @{
                                            @"red":@255,
@@ -268,12 +272,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                            @"name":@"solidColor.background",
                                            @"color":
                                                @{
-                                                   @"red":@255,
-                                                   @"green":@25,
-                                                   @"blue":@25,
-                                                   @"alpha":@0
-                                               },
-                                           }
+                                                   @"red":@0,
+                                                   @"green":@0,
+                                                   @"blue":@0,
+                                                   @"alpha":@100
+                                                   },
+                                           },
                                    },
                            @"registrationScreens":
                                @[
@@ -298,12 +302,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @"name":@"solidColor.background",
                                                @"color":
                                                    @{
-                                                       @"red":@25,
-                                                       @"green":@25,
-                                                       @"blue":@150,
-                                                       @"alpha":@0
+                                                       @"red":@0,
+                                                       @"green":@0,
+                                                       @"blue":@0,
+                                                       @"alpha":@100
                                                        },
-                                               }
+                                               },
                                        },
                                    @{
                                        @"name":@"modernEnterNameScreen.screen",
@@ -327,12 +331,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @"name":@"solidColor.background",
                                                @"color":
                                                    @{
-                                                       @"red":@150,
-                                                       @"green":@25,
-                                                       @"blue":@25,
-                                                       @"alpha":@0
+                                                       @"red":@0,
+                                                       @"green":@0,
+                                                       @"blue":@0,
+                                                       @"alpha":@100
                                                        },
-                                               }
+                                               },
                                        },
                                    @{
                                        @"name":@"modernEnterProfilePicture.screen",
@@ -362,13 +366,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @"name":@"solidColor.background",
                                                @"color":
                                                    @{
-                                                       @"red":@25,
-                                                       @"green":@50,
-                                                       @"blue":@25,
-                                                       @"alpha":@0
+                                                       @"red":@0,
+                                                       @"green":@0,
+                                                       @"blue":@0,
+                                                       @"alpha":@100
                                                        },
-                                               }
-                                       },
+                                               },                                       },
                                    ],
                            @"resetTokenScreen":
                                @{
@@ -393,12 +396,12 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                            @"name":@"solidColor.background",
                                            @"color":
                                                @{
-                                                   @"red":@25,
-                                                   @"green":@50,
-                                                   @"blue":@255,
-                                                   @"alpha":@0
+                                                   @"red":@0,
+                                                   @"green":@0,
+                                                   @"blue":@0,
+                                                   @"alpha":@100
                                                    },
-                                           }
+                                           },
                                    },
                            @"changePasswordScreen":
                                @{
@@ -423,17 +426,17 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                            @"name":@"solidColor.background",
                                            @"color":
                                                @{
-                                                   @"red":@25,
-                                                   @"green":@50,
-                                                   @"blue":@25,
-                                                   @"alpha":@0
+                                                   @"red":@0,
+                                                   @"green":@0,
+                                                   @"blue":@0,
+                                                   @"alpha":@100
                                                    },
                                            },
                                    }
                            };
         
-//        [templateDecorator setTemplateValue:loginComponent
-//                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
+        [templateDecorator setTemplateValue:loginComponent
+                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

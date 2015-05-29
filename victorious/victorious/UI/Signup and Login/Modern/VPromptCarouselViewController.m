@@ -46,10 +46,28 @@ static NSString * const kPromptsKey = @"prompts";
 
 #pragma mark - View lifecycle
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.collectionView.alpha = 0.0f;
+    [self.flowLayout invalidateLayout];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self setupTimer];
+    
+    [self.flowLayout invalidateLayout];
+    [UIView animateWithDuration:0.5f
+                          delay:0.5f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^
+     {
+         self.collectionView.alpha = 1.0f;
+     }
+                     completion:nil];
 }
 
 - (void)viewDidLayoutSubviews
@@ -61,7 +79,6 @@ static NSString * const kPromptsKey = @"prompts";
     self.gradientMaskView.startPoint = CGPointMake(0, 0.5f);
     self.gradientMaskView.endPoint = CGPointMake(1, 0.5f);
     self.view.maskView = self.gradientMaskView;
-    [self.flowLayout invalidateLayout];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -115,6 +132,13 @@ static NSString * const kPromptsKey = @"prompts";
 
 - (void)nextItem
 {
+    BOOL atLeastOneItem = [self.collectionView numberOfItemsInSection:0] > 0;
+    if (!atLeastOneItem)
+    {
+        [self.timerManager invalidate];
+        return;
+    }
+    
     NSIndexPath *currentIndexPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds),
                                                                                              CGRectGetMidY(self.collectionView.bounds))];
     NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:currentIndexPath.row + 1 inSection:currentIndexPath.section];
