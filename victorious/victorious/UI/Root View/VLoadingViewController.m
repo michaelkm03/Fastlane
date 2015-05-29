@@ -347,7 +347,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                },
                                        },
                                    @{
-                                       @"name":@"modernEnterProfilePicture.screen",
+                                       @"name":@"addProfilePicture.screen",
                                        @"prompt":@"Add your profile picture",
                                        @"buttonPrompt":@"Add photo",
                                        @"color.text.content":
@@ -452,8 +452,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                    }
                            };
         
-        [templateDecorator setTemplateValue:loginComponent
-                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
+//        [templateDecorator setTemplateValue:loginComponent
+//                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
