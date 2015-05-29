@@ -94,6 +94,18 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
     [self showCameraOnViewController:self];
 }
 
+- (IBAction)highlight:(id)sender
+{
+    self.avatarButton.highlighted = YES;
+    self.addProfilePictureButton.highlighted = YES;
+}
+
+- (IBAction)unHighlight:(id)sender
+{
+    self.avatarButton.highlighted = NO;
+    self.addProfilePictureButton.highlighted = NO;
+}
+
 - (void)userPressedDone
 {
     id <VLoginFlowControllerResponder> flowController = [self.viewControllerCameraPresentedFrom targetForAction:@selector(continueRegistrationFlow)
