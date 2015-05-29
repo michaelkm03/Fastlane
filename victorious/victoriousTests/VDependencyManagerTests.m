@@ -470,15 +470,15 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 - (void)testImageWithName
 {
-    UIImage *expected = [UIImage imageNamed:@"Menu"];
+    UIImage *expected = [UIImage imageNamed:@"C_menu"];
+    XCTAssertNotNil(expected); // This assert will fail if the "C_menu" image is ever removed from our project
     UIImage *actual = [self.dependencyManager imageForKey:@"myImage"];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testImage
 {
-    // This test may fail if the "Menu" image is ever removed from our project, but that should be
-    // around the same time that the logic of this method will need to be updated anyway.
+    // This test will fail if the "C_menu" image is ever removed from our project
     UIImage *sampleImage = [UIImage imageNamed:@"C_menu"];
     VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
                                                                                 configuration:@{ @"myImage": sampleImage }
