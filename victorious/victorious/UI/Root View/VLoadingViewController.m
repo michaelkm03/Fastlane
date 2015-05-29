@@ -348,7 +348,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                        },
                                    @{
                                        @"name":@"modernEnterProfilePicture.screen",
-                                       @"prompt":@"This is the kind voice of us asking for your avatar.",
+                                       @"prompt":@"Add your profile picture",
+                                       @"buttonPrompt":@"Add photo",
                                        @"color.text.content":
                                            @{
                                                @"red":@255,

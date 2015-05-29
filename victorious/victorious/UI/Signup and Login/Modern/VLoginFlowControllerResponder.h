@@ -87,4 +87,9 @@
  */
 - (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath;
 
+/**
+ *  The user has requested to continue along the registration flow.
+ */
+- (void)continueRegistrationFlow;
+
 @end

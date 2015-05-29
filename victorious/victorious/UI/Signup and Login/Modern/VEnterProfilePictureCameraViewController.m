@@ -22,14 +22,16 @@
 #import "VImageToolController.h"
 
 static NSString * const kPromptKey = @"prompt";
+static NSString * const kButtonPromptKey = @"buttonPrompt";
 
 @interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) UIViewController *viewControllerCameraPresentedFrom;
-@property (weak, nonatomic) IBOutlet UILabel *promptLabel;
+@property (nonatomic, weak) IBOutlet UILabel *promptLabel;
 @property (nonatomic, weak) IBOutlet UIButton *avatarButton;
+@property (nonatomic, weak) IBOutlet UIButton *addProfilePictureButton;
 
 @end
 
@@ -71,6 +73,18 @@ static NSString * const kPromptKey = @"prompt";
                                                                                          attributes:promptAttributes];
 
     self.promptLabel.attributedText = attributedPrompt;
+    NSDictionary *addProfileTextAttributes = @{
+                                               NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey],
+                                               NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey],
+                                               };
+    NSString *buttonPrompt = [self.dependencyManager stringForKey:kButtonPromptKey] ?: @"";
+    NSAttributedString *addProfilePictureButtonTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(buttonPrompt, nil)
+                                                                                  attributes:addProfileTextAttributes];
+    [self.addProfilePictureButton setAttributedTitle:addProfilePictureButtonTitle
+                                            forState:UIControlStateNormal];
+    
+    self.avatarButton.layer.cornerRadius = CGRectGetHeight(self.avatarButton.bounds) / 2;
+    self.avatarButton.layer.masksToBounds = YES;
 }
 
 #pragma mark - Target/Action
@@ -82,13 +96,13 @@ static NSString * const kPromptKey = @"prompt";
 
 - (void)userPressedDone
 {
-    id <VLoginFlowControllerResponder> flowController = [self.viewControllerCameraPresentedFrom targetForAction:@selector(setProfilePictureFilePath:)
+    id <VLoginFlowControllerResponder> flowController = [self.viewControllerCameraPresentedFrom targetForAction:@selector(continueRegistrationFlow)
                                                                                                      withSender:self];
     if (flowController == nil)
     {
-        NSAssert(false, @"We need a flow controller for setting the profile picture!");
+        NSAssert(false, @"We need a flow controller for finishing profile creation.");
     }
-    [flowController setProfilePictureFilePath:nil];
+    [flowController continueRegistrationFlow];
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate
@@ -110,6 +124,9 @@ static NSString * const kPromptKey = @"prompt";
         NSAssert(false, @"We need a flow controller for setting the profile picture!");
     }
     [flowController setProfilePictureFilePath:capturedMediaURL];
+    [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 - (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
