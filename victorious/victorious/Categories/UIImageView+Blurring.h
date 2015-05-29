@@ -33,7 +33,7 @@
  *  @param urlForImage A URL for the image that will be used to key off for the cache.
  *  @param tintColor A color to tint the image with during bluring.
  *  @param duration The duration for the fade-in animation.
- *  @param animations An block that will be the same as the blurred image is being faded in.
+ *  @param animations An block that will be executed while the blurred image is being faded in.
  */
 - (void)blurAndAnimateImageToVisible:(UIImage *)image
                             imageURL:(NSURL *)urlForImage

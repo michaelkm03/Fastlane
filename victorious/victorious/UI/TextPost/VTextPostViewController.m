@@ -19,6 +19,8 @@
 #import "VURLDetector.h"
 #import "VTextPostCalloutHelper.h"
 
+static const CGFloat kAnimationDuration = 0.35f;
+
 @interface VTextPostViewController () <CCHLinkTextViewDelegate>
 
 @property (nonatomic, assign) BOOL hasBeenDisplayed;
@@ -131,16 +133,16 @@
 
 - (void)setImageURL:(NSURL *)imageURL
 {
-    [self setImageURL:imageURL animated:NO completed:nil];
+    [self setImageURL:imageURL animated:NO completion:nil];
 }
 
-- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated completed:(void (^)(UIImage *))completionBlock
+- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated completion:(void (^)(UIImage *))completion
 {
     if ( _imageURL == imageURL )
     {
-        if ( completionBlock != nil )
+        if ( completion != nil )
         {
-            completionBlock(nil);
+            completion(nil);
         }
         return;
     }
@@ -153,9 +155,9 @@
     void (^onImageLoaded)(UIImage *) = ^void(UIImage *image)
     {
         self.backgroundImageView.alpha = 1.0f;
-        if ( completionBlock != nil )
+        if ( completion != nil )
         {
-            completionBlock(image);
+            completion(image);
         }
     };
     
@@ -165,7 +167,7 @@
         const BOOL wasDownloaded = cacheType == SDImageCacheTypeNone;
         if ( animated && wasDownloaded )
         {
-            [UIView animateWithDuration:.35f animations:^
+            [UIView animateWithDuration:kAnimationDuration animations:^
             {
                 onImageLoaded(image);
             }];

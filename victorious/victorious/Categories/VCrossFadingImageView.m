@@ -12,16 +12,15 @@
 #import "UIView+AutoLayout.h"
 #import "VImageViewContainer.h"
 #import "UIImage+ImageCreation.h"
-#import <objc/runtime.h>
 #import "VStreamItemPreviewView.h"
 #import "VStreamItem.h"
 
 static const NSTimeInterval kFadeAnimationDuration = 0.3f;
-static const char kAssociatedObjectKey;
 
 @interface VCrossFadingImageView ()
 
 @property (nonatomic, strong) NSMutableArray *imageViewContainers;
+@property (nonatomic, strong) VStreamItem *streamItem;
 
 @end
 
@@ -174,16 +173,11 @@ static const char kAssociatedObjectKey;
     }
     
     VImageViewContainer *imageViewContainer = ((VImageViewContainer *)self.imageViewContainers[index]);
-    VStreamItem *streamItem = objc_getAssociatedObject(imageViewContainer, &kAssociatedObjectKey);
     VStreamItem *previewViewStreamItem = previewView.streamItem;
     //Only need to update the imageViewContainer if it isn't already showing the image
-    if ( ![streamItem isEqual:previewViewStreamItem] )
+    if ( ![self.streamItem isEqual:previewViewStreamItem] )
     {
-        //Check if image load failed; if so, don't associate it with the url so it retries the next time this method is called
-        if ( image != nil )
-        {
-            objc_setAssociatedObject(imageViewContainer, &kAssociatedObjectKey, previewViewStreamItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
+        self.streamItem = previewViewStreamItem;
         NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
         [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
     }

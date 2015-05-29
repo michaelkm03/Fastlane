@@ -40,7 +40,7 @@
 - (void)setSequence:(VSequence *)sequence;
 
 /**
- *  Returns YES if this instance of VSequencePreviewView can handle the given seuqence.
+ *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.
  */
 - (BOOL)canHandleSequence:(VSequence *)sequence;
 

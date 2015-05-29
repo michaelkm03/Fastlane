@@ -57,16 +57,9 @@
     self.textPostViewController.text = text;
     self.textPostViewController.color = color;
     __weak VTextSequencePreviewView *weakSelf = self;
-    [self.textPostViewController setImageURL:backgroundImageURL animated:YES completed:^(UIImage *image)
+    [self.textPostViewController setImageURL:backgroundImageURL animated:YES completion:^(UIImage *image)
     {
-        __strong VTextSequencePreviewView *strongSelf = weakSelf;
-        if ( strongSelf == nil )
-        {
-            return;
-        }
-        
-        strongSelf.readyForDisplay = YES;
-        
+        weakSelf.readyForDisplay = YES;
     }];
 }
 
