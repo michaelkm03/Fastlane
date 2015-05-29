@@ -1,9 +1,0 @@
-{
-    "destination": null,
-    "title": "Create Post",
-    "icon": {
-        "imageURL": "A_createContent"
-    },
-    "identifier": "Accessory Create Post",
-    "position": "right"
-}
