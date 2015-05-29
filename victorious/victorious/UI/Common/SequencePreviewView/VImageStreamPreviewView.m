@@ -44,9 +44,8 @@
 {
     [super setStream:stream];
     
-    NSArray *imagePaths = [stream previewImagePaths];
     __weak VImageStreamPreviewView *weakSelf = self;
-    [self.previewImageView fadeInImageAtURL:[imagePaths firstObject]
+    [self.previewImageView fadeInImageAtURL:[stream previewImageUrl]
                            placeholderImage:nil
                                  completion:^(UIImage *image)
      {
