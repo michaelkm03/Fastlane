@@ -100,7 +100,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
             id customBadgeSource = [sourceViewController targetForAction:@selector(customBadgeProviderForMenuItem:) withSender:self];
             {
                 id<VProvidesNavigationMenuItemBadge> customBadgeProvider = [customBadgeSource customBadgeProviderForMenuItem:menuItem];
-                if ( customBadgeProvider != nil && [customBadgeProvider conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+                if ( customBadgeProvider != nil )
                 {
                     badgeProvider = customBadgeProvider;
                 }
@@ -154,7 +154,6 @@ static const char kAssociatedObjectSourceViewControllerKey;
         VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
         {
             [weakBarButton setBadgeNumber:badgeNumber];
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
             if ( [source conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
             {
                 id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)source;
