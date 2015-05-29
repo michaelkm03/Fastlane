@@ -20,7 +20,7 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
 @interface VCrossFadingImageView ()
 
 @property (nonatomic, strong) NSMutableArray *imageViewContainers;
-@property (nonatomic, strong) VStreamItem *streamItem;
+@property (nonatomic, strong) NSMutableDictionary *loadedStreamItems;
 
 @end
 
@@ -49,6 +49,7 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
 - (void)commonInit
 {
     self.imageViewContainers = [[NSMutableArray alloc] init];
+    self.loadedStreamItems = [[NSMutableDictionary alloc] init];
     self.offset = 0.0f;
 }
 
@@ -173,11 +174,12 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
     }
     
     VImageViewContainer *imageViewContainer = ((VImageViewContainer *)self.imageViewContainers[index]);
-    VStreamItem *previewViewStreamItem = previewView.streamItem;
+    VStreamItem *previewStreamItem = previewView.streamItem;
+    NSNumber *key = @(index);
     //Only need to update the imageViewContainer if it isn't already showing the image
-    if ( ![self.streamItem isEqual:previewViewStreamItem] )
+    if ( ![self.loadedStreamItems[key] isEqual:previewStreamItem] )
     {
-        self.streamItem = previewViewStreamItem;
+        self.loadedStreamItems[key] = previewStreamItem;
         NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
         [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
     }

@@ -18,19 +18,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bg-N6-FzQ" userLabel="DetailsContainer">
-                        <rect key="frame" x="0.0" y="308" width="361" height="57"/>
+                        <rect key="frame" x="0.0" y="308" width="361" height="99"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cka-LP-lJ0" userLabel="Details Container Backdrop">
-                                <rect key="frame" x="0.0" y="0.0" width="361" height="100"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="uTX-cd-6cg"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gwI-zs-1vj" userLabel="Label Alignment View">
                                 <rect key="frame" x="0.0" y="10" width="361" height="21"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" preferredMaxLayoutWidth="274" translatesAutoresizingMaskIntoConstraints="NO" id="9uF-IU-Ue1">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" preferredMaxLayoutWidth="274" translatesAutoresizingMaskIntoConstraints="NO" id="9uF-IU-Ue1">
                                         <rect key="frame" x="23" y="0.0" width="315" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -48,13 +41,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="cka-LP-lJ0" firstAttribute="top" secondItem="7bg-N6-FzQ" secondAttribute="top" id="2i4-3J-ncj"/>
-                            <constraint firstItem="cka-LP-lJ0" firstAttribute="leading" secondItem="7bg-N6-FzQ" secondAttribute="leading" id="6it-Rk-OMW"/>
-                            <constraint firstAttribute="bottom" secondItem="gwI-zs-1vj" secondAttribute="bottom" constant="26" id="LBV-UK-Qf0"/>
+                            <constraint firstAttribute="bottom" secondItem="gwI-zs-1vj" secondAttribute="bottom" constant="68" id="LBV-UK-Qf0"/>
                             <constraint firstItem="gwI-zs-1vj" firstAttribute="top" secondItem="7bg-N6-FzQ" secondAttribute="top" constant="10" id="Mph-oo-0BZ"/>
                             <constraint firstItem="gwI-zs-1vj" firstAttribute="leading" secondItem="7bg-N6-FzQ" secondAttribute="leading" id="bUo-OB-trb"/>
                             <constraint firstAttribute="trailing" secondItem="gwI-zs-1vj" secondAttribute="trailing" id="cTT-7U-Uh2"/>
-                            <constraint firstAttribute="trailing" secondItem="cka-LP-lJ0" secondAttribute="trailing" id="oN3-VX-GRc"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -62,9 +52,9 @@
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="7bg-N6-FzQ" secondAttribute="bottom" constant="-42" id="Afg-Vb-XzC"/>
                 <constraint firstAttribute="trailing" secondItem="7bg-N6-FzQ" secondAttribute="trailing" id="DEh-IS-voR"/>
                 <constraint firstItem="eCt-SX-LRs" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="Z5b-vK-rWd"/>
-                <constraint firstItem="7bg-N6-FzQ" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="bottom" constant="-57" id="jxG-wy-z5j"/>
                 <constraint firstItem="7bg-N6-FzQ" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="l50-vI-qec"/>
                 <constraint firstAttribute="bottom" secondItem="eCt-SX-LRs" secondAttribute="bottom" id="neJ-GK-Flc"/>
                 <constraint firstItem="eCt-SX-LRs" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="o2z-CR-jA1"/>
@@ -74,8 +64,7 @@
             <connections>
                 <outlet property="detailsBackgroundView" destination="gwI-zs-1vj" id="SRu-tQ-F92"/>
                 <outlet property="detailsContainer" destination="7bg-N6-FzQ" id="uuv-DS-Udf"/>
-                <outlet property="detailsContainerBackdrop" destination="cka-LP-lJ0" id="3SG-sb-C4w"/>
-                <outlet property="detailsContainerTopToStreamItemBottom" destination="jxG-wy-z5j" id="Tjb-Ub-vOg"/>
+                <outlet property="detailsContainerTopToStreamItemBottom" destination="Afg-Vb-XzC" id="940-7i-iFR"/>
                 <outlet property="labelBottomLayoutConstraint" destination="96H-Wj-DUE" id="xl4-Ya-53n"/>
                 <outlet property="labelTopLayoutConstraint" destination="hGT-qv-10z" id="1Dq-5q-e17"/>
                 <outlet property="nameLabel" destination="9uF-IU-Ue1" id="7S4-Fr-41h"/>

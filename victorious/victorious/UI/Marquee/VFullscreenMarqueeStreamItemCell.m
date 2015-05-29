@@ -27,7 +27,8 @@
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;
 static NSTimeInterval const kVDetailHideTime = 0.2f;
-static CGFloat const kVDetailBounceHeight = 4.0f;
+static CGFloat const kVDetailBounceOffset = 38.0f;
+static CGFloat const kVDetailStartOverflowOffset = 42.0f;
 static NSTimeInterval const kVDetailBounceTime = 0.35f;
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
 
@@ -36,7 +37,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 @property (nonatomic, assign) BOOL detailsVisible;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
-@property (nonatomic, weak) IBOutlet UIView *detailsContainerBackdrop;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsContainerTopToStreamItemBottom;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
@@ -53,6 +53,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [super setStreamItem:streamItem];
         
     self.nameLabel.text = streamItem.name;
+    [self layoutIfNeeded];
 
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];
@@ -65,7 +66,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     if ( dependencyManager != nil )
     {
-        self.detailsContainerBackdrop.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.detailsContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
         self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     }
@@ -99,7 +100,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     CGFloat detailsContainerHeight = CGRectGetHeight(self.detailsContainer.bounds);
     
-    CGFloat targetConstraintValue = visible ? -detailsContainerHeight : detailsContainerHeight;
+    CGFloat targetConstraintValue = visible ? - kVDetailStartOverflowOffset : - detailsContainerHeight;
     
     [self cancelDetailsAnimation];
     if ( animated )
@@ -113,7 +114,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
                                     relativeDuration:kVDetailBounceTime / (kVDetailBounceTime + kVDetailHideTime)
                                           animations:^
              {
-                 self.detailsContainerTopToStreamItemBottom.constant = -detailsContainerHeight -kVDetailBounceHeight;
+                 self.detailsContainerTopToStreamItemBottom.constant = -kVDetailBounceOffset;
                  [self layoutIfNeeded];
              }];
              [UIView addKeyframeWithRelativeStartTime:kVDetailBounceTime / (kVDetailBounceTime + kVDetailHideTime)

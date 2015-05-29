@@ -13,9 +13,9 @@
 @interface VBlurredMarqueeStreamItemCell : VAbstractMarqueeStreamItemCell
 
 /**
-    Sets the image in the previewImageView with or without a fade animation
+    Adds the provided preview view inside the cell unless it is already being displayed.
  
-    @param image The image to display
+    @param previewView The previewView that will be added into the cell if not already being displayed.
  */
 - (void)updateToPreviewView:(VStreamItemPreviewView *)previewView;
 
