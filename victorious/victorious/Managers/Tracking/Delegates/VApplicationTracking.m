@@ -68,8 +68,8 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
                                  VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
                                  VTrackingEventUserDidSelectRegistrationDone       : VTrackingDoneButtonTapKey,
-                                 VTrackingEventUserDidSelectRegister               : VTrackingRegisteButtonTapKey,
-                                 VTrackingEventUserDidSelectSignupWithEmail        : VTrackingSignUpButtonTapKey };
+                                 VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
+                                 VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
         _sessionTimer = [VSessionTimer sharedInstance];
@@ -216,11 +216,11 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 #if APPLICATION_TRACKING_LOGGING_ENABLED
     if ( connectionError )
     {
-        VLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
+        NSLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
     }
     else
     {
-        VLog( @"Applicaiton Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
+        NSLog( @"Applicaiton Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
     }
 #endif
 }
@@ -233,7 +233,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
     if ( url == nil )
     {
 #if APPLICATION_TRACKING_LOGGING_ENABLED
-        VLog( @"Applicaiton Tracking :: ERROR :: Invalid URL %@.", urlString );
+        NSLog( @"Applicaiton Tracking :: ERROR :: Invalid URL %@.", urlString );
 #endif
         return nil;
     }
@@ -251,7 +251,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
     if ( self.dependencyManager == nil )
     {
 #if APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
-        VLog( @"A dependency manager instance must be set before events can be properly tracked." );
+        NSLog( @"A dependency manager instance must be set before events can be properly tracked." );
 #endif
         return nil;
     }
@@ -262,7 +262,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 #if APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
     if ( urls.count > 0 )
     {
-        VLog( @"Applicaiton Tracking :: Adding Template URLS to event: %@\n%@.", eventName, urls );
+        NSLog( @"Applicaiton Tracking :: Adding Template URLS to event: %@\n%@.", eventName, urls );
     }
 #endif
     

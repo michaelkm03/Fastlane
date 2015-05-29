@@ -75,7 +75,7 @@ extern NSString * const VTrackingEventLoginDidShow; //< Params: CurrentSection
 extern NSString * const VTrackingEventUserDidCancelLogin; //< User exited out of the login prompt
 extern NSString * const VTrackingEventUserDidLogOut; 
 
-extern NSString * const VTrackingEventUserDidSelectSignupWithEmail; //< Backend mapping: sign_up_button_tap
+extern NSString * const VTrackingEventUserDidSelectSignupWithEmail;
 extern NSString * const VTrackingEventUserDidSelectLoginWithEmail; 
 extern NSString * const VTrackingEventSignupWithEmailDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventSignupWithEmailDidSucceed; 
@@ -231,7 +231,8 @@ extern NSString * const VTrackingEventUserDidSelectWelcomeGetStarted; //< Backen
 extern NSString * const VTrackingEventWelcomeVideoDidStart; //< Backend mapping: welcome_video_start
 extern NSString * const VTrackingEventWelcomeVideoDidEnd; //< Backend mapping: welcome_video_end
 extern NSString * const VTrackingEventWelcomeDidStart; //< Backend mapping: welcome_start
-extern NSString * const VTrackingEventUserDidSelectRegister; //< Backend mapping: register_button_tap
+extern NSString * const VTrackingEventUserDidSelectRegistrationOption; //< Backend mapping: register_button_tap
+extern NSString * const VTrackingEventUserDidSelectSignUpSubmit; //< Backend mapping: sign_up_button_tap
 
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc.",

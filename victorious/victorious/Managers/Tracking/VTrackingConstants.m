@@ -231,7 +231,8 @@ NSString * const VTrackingEventUserDidSelectWelcomeGetStarted = @"UserDidSelectW
 NSString * const VTrackingEventWelcomeVideoDidStart = @"WelcomeVideoDidStart";
 NSString * const VTrackingEventWelcomeVideoDidEnd = @"WelcomeVideoDidEnd";
 NSString * const VTrackingEventWelcomeDidStart = @"WelcomeDidStart";
-NSString * const VTrackingEventUserDidSelectRegister = @"UserDidSelectRegister";
+NSString * const VTrackingEventUserDidSelectRegistrationOption = @"UserDidSelectRegistrationOption";
+NSString * const VTrackingEventUserDidSelectSignUpSubmit = @"UserDidSelectSignUpSubmit";
 
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
