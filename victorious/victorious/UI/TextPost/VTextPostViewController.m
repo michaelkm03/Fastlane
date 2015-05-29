@@ -19,6 +19,8 @@
 #import "VURLDetector.h"
 #import "VTextPostCalloutHelper.h"
 
+static const CGFloat kAnimationDuration = 0.35f;
+
 @interface VTextPostViewController () <CCHLinkTextViewDelegate>
 
 @property (nonatomic, assign) BOOL hasBeenDisplayed;
@@ -131,13 +133,17 @@
 
 - (void)setImageURL:(NSURL *)imageURL
 {
-    [self setImageURL:imageURL animated:NO];
+    [self setImageURL:imageURL animated:NO completion:nil];
 }
 
-- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated
+- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated completion:(void (^)(UIImage *))completion
 {
     if ( _imageURL == imageURL )
     {
+        if ( completion != nil )
+        {
+            completion(nil);
+        }
         return;
     }
     
@@ -146,9 +152,13 @@
     self.backgroundImageView.image = nil;
     self.backgroundImageView.alpha = 0.0f;
     
-    void (^onImageLoaded)() = ^void
+    void (^onImageLoaded)(UIImage *) = ^void(UIImage *image)
     {
         self.backgroundImageView.alpha = 1.0f;
+        if ( completion != nil )
+        {
+            completion(image);
+        }
     };
     
     [self.backgroundImageView sd_setImageWithURL:_imageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
@@ -157,11 +167,14 @@
         const BOOL wasDownloaded = cacheType == SDImageCacheTypeNone;
         if ( animated && wasDownloaded )
         {
-            [UIView animateWithDuration:.35f animations:onImageLoaded];
+            [UIView animateWithDuration:kAnimationDuration animations:^
+            {
+                onImageLoaded(image);
+            }];
         }
         else
         {
-            onImageLoaded();
+            onImageLoaded(image);
         }
     }];
 }

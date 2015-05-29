@@ -35,9 +35,11 @@
 /**
  Sets the background iamge URL, which will load asynchronously and then
  display with or without animation.
+ @param imageURL The url of the image that should be loaded.
  @param animated Whether or not the image should animate (fade in) when loading completes.
+ @param completion The block to execute when the image finishes loading
  */
-- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated;
+- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated completion:(void (^)(UIImage *))completion;
 
 /**
  Sets the background color.

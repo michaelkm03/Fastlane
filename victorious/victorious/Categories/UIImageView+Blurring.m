@@ -58,7 +58,7 @@ static const char kAssociatedBlurredOriginalImageKey;
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
-         [weakSelf blurAndAnimateImageToVisible:image imageURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration];
+         [weakSelf blurAndAnimateImageToVisible:image imageURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration withConcurrentAnimations:nil];
      }];
 }
 
@@ -202,18 +202,20 @@ static const char kAssociatedBlurredOriginalImageKey;
      }];
 }
 
-- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration
+- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(void (^)(void))animations
 {
     [self blurAndAnimateImageToVisible:image
                               imageURL:nil
                          withTintColor:tintColor
-                           andDuration:duration];
+                           andDuration:duration
+              withConcurrentAnimations:animations];
 }
 
 - (void)blurAndAnimateImageToVisible:(UIImage *)image
                             imageURL:(NSURL *)urlForImage
                        withTintColor:(UIColor *)tintColor
                          andDuration:(NSTimeInterval)duration
+            withConcurrentAnimations:(void (^)(void))animations
 {
     NSURL *blurredURL = [urlForImage URLByAppendingPathComponent:@"blurred"];
     NSString *blurredKey = [blurredURL absoluteString];
@@ -244,6 +246,10 @@ static const char kAssociatedBlurredOriginalImageKey;
                              options:UIViewAnimationOptionCurveEaseInOut
                           animations:^
           {
+              if ( animations != nil )
+              {
+                  animations();
+              }
               weakSelf.alpha = 1.0f;
           }
                           completion:^(BOOL finished)

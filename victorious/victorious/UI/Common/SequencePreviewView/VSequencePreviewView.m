@@ -10,6 +10,7 @@
 
 // Models + Helpers
 #import "VSequence+Fetcher.h"
+#import "VStreamItem.h"
 
 // Subclasses
 #import "VTextSequencePreviewView.h"
@@ -17,7 +18,7 @@
 #import "VImageSequencePreviewView.h"
 #import "VVideoSequencePreviewView.h"
 #import "VHTMLSequncePreviewView.h"
-#import "VFailureSequencePreviewView.h"
+#import "VFailureStreamItemPreviewView.h"
 
 @implementation VSequencePreviewView
 
@@ -47,7 +48,7 @@
     else
     {
         NSAssert(@"Unable to handle sequence!", @"");
-        classType = [VFailureSequencePreviewView class];
+        classType = [VFailureStreamItemPreviewView class];
     }
     
     return classType;
@@ -58,9 +59,22 @@
     return [[[self classTypeForSequence:sequence] alloc] initWithFrame:CGRectZero];
 }
 
+- (void)setStreamItem:(VStreamItem *)streamItem
+{
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        [self setSequence:(VSequence *)streamItem];
+    }
+    else
+    {
+        NSString *errorString = [NSString stringWithFormat:@"VSequencePreviewView cannot handle streamItem of class %@!", NSStringFromClass([streamItem class])];
+        NSAssert(false, errorString);        
+    }
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
-    NSAssert(false, @"Override in subclasses!");
+    [super setStreamItem:sequence];
 }
 
 - (BOOL)canHandleSequence:(VSequence *)sequence
@@ -72,11 +86,9 @@
     return NO;
 }
 
-#pragma mark - VStreamCellComponentSpecialization
-
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier
 {
-    return [NSString stringWithFormat:@"%@.%@", baseIdentifier, NSStringFromClass([self classTypeForSequence:sequence])];
+    return [self reuseIdentifierForStreamItem:sequence baseIdentifier:baseIdentifier];
 }
 
 @end
