@@ -108,6 +108,8 @@
 	<string>VBlurredMarqueeController</string>
 	<key>inset.marqueeCell</key>
 	<string>VInsetMarqueeController</string>
+	<key>webView.screen</key>
+	<string>VWebBrowserViewController</string>
 	<key>standard.coachmark</key>
 	<string>VCoachmark</string>
 	<key>standard.permissionsAlert</key>
