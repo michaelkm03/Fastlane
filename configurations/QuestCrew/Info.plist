@@ -3,35 +3,33 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}GLAM</string>
+	<string>${ProductPrefix}Quest Crew</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}glamss</string>
-	<key>CFBundleName</key>
-	<string>${ProductPrefix}GLAM</string>
+	<string>com.getvictorious.${ProductPrefix}questcrew</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1425004394476168</string>
+				<string>fb1627435220801627</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1425004394476168</string>
+	<string>1627435220801627</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>zT2dHDufwBEFide7vcoh4zTYV</string>
+	<string>82bY3Gm8q3uTlLiCFVUSZ1OLM</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>7yCkFkc63s6zZvxEK3nT2KWLOsHa3GKoMzO7WK9GLBagxkG7YZ</string>
+	<string>fpEA7ZOj2vNhmZyBCKi0hTYAdupwhRSU5j9yMMmd1WRs1bpq23</string>
 	<key>VictoriousAppID</key>
-	<integer>50</integer>
+	<integer>52</integer>
 	<key>StagingAppID</key>
-	<integer>66</integer>
+	<integer>69</integer>
 	<key>QAAppID</key>
-	<integer>48</integer>
+	<integer>51</integer>
 	<key>CreatorSalutation</key>
-	<string>GLAM</string>
+	<string>Quest Crew</string>
 	<key>FlurryAPIKey</key>
-	<string>RRV4DMGR9K7PGJHXK598</string>
+	<string>GFNHF3FNWTT8ZC6XKF36</string>
 </dict>
 </plist>
