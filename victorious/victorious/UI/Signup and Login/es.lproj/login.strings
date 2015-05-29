@@ -5,7 +5,7 @@
 "3pO-cP-eTE.placeholder" = "Contraseña";
 
 /* Class = "UILabel"; text = "Connect with Twitter"; ObjectID = "3q4-yP-lYm"; */
-"3q4-yP-lYm.text" = "Conecar con Twitter";
+"3q4-yP-lYm.text" = "Conectar con Twitter";
 
 /* Class = "UIButton"; normalTitle = "Log In"; ObjectID = "5AW-ID-rMK"; */
 "5AW-ID-rMK.normalTitle" = "Ingresar";
