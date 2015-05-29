@@ -8,17 +8,22 @@
 
 #import "VAuthorizedAction.h"
 #import "VObjectManager+Login.h"
-#import "VLoginViewController.h"
 #import "VProfileCreateViewController.h"
-#import "VPresentWithBlurTransition.h"
-#import "VTransitionDelegate.h"
 #import "VDependencyManager.h"
+#import "VHasManagedDependencies.h"
+#import "VLoginRegistrationFlow.h"
+
+#import "UIView+AutoLayout.h"
+
+static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationView";
 
 @interface VAuthorizedAction()
 
-@property (nonatomic, strong) VTransitionDelegate *transition;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) VObjectManager *objectManager;
+@property (nonatomic, strong) id presentingController;
+@property (nonatomic, strong) id loginController;
+@property (nonatomic, strong) UIView *replicantView;
 
 @end
 
@@ -35,7 +40,6 @@
     {
         _objectManager = objectManager;
         _dependencyManager = dependencyManager;
-        _transition = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
     }
     return self;
 }
@@ -46,7 +50,6 @@
 {
     NSParameterAssert( completionActionBlock != nil );
     NSParameterAssert( presentingViewController != nil );
-    
     NSAssert( self.objectManager != nil, @"Before calling, the `objectManager` property should be set directly or through `initWithObjectManager`." );
     
     if ( self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
@@ -60,13 +63,17 @@
     }
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
-        VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
-        viewController.authorizationContextType = authorizationContext;
-        [viewController setAuthorizedAction:completionActionBlock];
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-        viewController.transitionDelegate = self.transition;
-        [presentingViewController presentViewController:navigationController animated:YES completion:nil];
+        UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
+                                                                                                                           forKey:kLoginAndRegistrationViewKey];
+        if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
+        {
+            [loginFlowController setAuthorizationContext:authorizationContext];
+        }
+        [loginFlowController setCompletionBlock:completionActionBlock];
+
+        [presentingViewController presentViewController:loginFlowController
+                                               animated:YES
+                                             completion:nil];
         return NO;
     }
     else
@@ -74,6 +81,57 @@
         completionActionBlock(YES);
         return YES;
     }
+}
+
+- (BOOL)prepareInViewController:(UIViewController *)presentingViewController
+                        context:(VAuthorizationContext)authorizationContext
+                     completion:(void(^)(BOOL authorized))completionActionBlock
+{
+    NSParameterAssert( completionActionBlock != nil );
+    NSParameterAssert( presentingViewController != nil );
+    NSAssert( self.objectManager != nil, @"Before calling, the `objectManager` property should be set directly or through `initWithObjectManager`." );
+    
+    if (self.objectManager.mainUserLoggedIn)
+    {
+        completionActionBlock(YES);
+        return YES;
+    }
+    
+    UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
+                                                                                                                       forKey:kLoginAndRegistrationViewKey];
+    
+    UIView *replicant = [loginFlowController.view snapshotViewAfterScreenUpdates:YES];
+    [presentingViewController.view addSubview:replicant];
+    [presentingViewController.view v_addFitToParentConstraintsToSubview:replicant];
+    
+    if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
+    {
+        [loginFlowController setAuthorizationContext:authorizationContext];
+    }
+    [loginFlowController setCompletionBlock:completionActionBlock];
+
+    self.presentingController = presentingViewController;
+    self.loginController = loginFlowController;
+    self.replicantView = replicant;
+    
+    return NO;
+}
+
+- (void)execute
+{
+    if (self.loginController == nil)
+    {
+        return;
+    }
+    [self.presentingController presentViewController:self.loginController
+                                                                animated:NO
+                                                              completion:^
+     {
+         [self.replicantView removeFromSuperview];
+         self.loginController = nil;
+         self.presentingController = nil;
+         self.replicantView = nil;
+     }];
 }
 
 @end
