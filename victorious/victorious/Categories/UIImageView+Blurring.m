@@ -217,14 +217,17 @@ static const char kAssociatedBlurredOriginalImageKey;
                          andDuration:(NSTimeInterval)duration
             withConcurrentAnimations:(void (^)(void))animations
 {
-    NSURL *blurredURL = [urlForImage URLByAppendingPathComponent:@"blurred"];
+    NSURL *blurredURL = urlForImage != nil ? [urlForImage URLByAppendingPathComponent:@"blurred"] : nil;
     NSString *blurredKey = [blurredURL absoluteString];
-    UIImage *cachedBlurredImage = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:blurredKey];
-    if (cachedBlurredImage !=  nil)
+    if ( blurredKey != nil )
     {
-        self.image = cachedBlurredImage;
-        self.alpha = 1.0f;
-        return;
+        UIImage *cachedBlurredImage = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:blurredKey];
+        if (cachedBlurredImage !=  nil)
+        {
+            self.image = cachedBlurredImage;
+            self.alpha = 1.0f;
+            return;
+        }
     }
     
     __weak UIImageView *weakSelf = self;
@@ -254,8 +257,11 @@ static const char kAssociatedBlurredOriginalImageKey;
           }
                           completion:^(BOOL finished)
           {
-              [[[SDWebImageManager sharedManager] imageCache] storeImage:blurredImage
-                                                                  forKey:blurredKey];
+              if ( blurredKey != nil )
+              {
+                  [[[SDWebImageManager sharedManager] imageCache] storeImage:blurredImage
+                                                                      forKey:blurredKey];
+              }
           }];
      }];
     
