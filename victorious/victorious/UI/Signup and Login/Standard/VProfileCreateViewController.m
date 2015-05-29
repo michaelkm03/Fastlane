@@ -160,6 +160,8 @@
     self.usernameTextField.accessibilityIdentifier = VAutomationIdentifierProfileUsernameField;
     self.locationTextField.accessibilityIdentifier = VAutomationIdentifierProfileLocationField;
     self.profileImageView.accessibilityIdentifier = VAutomationIdentifierProfilSelectImage;
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -360,6 +362,8 @@
             [self didCreateProfile];
             return;
         }
+        
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
         
         [self performProfileCreationWithRegistrationModel:self.registrationModel];
     }

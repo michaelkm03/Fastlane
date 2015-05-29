@@ -104,6 +104,14 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     self.firstLaunch = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
     [[VTrackingManager sharedInstance] clearSessionParameters];
+    
+}
+
+- (NSUInteger)sessionDuration
+{
+    NSDate *startDate = self.sessionStartTime;
+    NSUInteger duration = (NSUInteger)([[NSDate date] timeIntervalSinceDate:startDate] * 1000); // Backend requires milliseconds
+    return duration;
 }
 
 #pragma mark - Tracking
@@ -118,12 +126,8 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)trackApplicationBackground
 {
-    NSDate *startDate = self.sessionStartTime;
-    NSDate *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:kSessionEndTimeDefaultsKey];
-    NSTimeInterval sessionDuration = [endDate timeIntervalSinceDate:startDate] * 1000;  // Backend requires milliseconds
-    
     NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingStopKey] ?: @[];
-    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:sessionDuration] };
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:self.sessionDuration] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
 

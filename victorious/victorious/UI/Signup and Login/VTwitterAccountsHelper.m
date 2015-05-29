@@ -20,7 +20,6 @@
 {
     NSParameterAssert(completion != nil);
     
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     

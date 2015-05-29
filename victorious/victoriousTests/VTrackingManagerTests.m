@@ -107,23 +107,23 @@
     VTestDelegate *delegate2 = [[VTestDelegate alloc] init];
     
     [self.trackingMgr addDelegate:delegate1];
-    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)1 );
+    XCTAssertEqual( self.trackingMgr.delegates.count, 1u );
     
     [self.trackingMgr addDelegate:delegate2];
-    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)2 );
+    XCTAssertEqual( self.trackingMgr.delegates.count, 2u );
     
     [self.trackingMgr removeDelegate:delegate2];
-    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)1 );
+    XCTAssertEqual( self.trackingMgr.delegates.count, 1u );
     XCTAssertEqualObjects( self.trackingMgr.delegates[0], delegate1 );
     
     [self.trackingMgr addDelegate:delegate2];
-    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)2 );
+    XCTAssertEqual( self.trackingMgr.delegates.count, 2u );
     
     [self.trackingMgr addDelegate:delegate2];
-    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)2, @"Should not add twice." );
+    XCTAssertEqual( self.trackingMgr.delegates.count, 2u, @"Should not add twice." );
     
     [self.trackingMgr removeAllDelegates];
-    XCTAssertEqual( self.trackingMgr.delegates.count, (NSUInteger)0 );
+    XCTAssertEqual( self.trackingMgr.delegates.count, 0u );
     
 }
 
@@ -135,18 +135,18 @@
     [self.trackingMgr addDelegate:delegate2];
     
     [self.trackingMgr trackEvent:nil parameters:nil];
-    XCTAssertEqual( delegate1.trackedEventCount, (NSUInteger)0 );
-    XCTAssertEqual( delegate2.trackedEventCount, (NSUInteger)0 );
+    XCTAssertEqual( delegate1.trackedEventCount, 0u );
+    XCTAssertEqual( delegate2.trackedEventCount, 0u );
     
     [self.trackingMgr trackEvent:@"" parameters:nil];
-    XCTAssertEqual( delegate1.trackedEventCount, (NSUInteger)0 );
-    XCTAssertEqual( delegate2.trackedEventCount, (NSUInteger)0 );
+    XCTAssertEqual( delegate1.trackedEventCount, 0u );
+    XCTAssertEqual( delegate2.trackedEventCount, 0u );
     
     NSString *event = @"some_event";
     NSDictionary *params = @{ @"param_key" : @"param_value" };
     [self.trackingMgr trackEvent:event parameters:params];
-    XCTAssertEqual( delegate1.trackedEventCount, (NSUInteger)1 );
-    XCTAssertEqual( delegate2.trackedEventCount, (NSUInteger)1 );
+    XCTAssertEqual( delegate1.trackedEventCount, 1u );
+    XCTAssertEqual( delegate2.trackedEventCount, 1u );
     XCTAssertEqualObjects( event, delegate1.eventNameReceived );
     XCTAssertEqualObjects( event, delegate2.eventNameReceived );
     XCTAssertEqualObjects( params[ @"param_key" ], delegate1.paramsReceived[ @"param_key" ] );
@@ -270,12 +270,12 @@
     [delegate resetTrackedEventCount];
     [self.trackingMgr clearQueuedEventsWithName:eventName1];
     XCTAssertEqual( self.trackingMgr.queuedEvents.count, totalEvents - numEvents1 );
-    XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)0, @"No events should be tracked whened queue is cleared." );
+    XCTAssertEqual( delegate.trackedEventCount, 0u, @"No events should be tracked whened queue is cleared." );
     
     delegate.trackedEventCount = 0;
     [self.trackingMgr clearQueuedEventsWithName:eventName2];
-    XCTAssertEqual( self.trackingMgr.queuedEvents.count, (NSUInteger)0 );
-    XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)0, @"No events should be tracked whened queue is cleared." );
+    XCTAssertEqual( self.trackingMgr.queuedEvents.count, 0u );
+    XCTAssertEqual( delegate.trackedEventCount, 0u, @"No events should be tracked whened queue is cleared." );
     
     
     for ( NSUInteger i = 0; i < numEvents1; i++ )
