@@ -42,17 +42,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 @implementation VSessionTimer
 
-+ (VSessionTimer *)sharedInstance
-{
-    static VSessionTimer *instance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-                  {
-                      instance = [[VSessionTimer alloc] init];
-                  });
-    return instance;
-}
-
 - (void)start
 {
     if ( self.started )

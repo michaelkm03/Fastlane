@@ -142,13 +142,13 @@
 
 #pragma mark - Public tracking methods
 
-- (void)trackEventWithParameters:(NSDictionary *)parameters
-{
-    [self trackEvent:nil parameters:parameters];
-}
-
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
+    if ( eventName == nil || eventName.length == 0 || parameters.allValues.count == 0 )
+    {
+        return;
+    }
+    
 #ifndef V_NO_TRACKING_ALERTS
     [self.eventLog logEvent:eventName parameters:parameters];
 #endif

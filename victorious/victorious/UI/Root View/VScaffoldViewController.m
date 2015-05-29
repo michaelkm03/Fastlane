@@ -30,6 +30,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
 #import "VCoachmarkManager.h"
+#import "VRootViewController.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -46,6 +47,7 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 
 @property (nonatomic, strong) VFollowingHelper *followHelper;
 @property (nonatomic, readonly) VDependencyManager *firstTimeContentDependency;
+@property (nonatomic, strong) VSessionTimer *sessionTimer;
 
 @end
 
@@ -69,6 +71,8 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.sessionTimer = [VRootViewController rootViewController].sessionTimer;
     
     BOOL didShowFirstTimeUserExperience = NO;
     if ( !self.hasBeenShown )
@@ -144,21 +148,21 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 - (void)trackFirstTimeContentView
 {
     NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeStartKey],
-                              VTrackingKeySessionTime : @([VSessionTimer sharedInstance].sessionDuration) };
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeDidStart parameters:params];
 }
 
 - (void)videoHasStartedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
     NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeVideoStartKey],
-                              VTrackingKeySessionTime : @([VSessionTimer sharedInstance].sessionDuration) };
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeVideoDidStart parameters:params];
 }
 
 - (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
     NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeVideoEndKey],
-                              VTrackingKeySessionTime : @([VSessionTimer sharedInstance].sessionDuration) };
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeVideoDidEnd parameters:params];
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -172,7 +176,7 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 - (void)userWantsToDismissLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
     NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeGetStartedTapKey],
-                              VTrackingKeySessionTime : @([VSessionTimer sharedInstance].sessionDuration) };
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWelcomeGetStarted parameters:params];
     
     [self dismissViewControllerAnimated:YES completion:nil];

@@ -9,6 +9,8 @@
 #import "VSideMenuViewController.h"
 #import "VDeeplinkReceiver.h"
 
+@class VSessionTimer;
+
 /**
  Posted at the same time as UIApplicationDidBecomeActiveNotification, but
  only if a new session is NOT starting.
@@ -21,6 +23,11 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  The view controller that is currently being displayed
  */
 @property (nonatomic, strong, readonly) UIViewController *currentViewController;
+
+/**
+ A session timer that monitors start/stop events and computes duration.
+ */
+@property (nonatomic, strong, readonly) VSessionTimer *sessionTimer;
 
 /**
  NOT A CONSTRUCTOR/FACTORY METHOD. Returns the instance of VRootViewController that is 

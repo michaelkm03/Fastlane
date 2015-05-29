@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VLoadingViewController *loadingViewController;
-@property (nonatomic, strong) VSessionTimer *sessionTimer;
+@property (nonatomic, strong, readwrite) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
@@ -92,6 +92,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     [[VObjectManager sharedManager] resetSessionID];
     
+    self.sessionTimer = [[VSessionTimer alloc] init];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -121,8 +123,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.sessionTimer = [VSessionTimer sharedInstance];
     
     // Check if we have location services and start getting locations if we do
     if ( [VLocationManager haveLocationServicesPermission] )

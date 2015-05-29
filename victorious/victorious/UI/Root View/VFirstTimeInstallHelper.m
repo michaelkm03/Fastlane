@@ -21,8 +21,6 @@ static NSString * const VDidPlayFirstTimeUserVideo = @"com.getvictorious.setting
 
 - (BOOL)hasBeenShown
 {
-#warning remove
-    return NO;
     return [[[NSUserDefaults standardUserDefaults] valueForKey:VDidPlayFirstTimeUserVideo] boolValue];
 }
 

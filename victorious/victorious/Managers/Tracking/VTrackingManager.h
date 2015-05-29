@@ -51,8 +51,6 @@
  */
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters;
 
-- (void)trackEventWithParameters:(NSDictionary *)parameters;
-
 /**
  Captures an event to be sent later or prevent another event from being sent.
  @param eventId An ID to test the event's uniqueness to prevent duplicates in the queue.

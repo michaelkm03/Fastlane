@@ -20,7 +20,7 @@ NSString * const VTrackingDoneButtonTapKey         = @"done_button_tap";
 NSString * const VTrackingRegisteButtonTapKey      = @"register_button_tap";
 NSString * const VTrackingSignUpButtonTapKey       = @"sign_up_button_tap";
 
-static NSString * const kTrackingKey                = @"tracking";
+static NSString * const kTrackingKey               = @"tracking";
 
 @implementation VDependencyManager (VTracking)
 

@@ -13,6 +13,7 @@
 #import "NSCharacterSet+VURLParts.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
+#import "VRootViewController.h"
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
@@ -26,7 +27,7 @@ static NSString * const kMacroNotificationID         = @"%%NOTIF_ID%%";
 static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 
-#define APPLICATION_TRACKING_LOGGING_ENABLED 1
+#define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
 
 #if APPLICATION_TRACKING_LOGGING_ENABLED || APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
@@ -38,7 +39,6 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
 @property (nonatomic, readonly) NSDictionary *keyForEventMapping;
 @property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
-@property (nonatomic, strong) VSessionTimer *sessionTimer;
 
 @end
 
@@ -72,7 +72,6 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
                                  VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
-        _sessionTimer = [VSessionTimer sharedInstance];
     }
     return self;
 }
@@ -124,7 +123,8 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
     }
     
     NSMutableDictionary *completeParameters = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    completeParameters[ VTrackingKeySessionTime ] = @(self.sessionTimer.sessionDuration);
+    VSessionTimer *sessionTimer = [VRootViewController rootViewController].sessionTimer;
+    completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
     
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:url
@@ -216,11 +216,11 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 #if APPLICATION_TRACKING_LOGGING_ENABLED
     if ( connectionError )
     {
-        NSLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
+        NSLog( @"Application Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
     }
     else
     {
-        NSLog( @"Applicaiton Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
+        NSLog( @"Application Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
     }
 #endif
 }
@@ -233,7 +233,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
     if ( url == nil )
     {
 #if APPLICATION_TRACKING_LOGGING_ENABLED
-        NSLog( @"Applicaiton Tracking :: ERROR :: Invalid URL %@.", urlString );
+        NSLog( @"Application Tracking :: ERROR :: Invalid URL %@.", urlString );
 #endif
         return nil;
     }
@@ -262,7 +262,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 #if APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
     if ( urls.count > 0 )
     {
-        NSLog( @"Applicaiton Tracking :: Adding Template URLS to event: %@\n%@.", eventName, urls );
+        NSLog( @"Application Tracking :: Adding Template URLS to event: %@\n%@.", eventName, urls );
     }
 #endif
     
