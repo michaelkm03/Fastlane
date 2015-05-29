@@ -154,18 +154,19 @@ static const char kAssociatedObjectSourceViewControllerKey;
         VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
         {
             [weakBarButton setBadgeNumber:badgeNumber];
-            if ( [source conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
-            {
-                id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)source;
-                if ( badgeProvider.badgeNumberUpdateBlock != nil )
-                {
-                    badgeProvider.badgeNumberUpdateBlock( badgeNumber );
-                }
-            }
         };
         [badgeProvider setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
         NSInteger badgeNumber = [badgeProvider badgeNumber];
         badgeNumberUpdateBlock( badgeNumber );
+        
+        if ( [source conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+        {
+            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)source;
+            if ( badgeProvider.badgeNumberUpdateBlock != nil )
+            {
+                badgeProvider.badgeNumberUpdateBlock( badgeNumber );
+            }
+        }
     }
 }
 

@@ -479,7 +479,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     // This test may fail if the "Menu" image is ever removed from our project, but that should be
     // around the same time that the logic of this method will need to be updated anyway.
-    UIImage *sampleImage = [UIImage imageNamed:@"Menu"];
+    UIImage *sampleImage = [UIImage imageNamed:@"C_menu"];
     VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
                                                                                 configuration:@{ @"myImage": sampleImage }
                                                             dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
