@@ -27,9 +27,12 @@
 
 #import "VInitialViewController.h"
 
+#import "VCoachmarkDisplayer.h"
+#import "VCoachmarkDisplayResponder.h"
+
 NSString * const kMenuKey = @"menu";
 
-@interface VTabMenuViewController () <UITabBarControllerDelegate>
+@interface VTabMenuViewController () <UITabBarControllerDelegate, VCoachmarkDisplayResponder>
 
 @property (nonatomic, strong) UITabBarController *internalTabBarViewController;
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
@@ -199,6 +202,43 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
             VNavigationController *navigationController = (VNavigationController *)containerViewController.containedViewController;
             [navigationController.innerNavigationController pushViewController:viewController animated:YES];
         }
+    }
+}
+
+#pragma mark - VCoachmarkDisplayResponder
+
+- (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion
+{
+    for ( NSUInteger index = 0; index < self.navigationDestinations.count; index++ )
+    {
+        UIViewController *viewController = self.navigationDestinations[index];
+        if ( [viewController conformsToProtocol:@protocol(VCoachmarkDisplayer)] )
+        {
+            UIViewController <VCoachmarkDisplayer> *coachmarkDisplayer = (UIViewController <VCoachmarkDisplayer> *)viewController;
+            
+            //View controller can display a coachmark
+            NSString *screenIdenifier = [coachmarkDisplayer screenIdentifier];
+            if ( [identifier isEqualToString:screenIdenifier] )
+            {
+                //Found the screen that we're supposed to point out
+                CGRect frame = self.internalTabBarViewController.tabBar.frame;
+                CGFloat width = CGRectGetWidth(frame) / self.internalTabBarViewController.tabBar.items.count;
+                frame.size.width = width;
+                frame.origin.x = width * index;
+                completion(YES, frame);
+                return;
+            }
+        }
+    }
+    
+    UIResponder <VCoachmarkDisplayResponder> *nextResponder = [self.nextResponder targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:nil];
+    if ( nextResponder == nil )
+    {
+        completion(NO, CGRectZero);
+    }
+    else
+    {
+        [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
     }
 }
 

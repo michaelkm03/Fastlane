@@ -29,6 +29,7 @@
 #import "VURLSelectionResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
+#import "VCoachmarkManager.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -56,7 +57,7 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        
+        _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
     }

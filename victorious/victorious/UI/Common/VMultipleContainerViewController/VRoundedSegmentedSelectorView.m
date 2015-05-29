@@ -43,6 +43,18 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     return self;
 }
 
+- (CGRect)frameOfButtonAtIndex:(NSUInteger)index
+{
+    NSUInteger numberOfButtons = self.buttons.count;
+    if ( index > numberOfButtons )
+    {
+        return CGRectZero;
+    }
+    
+    UIButton *button = self.buttons[index];
+    return [button convertRect:button.bounds toView:self.window];
+}
+
 - (void)setViewControllers:(NSArray *)viewControllers
 {
     [super setViewControllers:viewControllers];
