@@ -217,13 +217,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
         // Remove any of the backend's broken accessoryScreens (get rid of this when debugging with backend and comment out the additions below
-        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
+        /*for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
         {
             [templateDecorator setTemplateValue:@[] forKeyPath:keyPath];
-        }
+        }*/
         
         // Add the working ones for testing
-        BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
+        /*BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
         if ( isSideNavMenu )
         {
             // Add hamburger button
@@ -265,10 +265,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
             
             // Add Compose to messages screen in inbox main menu item
             NSParameterAssert( [templateDecorator removeTemplateValueForKeyPath:@"scaffold/menu/items/4"]);
-            /*NSParameterAssert( [templateDecorator setTemplateValue:@[]
+            NSParameterAssert( [templateDecorator setTemplateValue:@[]
                                                         forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
-                                                                forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens/0"] );*/
+                                                                forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens/0"] );
             
             //NSParameterAssert( [templateDecorator removeTemplateValueForKeyPath:@"scaffold/menu/items/4"] );
         }
@@ -282,7 +282,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         // Add Follow/Unfollow button to hashtag stream screen in scaffold
         NSParameterAssert( [templateDecorator setTemplateValue:@[] forKeyPath:@"scaffold/hashtagStream/accessoryScreens"] );
         NSParameterAssert( [templateDecorator setComponentWithFilename:@"followAccessory"
-                                                            forKeyPath:@"scaffold/hashtagStream/accessoryScreens/0"] );
+                                                            forKeyPath:@"scaffold/hashtagStream/accessoryScreens/0"] );*/
         
         
         // Set all accessory item colors (used for debugging with backend, leave here for now)
@@ -297,10 +297,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         }
         
         // TO be used for debugging with backend
-        /*for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
+        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
         {
             NSLog( @"%@ = %@", keyPath, [templateDecorator templateValueForKeyPath:keyPath] );
-        }*/
+        }
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
