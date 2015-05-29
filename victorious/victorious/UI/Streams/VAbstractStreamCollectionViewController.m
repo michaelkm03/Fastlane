@@ -15,7 +15,6 @@
 
 #import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "VNavigationControllerScrollDelegate.h"
 #import "VObjectManager+Login.h"
 
 //View Controllers
@@ -44,7 +43,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
-@property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
 @property (nonatomic, readwrite) CGFloat topInset;
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;

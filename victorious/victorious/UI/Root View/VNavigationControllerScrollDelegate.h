@@ -21,6 +21,11 @@
 @property (nonatomic, weak, readonly) VNavigationController *navigationController; ///< The navigation controller that was passed into the -init method
 
 /**
+ Scroll offset at which the navigation bar will start moving off screen
+*/
+@property (nonatomic, assign) CGFloat catchOffset;
+
+/**
  Initializes a new instance of this class
  
  @param navigationController The navigation controller whose navigation bar we are hiding/showing

@@ -12,6 +12,7 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
+#import "VStreamCollectionViewFlowLayout.h"
 
 //Controllers
 #import "VAlertController.h"
@@ -236,6 +237,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.dataSource = self.streamDataSource;
     self.streamDataSource.collectionView = self.collectionView;
     
+    // Setup custom flow layout for parallax
+    VStreamCollectionViewFlowLayout *flowLayout = [[VStreamCollectionViewFlowLayout alloc] initWithMarqueeController:self.marqueeCellController
+                                                                                                          dataSource:self.streamDataSource];
+    flowLayout.marqueeParallaxRatio = VStreamMarqueeParallaxRatio;
+    self.collectionView.collectionViewLayout = flowLayout;
+    
     [self.KVOController observe:self.streamDataSource.stream
                         keyPath:NSStringFromSelector(@selector(streamItems))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -274,6 +281,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
+    
+    // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
+    if (self.streamDataSource.hasHeaderCell)
+    {
+        CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
+        self.navigationControllerScrollDelegate.catchOffset = marqueeSize.height;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

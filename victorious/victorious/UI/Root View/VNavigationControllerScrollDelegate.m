@@ -38,6 +38,7 @@ static const CGFloat kThresholdPercent = 0.25f;
         _navigationController = navigationController;
         _state = VNavigationControllerScrollDelegateStateInactive;
         _offset = 0;
+        _catchOffset = 0;
     }
     return self;
 }
@@ -77,7 +78,7 @@ static const CGFloat kThresholdPercent = 0.25f;
     navigationBarHeight += CGRectGetHeight(self.navigationController.supplementaryHeaderView.frame);
     self.navigationBarHeight = navigationBarHeight;
 
-    self.offset = MAX(scrollView.contentOffset.y, self.navigationBarHeight * kThresholdPercent);
+    self.offset = MAX(scrollView.contentOffset.y, self.catchOffset > 0 ? self.catchOffset : self.navigationBarHeight * kThresholdPercent);
 
     if ( self.state == VNavigationControllerScrollDelegateStateShowing )
     {
@@ -112,14 +113,14 @@ static const CGFloat kThresholdPercent = 0.25f;
                                       delay:0
                                     options:UIViewAnimationOptionCurveLinear
                                  animations:^(void)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
-                }
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
+                 }
                                  completion:^(BOOL finished)
-                {
-                    [self.navigationController setNavigationBarHidden:YES];
-                    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                }];
+                 {
+                     [self.navigationController setNavigationBarHidden:YES];
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                 }];
             }
             else
             {
@@ -127,9 +128,9 @@ static const CGFloat kThresholdPercent = 0.25f;
                                       delay:0
                                     options:UIViewAnimationOptionCurveEaseOut
                                  animations:^(void)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                }
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                 }
                                  completion:nil];
             }
             break;
@@ -141,9 +142,9 @@ static const CGFloat kThresholdPercent = 0.25f;
                                       delay:0
                                     options:UIViewAnimationOptionCurveLinear
                                  animations:^(void)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                }
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                 }
                                  completion:nil];
             }
             else
@@ -152,14 +153,14 @@ static const CGFloat kThresholdPercent = 0.25f;
                                       delay:0
                                     options:UIViewAnimationOptionCurveEaseOut
                                  animations:^(void)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
-                }
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
+                 }
                                  completion:^(BOOL finished)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                    [self.navigationController setNavigationBarHidden:YES];
-                }];
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                     [self.navigationController setNavigationBarHidden:YES];
+                 }];
             }
             break;
             
