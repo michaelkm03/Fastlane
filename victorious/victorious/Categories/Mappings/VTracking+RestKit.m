@@ -19,23 +19,17 @@
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"view-start"         :   VSelectorName(viewStart),
-                                  @"view-25-complete"   :   VSelectorName(videoComplete25),
-                                  @"view-50-complete"   :   VSelectorName(videoComplete50),
-                                  @"view-75-complete"   :   VSelectorName(videoComplete75),
-                                  @"view-100-complete"  :   VSelectorName(videoComplete100),
-                                  @"view-error"         :   VSelectorName(videoError),
-                                  @"view-stall"         :   VSelectorName(videoStall),
-                                  @"view-skip"          :   VSelectorName(videoSkip),
-                                  @"cell-view"          :   VSelectorName(cellView),
-                                  @"cell-click"         :   VSelectorName(cellClick),
-                                  @"init"               :   VSelectorName(appLaunch),
-                                  @"install"            :   VSelectorName(appInstall),
-                                  @"start"              :   VSelectorName(appEnterForeground),
-                                  @"stop"               :   VSelectorName(appEnterBackground),
-                                  @"share"              :   VSelectorName(share),
-                                  @"ballistic_count"    :   VSelectorName(ballisticCount),
-                                  };
+                                  @"view-start"             :   VSelectorName(viewStart),
+                                  @"view-25-complete"       :   VSelectorName(videoComplete25),
+                                  @"view-50-complete"       :   VSelectorName(videoComplete50),
+                                  @"view-75-complete"       :   VSelectorName(videoComplete75),
+                                  @"view-100-complete"      :   VSelectorName(videoComplete100),
+                                  @"view-error"             :   VSelectorName(videoError),
+                                  @"view-stall"             :   VSelectorName(videoStall),
+                                  @"view-skip"              :   VSelectorName(videoSkip),
+                                  @"cell-view"              :   VSelectorName(cellView),
+                                  @"cell-click"             :   VSelectorName(cellClick),
+                                  @"share"                  :   VSelectorName(share) };
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]

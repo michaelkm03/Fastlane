@@ -27,6 +27,7 @@
 #import "VVoteType.h"
 #import "VAppInfo.h"
 #import "VUploadManager.h"
+#import "VApplicationTracking.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -52,11 +53,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VLoadingViewController *loadingViewController;
-@property (nonatomic, strong) VSessionTimer *sessionTimer;
+@property (nonatomic, strong, readwrite) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
 @property (nonatomic, strong) VDeeplinkReceiver *deepLinkReceiver;
+@property (nonatomic, strong) VApplicationTracking *applicationTracking;
 
 @end
 
@@ -85,8 +87,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)commonInit
 {
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
+    self.applicationTracking = [[VApplicationTracking alloc] init];
+    [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
     
     [[VObjectManager sharedManager] resetSessionID];
+    
+    self.sessionTimer = [[VSessionTimer alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
@@ -117,8 +123,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.sessionTimer = [[VSessionTimer alloc] init];
     
     // Check if we have location services and start getting locations if we do
     if ( [VLocationManager haveLocationServicesPermission] )
@@ -225,6 +229,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     self.dependencyManager = dependencyManager;
     self.deepLinkReceiver.dependencyManager = dependencyManager;
+    self.applicationTracking.dependencyManager = dependencyManager;
     
     [self seedMonetizationNetworks:[dependencyManager templateValueOfType:[NSArray class] forKey:kAdSystemsKey]];
     

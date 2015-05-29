@@ -10,7 +10,6 @@
 
 #import "VContentViewFactory.h"
 #import "VDeeplinkHandler.h"
-#import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -28,11 +27,18 @@
 #import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "VDependencyManager+VTracking.h"
+#import "VSessionTimer.h"
 #import "VRootViewController.h"
 #import "VCoachmarkManager.h"
+#import "VRootViewController.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
+NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
+NSString * const VTrackingWelcomeVideoEndKey = @"welcome_video_end";
+NSString * const VTrackingWelcomeStartKey = @"welcome_start";
+NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 
 static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
@@ -43,6 +49,8 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 
 @property (nonatomic, strong) VFollowingHelper *followHelper;
+@property (nonatomic, readonly) VDependencyManager *firstTimeContentDependency;
+@property (nonatomic, strong) VSessionTimer *sessionTimer;
 
 @end
 
@@ -80,6 +88,8 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 {
     [super viewDidAppear:animated];
     
+    self.sessionTimer = [VRootViewController rootViewController].sessionTimer;
+    
     BOOL didShowFirstTimeUserExperience = NO;
     if ( !self.hasBeenShown )
     {
@@ -102,16 +112,14 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     if ( ![firstTimeInstallHelper hasBeenShown] && ![[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue])
     {
         [firstTimeInstallHelper savePlaybackDefaults];
+        
         VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                        forKey:VScaffoldViewControllerFirstTimeContentKey];
         if ( lightweightContentVC != nil )
         {
             lightweightContentVC.delegate = self;
-            [self presentViewController:lightweightContentVC animated:YES completion:^(void)
-            {
-                [self trackFirstTimeContentView];
-            }];
-            
+            [self presentViewController:lightweightContentVC animated:YES completion:nil];
+            [self trackFirstTimeContentView];
             return YES;
         }
     }
@@ -119,18 +127,10 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     return NO;
 }
 
-- (void)trackFirstTimeContentView
+- (VDependencyManager *)firstTimeContentDependency
 {
-    // Tracking
-    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
-    
-    NSArray *trackingUrlArray = [childDependencyManager trackingURLsForKey:VTrackingStartKey];
-    if ( trackingUrlArray != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
-    }
+    NSDictionary *configuration = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
+    return [self.dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
 }
 
 #pragma mark - Content View
@@ -161,8 +161,26 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 #pragma mark - VLightweightContentViewControllerDelegate
 
+- (void)trackFirstTimeContentView
+{
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeStartKey],
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeDidStart parameters:params];
+}
+
+- (void)videoHasStartedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
+{
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeVideoStartKey],
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeVideoDidStart parameters:params];
+}
+
 - (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeVideoEndKey],
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeVideoDidEnd parameters:params];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -173,6 +191,10 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 - (void)userWantsToDismissLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeGetStartedTapKey],
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWelcomeGetStarted parameters:params];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

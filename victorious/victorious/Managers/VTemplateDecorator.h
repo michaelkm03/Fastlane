@@ -84,6 +84,8 @@
  */
 - (id)templateValueForKeyPath:(NSString *)keyPath;
 
+- (BOOL)removeTemplateValueForKeyPath:(NSString *)keyPath;
+
 /**
  Recursively finds all keys that match the specified key and replaces the
  existing value with the specified value.

@@ -244,6 +244,8 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
         self.registrationModel.email = self.emailTextField.text;
         self.registrationModel.password = self.passwordTextField.text;
         
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
+        
         [self performSignupWithEmail:self.registrationModel.email
                             password:self.registrationModel.password];
     }

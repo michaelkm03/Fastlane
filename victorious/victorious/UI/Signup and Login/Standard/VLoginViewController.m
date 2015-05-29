@@ -30,6 +30,7 @@
 #import "VDependencyManager.h"
 #import "VCreatorInfoHelper.h"
 #import "UIAlertView+VBlocks.h"
+#import "VDependencyManager+VTracking.h"
 #import "VTwitterAccountsHelper.h"
 
 @import Accounts;
@@ -80,6 +81,8 @@
     {
         self.navigationController.transitioningDelegate = nil;
     }
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishRegistration];
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^void
      {
@@ -134,6 +137,8 @@
     self.authorizationContextTextView.attributedText = [[NSAttributedString alloc] initWithString:authorizationContextText attributes:attributes];
     
     [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartRegistration];
 }
 
 - (void)dealloc
@@ -279,6 +284,7 @@
 {
     [self showLoginProgress];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
     [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
@@ -310,6 +316,9 @@
 - (IBAction)twitterClicked:(id)sender
 {
     [self showLoginProgress];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
+    
     VTwitterAccountsHelper *twitterHelper = [[VTwitterAccountsHelper alloc] init];
     
     [twitterHelper selectTwitterAccountWithViewControler:self
@@ -337,6 +346,7 @@
 - (IBAction)signup:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
     
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
