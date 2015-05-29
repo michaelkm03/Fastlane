@@ -27,6 +27,7 @@
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
+#import "VAuthorizedAction.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 
@@ -257,10 +258,11 @@ static NSString * const kSupportEmailKey = @"email.support";
     }
     else
     {
-        VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-        viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
-        [self presentViewController:navigationController animated:YES completion:nil];
+        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                             dependencyManager:self.dependencyManager];
+        [authorizedAction performFromViewController:self
+                                            context:VAuthorizationContextDefault
+                                         completion:^(BOOL authorized) { }];
     }
     
     [self.tableView beginUpdates];

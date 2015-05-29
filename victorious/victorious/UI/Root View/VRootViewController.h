@@ -12,6 +12,19 @@
 @class VSessionTimer;
 
 /**
+ *  ViewControllers that will be contained by the rootViewController can conform 
+ *  to this protocol to be notified about events.
+ */
+@protocol VRootViewControllerContainedViewController <NSObject>
+
+/**
+ *  Informs the contained viewController that the loading animation has finished.
+ */
+- (void)onLoadingCompletion;
+
+@end
+
+/**
  Posted at the same time as UIApplicationDidBecomeActiveNotification, but
  only if a new session is NOT starting.
  */

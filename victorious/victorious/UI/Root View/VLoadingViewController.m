@@ -216,35 +216,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-#warning For testing only: Remove this once the backed has tracking URLs in proper place (top level of template)
-        NSArray *keysToMove = @[ @"create_profile_start",
-                                 @"registration_end",
-                                 @"registration_start",
-                                 @"done_button_tap",
-                                 @"register_button_tap",
-                                 @"sign_up_button_tap" ];
-        for ( NSString *key in templateConfiguration[ @"scaffold" ][ @"firstTimeContent" ][ @"tracking" ] )
-        {
-            NSString *keyPath = [NSString stringWithFormat:@"scaffold/firstTimeContent/tracking/%@", key];
-            NSArray *URLs = templateConfiguration[ @"scaffold" ][ @"firstTimeContent" ][ @"tracking" ][ key ];
-            NSMutableArray *newURLS = [[NSMutableArray alloc] init];
-            for ( NSString *string in URLs )
-            {
-                NSString *newString = [string stringByReplacingOccurrencesOfString:@"%%TIME_SINCE_BOOT%%" withString:@"%%SESSION_TIME%%"];
-                [newURLS addObject:newString];
-            }
-            NSParameterAssert( [templateDecorator removeTemplateValueForKeyPath:keyPath] );
-            if ( [keysToMove containsObject:key] )
-            {
-                NSString *newKeyPath = [NSString stringWithFormat:@"tracking/%@", key];
-                NSParameterAssert( [templateDecorator setTemplateValue:newURLS.copy forKeyPath:newKeyPath] );
-            }
-            else
-            {
-                NSParameterAssert( [templateDecorator setTemplateValue:newURLS.copy forKeyPath:keyPath] );
-            }
-        }
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

@@ -29,6 +29,7 @@
 #import "VURLSelectionResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
+#import "VRootViewController.h"
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
 
@@ -39,7 +40,9 @@ NSString * const VTrackingWelcomeVideoEndKey = @"welcome_video_end";
 NSString * const VTrackingWelcomeStartKey = @"welcome_start";
 NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder>
+static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
+
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -68,6 +71,19 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 
 #pragma mark - Lifecyle Methods
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
+    if (shouldShowLogin && !self.hasBeenShown )
+    {
+        [self.authorizedAction prepareInViewController:self
+                                               context:VAuthorizationContextDefault
+                                            completion:^(BOOL authorized) {}];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -93,7 +109,7 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 {
     VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
 
-    if ( ![firstTimeInstallHelper hasBeenShown] )
+    if ( ![firstTimeInstallHelper hasBeenShown] && ![[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue])
     {
         [firstTimeInstallHelper savePlaybackDefaults];
         
@@ -328,6 +344,13 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
         }
         [self presentViewController:contentView animated:YES completion:nil];
     }
+}
+
+#pragma mark - VRootViewControllerContainedViewController
+
+- (void)onLoadingCompletion
+{
+    [self.authorizedAction execute];
 }
 
 @end

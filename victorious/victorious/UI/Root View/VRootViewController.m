@@ -31,7 +31,7 @@
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
-static const NSTimeInterval kAnimationDuration = 0.2;
+static const NSTimeInterval kAnimationDuration = 0.25f;
 
 static NSString * const kDeepLinkURLKey = @"deeplink";
 static NSString * const kNotificationIDKey = @"notification_id";
@@ -289,6 +289,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         
         void (^removeViewController)(BOOL) = ^(BOOL complete)
         {
+            if ([viewController conformsToProtocol:@protocol(VRootViewControllerContainedViewController) ])
+            {
+                [((id<VRootViewControllerContainedViewController>)viewController) onLoadingCompletion];
+            }
             [fromViewController.view removeFromSuperview];
             [fromViewController removeFromParentViewController];
             finishingTasks();
@@ -299,12 +303,14 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
             viewController.view.clipsToBounds = YES;
             viewController.view.center = CGPointMake(CGRectGetWidth(self.view.bounds) * 1.5f, CGRectGetMidY(self.view.bounds));
             [UIView animateWithDuration:kAnimationDuration
-                                  delay:0
-                                options:UIViewAnimationOptionCurveEaseIn
+                                  delay:0.0f
+                 usingSpringWithDamping:1.0f
+                  initialSpringVelocity:0.0f
+                                options:kNilOptions
                              animations:^(void)
-                                        {
-                                            viewController.view.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-                                        }
+             {
+                 viewController.view.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+             }
                              completion:removeViewController];
         }
         else

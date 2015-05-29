@@ -2,6 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>addProfilePicture.screen</key>
+	<string>VEnterProfilePictureCameraViewController</string>
+	<key>modernResetPassword.screen</key>
+	<string>VModernResetPasswordViewController</string>
+	<key>modernResetToken.screen</key>
+	<string>VModernResetTokenViewController</string>
+	<key>modernEnterNameScreen.screen</key>
+	<string>VModernEnterNameViewController</string>
+	<key>modernRegisterEmailAndPassword.screen</key>
+	<string>VModernRegisterViewController</string>
+	<key>modernLoginEmailAndPassword.screen</key>
+	<string>VModernLoginViewController</string>
+	<key>modernLanding.screen</key>
+	<string>VModernLandingViewController</string>
+	<key>modernLoginAndRegistration.screen</key>
+	<string>VModernLoginAndRegistrationFlowViewController</string>
+	<key>standard.loginAndRegistrationView</key>
+	<string>VStandardLoginFlowViewController</string>
 	<key>hiddenWorkspace</key>
 	<string>VWorkspaceFlowController</string>
 	<key>translucent.background</key>
@@ -12,6 +30,8 @@
 	<string>VSolidColorBackground</string>
 	<key>tilePattern.background</key>
 	<string>VTilePatternBackground</string>
+	<key>video.background</key>
+	<string>VVideoBackground</string>
 	<key>trim.video.tool</key>
 	<string>VTrimVideoTool</string>
 	<key>snapshot.video.tool</key>

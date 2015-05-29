@@ -311,7 +311,7 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    VTOSViewController *termsOfServiceVC = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
+    VTOSViewController *termsOfServiceVC = [VTOSViewController termsOfServiceViewController];
     termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
     if ( self.navigationController != nil )
     {
