@@ -267,7 +267,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                            @"blue":@255,
                                            @"alpha":@255
                                            },
-                                   @"promptDuration": @5000,
+                                   @"promptDuration": @1000,
                                    @"background":
                                        @{
                                            @"name":@"solidColor.background",
@@ -452,8 +452,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                    }
                            };
         
-//        [templateDecorator setTemplateValue:loginComponent
-//                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
+        [templateDecorator setTemplateValue:loginComponent
+                                 forKeyPath:@"scaffold/loginAndRegistrationView"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

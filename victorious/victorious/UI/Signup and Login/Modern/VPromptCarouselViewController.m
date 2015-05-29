@@ -140,9 +140,15 @@ static NSString * const kPromptDurationKey = @"promptDuration";
         return;
     }
     
+    if (self.collectionView.isDragging || self.collectionView.isTracking)
+    {
+        [self.timerManager invalidate];
+        return;
+    }
+
     NSIndexPath *currentIndexPath = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds),
                                                                                              CGRectGetMidY(self.collectionView.bounds))];
-    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:currentIndexPath.row + 1 inSection:currentIndexPath.section];
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:currentIndexPath.item + 1 inSection:currentIndexPath.section];
     if ((nextIndexPath.item) < [self.collectionView numberOfItemsInSection:currentIndexPath.section])
     {
         [self.collectionView scrollToItemAtIndexPath:nextIndexPath
