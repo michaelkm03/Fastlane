@@ -92,12 +92,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(resetPasswordWithTextFieldToken)];
-    NSDictionary *nextButtonAttributes = @{
-                                           NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
-                                           NSForegroundColorAttributeName:[self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey]
-                                           };
-    [nextButton setTitleTextAttributes:nextButtonAttributes
-                                   forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = nextButton;
 
 }

@@ -311,7 +311,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                        },
                                    @{
                                        @"name":@"modernEnterNameScreen.screen",
-                                       @"prompt":@"Yo dawg we need your name🐕",
+                                       @"prompt":@"Create a username and introduce yourself to the community",
                                        @"color.text.content":
                                            @{
                                                @"red":@258,
@@ -325,6 +325,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                @"green":@255,
                                                @"blue":@255,
                                                @"alpha":@100
+                                               },
+                                       @"color.text.content":
+                                           @{
+                                               @"red":@255,
+                                               @"green":@255,
+                                               @"blue":@255,
+                                               @"alpha":@255
                                                },
                                        @"background":
                                            @{
@@ -340,7 +347,15 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                        },
                                    @{
                                        @"name":@"modernEnterProfilePicture.screen",
-                                       }
+                                       @"prompt":@"This is the kind voice of us asking for your avatar.",
+                                       @"color.text.content":
+                                           @{
+                                               @"red":@255,
+                                               @"green":@255,
+                                               @"blue":@255,
+                                               @"alpha":@255
+                                               },
+                                       },
                                    ],
                            @"loginScreens":
                                @[

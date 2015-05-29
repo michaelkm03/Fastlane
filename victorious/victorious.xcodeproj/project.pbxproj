@@ -684,7 +684,7 @@
 		D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CF219E379C200D7E260 /* VExperienceEnhancer.m */; };
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
-		D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.m */; };
+		D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m */; };
 		D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D83AC7A91AB201A600F63603 /* VPlayerView.m */; };
 		D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
@@ -815,6 +815,7 @@
 		D8DF71F11AFD987B002EA7A5 /* VFollowingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71F01AFD987B002EA7A5 /* VFollowingHelper.m */; };
 		D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF72261AFEC360002EA7A5 /* VTabMenuShim.m */; };
 		D8DF722A1AFEC360002EA7A5 /* VTabMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF72281AFEC360002EA7A5 /* VTabMenuViewController.m */; };
+		D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */; };
@@ -2200,8 +2201,8 @@
 		D836884019C370C400070F22 /* VBaseCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseCollectionViewCell.m; sourceTree = "<group>"; };
 		D836884219C3718A00070F22 /* VBaseSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBaseSupplementaryView.h; sourceTree = "<group>"; };
 		D836884319C3718A00070F22 /* VBaseSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseSupplementaryView.m; sourceTree = "<group>"; };
-		D839D6901B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnterProfilePictureCameraShimViewController.h; sourceTree = "<group>"; };
-		D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnterProfilePictureCameraShimViewController.m; sourceTree = "<group>"; };
+		D839D6901B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnterProfilePictureCameraViewController.h; sourceTree = "<group>"; };
+		D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnterProfilePictureCameraViewController.m; sourceTree = "<group>"; };
 		D83AC7A81AB201A600F63603 /* VPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPlayerView.h; sourceTree = "<group>"; };
 		D83AC7A91AB201A600F63603 /* VPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlayerView.m; sourceTree = "<group>"; };
 		D84558FE1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeStringFormatter.h; sourceTree = "<group>"; };
@@ -2453,6 +2454,7 @@
 		D8DF72271AFEC360002EA7A5 /* VTabMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuViewController.h; sourceTree = "<group>"; };
 		D8DF72281AFEC360002EA7A5 /* VTabMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabMenuViewController.m; sourceTree = "<group>"; };
 		D8DF722B1AFEC38B002EA7A5 /* VTabMenuContainedViewControllerNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuContainedViewControllerNavigation.h; sourceTree = "<group>"; };
+		D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VEnterProfilePictureCameraViewController.storyboard; sourceTree = "<group>"; };
 		D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewViewModel.h; sourceTree = "<group>"; };
 		D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewViewModel.m; sourceTree = "<group>"; };
 		D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
@@ -5420,8 +5422,9 @@
 		D85B702B1B0EAF3F0038CA5B /* Modern */ = {
 			isa = PBXGroup;
 			children = (
-				D839D6901B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.h */,
-				D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.m */,
+				D839D6901B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.h */,
+				D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m */,
+				D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */,
 				D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */,
 				D8D8129F1B13CB9300E93B37 /* VModernEnterNameViewController.h */,
 				D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */,
@@ -6451,6 +6454,7 @@
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
 				036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */,
+				D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */,
 				036F386A1A0C4DEA0014DF66 /* DeliusUnicase-Regular.ttf in Resources */,
 				036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */,
 				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
@@ -7178,7 +7182,7 @@
 				D8DF71EC1AFC4A61002EA7A5 /* VStreamHeaderComment.m in Sources */,
 				A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */,
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
-				D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraShimViewController.m in Sources */,
+				D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m in Sources */,
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
 				03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */,

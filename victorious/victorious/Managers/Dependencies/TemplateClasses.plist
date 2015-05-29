@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>modernEnterProfilePicture.screen</key>
-	<string>VEnterProfilePictureCameraShimViewController</string>
+	<string>VEnterProfilePictureCameraViewController</string>
 	<key>modernResetPassword.screen</key>
 	<string>VModernResetPasswordViewController</string>
 	<key>modernResetToken.screen</key>

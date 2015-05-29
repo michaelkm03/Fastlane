@@ -73,9 +73,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self
                                                                    action:@selector(login)];
-    [loginButton setTitleTextAttributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
-                                          NSForegroundColorAttributeName:[self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey]}
-                               forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = loginButton;
 
     // Legal Text

@@ -107,12 +107,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(signup)];
-    NSDictionary *nextButtonAttributes = @{
-                                           NSFontAttributeName:[self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey],
-                                           NSForegroundColorAttributeName:[self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey]
-                                           };
-    [self.nextButton setTitleTextAttributes:nextButtonAttributes
-                                   forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = self.nextButton;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];

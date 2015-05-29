@@ -82,7 +82,8 @@
 - (void)showPrivacyPolicy;
 
 /**
- * The user has taken a picture for their profile picture and it was saved to the passed in file path.
+ *  The user has taken a picture for their profile picture and it was saved to the passed in file path.
+ *  Parameter may be nil to indicate the user has opted to not submit an avatar.
  */
 - (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath;
 

@@ -21,7 +21,7 @@
 #import "VModernFlowControllerAnimationController.h"
 #import "VTOSViewController.h"
 #import "VPrivacyPoliciesViewController.h"
-#import "VEnterProfilePictureCameraShimViewController.h"
+#import "VEnterProfilePictureCameraViewController.h"
 
 // Responder Chain
 #import "VLoginFlowControllerResponder.h"
@@ -423,11 +423,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     {
         [self onAuthenticationFinishedWithSuccess:YES];
     }
-    else if ([nextRegisterViewController isKindOfClass:[VEnterProfilePictureCameraShimViewController class]])
-    {
-        VEnterProfilePictureCameraShimViewController *cameraViewController = (VEnterProfilePictureCameraShimViewController *)nextRegisterViewController;
-        [cameraViewController showCameraOnViewController:self];
-    }
     else
     {
         [self pushViewController:nextRegisterViewController
@@ -437,6 +432,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 
 - (void)onAuthenticationFinishedWithSuccess:(BOOL)success
 {
+    [self.view endEditing:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:^
      {
