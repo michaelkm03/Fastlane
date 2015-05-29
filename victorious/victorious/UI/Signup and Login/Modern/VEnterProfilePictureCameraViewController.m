@@ -92,6 +92,7 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 - (IBAction)addProfilePicture:(id)sender
 {
     [self showCameraOnViewController:self];
+    [self unHighlight:nil];
 }
 
 - (IBAction)highlight:(id)sender

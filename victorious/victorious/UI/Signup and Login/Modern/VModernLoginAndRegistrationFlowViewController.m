@@ -402,10 +402,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     else
     {
         [self.loginFlowHelper updateProfilePictureWithPictureAtFilePath:profilePictureFilePath
-                                                             completion:^(BOOL success, NSError *error)
-         {
-             // nop
-         }];;
+                                                             completion:nil];;
     }
 }
 

@@ -401,8 +401,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
                                        completion:(void (^)(BOOL success, NSError *error))completion
 {
-    NSParameterAssert(completion != nil);
-    
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
                                                          name:nil
@@ -411,11 +409,17 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                       tagline:nil
                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         completion(YES, nil);
+         if (completion != nil)
+         {
+             completion(YES, nil);
+         }
      }
                                                     failBlock:^(NSOperation *operation, NSError *error)
      {
-         completion(NO, error);
+         if (completion != nil)
+         {
+             completion(NO, error);
+         }
      }];
 }
 
