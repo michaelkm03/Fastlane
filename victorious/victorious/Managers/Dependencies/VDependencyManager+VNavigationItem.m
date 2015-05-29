@@ -105,7 +105,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
                     badgeProvider = customBadgeProvider;
                 }
             }
-            [self registerBadgeUpdateBlockWithButton:barButton badgeProvider:badgeProvider];
+            [self registerBadgeUpdateBlockWithButton:barButton destination:menuItem.destination source:sourceViewController];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
@@ -145,18 +145,25 @@ static const char kAssociatedObjectSourceViewControllerKey;
     [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:shouldAnimate];
 }
 
-- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton badgeProvider:(id<VProvidesNavigationMenuItemBadge>)badgeProvider
+- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton destination:(id)destination source:(id)source
 {
     __weak typeof (barButton) weakBarButton = barButton;
-    
-    if ( [badgeProvider conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+    if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
     {
+        id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)destination;
         VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
         {
             [weakBarButton setBadgeNumber:badgeNumber];
             [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
+            if ( [source conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
+            {
+                id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)source;
+                if ( badgeProvider.badgeNumberUpdateBlock != nil )
+                {
+                    badgeProvider.badgeNumberUpdateBlock( badgeNumber );
+                }
+            }
         };
-        
         [badgeProvider setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
         NSInteger badgeNumber = [badgeProvider badgeNumber];
         badgeNumberUpdateBlock( badgeNumber );

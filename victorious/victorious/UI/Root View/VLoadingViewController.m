@@ -216,12 +216,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+        // Remove any of the backend's broken accessoryScreens (get rid of this when debugging with backend and comment out the additions below
         for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
         {
             [templateDecorator setTemplateValue:@[] forKeyPath:keyPath];
         }
         
-        
+        // Add the working ones for testing
         BOOL isSideNavMenu = [templateConfiguration[ @"scaffold" ][ @"menu" ][ @"items" ][ 0 ] isKindOfClass:[NSArray class]];
         if ( isSideNavMenu )
         {
@@ -261,10 +262,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                                 forKeyPath:@"scaffold/menu/items/3/destination/accessoryScreens/2"] );
             
             // Add Compose to messages screen in inbox main menu item
-            NSParameterAssert( [templateDecorator setTemplateValue:@[]
+            NSParameterAssert( [templateDecorator removeTemplateValueForKeyPath:@"scaffold/menu/items/4"]);
+            /*NSParameterAssert( [templateDecorator setTemplateValue:@[]
                                                         forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"composeAccessory"
-                                                                forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens/0"] );
+                                                                forKeyPath:@"scaffold/menu/items/4/destination/screens/0/accessoryScreens/0"] );*/
             
             //NSParameterAssert( [templateDecorator removeTemplateValueForKeyPath:@"scaffold/menu/items/4"] );
         }
@@ -281,8 +283,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                             forKeyPath:@"scaffold/hashtagStream/accessoryScreens/0"] );
         
         
-        // Set all accessory item colors
-        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
+        // Set all accessory item colors (used for debugging with backend, leave here for now)
+        /*for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
         {
             NSArray *array = [templateDecorator templateValueForKeyPath:keyPath];
             for ( NSUInteger i = 0; i < array.count; i++ )
@@ -290,9 +292,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                 NSString *colorKeyPath = [NSString stringWithFormat:@"%@/%@/color.text", keyPath, @(i)];
                 [templateDecorator setTemplateValue:[VDependencyManager dictionaryFromColor:[UIColor redColor]] forKeyPath:colorKeyPath];
             }
-        }
+        }*/
         
-        
+        // TO be used for debugging with backend
         /*for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
         {
             NSLog( @"%@ = %@", keyPath, [templateDecorator templateValueForKeyPath:keyPath] );

@@ -13,7 +13,7 @@
 
 @class VUser;
 
-@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource>
+@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, readonly) VUser *user;
 

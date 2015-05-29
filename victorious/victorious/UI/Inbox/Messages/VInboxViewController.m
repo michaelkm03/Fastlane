@@ -540,6 +540,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         
         if ( [newUnreadCount isKindOfClass:[NSNumber class]] )
         {
+            NSLog( @">>>>>> %@ <<<<<<", newUnreadCount );
             self.badgeNumber = [newUnreadCount integerValue];
         }
     }

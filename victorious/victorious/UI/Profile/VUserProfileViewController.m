@@ -837,11 +837,16 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             ((VMessageContainerViewController *)menuItem.destination).otherUser = self.user;
         }
     }
-    if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
+    else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
     }
+    
     return YES;
 }
+
+#pragma mark - VProvidesNavigationMenuItemBadge
+
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
 
 @end
