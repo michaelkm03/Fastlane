@@ -239,11 +239,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     if ( messageViewController == nil )
     {
-        NSDictionary *moreAcessory = [VTemplateDecorator dictionaryFromJSONFile:@"moreAccessory"];
-        NSDictionary *childCondifuration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
-        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childCondifuration];
         messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser
-                                                                            dependencyManager:childDependencyManager];
+                                                                            dependencyManager:self.dependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }
     [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
