@@ -267,6 +267,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                            @"blue":@255,
                                            @"alpha":@255
                                            },
+                                   @"promptDuration": @5000,
                                    @"background":
                                        @{
                                            @"name":@"solidColor.background",

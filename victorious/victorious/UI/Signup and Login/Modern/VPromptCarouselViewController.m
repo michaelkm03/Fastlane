@@ -17,6 +17,7 @@
 #import "VDependencyManager.h"
 
 static NSString * const kPromptsKey = @"prompts";
+static NSString * const kPromptDurationKey = @"promptDuration";
 
 @interface VPromptCarouselViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -159,8 +160,9 @@ static NSString * const kPromptsKey = @"prompts";
 - (void)setupTimer
 {
     [self.timerManager invalidate];
-    
-    self.timerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:3.0f
+    NSNumber *promptDuration = [self.dependencyManager numberForKey:kPromptDurationKey];
+    NSTimeInterval promptInterval = [promptDuration doubleValue] / 1000;
+    self.timerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:promptInterval
                                                                       target:self
                                                                     selector:@selector(nextItem)
                                                                     userInfo:nil
