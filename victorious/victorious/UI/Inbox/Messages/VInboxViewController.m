@@ -34,7 +34,6 @@
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
 #import "VNavigationController.h"
-#import "VTemplateDecorator.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "UIResponder+VResponderChain.h"
@@ -239,8 +238,16 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     if ( messageViewController == nil )
     {
-        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser
-                                                                            dependencyManager:self.dependencyManager];
+        NSString *title = NSLocalizedString( @"More", @"" );
+        NSString *imageName = @"A_more";
+        NSDictionary *moreAcessory = @{ VDependencyManagerDestinationKey: [NSNull null],
+                                        VDependencyManagerTitleKey: title,
+                                        VDependencyManagerIconKey: @{ VDependencyManagerImageURLKey: imageName },
+                                        VDependencyManagerIdentifierKey: VDependencyManagerAccessoryItemMore,
+                                        VDependencyManagerPositionKey: VDependencyManagerPositionRight };
+        NSDictionary *childCondifuration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
+        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childCondifuration];
+        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:childDependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }
     [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];

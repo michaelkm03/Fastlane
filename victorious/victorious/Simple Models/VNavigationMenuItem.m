@@ -9,11 +9,6 @@
 #import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
 
-static NSString * const kIdentifierKey = @"identifier";
-static NSString * const kDestinationKey = @"destination";
-static NSString * const kIconKey = @"icon";
-static NSString * const kSelectedIconKey = @"selectedIcon";
-
 @implementation VNavigationMenuItem
 
 - (instancetype)initWithTitle:(NSString *)title
@@ -42,10 +37,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 {
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     title = NSLocalizedString(title, "");
-    NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
-    UIImage *icon = [dependencyManager imageForKey:kIconKey];
-    UIImage *selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
-    id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
+    NSString *identifier = [dependencyManager stringForKey:VDependencyManagerIdentifierKey];
+    UIImage *icon = [dependencyManager imageForKey:VDependencyManagerIconKey];
+    UIImage *selectedIcon = [dependencyManager imageForKey:VDependencyManagerSelectedIconKey];
+    id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:VDependencyManagerDestinationKey];
     NSString *position = [dependencyManager stringForKey:VDependencyManagerPositionKey];
     UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     return [self initWithTitle:title
