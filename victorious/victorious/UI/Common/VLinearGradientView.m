@@ -40,4 +40,24 @@
     return [[self gradientLayer] locations];
 }
 
+- (void)setStartPoint:(CGPoint)startPoint
+{
+    [[self gradientLayer] setStartPoint:startPoint];
+}
+
+- (CGPoint)startPoint
+{
+    return [[self gradientLayer] startPoint];
+}
+
+- (void)setEndPoint:(CGPoint)endPoint
+{
+    [[self gradientLayer] setEndPoint:endPoint];
+}
+
+- (CGPoint)endPoint
+{
+    return [[self gradientLayer] endPoint];
+}
+
 @end

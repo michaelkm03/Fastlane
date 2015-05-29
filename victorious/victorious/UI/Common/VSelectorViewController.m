@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong, readwrite) NSArray *items;
 @property (nonatomic, copy) VSelectionItemConfigureCellBlock configureBlock;
+@property (nonatomic, copy) VSelectorViewControllerCompletionBlock completion;
 
 @end
 
@@ -22,10 +23,15 @@ NSString *const kSelectorCellIdentifier = @"cell";
 
 + (instancetype)selectorViewControllerWithItemsToSelectFrom:(NSArray *)items
                                          withConfigureBlock:(VSelectionItemConfigureCellBlock)configureBlock
+                                                 completion:(void(^)(id selectedItem))completion
 {
+    NSParameterAssert(configureBlock != nil);
+    NSParameterAssert(completion != nil);
+    
     VSelectorViewController *selectorViewController = [[VSelectorViewController alloc] initWithStyle:UITableViewStylePlain];
     selectorViewController.items = items;
     selectorViewController.configureBlock = configureBlock;
+    selectorViewController.completion = completion;
     return selectorViewController;
 }
 
@@ -40,11 +46,6 @@ NSString *const kSelectorCellIdentifier = @"cell";
     
     [self.tableView registerClass:[UITableViewCell class]
            forCellReuseIdentifier:kSelectorCellIdentifier];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 #pragma mark - UITableViewDataSource
@@ -73,15 +74,14 @@ NSString *const kSelectorCellIdentifier = @"cell";
 - (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.delegate vSelectorViewController:self
-                             didSelectItem:[self.items objectAtIndex:indexPath.row]];
+    self.completion([self.items objectAtIndex:indexPath.row]);
 }
 
 #pragma mark - Actions
 
 - (void)cancel:(id)sender
 {
-    [self.delegate vSelectorViewControllerDidCancel:self];
+    self.completion(nil);
 }
 
 @end

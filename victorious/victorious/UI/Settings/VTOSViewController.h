@@ -10,4 +10,15 @@
 
 @interface VTOSViewController : VWebContentViewController
 
+/**
+ *  A terms of service viewController. Suitable for pushing inside of a navigation controller. 
+ *  Provides a cancel button if presented as the root of a navigation controller.
+ */
++ (VTOSViewController *)termsOfServiceViewController;
+
+/**
+ *  Presentable terms of service viewController. Provides a mechanism for this viewController to dismiss itself.
+ */
++ (UIViewController *)presentableTermsOfServiceViewController;
+
 @end
