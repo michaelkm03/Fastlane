@@ -26,6 +26,7 @@
 #import "NSArray+VMap.h"
 
 #import "VInitialViewController.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkDisplayResponder.h"

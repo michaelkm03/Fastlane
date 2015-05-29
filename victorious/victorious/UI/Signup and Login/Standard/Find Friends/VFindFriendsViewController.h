@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VDependencyManager+VNavigationItem.h"
 
 @class VDependencyManager;
 
-@interface VFindFriendsViewController : UIViewController
+@interface VFindFriendsViewController : UIViewController <VAccessoryNavigationSource>
 
 @property (nonatomic) BOOL shouldAutoselectNewFriends; ///< If YES, new friends will be automatically selected as they're displayed
 

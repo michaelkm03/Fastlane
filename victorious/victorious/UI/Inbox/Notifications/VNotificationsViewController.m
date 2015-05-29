@@ -35,7 +35,6 @@ static int const kNotificationFetchBatchSize = 50;
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
-@property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
@@ -43,7 +42,8 @@ static int const kNotificationFetchBatchSize = 50;
 
 @implementation VNotificationsViewController
 
-@synthesize multipleContainerChildDelegate;
+@synthesize multipleContainerChildDelegate = _multipleContainerChildDelegate;
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -51,8 +51,6 @@ static int const kNotificationFetchBatchSize = 50;
     if (viewController)
     {
         viewController.dependencyManager = dependencyManager;
-        viewController.navigationItem.rightBarButtonItem = nil;
-        [dependencyManager addPropertiesToNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];

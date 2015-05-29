@@ -27,6 +27,7 @@
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
+#import "VDependencyManager+VNavigationItem.h"
 #import "VAuthorizedAction.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
@@ -153,6 +154,8 @@ static NSString * const kSupportEmailKey = @"email.support";
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
 }
 
 - (void)updateResetCoachmarksCell
@@ -469,6 +472,18 @@ static NSString * const kSupportEmailKey = @"email.support";
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
     return YES;
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    return self.navigationController.viewControllers.count == 1;
 }
 
 @end

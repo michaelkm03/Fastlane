@@ -109,6 +109,8 @@
  */
 - (NSArray *)keyPathsForKey:(NSString *)key;
 
+- (NSArray *)keyPathsForValue:(id)value;
+
 /**
  Searches recursively for any dictinoary string values and performs a string replacement with all occurences
  of the string within the value.

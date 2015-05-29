@@ -29,8 +29,6 @@
 @property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
 @property (nonatomic) NSUInteger selectedIndex;
-@property (nonatomic) NSInteger badgeNumber;
-@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -48,8 +46,6 @@ static NSString * const kInitialKey = @"initial";
     {
         _didShowInitial = NO;
         _selectedIndex = 0;
-        CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
-        self.navigationItem.leftBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
     }
     return self;
 }
@@ -67,22 +63,7 @@ static NSString * const kInitialKey = @"initial";
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
-        [_dependencyManager addPropertiesToNavigationItem:self.navigationItem];
         self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
-        
-        __weak typeof(self) weakSelf = self;
-        VNavigationMenuItemBadgeNumberUpdateBlock block = ^(NSInteger badgeNumber)
-        {
-            [weakSelf updateBadge];
-        };
-        for (UIViewController *vc in _viewControllers)
-        {
-            if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-            {
-                UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
-                viewController.badgeNumberUpdateBlock = block;
-            }
-        }
     }
     return self;
 }
@@ -226,36 +207,6 @@ static NSString * const kInitialKey = @"initial";
     }];
 }
 
-#pragma mark - Badges
-
-- (void)setBadgeNumber:(NSInteger)badgeNumber
-{
-    if ( badgeNumber == _badgeNumber )
-    {
-        return;
-    }
-    _badgeNumber = badgeNumber;
-    
-    if ( self.badgeNumberUpdateBlock != nil )
-    {
-        self.badgeNumberUpdateBlock(self.badgeNumber);
-    }
-}
-
-- (void)updateBadge
-{
-    NSInteger count = 0;
-    for (UIViewController *vc in _viewControllers)
-    {
-        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-        {
-            UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
-            count += viewController.badgeNumber;
-        }
-    }
-    self.badgeNumber = count;
-}
-
 #pragma mark - VMultipleContainer
 
 - (NSArray *)children
@@ -314,29 +265,12 @@ static NSString * const kInitialKey = @"initial";
 - (void)displayViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated isDefaultSelection:(BOOL)isDefaultSelection
 {
     self.selectedIndex = index;
-    [self resetNavigationItemForIndex:index];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
     
     id<VMultipleContainerChild> viewController = self.viewControllers[ index ];
     [viewController multipleContainerDidSetSelected:isDefaultSelection];
-}
-
-- (void)resetNavigationItemForIndex:(NSUInteger)index
-{
-    [self resetNavigationItem];
-    UIViewController<VMultipleContainerChild> *viewController = self.viewControllers[ index ];
-    if ([viewController.navigationItem.rightBarButtonItems count] > 0)
-    {
-        self.navigationItem.rightBarButtonItems = viewController.navigationItem.rightBarButtonItems;
-    }
-}
-
-- (void)resetNavigationItem
-{
-    CGRect itemFrame = CGRectMake(0.0f, 0.0f, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
-    self.navigationItem.rightBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] initWithFrame:itemFrame]] ];
 }
 
 #pragma mark - UICollectionViewDelegate methods
@@ -397,6 +331,37 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
 {
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
+}
+
+#pragma mark - VProvidesNavigationMenuItemBadge
+
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
+{
+    _badgeNumberUpdateBlock = nil;
+    for (UIViewController *vc in _viewControllers)
+    {
+        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            UIViewController<VProvidesNavigationMenuItemBadge> *viewController = (id)vc;
+            viewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+        }
+    }
+}
+
+- (NSInteger)badgeNumber
+{
+    NSInteger total = 0;
+    for (UIViewController *vc in _viewControllers)
+    {
+        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)vc;
+            total += [badgeProvider badgeNumber];
+        }
+    }
+    return total;
 }
 
 #pragma mark - VCoachmarkDisplayResponder

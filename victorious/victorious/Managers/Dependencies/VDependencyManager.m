@@ -134,6 +134,11 @@ static NSString * const kMacroReplacement = @"XXXXX";
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@\n%@", NSStringFromClass([self class]), self.configuration];
+}
+
 #pragma mark - High-level dependency getters
 
 - (UIColor *)colorForKey:(NSString *)key
@@ -149,7 +154,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
-    UIColor *color = [self colorFromDictionary:colorDictionary];
+    UIColor *color = [[self class] colorFromDictionary:colorDictionary];
     
     if ( color == nil )
     {
@@ -161,7 +166,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
 }
 
-- (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary
++ (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary
 {
     if (![colorDictionary isKindOfClass:[NSDictionary class]])
     {
@@ -194,6 +199,16 @@ static NSString * const kMacroReplacement = @"XXXXX";
                                       blue:[blue VCGFLOAT_VALUE] / 255.0f
                                      alpha:[alpha VCGFLOAT_VALUE] / 255.0f];
     return color;
+}
+
++ (NSDictionary *)dictionaryFromColor:(UIColor *)color
+{
+    CGFloat r, g, b, a;
+    if ( [color getRed:&r green:&g blue:&b alpha:&a] )
+    {
+        return @{ kRedKey : @(r * 255.0f), kGreenKey : @(g * 255.0f), kBlueKey : @(b * 255.0f), kAlphaKey : @(a * 255.0f) };
+    }
+    return nil;
 }
 
 - (UIFont *)fontForKey:(NSString *)key
