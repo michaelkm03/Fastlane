@@ -256,6 +256,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
             // Add Inbox and Find Friends to current user profile
             NSParameterAssert( [templateDecorator setTemplateValue:@[]
                                                         forKeyPath:@"scaffold/menu/items/3/destination/accessoryScreens"] );
+            NSParameterAssert( [templateDecorator setComponentWithFilename:@"settingsAccessory"
+                                                                forKeyPath:@"scaffold/menu/items/3/destination/accessoryScreens/0"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"inboxAccessory"
                                                                 forKeyPath:@"scaffold/menu/items/3/destination/accessoryScreens/1"] );
             NSParameterAssert( [templateDecorator setComponentWithFilename:@"findFriendsAccessory"
@@ -284,15 +286,15 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         
         
         // Set all accessory item colors (used for debugging with backend, leave here for now)
-        /*for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
+        for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )
         {
             NSArray *array = [templateDecorator templateValueForKeyPath:keyPath];
             for ( NSUInteger i = 0; i < array.count; i++ )
             {
                 NSString *colorKeyPath = [NSString stringWithFormat:@"%@/%@/color.text", keyPath, @(i)];
-                [templateDecorator setTemplateValue:[VDependencyManager dictionaryFromColor:[UIColor redColor]] forKeyPath:colorKeyPath];
+                [templateDecorator setTemplateValue:[VDependencyManager dictionaryFromColor:[UIColor blackColor]] forKeyPath:colorKeyPath];
             }
-        }*/
+        }
         
         // TO be used for debugging with backend
         /*for ( NSString *keyPath in [templateDecorator keyPathsForKey:@"accessoryScreens"] )

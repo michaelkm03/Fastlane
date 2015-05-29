@@ -376,6 +376,7 @@
 		A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055B1A030E4700285A9C /* VFlurryTracking.m */; };
 		A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */; };
 		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
+		A724C4051B1810F000583421 /* settingsAccessory.json in Resources */ = {isa = PBXBuildFile; fileRef = A724C4041B1810F000583421 /* settingsAccessory.json */; };
 		A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8B1AA5331000B6BC1F /* VCardDirectoryCell.m */; };
 		A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */; };
 		A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8E1AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m */; };
@@ -1591,6 +1592,7 @@
 		A72005611A030EB100285A9C /* VTrackingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingDelegate.h; sourceTree = "<group>"; };
 		A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingURLRequest.h; sourceTree = "<group>"; };
 		A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingURLRequest.m; sourceTree = "<group>"; };
+		A724C4041B1810F000583421 /* settingsAccessory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = settingsAccessory.json; sourceTree = "<group>"; };
 		A7299E8A1AA5331000B6BC1F /* VCardDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCell.h; sourceTree = "<group>"; };
 		A7299E8B1AA5331000B6BC1F /* VCardDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCell.m; sourceTree = "<group>"; };
 		A7299E8C1AA5331000B6BC1F /* VCardDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCardDirectoryCell.xib; sourceTree = "<group>"; };
@@ -3706,6 +3708,7 @@
 				A7BB9C781AFD9934005B4596 /* inboxAccessory.json */,
 				A74B43151B0D6379003C19A0 /* moreAccessory.json */,
 				A7BB9C7C1AFD9C5D005B4596 /* composeAccessory.json */,
+				A724C4041B1810F000583421 /* settingsAccessory.json */,
 				A74B43111B0D2243003C19A0 /* followAccessory.json */,
 				A74B430E1B0BDC17003C19A0 /* postAccessory.json */,
 				A7BB9C811B019B4F005B4596 /* findFriendsAccessory.json */,
@@ -3931,7 +3934,6 @@
 			children = (
 				03C185CE19B4308400E27D05 /* VAnimation.h */,
 				A74293991AAFE4A400532948 /* VAuthorizationContext.h */,
-				D8F8B1F01AC4C89E00AA2DB7 /* VBackgroundContainer.h */,
 				A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */,
 				D8A2615C1AD7693A00780F00 /* VAuthorizationContextProvider.h */,
 				D8F8B1F01AC4C89E00AA2DB7 /* VBackgroundContainer.h */,
@@ -6210,6 +6212,7 @@
 				03848F951B0A41090092C660 /* InfoPlist.strings in Resources */,
 				F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */,
 				036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */,
+				A724C4051B1810F000583421 /* settingsAccessory.json in Resources */,
 				036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */,
 				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
@@ -6318,9 +6321,7 @@
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				037FCF191A8DAF0E00E8ABFC /* VBarButton.xib in Resources */,
-				D8B44CD51ADCB3A4006340E8 /* VSleekStreamCollectionCellPoll.xib in Resources */,
-				A7AEF9A91A83F1C300A3D3A0 /* VStreamCollectionCell.xib in Resources */,
-				037FCF191A8DAF0E00E8ABFC /* VHamburgerButton.xib in Resources */,
+				037FCF191A8DAF0E00E8ABFC /* VBarButton.xib in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7299E951AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib in Resources */,

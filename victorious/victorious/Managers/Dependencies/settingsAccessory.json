@@ -1,0 +1,13 @@
+{
+    "destination": {
+        "name": "settings.screen"
+    },
+    "icon": {
+        "imageURL": "D_settings"
+    },
+    "identifier": "Menu Settings",
+    "selectedIcon": {
+        "imageURL": "D_settings_selected"
+    },
+    "title": "Settings"
+}
