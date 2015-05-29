@@ -13,20 +13,40 @@
 
 @implementation VTOSViewController
 
++ (VTOSViewController *)termsOfServiceViewController
+{
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"settings"
+                                                         bundle:bundleForClass];
+    VTOSViewController *termsOfServiceVC = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
+    termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
+    return termsOfServiceVC;
+}
+
++ (UIViewController *)presentableTermsOfServiceViewController
+{
+    VTOSViewController *tosViewController = [self termsOfServiceViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tosViewController];
+    UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:tosViewController action:@selector(pressedBack)];
+    tosViewController.navigationItem.leftBarButtonItem = dismissButton;
+    return navigationController;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    if ( [self.navigationController viewControllers].count == 1 )
+    if (self.navigationItem.leftBarButtonItem == nil)
     {
         //Need to create a fake "back" button so that we can get off of this screen
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BackButton", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedBack)];
         [backButton setTintColor:[UIColor blackColor]];
         [self.navigationItem setLeftBarButtonItem:backButton];
-    }
 
+    }
+    
     self.shouldShowLoadingState = YES;
     
     [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)

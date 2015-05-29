@@ -41,4 +41,15 @@
                           context:(VAuthorizationContext)authorizationContext
                        completion:(void(^)(BOOL authorized))completionActionBlock;
 
+/**
+ *  Use this for forced registration. Takes a snapshot and adds it to the presentingViewControllers view hierarchy and removes after "-execute" is called. Execute must be called after the viewController hierarchy is prepared.
+ */
+- (BOOL)prepareInViewController:(UIViewController *)presentingViewController
+                        context:(VAuthorizationContext)authorizationContext
+                     completion:(void(^)(BOOL authorized))completionActionBlock;
+/**
+ *  Finishes the preparation work done in "-prepareInViewController:context:completion:"
+ */
+- (void)execute;
+
 @end

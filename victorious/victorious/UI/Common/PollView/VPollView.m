@@ -120,15 +120,19 @@
 
 #pragma mark - Public Methods
 
-- (void)setImageURL:(NSURL *)imageURL forPollAnswer:(VPollAnswer)pollAnswer
+- (void)setImageURL:(NSURL *)imageURL forPollAnswer:(VPollAnswer)pollAnswer completion:(void (^)(UIImage *))completionBlock
 {
     switch (pollAnswer)
     {
         case VPollAnswerA:
-            [self.answerAImageView fadeInImageAtURL:imageURL];
+            [self.answerAImageView fadeInImageAtURL:imageURL
+                                   placeholderImage:nil
+                                         completion:completionBlock];
             break;
         case VPollAnswerB:
-            [self.answerBImageView fadeInImageAtURL:imageURL];
+            [self.answerBImageView fadeInImageAtURL:imageURL
+                                   placeholderImage:nil
+                                         completion:completionBlock];
             break;
     }
 }

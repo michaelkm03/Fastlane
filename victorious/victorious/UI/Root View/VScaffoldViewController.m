@@ -28,12 +28,15 @@
 #import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "VRootViewController.h"
 #import "VCoachmarkManager.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder>
+static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
+
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
@@ -60,6 +63,19 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - Lifecyle Methods
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
+    if (shouldShowLogin && !self.hasBeenShown )
+    {
+        [self.authorizedAction prepareInViewController:self
+                                               context:VAuthorizationContextDefault
+                                            completion:^(BOOL authorized) {}];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -83,7 +99,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 {
     VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
 
-    if ( ![firstTimeInstallHelper hasBeenShown] )
+    if ( ![firstTimeInstallHelper hasBeenShown] && ![[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue])
     {
         [firstTimeInstallHelper savePlaybackDefaults];
         VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
@@ -306,6 +322,13 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         }
         [self presentViewController:contentView animated:YES completion:nil];
     }
+}
+
+#pragma mark - VRootViewControllerContainedViewController
+
+- (void)onLoadingCompletion
+{
+    [self.authorizedAction execute];
 }
 
 @end

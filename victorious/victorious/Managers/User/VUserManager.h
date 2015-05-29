@@ -31,7 +31,11 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 
 - (void)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-- (void)loginViaEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
+
+- (void)loginViaEmail:(NSString *)email
+             password:(NSString *)password
+         onCompletion:(VUserManagerLoginCompletionBlock)completion
+              onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
  Re-login to whatever service the user last logged in with

@@ -49,6 +49,13 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
+{
+    return [self fetchSequenceByID:sequenceId inStreamWithStreamID:nil successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
                                   inStreamWithStreamID:(NSString *)streamId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail

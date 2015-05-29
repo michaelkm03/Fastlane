@@ -18,8 +18,6 @@
 
 + (VLoginViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
-@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-
 /**
  VPresentWithBlurViewController
  */

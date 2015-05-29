@@ -168,15 +168,19 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 #pragma mark - VStreamCellComponentSpecialization
 
-+ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
-                          baseIdentifier:(NSString *)baseIdentifier
++ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
+                            baseIdentifier:(NSString *)baseIdentifier
 {
     NSString *identifier = baseIdentifier == nil ? [[NSString alloc] init] : baseIdentifier;
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
-    identifier = [VSequencePreviewView reuseIdentifierForSequence:sequence
-                                                   baseIdentifier:identifier];
-    return [VSleekActionView reuseIdentifierForSequence:sequence
-                                         baseIdentifier:identifier];
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
+                                                       baseIdentifier:identifier];
+    }
+    
+    return [VSleekActionView reuseIdentifierForStreamItem:streamItem
+                                           baseIdentifier:identifier];
 }
 
 #pragma mark - Class Methods

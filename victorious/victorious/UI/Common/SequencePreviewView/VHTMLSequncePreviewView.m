@@ -17,9 +17,8 @@
 // Controllers
 #import "VStreamWebViewController.h"
 
-@interface VHTMLSequncePreviewView ()
+@interface VHTMLSequncePreviewView () <VStreamWebViewControllerDelegate>
 
-@property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
 
 @end
@@ -33,6 +32,7 @@
     {
         _webViewController = [[VStreamWebViewController alloc] init];
         _webViewController.view.backgroundColor = [UIColor clearColor];
+        _webViewController.delegate = self;
         [self addSubview:_webViewController.view];
         [self v_addFitToParentConstraintsToSubview:_webViewController.view];
     }
@@ -43,9 +43,15 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
-    
+    [super setSequence:sequence];
     self.webViewController.url = [NSURL URLWithString:sequence.webContentPreviewUrl];
+}
+
+#pragma mark - VStreamWebViewControllerDelegate
+
+- (void)streamWebViewControllerContentIsVisible
+{
+    self.readyForDisplay = YES;
 }
 
 @end
