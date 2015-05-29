@@ -12,14 +12,15 @@
 #import "UIView+AutoLayout.h"
 #import "VImageViewContainer.h"
 #import "UIImage+ImageCreation.h"
-#import <objc/runtime.h>
+#import "VStreamItemPreviewView.h"
+#import "VStreamItem.h"
 
 static const NSTimeInterval kFadeAnimationDuration = 0.3f;
-static const char kAssociatedObjectKey;
 
 @interface VCrossFadingImageView ()
 
 @property (nonatomic, strong) NSMutableArray *imageViewContainers;
+@property (nonatomic, strong) NSMutableDictionary *loadedStreamItems;
 
 @end
 
@@ -48,6 +49,7 @@ static const char kAssociatedObjectKey;
 - (void)commonInit
 {
     self.imageViewContainers = [[NSMutableArray alloc] init];
+    self.loadedStreamItems = [[NSMutableDictionary alloc] init];
     self.offset = 0.0f;
 }
 
@@ -163,7 +165,7 @@ static const char kAssociatedObjectKey;
     return [NSArray arrayWithArray:visibleImageViewContainers];
 }
 
-- (void)updateBlurredImageViewForImage:(UIImage *)image fromURL:(NSURL *)url withTintColor:(UIColor *)tintColor atIndex:(NSInteger)index animated:(BOOL)animated
+- (void)updateBlurredImageViewForImage:(UIImage *)image fromPreviewView:(VStreamItemPreviewView *)previewView withTintColor:(UIColor *)tintColor atIndex:(NSInteger)index animated:(BOOL)animated withConcurrentAnimations:(void (^)(void))concurrentAnimations
 {
     NSInteger count = (NSInteger)self.imageViewContainers.count;
     if ( index >= count )
@@ -172,17 +174,14 @@ static const char kAssociatedObjectKey;
     }
     
     VImageViewContainer *imageViewContainer = ((VImageViewContainer *)self.imageViewContainers[index]);
-    NSURL *loadedURL = objc_getAssociatedObject(imageViewContainer, &kAssociatedObjectKey);
+    VStreamItem *previewStreamItem = previewView.streamItem;
+    NSNumber *key = @(index);
     //Only need to update the imageViewContainer if it isn't already showing the image
-    if ( ![loadedURL isEqual:url] )
+    if ( ![self.loadedStreamItems[key] isEqual:previewStreamItem] )
     {
-        //Check if image load failed; if so, don't associate it with the url so it retries the next time this method is called
-        if ( !( url != nil && image == nil ) )
-        {
-            objc_setAssociatedObject(imageViewContainer, &kAssociatedObjectKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
+        self.loadedStreamItems[key] = previewStreamItem;
         NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
-        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration];
+        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
     }
 }
 

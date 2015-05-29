@@ -1,27 +1,28 @@
 //
-//  VImageSequencePreviewView.m
+//  VImageStreamPreviewView.m
 //  victorious
 //
-//  Created by Michael Sena on 5/6/15.
+//  Created by Sharif Ahmed on 5/27/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VImageSequencePreviewView.h"
+#import "VImageStreamPreviewView.h"
 
 // Models + Helpers
-#import "VSequence+Fetcher.h"
+#import "VStream.h"
+#import "VStreamItem+Fetcher.h"
 
 // Views + Helpers
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
 
-@interface VImageSequencePreviewView ()
+@interface VImageStreamPreviewView ()
 
 @property (nonatomic, strong) UIImageView *previewImageView;
 
 @end
 
-@implementation VImageSequencePreviewView
+@implementation VImageStreamPreviewView
 
 #pragma mark - Lazy Property Accessors
 
@@ -31,24 +32,25 @@
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _previewImageView.clipsToBounds = YES;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
     }
     return _previewImageView;
 }
 
-#pragma mark - VSequencePreviewView Overrides
+#pragma mark - VStreamPreviewView Overrides
 
-- (void)setSequence:(VSequence *)sequence
+- (void)setStream:(VStream *)stream
 {
-    [super setSequence:sequence];
+    [super setStream:stream];
     
-    [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
+    NSArray *imagePaths = [stream previewImagePaths];
+    __weak VImageStreamPreviewView *weakSelf = self;
+    [self.previewImageView fadeInImageAtURL:[imagePaths firstObject]
                            placeholderImage:nil
                                  completion:^(UIImage *image)
      {
-         self.readyForDisplay = YES;
+         weakSelf.readyForDisplay = YES;
      }];
 }
 

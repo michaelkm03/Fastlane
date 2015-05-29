@@ -82,7 +82,14 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.5f;
      {
          self.webView.alpha = 1.0f;
      }
-                     completion:nil];
+                     completion:^(BOOL finished)
+     {
+         if ( self.delegate != nil )
+         {
+             [self.delegate streamWebViewControllerContentIsVisible];
+         }
+         
+     }];
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
