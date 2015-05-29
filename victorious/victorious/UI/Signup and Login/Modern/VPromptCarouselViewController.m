@@ -36,6 +36,11 @@ static NSString * const kPromptDurationKey = @"promptDuration";
 
 @implementation VPromptCarouselViewController
 
+- (void)dealloc
+{
+    _collectionView.delegate = nil;
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
