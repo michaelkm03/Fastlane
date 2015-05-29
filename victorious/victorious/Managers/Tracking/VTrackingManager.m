@@ -144,7 +144,7 @@
 
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
-    if ( eventName == nil || eventName.length == 0 || parameters.allValues.count == 0 )
+    if ( eventName == nil || eventName.length == 0 )
     {
         return;
     }
