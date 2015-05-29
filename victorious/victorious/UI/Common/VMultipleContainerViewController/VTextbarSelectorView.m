@@ -46,7 +46,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     }
     
     UIButton *button = self.buttons[index];
-    return [button convertRect:self.bounds toView:self.window];
+    return [button convertRect:button.bounds toView:self.window];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers
