@@ -14,6 +14,7 @@
 #import "VWebBrowserViewController.h"
 #import "NSURL+VCustomScheme.h"
 #import "VRootViewController.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 static NSString * const kContentViewComponentKey = @"contentView";
 
@@ -112,14 +113,16 @@ static NSString * const kContentViewComponentKey = @"contentView";
     }
     else
     {
-        VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:self.dependencyManager];
+        VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+        VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
         viewController.isLandscapeOrientationSupported = YES;
         viewController.sequence = sequence;
         if ( url != nil )
         {
             [viewController loadUrl:url];
         }
-        return viewController;
+        navigationController.innerNavigationController.viewControllers = @[viewController];
+        return navigationController;
     }
     return nil;
 }
