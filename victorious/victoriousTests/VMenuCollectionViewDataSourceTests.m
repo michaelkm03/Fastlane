@@ -51,8 +51,8 @@ static NSString * const kFooterReuseID = @"SectionFooterView";
     id sectionTwoVC = [OCMockObject niceMockForClass:[UIViewController class]];
     self.collectionViewMock = [OCMockObject niceMockForClass:[UICollectionView class]];
     
-    self.sectionOneItem = [[VNavigationMenuItem alloc] initWithTitle:@"One" identifier:@"One" icon:nil selectedIcon:nil destination:sectionOneVC position:@"left"];
-    self.sectionTwoItem = [[VNavigationMenuItem alloc] initWithTitle:@"Two" identifier:@"Two" icon:nil selectedIcon:nil destination:sectionTwoVC position:@"right"];
+    self.sectionOneItem = [[VNavigationMenuItem alloc] initWithTitle:@"One" identifier:@"One" icon:nil selectedIcon:nil destination:sectionOneVC position:@"left" tintColor:[UIColor redColor]];
+    self.sectionTwoItem = [[VNavigationMenuItem alloc] initWithTitle:@"Two" identifier:@"Two" icon:nil selectedIcon:nil destination:sectionTwoVC position:@"right" tintColor:[UIColor redColor]];
     
     self.menuItemSections = @[
         @[
