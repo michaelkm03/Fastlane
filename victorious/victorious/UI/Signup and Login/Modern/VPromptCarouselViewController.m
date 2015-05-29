@@ -168,6 +168,10 @@ static NSString * const kPromptDurationKey = @"promptDuration";
     [self.timerManager invalidate];
     NSNumber *promptDuration = [self.dependencyManager numberForKey:kPromptDurationKey];
     NSTimeInterval promptInterval = [promptDuration doubleValue] / 1000;
+    if (promptInterval == 0)
+    {
+        return;
+    }
     self.timerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:promptInterval
                                                                       target:self
                                                                     selector:@selector(nextItem)
