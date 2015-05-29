@@ -105,7 +105,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
                     badgeProvider = customBadgeProvider;
                 }
             }
-            [self registerBadgeUpdateBlockWithButton:barButton destination:menuItem.destination source:sourceViewController];
+            [self registerBadgeUpdateBlockWithButton:barButton destination:badgeProvider source:sourceViewController];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;

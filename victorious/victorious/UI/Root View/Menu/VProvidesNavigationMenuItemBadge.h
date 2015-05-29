@@ -24,6 +24,8 @@ typedef void (^VNavigationMenuItemBadgeNumberUpdateBlock)(NSInteger badgeNumber)
  */
 @property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
+@optional
+
 /**
  Returns a number to badge the navigation menu item.
  */
