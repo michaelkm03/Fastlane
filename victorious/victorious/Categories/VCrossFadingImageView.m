@@ -178,10 +178,13 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
     NSNumber *key = @(index);
     //Only need to update the imageViewContainer if it isn't already showing the image
 
-    self.loadedStreamItems[key] = previewStreamItem;
-    NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
-    NSURL *blurredViewURL = [[previewStreamItem previewImageUrl] URLByAppendingPathComponent:@"marqueeView"];
-    [imageViewContainer.imageView blurAndAnimateImageToVisible:image imageURL:blurredViewURL withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
+    if ( ![self.loadedStreamItems[key] isEqual:previewStreamItem] )
+    {
+        self.loadedStreamItems[key] = previewStreamItem;
+        NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
+        NSURL *blurredViewURL = [[previewStreamItem previewImageUrl] URLByAppendingPathComponent:@"marqueeView"];
+        [imageViewContainer.imageView blurAndAnimateImageToVisible:image cacheURL:blurredViewURL withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
+    }
 }
 
 @end
