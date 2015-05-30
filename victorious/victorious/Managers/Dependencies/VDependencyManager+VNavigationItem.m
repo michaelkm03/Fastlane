@@ -97,15 +97,15 @@ static const char kAssociatedObjectSourceViewControllerKey;
             barButton.menuItem = menuItem;
             
             id<VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
+            id<VProvidesNavigationMenuItemBadge> customBadgeProvider = nil;
             id customBadgeSource = [sourceViewController targetForAction:@selector(customBadgeProviderForMenuItem:) withSender:self];
             {
-                id<VProvidesNavigationMenuItemBadge> customBadgeProvider = [customBadgeSource customBadgeProviderForMenuItem:menuItem];
-                if ( customBadgeProvider != nil )
-                {
-                    badgeProvider = customBadgeProvider;
-                }
+                customBadgeProvider = [customBadgeSource customBadgeProviderForMenuItem:menuItem];
             }
-            [self registerBadgeUpdateBlockWithButton:barButton destination:badgeProvider source:sourceViewController];
+            [self registerBadgeUpdateBlockWithButton:barButton
+                                          fromSource:sourceViewController
+                                     withDestination:customBadgeProvider ?: badgeProvider
+                                            isCustom:customBadgeProvider != nil];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
@@ -145,7 +145,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
     [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:shouldAnimate];
 }
 
-- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton destination:(id)destination source:(id)source
+- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton fromSource:(id)source withDestination:(id)destination isCustom:(BOOL)isCustom
 {
     __weak typeof (barButton) weakBarButton = barButton;
     if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
@@ -154,6 +154,14 @@ static const char kAssociatedObjectSourceViewControllerKey;
         VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
         {
             [weakBarButton setBadgeNumber:badgeNumber];
+            if ( [source conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] && !isCustom )
+            {
+                id<VProvidesNavigationMenuItemBadge> sourceBadgeProvider = (id<VProvidesNavigationMenuItemBadge>)source;
+                if ( sourceBadgeProvider.badgeNumberUpdateBlock != nil )
+                {
+                    sourceBadgeProvider.badgeNumberUpdateBlock( badgeNumber );
+                }
+            }
         };
         [badgeProvider setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
         NSInteger badgeNumber = [badgeProvider badgeNumber];

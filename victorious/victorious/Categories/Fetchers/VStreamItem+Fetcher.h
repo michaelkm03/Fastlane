@@ -32,4 +32,11 @@
  */
 - (NSArray *)previewImagePaths;
 
+/**
+ *  Returns The URL of the first valid preview image in self.previewImageObject
+ *
+ *  @return A valid image url
+ */
+- (NSURL *)previewImageUrl;
+
 @end

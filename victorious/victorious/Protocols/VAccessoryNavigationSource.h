@@ -38,6 +38,14 @@
 
 @optional
 
+/**
+ In cases where some kind of custom badging behavior for the navigation menu item is needed, objects
+ can implement this method to provide a custom badge provider.  This custom badge prodiver will be
+ used to generate and update badge values in place of the menu item's `destination`, which is
+ the default provider.  This is most useful for navigation items that do not inherently have a
+ destination (because they have some custom behavior that is overidden), but still want to display
+ a badge to represent something about that custom behavior.
+ */
 - (id<VProvidesNavigationMenuItemBadge>)customBadgeProviderForMenuItem:(VNavigationMenuItem *)menuItem;
 
 /**

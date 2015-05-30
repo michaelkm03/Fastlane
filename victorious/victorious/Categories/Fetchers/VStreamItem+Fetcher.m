@@ -45,4 +45,26 @@ static NSString * const kVStreamContentTypeStream = @"stream";
     }
 }
 
+- (NSURL *)previewImageUrl
+{
+    NSString *previewImageString = nil;
+    if ( [self.previewImagesObject isKindOfClass:[NSString class]] )
+    {
+        previewImageString = self.previewImagesObject;
+    }
+    else if ( [self.previewImagesObject isKindOfClass:[NSArray class]] )
+    {
+        for ( id object in self.previewImagesObject )
+        {
+            if ( [object isKindOfClass:[NSString class]] )
+            {
+                previewImageString = object;
+                break;
+            }
+        }
+    }
+    
+    return [NSURL URLWithString:previewImageString];
+}
+
 @end
