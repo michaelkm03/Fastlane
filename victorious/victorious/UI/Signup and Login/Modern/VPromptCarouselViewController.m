@@ -87,6 +87,16 @@ static NSString * const kPromptDurationKey = @"promptDuration";
     self.view.maskView = self.gradientMaskView;
 }
 
+#pragma mark - Target/Action
+
+- (IBAction)selectedPage:(UIPageControl *)sender
+{
+    [self setupTimer];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:sender.currentPage inSection:0]
+                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                        animated:YES];
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section

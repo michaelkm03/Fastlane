@@ -169,6 +169,9 @@
                             </collectionView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="c88-pr-ZJo">
                                 <rect key="frame" x="281" y="292" width="39" height="37"/>
+                                <connections>
+                                    <action selector="selectedPage:" destination="7eN-Fq-kx7" eventType="valueChanged" id="shZ-9A-WsQ"/>
+                                </connections>
                             </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
