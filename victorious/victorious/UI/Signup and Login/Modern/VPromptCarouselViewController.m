@@ -47,6 +47,13 @@ static NSString * const kPromptDurationKey = @"promptDuration";
     
     _prompts = [dependencyManager arrayForKey:kPromptsKey];
     
+    if (_prompts == nil || _prompts.count == 0)
+    {
+        self.view.hidden = YES;
+        self.collectionView.dataSource = nil;
+        return;
+    }
+    
     [self.collectionView reloadData];
 }
 
