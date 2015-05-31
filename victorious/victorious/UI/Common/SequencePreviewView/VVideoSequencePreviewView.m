@@ -35,6 +35,7 @@
     if (self != nil)
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
@@ -53,6 +54,7 @@
         
         _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
         _videoView.delegate = self;
+
         [self addSubview:_videoView];
         [self v_addFitToParentConstraintsToSubview:_videoView];
     }
