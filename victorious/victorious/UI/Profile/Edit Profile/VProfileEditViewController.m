@@ -133,30 +133,42 @@
  */
 - (BOOL)validateInputs
 {
-    if (self.usernameTextField.text.length)
-    {
-        return YES;
-    }
-    
-    // Identify Which Form Field is Missing
-    NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
-    
     if (!self.usernameTextField.text.length)
     {
+        NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
-    }
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditProfileValidationDidFail parameters:params];
         
-    NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditProfileValidationDidFail parameters:params];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                        message:errorMsg
+                                                       delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+        [alert show];
+        
+        return NO;
+    }
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                                    message:errorMsg
-                                                   delegate:nil
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-    [alert show];
+    // Test only spaces
+    NSString *stringByRemovingSpaces = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (stringByRemovingSpaces.length == 0)
+    {
+        UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"ProfileIncomplete", nil)
+                                                                                 message:NSLocalizedString(@"ProfileNameSpaces", nil)
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction *action)
+                                       {
+                                           [self dismissViewControllerAnimated:YES completion:nil];
+                                       }];
+        [alertcontroller addAction:cancelAction];
+        [self presentViewController:alertcontroller animated:YES completion:nil];
+        return NO;
+    }
     
-    return NO;
+    return YES;
 }
 
 - (IBAction)goBack:(id)sender
