@@ -7,6 +7,8 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.getvictorious.${ProductPrefix}meghanrienks</string>
 	<key>CFBundleURLTypes</key>
+	<string>${ProductPrefix}MeghanRienks</string>
+	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
