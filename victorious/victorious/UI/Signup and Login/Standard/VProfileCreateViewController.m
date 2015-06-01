@@ -355,14 +355,6 @@
 
     if ([self shouldCreateProfile])
     {
-        if (!self.registrationModel.username.length &&
-            !self.registrationModel.profileImageURL &&
-            !self.registrationModel.locationText.length)
-        {
-            [self didCreateProfile];
-            return;
-        }
-        
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
         
         [self performProfileCreationWithRegistrationModel:self.registrationModel];

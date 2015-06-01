@@ -8,7 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
+@class VUser;
+
+/**
+ *  A simple model for passing around values related to 
+ *  registration and updating the user. Should probably 
+ *  be a tuple.
+ */
 @interface VRegistrationModel : NSObject
+
+/**
+ *  Creates a registration model for the passed in user 
+ *  configured with any corresponding properties.
+ */
++ (VRegistrationModel *)registrationModelWithUser:(VUser *)user;
 
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, strong) NSString *password;
