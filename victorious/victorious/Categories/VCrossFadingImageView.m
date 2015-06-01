@@ -13,7 +13,7 @@
 #import "VImageViewContainer.h"
 #import "UIImage+ImageCreation.h"
 #import "VStreamItemPreviewView.h"
-#import "VStreamItem.h"
+#import "VStreamItem+Fetcher.h"
 
 static const NSTimeInterval kFadeAnimationDuration = 0.3f;
 
@@ -176,12 +176,14 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
     VImageViewContainer *imageViewContainer = ((VImageViewContainer *)self.imageViewContainers[index]);
     VStreamItem *previewStreamItem = previewView.streamItem;
     NSNumber *key = @(index);
+    
     //Only need to update the imageViewContainer if it isn't already showing the image
-    if ( ![self.loadedStreamItems[key] isEqual:previewStreamItem] )
+    if ( !([self.loadedStreamItems[key] isEqual:previewStreamItem] && imageViewContainer.imageView.image != nil) )
     {
         self.loadedStreamItems[key] = previewStreamItem;
         NSTimeInterval duration = animated ? kFadeAnimationDuration : 0.0f;
-        [imageViewContainer.imageView blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
+        NSURL *blurredViewURL = [[previewStreamItem previewImageUrl] URLByAppendingPathComponent:@"marqueeView"];
+        [imageViewContainer.imageView blurAndAnimateImageToVisible:image cacheURL:blurredViewURL withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
     }
 }
 

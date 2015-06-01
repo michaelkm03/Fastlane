@@ -434,13 +434,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //If this is the first page, break the relationship to all the old objects.
+        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
         if ( pageType == VPageTypeFirst )
         {
             stream.streamItems = [[NSOrderedSet alloc] init];
+            marqueeItems = [[NSMutableOrderedSet alloc] init];
         }
         
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
-        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
         
         VStream *fullStream = [resultObjects lastObject];
 
@@ -457,7 +458,10 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
-        stream.marqueeItems = marqueeItems;
+        if ( ![marqueeItems isEqualToOrderedSet:stream.marqueeItems] )
+        {
+            stream.marqueeItems = marqueeItems;
+        }
         NSString *streamId = fullResponse[ @"stream_id" ];
         stream.streamId = streamId;
         

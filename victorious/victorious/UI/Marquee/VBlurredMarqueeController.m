@@ -99,8 +99,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         self.loadingPreviewViews = [[NSMutableArray alloc] init];
     }
     
-    [self.collectionView.collectionViewLayout invalidateLayout];
-    
     NSMutableArray *contentNames = [[NSMutableArray alloc] init];
     
     NSInteger marqueeItemsCount = self.stream.marqueeItems.count;
@@ -119,6 +117,15 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     }
     
     [self.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[self labelTextAttributes]];
+    
+    //Set the content offset to a safe value
+    CGFloat maxOffset = (marqueeItemsCount - 1) * CGRectGetWidth(self.collectionView.bounds);
+    CGPoint contentOffset = self.collectionView.contentOffset;
+    contentOffset.x = MIN(maxOffset, contentOffset.x);
+    self.collectionView.contentOffset = contentOffset;
+    
+    //Update the label and background image for the new content offset
+    [self updateFadingViews];
 }
 
 - (void)loadContentForStreamItem:(VStreamItem *)streamItem andUpdateSubviewsAtIndex:(NSUInteger)index
@@ -227,8 +234,13 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         }
     }
     
+    [self updateFadingViews];
+}
+
+- (void)updateFadingViews
+{
     [self.collectionView.collectionViewLayout invalidateLayout];
-    CGPoint point = scrollView.contentOffset;
+    CGPoint point = self.collectionView.contentOffset;
     CGFloat newOffset = point.x / CGRectGetWidth(self.collectionView.bounds);
     self.crossfadingBlurredImageView.offset = newOffset;
     self.crossfadingLabel.offset = newOffset;

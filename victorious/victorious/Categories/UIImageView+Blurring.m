@@ -22,6 +22,8 @@ static const char kAssociatedImageKey;
 static const char kAssociatedURLKey;
 static const char kAssociatedBlurredOriginalImageKey;
 
+static NSString * const kBlurredImageCachePathExtension = @"blurred";
+
 @implementation UIImageView (Blurring)
 
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
@@ -58,7 +60,7 @@ static const char kAssociatedBlurredOriginalImageKey;
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
-         [weakSelf blurAndAnimateImageToVisible:image imageURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration withConcurrentAnimations:nil];
+         [weakSelf blurAndAnimateImageToVisible:image cacheURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration withConcurrentAnimations:nil];
      }];
 }
 
@@ -205,29 +207,28 @@ static const char kAssociatedBlurredOriginalImageKey;
 - (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(void (^)(void))animations
 {
     [self blurAndAnimateImageToVisible:image
-                              imageURL:nil
+                              cacheURL:nil
                          withTintColor:tintColor
                            andDuration:duration
               withConcurrentAnimations:animations];
 }
 
 - (void)blurAndAnimateImageToVisible:(UIImage *)image
-                            imageURL:(NSURL *)urlForImage
+                            cacheURL:(NSURL *)cacheURL
                        withTintColor:(UIColor *)tintColor
                          andDuration:(NSTimeInterval)duration
             withConcurrentAnimations:(void (^)(void))animations
 {
-    NSURL *blurredURL = urlForImage != nil ? [urlForImage URLByAppendingPathComponent:@"blurred"] : nil;
-    NSString *blurredKey = [blurredURL absoluteString];
-    if ( blurredKey != nil )
+    UIImage *cachedBlurredImage = [self cachedBlurredImageForURL:cacheURL];
+    if (cachedBlurredImage !=  nil)
     {
-        UIImage *cachedBlurredImage = [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:blurredKey];
-        if (cachedBlurredImage !=  nil)
+        if ( animations != nil )
         {
-            self.image = cachedBlurredImage;
-            self.alpha = 1.0f;
-            return;
+            animations();
         }
+        self.image = cachedBlurredImage;
+        self.alpha = 1.0f;
+        return;
     }
     
     __weak UIImageView *weakSelf = self;
@@ -257,14 +258,31 @@ static const char kAssociatedBlurredOriginalImageKey;
           }
                           completion:^(BOOL finished)
           {
-              if ( blurredKey != nil )
-              {
-                  [[[SDWebImageManager sharedManager] imageCache] storeImage:blurredImage
-                                                                      forKey:blurredKey];
-              }
+              [weakSelf addBlurredImage:blurredImage toCacheWithURL:cacheURL];
           }];
      }];
+}
+
+- (void)addBlurredImage:(UIImage *)image toCacheWithURL:(NSURL *)imageURL
+{
+    if ( imageURL == nil )
+    {
+        return;
+    }
     
+    [[[SDWebImageManager sharedManager] imageCache] storeImage:image
+                                                        forKey:[[imageURL URLByAppendingPathComponent:kBlurredImageCachePathExtension] absoluteString]];
+}
+
+- (UIImage *)cachedBlurredImageForURL:(NSURL *)cacheURL
+{
+    NSURL *blurredURL = cacheURL != nil ? [cacheURL URLByAppendingPathComponent:kBlurredImageCachePathExtension] : nil;
+    NSString *blurredKey = [blurredURL absoluteString];
+    if ( blurredKey != nil )
+    {
+        return [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:blurredKey];
+    }
+    return nil;
 }
 
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock
