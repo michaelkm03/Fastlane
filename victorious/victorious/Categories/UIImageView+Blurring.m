@@ -258,12 +258,12 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
           }
                           completion:^(BOOL finished)
           {
-              [weakSelf cacheBlurredImage:blurredImage forURL:cacheURL];
+              [weakSelf addBlurredImage:blurredImage toCacheWithURL:cacheURL];
           }];
      }];
 }
 
-- (void)cacheBlurredImage:(UIImage *)image forURL:(NSURL *)imageURL
+- (void)addBlurredImage:(UIImage *)image toCacheWithURL:(NSURL *)imageURL
 {
     if ( imageURL == nil )
     {
