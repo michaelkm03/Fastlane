@@ -62,9 +62,7 @@
 
 - (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController newWithDependencyManager:self.dependencyManager];
-    commentsTable.sequence = sequence;
-    [viewController.navigationController pushViewController:commentsTable animated:YES];
+    [viewController.navigationController pushViewController:[self.dependencyManager commentsContainerWithSequence:sequence] animated:YES];
 }
 
 #pragma mark - User

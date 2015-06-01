@@ -30,6 +30,8 @@
 #import "UIView+AutoLayout.h"
 
 static const CGFloat kNoPreviewBackgroundTransparency = 0.75f;
+static NSString * const kCommentsViewControllerKey = @"commentsScreen";
+static NSString * const kSequenceKey = @"sequence";
 
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
@@ -49,6 +51,7 @@ static const CGFloat kNoPreviewBackgroundTransparency = 0.75f;
 {
     VCommentsContainerViewController *viewController = (VCommentsContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kCommentsContainerStoryboardID];
     viewController.dependencyManager = dependencyManager;
+    viewController.sequence = [dependencyManager templateValueOfType:[VSequence class] forKey:kSequenceKey];
     return viewController;
 }
 
@@ -277,6 +280,18 @@ static const CGFloat kNoPreviewBackgroundTransparency = 0.75f;
              completion(finished);
          }
      }];
+}
+
+@end
+
+#pragma mark -
+
+@implementation VDependencyManager (VCommentsContainerViewController)
+
+- (VCommentsContainerViewController *)commentsContainerWithSequence:(VSequence *)sequence
+{
+    NSParameterAssert(sequence != nil );
+    return [self templateValueOfType:[VCommentsContainerViewController class] forKey:kCommentsViewControllerKey withAddedDependencies:@{ kSequenceKey: sequence }];
 }
 
 @end

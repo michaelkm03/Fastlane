@@ -10,11 +10,20 @@
 
 #import "VAnimation.h"
 
+#import "VDependencyManager.h"
+
 @class VSequence, VDependencyManager;
 
 @interface VCommentsContainerViewController : VKeyboardBarContainerViewController <VAnimation>
+
 @property (nonatomic, strong) VSequence *sequence;
 
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
+@end
+
+#pragma mark -
+
+@interface VDependencyManager (VCommentsContainerViewController)
+
+- (VCommentsContainerViewController *)commentsContainerWithSequence:(VSequence *)sequence;
 
 @end
