@@ -12,7 +12,7 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VLoginRegistrationFlow.h"
-
+#import "VUser.h"
 #import "UIView+AutoLayout.h"
 
 static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationView";
@@ -58,6 +58,7 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
         [viewController setAuthorizedAction:completionActionBlock];
         viewController.profile = [VObjectManager sharedManager].mainUser;
         viewController.registrationModel = [[VRegistrationModel alloc] init];
+        viewController.registrationModel.username = [VObjectManager sharedManager].mainUser.name;
         [presentingViewController presentViewController:viewController animated:YES completion:nil];
         return NO;
     }

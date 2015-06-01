@@ -7,7 +7,20 @@
 //
 
 #import "VRegistrationModel.h"
+#import "VUser.h"
 
 @implementation VRegistrationModel
+
++ (VRegistrationModel *)registrationModelWithUser:(VUser *)user
+{
+    VRegistrationModel *registrationModel = [[self alloc] init];
+    
+    registrationModel.email = user.email;
+    registrationModel.username = user.name;
+    registrationModel.locationText = user.location;
+    registrationModel.profileImageURL = [NSURL URLWithString:user.pictureUrl];
+    
+    return registrationModel;
+}
 
 @end

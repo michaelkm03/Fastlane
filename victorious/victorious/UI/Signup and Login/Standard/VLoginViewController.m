@@ -362,12 +362,13 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    VRegistrationModel *registrationModelForUser = [VRegistrationModel registrationModelWithUser:self.profile];
     if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = VLoginTypeFaceBook;
-        profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+        profileViewController.registrationModel = registrationModelForUser;
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
     }
@@ -378,7 +379,7 @@
         profileViewController.loginType = VLoginTypeTwitter;
         profileViewController.profile = self.profile;
         profileViewController.registrationStepDelegate = self;
-        profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+        profileViewController.registrationModel = registrationModelForUser;
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
@@ -387,6 +388,7 @@
         profileViewController.loginType = VLoginTypeEmail;
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
+        profileViewController.registrationModel = registrationModelForUser;
     }
     else if ([segue.identifier isEqualToString:@"toEmailLogin"])
     {
