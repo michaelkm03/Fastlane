@@ -112,8 +112,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     self.navigationBar.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartRegistration];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -121,6 +119,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [super viewDidAppear:animated];
     
     self.actionsDisabled = NO;
+    
+    if ( self.isBeingPresented )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartRegistration];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
