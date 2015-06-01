@@ -36,7 +36,7 @@
  *  @param animations An block that will be executed while the blurred image is being faded in.
  */
 - (void)blurAndAnimateImageToVisible:(UIImage *)image
-                            imageURL:(NSURL *)urlForImage
+                            cacheURL:(NSURL *)cacheURL
                        withTintColor:(UIColor *)tintColor
                          andDuration:(NSTimeInterval)duration
             withConcurrentAnimations:(void (^)(void))animations;

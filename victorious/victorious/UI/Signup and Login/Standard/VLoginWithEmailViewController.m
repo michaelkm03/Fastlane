@@ -408,12 +408,13 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    VRegistrationModel *registrationModelForUser = [VRegistrationModel registrationModelWithUser:self.profile];
     if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
         profileViewController.loginType = VLoginTypeEmail;
-        profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+        profileViewController.registrationModel = registrationModelForUser;
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.registrationStepDelegate = self;
     }

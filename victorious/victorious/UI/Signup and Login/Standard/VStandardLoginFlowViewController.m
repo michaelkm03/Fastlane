@@ -37,10 +37,14 @@
 {
     [super viewWillAppear:animated];
     
-    VLoginViewController *loginViewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
-    loginViewController.authorizedAction = self.completionBlock;
-    loginViewController.authorizationContextType = self.authorizationContext;
-    self.viewControllers = @[loginViewController];
+    // Only need to setup UI once
+    if (self.viewControllers.count == 0)
+    {
+        VLoginViewController *loginViewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+        loginViewController.authorizedAction = self.completionBlock;
+        loginViewController.authorizationContextType = self.authorizationContext;
+        self.viewControllers = @[loginViewController];
+    }
 }
 
 @end
