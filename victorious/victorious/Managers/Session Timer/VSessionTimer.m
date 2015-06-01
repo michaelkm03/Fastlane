@@ -14,7 +14,7 @@
 #import "VTracking.h"
 #import "VFirstInstallManager.h"
 
-#define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
+#define TEST_NEW_SESSION 1 // Set to '1' to start a new session by leaving the app for only 10 seconds.
 
 NSTimeInterval kVFirstLaunch = DBL_MAX;
 

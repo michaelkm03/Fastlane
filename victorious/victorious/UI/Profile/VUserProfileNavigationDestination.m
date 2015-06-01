@@ -37,6 +37,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _userProfileViewController = nil;
+}
+
 #pragma mark VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -88,8 +93,8 @@
 
 - (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
 {
-    _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
-    self.userProfileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    //_badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    //self.userProfileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end
