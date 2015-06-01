@@ -87,6 +87,7 @@
 "ProfileRequiredTagLine" = "Dein Slogan";
 "ProfileUpdateFailed" = "Profilaktualisierung fehlgeschlagen";
 "Profile load failed!" = "Laden des Profils fehlgeschlagen!";
+"ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
 
 "User already exists" = "Nutzer bereits existiert";
 "Invalid email address or password" = "Ungültige E-Mail-Adresse oder Passwort";

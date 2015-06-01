@@ -87,6 +87,7 @@
 "ProfileRequiredTagLine" = "Tu eslogan";
 "ProfileUpdateFailed" = "Error al actualizar el perfil";
 "Profile load failed!" = "Error al cargar el perfil";
+"ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
 
 "User already exists" = "El usuario ya existe";
 "Invalid email address or password" = "Email o contraseña inválidos";
