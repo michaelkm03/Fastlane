@@ -16,6 +16,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+static const CGFloat kMinimumBlurredImageSize = 50.0;
+
 @interface VStaticUserProfileHeaderViewController ()
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *staticProfileImageView;
@@ -56,9 +58,9 @@
 
 - (void)updateProfileImage
 {
-    // For the blurred background we will use the low-res version
-    NSURL *imageURL = [NSURL URLWithString:self.user.pictureUrl];
-    if ((imageURL == nil) || (imageURL.absoluteString.length == 0) )
+    CGSize minimumSize = CGSizeMake( kMinimumBlurredImageSize, kMinimumBlurredImageSize );
+    NSURL *imageURL = [self getBestAvailableImageForMinimuimSize:minimumSize];
+    if ( imageURL == nil || imageURL.absoluteString.length == 0 )
     {
         
         [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
@@ -66,7 +68,7 @@
                                                       tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
         return;
     }
-    if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
+    else if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
     {
         [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL
                                                    withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
