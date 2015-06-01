@@ -13,6 +13,14 @@ extern NSString * const VTrackingStopKey;
 extern NSString * const VTrackingInitKey;
 extern NSString * const VTrackingInstallKey;
 extern NSString * const VTrackingBallisticCountKey;
+extern NSString * const VTrackingCreateProfileStartKey;
+extern NSString * const VTrackingRegistrationEndKey;
+extern NSString * const VTrackingRegistrationStartKey;
+extern NSString * const VTrackingDoneButtonTapKey;
+extern NSString * const VTrackingRegisteButtonTapKey;
+extern NSString * const VTrackingSignUpButtonTapKey;
+
+extern NSString * const VTrackingBallisticCountKey;
 
 @interface VDependencyManager (VTracking)
 

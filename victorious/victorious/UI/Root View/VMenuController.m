@@ -38,11 +38,7 @@ static char kKVOContext;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VMenuCollectionViewDataSource *collectionViewDataSource;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-#pragma mark properties for VProvidesNavigationMenuItemBadge compliance
-
 @property (nonatomic) NSInteger badgeNumber;
-@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -173,10 +169,19 @@ static char kKVOContext;
             
             if ( self.badgeNumberUpdateBlock != nil )
             {
-                self.badgeNumberUpdateBlock(self.badgeNumber);
+                self.badgeNumberUpdateBlock( self.badgeNumber );
             }
         }
     }
+}
+
+#pragma mark - VProvidesNavigationMenuItemBadge
+
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
+{
+    _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end

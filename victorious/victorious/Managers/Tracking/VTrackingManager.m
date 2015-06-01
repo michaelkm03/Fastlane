@@ -148,6 +148,7 @@
     {
         return;
     }
+    
 #ifndef V_NO_TRACKING_ALERTS
     [self.eventLog logEvent:eventName parameters:parameters];
 #endif

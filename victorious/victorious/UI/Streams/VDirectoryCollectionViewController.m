@@ -154,6 +154,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
 }
 
@@ -171,7 +172,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self.collectionView.collectionViewLayout invalidateLayout];
     
     //Adds the create sequence button if possible. If not called here, the button 
-    [self updateUserPostAllowed];
+    [self updateNavigationItems];
 }
 
 - (BOOL)shouldAutorotate

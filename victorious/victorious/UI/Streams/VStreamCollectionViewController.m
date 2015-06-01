@@ -74,6 +74,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VHashtagSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
@@ -86,7 +87,6 @@ static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 
 NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
-NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 NSString * const VStreamCollectionViewControllerMarqueeComponentKey = @"marqueeCell";
 
@@ -108,7 +108,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
-@property (nonatomic, assign) BOOL canAddContent;
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
@@ -131,6 +130,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    
+    NSDictionary *streamContentAccessory = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"streamContentAccessory"];
+    if ( streamContentAccessory != nil )
+    {
+        NSDictionary *accessoryScreens = @{ @"accessoryScreens" : @[ streamContentAccessory ] };
+        VDependencyManager *childDependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:accessoryScreens];
+        dependencyManager = childDependencyManager;
+    }
     
     NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
 
@@ -184,7 +191,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)sharedInit
 {
-    self.canShowContent = YES;
     self.canShowMarquee = YES;
 }
 
@@ -268,10 +274,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
         [self.marqueeCellController enableTimer];
-    }
-    
-    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
-    [self updateUserPostAllowed];
+    } 
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -280,6 +283,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
+    
+    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
+    [self updateNavigationItems];
+
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
@@ -357,9 +364,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     return isUserPostAllowedByTemplate || isUserPostAllowedByStream;
 }
 
-- (void)updateUserPostAllowed
+- (void)updateNavigationItems
 {
-    [super updateUserPostAllowed];
+    [super updateNavigationItems];
     
     [self addUploadProgressView];
     
@@ -369,33 +376,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
     
-    BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];
-    [self installCreateButtonOnNavigationItem:navigationItem
-                             initiallyVisible:userPostAllowed];
-    
-    navigationItem.rightBarButtonItem.customView.hidden = !userPostAllowed;
+    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
 }
 
-- (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
-                           initiallyVisible:(BOOL)initiallyVisible
+- (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    if (!self.canShowContent)
-    {
-        return;
-    }
-    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
-    UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-    createbutton.frame = CGRectMake(0, 0, VStreamCollectionViewControllerCreateButtonHeight, VStreamCollectionViewControllerCreateButtonHeight);
-    [createbutton setImage:image forState:UIControlStateNormal];
-    [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
-    createbutton.hidden = !initiallyVisible;
-    
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
-    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-    [navigationItem setRightBarButtonItem:barButton animated:NO];
 }
 
-- (void)createSequenceAction:(id)sender
+- (void)createNewPost
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     
@@ -888,6 +876,39 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)hashtagSelected:(NSString *)text
 {
     [self showHashtagStreamWithHashtag:text];
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemCreatePost] )
+    {
+        [self createNewPost];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemCreatePost] )
+    {
+        BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream
+                                         withDependencyManager:self.dependencyManager];
+        return userPostAllowed;
+    }
+    return YES;
+}
+
+- (BOOL)menuItem:(VNavigationMenuItem *)menuItem requiresAuthorizationWithContext:(VAuthorizationContext *)context
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemCreatePost] )
+    {
+        *context = VAuthorizationContextCreatePost;
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - VCoachmarkDisplayer

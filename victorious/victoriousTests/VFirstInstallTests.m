@@ -11,11 +11,10 @@
 #import "VFirstInstallManager.h"
 #import "VObjectManager+Analytics.h"
 #import "NSObject+VMethodSwizzling.h"
-#import "VDummyModels.h"
-#import "VTracking.h"
 
 @interface VFirstInstallTests : XCTestCase
 
+@property (nonatomic, strong) NSArray *trackingURLs;
 @property (nonatomic, strong) VTracking *tracking;
 
 @end
@@ -26,8 +25,7 @@
 {
     [super setUp];
     
-    self.tracking = [VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
-    self.tracking.appInstall = @[ @"url1", @"url2" ];
+    self.trackingURLs = @[ @"url1", @"url2" ];
     
     [VObjectManager setSharedManager:[[VObjectManager alloc] init]];
     
@@ -55,7 +53,7 @@
                                                                                              NSDictionary *parameters)
          {
              NSArray *urls = parameters[ VTrackingKeyUrls ];
-             NSArray *expectedUrls = (NSArray *)self.tracking.appInstall;
+             NSArray *expectedUrls = self.trackingURLs;
              XCTAssertNotNil( urls );
              XCTAssert( [urls isKindOfClass:[NSArray class]] );
              XCTAssertEqual( urls.count, expectedUrls.count );
@@ -67,7 +65,7 @@
          }
                              executeBlock:^void
          {
-             [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:self.tracking.appInstall];
+             [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:self.trackingURLs];
              id defaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
              XCTAssertEqualObjects( defaultsValue, @YES );
              

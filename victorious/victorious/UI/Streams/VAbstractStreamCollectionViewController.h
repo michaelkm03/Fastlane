@@ -63,6 +63,6 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
     Called when a condition that affects UGC permissions may have changed for the stream
         and a the presennce of the create content button should be updated.
  */
-- (void)updateUserPostAllowed;
+- (void)updateNavigationItems;
 
 @end

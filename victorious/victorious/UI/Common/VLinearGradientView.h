@@ -20,8 +20,14 @@
 - (void)setColors:(NSArray *)colors;
 
 /**
- *  An optional arry of NSNumber objects. See CAGradientLayer
+ *  An optional arry of NSNumber objects. See CAGradientLayer.
  */
 @property (nonatomic, copy) NSArray *locations;
+
+/**
+ *  See CAGradientLayer.
+ */
+@property CGPoint startPoint;
+@property CGPoint endPoint;
 
 @end

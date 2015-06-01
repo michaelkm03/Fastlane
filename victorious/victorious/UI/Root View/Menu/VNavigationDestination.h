@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
+
 /**
  Objects (usually but not always UIViewController subclasses) conforming
  to this protocol can be specified as a destination for navigation,
@@ -17,6 +19,8 @@
 @protocol VNavigationDestination <NSObject>
 
 @optional
+
+- (NSInteger)badgeNumber;
 
 /**
  Asks the receiver if it is ready to be navigated to. If the receiver
@@ -33,5 +37,9 @@
  @return YES if all systems are GO for navigation, or NO to cancel navigation.
  */
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController;
+
+@optional
+
+- (VDependencyManager *)dependencyManager;
 
 @end

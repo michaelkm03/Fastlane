@@ -6,10 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-#import "VHasManagedDependencies.h"
-#import "VStreamCellSpecialization.h"
+#import "VStreamItemPreviewView.h"
 
 @class VSequence;
 
@@ -19,7 +16,17 @@
  *  VStreamCellComponentSpecialization and should be reused for sequences that return the same reuse
  *  identifier from: "reuseIdentifierForSequence:baseIdentifier:".
  */
-@interface VSequencePreviewView : UIView <VHasManagedDependencies, VStreamCellComponentSpecialization>
+@interface VSequencePreviewView : VStreamItemPreviewView
+
+/**
+ *  Returns a sequence preview view class for the provided sequence.
+ */
++ (Class)classTypeForSequence:(VSequence *)sequence;
+
+/**
+ *  Returns an appropriate reuse identifier for the provided sequence and base identifier.
+ */
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier;
 
 /**
  *  The factory method for the VSequencePreviewView, will provide a concrete subclass specialized to
@@ -33,7 +40,7 @@
 - (void)setSequence:(VSequence *)sequence;
 
 /**
- *  Returns YES if this instance of VSequencePreviewView canhandle the given seuqence.
+ *  Returns YES if this instance of VSequencePreviewView can handle the given sequence.
  */
 - (BOOL)canHandleSequence:(VSequence *)sequence;
 

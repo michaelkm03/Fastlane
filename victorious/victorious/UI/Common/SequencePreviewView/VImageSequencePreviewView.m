@@ -18,7 +18,6 @@
 @interface VImageSequencePreviewView ()
 
 @property (nonatomic, strong) UIImageView *previewImageView;
-@property (nonatomic, strong) VSequence *sequence;
 
 @end
 
@@ -32,6 +31,7 @@
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _previewImageView.clipsToBounds = YES;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
     }
@@ -42,9 +42,14 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
     
-    [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL];
+    [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
+                           placeholderImage:nil
+                                 completion:^(UIImage *image)
+     {
+         self.readyForDisplay = YES;
+     }];
 }
 
 @end
