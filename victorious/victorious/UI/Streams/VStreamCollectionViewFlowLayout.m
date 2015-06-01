@@ -8,6 +8,8 @@
 
 #import "VStreamCollectionViewFlowLayout.h"
 
+static const CGFloat kHeaderFadeoutDistance = 20.0f;
+
 @interface VStreamCollectionViewFlowLayout ()
 
 @property (nonatomic, strong) VAbstractMarqueeController *marqueeController;
@@ -40,13 +42,21 @@
     NSArray *attributes = [super layoutAttributesForElementsInRect:rect];
     for (UICollectionViewLayoutAttributes *layoutAttributes in attributes)
     {
-        if (self.collectionViewDataSource.hasHeaderCell && layoutAttributes.indexPath.section == 0)
+        if (self.collectionViewDataSource.hasHeaderCell && layoutAttributes.indexPath.section == 0 && self.marqueeParallaxRatio < 1.0f)
         {
             CGRect headerFrame = layoutAttributes.frame;
             CGPoint contentOffset = self.collectionView.contentOffset;
-            if (contentOffset.y > 0 && self.marqueeParallaxRatio < 1.0f)
+            if (contentOffset.y > 0)
             {
+                // Offset the frame of the header to create parallax effect
                 headerFrame.origin.y += contentOffset.y * self.marqueeParallaxRatio;
+                
+                // Adjust alpha to create smooth fade out of header if its still visible behind cells
+                if (contentOffset.y > headerFrame.size.height - kHeaderFadeoutDistance)
+                {
+                    CGFloat newAlpha = 1 - (contentOffset.y - headerFrame.size.height) / (headerFrame.size.height - kHeaderFadeoutDistance);
+                    layoutAttributes.alpha = newAlpha;
+                }
             }
             
             layoutAttributes.frame = headerFrame;
