@@ -22,7 +22,7 @@
 #import "VLoginFlowControllerResponder.h"
 
 static NSString * const kPromptKey = @"prompt";
-static NSString *kKeyboardStyleKey = @"keyboardStyle";
+static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VModernRegisterViewController () <UITextFieldDelegate, VBackgroundContainer>
 
