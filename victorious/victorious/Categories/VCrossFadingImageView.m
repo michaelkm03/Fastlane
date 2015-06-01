@@ -176,8 +176,8 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
     VImageViewContainer *imageViewContainer = ((VImageViewContainer *)self.imageViewContainers[index]);
     VStreamItem *previewStreamItem = previewView.streamItem;
     NSNumber *key = @(index);
+    
     //Only need to update the imageViewContainer if it isn't already showing the image
-
     if ( ![self.loadedStreamItems[key] isEqual:previewStreamItem] )
     {
         self.loadedStreamItems[key] = previewStreamItem;
