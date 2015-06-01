@@ -59,6 +59,11 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
+ Returns YES if a FTUE video has already been displayed
+ */
+- (BOOL)hasShownFirstTimeUserExperience;
+
+/**
  Initializes the receiver with a nib name and an instance of VDependencyManager
  */
 //- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName NS_DESIGNATED_INITIALIZER;

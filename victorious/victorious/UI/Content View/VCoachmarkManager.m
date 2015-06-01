@@ -10,6 +10,7 @@
 #import "VCoachmark.h"
 #import "VCoachmarkView.h"
 #import "VDependencyManager+VScaffoldViewController.h"
+#import "VScaffoldViewController.h"
 #import "VCoachmarkDisplayResponder.h"
 #import "VNavigationController.h"
 #import "UIViewController+VLayoutInsets.h"
@@ -56,6 +57,12 @@ static const CGFloat kAnimationDelay = 1.0f;
 
 - (BOOL)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController
 {
+    if ( ![[self.dependencyManager scaffoldViewController] hasShownFirstTimeUserExperience] )
+    {
+        //We haven't yet shown a FTUE video, don't try to display a coachmark yet.
+        return NO;
+    }
+    
     NSString *identifier = [viewController screenIdentifier];
     NSMutableArray *validTooltips = [[NSMutableArray alloc] init];
     CGFloat width = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
