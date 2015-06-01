@@ -35,6 +35,7 @@
     if (self != nil)
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
