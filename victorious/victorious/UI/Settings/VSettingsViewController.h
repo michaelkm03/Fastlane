@@ -10,7 +10,7 @@
 
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
-#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 @interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination, VAccessoryNavigationSource>
 
