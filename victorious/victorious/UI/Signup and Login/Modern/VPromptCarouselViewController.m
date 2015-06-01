@@ -36,11 +36,23 @@ static NSString * const kPromptDurationKey = @"promptDuration";
 
 @implementation VPromptCarouselViewController
 
+- (void)dealloc
+{
+    _collectionView.delegate = nil;
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
     
     _prompts = [dependencyManager arrayForKey:kPromptsKey];
+    
+    if (_prompts == nil || _prompts.count == 0)
+    {
+        self.view.hidden = YES;
+        self.collectionView.dataSource = nil;
+        return;
+    }
     
     [self.collectionView reloadData];
 }
@@ -80,6 +92,16 @@ static NSString * const kPromptDurationKey = @"promptDuration";
     self.gradientMaskView.startPoint = CGPointMake(0, 0.5f);
     self.gradientMaskView.endPoint = CGPointMake(1, 0.5f);
     self.view.maskView = self.gradientMaskView;
+}
+
+#pragma mark - Target/Action
+
+- (IBAction)selectedPage:(UIPageControl *)sender
+{
+    [self setupTimer];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:sender.currentPage inSection:0]
+                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                        animated:YES];
 }
 
 #pragma mark - UICollectionViewDataSource
