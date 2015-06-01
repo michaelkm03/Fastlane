@@ -34,6 +34,10 @@
 
 - (void)applyStyle;
 
+/**
+ Searches both the preview assets and picture URL properties of the user profile
+ in order to find the best available image for the minimum size provided.
+ */
 - (NSURL *)getBestAvailableImageForMinimuimSize:(CGSize)minimumSize;
 
 @end
