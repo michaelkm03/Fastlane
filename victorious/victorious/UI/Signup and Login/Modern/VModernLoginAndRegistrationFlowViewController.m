@@ -127,7 +127,10 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 {
     [super viewDidDisappear:animated];
     
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishRegistration];
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishRegistration];
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -195,6 +198,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     {
         return;
     }
+        
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
     
     [self pushViewController:[self.loginScreens firstObject]
                     animated:YES];

@@ -132,6 +132,8 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             {
                 errorBlock(error, NO);
             }
+            
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
         };
         [[VObjectManager sharedManager] createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                    SuccessBlock:success
