@@ -63,6 +63,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     {
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
+        _coachmarkManager.allowCoachmarks = [self hasShownFirstTimeUserExperience];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
     }
@@ -120,6 +121,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
             {
                 //Finished presenting the FTUE VC, save that we showed the first time user experience.
                 [firstTimeInstallHelper savePlaybackDefaults];
+                self.coachmarkManager.allowCoachmarks = YES;
             }];
             [self trackFirstTimeContentView];
             return YES;
@@ -129,6 +131,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
             //Didn't have a valid FTUE VC to show, but we wanted to show it,
             //so we should save that we tried to show it as to not try again.
             [firstTimeInstallHelper savePlaybackDefaults];
+            self.coachmarkManager.allowCoachmarks = YES;
         }
     }
     
