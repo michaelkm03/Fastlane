@@ -14,7 +14,7 @@
 
 @class VSequence, VDependencyManager;
 
-@interface VCommentsContainerViewController : VKeyboardBarContainerViewController <VAnimation, VHasManagedDependencies>
+@interface VCommentsContainerViewController : VKeyboardBarContainerViewController <VAnimation>
 
 @property (nonatomic, readonly) VSequence *sequence;
 
