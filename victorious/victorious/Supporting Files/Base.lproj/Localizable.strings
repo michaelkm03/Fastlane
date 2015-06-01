@@ -82,6 +82,7 @@
 "ProfileAborted"        =   "You will be unable to use some features until your profile has been completed.";
 "ProfileRequired"       =   "Please provide the following:";
 "ProfileRequiredPhoto"  =   "Profile image";
+"ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
 "ProfileRequiredName"   =   "Name";
 "ProfileRequiredToS"    =   "Agree to our terms";
 "ProfileRequiredTagLine"=   "Your tagline";
