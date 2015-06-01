@@ -34,4 +34,6 @@
 
 - (void)applyStyle;
 
+- (NSURL *)getBestAvailableImageForMinimuimSize:(CGSize)minimumSize;
+
 @end
