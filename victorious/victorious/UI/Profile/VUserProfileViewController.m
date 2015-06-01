@@ -59,7 +59,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) NSNumber *remoteId;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
-@property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
 @property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;

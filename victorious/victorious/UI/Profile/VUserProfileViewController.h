@@ -15,7 +15,7 @@
 
 @interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge>
 
-@property (nonatomic, readonly) VUser *user;
+@property (nonatomic, strong) VUser *user;
 
 /**
  *  While this property is YES, the viewController will listen for

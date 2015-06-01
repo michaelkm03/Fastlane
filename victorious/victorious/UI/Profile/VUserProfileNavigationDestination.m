@@ -58,6 +58,7 @@
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
+    self.userProfileViewController.user = self.objectManager.mainUser;
     if ( [self.userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
     {
         [self.userProfileViewController setDependencyManager:self.dependencyManager];
