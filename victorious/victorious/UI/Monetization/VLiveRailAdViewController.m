@@ -12,8 +12,8 @@
 #import "VAdBreak.h"
 #import "VSequence.h"
 
-static const NSString *kLiveRailPublisherIDKey = @"LR_PUBLISHER_ID";
-static const NSString *kLiveRailSequenceIDKey = @"LR_VIDEO_AMID";
+static NSString * const kLiveRailPublisherIDKey = @"LR_PUBLISHER_ID";
+static NSString * const kLiveRailSequenceIDKey = @"LR_VIDEO_AMID";
 
 #define EnableLiveRailLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
@@ -93,12 +93,7 @@ static const NSString *kLiveRailSequenceIDKey = @"LR_VIDEO_AMID";
 
 - (NSString *)sequenceID
 {
-    if (_sequenceID == nil)
-    {
-        return @"";
-    }
-    
-    return _sequenceID;
+    return _sequenceID ?: @"";
 }
 
 #pragma mark - Ad Methods
