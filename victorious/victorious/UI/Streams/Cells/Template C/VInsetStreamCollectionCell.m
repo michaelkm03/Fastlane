@@ -417,7 +417,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         commentSize = [[self stringForCommentTextWithSequence:sequence] frameSizeForWidth:textAreaWidth
                                                                             andAttributes:[self sequenceCommentCountAttributesWithDependencyManager:dependencyManager]];
     }
-    sizeWithText.height = sizeWithText.height + commentSize.height;
+    sizeWithText.height += VCEIL(commentSize.height);
     if (sequence.name.length > 0)
     {
         if ( hasCommentString )
@@ -429,11 +429,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         // Caption view size
         CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
                                                 andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        sizeWithText.height += captionSize.height;
+        sizeWithText.height += VCEIL(captionSize.height);
     }
     
     // Bottom Margins
-    sizeWithText.height = sizeWithText.height + kTextMargins.bottom;
+    sizeWithText.height += kTextMargins.bottom;
     [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
                              forKey:sequence.remoteId];
     return sizeWithText;
