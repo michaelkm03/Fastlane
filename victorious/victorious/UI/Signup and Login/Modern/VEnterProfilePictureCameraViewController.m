@@ -28,7 +28,6 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak) UIViewController *viewControllerCameraPresentedFrom;
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
 @property (nonatomic, weak) IBOutlet UIButton *avatarButton;
 @property (nonatomic, weak) IBOutlet UIButton *addProfilePictureButton;
@@ -109,8 +108,8 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 
 - (void)userPressedDone
 {
-    id <VLoginFlowControllerResponder> flowController = [self.viewControllerCameraPresentedFrom targetForAction:@selector(continueRegistrationFlow)
-                                                                                                     withSender:self];
+    id <VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(continueRegistrationFlow)
+                                                                   withSender:self];
     if (flowController == nil)
     {
         NSAssert(false, @"We need a flow controller for finishing profile creation.");
@@ -130,16 +129,18 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
        finishedWithPreviewImage:(UIImage *)previewImage
                capturedMediaURL:(NSURL *)capturedMediaURL
 {
-    id <VLoginFlowControllerResponder> flowController = [self.viewControllerCameraPresentedFrom targetForAction:@selector(setProfilePictureFilePath:)
-                                                                                                     withSender:self];
-    if (flowController == nil)
-    {
-        NSAssert(false, @"We need a flow controller for setting the profile picture!");
-    }
-    [flowController setProfilePictureFilePath:capturedMediaURL];
-    [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
     [self dismissViewControllerAnimated:YES
-                             completion:nil];
+                             completion:^
+     {
+         id <VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(setProfilePictureFilePath:)
+                                                                        withSender:self];
+         if (flowController == nil)
+         {
+             NSAssert(false, @"We need a flow controller for setting the profile picture!");
+         }
+         [flowController setProfilePictureFilePath:capturedMediaURL];
+         [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
+     }];
 }
 
 - (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
@@ -156,7 +157,6 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
     VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;
-    self.viewControllerCameraPresentedFrom = viewController;
     [viewController presentViewController:workspaceFlowController.flowRootViewController
                                  animated:YES
                                completion:nil];
