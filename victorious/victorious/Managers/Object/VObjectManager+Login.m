@@ -22,6 +22,9 @@
 #import "NSDictionary+VJSONLogging.h"
 #import "VStoredLogin.h"
 #import "VLoginType.h"
+#import "VImageAsset+Fetcher.h"
+
+@import CoreData;
 
 @implementation VObjectManager (Login)
 
@@ -320,10 +323,20 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
         if (profileImageURL)
         {
+            NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+            
+            NSManagedObjectContext *context =user.managedObjectContext;
+            NSEntityDescription *description = [NSEntityDescription entityForName:[VImageAsset entityName] inManagedObjectContext:context];
+            VImageAsset *imageAsset = [[VImageAsset alloc] initWithEntity:description insertIntoManagedObjectContext:context];
+            imageAsset.imageURL = profileImageURL.absoluteString;
+            imageAsset.isLocal = @(YES);
+            
+            [user addPreviewAssetsObject:imageAsset];
             user.pictureUrl = profileImageURL.absoluteString;
-            user.previewAssets = [NSSet set];
         }
         [user.managedObjectContext save:nil];
+        
+        NSLog( @"Assets: %@", user.previewAssets.allObjects );
         
         if (success)
         {
