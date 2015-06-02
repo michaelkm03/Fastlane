@@ -12,6 +12,9 @@
 #import "VAdBreak.h"
 #import "VSequence.h"
 
+static const NSString *kLiveRailPublisherIDKey = @"LR_PUBLISHER_ID";
+static const NSString *kLiveRailSequenceIDKey = @"LR_VIDEO_AMID";
+
 #define EnableLiveRailLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
 @interface VLiveRailAdViewController ()
@@ -85,7 +88,7 @@
 - (void)setPubID:(NSString *)pubID
 {
     _pubID = pubID;
-    [self.adManager initAd:@{@"LR_PUBLISHER_ID":self.pubID, @"LR_VIDEO_AMID":self.sequenceID}];
+    [self.adManager initAd:@{kLiveRailPublisherIDKey:self.pubID, kLiveRailSequenceIDKey:self.sequenceID}];
 }
 
 - (NSString *)sequenceID
