@@ -25,7 +25,7 @@ static const CGFloat kThresholdPercent = 0.25f;
 @property (nonatomic) CGFloat offset;
 @property (nonatomic) CGFloat navigationBarHeight;
 @property (nonatomic) CGFloat translation;
-@property (nonatomic) BOOL scrollDidEnd;
+@property (nonatomic) BOOL dragging; ///< In order to keep track of whether the user flicked outside of the catch offset
 
 @end
 
@@ -51,7 +51,8 @@ static const CGFloat kThresholdPercent = 0.25f;
         self.translation = [self translationWithNewContentOffset:[self adjustedContentOffset:scrollView.contentOffset]];
         [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, self.translation)];
         
-        if (fabsf(self.translation) >= self.navigationBarHeight && self.scrollDidEnd)
+        // If user has released their finger and nav bar has scrolled off screen, set it to hidden and return state to default
+        if (fabs(self.translation) >= self.navigationBarHeight && !self.dragging)
         {
             [self.navigationController setNavigationBarHidden:YES];
             [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
@@ -70,7 +71,8 @@ static const CGFloat kThresholdPercent = 0.25f;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    self.scrollDidEnd = NO;
+    self.dragging = YES;
+    
     if ( self.navigationController.innerNavigationController.navigationBarHidden )
     {
         self.state = VNavigationControllerScrollDelegateStateShowing;
@@ -112,41 +114,45 @@ static const CGFloat kThresholdPercent = 0.25f;
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    self.scrollDidEnd = YES;
+    self.dragging = NO;
+    
     CGFloat const translation = [self translationWithNewContentOffset:[self adjustedContentOffset:*targetContentOffset]];
     
     switch (self.state)
     {
         case VNavigationControllerScrollDelegateStateHiding:
+            
             // Only adjust nav bar on release if we're outside of the catch offset
-            if (scrollView.contentOffset.y >= self.catchOffset)
+            if (scrollView.contentOffset.y < self.catchOffset)
             {
-                if ( ABS(translation) >= self.navigationBarHeight * kThresholdPercent )
-                {
-                    [UIView animateWithDuration:[self timeIntervalWithVelocity:velocity.y distance:(self.navigationBarHeight - ABS(self.translation))]
-                                          delay:0
-                                        options:UIViewAnimationOptionCurveLinear
-                                     animations:^(void)
-                     {
-                         [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
-                     }
-                                     completion:^(BOOL finished)
-                     {
-                         [self.navigationController setNavigationBarHidden:YES];
-                         [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                     }];
-                }
-                else
-                {
-                    [UIView animateWithDuration:kAnimationDuration
-                                          delay:0
-                                        options:UIViewAnimationOptionCurveEaseOut
-                                     animations:^(void)
-                     {
-                         [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                     }
-                                     completion:nil];
-                }
+                return;
+            }
+            
+            if ( ABS(translation) >= self.navigationBarHeight * kThresholdPercent )
+            {
+                [UIView animateWithDuration:[self timeIntervalWithVelocity:velocity.y distance:(self.navigationBarHeight - ABS(self.translation))]
+                                      delay:0
+                                    options:UIViewAnimationOptionCurveLinear
+                                 animations:^(void)
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
+                 }
+                                 completion:^(BOOL finished)
+                 {
+                     [self.navigationController setNavigationBarHidden:YES];
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                 }];
+            }
+            else
+            {
+                [UIView animateWithDuration:kAnimationDuration
+                                      delay:0
+                                    options:UIViewAnimationOptionCurveEaseOut
+                                 animations:^(void)
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                 }
+                                 completion:nil];
             }
             
             break;
@@ -184,16 +190,37 @@ static const CGFloat kThresholdPercent = 0.25f;
             break;
     }
     
-    // Only set inactive state if we're outside the catch offset so that nav bar can scroll with the scroll view
-    if (scrollView.contentOffset.y >= self.catchOffset)
-    {
-        self.state = VNavigationControllerScrollDelegateStateInactive;
-    }
+    self.state = VNavigationControllerScrollDelegateStateInactive;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    // TODO: Adjust nav bar if we end in between states
+    if (self.catchOffset == 0)
+    {
+        return;
+    }
+    
+    // Hide nav bar if it gets stuck in the middle after flick
+    CGRect navBarFrame = self.navigationController.innerNavigationController.navigationBar.frame;
+    BOOL semiOffscreen = CGRectGetMaxY(navBarFrame) > 0 && CGRectGetMaxY(navBarFrame) < self.navigationBarHeight;
+    
+    if (!self.navigationController.innerNavigationController.navigationBarHidden && scrollView.contentOffset.y > self.catchOffset && semiOffscreen)
+    {
+        [UIView animateWithDuration:kAnimationDuration
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^(void)
+         {
+             [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, - (self.navigationBarHeight - CGRectGetMaxY(navBarFrame)))];
+         }
+                         completion:^(BOOL finished)
+         {
+             [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+             [self.navigationController setNavigationBarHidden:YES];
+         }];
+        
+        self.state = VNavigationControllerScrollDelegateStateInactive;
+    }
 }
 
 - (CGPoint)adjustedContentOffset:(CGPoint)offset
