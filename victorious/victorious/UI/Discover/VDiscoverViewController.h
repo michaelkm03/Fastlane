@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VMultipleContainer.h"
 
 @class VDependencyManager;
 
@@ -18,7 +17,7 @@ enum
     VDiscoverViewControllerSectionsCount
 };
 
-@interface VDiscoverViewController : UITableViewController <VMultipleContainerChild>
+@interface VDiscoverViewController : UITableViewController
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 

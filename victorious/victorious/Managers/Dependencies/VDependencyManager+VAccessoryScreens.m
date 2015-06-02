@@ -42,12 +42,6 @@ NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory Mo
 
 static const char kAssociatedObjectSourceViewControllerKey;
 
-@interface VDependencyManager()
-
-@property (nonatomic, strong) VDependencyManager *parentManager;
-
-@end
-
 @implementation VDependencyManager (VAccessoryScreens)
 
 - (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
