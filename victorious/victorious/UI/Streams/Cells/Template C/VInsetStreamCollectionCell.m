@@ -114,7 +114,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     _captionTextView.scrollEnabled = NO;
     _captionTextView.editable = NO;
     _captionTextView.textContainerInset = UIEdgeInsetsZero;
-    _captionTextView.textContainer.lineFragmentPadding = 0.0f;
     _captionTextView.linkDelegate = self;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_captionTextView];
