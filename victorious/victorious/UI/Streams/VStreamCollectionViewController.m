@@ -12,7 +12,7 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
-#import "VStreamCollectionViewFlowLayout.h"
+#import "VStreamCollectionViewParallaxFlowLayout.h"
 
 //Controllers
 #import "VAlertController.h"
@@ -244,8 +244,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.streamDataSource.collectionView = self.collectionView;
     
     // Setup custom flow layout for parallax
-    VStreamCollectionViewFlowLayout *flowLayout = [[VStreamCollectionViewFlowLayout alloc] initWithMarqueeController:self.marqueeCellController
-                                                                                                          dataSource:self.streamDataSource];
+    VStreamCollectionViewParallaxFlowLayout *flowLayout = [[VStreamCollectionViewParallaxFlowLayout alloc] initWithStreamDataSource:self.streamDataSource];
     flowLayout.marqueeParallaxRatio = VStreamMarqueeParallaxRatio;
     self.collectionView.collectionViewLayout = flowLayout;
     

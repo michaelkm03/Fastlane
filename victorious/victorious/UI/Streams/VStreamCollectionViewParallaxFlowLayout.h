@@ -13,7 +13,7 @@
 /**
  A collection view flow layout that allows for a parallax effect on the header cell
  */
-@interface VStreamCollectionViewFlowLayout : UICollectionViewFlowLayout
+@interface VStreamCollectionViewParallaxFlowLayout : UICollectionViewFlowLayout
 
 /**
  How much parallax effect you want. A value of 0.5 will cause the header cell to scroll
@@ -21,7 +21,6 @@
  */
 @property (nonatomic, assign) CGFloat marqueeParallaxRatio;
 
-- (instancetype)initWithMarqueeController:(VAbstractMarqueeController *)marqueeController
-                               dataSource:(VStreamCollectionViewDataSource *)dataSource;
+- (instancetype)initWithStreamDataSource:(VStreamCollectionViewDataSource *)dataSource;
 
 @end

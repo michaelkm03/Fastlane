@@ -6,26 +6,23 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamCollectionViewFlowLayout.h"
+#import "VStreamCollectionViewParallaxFlowLayout.h"
 
-static const CGFloat kHeaderFadeoutDistance = 20.0f;
+static const CGFloat kHeaderFadeoutBuffer = 20.0f;
 
-@interface VStreamCollectionViewFlowLayout ()
+@interface VStreamCollectionViewParallaxFlowLayout ()
 
-@property (nonatomic, strong) VAbstractMarqueeController *marqueeController;
 @property (nonatomic, strong) VStreamCollectionViewDataSource *collectionViewDataSource;
 
 @end
 
-@implementation VStreamCollectionViewFlowLayout
+@implementation VStreamCollectionViewParallaxFlowLayout
 
-- (instancetype)initWithMarqueeController:(VAbstractMarqueeController *)marqueeController
-                               dataSource:(VStreamCollectionViewDataSource *)dataSource
+- (instancetype)initWithStreamDataSource:(VStreamCollectionViewDataSource *)dataSource
 {
     self = [super init];
     if (self != nil)
     {
-        _marqueeController = marqueeController;
         _collectionViewDataSource = dataSource;
         _marqueeParallaxRatio = 1.0f;
     }
@@ -34,7 +31,7 @@ static const CGFloat kHeaderFadeoutDistance = 20.0f;
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    return self.collectionViewDataSource.hasHeaderCell;
+    return YES;
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
@@ -52,9 +49,9 @@ static const CGFloat kHeaderFadeoutDistance = 20.0f;
                 headerFrame.origin.y += contentOffset.y * self.marqueeParallaxRatio;
                 
                 // Adjust alpha to create smooth fade out of header if its still visible behind cells
-                if (contentOffset.y > headerFrame.size.height - kHeaderFadeoutDistance)
+                if (contentOffset.y > headerFrame.size.height - kHeaderFadeoutBuffer)
                 {
-                    CGFloat newAlpha = 1 - (contentOffset.y - headerFrame.size.height) / (headerFrame.size.height - kHeaderFadeoutDistance);
+                    CGFloat newAlpha = 1 - (contentOffset.y - headerFrame.size.height) / (headerFrame.size.height - kHeaderFadeoutBuffer);
                     layoutAttributes.alpha = newAlpha;
                 }
             }

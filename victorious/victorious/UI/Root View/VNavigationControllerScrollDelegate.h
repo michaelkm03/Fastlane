@@ -37,5 +37,6 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset; ///< This method promises not to modify targetContentOffset. If you would like to modify it, do so before calling this method.
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
 
 @end
