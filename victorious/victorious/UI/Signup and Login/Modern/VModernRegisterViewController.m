@@ -21,7 +21,8 @@
 #import "VBackgroundContainer.h"
 #import "VLoginFlowControllerResponder.h"
 
-static NSString *kKeyboardStyleKey = @"keyboardStyle";
+static NSString * const kPromptKey = @"prompt";
+static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VModernRegisterViewController () <UITextFieldDelegate, VBackgroundContainer>
 
@@ -80,8 +81,11 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                  name:UITextFieldTextDidChangeNotification
                                                object:self.passwordField];
     
+    NSString *prompt = [self.dependencyManager stringForKey:kPromptKey];
+    self.promptTextView.text = NSLocalizedString(prompt, nil);
     self.promptTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.promptTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.promptTextView.textAlignment = NSTextAlignmentCenter;
     
     NSDictionary *textFieldAttributes = @{
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
