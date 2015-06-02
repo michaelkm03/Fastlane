@@ -156,21 +156,17 @@ static NSString * const kTestingFileUrl = @"http://www.google.com/";
     NSString *savePath = [NSString stringWithFormat:@"%@/testself.files/singleself.file.html", kTestingPathRoot];
     [self writeFileSynchronousWithSavePath:savePath];
     
-    __block NSData *fileData = nil;
+    XCTestExpectation *expectation = [self expectationWithDescription:@"fileWriteExpectation"];
     BOOL result = [self.fileCache getCachedFileForSavePath:savePath completeCallback:^(NSData *data) {
-        fileData = data;
-    }];
-    XCTAssert( result );
-    
-    // If this fails occasionally, check your network settings or adjust the wait duration
-    [self.asyncHelper waitForSignal:10.0f withSignalBlock:^BOOL{
-        BOOL didFileLoad = fileData != nil;
+        BOOL didFileLoad = data != nil;
         if ( didFileLoad )
         {
-            XCTAssert( [fileData isKindOfClass:[NSData class]] );
+            XCTAssert( [data isKindOfClass:[NSData class]] );
         }
-        return didFileLoad;
+        [expectation fulfill];
     }];
+    [self waitForExpectationsWithTimeout:10.0f handler:nil];
+    XCTAssert( result );
 }
 
 - (void)testGetFileAsynchronousInvalidInput
