@@ -51,6 +51,24 @@
 "NumStreams"            =   "%@ STREAMS";
 "NumItems"              =   "%@ ITEMS";
 
+"Keep up to date with users and hashtags you're following here" = "Keep up to date with users and hashtags you're following here";
+"View content from users and hashtags you're following here" = "View content from users and hashtags you're following here";
+"Tap here to view posts from the entire community" = "Tap here to view posts from the entire community";
+"Tap here to view posts from other fans" = "Tap here to view posts from other fans";
+"View posts from the entire community here" = "View posts from the entire community here";
+"View posts from other fans here" = "View posts from other fans here";
+"Tap here to watch my exclusive videos" = "Tap here to watch my exclusive videos";
+"Tap here to watch exclusive videos" = "Tap here to watch exclusive videos";
+"Tap here to watch my videos" = "Tap here to watch my videos";
+"Tap here to watch videos" = "Tap here to watch videos";
+"Watch my exclusive videos here" = "Watch my exclusive videos here";
+"Watch exclusive videos here" = "Watch exclusive videos here";
+"Watch my videos here" = "Watch my videos here";
+"Watch videos here" = "Watch videos here";
+"Tap here to create your first post" = "Tap here to create your first post";
+"Tap here to create a post" = "Tap here to create a post";
+"Tap here and create a post now!" = "Tap here and create a post now!";
+
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
