@@ -344,6 +344,35 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)loadUserWithRemoteId:(NSNumber *)remoteId
 {
+    self.remoteId = remoteId;
+    if ( self.retryHUD == nil )
+    {
+        self.retryHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.defaultMBProgressHUDMargin = self.retryHUD.margin;
+    }
+    else
+    {
+        self.retryHUD.margin = self.defaultMBProgressHUDMargin;
+        self.retryHUD.mode = MBProgressHUDModeIndeterminate;
+    }
+    
+    [[VObjectManager sharedManager] fetchUser:self.remoteId
+                             withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self.retryHUD hide:YES];
+         [self.retryProfileLoadButton removeFromSuperview];
+         self.retryHUD = nil;
+         self.user = [resultObjects lastObject];
+     }
+                                    failBlock:^(NSOperation *operation, NSError *error)
+     {
+         //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
+         self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
+         self.retryHUD.mode = MBProgressHUDModeCustomView;
+         self.retryHUD.customView = self.retryProfileLoadButton;
+         self.retryHUD.margin = 0.0f;
+         [self.retryProfileLoadButton setUserInteractionEnabled:YES];
+     }];
 }
 
 - (void)retryProfileLoad
@@ -399,6 +428,32 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)refreshWithCompletion:(void (^)(void))completionBlock
 {
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    {
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+        return;
+    }
+    else
+    {
+        if ( self.user != nil )
+        {
+            void (^fullCompletionBlock)(void) = ^void(void)
+            {
+                if (self.streamDataSource.count)
+                {
+                    [self shrinkHeaderAnimated:YES];
+                }
+                if ( completionBlock != nil )
+                {
+                    completionBlock();
+                }
+            };
+            [super refreshWithCompletion:fullCompletionBlock];
+        }
+    }
 }
 
 - (void)toggleFollowUser
