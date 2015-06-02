@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Sharif Ahmed on 4/22/15.
+//  Created by Sharif Ahmed on 6/2/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
@@ -10,6 +10,7 @@
 #import "VAdBreak.h"
 #import "VComment.h"
 #import "VEndCard.h"
+#import "VImageAsset.h"
 #import "VNode.h"
 #import "VPollResult.h"
 #import "VTracking.h"
@@ -24,21 +25,21 @@
 @dynamic createdBy;
 @dynamic expiresAt;
 @dynamic gameStatus;
+@dynamic gifCount;
 @dynamic hasReposted;
 @dynamic isComplete;
 @dynamic isRemix;
 @dynamic isRepost;
+@dynamic memeCount;
 @dynamic nameEmbeddedInContent;
 @dynamic parentUserId;
 @dynamic permissions;
 @dynamic previewData;
 @dynamic previewType;
 @dynamic releasedAt;
-@dynamic gifCount;
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic status;
-@dynamic memeCount;
 @dynamic adBreaks;
 @dynamic comments;
 @dynamic endCard;
@@ -46,11 +47,10 @@
 @dynamic parentEndCard;
 @dynamic parentUser;
 @dynamic pollResults;
-@dynamic remixers;
+@dynamic previewAssets;
 @dynamic reposters;
 @dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
-@dynamic previewAssets;
 
 @end

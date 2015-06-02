@@ -136,6 +136,15 @@
 "SuggestedFollowersPlur" = "%@ abonnés";
 "SuggestedFollowersK" = "%@ abonnés";
 
+"NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
+"NoRepostersMessage"    =   "Share this content with all of your followers!";
+
+"NoGiffersTitle"       =   "BE THE 1ST TO GIF!";
+"NoGiffersMessage"     =   "Make a GIF by selecting your favorite clip from this video and sharing it with other fans!";
+
+"NoMemersTitle"       =   "BE THE 1ST TO MEME!";
+"NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
+
 "NoRepostersTitle" = "SOYEZ LE PREMIER À REPUBLIER !";
 "NoRepostersMessage" = "Partagez ce contenu avec tous vos abonnés !";
 
