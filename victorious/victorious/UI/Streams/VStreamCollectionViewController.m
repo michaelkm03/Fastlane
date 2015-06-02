@@ -289,12 +289,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
-    // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
-    if (self.streamDataSource.hasHeaderCell)
-    {
-        CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
-        self.navigationControllerScrollDelegate.catchOffset = marqueeSize.height;
-    }
+    [self updateNavigationBarScrollOffset];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -345,6 +340,23 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     if ( self.canShowMarquee )
     {
         self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
+    }
+    
+    // Update scroll offset to account for marquee
+    [self updateNavigationBarScrollOffset];
+}
+
+- (void)updateNavigationBarScrollOffset
+{
+    // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
+    if (self.streamDataSource.hasHeaderCell)
+    {
+        CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
+        self.navigationControllerScrollDelegate.catchOffset = marqueeSize.height;
+    }
+    else
+    {
+        self.navigationControllerScrollDelegate.catchOffset = 0;
     }
 }
 

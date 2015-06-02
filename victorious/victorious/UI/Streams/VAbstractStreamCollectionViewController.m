@@ -428,6 +428,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.navigationControllerScrollDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self.navigationControllerScrollDelegate scrollViewDidEndDecelerating:scrollView];
+}
+
 #pragma mark - VStreamCollectionDataDelegate
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
