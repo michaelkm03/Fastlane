@@ -39,6 +39,7 @@
 
 - (void)dealloc
 {
+    [_userProfileViewController removeNotificationObservers];
     _userProfileViewController = nil;
 }
 
@@ -93,8 +94,8 @@
 
 - (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
 {
-    //_badgeNumberUpdateBlock = badgeNumberUpdateBlock;
-    //self.userProfileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    self.userProfileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end

@@ -122,6 +122,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return nil;
 }
 
+- (void)removeNotificationObservers
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
+}
+
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad
@@ -212,7 +217,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
+    [self removeNotificationObservers];
 }
 
 - (void)viewDidAppear:(BOOL)animated

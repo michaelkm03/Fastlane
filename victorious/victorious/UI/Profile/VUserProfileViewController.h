@@ -30,4 +30,6 @@
  */
 + (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
 
+- (void)removeNotificationObservers;
+
 @end

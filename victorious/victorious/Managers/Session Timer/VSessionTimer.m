@@ -14,7 +14,7 @@
 #import "VTracking.h"
 #import "VFirstInstallManager.h"
 
-#define TEST_NEW_SESSION 1 // Set to '1' to start a new session by leaving the app for only 10 seconds.
+#define TEST_NEW_SESSION  // Set to '1' to start a new session by leaving the app for only 10 seconds.
 
 NSTimeInterval kVFirstLaunch = DBL_MAX;
 
@@ -24,7 +24,7 @@ static NSString * const kSessionEndTimeDefaultsKey      = @"com.victorious.VSess
 static NSString * const kSessionEndTimePropertyListKey  = @"date";
 static NSString * const kSessionLengthPropertyListKey   = @"length";
 
-#if TEST_NEW_SESSION
+#if TEST_NEW_SESSION 0
 #warning New sessions will start after 10 seconds of background time
 static NSTimeInterval const kMinimumTimeBetweenSessions = 10.0;
 #else
