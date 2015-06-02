@@ -101,7 +101,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _parentManager = parentManager;
         _configuration = [self preparedConfigurationWithUnpreparedDictionary:configuration];

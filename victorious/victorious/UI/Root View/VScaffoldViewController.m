@@ -63,6 +63,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     {
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
+        _coachmarkManager.allowCoachmarks = [self hasShownFirstTimeUserExperience];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
     }
@@ -109,22 +110,38 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 {
     VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
 
-    if ( ![firstTimeInstallHelper hasBeenShown] && ![[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue])
+    if ( ![self hasShownFirstTimeUserExperience] )
     {
-        [firstTimeInstallHelper savePlaybackDefaults];
-        
         VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                        forKey:VScaffoldViewControllerFirstTimeContentKey];
         if ( lightweightContentVC != nil )
         {
             lightweightContentVC.delegate = self;
-            [self presentViewController:lightweightContentVC animated:YES completion:nil];
+            [self presentViewController:lightweightContentVC animated:YES completion:^
+            {
+                //Finished presenting the FTUE VC, save that we showed the first time user experience.
+                [firstTimeInstallHelper savePlaybackDefaults];
+                self.coachmarkManager.allowCoachmarks = YES;
+            }];
             [self trackFirstTimeContentView];
             return YES;
+        }
+        else
+        {
+            //Didn't have a valid FTUE VC to show, but we wanted to show it,
+            //so we should save that we tried to show it as to not try again.
+            [firstTimeInstallHelper savePlaybackDefaults];
+            self.coachmarkManager.allowCoachmarks = YES;
         }
     }
     
     return NO;
+}
+
+- (BOOL)hasShownFirstTimeUserExperience
+{
+    VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
+    return [firstTimeInstallHelper hasBeenShown] || [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
 }
 
 - (VDependencyManager *)firstTimeContentDependency

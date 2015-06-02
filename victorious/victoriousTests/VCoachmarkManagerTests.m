@@ -92,6 +92,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:configuration dictionaryOfClassesByTemplateName:nil];
     self.coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:self.dependencyManager];
     [self.coachmarkManager resetShownCoachmarks];
+    self.coachmarkManager.allowCoachmarks = YES;
 }
 
 - (void)tearDown

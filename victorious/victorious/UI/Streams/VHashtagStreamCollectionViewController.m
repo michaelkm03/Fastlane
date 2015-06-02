@@ -116,6 +116,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    [self updateFollowingStatus];
 }
 
 #pragma mark - Fetch Users Tags

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "VImageAsset+Fetcher.h"
 #import "VUserProfileHeaderViewController.h"
 #import "VUser+Fetcher.h"
 #import "VDependencyManager.h"
@@ -122,6 +123,29 @@
 - (void)updateProfileImage
 {
     NSAssert( NO, @"Must be overridden by subclasses." );
+}
+
+- (NSURL *)getBestAvailableImageForMinimuimSize:(CGSize)minimumSize
+{
+    NSURL *imageURL = nil;
+    BOOL canUseHighResAsset = NO; // Until proven otherwise
+    
+    // Try to load high-res from server and make sure it's valid and large enough to display
+    if ( self.user.previewAssets.count > 0 )
+    {
+        VImageAsset *imageAsset = [VImageAsset assetWithPreferredMinimumSize:minimumSize fromAssets:self.user.previewAssets];
+        imageURL = [NSURL URLWithString:imageAsset.imageURL];
+        const BOOL isURLValid = imageURL != nil && imageURL.absoluteString.length > 0;
+        canUseHighResAsset = isURLValid;
+    }
+    
+    if ( !canUseHighResAsset )
+    {
+        // Otherwise fall back on local or low-res
+        imageURL = [NSURL URLWithString:self.user.pictureUrl];
+    }
+    
+    return imageURL;
 }
 
 - (void)setState:(VUserProfileHeaderState)state

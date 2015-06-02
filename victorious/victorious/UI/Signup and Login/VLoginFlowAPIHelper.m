@@ -105,7 +105,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
