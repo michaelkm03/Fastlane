@@ -116,43 +116,18 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
     
     if (isProfileImageRequired && !self.hasSelectedAvatar)
     {
-        [UIView animateKeyframesWithDuration:0.55f
-                                       delay:0.0f
-                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
-                                  animations:^
-         {
-             [UIView addKeyframeWithRelativeStartTime:0.0f
-                                     relativeDuration:0.25f
-                                           animations:^
-              {
-                  self.avatarButton.transform = CGAffineTransformMakeScale(0.7f, 0.7f);
-              }];
-             [UIView addKeyframeWithRelativeStartTime:0.25f
-                                     relativeDuration:0.5f
-                                           animations:^
-              {
-                  self.avatarButton.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
-              }];
-             [UIView addKeyframeWithRelativeStartTime:0.75f
-                                     relativeDuration:0.25f
-                                           animations:^
-              {
-                  self.avatarButton.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-              }];
-         }
-                                  completion:nil];
-
-        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-        return;
+        [self showAvatarValidationFailedAnimation];
     }
-    
-    id <VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(continueRegistrationFlow)
-                                                                   withSender:self];
-    if (flowController == nil)
+    else
     {
-        NSAssert(false, @"We need a flow controller for finishing profile creation.");
+        id <VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(continueRegistrationFlow)
+                                                                       withSender:self];
+        if (flowController == nil)
+        {
+            NSAssert(false, @"We need a flow controller for finishing profile creation.");
+        }
+        [flowController continueRegistrationFlow];
     }
-    [flowController continueRegistrationFlow];
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate
@@ -188,6 +163,37 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 }
 
 #pragma mark - Private Methods
+
+- (void)showAvatarValidationFailedAnimation
+{
+    [UIView animateKeyframesWithDuration:0.55f
+                                   delay:0.0f
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^
+     {
+         [UIView addKeyframeWithRelativeStartTime:0.0f
+                                 relativeDuration:0.25f
+                                       animations:^
+          {
+              self.avatarButton.transform = CGAffineTransformMakeScale(0.7f, 0.7f);
+          }];
+         [UIView addKeyframeWithRelativeStartTime:0.25f
+                                 relativeDuration:0.5f
+                                       animations:^
+          {
+              self.avatarButton.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
+          }];
+         [UIView addKeyframeWithRelativeStartTime:0.75f
+                                 relativeDuration:0.25f
+                                       animations:^
+          {
+              self.avatarButton.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+          }];
+     }
+                              completion:nil];
+    
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+}
 
 - (void)showCameraOnViewController:(UIViewController *)viewController
 {
