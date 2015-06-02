@@ -1,7 +1,7 @@
+
 /* 
   Localizable.strings
   victorious
-
   Created by Gary Philipp on 12/23/13.
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
@@ -51,6 +51,24 @@
 "NumStreams" = "%@ CORRIENTES";
 "NumItems" = "%@ ARTÍCULOS";
 
+"Keep up to date with users and hashtags you're following here" = "Keep up to date with users and hashtags you're following here";
+"View content from users and hashtags you're following here" = "View content from users and hashtags you're following here";
+"Tap here to view posts from the entire community" = "Tap here to view posts from the entire community";
+"Tap here to view posts from other fans" = "Tap here to view posts from other fans";
+"View posts from the entire community here" = "View posts from the entire community here";
+"View posts from other fans here" = "View posts from other fans here";
+"Tap here to watch my exclusive videos" = "Tap here to watch my exclusive videos";
+"Tap here to watch exclusive videos" = "Tap here to watch exclusive videos";
+"Tap here to watch my videos" = "Tap here to watch my videos";
+"Tap here to watch videos" = "Tap here to watch videos";
+"Watch my exclusive videos here" = "Watch my exclusive videos here";
+"Watch exclusive videos here" = "Watch exclusive videos here";
+"Watch my videos here" = "Watch my videos here";
+"Watch videos here" = "Watch videos here";
+"Tap here to create your first post" = "Tap here to create your first post";
+"Tap here to create a post" = "Tap here to create a post";
+"Tap here and create a post now!" = "Tap here and create a post now!";
+
 "TimeSeparator" = ":";
 "InvalidTimePlaceholder" = "-:--";
 "%ld+" = "%ld+";
@@ -82,12 +100,12 @@
 "ProfileAborted" = "No podrás usar algunas funciones hasta que hayas completado tu perfil.";
 "ProfileRequired" = "Por favor, incluye lo siguiente";
 "ProfileRequiredPhoto" = "Imagen del perfil";
+"ProfileNameSpaces" = "Your profile name cannot be only spaces.";
 "ProfileRequiredName" = "Nombre";
 "ProfileRequiredToS" = "Acuerda nuestros términos";
 "ProfileRequiredTagLine" = "Tu eslogan";
 "ProfileUpdateFailed" = "Error al actualizar el perfil";
 "Profile load failed!" = "Error al cargar el perfil";
-"ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
 
 "User already exists" = "El usuario ya existe";
 "Invalid email address or password" = "Email o contraseña inválidos";
@@ -143,17 +161,28 @@
 "NoRemixersTitle" = "¡SÉ EL PRIMERO EN REMEZCLAR!";
 "NoRemixersMessage" = "Haz este contenido tuyo añadiendo un comentario, otros vídeoclips, ¡y mucho más!";
 
-"OwnerSharePollFormat" = "¡Mira esta encuesta hecha por %@!"; //Check out this poll by <creator>! <URL>
-"OwnerShareVideoFormat" = "Dale un ojo a %@ por %@";    //Check out "<video name>" by <creator>! <URL>
-"OwnerShareVideoFormatNoVideoName" = "¡Mira este video de %@!"; // Check out this videy by <creator>! <URL>
-"OwnerShareImageFormat" = "Mira esta foto de %@";//Check out this photo by <creator>! <URL>
-"OwnerShareTextFormat" = "Mira esta publicación de \"%@\""; //Check out this post by <creator>! <URL>
-"UGCSharePollFormat" = "¡Mira esta encuesta!";       //Check out this poll! <URL>
-"UGCShareVideoFormat" = "¡Checa este video!";      //Check out this video! <URL>
-"UGCShareGIFFormat" = "¡Checa este gif!";        //Check out this gif! <URL>
-"UGCShareImageFormat" = "¡Mira esta foto!";      //Check out this photo! <URL>
-"UGCShareTextFormat" = "¡Mira esta publicación!";      //Check out this post! <URL>
-"EmailShareSubjectFormat" = "¡Mira esta publicación de la app %@!"; //Check out this post from the <creator name> app!
+/* Check out this poll by <creator>! <URL> */
+"OwnerSharePollFormat" = "¡Mira esta encuesta hecha por %@!";
+/* Check out "<video name>" by <creator>! <URL> */
+"OwnerShareVideoFormat" = "Dale un ojo a %@ por %@";
+/* Check out this videy by <creator>! <URL> */
+"OwnerShareVideoFormatNoVideoName" = "¡Mira este video de %@!";
+/* Check out this photo by <creator>! <URL> */
+"OwnerShareImageFormat" = "Mira esta foto de %@";
+/* Check out this post by <creator>! <URL> */
+"OwnerShareTextFormat" = "Mira esta publicación de \"%@\"";
+/* Check out this poll! <URL> */
+"UGCSharePollFormat" = "¡Mira esta encuesta!";
+/* Check out this video! <URL> */
+"UGCShareVideoFormat" = "¡Checa este video!";
+/* Check out this gif! <URL> */
+"UGCShareGIFFormat" = "¡Checa este gif!";
+/* Check out this photo! <URL> */
+"UGCShareImageFormat" = "¡Mira esta foto!";
+/* Check out this post! <URL> */
+"UGCShareTextFormat" = "¡Mira esta publicación!";
+/* Check out this post from the <creator name> app! */
+"EmailShareSubjectFormat" = "¡Mira esta publicación de la app %@!";
 
 "Facebook" = "Facebook";
 "FacebookFailed" = "No pudo conectarse a Facebook.";
@@ -371,6 +400,7 @@
 
 "AccessMicrophoneDenied" = "Para grabar video desde el dispositivo, por favor, ve a a Configuración -> Privacidad -> Micrófono";
 "AccessMicrophoneRestricted" = "No se puede acceder a su micrófono debido a restricciones en su dispositivo.";
+"AccessLibraryRestricted" = "To access media from your camera roll, please grant access by going to Settings -> Privacy -> Photos";
 "AccessCameraDenied" = "Para grabar víieos desde el dispositivo, por favor, ir ir a Configuración-> Privacidad";
 "AccessCameraRestricted" = "No se pudo acceder a la cámara debido a restricciones en su dispositivo.";
 "UnableSelectVideo" = "Imposible seleccionar video.";
@@ -410,12 +440,17 @@
 "NoFriends" = "No hay coincidencias";
 "NoFriendsDetail" = "No pudimos encontrar amigos tuyos que usen nuestra app. ¡Invítalos!";
 
-"RTCUserPostedAtSyntax" = "%@ a %@";//e.g. "Username at 0:04"
+/* e.g. "Username at 0:04" */
+"RTCUserPostedAtSyntax" = "%@ a %@";
 
 "Report/Flag" = "Reportar/Señalar";
 "CreatedBy" = "CREADO POR";
+"remixes" = "remixes";
+"Remix" = "Remix";
 "RemixVerb" = "Remezclar";
-"Reposts" = "Vueltos a publicar";
+"reposts" = "republicaciones";
+"REPOSTS" = "Republicaciones";
+"REMIXES" = "Remixes";
 "Repost" = "Volver a publicar";
 "Reposted" = "Vuelto a publicar";
 "RepostContentView" = " REPUBLICACIÓN";
@@ -425,6 +460,7 @@
 "repostedByFormat" = "Vuelto a publicar por %@";
 "doubleRepostedByFormat" = "Vuelto a publicar por %@ + un otro";
 "multipleRepostedByFormat" = "Vuelto a publicar por %@ más %lu otros";
+"+ %lu others" = "+ %lu others";
 "remixedFromFormat" = "Remix de %@";
 "giffedFromFormat" = "GIF de %@";
 
@@ -501,12 +537,15 @@
 "ProductsRequestError" = "No pudimos cargar la información del producto desde la App Store. Inténtalo de nuevo más tarde.";
 "RestorePurchasesErrorTitle" = "Error al restaurar las compras";
 "RestorePurchasesError" = "Erro al restaurar las compras en este momento. Por favor, intentar más tarde.";
-"RestorePurchasesSuccessTitleSingular" = "%lu ¡Compra restaurada!"; //e.g. "1 Purchase Restored!""
-"RestorePurchasesSuccessTitlePlural" = "%lu ¡Compra restaurada!"; //e.g. "5 PurchaseS Restored!""
+/* e.g. "1 Purchase Restored!"" */
+"RestorePurchasesSuccessTitleSingular" = "¡%lu Compra restaurada!";
+/* e.g. "5 PurchaseS Restored!"" */
+"RestorePurchasesSuccessTitlePlural" = "¡%lu Compra restaurada!";
 "RestorePurchasesSuccess" = "Puedes revisar tus compras en la sección de configuraciones";
 "ActivityRestoring" = "  Restaurando...";
 "ActivityPurchasing" = "  Comprando...";
-"PurchaseUnlockWithPrice" = "Desbloquear para %@"; //e.g. "Unlock for $0.99"
+/* e.g. "Unlock for $0.99" */
+"PurchaseUnlockWithPrice" = "Desbloquear para %@";
 "SettingsRestorePurchases" = "Restaurar compras";
 "SettingsRestorePurchasesPrompt" = "No has comprado en este dispositivo.\nSi has hecho compras en otro dispositivo, haz clic en Restaurar compras para reiniciarlas.";
 
@@ -525,18 +564,30 @@
 
 "This will discard any content added to your post" = "Esto elimina cualquier contenido que hayas añadido a tu publicación";
 
-"No Color" = "Sin Color";    // No color selected
-"Standard" = "Normal";   // The default color before a selection is made
-"Red" = "Rojo";        // The color red
-"Magenta" = "Magenta";    // The color, a pink/red
-"Orange" = "Anaranjado";     // The color orange
-"Peach" = "Melocotón";      // The color, a light yellow/orange
-"Yellow" = "Amarillo";     // The color yellow
-"Green" = "Verde";      // The color green
-"Teal" = "Verde azulado";       // The color, a blue/green
-"Blue" = "Azul";       // The color blue
-"Purple" = "Morado";     // The color purp[le
-"Black" = "Negro";      // The color black
+/* No color selected */
+"No Color" = "Sin Color";
+/* The default color before a selection is made */
+"Standard" = "Normal";
+/* The color red */
+"Red" = "Rojo";
+/* red */
+"Magenta" = "Magenta";
+/* The color orange */
+"Orange" = "Anaranjado";
+/* orange */
+"Peach" = "Melocotón";
+/* The color yellow */
+"Yellow" = "Amarillo";
+/* The color green */
+"Green" = "Verde";
+/* green */
+"Teal" = "Verde azulado";
+/* The color blue */
+"Blue" = "Azul";
+/* The color purp[le */
+"Purple" = "Morado";
+/* The color black */
+"Black" = "Negro";
 
 "Video loading failed." = "Error al cargar el video";
 "Error Loading Next Video" = "Error Cargando el próximo video";
@@ -557,7 +608,21 @@
 "GIF MODE" = "MODO GIF";
 "VIDEO MODE" = "MODO VIDEO";
 "Write a caption (optional)" = "Escribir un subtítulo (opcional)";
-"Rendering..." = "Reproduciendo...";
 "Render failure" = "Error de reproducción";
-"Publishing..." = "Publicando...";
 "Upload failure" = "Error al cargar";
+
+"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
+"Thank you for joining the community! Add a profile picture now." = "Thank you for joining the community! Add a profile picture now.";
+"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Before you can record and share videos, we need access to your microphone. Allow microphone access now?";
+
+"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!";
+"Follow content from other fans." = "Follow content from other fans.";
+"Share creations with the community." = "Share creations with the community.";
+"Join in on the conversation." = "Join in on the conversation.";
+"By signing up you are agreeing to the ToS and Privacy Policy." = "By signing up you are agreeing to the ToS and Privacy Policy.";
+"Sign up with Email" = "Sign up with Email";
+"Sign up with Facebook" = "Sign up with Facebook";
+"Create an account and join the community." = "Create an account and join the community.";
+"Create a username and introduce yourself to the community." = "Create a username and introduce yourself to the community.";
+"Add photo" = "Add photo";
+"Add your profile picture." = "Add your profile picture.";
