@@ -19,7 +19,8 @@
 @interface VUserProfileNavigationDestination () <VCoachmarkDisplayer, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VUserProfileViewController *userProfileViewController;
+@property (nonatomic, strong) id<VProvidesNavigationMenuItemBadge> preDisplayBadgeProvider;
+@property (nonatomic, weak) VUserProfileViewController *displayedBadgeProvider;
 
 @end
 
@@ -37,12 +38,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [_userProfileViewController removeNotificationObservers];
-    _userProfileViewController = nil;
-}
-
 #pragma mark VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -51,25 +46,32 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
-                                                                andDependencyManager:self.dependencyManager];
-        _userProfileViewController.representsMainUser = YES;
-        [_userProfileViewController.dependencyManager configureNavigationItem:_userProfileViewController.navigationItem
-                                                            forViewController:_userProfileViewController];
+        
+        _preDisplayBadgeProvider = [self createProfileForLoggedInUser];
     }
     return self;
+}
+
+- (id<VProvidesNavigationMenuItemBadge>)createProfileForLoggedInUser
+{
+    VUserProfileViewController *profile = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
+                                                                     andDependencyManager:self.dependencyManager];
+    profile.representsMainUser = YES;
+    [profile updateAccessoryItems];
+    return profile;
 }
 
 #pragma mark - VNavigationDestination conformance
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    self.userProfileViewController.user = self.objectManager.mainUser;
-    if ( [self.userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        [self.userProfileViewController setDependencyManager:self.dependencyManager];
-    }
-    *alternateViewController = self.userProfileViewController;
+    // Once this destination is selected, it will handle providing bades and this is no longer needed
+    self.preDisplayBadgeProvider = nil;
+    
+    VUserProfileViewController *destination = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
+                                                                         andDependencyManager:self.dependencyManager];
+    *alternateViewController = destination;
+    self.displayedBadgeProvider = destination;
     
     return YES;
 }
@@ -95,7 +97,14 @@
 - (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
 {
     _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
-    self.userProfileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    if ( self.displayedBadgeProvider != nil )
+    {
+        self.displayedBadgeProvider.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    }
+    else if ( self.preDisplayBadgeProvider != nil )
+    {
+        self.preDisplayBadgeProvider.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    }
 }
 
 @end

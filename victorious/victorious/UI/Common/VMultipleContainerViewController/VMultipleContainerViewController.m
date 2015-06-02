@@ -68,6 +68,11 @@ static NSString * const kInitialKey = @"initial";
     return self;
 }
 
+- (void)dealloc
+{
+    
+}
+
 #pragma mark - View Lifecycle
 
 - (void)loadView

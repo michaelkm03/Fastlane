@@ -30,6 +30,11 @@
  */
 + (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
 
-- (void)removeNotificationObservers;
+/**
+ Allows calling code to trigger the creating of accessory screen bar button items
+ for cases when this view controller needs to propagate badge updates from one of its accessory
+ screens before it is ready to be displayed.
+ */
+- (void)updateAccessoryItems;
 
 @end
