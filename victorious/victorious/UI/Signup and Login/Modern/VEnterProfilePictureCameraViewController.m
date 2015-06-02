@@ -10,6 +10,7 @@
 
 // Libraries
 @import CoreText;
+@import AudioToolbox;
 
 #import "VLoginFlowControllerResponder.h"
 
@@ -31,6 +32,8 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
 @property (nonatomic, weak) IBOutlet UIButton *avatarButton;
 @property (nonatomic, weak) IBOutlet UIButton *addProfilePictureButton;
+
+@property (nonatomic, assign) BOOL hasSelectedAvatar;
 
 @end
 
@@ -108,6 +111,41 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 
 - (void)userPressedDone
 {
+    NSNumber *profileImageRequiredValue = [self.dependencyManager numberForKey:VDependencyManagerProfileImageRequiredKey];
+    const BOOL isProfileImageRequired = (profileImageRequiredValue == nil) ? YES : [profileImageRequiredValue boolValue];
+    
+    if (isProfileImageRequired && !self.hasSelectedAvatar)
+    {
+        [UIView animateKeyframesWithDuration:0.55f
+                                       delay:0.0f
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^
+         {
+             [UIView addKeyframeWithRelativeStartTime:0.0f
+                                     relativeDuration:0.25f
+                                           animations:^
+              {
+                  self.avatarButton.transform = CGAffineTransformMakeScale(0.7f, 0.7f);
+              }];
+             [UIView addKeyframeWithRelativeStartTime:0.25f
+                                     relativeDuration:0.5f
+                                           animations:^
+              {
+                  self.avatarButton.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
+              }];
+             [UIView addKeyframeWithRelativeStartTime:0.75f
+                                     relativeDuration:0.25f
+                                           animations:^
+              {
+                  self.avatarButton.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+              }];
+         }
+                                  completion:nil];
+
+        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+        return;
+    }
+    
     id <VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(continueRegistrationFlow)
                                                                    withSender:self];
     if (flowController == nil)
@@ -129,6 +167,7 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
        finishedWithPreviewImage:(UIImage *)previewImage
                capturedMediaURL:(NSURL *)capturedMediaURL
 {
+    self.hasSelectedAvatar = YES;
     [self dismissViewControllerAnimated:YES
                              completion:^
      {
