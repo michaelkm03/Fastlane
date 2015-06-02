@@ -524,7 +524,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.currentStream = [VStream streamForUser:self.user];
     
-    self.title = self.isCurrentUser ? @"Profile" : user.name;
+    self.title = self.isCurrentUser ? NSLocalizedString( @"me", nil ) : user.name;
     
     [self updateProfileHeader];
     
