@@ -5,13 +5,13 @@
 "3pO-cP-eTE.placeholder" = "Mot de passe";
 
 /* Class = "UILabel"; text = "Connect with Twitter"; ObjectID = "3q4-yP-lYm"; */
-"3q4-yP-lYm.text" = "Se connecter via Twitter";
+"3q4-yP-lYm.text" = "S'inscrire via Twitter";
 
 /* Class = "UIButton"; normalTitle = "Log In"; ObjectID = "5AW-ID-rMK"; */
 "5AW-ID-rMK.normalTitle" = "Se connecter";
 
 /* Class = "UITextView"; text = "Already Registered? Log in here"; ObjectID = "5M9-eq-LWT"; */
-"5M9-eq-LWT.text" = "Déjà inscrit(e) ? Connectez-vous ici";
+"5M9-eq-LWT.text" = "Déjà inscrit? Se connecter ici";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "7P1-3N-TQ4"; */
 "7P1-3N-TQ4.normalTitle" = "Annuler";
@@ -53,7 +53,7 @@
 "d29-FA-lll.title" = "Se connecter via e-mail";
 
 /* Class = "UILabel"; text = "Sign up with Email"; ObjectID = "gWK-fr-OZX"; */
-"gWK-fr-OZX.text" = "Se connecter via e-mail";
+"gWK-fr-OZX.text" = "S'inscrire via email";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "jhx-0Z-CyE"; */
 "jhx-0Z-CyE.normalTitle" = "Annuler";
@@ -77,7 +77,7 @@
 "tdl-Dc-Ep6.placeholder" = "Confirmer le mot de passe";
 
 /* Class = "UILabel"; text = "Connect with Facebook"; ObjectID = "tgS-Dw-MLG"; */
-"tgS-Dw-MLG.text" = "Se connecter via Facebook";
+"tgS-Dw-MLG.text" = "S'inscrire via Facebook";
 
 /* Class = "UITextView"; text = "Resend Email"; ObjectID = "ucd-V3-oVY"; */
 "ucd-V3-oVY.text" = "Renvoyer l'e-mail";
