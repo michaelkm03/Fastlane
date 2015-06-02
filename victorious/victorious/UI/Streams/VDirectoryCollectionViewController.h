@@ -2,17 +2,23 @@
 //  VDirectoryCollectionViewController.h
 //  victorious
 //
-//  Created by Will Long on 9/8/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 3/24/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-#import "VAbstractDirectoryCollectionViewController.h"
+#import "VAbstractStreamCollectionViewController.h"
+#import "VHasManagedDependencies.h"
 
 /**
- *  A view controller that uses a UICollectionView to display the streamItems in a VStream.
+    A collection view controller that displays content in a format determined its "directoryCell" component
  */
-@interface VDirectoryCollectionViewController : VAbstractDirectoryCollectionViewController
+@interface VDirectoryCollectionViewController : VAbstractStreamCollectionViewController <VHasManagedDependencies>
+
+/**
+    Navigates to a view controller that can appropriately display the provided stream item.
+ 
+    @param streamItem The stream item to display in a new view controller
+ */
+- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem;
 
 @end

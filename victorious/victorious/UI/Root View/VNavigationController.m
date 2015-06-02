@@ -14,6 +14,7 @@
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
 #import  "UIColor+VBrightness.h"
+#import "VTabMenuViewController.h"
 
 #import <objc/runtime.h>
 
@@ -58,7 +59,8 @@ static const CGFloat kStatusBarHeight = 20.0f;
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
-        _statusBarStyle = [self statusBarStyleForColor:[[_dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey]];
+        UIColor *navigationBarTextColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
+        _statusBarStyle = [self statusBarStyleForColor:navigationBarTextColor];
     }
     return self;
 }
@@ -72,12 +74,16 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
 {
-    switch ([color v_colorLuminance])
+    VColorLuminance luminance = [color v_colorLuminance];
+    switch (luminance)
     {
         case VColorLuminanceBright:
-            return UIStatusBarStyleDefault;
-        case VColorLuminanceDark:
             return UIStatusBarStyleLightContent;
+            break;
+            
+        case VColorLuminanceDark:
+            return UIStatusBarStyleDefault;
+            break;
     }
 }
 
@@ -344,8 +350,14 @@ static const CGFloat kStatusBarHeight = 20.0f;
     }
     
     CGFloat navigationBarHeight = CGRectGetHeight(self.innerNavigationController.navigationBar.frame) +
-                                  CGRectGetHeight(viewController.navigationItem.v_supplementaryHeaderView.frame) +
                                   CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    UIView *supplementaryView = viewController.navigationItem.v_supplementaryHeaderView;
+    if ( supplementaryView != nil )
+    {
+        //The supplementary header exists, add its height and subtract the height of the shadow image that other content would normally be shown behind
+        navigationBarHeight += CGRectGetHeight(supplementaryView.frame) -
+                               self.innerNavigationController.navigationBar.shadowImage.size.height;
+    }
     viewController.v_layoutInsets = UIEdgeInsetsMake(navigationBarHeight, 0, 0, 0);
 }
 
@@ -481,6 +493,13 @@ static const CGFloat kStatusBarHeight = 20.0f;
         [self.displayedViewController v_setNavigationController:nil];
         self.displayedViewController = viewController;
     }
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self.innerNavigationController popToRootViewControllerAnimated:YES];
 }
 
 @end

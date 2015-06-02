@@ -29,6 +29,11 @@
  */
 - (void)failedToLoadSequenceInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController;
 
+/**
+ Notifies the delegate that the user wants to dismiss the view controller
+ */
+- (void)userWantsToDismissLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController;
+
 @end
 
 @interface VLightweightContentViewController : UIViewController

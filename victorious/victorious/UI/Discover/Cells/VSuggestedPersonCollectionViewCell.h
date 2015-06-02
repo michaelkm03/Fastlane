@@ -11,14 +11,6 @@
 
 @class VDependencyManager;
 
-@protocol VSuggestedPersonCollectionViewCellDelegate
-
-@required
-- (void)unfollowPerson:(VUser *)user;
-- (void)followPerson:(VUser *)user;
-
-@end
-
 @interface VSuggestedPersonCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) VUser *user;
@@ -28,8 +20,7 @@
 
 + (UIImage *)followedImage;
 + (UIImage *)followImage;
-
-@property (nonatomic, weak) id<VSuggestedPersonCollectionViewCellDelegate> delegate;
++ (CGFloat)cellHeight;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 

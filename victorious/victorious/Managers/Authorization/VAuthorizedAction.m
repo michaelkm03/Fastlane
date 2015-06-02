@@ -41,8 +41,8 @@
 }
 
 - (BOOL)performFromViewController:(UIViewController *)presentingViewController
-                                      context:(VAuthorizationContext)authorizationContext
-                                      completion:(void(^)(BOOL authorized))completionActionBlock
+                          context:(VAuthorizationContext)authorizationContext
+                       completion:(void(^)(BOOL authorized))completionActionBlock
 {
     NSParameterAssert( completionActionBlock != nil );
     NSParameterAssert( presentingViewController != nil );

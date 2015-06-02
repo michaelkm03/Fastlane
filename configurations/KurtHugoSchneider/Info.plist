@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Kurt Hugo Schneider</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}kurthugoschneider</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}KurtHugoSchneider</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1429679274004252</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1429679274004252</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>gqqK7iSdLzA1NhneQTg2CAdmz</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>CEU0KyEF0bpDhdirHBbE5ExLs5LywaBU3rc2SrukyIuyxWlHLP</string>
+	<key>VictoriousAppID</key>
+	<integer>49</integer>
+	<key>StagingAppID</key>
+	<integer>63</integer>
+	<key>QAAppID</key>
+	<integer>46</integer>
+	<key>CreatorSalutation</key>
+	<string>Kurt Hugo Schneider</string>
+	<key>FlurryAPIKey</key>
+	<string>854D5MJ2XNKRMWS2DZJQ</string>
+</dict>
+</plist>

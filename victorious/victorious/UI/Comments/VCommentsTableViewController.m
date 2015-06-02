@@ -47,6 +47,7 @@
 #import "VHashtagStreamCollectionViewController.h"
 
 #import "UIStoryboard+VMainStoryboard.h"
+#import "VDependencyManager+VUserProfile.h"
 
 @import Social;
 
@@ -152,10 +153,14 @@
     if (!hasComments)
     {
         VNoContentView *noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        if ( [noCommentsView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noCommentsView.dependencyManager = self.dependencyManager;
+        }
         self.tableView.backgroundView = noCommentsView;
-        noCommentsView.titleLabel.text = NSLocalizedString(@"NoCommentsTitle", @"");
-        noCommentsView.messageLabel.text = NSLocalizedString(@"NoCommentsMessage", @"");
-        noCommentsView.iconImageView.image = [UIImage imageNamed:@"noCommentIcon"];
+        noCommentsView.title = NSLocalizedString(@"NoCommentsTitle", @"");
+        noCommentsView.message = NSLocalizedString(@"NoCommentsMessage", @"");
+        noCommentsView.icon = [UIImage imageNamed:@"noCommentIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
@@ -288,7 +293,7 @@
         cell.commentTextView.mediaThumbnailView.hidden = YES;
         cell.commentTextView.hasMedia = NO;
     }
-    
+    cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {

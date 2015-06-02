@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 03/23/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 04/24/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -186,8 +186,8 @@ NSString * const VTrackingEventUserDidInviteFiendsWithSMS = @"UserDidInviteFiend
 NSString * const VTrackingEventUserDidSelectCreateMessage = @"UserDidSelectCreateMessage";
 NSString * const VTrackingEventUserDidSendMessage = @"UserDidSendMessage";
 NSString * const VTrackingEventUserDidSelectMessage = @"UserDidSelectMessage";
-NSString * const VTrackingEventUserDidSelectNotification = @"UserDidSelectNotification";
 NSString * const VTrackingEventUserDidSelectUserFromSearchRecipient = @"UserDidSelectUserFromSearchRecipient";
+NSString * const VTrackingEventUserDidSelectNotification = @"UserDidSelectNotification";
 NSString * const VTrackingEventUserDidFlagConversation = @"UserDidFlagConversation";
 
 // Discover

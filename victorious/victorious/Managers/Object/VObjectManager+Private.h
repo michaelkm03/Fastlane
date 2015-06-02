@@ -7,13 +7,15 @@
 //
 
 #import "VObjectManager.h"
+#import "VLoginType.h"
 
 @import CoreData;
 
 @interface VObjectManager ()
 
 @property (nonatomic, strong) NSCache *objectCache;
-@property (nonatomic, strong) VUser  *mainUser;
+@property (nonatomic, strong) VUser *mainUser;
+@property (nonatomic, assign) VLoginType loginType;
 
 @end
 

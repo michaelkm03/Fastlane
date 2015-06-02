@@ -46,9 +46,13 @@
     self.passwordTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.confirmPasswordTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.confirmPasswordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.confirmPasswordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     
     self.cancelButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.cancelButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];

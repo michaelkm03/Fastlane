@@ -11,7 +11,6 @@
 #import "VSequenceUserInteractions.h"
 
 extern NSString * const kPollResultsLoaded;
-extern NSString * const kHashtagStatusChangedNotification;
 
 @class VAnswer, VSequence, VVoteType, VAsset;
 
@@ -22,6 +21,7 @@ extern NSString * const kHashtagStatusChangedNotification;
                                           failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
+                                  inStreamWithStreamID:(NSString *)streamId
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;
 

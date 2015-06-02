@@ -13,7 +13,7 @@
 
 @interface VUserProfileViewController : VStreamCollectionViewController
 
-@property (nonatomic, readonly) VUser *profile;
+@property (nonatomic, readonly) VUser *user;
 
 /**
  *  While this property is YES, the viewController will listen for
@@ -27,29 +27,5 @@
  use the -userProfileViewControllerWithUser: category on VDependencyManager.
  */
 + (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
-
-@end
-
-#pragma mark -
-
-@interface VDependencyManager (VUserProfileViewControllerAdditions)
-
-/**
- Returns a new VUserProfileViewController instance according to the 
- template configuration, primed to display the given user.
- 
- @param user The user whose profile we should display
- @param key  The template key holding the configuration information for VUserProfileViewController
- */
-- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user;
-
-/**
- Returns a new VUserProfileViewController instance according to the
- template configuration, primed to display the user with the given remoteID.
- 
- @param user The user whose profile we should display
- @param key  The template key holding the configuration information for VUserProfileViewController
- */
-- (VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId;
 
 @end

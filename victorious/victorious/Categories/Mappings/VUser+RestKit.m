@@ -7,6 +7,7 @@
 //
 
 #import "VUser+RestKit.h"
+#import "VImageAsset+RestKit.h"
 
 @implementation VUser (RestKit)
 
@@ -34,6 +35,7 @@
                                   @"following" : VSelectorName(isFollowing),
                                   @"number_of_followers" : VSelectorName(numberOfFollowers),
                                   };
+    
 
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
@@ -42,6 +44,11 @@
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
 
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                              toKeyPath:VSelectorName(previewAssets)
+                                                                                            withMapping:[VImageAsset entityMapping]];
+    [mapping addPropertyMapping:previewAssetsMapping];
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
     [mapping addConnectionForRelationship:@"conversation" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];

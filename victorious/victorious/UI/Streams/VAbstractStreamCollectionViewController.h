@@ -11,6 +11,7 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamTrackingHelper.h"
 #import "VMultipleContainer.h"
+#import "VNavigationViewFloatingController.h"
 
 @class VStream, VNavigationHeaderView, VCollectionRefreshControl;
 
@@ -33,6 +34,7 @@
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper; ///< An aide for sending tracking events
+@property (nonatomic, strong) id<VNavigationViewFloatingController> navigationViewfloatingController;
 
 /**
     Called by the refresh controller when the user activates it by scrolling up to the top.

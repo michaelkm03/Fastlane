@@ -10,9 +10,9 @@ target :victorious do
     pod 'TTTAttributedLabel', '~>1.8.1'
     pod 'MBProgressHUD', '~> 0.8'
     pod 'FlurrySDK', '~> 5.4'
-    pod 'CCHLinkTextView'
     pod 'KVOController'
     pod 'SDWebImage'
+    pod 'CCHLinkTextView'
     link_with 'victorious'
 
     target :test do

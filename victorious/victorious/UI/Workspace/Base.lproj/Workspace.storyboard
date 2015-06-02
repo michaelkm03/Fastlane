@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -77,7 +77,6 @@
                             <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="pdG-8B-6bD"/>
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="pnB-hJ-LMB"/>
                             <constraint firstItem="rB7-pY-luZ" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="t5H-Iv-3np"/>
-                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="bottom" constant="44" id="vtj-8b-Y1E"/>
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="rB7-pY-luZ" secondAttribute="bottom" id="wke-BM-e98"/>
                         </constraints>
                     </view>
@@ -147,7 +146,6 @@
         <!--Crop Tool View Controller-->
         <scene sceneID="3yx-bR-QwV">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="VCropToolViewController" id="68P-kQ-eWn" customClass="VCropToolViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
@@ -172,6 +170,7 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="550" y="343"/>
         </scene>

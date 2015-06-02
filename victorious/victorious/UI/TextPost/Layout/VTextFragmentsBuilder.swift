@@ -9,30 +9,6 @@
 import UIKit
 
 /**
-Represents a line, part of a line or a single word of text
-*/
-class VTextFragment
-{
-    static let topInsetMultiplier: CGFloat = 0.42
-    static let bottomInsetMultipler: CGFloat = 0.09
-    
-    let text: String
-    var rect: CGRect
-    let range: NSRange
-    let isCallout: Bool ///< Is this fragment a callout as indicated by a callout delimeter prefix ("#" or "@")
-    let isNewLine: Bool ///< Is the fragment the star to of a new line
-    
-    init( text: String, rect: CGRect, range: NSRange, isCallout: Bool, isNewLine: Bool )
-    {
-        self.text = text
-        self.rect = rect
-        self.range = range
-        self.isCallout = isCallout
-        self.isNewLine = isNewLine
-    }
-}
-
-/**
 Primary reponsiblity is to break apart attributed text from a text view into a group of
 VTextFragments so that the `rect` properties of those fragments can be rendered in the background
 of a text view for text posts.
@@ -70,6 +46,8 @@ class VTextFragmentsBuilder: NSObject
             let isFirstCharacter = i == 0
             let isMinCalloutLength = fragmentRange.length > 2
             let calloutIndex: Int = self.indexOfCalloutRangeContainingIndex( i, calloutRanges: calloutRanges ) ?? -1
+            let isLineBreak = currentCharacter == "\n"
+            
             
             if isFirstCharacter
             {
@@ -77,7 +55,10 @@ class VTextFragmentsBuilder: NSObject
                 currentFragmentRect = fragmentRect
             }
             
-            if calloutIndex >= 0 && lastCalloutIndex != calloutIndex
+            let isStartOfCallout = calloutIndex >= 0 && lastCalloutIndex != calloutIndex && fragmentText != "\n"
+            let isEndOfCallout = calloutIndex < 0 && lastCalloutIndex >= 0 && fragmentText != "\n"
+            
+            if isStartOfCallout
             {
                 if count(fragmentText) > 0
                 {
@@ -93,14 +74,14 @@ class VTextFragmentsBuilder: NSObject
                 fragmentStartIndex = i
                 currentFragmentRect = fragmentRect
             }
-            else if calloutIndex < 0 && lastCalloutIndex >= 0
+            else if isEndOfCallout
             {
                 output.append( VTextFragment(
                     text: fragmentText,
                     rect:currentFragmentRect,
                     range: fragmentRange,
                     isCallout: calloutIndex >= 0,
-                    isNewLine: isNewLine  )
+                    isNewLine: isNewLine )
                 )
                 isNewLine = false
                 fragmentStartIndex = i
@@ -108,11 +89,13 @@ class VTextFragmentsBuilder: NSObject
             }
             else if needsNewLine
             {
-                if fragmentText != " "
+                let isValidFragment = count(fragmentText) > 0 && fragmentText != " " && fragmentText != "\n"
+                if isValidFragment
                 {
                     output.append( VTextFragment(
                         text: fragmentText,
-                        rect:currentFragmentRect, range: fragmentRange,
+                        rect: currentFragmentRect,
+                        range: fragmentRange,
                         isCallout: calloutIndex >= 0,
                         isNewLine: isNewLine )
                     )
@@ -122,19 +105,25 @@ class VTextFragmentsBuilder: NSObject
                 currentFragmentRect = fragmentRect
             }
             
-            currentFragmentRect.size.width = CGRectGetMaxX( fragmentRect ) - currentFragmentRect.origin.x
+            if !isLineBreak
+            {
+                currentFragmentRect.size.width = CGRectGetMaxX( fragmentRect ) - currentFragmentRect.origin.x
+            }
             
             if isLastCharacter
             {
                 let lastRange = NSMakeRange( fragmentStartIndex, i - fragmentStartIndex + 1 )
                 let text = text.substringWithRange( lastRange )
-                output.append( VTextFragment(
-                    text: text,
-                    rect:currentFragmentRect,
-                    range: fragmentRange,
-                    isCallout: calloutIndex >= 0,
-                    isNewLine: isNewLine )
-                )
+                if count(text) > 0 && text != "\n"
+                {
+                    output.append( VTextFragment(
+                        text: text,
+                        rect: currentFragmentRect,
+                        range: fragmentRange,
+                        isCallout: calloutIndex >= 0,
+                        isNewLine: isNewLine )
+                    )
+                }
             }
             
             lastCalloutIndex = calloutIndex
@@ -168,12 +157,13 @@ class VTextFragmentsBuilder: NSObject
             {
                 if nextFragment.isNewLine
                 {
-                    fragment.rect.size.width += horizontalOffset
+                    let multipler: CGFloat = fragment.isCallout ? 1.0 : 2.0
+                    fragment.rect.size.width += horizontalOffset * multipler
                 }
             }
             else
             {
-                fragment.rect.size.width += horizontalOffset * 2
+                fragment.rect.size.width += horizontalOffset
             }
         }
     }

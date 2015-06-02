@@ -18,8 +18,9 @@
 
 static NSString * const kSuggestedPersonCellIdentifier          = @"VSuggestedPersonCollectionViewCell";
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
+static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
-@interface VSuggestedPeopleCollectionViewController () <VSuggestedPersonCollectionViewCellDelegate>
+@interface VSuggestedPeopleCollectionViewController ()
 
 @property (nonatomic, strong) VUser *userToAnimate;
 
@@ -43,6 +44,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     self.error = nil;
     
     [self.collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
+    ((UICollectionViewFlowLayout *)self.collectionViewLayout).sectionInset = kCollectionViewEdgeInsets;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(followingDidUpdate:) name:VMainUserDidChangeFollowingUserNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
@@ -78,7 +80,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 - (void)followingDidUpdate:(NSNotification *)note
 {
     [self updateFollowingInUsers:self.suggestedUsers];
-    [self.collectionView reloadData];
 }
 
 - (void)updateFollowingInUsers:(NSArray *)users
@@ -202,53 +203,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     return self.suggestedUsers.count == 0 || self.error != nil;
 }
 
-#pragma mark - VSuggestedPersonCollectionViewCellDelegate
-
-- (void)unfollowPerson:(VUser *)user
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueSuggestedPeople forSessionParameterWithKey:VTrackingKeyContext];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:[self.delegate componentRootViewController] context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-             
-         [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-          {
-              [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-              
-              self.userToAnimate = user;
-              [self.collectionView reloadData];
-          } failBlock:nil];
-     }];
-}
-
-- (void)followPerson:(VUser *)user
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueSuggestedPeople forSessionParameterWithKey:VTrackingKeyContext];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:[self.delegate componentRootViewController] context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-          {
-              [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-              
-              self.userToAnimate = user;
-              [self.collectionView reloadData];
-          } failBlock:nil];
-     }];
-}
-
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -266,7 +220,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     {
         self.userToAnimate = nil;
     }
-    cell.delegate = self;
     cell.dependencyManager = self.dependencyManager;
     return cell;
 }

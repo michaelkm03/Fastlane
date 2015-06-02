@@ -39,6 +39,7 @@
 
 - (instancetype)init
 {
+    NSAssert([NSThread isMainThread], @"VLocationManager init MUST be called from the main thread since it's creating the shared CLLocationManager");
     self = [super init];
     if (self)
     {

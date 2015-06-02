@@ -18,6 +18,7 @@ extern NSString * const VDependencyManagerImageURLKey;
 extern NSString * const VDependencyManagerBackgroundColorKey;
 extern NSString * const VDependencyManagerMainTextColorKey;
 extern NSString * const VDependencyManagerContentTextColorKey;
+extern NSString * const VDependencyManagerSecondaryTextColorKey;
 extern NSString * const VDependencyManagerAccentColorKey;
 extern NSString * const VDependencyManagerSecondaryAccentColorKey;
 extern NSString * const VDependencyManagerLinkColorKey;
@@ -37,9 +38,13 @@ extern NSString * const VDependencyManagerLabel4FontKey;
 extern NSString * const VDependencyManagerButton1FontKey;
 extern NSString * const VDependencyManagerButton2FontKey;
 
+// Keys for identification
+extern NSString * const VDependencyManagerIDKey;
+
 // Keys for experiments (these should be retrieved with -numberForKey:, as a bool wrapped in an NSNumber)
 extern NSString * const VDependencyManagerHistogramEnabledKey;
 extern NSString * const VDependencyManagerProfileImageRequiredKey;
+extern NSString * const VDependencyManagerPauseVideoWhenCommentingKey;
 
 // Keys for view controllers
 extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "scaffold" is the view controller that sits at the root of the view controller heirarchy

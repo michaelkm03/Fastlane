@@ -9,7 +9,7 @@
 @class VUser;
 
 typedef void (^VUserManagerLoginCompletionBlock)(VUser *user, BOOL created);
-typedef void (^VUserManagerLoginErrorBlock)(NSError *error);
+typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFailure);
 
 @interface VUserManager : NSObject
 
@@ -38,7 +38,10 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error);
  */
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-- (void)logout;
+/**
+ Performs any cleanup necessary after user has logged out through the server (i.e. VObjectManager).
+ */
+- (void)userDidLogout;
 
 /**
  Saves the user's password in the keychain for automatic login in the future

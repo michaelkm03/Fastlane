@@ -10,7 +10,7 @@
 #import <XCTest/XCTest.h>
 
 // VActionBar
-#import "VActionBar.h"
+#import "VFlexBar.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VActionBarFlexibleSpaceItem.h"
 
@@ -22,7 +22,7 @@ static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as
 @class VActionBarFlexibleSpaceItem;
 @class VActionBarFixedWidthItem;
 
-@interface VActionBar (tests)
+@interface VFlexBar (tests)
 
 - (CGFloat)flexibleSpaceWidthWithFlexibleItemCount:(NSInteger)numberOfFlexibleItems
                                  widthToDistribute:(CGFloat)width;
@@ -39,7 +39,7 @@ static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as
 
 @interface VActionBarTests : XCTestCase
 
-@property (nonatomic, strong) VActionBar *actionBar;
+@property (nonatomic, strong) VFlexBar *actionBar;
 
 @end
 
@@ -48,7 +48,7 @@ static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as
 - (void)setUp
 {
     [super setUp];
-    self.actionBar = [[VActionBar alloc] initWithFrame:CGRectMake(0, 0, 300, 50)];
+    self.actionBar = [[VFlexBar alloc] initWithFrame:CGRectMake(0, 0, 300, 50)];
     self.actionBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self.actionBar v_addWidthConstraint:300.0f];
     [self.actionBar v_addHeightConstraint:50.0f];

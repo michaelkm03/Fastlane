@@ -18,16 +18,15 @@
 #import "VRootViewController.h"
 #import "VScaffoldViewController.h"
 #import "VSessionTimer.h"
-#import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VTracking.h"
 #import "TremorVideoAd.h"
 #import "VConstants.h"
-#import "VTemplateGenerator.h"
 #import "VLocationManager.h"
 #import "VVoteSettings.h"
 #import "VVoteType.h"
 #import "VAppInfo.h"
+#import "VUploadManager.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -47,16 +46,17 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
-@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VVoteSettings *voteSettings;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
+@property (nonatomic, strong) VLoadingViewController *loadingViewController;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
-@property (nonatomic, readwrite) VDeeplinkReceiver *deepLinkReceiver;
+@property (nonatomic, strong) VDeeplinkReceiver *deepLinkReceiver;
 
 @end
 
@@ -85,6 +85,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)commonInit
 {
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
+    
+    [[VObjectManager sharedManager] resetSessionID];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
@@ -213,10 +215,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)showLoadingViewController
 {
     self.launchState = VAppLaunchStateWaiting;
-    VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
-    loadingViewController.delegate = self;
-    loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
-    [self showViewController:loadingViewController animated:NO completion:nil];
+    self.loadingViewController = [VLoadingViewController loadingViewController];
+    self.loadingViewController.delegate = self;
+    self.loadingViewController.parentDependencyManager = [self createNewParentDependencyManager];
+    [self showViewController:self.loadingViewController animated:NO completion:nil];
 }
 
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -229,7 +231,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
     self.sessionTimer.dependencyManager = self.dependencyManager;
     [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
-    [[VSettingManager sharedManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
     self.voteSettings = [[VVoteSettings alloc] init];
@@ -326,10 +327,27 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeepLinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
+    
+    [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
+}
 
+- (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [self openURL:url fromExternalSourceWithOptionalNotificationID:nil];
+}
+
+/**
+ This version of -openURL: should be called when the request to open a URL comes from a place outside of the app, usually
+ a push notification, but maybe mobile safari or another application calling -[UIApplication openURL:]
+ */
+- (void)openURL:(NSURL *)deepLink fromExternalSourceWithOptionalNotificationID:(NSString *)notificationID
+{
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && self.properlyBackgrounded )
     {
-        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
+        if ( notificationID != nil )
+        {
+            [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
+        }
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
             [self.deepLinkReceiver queueDeeplink:deepLink];
@@ -337,7 +355,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         }
         else
         {
-            [self receiveDeeplink:deepLink];
+            [self openURL:deepLink];
         }
     }
     else if ( [deepLink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
@@ -345,9 +363,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
     }
 }
-- (void)receiveDeeplink:(NSURL *)deepLink
+
+- (void)openURL:(NSURL *)url
 {
-    [self.deepLinkReceiver receiveDeeplink:deepLink];
+    [self.deepLinkReceiver receiveDeeplink:url];
 }
 
 #pragma mark - Ad Networks
@@ -392,7 +411,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         return;
     }
-    [[VTrackingManager sharedInstance] clearSessionParameters];
     
     if ( self.queuedNotificationID != nil )
     {
@@ -402,7 +420,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     
     [self showViewController:nil animated:NO completion:nil];
     [RKObjectManager setSharedManager:nil];
-    [VObjectManager setupObjectManager];
+    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
     [self showLoadingViewController];
 }
 
@@ -413,7 +431,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSURL *url = notification.userInfo[UIApplicationLaunchOptionsURLKey];
     if ( url != nil )
     {
-        [self receiveDeeplink:url];
+        [self openURL:url];
         return;
     }
     

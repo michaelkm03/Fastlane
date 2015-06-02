@@ -54,6 +54,16 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
     VWorkspaceFlowControllerInitialCaptureStateVideo,
 };
 
+// The context in which we're opening the workspace
+typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerContext)
+{
+    VWorkspaceFlowControllerContextProfileImage,
+    VWorkspaceFlowControllerContextContentCreation,
+};
+
+// For determining how to ask for camera permissions
+extern NSString * const VWorkspaceFlowControllerContextKey;
+
 // Remix
 extern NSString * const VWorkspaceFlowControllerSequenceToRemixKey;
 
@@ -70,14 +80,14 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *
  *  - The preview image for the workspace. This will be the image that is used during editing.
  *  Use VWorkspaceFlowControllerPreloadedImageKey with a UIImage.
+ * 
+ *  - The context in which the workspace is being opened can be injected with
+ *  the VWorkspaceFlowControllerContextKey. This used currently to control
+ *  which message shows when requesting camera permissions.
  *
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
  */
 @interface VWorkspaceFlowController : NSObject <VHasManagedDependencies, VNavigationDestination, VAuthorizationContextProvider>
-
-//TODO: this is a temporary workaround for when there may not be a dependency manager.
-+ (instancetype)workspaceFlowControllerWithoutADependencyManger;
-+ (instancetype)workspaceFlowControllerWithoutADependencyMangerWithInjection:(NSDictionary *)injectedDependencies;
 
 /**
  *  A delegate of the workspace flow controller.

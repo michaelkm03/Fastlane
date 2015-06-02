@@ -17,7 +17,7 @@
     dispatch_once(&onceToken, ^(void)
                   {
                       NSMutableCharacterSet *mutableCharacterSet = [[NSCharacterSet URLPathAllowedCharacterSet] mutableCopy];
-                      [mutableCharacterSet removeCharactersInString:@"/@"];
+                      [mutableCharacterSet removeCharactersInString:@"/@:"];
                       pathPartCharacterSet = [mutableCharacterSet copy];
                   });
     return pathPartCharacterSet;

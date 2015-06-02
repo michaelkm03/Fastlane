@@ -14,7 +14,7 @@
 #import "VCanvasView.h"
 
 #import "VDependencyManager.h"
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 
 // Filters
 #import "VPhotoFilterSerialization.h"

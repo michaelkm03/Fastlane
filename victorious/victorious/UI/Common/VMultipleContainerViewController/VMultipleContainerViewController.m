@@ -18,8 +18,10 @@
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "UIView+AutoLayout.h"
+#import "VCoachmarkDisplayResponder.h"
+#import "VCoachmarkDisplayer.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge, VCoachmarkDisplayResponder, VCoachmarkDisplayer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
@@ -61,7 +63,7 @@ static NSString * const kInitialKey = @"initial";
     {
         _dependencyManager = dependencyManager;
         self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
-        _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey withAddedDependencies:[dependencyManager styleDictionaryForNavigationBar]];
+        _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
@@ -125,17 +127,17 @@ static NSString * const kInitialKey = @"initial";
     if ( !self.didShowInitial )
     {
         UIViewController *initialViewController = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:kInitialKey];
+        NSUInteger index = 0;
         if ( initialViewController != nil )
         {
-            NSUInteger index = [self.viewControllers indexOfObject:initialViewController];
+            index = [self.viewControllers indexOfObject:initialViewController];
             if ( index == NSNotFound )
             {
                 index = 0;
             }
-            [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
-            [self.selector setActiveViewControllerIndex:index];
         }
-        self.didShowInitial = YES;
+        [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
+        [self.selector setActiveViewControllerIndex:index];
     }
 }
 
@@ -159,6 +161,15 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if ( !self.didShowInitial )
+    {
+        if ( !self.isInitialViewController )
+        {
+            [self.collectionView reloadData];
+        }
+        self.didShowInitial = YES;
+    }
     
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];
@@ -386,6 +397,56 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
 {
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
+}
+
+#pragma mark - VCoachmarkDisplayResponder
+
+- (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion
+{
+    NSParameterAssert(completion != nil);
+    for ( NSUInteger index = 0; index < self.viewControllers.count; index++ )
+    {
+        UIViewController *viewController = self.viewControllers[index];
+        if ( [viewController conformsToProtocol:@protocol(VCoachmarkDisplayer)] )
+        {
+            UIViewController <VCoachmarkDisplayer> *coachmarkDisplayer = (UIViewController <VCoachmarkDisplayer> *)viewController;
+            if ( [coachmarkDisplayer respondsToSelector:@selector(selectorIsVisible)] )
+            {
+                if ( ![coachmarkDisplayer selectorIsVisible] )
+                {
+                    //The current displayer doesn't have a visible selector, stop looking for coachmarks it can display
+                    break;
+                }
+            }
+
+            //View controller can display a coachmark
+            NSString *screenIdenifier = [coachmarkDisplayer screenIdentifier];
+            if ( [identifier isEqualToString:screenIdenifier] )
+            {
+                //Found the screen that we're supposed to point out
+                CGRect frame = [self.selector frameOfButtonAtIndex:index];
+                completion(YES, frame);
+                return;
+            }
+        }
+    }
+    
+    UIResponder <VCoachmarkDisplayResponder> *nextResponder = [self.nextResponder targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:nil];
+    if ( nextResponder == nil )
+    {
+        completion(NO, CGRectZero);
+    }
+    else
+    {
+        [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
+    }
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 @end

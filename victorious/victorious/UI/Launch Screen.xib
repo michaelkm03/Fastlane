@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -12,9 +12,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage.png" translatesAutoresizingMaskIntoConstraints="NO" id="giS-8d-1UF">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="1067"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="1104"/>
                     <constraints>
-                        <constraint firstAttribute="height" secondItem="giS-8d-1UF" secondAttribute="width" multiplier="16:9" id="mOY-pO-GsJ"/>
+                        <constraint firstAttribute="height" secondItem="giS-8d-1UF" secondAttribute="width" multiplier="16:9" priority="750" id="mOY-pO-GsJ"/>
                     </constraints>
                 </imageView>
             </subviews>
@@ -22,6 +22,7 @@
             <constraints>
                 <constraint firstItem="giS-8d-1UF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BFJ-bC-lpE"/>
                 <constraint firstAttribute="trailing" secondItem="giS-8d-1UF" secondAttribute="trailing" id="CM0-Am-0pP"/>
+                <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="giS-8d-1UF" secondAttribute="bottom" id="OQy-ad-VLn"/>
                 <constraint firstAttribute="centerX" secondItem="giS-8d-1UF" secondAttribute="centerX" id="iOK-Vm-IEE"/>
                 <constraint firstItem="giS-8d-1UF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="mDe-dc-Pu4"/>
             </constraints>

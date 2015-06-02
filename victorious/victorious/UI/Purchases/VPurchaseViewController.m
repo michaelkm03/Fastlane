@@ -8,7 +8,6 @@
 
 #import "VPurchaseViewController.h"
 #import "VPurchaseManager.h"
-#import "VSettingManager.h"
 #import "VAlertController.h"
 #import "VThemeManager.h"
 #import "VButton.h"
@@ -17,6 +16,9 @@
 #import "VPurchaseStringMaker.h"
 #import "VCreatorInfoHelper.h"
 #import "VDependencyManager.h"
+
+static const CGFloat kRestorePurchaseDescriptionFontSize = 11.0f;
+static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 
 @interface VPurchaseViewController ()
 
@@ -35,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *restoreLoadingLabel;
 @property (weak, nonatomic) IBOutlet VButton *unlockButton;
 @property (weak, nonatomic) IBOutlet VButton *restoreButton;
+@property (weak, nonatomic) IBOutlet UITextView *restoreDescriptionTextView;
 
 @end
 
@@ -59,6 +62,8 @@
     
     NSAssert( self.voteType != nil, @"A valid VVoteType should be populated before loading. See `voteType` property." );
     
+    self.restoreDescriptionTextView.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"RestorePurchaseDescription", @"")
+                                                                                     attributes:[self attributesForRestoreDescription]];
     self.purchaseManager = [VPurchaseManager sharedInstance];
     self.stringMaker = [[VPurchaseStringMaker alloc] init];
     self.product = [self.purchaseManager purchaseableProductForProductIdentifier:self.voteType.productIdentifier];
@@ -79,6 +84,20 @@
 }
 
 #pragma mark - Helpers
+
+- (NSDictionary *)attributesForRestoreDescription
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    
+    return @{ NSFontAttributeName: [UIFont systemFontOfSize:kRestorePurchaseDescriptionFontSize],
+              NSForegroundColorAttributeName:[UIColor colorWithRed:kRestorePurchaseDescriptionGrayLevel
+                                                             green:kRestorePurchaseDescriptionGrayLevel
+                                                              blue:kRestorePurchaseDescriptionGrayLevel
+                                                             alpha:1.0f],
+              NSParagraphStyleAttributeName: paragraphStyle,
+             };
+}
 
 - (void)applyTheme
 {

@@ -51,5 +51,6 @@
 @dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
+@dynamic previewAssets;
 
 @end

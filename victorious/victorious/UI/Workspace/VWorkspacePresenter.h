@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDependencyManager;
+
 @interface VWorkspacePresenter : NSObject
 
-+ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn;
++ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)present;
 

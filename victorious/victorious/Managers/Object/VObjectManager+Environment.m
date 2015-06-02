@@ -6,11 +6,14 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSArray+VMap.h"
 #import "VEnvironment.h"
 #import "VObjectManager+Environment.h"
 #import "VConstants.h"
 
 static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager.Environment.currentEnvironment";
+static NSString * const kEnvironmentsFilename = @"environments";
+static NSString * const kPlist = @"plist";
 
 @implementation VObjectManager (Environment)
 
@@ -45,22 +48,25 @@ static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
     {
-        allEnvironments =
-        @[
-#ifndef V_NO_SWITCH_ENVIRONMENTS
-          
-          [[VEnvironment alloc] initWithName:@"Local" baseURL:[NSURL URLWithString:@"http://local.getvictorious.com"]
-                                       appID:@(kDevAppID)],
-            [[VEnvironment alloc] initWithName:@"Dev" baseURL:[NSURL URLWithString:@"http://dev.getvictorious.com"]
-                                         appID:@(kDevAppID)],
-            [[VEnvironment alloc] initWithName:@"QA" baseURL:[NSURL URLWithString:@"http://qa.getvictorious.com"]
-                                         appID:[[NSBundle mainBundle] objectForInfoDictionaryKey:kQAAppIDKey]],
-            [[VEnvironment alloc] initWithName:@"Staging" baseURL:[NSURL URLWithString:@"https://staging.getvictorious.com"]
-                                         appID:[[NSBundle mainBundle] objectForInfoDictionaryKey:kStagingAppIDKey]],
-#endif
-            [[VEnvironment alloc] initWithName:@"Production" baseURL:[NSURL URLWithString:@"https://api.getvictorious.com"]
-                                         appID:[[NSBundle mainBundle] objectForInfoDictionaryKey:kVictoriousAppIDKey]]
-        ];
+        NSURL *environmentsConfigurationURL = [[NSBundle bundleForClass:self] URLForResource:kEnvironmentsFilename withExtension:kPlist];
+        NSInputStream *fileStream = [[NSInputStream alloc] initWithURL:environmentsConfigurationURL];
+        [fileStream open];
+        NSArray *environmentsPlist = [NSPropertyListSerialization propertyListWithStream:fileStream options:0 format:nil error:nil];
+        [fileStream close];
+        
+        NSMutableArray *environments = [[NSMutableArray alloc] initWithCapacity:environmentsPlist.count];
+        for ( NSDictionary *environmentDictionary in environmentsPlist)
+        {
+            if ( [environmentDictionary isKindOfClass:[NSDictionary class]] )
+            {
+                VEnvironment *environment = [[VEnvironment alloc] initWithDictionary:environmentDictionary];
+                if ( environment != nil )
+                {
+                    [environments addObject:environment];
+                }
+            }
+        }
+        allEnvironments = [NSArray arrayWithArray:environments];
     });
     return allEnvironments;
 }

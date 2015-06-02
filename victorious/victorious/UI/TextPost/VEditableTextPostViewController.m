@@ -11,11 +11,12 @@
 #import "NSArray+VMap.h"
 #import "VTextPostViewModel.h"
 #import "VDependencyManager.h"
-#import "UIView+AutoLayout.h"
 #import "VTextPostTextView.h"
 #import "VEditableTextPostHashtagHelper.h"
 #import "VTextPostImageHelper.h"
 #import "VContentInputAccessoryView.h"
+#import "UIView+AutoLayout.h"
+#import "CCHLinkGestureRecognizer.h"
 
 static NSString * const kDefaultTextKey = @"defaultText";
 static NSString * const kCharacterLimit = @"characterLimit";
@@ -51,13 +52,13 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     [super viewDidLoad];
     
-    self.hashtagHelper = [[VEditableTextPostHashtagHelper alloc] init];
-    self.imageHelper = [[VTextPostImageHelper alloc] init];
-    
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
     [self.view insertSubview:self.overlayButton belowSubview:self.textView];
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];
     [self.overlayButton addTarget:self action:@selector(overlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.hashtagHelper = [[VEditableTextPostHashtagHelper alloc] init];
+    self.imageHelper = [[VTextPostImageHelper alloc] init];
     
     self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
     self.characterCountMax = [self.dependencyManager numberForKey:kCharacterLimit].integerValue;
@@ -65,6 +66,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     self.textView.userInteractionEnabled = YES;
     self.textView.editable = YES;
+    self.textView.selectable = YES;
+    
     CGRect accessoryFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kAccessoryViewHeight );
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:accessoryFrame];
     inputAccessoryView.textInputView = self.textView;

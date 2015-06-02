@@ -200,8 +200,8 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
         }
         case VCameraControlStateCapturingImage:
         {
-            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
             _cameraControlState = cameraControlState;
+            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
             return;
             break;
         }
@@ -235,6 +235,12 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     if (self.cameraControlState == VCameraControlStateRecording)
     {
         [self sendActionsForControlEvents:VCameraControlEventEndRecordingVideo];
+    }
+    BOOL inDefaultState = self.cameraControlState == VCameraControlStateDefault;
+    BOOL captureMode = ((self.captureMode & VCameraControlCaptureModeVideo) && !(self.captureMode & VCameraControlCaptureModeImage));
+    if ( inDefaultState && captureMode)
+    {
+        [self sendActionsForControlEvents:VCameraControlEventFailedRecordingVideo];
     }
 
     BOOL shouldRecognizeImage = self.captureMode | VCameraControlCaptureModeImage;

@@ -177,6 +177,7 @@ UserDidSelectCreateMessage,
 UserDidSendMessage,"Params: TextLength, MediaType"
 UserDidSelectMessage,
 UserDidSelectUserFromSearchRecipient,
+UserDidSelectNotification,
 UserDidFlagConversation,
 ,
 // Discover,

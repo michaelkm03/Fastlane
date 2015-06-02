@@ -39,7 +39,18 @@
 @property (nonatomic, weak) id<VSelectorViewDelegate> delegate; ///< A delegate object to be notified when the selection changes
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The views from which we are selecting
 @property (nonatomic) NSUInteger activeViewControllerIndex; ///< The index of the currently selected view controller in the viewControllers array
+@property (nonatomic, readonly) UIColor *foregroundColor; ///< The foreground color of the selector
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+
+/**
+ Returns the frame of a button at the provided index.
+ This method must be overridden by subclasses of this class.
+
+ @param index The index of the button whose frame should be returned.
+ 
+ @return The frame of the button at the provided index.
+ */
+- (CGRect)frameOfButtonAtIndex:(NSUInteger)index;
 
 @end

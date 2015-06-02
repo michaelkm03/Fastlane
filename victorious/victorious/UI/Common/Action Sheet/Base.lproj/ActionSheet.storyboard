@@ -225,9 +225,9 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="S8s-wt-Bcj" secondAttribute="trailing" id="1gT-MX-p6J"/>
                                     <constraint firstAttribute="centerY" secondItem="S8s-wt-Bcj" secondAttribute="centerY" id="6Sf-C8-Scn"/>
-                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="S8s-wt-Bcj" secondAttribute="bottom" priority="250" constant="40" id="BWG-Y8-vzW"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="S8s-wt-Bcj" secondAttribute="bottom" constant="40" id="BWG-Y8-vzW"/>
                                     <constraint firstItem="S8s-wt-Bcj" firstAttribute="leading" secondItem="nzP-Jb-6eL" secondAttribute="leading" id="VFz-s7-TRc"/>
-                                    <constraint firstItem="S8s-wt-Bcj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nzP-Jb-6eL" secondAttribute="top" priority="250" constant="30" id="Z3L-ci-fNO"/>
+                                    <constraint firstItem="S8s-wt-Bcj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nzP-Jb-6eL" secondAttribute="top" constant="30" id="Z3L-ci-fNO"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="SwP-6a-xtZ" appends="YES" id="kvm-Fq-I3d"/>
@@ -264,13 +264,13 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="480"/>
                     <connections>
-                        <outlet property="AvatarImageView" destination="eob-Pq-0le" id="zYV-ur-tiN"/>
                         <outlet property="actionItemsTableView" destination="dX5-Jj-M61" id="SIw-e4-qbp"/>
                         <outlet property="avatarButton" destination="nGE-Gh-2VM" id="tPl-0O-l0I"/>
                         <outlet property="blurringContainer" destination="fKP-Uj-Ir7" id="40q-wk-3ZO"/>
                         <outlet property="blurringContainerHeightConstraint" destination="U8h-MH-Fxw" id="H2j-Id-X2a"/>
                         <outlet property="cancelButton" destination="wiR-Nr-0cm" id="lUo-1X-jHG"/>
                         <outlet property="gradientContainer" destination="Iq4-PT-v1o" id="EAM-o5-YDj"/>
+                        <outlet property="profileImageView" destination="eob-Pq-0le" id="lCL-Hu-QVe"/>
                         <outlet property="tableView" destination="dX5-Jj-M61" id="hFV-st-RLo"/>
                         <outlet property="tapAwayGestureRecognizer" destination="SwP-6a-xtZ" id="hxB-9R-B2W"/>
                         <outlet property="titleTextView" destination="S8s-wt-Bcj" id="zFs-n9-YKO"/>

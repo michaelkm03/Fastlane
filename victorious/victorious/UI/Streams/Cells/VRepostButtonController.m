@@ -16,7 +16,6 @@
 
 static CGFloat const kScaleActive               = 1.0f;
 static CGFloat const kScaleScaledUp             = 1.4f;
-static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 @interface VRepostButtonController ()
 
@@ -88,14 +87,12 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
         [self.repostButton setImage:self.repostedImage
                            forState:UIControlStateNormal];
         self.repostButton.enabled = NO;
-        self.repostButton.alpha = kRepostedDisabledAlpha;
     }
     else
     {
         [self.repostButton setImage:self.unRepostedImage
                            forState:UIControlStateNormal];
         self.repostButton.enabled = YES;
-        self.repostButton.alpha = 1.0f;
     }
 }
 
@@ -127,7 +124,6 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
      {
          animations();
          button.transform = CGAffineTransformMakeScale( kScaleScaledUp, kScaleScaledUp );
-         button.alpha = kRepostedDisabledAlpha;
      }
                      completion:^(BOOL finished)
      {

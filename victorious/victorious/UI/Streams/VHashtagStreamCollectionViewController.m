@@ -19,6 +19,7 @@
 #import "VStream+Fetcher.h"
 #import "VNoContentView.h"
 #import "VAuthorizedAction.h"
+#import <FBKVOController.h>
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
@@ -72,14 +73,34 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     [super viewDidLoad];
     
-    [self fetchHashtagsForLoggedInUser];
+    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
+                        keyPath:NSStringFromSelector(@selector(hashtags))
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                         action:@selector(hashtagsUpdated)];
+    
+    if ( [VObjectManager sharedManager].mainUser.hashtags.count == 0 )
+    {
+        //Only fetch hashtags for user to update the follow button status and visibility if they've never been loaded before
+        [self fetchHashtagsForLoggedInUser];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self updateUserFollowingStatus];
+}
+
+- (void)hashtagsUpdated
+{
+    [self updateUserFollowingStatus];
 }
 
 #pragma mark - Fetch Users Tags
 
 - (void)fetchHashtagsForLoggedInUser
 {
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    VSuccessBlock successBlock = ^(NSOperation *operation, id result, NSArray *resultObjects)
     {
         [self updateUserFollowingStatus];
     };
@@ -117,14 +138,18 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)dataSourceDidRefresh
 {
-    if ( self.streamDataSource.count == 0 )
+    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
         if ( self.noContentView == nil )
         {
             VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
-            noContentView.titleLabel.text = NSLocalizedString( @"NoHashtagsTitle", @"" );
-            noContentView.messageLabel.text = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
-            noContentView.iconImageView.image = [UIImage imageNamed:@"tabIconHashtag"];
+            if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
+            {
+                noContentView.dependencyManager = self.dependencyManager;
+            }
+            noContentView.title = NSLocalizedString( @"NoHashtagsTitle", @"" );
+            noContentView.message = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
+            noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
             self.noContentView = noContentView;
         }
         
@@ -141,7 +166,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)toggleFollowHashtag
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
+                                                                      dependencyManager:self.dependencyManager];
     [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^(BOOL authorized)
      {
          if (!authorized)
@@ -167,7 +192,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         // Animate follow button
         self.followingSelectedHashtag = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
         
         self.navigationItem.rightBarButtonItem.enabled = YES;
     };
@@ -195,7 +219,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         self.followingSelectedHashtag = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
         
         self.navigationItem.rightBarButtonItem.enabled = YES;
     };
@@ -220,11 +243,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)setFollowingSelectedHashtag:(BOOL)followingSelectedHashtag
 {
-    BOOL isAlreadyNewValue = _followingSelectedHashtag == followingSelectedHashtag;
-    
     _followingSelectedHashtag = followingSelectedHashtag;
     
-    [self updateFollowingStatusAnimated:!isAlreadyNewValue];
+    [self updateFollowingStatus];
 }
 
 - (UIImage *)followButtonImage
@@ -233,7 +254,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     return [UIImage imageNamed:imageName];
 }
 
-- (void)updateFollowingStatusAnimated:(BOOL)animated
+- (void)updateFollowingStatus
 {
     if ( self.streamDataSource.count == 0 )
     {

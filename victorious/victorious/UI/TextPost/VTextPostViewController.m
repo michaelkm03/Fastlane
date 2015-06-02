@@ -10,11 +10,16 @@
 #import "VDependencyManager.h"
 #import "VTextPostTextView.h"
 #import "VTextPostViewModel.h"
-#import "VHashTags.h"
 #import "victorious-Swift.h" // For VTextPostBackgroundLayout
-#import <SDWebImageManager.h>
+#import "UIImageView+WebCache.h"
+#import "CCHLinkTextViewDelegate.h"
+#import "VHashtagSelectionResponder.h"
+#import "VURLSelectionResponder.h"
+#import "UIColor+VBrightness.h"
+#import "VURLDetector.h"
+#import "VTextPostCalloutHelper.h"
 
-@interface VTextPostViewController ()
+@interface VTextPostViewController () <CCHLinkTextViewDelegate>
 
 @property (nonatomic, assign) BOOL hasBeenDisplayed;
 
@@ -24,11 +29,34 @@
 @property (nonatomic, strong) VTextCalloutFormatter *textCalloutFormatter;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *backgroundImageView;
 
+@property (nonatomic, strong) NSDictionary *calloutAttributes;
+@property (nonatomic, strong) NSDictionary *attributes;
+
+@property (nonatomic, strong) VTextPostCalloutHelper *calloutHelper;
+
 @end
 
 @implementation VTextPostViewController
 
-#pragma mark - Initializations
+#pragma mark - Caches
+
++ (NSCache *)backgroundFramesCache
+{
+    static NSCache *backgroundFramesCache;
+    if ( backgroundFramesCache == nil )
+    {
+        backgroundFramesCache = [[NSCache alloc] init];
+    }
+    return backgroundFramesCache;
+}
+
+- (void)updateCachedTextAttributes
+{
+    self.attributes = [self.viewModel textAttributesWithDependencyManager:_dependencyManager];
+    self.calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:_dependencyManager];
+}
+
+#pragma mark - Dependencies and initializations
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -39,19 +67,30 @@
     return viewController;
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    [self updateCachedTextAttributes];
+}
+
+#pragma mark - View controller life cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self updateCachedTextAttributes];
+    
     self.textBackgroundFrameMaker = [[VTextBackgroundFrameMaker alloc] init];
     self.textCalloutFormatter = [[VTextCalloutFormatter alloc] init];
     
+    self.textView.linkDelegate = self;
     self.textView.text = @"";
     self.textView.selectable = NO;
     
-    [self updateTextView];
-    
     [self updateTextIsSelectable];
+    [self updateTextView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -60,12 +99,12 @@
     
     if ( !self.hasBeenDisplayed )
     {
-        [self updateTextView];
         self.hasBeenDisplayed = YES;
+        [self updateTextView];
     }
 }
 
-#pragma mark - View controller lifecycle
+#pragma mark - public
 
 - (void)setText:(NSString *)text
 {
@@ -78,21 +117,6 @@
     [self updateTextView];
 }
 
-- (void)updateTextView
-{
-    if ( self.text == nil )
-    {
-        return;
-    }
-    
-    NSDictionary *calloutAttributes = [self.viewModel calloutAttributesWithDependencyManager:self.dependencyManager];
-    NSDictionary *attributes = [self.viewModel textAttributesWithDependencyManager:self.dependencyManager];
-    NSArray *calloutRanges = [VHashTags detectHashTags:self.text includeHashSymbol:YES];
-    [self updateTextView:self.textPostTextView withText:self.text calloutRanges:calloutRanges textAttributes:attributes calloutAttributes:calloutAttributes];
-}
-
-#pragma mark - public
-
 - (void)setColor:(UIColor *)color
 {
     _color = color;
@@ -102,30 +126,44 @@
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
-    _backgroundImage = backgroundImage;
-    
     self.backgroundImageView.image = backgroundImage;
 }
 
 - (void)setImageURL:(NSURL *)imageURL
 {
-    if ( _imageURL == imageURL && imageURL != nil )
+    [self setImageURL:imageURL animated:NO];
+}
+
+- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated
+{
+    if ( _imageURL == imageURL )
     {
         return;
     }
     
     _imageURL = imageURL;
     
-    [[SDWebImageManager sharedManager] downloadImageWithURL:imageURL
-                          options:0
-                         progress:nil
-                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
-     {
-         if ( image != nil )
-         {
-             self.backgroundImage = image;
-         }
-     }];
+    self.backgroundImageView.image = nil;
+    self.backgroundImageView.alpha = 0.0f;
+    
+    void (^onImageLoaded)() = ^void
+    {
+        self.backgroundImageView.alpha = 1.0f;
+    };
+    
+    [self.backgroundImageView sd_setImageWithURL:_imageURL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        // Only fade in if there was a delay from downloading
+        const BOOL wasDownloaded = cacheType == SDImageCacheTypeNone;
+        if ( animated && wasDownloaded )
+        {
+            [UIView animateWithDuration:.35f animations:onImageLoaded];
+        }
+        else
+        {
+            onImageLoaded();
+        }
+    }];
 }
 
 - (VTextPostTextView *)textView
@@ -140,9 +178,36 @@
     [self updateTextIsSelectable];
 }
 
+#pragma mark -
+
+- (VTextPostCalloutHelper *)calloutHelper
+{
+    if ( _calloutHelper == nil )
+    {
+        _calloutHelper = [[VTextPostCalloutHelper alloc] init];
+    }
+    return _calloutHelper;
+}
+
+- (void)updateTextView
+{
+    if ( self.text != nil )
+    {
+        [self updateTextView:self.textPostTextView
+                    withText:self.text
+               calloutRanges:[self.calloutHelper calloutRangesForText:self.text]
+              textAttributes:self.attributes
+           calloutAttributes:self.calloutAttributes];
+    }
+}
+
+- (void)overlayButtonTapped:(UIButton *)sender
+{
+    self.textView.selectedRange = NSMakeRange(0, 0);
+}
+
 - (void)updateTextIsSelectable
 {
-    self.textView.userInteractionEnabled = self.isTextSelectable;
     self.textView.selectable = self.isTextSelectable;
 }
 
@@ -168,17 +233,72 @@
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:textAttributes];
     textPostTextView.attributedText = attributedText;
     
+    self.textView.tintColor = calloutAttributes[ NSForegroundColorAttributeName ];
+    self.textView.linkTextTouchAttributes = @{ NSBackgroundColorAttributeName : [UIColor clearColor],
+                                               NSForegroundColorAttributeName : [self.textView.tintColor v_colorDarkenedBy:0.25] };
+    
     [self.textCalloutFormatter applyAttributes:calloutAttributes toText:attributedText inCalloutRanges:calloutRanges];
     [self.textCalloutFormatter setKerning:self.viewModel.calloutWordKerning toText:attributedText withCalloutRanges:calloutRanges];
     textPostTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attributedText];
     
-    NSArray *backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:self.textView
-                                                                                  characterWidth:characterBounds.size.width
-                                                                             calloutRangeObjects:calloutRanges];
-    self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
+    NSCache *cache = [[self class] backgroundFramesCache];
+    NSString *cacheKey = [NSString stringWithFormat:@"%@ %@", text, NSStringFromCGRect( textPostTextView.frame )];
+    NSArray *backgroundFrames = [cache objectForKey:cacheKey];
+    if ( backgroundFrames == nil || text.length == 0 )
+    {
+        backgroundFrames = [self.textBackgroundFrameMaker createBackgroundFramesForTextView:textPostTextView
+                                                                             characterWidth:characterBounds.size.width
+                                                                        calloutRangeObjects:calloutRanges];
+        [cache setObject:backgroundFrames forKey:cacheKey];
+    }
     self.textView.backgroundFrames = backgroundFrames;
+    self.textView.backgroundFrameColor = self.viewModel.backgroundColor;
     
     textPostTextView.selectable = wasSelected;
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    NSString *calloutText = (NSString *)value;
+    if ( calloutText == nil || calloutText.length == 0 )
+    {
+        return;
+    }
+    
+    NSDictionary *callouts = [self.calloutHelper calloutsForText:self.text];
+    VTextPostCallout *callout = callouts[ calloutText ];
+    if ( callout.type == VTextCalloutTypeHashtag )
+    {
+        [self hashtagSelected:calloutText];
+    }
+    else if ( callout.type == VTextCalloutTypeURL )
+    {
+        [self urlSelected:calloutText];
+    }
+}
+
+#pragma mark - Handling tapped callouts
+
+- (void)hashtagSelected:(NSString *)hashtag
+{
+    id target = [[self nextResponder] targetForAction:@selector(hashtagSelected:) withSender:self];
+    if ( [target conformsToProtocol:@protocol(VHashtagSelectionResponder)] )
+    {
+        id<VHashtagSelectionResponder> responder = (id<VHashtagSelectionResponder>)target;
+        [responder hashtagSelected:[hashtag substringFromIndex:1]];
+    }
+}
+
+- (void)urlSelected:(NSString *)urlString
+{
+    id target = [[self nextResponder] targetForAction:@selector(URLSelected:) withSender:self];
+    if ( [target conformsToProtocol:@protocol(VURLSelectionResponder)] )
+    {
+        id<VURLSelectionResponder> responder = (id<VURLSelectionResponder>)target;
+        [responder URLSelected:[NSURL URLWithString:urlString]];
+    }
 }
 
 @end

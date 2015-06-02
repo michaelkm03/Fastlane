@@ -140,7 +140,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 #pragma mark - Start/Stop
 
-- (void)startRunningWithCompletion:(void(^)(NSError *))completion
+- (void)startRunningWithVideoEnabled:(BOOL)videoEnabled andCompletion:(void (^)(NSError *))completion
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
@@ -172,6 +172,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         
         AVAuthorizationStatus audioAuthorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
         if (!self.audioInput &&
+            videoEnabled &&
             audioAuthorizationStatus != AVAuthorizationStatusDenied &&
             audioAuthorizationStatus != AVAuthorizationStatusRestricted)
         {
@@ -200,7 +201,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
         }
         
-        if (!self.videoOutput)
+        if (!self.videoOutput && videoEnabled)
         {
             AVCaptureVideoDataOutput *videoOutput = [[AVCaptureVideoDataOutput alloc] init];
             if ([self.captureSession canAddOutput:videoOutput])
@@ -221,7 +222,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             }
         }
         
-        if (!self.audioOutput)
+        if (!self.audioOutput && videoEnabled)
         {
             AVCaptureAudioDataOutput *audioOutput = [[AVCaptureAudioDataOutput alloc] init];
             if ([self.captureSession canAddOutput:audioOutput])
@@ -441,6 +442,8 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     switch ([UIDevice currentDevice].orientation)
     {
         case UIDeviceOrientationPortrait:
+        case UIDeviceOrientationFaceUp:
+        case UIDeviceOrientationFaceDown:
             orientation = AVCaptureVideoOrientationPortrait;
             break;
         case UIDeviceOrientationLandscapeRight:

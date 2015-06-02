@@ -26,9 +26,10 @@
 #import "MBProgressHUD.h"
 #import "VLaunchScreenProvider.h"
 
+static const NSUInteger kCharacterLimit = 1024;
+
 @interface VMessageContainerViewController ()
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
 @end
@@ -52,6 +53,7 @@
     self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
     self.keyboardBarViewController.hideAccessoryBar = YES;
     self.keyboardBarViewController.textStorage.disableSearching = YES;
+    self.keyboardBarViewController.characterLimit = kCharacterLimit;
     
     [self addBackgroundImage];
     [self hideKeyboardBarIfNeeded];

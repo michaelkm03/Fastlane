@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence, VAsset, VNode, VDependencyManager;
+@class VSequence, VAsset, VNode, VDependencyManager, VUser;
 
 typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 {
@@ -24,6 +24,8 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 - (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
 - (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
+
+- (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController;
 
 /**
  *  Presents remix UI on a viewcontroller with a given sequence to remix.

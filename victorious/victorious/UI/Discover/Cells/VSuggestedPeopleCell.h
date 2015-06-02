@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VSuggestedPeopleCell : UITableViewCell
+#import "VHasManagedDependencies.h"
 
-+ (NSInteger)cellHeight;
+@interface VSuggestedPeopleCell : UITableViewCell <VHasManagedDependencies>
+
++ (CGFloat)cellHeight;
 
 @end

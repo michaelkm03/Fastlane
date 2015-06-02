@@ -139,6 +139,11 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 - (void)setFollowing:(BOOL)following
             animated:(BOOL)animated
 {
+    if (self.following == following)
+    {
+        return;
+    }
+    
     void (^animations)() = ^(void)
     {
         self.following = following;
@@ -164,6 +169,13 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 }
 
 #pragma mark - UIControl
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    
+    self.imageView.alpha = enabled ? 1.0f : 0.5f;
+}
 
 - (void)setHighlighted:(BOOL)highlighted
 {

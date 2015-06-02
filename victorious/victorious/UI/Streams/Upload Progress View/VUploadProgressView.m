@@ -10,6 +10,7 @@
 #import "VUploadManager.h"
 #import "VUploadProgressView.h"
 #import "VUploadTaskInformation.h"
+#import <FBKVOController.h>
 
 static const NSTimeInterval kAnimationDuration = 0.1;
 static const CGFloat kAccessoryButtonWidth = 44.0f;
@@ -72,21 +73,34 @@ static const CGFloat kAccessoryButtonWidth = 44.0f;
         return;
     }
     
-    if (_uploadTask)
+    if ( _uploadTask != nil )
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:VUploadManagerTaskProgressNotification object:_uploadTask];
+        [self.KVOController unobserve:_uploadTask];
     }
     _uploadTask = uploadTask;
     self.previewImageView.image = uploadTask.previewImage;
     [self setProgress:0 animated:NO];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskProgress:) name:VUploadManagerTaskProgressNotification object:uploadTask];
+    [self.KVOController observe:_uploadTask
+                        keyPath:NSStringFromSelector(@selector(bytesSent))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                         action:@selector(updateProgressAmount)];
 }
 
 - (void)setState:(VUploadProgressViewState)state
 {
     _state = state;
     [self updateViewAccordingToCurrentState];
+}
+
+- (void)updateProgressAmount
+{
+    CGFloat progressPercent = 0;
+    CGFloat totalBytes = (CGFloat)self.uploadTask.expectedBytesToSend;
+    if ( totalBytes != 0 )
+    {
+        progressPercent = (CGFloat)self.uploadTask.bytesSent / totalBytes;
+    }
+    [self setProgress:progressPercent animated:YES];
 }
 
 - (void)setProgress:(CGFloat)progressPercent animated:(BOOL)animated
@@ -99,14 +113,17 @@ static const CGFloat kAccessoryButtonWidth = 44.0f;
             [self layoutIfNeeded];
         }
     };
-    if (animated)
-    {
-        [UIView animateWithDuration:kAnimationDuration animations:animations];
-    }
-    else
-    {
-        animations();
-    }
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       if (animated)
+                       {
+                           [UIView animateWithDuration:kAnimationDuration animations:animations];
+                       }
+                       else
+                       {
+                           animations();
+                       }
+                   });
 }
 
 - (void)updateViewAccordingToCurrentState
@@ -125,7 +142,7 @@ static const CGFloat kAccessoryButtonWidth = 44.0f;
             self.uploadingIcon.hidden = NO;
             break;
             
-        case VUploadProgressViewStateCancelling:
+        case VUploadProgressViewStateCanceling:
             self.titleLabel.text = NSLocalizedString(@"Cancelling...", @"");
             self.uploadingIcon.hidden = NO;
             break;
@@ -171,16 +188,6 @@ static const CGFloat kAccessoryButtonWidth = 44.0f;
     {
         [self.delegate accessoryButtonTappedInUploadProgressView:self];
     }
-}
-
-#pragma mark - NSNotification handlers
-
-- (void)taskProgress:(NSNotification *)notification
-{
-    int64_t bytesSent = [notification.userInfo[VUploadManagerBytesSentUserInfoKey] longLongValue];
-    int64_t totalBytes = [notification.userInfo[VUploadManagerTotalBytesUserInfoKey] longLongValue];
-    CGFloat progressPercent = (CGFloat)bytesSent / (CGFloat)totalBytes;
-    [self setProgress:progressPercent animated:YES];
 }
 
 @end

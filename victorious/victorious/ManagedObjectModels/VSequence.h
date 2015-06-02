@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "VStreamItem.h"
+#import "VImageAsset.h"
 
-@class VAdBreak, VComment, VEndCard, VNode, VPollResult, VTracking, VUser, VVoteResult;
+@class VAdBreak, VComment, VNode, VPollResult, VTracking, VUser, VVoteResult, VEndCard, VImageAsset;
 
 @interface VSequence : VStreamItem
 
@@ -46,6 +47,8 @@
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
+@property (nonatomic, retain) NSSet *previewAssets;
+
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
@@ -99,5 +102,10 @@
 - (void)removeVoteResultsObject:(VVoteResult *)value;
 - (void)addVoteResults:(NSSet *)values;
 - (void)removeVoteResults:(NSSet *)values;
+
+- (void)addPreviewAssetsObject:(VImageAsset *)values;
+- (void)removePreviewAssetsObject:(VImageAsset *)values;
+- (void)addPreviewAssets:(NSSet *)values;
+- (void)removePreviewAssets:(NSSet *)values;
 
 @end

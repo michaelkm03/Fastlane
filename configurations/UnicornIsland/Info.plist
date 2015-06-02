@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Unicorn Island</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}unicornisland</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}UnicornIsland</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb535837833236287</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>535837833236287</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>pJ372CSMpG74ItT70GQFMYEbv</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>pDkk5XtGYQxNApJEVYPXWrUrJ8X81GqlN3S246qsfVjhdKYVqR</string>
+	<key>VictoriousAppID</key>
+	<integer>51</integer>
+	<key>StagingAppID</key>
+	<integer>67</integer>
+	<key>QAAppID</key>
+	<integer>49</integer>
+	<key>CreatorSalutation</key>
+	<string>Unicorn Island</string>
+	<key>FlurryAPIKey</key>
+	<string>9VTV7XB3S8JH4TWN8SZT</string>
+</dict>
+</plist>

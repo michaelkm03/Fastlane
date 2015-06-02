@@ -51,6 +51,7 @@
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
 NSString * const VWorkspaceFlowControllerPreloadedImageKey = @"preloadedImageKey";
+NSString * const VWorkspaceFlowControllerContextKey = @"workspaceContext";
 
 static const char kAssociatedObjectKey;
 
@@ -83,23 +84,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 @end
 
 @implementation VWorkspaceFlowController
-
-+ (instancetype)workspaceFlowControllerWithoutADependencyMangerWithInjection:(NSDictionary *)injectedDependencies
-{
-    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:@"defaultWorkspaceDestination"
-                                                                               withAddedDependencies:injectedDependencies];
-    return workspaceFlowController;
-}
-
-+ (instancetype)workspaceFlowControllerWithoutADependencyManger
-{
-    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                              forKey:VDependencyManagerWorkspaceFlowKey];
-    return workspaceFlowController;
-}
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -259,7 +243,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]];
+    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]
+                                                                                 dependencyManager:self.dependencyManager];
     [self.workspacePresenter present];
     return NO;
 }
@@ -309,6 +294,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         case VWorkspaceFlowControllerInitialCaptureStateVideo:
             self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
             break;
+    }
+    if ([self.cameraViewController respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.cameraViewController setDependencyManager:self.dependencyManager];
     }
     self.cameraViewController.shouldSkipPreview = YES;
     self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
@@ -554,6 +543,23 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                           toState:VWorkspaceFlowControllerStatePublish];
     };
     [self.flowNavigationController pushViewController:imageWorkspaceViewController animated:YES];
+}
+
+- (void)videoToolControllerDidFail:(VVideoToolController *)videoToolController
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Video failed to load", @"")
+                                                                             message:NSLocalizedString(@"We encountered an error trying to edit this video.", @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction *action)
+                                {
+                                    [self notifyDelegateOfCancel];
+                                }]];
+    [self.flowRootViewController presentViewController:alertController
+                                              animated:YES
+                                            completion:nil];
+
 }
 
 @end

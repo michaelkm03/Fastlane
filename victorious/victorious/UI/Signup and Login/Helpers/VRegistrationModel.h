@@ -16,6 +16,5 @@
 @property (nonatomic, strong) NSURL *profileImageURL;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *locationText;
-@property (nonatomic, strong) NSString *taglineText;
 
 @end

@@ -1,9 +1,9 @@
 //
 //  VStream.h
-//  victorious
+//  
 //
-//  Created by Michael Sena on 10/31/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 5/26/15.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -17,15 +17,26 @@
 @property (nonatomic, retain) NSString * apiPath;
 @property (nonatomic, retain) NSNumber * count;
 @property (nonatomic, retain) NSString * filterName;
-@property (nonatomic, retain) NSOrderedSet *streamItems;
-@property (nonatomic, retain) NSOrderedSet *marqueeItems;
 @property (nonatomic, retain) NSString * hashtag;
-@property (nonatomic, retain) NSString * trackingIdentifier;
 @property (nonatomic, retain) NSNumber * isUserPostAllowed;
+@property (nonatomic, retain) NSString * trackingIdentifier;
+@property (nonatomic, retain) NSString * streamId;
+@property (nonatomic, retain) NSOrderedSet *marqueeItems;
+@property (nonatomic, retain) NSOrderedSet *streamItems;
 @end
 
 @interface VStream (CoreDataGeneratedAccessors)
 
+- (void)insertObject:(VStreamItem *)value inMarqueeItemsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromMarqueeItemsAtIndex:(NSUInteger)idx;
+- (void)insertMarqueeItems:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeMarqueeItemsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInMarqueeItemsAtIndex:(NSUInteger)idx withObject:(VStreamItem *)value;
+- (void)replaceMarqueeItemsAtIndexes:(NSIndexSet *)indexes withMarqueeItems:(NSArray *)values;
+- (void)addMarqueeItemsObject:(VStreamItem *)value;
+- (void)removeMarqueeItemsObject:(VStreamItem *)value;
+- (void)addMarqueeItems:(NSOrderedSet *)values;
+- (void)removeMarqueeItems:(NSOrderedSet *)values;
 - (void)insertObject:(VStreamItem *)value inStreamItemsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromStreamItemsAtIndex:(NSUInteger)idx;
 - (void)insertStreamItems:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
@@ -36,5 +47,4 @@
 - (void)removeStreamItemsObject:(VStreamItem *)value;
 - (void)addStreamItems:(NSOrderedSet *)values;
 - (void)removeStreamItems:(NSOrderedSet *)values;
-
 @end

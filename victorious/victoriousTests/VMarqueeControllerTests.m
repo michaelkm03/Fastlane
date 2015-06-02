@@ -16,6 +16,7 @@
 #import "VDependencyManager.h"
 #import "VObjectManager.h"
 #import "VDependencyManager+VObjectManager.h"
+#import "VUploadManager.h"
 
 @interface VMarqueeControllerTests : XCTestCase
 
@@ -30,7 +31,7 @@
     [super setUp];
     
     //Setup a dependencyManager with a valid objectManager to allow the marquee to fetch a stream during init
-    [VObjectManager setupObjectManager];
+    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
     VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
                                                                                 configuration:
                                              @{

@@ -8,12 +8,15 @@
 
 #import "VDefaultProfileImageView.h"
 
-// Utilities
-#import "VThemeManager.h"
-#import "VSettingManager.h"
-
 // Categories
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImage+VTint.h"
+
+@interface VDefaultProfileImageView ()
+
+@property (nonatomic, strong) NSURL *imageURL;
+
+@end
 
 @implementation VDefaultProfileImageView
 
@@ -26,7 +29,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self setup];
     }
@@ -35,32 +38,53 @@
 
 - (void)setup
 {
-    self.image = [self defaultImage];
-    
-    //Was previously accent color on A and D
-    NSString *colorKey = kVLinkColor;
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
-    
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
     self.clipsToBounds = YES;
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+        
+    self.backgroundColor = [UIColor whiteColor];
+    self.tintColor = [UIColor darkGrayColor];
+}
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    super.tintColor = [tintColor colorWithAlphaComponent:0.3f];
+    // Re-render placeholder image if necessary
+    if (_imageURL == nil || [_imageURL absoluteString].length == 0)
+    {
+        self.image = [self placeholderImage];
+    }
 }
 
 - (void)setProfileImageURL:(NSURL *)url
 {
-    [self sd_setImageWithURL:url
-            placeholderImage:[self defaultImage]];
-    self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
+    _imageURL = url;
+    [self sd_setImageWithURL:url placeholderImage:[self placeholderImage]];
 }
 
-- (UIImage *)defaultImage
+- (UIImage *)placeholderImage
 {
     UIImage *image = [UIImage imageNamed:@"profile_thumb"];
     if (CGRectGetHeight(self.bounds) > image.size.height)
     {
         image = [UIImage imageNamed:@"profile_full"];
     }
-    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    // Create unique key from tint color
+    NSString *tintKey = [self.tintColor description];
+    
+    // Check cache for already tinted image
+    SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
+    UIImage *cachedImage = [cache imageFromMemoryCacheForKey:tintKey];
+    if (cachedImage != nil)
+    {
+        return cachedImage;
+    }
+    
+    // Tint image and store in cache
+    UIImage *tintedImage = [image v_tintedTemplateImageWithColor:[self tintColor]];
+    [cache storeImage:tintedImage forKey:tintKey];
+    
+    return tintedImage;
 }
 
 @end

@@ -46,7 +46,13 @@
                           is being presented when the app is launched with a deep link URL.  If there
                           is no comment, simply pass `nil`.
  */
-- (UIViewController *)contentViewForSequence:(VSequence *)sequence commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage;
+- (UIViewController *)contentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage;
+
+/**
+ Instantiates and returns a web browser content view to display the specified URL.
+ Calling code is responding for presenting, this method only creates the view controller.
+ */
+- (UIViewController *)webContentViewControllerWithURL:(NSURL *)url;
 
 @end
 

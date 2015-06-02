@@ -61,20 +61,26 @@
     {
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         
-        // Zap the existing hashtags if this is a refresh
-        if ( pageType == VPageTypeFirst )
-        {
-            mainUser.hashtags = nil;
-        }
-        
         // Add hashtags to main user object
         if (resultObjects.count > 0)
         {
-            NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+            NSMutableOrderedSet *hashtagSet = [[NSMutableOrderedSet alloc] init];
+            if ( pageType != VPageTypeFirst )
+            {
+                hashtagSet = [mainUser.hashtags mutableCopy];
+            }
+            
             [hashtagSet addObjectsFromArray:resultObjects];
             
-            mainUser.hashtags = hashtagSet;
-            [mainUser.managedObjectContext saveToPersistentStore:nil];
+            if ( [self shouldUpdateUserForHashtags:hashtagSet] )
+            {
+                mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
+                [mainUser.managedObjectContext saveToPersistentStore:nil];
+            }
+        }
+        else if ( pageType == VPageTypeFirst )
+        {
+            mainUser.hashtags = nil;
         }
 
         if (success != nil)
@@ -103,7 +109,7 @@
     }
     hashtagFilter.perPageNumber = [NSNumber numberWithInteger:pageLimit];
     
-    return [self.paginationManager loadFilter:hashtagFilter withPageType:VPageTypeFirst successBlock:fullSuccess failBlock:fullFailure];
+    return [self.paginationManager loadFilter:hashtagFilter withPageType:pageType successBlock:fullSuccess failBlock:fullFailure];
 }
 
 - (RKManagedObjectRequestOperation *)subscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
@@ -131,8 +137,8 @@
         newTag.tag = hashtag;
         
         [hashtagSet addObject:newTag];
-        mainUser.hashtags = hashtagSet;
-        [mainUser.managedObjectContext save:nil];
+        mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
+        [mainUser.managedObjectContext saveToPersistentStore:nil];
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowHashtag];
         
@@ -173,13 +179,14 @@
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
-        for (VHashtag *aTag in hashtagSet)
+        NSOrderedSet *enumerationSet = [mainUser.hashtags mutableCopy];
+        for (VHashtag *aTag in enumerationSet)
         {
             if ([aTag.tag isEqualToString:hashtag])
             {
+                NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
                 [hashtagSet removeObject:aTag];
-                mainUser.hashtags = hashtagSet;
+                mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
                 [mainUser.managedObjectContext saveToPersistentStore:nil];
                 break;
             }
@@ -242,6 +249,37 @@
            parameters:nil
          successBlock:fullSuccess
             failBlock:fullFailure];
+}
+
+- (BOOL)shouldUpdateUserForHashtags:(NSOrderedSet *)hashtags
+{
+    NSOrderedSet *userHashtags = self.mainUser.hashtags;
+    if ( userHashtags.count == hashtags.count )
+    {
+        //We have the same count of hashtags, check each hashtag inside to make sure we have the same hashtags
+        __block BOOL needsUpdate = NO;
+        [userHashtags enumerateObjectsUsingBlock:^(VHashtag *followedHashtag, NSUInteger idx, BOOL *stop)
+        {
+            NSInteger foundIndex = [hashtags indexOfObjectPassingTest:^BOOL(VHashtag *hashtag, NSUInteger idx, BOOL *innerStop)
+            {
+                BOOL found = [hashtag.tag isEqualToString:followedHashtag.tag];
+                if ( found )
+                {
+                    *innerStop = YES;
+                }
+                return found;
+            }];
+            if ( foundIndex == NSNotFound )
+            {
+                //Found a discrepancy, need to update
+                needsUpdate = YES;
+                *stop = YES;
+            }
+        }];
+        return needsUpdate;
+    }
+    //Different count of hashtags, need to update
+    return YES;
 }
 
 @end

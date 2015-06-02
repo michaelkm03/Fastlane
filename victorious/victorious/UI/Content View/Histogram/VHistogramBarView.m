@@ -7,14 +7,7 @@
 //
 
 #import "VHistogramBarView.h"
-
 #import "VThemeManager.h"
-
-#ifdef __LP64__
-#define FLOOR(a) floor(a)
-#else
-#define FLOOR(a) floorf(a)
-#endif
 
 static const CGFloat kMinimumTickHeight = 3.0f;
 static const CGFloat kMaximumTickHeight = 19.0f;
@@ -92,7 +85,7 @@ static const CGFloat kColorAlpha = 0.6f;
     
     CGFloat tickSpace = CGRectGetWidth(self.bounds) - self.tickSpacing;
     
-    return (NSInteger)FLOOR(tickSpace / spacePerTick);
+    return (NSInteger)VFLOOR(tickSpace / spacePerTick);
 }
 
 #pragma mark - Public Methods

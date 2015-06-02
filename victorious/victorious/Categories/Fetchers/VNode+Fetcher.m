@@ -14,10 +14,34 @@
 
 static NSString * const km3u8MimeType = @"application/x-mpegURL";
 static NSString * const kmp4MimeType = @"video/mp4";
+static NSString * const kTextAsset = @"text";
 
 @implementation VNode (Fetcher)
 
 #pragma mark - Public Methods
+
+- (VAnswer *)answerA
+{
+    if (![self isPoll])
+    {
+        return nil;
+    }
+    return [[self firstAnswers] firstObject];
+}
+
+- (VAnswer *)answerB
+{
+    if (![self isPoll])
+    {
+        return nil;
+    }
+    VAnswer *answerB = nil;
+    if ([self firstAnswers].count > 1)
+    {
+        answerB = [self firstAnswers][1];
+    }
+    return answerB;
+}
 
 - (NSArray *)firstAnswers
 {
@@ -52,7 +76,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
     
     [self.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
      {
-         if ( asset.data != nil && [asset.type isEqualToString:@"text"] && [asset.data isKindOfClass:[NSString class]] )
+         if ( asset.data != nil && [asset.type isEqualToString:kTextAsset] && [asset.data isKindOfClass:[NSString class]] )
          {
              textAsset = asset;
              *stop = YES;

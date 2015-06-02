@@ -19,14 +19,14 @@
 /* Class = "UIButton"; normalTitle = "Done"; ObjectID = "9Wi-As-OwD"; */
 "9Wi-As-OwD.normalTitle" = "Fertig";
 
+/* Class = "UILabel"; text = "I'm at least 13 years old and agree to the Terms of Service"; ObjectID = "87v-KS-JzW"; */
+"87v-KS-JzW.text" = "Ich bin mindestens 13 Jahre alt und akzeptiere die Nutzungsbedingungen";
+
 /* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "A3z-ra-4Af"; */
 "A3z-ra-4Af.placeholder" = "E-Mail";
 
 /* Class = "UILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
 "CGW-Kx-wFZ.text" = "CODE EINGEBEN";
-
-/* Class = "UILabel"; text = "I'm at least 13 years old and agree to the Terms of Service"; ObjectID = "EGg-eb-7Dm"; */
-"EGg-eb-7Dm.text" = "Ich bin mindestens 13 Jahre alt und akzeptiere die Nutzungsbedingungen";
 
 /* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "Jbh-n4-soS"; */
 "Jbh-n4-soS.placeholder" = "E-Mail";
@@ -52,17 +52,11 @@
 /* Class = "UINavigationItem"; title = "Login with E-mail"; ObjectID = "d29-FA-lll"; */
 "d29-FA-lll.title" = "Mit E-Mail anmelden";
 
-/* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "g23-E6-rHp"; */
-"g23-E6-rHp.placeholder" = "Passwort bestätigen";
-
 /* Class = "UILabel"; text = "Sign up with Email"; ObjectID = "gWK-fr-OZX"; */
 "gWK-fr-OZX.text" = "Per E-Mail registrieren";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "jhx-0Z-CyE"; */
 "jhx-0Z-CyE.normalTitle" = "Abbrechen";
-
-/* Class = "UILabel"; text = "Tell us about yourself..."; ObjectID = "kzi-75-z6l"; */
-"kzi-75-z6l.text" = "Erzähle uns ein wenig über dich selbst:";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
 "pDv-b6-X4m.placeholder" = "Ort";

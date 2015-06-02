@@ -12,6 +12,9 @@
 #import "VUser.h"
 #import "VUserManager.h"
 #import "VConstants.h"
+#import "VUser+RestKit.h"
+#import "VConversation.h"
+#import "VPollResult+RestKit.h"
 
 typedef NS_ENUM(NSInteger, VLastLoginType)
 {
@@ -30,9 +33,10 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
 
 + (VUserManager *)sharedInstance
 {
-    static  VUserManager       *sharedInstance;
-    static  dispatch_once_t     onceToken;
-    dispatch_once(&onceToken, ^{
+    static VUserManager *sharedInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
         sharedInstance = [[self alloc] init];
     });
                   
@@ -41,9 +45,9 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
 
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    NSInteger  loginType  = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
-    NSString  *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
-    switch (loginType)
+    NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
+    NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
+    switch ( loginType )
     {
         case kVLastLoginTypeFacebook:
         {
@@ -68,9 +72,9 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         case kVLastLoginTypeNone:
         default:
         {
-            if (errorBlock)
+            if ( errorBlock != nil )
             {
-                errorBlock(nil);
+                errorBlock( nil, NO );
             }
             break;
         }
@@ -106,7 +110,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             }
             else if (errorBlock)
             {
-                errorBlock(nil);
+                errorBlock(nil, NO);
             }
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)
@@ -117,32 +121,40 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
                 [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                             SuccessBlock:success
                                                                failBlock:^(NSOperation *operation, NSError *error)
-                {
-                    if (errorBlock)
-                    {
-                        errorBlock(error);
-                    }
-                }];
+                 {
+                     if (errorBlock)
+                     {
+                         errorBlock(error, NO);
+                     }
+                 }];
             }
             else if (errorBlock)
             {
-                errorBlock(error);
+                errorBlock(error, NO);
             }
         };
         [[VObjectManager sharedManager] createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                    SuccessBlock:success
                                                       failBlock:failed];
     };
+    
+    void (^failureBlock)() = ^(NSError *error)
+    {
+        if (errorBlock)
+        {
+            errorBlock(error, YES);
+        }
+    };
 
     if (stored)
     {
-        [[VFacebookManager sharedFacebookManager] loginWithStoredTokenOnSuccess:successBlock onFailure:errorBlock];
+        [[VFacebookManager sharedFacebookManager] loginWithStoredTokenOnSuccess:successBlock onFailure:failureBlock];
     }
     else
     {
         [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent
                                                           onSuccess:successBlock
-                                                          onFailure:errorBlock];
+                                                          onFailure:failureBlock];
     }
 }
 
@@ -181,7 +193,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     {
         if (errorBlock)
         {
-            errorBlock(nil);
+            errorBlock(nil, YES);
         }
         return;
     }
@@ -194,7 +206,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             if (errorBlock)
             {
-                errorBlock(error);
+                errorBlock(error, YES);
             }
             return;
         }
@@ -213,7 +225,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             {
                 if (errorBlock)
                 {
-                    errorBlock(nil);
+                    errorBlock(nil, NO);
                 }
             }
             else
@@ -237,7 +249,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             {
                 if (errorBlock)
                 {
-                    errorBlock(error);
+                    errorBlock(error, NO);
                 }
             };
              
@@ -252,7 +264,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             {
                 if (errorBlock)
                 {
-                    errorBlock(error);
+                    errorBlock(error, NO);
                 }
             }
         };
@@ -271,7 +283,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     {
         if (errorBlock)
         {
-            errorBlock(nil);
+            errorBlock(nil, NO);
         }
         return;
     }
@@ -284,7 +296,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             if (errorBlock)
             {
-                errorBlock(nil);
+                errorBlock(nil, NO);
             }
         }
         else
@@ -303,7 +315,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     {
         if (errorBlock)
         {
-            errorBlock(error);
+            errorBlock(error, NO);
         }
         VLog(@"Error in victorious Login: %@", error);
     };
@@ -317,7 +329,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     {
         if (errorBlock)
         {
-            errorBlock(nil);
+            errorBlock(nil, NO);
         }
         return;
     }
@@ -329,7 +341,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             if (errorBlock)
             {
-                errorBlock(nil);
+                errorBlock(nil, NO);
             }
         }
         else
@@ -348,7 +360,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     {
         if (errorBlock)
         {
-            errorBlock(error);
+            errorBlock(error, NO);
         }
         VLog(@"Error in victorious Login: %@", error);
     };
@@ -359,12 +371,43 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
                                                      failBlock:fail];
 }
 
-- (void)logout
+- (void)userDidLogout
 {
-    [[VObjectManager sharedManager] logout];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAccountIdentifierDefaultsKey];
+    
     [self clearSavedPassword];
+    
+    //Delete all conversations / pollresults for the user!
+    NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    [context performBlockAndWait:^(void)
+     {
+         [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
+         
+         NSFetchRequest *allConversations = [[NSFetchRequest alloc] init];
+         [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
+         [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+         
+         NSArray *conversations = [context executeFetchRequest:allConversations error:nil];
+         for (NSManagedObject *conversation in conversations)
+         {
+             [context deleteObject:conversation];
+         }
+         
+         NSFetchRequest *allPollResults = [[NSFetchRequest alloc] init];
+         [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
+         [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+         
+         NSArray *pollResults = [context executeFetchRequest:allPollResults error:nil];
+         for (NSManagedObject *pollResult in pollResults)
+         {
+             [context deleteObject:pollResult];
+         }
+         
+         [context save:nil];
+     }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
 
 #pragma mark - Keychain

@@ -11,7 +11,6 @@
 #import "VObjectManager+Analytics.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
-#import "VSettingManager.h"
 #import "VTracking.h"
 #import "VFirstInstallManager.h"
 
@@ -104,6 +103,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 {
     self.firstLaunch = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
+    [[VTrackingManager sharedInstance] clearSessionParameters];
 }
 
 #pragma mark - Tracking
@@ -112,6 +112,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 {
     NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingStartKey] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VObjectManager sharedManager] resetSessionID];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
 }
 
@@ -144,8 +145,8 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
-    [self sessionDidEnd];
     [self trackApplicationBackground];
+    [self sessionDidEnd];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification

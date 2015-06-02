@@ -25,15 +25,21 @@
 #import "VPushNotificationManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "VMultipleContainer.h"
+#import "VFollowingHelper.h"
+#import "VFollowResponder.h"
+#import "VURLSelectionResponder.h"
+#import "VCoachmarkManager.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
+
+@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @end
 
@@ -45,6 +51,9 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
+        _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
+                                                  viewControllerToPresentOn:self];
     }
     return self;
 }
@@ -55,22 +64,16 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 {
     [super viewDidAppear:animated];
     
+    BOOL didShowFirstTimeUserExperience = NO;
     if ( !self.hasBeenShown )
     {
         self.hasBeenShown = YES;
-        [self viewDidAppearFirstTime];
+        didShowFirstTimeUserExperience = [self showFirstTimeUserExperience];
     }
-}
-
-#pragma mark - First appearance (i.e. when app loads and first presents views from template)
-
-- (void)viewDidAppearFirstTime
-{
-    BOOL didShow = [self showFirstTimeUserExperience];
-    if ( !self.pushNotificationsRegistered && !didShow )
+    
+    if ( !didShowFirstTimeUserExperience && ![[VPushNotificationManager sharedPushNotificationManager] started] )
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-        self.pushNotificationsRegistered = YES;
     }
 }
 
@@ -116,7 +119,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - Content View
 
-- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
+- (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
     VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
     
@@ -129,7 +132,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         return;
     }
     
-    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence commentID:commentID placeholderImage:placeholderImage];
+    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence inStreamWithID:streamId commentID:commentID placeholderImage:placeholderImage];
     if ( contentView != nil )
     {
         if ( self.presentedViewController )
@@ -148,6 +151,11 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 }
 
 - (void)failedToLoadSequenceInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)userWantsToDismissLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -266,6 +274,38 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
+}
+
+#pragma mark - VFollowing
+
+- (void)followUser:(VUser *)user
+    withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper followUser:user
+                   withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user
+      withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper unfollowUser:user
+                     withCompletion:completion];
+}
+
+#pragma mark - VURLSelectionResponder
+
+- (void)URLSelected:(NSURL *)URL
+{
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:URL];
+    if ( contentView != nil )
+    {
+        if ( self.presentedViewController )
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
+        [self presentViewController:contentView animated:YES completion:nil];
+    }
 }
 
 @end

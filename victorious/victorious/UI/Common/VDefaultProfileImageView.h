@@ -15,6 +15,5 @@
 
 - (void)setup;
 - (void)setProfileImageURL:(NSURL *)url;
-- (UIImage *)defaultImage;
 
 @end

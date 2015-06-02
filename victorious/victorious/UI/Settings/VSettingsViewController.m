@@ -12,7 +12,6 @@
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VSettingManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"
@@ -28,6 +27,8 @@
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
+#import "VDependencyManager+VCoachmarkManager.h"
+#import "VCoachmarkManager.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -37,6 +38,7 @@ static const NSInteger kPushNotificationsButtonIndex = 3;
 static const NSInteger kResetPurchasesButtonIndex    = 4;
 static const NSInteger kServerEnvironmentButtonIndex = 5;
 static const NSInteger kTrackingButtonIndex          = 6;
+static const NSInteger kResetCoachmarksIndex         = 7;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kSupportEmailKey = @"email.support";
@@ -54,6 +56,8 @@ static NSString * const kSupportEmailKey = @"email.support";
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
+@property (nonatomic, assign) BOOL showChangePassword;
+@property (nonatomic, assign) BOOL showResetCoachmarks;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -128,9 +132,17 @@ static NSString * const kSupportEmailKey = @"email.support";
     self.showTrackingAlertSetting = YES;
 #endif
     
-    self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
+#ifdef V_SHOW_COACHMARK_RESET
+    self.showResetCoachmarks = YES;
+    [self updateResetCoachmarksCell];
+#else
+    self.showResetCoachmarks = NO;
+#endif
     
+    self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     self.showPushNotificationSettings = YES;
+    
+    self.showChangePassword = [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
@@ -140,6 +152,19 @@ static NSString * const kSupportEmailKey = @"email.support";
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
+}
+
+- (void)updateResetCoachmarksCell
+{
+    if ( self.showResetCoachmarks )
+    {
+        UITableViewCell *tableViewCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kResetCoachmarksIndex inSection:0]];
+        UILabel *label = tableViewCell.textLabel;
+        NSArray *shownCoachmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"shownCoachmarks"];
+        BOOL canResetCoachmarks = shownCoachmarks != nil && shownCoachmarks.count > 0;
+        label.textColor = canResetCoachmarks ? [UIColor blueColor] : [UIColor lightGrayColor];
+        tableViewCell.userInteractionEnabled = canResetCoachmarks;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -184,6 +209,15 @@ static NSString * const kSupportEmailKey = @"email.support";
         NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
     }
+    
+    if ( indexPath.row == kResetCoachmarksIndex )
+    {
+        //Reset coachmarks
+        [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
+        [self updateResetCoachmarksCell];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)loginStatusDidChange:(NSNotification *)note
@@ -218,9 +252,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
-        
-        [[VUserManager sharedInstance] logout];
-        
+        [[VObjectManager sharedManager] logout];
         [self updateLogoutButtonState];
     }
     else
@@ -275,9 +307,20 @@ static NSString * const kSupportEmailKey = @"email.support";
             return 0;
         }
     }
+    else if (kSettingsSectionIndex == indexPath.section && kResetCoachmarksIndex == indexPath.row)
+    {
+        if ( self.showResetCoachmarks )
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
     {
-        if ([VObjectManager sharedManager].mainUserLoggedIn)
+        if ( self.showChangePassword )
         {
             return self.tableView.rowHeight;
         }
@@ -310,7 +353,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     }
     else if (kSettingsSectionIndex == indexPath.section && kTrackingButtonIndex == indexPath.row)
     {
-        if (self.showEnvironmentSetting)
+        if (self.showTrackingAlertSetting)
         {
             return self.tableView.rowHeight;
         }

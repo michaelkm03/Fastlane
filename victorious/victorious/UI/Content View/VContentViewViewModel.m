@@ -48,7 +48,6 @@
 // End Card
 #import "VEndCard.h"
 #import "VStream.h"
-#import "VThemeManager.h"
 #import "VEndCardModel.h"
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
@@ -83,12 +82,14 @@
 
 #pragma mark - Initializers
 
-- (instancetype)initWithSequence:(VSequence *)sequence depenencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithSequence:(VSequence *)sequence streamID:(NSString *)streamId depenencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _sequence = sequence;
+        
+        _streamId = streamId;
         
         _dependencyManager = dependencyManager;
         
@@ -225,6 +226,7 @@
 #endif
     
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
+                                 inStreamWithStreamID:self.streamId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          // This is here to update the vote counts
@@ -251,6 +253,7 @@
     }
     
     [[VObjectManager sharedManager] fetchSequenceByID:nextSequenceId
+                                 inStreamWithStreamID:self.streamId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          VSequence *nextSequence = resultObjects.firstObject;
@@ -451,7 +454,14 @@
         return cacheURL;
     }
     
-    return [NSURL URLWithString:self.currentAsset.data];
+    if ([self loop])
+    {
+        return [NSURL URLWithString:mp4Asset.data];
+    }
+    else
+    {
+        return [NSURL URLWithString:self.currentAsset.data];
+    }
 }
 
 - (float)speed

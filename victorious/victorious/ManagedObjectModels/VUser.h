@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VHashtag, VMessage, VNotification, VPollResult, VSequence, VUser;
+@class VComment, VConversation, VHashtag, VMessage, VNotification, VPollResult, VSequence, VUser, VImageAsset;
 
 @interface VUser : NSManagedObject
 
@@ -39,7 +39,7 @@
 @property (nonatomic, retain) NSSet *postedSequences;
 @property (nonatomic, retain) NSSet *remixedSequences;
 @property (nonatomic, retain) NSSet *repostedSequences;
-
+@property (nonatomic, retain) NSSet *previewAssets;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
@@ -98,5 +98,11 @@
 - (void)removeRepostedSequencesObject:(VSequence *)value;
 - (void)addRepostedSequences:(NSSet *)values;
 - (void)removeRepostedSequences:(NSSet *)values;
+
+- (void)addPreviewAssetsObject:(VImageAsset *)values;
+- (void)removePreviewAssetsObject:(VImageAsset *)values;
+- (void)addPreviewAssets:(NSSet *)values;
+- (void)removePreviewAssets:(NSSet *)values;
+
 
 @end
