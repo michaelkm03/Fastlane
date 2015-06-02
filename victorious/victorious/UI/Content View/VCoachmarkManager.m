@@ -56,6 +56,12 @@ static const CGFloat kAnimationDelay = 1.0f;
 
 - (BOOL)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController
 {
+    if ( !self.allowCoachmarks )
+    {
+        //We haven't yet shown a FTUE video, don't try to display a coachmark yet.
+        return NO;
+    }
+    
     NSString *identifier = [viewController screenIdentifier];
     NSMutableArray *validTooltips = [[NSMutableArray alloc] init];
     CGFloat width = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;

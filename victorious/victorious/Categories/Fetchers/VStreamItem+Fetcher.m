@@ -8,7 +8,6 @@
 
 #import "VStreamItem+Fetcher.h"
 
-static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentTypeContent = @"content";
 static NSString * const kVStreamContentTypeStream = @"stream";
 
@@ -44,6 +43,28 @@ static NSString * const kVStreamContentTypeStream = @"stream";
         NSAssert(false, @"undefined type for sequence.previewImage");
         return nil;
     }
+}
+
+- (NSURL *)previewImageUrl
+{
+    NSString *previewImageString = nil;
+    if ( [self.previewImagesObject isKindOfClass:[NSString class]] )
+    {
+        previewImageString = self.previewImagesObject;
+    }
+    else if ( [self.previewImagesObject isKindOfClass:[NSArray class]] )
+    {
+        for ( id object in self.previewImagesObject )
+        {
+            if ( [object isKindOfClass:[NSString class]] )
+            {
+                previewImageString = object;
+                break;
+            }
+        }
+    }
+    
+    return [NSURL URLWithString:previewImageString];
 }
 
 @end

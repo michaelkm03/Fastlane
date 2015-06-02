@@ -54,4 +54,10 @@
  */
 - (void)hideCoachmarkViewInViewController:(UIViewController *)viewController animated:(BOOL)animated;
 
+/**
+    Whether or not coachmarks should be added to view controllers provided to displayCoachmarkViewInViewController:
+    Defaults to NO
+ */
+@property (nonatomic, assign) BOOL allowCoachmarks;
+
 @end

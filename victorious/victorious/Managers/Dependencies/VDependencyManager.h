@@ -19,6 +19,7 @@ extern NSString * const VDependencyManagerBackgroundColorKey;
 extern NSString * const VDependencyManagerMainTextColorKey;
 extern NSString * const VDependencyManagerContentTextColorKey;
 extern NSString * const VDependencyManagerSecondaryTextColorKey;
+extern NSString * const VDependencyManagerPlaceholderTextColorKey;
 extern NSString * const VDependencyManagerAccentColorKey;
 extern NSString * const VDependencyManagerSecondaryAccentColorKey;
 extern NSString * const VDependencyManagerLinkColorKey;
@@ -81,12 +82,6 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  Returns the color with the specified key
  */
 - (UIColor *)colorForKey:(NSString *)key;
-
-/**
- Marshalls a dictionary in the expected format into a UIColor object.
- Returns nil if failed.
-*/
- - (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary;
 
 /**
  Returns the font with the specified key
@@ -252,5 +247,17 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
                       by the new manager.
  */
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration;
+
+/**
+ Marshalls a dictionary in the expected format into a UIColor object.
+ Returns nil if failed.
+ */
++ (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary;
+
+/**
+ Marshalls a UIColor into a dictionary in the expected template format.
+ Returns nil if failed.
+ */
++ (NSDictionary *)dictionaryFromColor:(UIColor *)color;
 
 @end

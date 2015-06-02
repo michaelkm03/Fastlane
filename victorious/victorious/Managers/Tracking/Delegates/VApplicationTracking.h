@@ -11,7 +11,11 @@
 #import "VTracking.h"
 #import "VTrackingDelegate.h"
 
+@class VDependencyManager;
+
 @interface VApplicationTracking : NSObject <VTrackingDelegate>
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  Tracks event using URLS after replacing URL-embedded macros with values

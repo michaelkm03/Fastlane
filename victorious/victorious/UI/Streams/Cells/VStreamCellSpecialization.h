@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence;
+@class VStreamItem;
 
 /**
  *  Stream cells that conform to this protcol desire specialization. When a cell or cell
@@ -25,7 +25,7 @@
  *  An identifier that represents the specialization of a cell or cell component to minimize 
  *  relayout or reconfiguration when reused.
  */
-+ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
-                          baseIdentifier:(NSString *)baseIdentifier;
++ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
+                            baseIdentifier:(NSString *)baseIdentifier;
 
 @end

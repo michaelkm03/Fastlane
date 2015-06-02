@@ -23,7 +23,6 @@
 @property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, strong) UIView *playIconContainerView;
 @property (nonatomic, strong) VVideoView *videoView;
-@property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, assign) BOOL hasFocus;
 
 @end
@@ -36,6 +35,7 @@
     if (self != nil)
     {
         _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_previewImageView];
         [self v_addFitToParentConstraintsToSubview:_previewImageView];
         
@@ -64,14 +64,26 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
     
     // Hide video view in case we're not auto playing
     self.videoView.hidden = YES;
     
-    [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]];
+    __weak VVideoSequencePreviewView *weakSelf = self;
+    [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
+                           placeholderImage:nil
+                                 completion:^(UIImage *image)
+     {
+         __strong VVideoSequencePreviewView *strongSelf = weakSelf;
+         if ( strongSelf == nil )
+         {
+             return;
+         }
+         
+         strongSelf.readyForDisplay = YES;
+     }];
     
-    VAsset *asset = [self.sequence.firstNode mp4Asset];
+    VAsset *asset = [sequence.firstNode mp4Asset];
     if ( asset.streamAutoplay.boolValue )
     {
         self.videoView.hidden = NO;

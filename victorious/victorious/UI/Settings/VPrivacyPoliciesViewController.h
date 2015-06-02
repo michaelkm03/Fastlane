@@ -12,6 +12,14 @@
 
 @interface VPrivacyPoliciesViewController : VWebContentViewController
 
+/**
+ *  Presentable terms of service viewController. Provides a mechanism for this viewController to dismiss itself.
+ */
++ (UIViewController *)presentableTermsOfServiceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ *  The dependency manager for the privacy policy.
+ */
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

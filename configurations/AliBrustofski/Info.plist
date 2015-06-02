@@ -6,6 +6,8 @@
 	<string>${ProductPrefix}Ali Brustofski</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.getvictorious.${ProductPrefix}alibrustofski</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}AliBrustofski</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -27,8 +29,6 @@
 	<integer>47</integer>
 	<key>QAAppID</key>
 	<integer>31</integer>
-	<key>GAID</key>
-	<string></string>
 	<key>CreatorSalutation</key>
 	<string>Ali Brustofski</string>
 	<key>FlurryAPIKey</key>

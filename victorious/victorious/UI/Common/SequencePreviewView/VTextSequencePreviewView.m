@@ -21,7 +21,6 @@
 @interface VTextSequencePreviewView ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
@@ -32,16 +31,16 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
     
-    VAsset *textAsset = [self.sequence.firstNode textAsset];
+    VAsset *textAsset = [sequence.firstNode textAsset];
     if ( textAsset.data != nil )
     {
         NSString *text = textAsset.data;
         UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
-        VAsset *imageAsset = [self.sequence.firstNode imageAsset];
+        VAsset *imageAsset = [sequence.firstNode imageAsset];
         NSURL *imageUrl = [NSURL URLWithString:imageAsset.data];
-        [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:self.sequence.remoteId];
+        [self setupTextPostViewControllerText:text color:color backgroundImageURL:imageUrl cacheKey:sequence.remoteId];
     }
 }
 
@@ -57,7 +56,11 @@
     
     self.textPostViewController.text = text;
     self.textPostViewController.color = color;
-    [self.textPostViewController setImageURL:backgroundImageURL animated:YES];
+    __weak VTextSequencePreviewView *weakSelf = self;
+    [self.textPostViewController setImageURL:backgroundImageURL animated:YES completion:^(UIImage *image)
+    {
+        weakSelf.readyForDisplay = YES;
+    }];
 }
 
 @end

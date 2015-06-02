@@ -26,21 +26,25 @@ static NSString * const kKeyPathDelimiter = @"/";
     NSString *pathInBundle = [[NSBundle bundleForClass:[self class]] pathForResource:filename ofType:kJSONType];
     NSError *error = nil;
     
-    NSAssert( pathInBundle != nil, @"Cannot find path in bundle for filename \"%@\". \
-             Make sure the file is added to the project.", filename );
+    NSAssert( pathInBundle != nil, @"VTemplateDecorator cannot find path in bundle for filename \"%@\". \
+             Make sure the file is added to the project and do not included the \".json\" extension.", filename );
     
     NSData *data = [NSData dataWithContentsOfFile:pathInBundle options:kNilOptions error:&error];
     if ( data == nil )
     {
         return nil;
     }
+    
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-    if ( dictionary == nil )
-    {
-        return nil;
-    }
+    NSAssert( dictionary != nil, @"Error parsing JSON file \"%@\": %@", filename, error );
     
     return dictionary;
+}
+
++ (NSString *)JSONStringFromDictionary:(NSDictionary *)dictionary
+{
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 - (instancetype)init
@@ -105,10 +109,23 @@ static NSString * const kKeyPathDelimiter = @"/";
 
 - (BOOL)setTemplateValue:(id)templateValue forKeyPath:(NSString *)keyPath
 {
+    NSParameterAssert( templateValue != nil );
     NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimiter]];
     BOOL didSetTemplateValue = NO;
     self.workingTemplate = [self collectionFromCollection:self.workingTemplate
                                    bySettingTemplateValue:templateValue
+                                           forKeyPathKeys:keyPathKeys
+                                                   didSet:&didSetTemplateValue];
+    
+    return didSetTemplateValue;
+}
+
+- (BOOL)removeTemplateValueForKeyPath:(NSString *)keyPath
+{
+    NSMutableArray *keyPathKeys = [[NSMutableArray alloc] initWithArray:[keyPath componentsSeparatedByString:kKeyPathDelimiter]];
+    BOOL didSetTemplateValue = NO;
+    self.workingTemplate = [self collectionFromCollection:self.workingTemplate
+                                   bySettingTemplateValue:nil
                                            forKeyPathKeys:keyPathKeys
                                                    didSet:&didSetTemplateValue];
     
@@ -139,7 +156,11 @@ static NSString * const kKeyPathDelimiter = @"/";
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    destination[i] = templateValue;
+                    // If templateValue is nil, it will be skipped, thereby removing that value for the index
+                    if ( templateValue != nil )
+                    {
+                        destination[i] = templateValue;
+                    }
                     *didSetTemplateValue = YES;
                 }
                 else
@@ -174,7 +195,11 @@ static NSString * const kKeyPathDelimiter = @"/";
             {
                 if ( keyPathKeys.count == 0 )
                 {
-                    destination[ currentKey ] = templateValue;
+                    // If templateValue is nil, it will be skipped, thereby removing that value for the index
+                    if ( templateValue != nil )
+                    {
+                        destination[ currentKey ] = templateValue;
+                    }
                     *didSetTemplateValue = YES;
                 }
                 else
@@ -311,6 +336,74 @@ static NSString * const kKeyPathDelimiter = @"/";
     return nil;
 }
 
+- (NSArray *)keyPathsForValue:(id)value
+{
+    NSParameterAssert( value != nil );
+    
+    NSMutableArray *completedKeyPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *workingKeyPath = [[NSMutableArray alloc] init];
+    [self searchCollection:self.workingTemplate forValue:value workingKeyPath:&workingKeyPath completedKeyPaths:&completedKeyPaths];
+    
+    NSMutableArray *output = [[NSMutableArray alloc] init];
+    for ( NSArray *keyPathArray in completedKeyPaths )
+    {
+        NSMutableString *mutableKeyPath = [[NSMutableString alloc] init];
+        for ( NSString *key in keyPathArray )
+        {
+            if ( ![mutableKeyPath isEqualToString:@""] )
+            {
+                [mutableKeyPath appendString:kKeyPathDelimiter];
+            }
+            [mutableKeyPath appendString:key];
+        }
+        [output addObject:[[NSString alloc] initWithString:mutableKeyPath]];
+    }
+    
+    return [[NSArray alloc] initWithArray:output];
+}
+
+- (void)searchCollection:(id)collection
+                forValue:(id)searchValue
+          workingKeyPath:(NSMutableArray **)workingKeyPath
+       completedKeyPaths:(NSMutableArray **)completedKeyPaths
+{
+    if ( [collection isKindOfClass:[NSArray class]] )
+    {
+        NSArray *collectionArray = (NSArray *)collection;
+        for ( NSInteger i = 0; i < (NSInteger)collectionArray.count; i++ )
+        {
+            id value = collectionArray[ i ];
+            if ( [value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]] )
+            {
+                [*workingKeyPath addObject:@(i).stringValue];
+                [self searchCollection:value forValue:searchValue workingKeyPath:workingKeyPath completedKeyPaths:completedKeyPaths];
+                [*workingKeyPath removeLastObject];
+            }
+        }
+    }
+    else if ( [collection isKindOfClass:[NSDictionary class]] )
+    {
+        NSDictionary *collectionDictionary = (NSDictionary *)collection;
+        for ( NSString *templateKey in collectionDictionary.allKeys )
+        {
+            id value = collectionDictionary[ templateKey ];
+            if ( [value isEqual:searchValue] )
+            {
+                [*workingKeyPath addObject:templateKey];
+                [*completedKeyPaths addObject:[NSArray arrayWithArray:*workingKeyPath]];
+                [*workingKeyPath removeLastObject];
+            }
+            
+            if ( [value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]] )
+            {
+                [*workingKeyPath addObject:templateKey];
+                [self searchCollection:value forValue:searchValue workingKeyPath:workingKeyPath completedKeyPaths:completedKeyPaths];
+                [*workingKeyPath removeLastObject];
+            }
+        }
+    }
+}
+
 - (NSArray *)keyPathsForKey:(NSString *)key
 {
     NSParameterAssert( key != nil );
@@ -377,6 +470,69 @@ static NSString * const kKeyPathDelimiter = @"/";
             }
         }
     }
+}
+
+- (NSInteger)replaceOccurencesOfString:(NSString *)stringToReplace withString:(NSString *)replacementString
+{
+    NSInteger replacementCount = 0;
+    self.workingTemplate = [self replaceOccurencesOfString:stringToReplace withString:replacementString inCollection:self.workingTemplate replacementCount:&replacementCount];
+    return replacementCount;
+}
+
+- (id)replaceOccurencesOfString:(NSString *)stringToReplace withString:(NSString *)replacementString inCollection:(id)source replacementCount:(NSInteger *)replacementCount
+{
+    if ( [source isKindOfClass:[NSArray class]] )
+    {
+        NSMutableArray *destination = [[NSMutableArray alloc] init];
+        NSMutableArray *sourceArray = (NSMutableArray *)source;
+        for ( NSInteger i = 0; i < (NSInteger)sourceArray.count; i++ )
+        {
+            id value = sourceArray[ i ];
+            if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+            {
+                destination[ i ] = [self replaceOccurencesOfString:stringToReplace withString:replacementString inCollection:value replacementCount:replacementCount];
+            }
+            else
+            {
+                destination[ i ] = value;
+            }
+        }
+        return destination;
+    }
+    else if ( [source isKindOfClass:[NSDictionary class]] )
+    {
+        NSMutableDictionary *destination = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *sourceDictionary = (NSMutableDictionary *)source;
+        for ( NSString *templateKey in sourceDictionary.allKeys )
+        {
+            id value = ((NSDictionary *)source)[ templateKey ];
+            if ( [value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]] )
+            {
+                destination[ templateKey ] = [self replaceOccurencesOfString:stringToReplace withString:replacementString inCollection:value replacementCount:replacementCount];
+            }
+            else if ( [value isKindOfClass:[NSString class]] )
+            {
+                NSString *stringValue = (NSString *)source[ templateKey ];
+                if ( [stringValue rangeOfString:stringToReplace].location != NSNotFound )
+                {
+                    destination[ templateKey ] = [stringValue stringByReplacingOccurrencesOfString:stringToReplace
+                                                                                        withString:replacementString];
+                    (*replacementCount)++;
+                }
+                else
+                {
+                    destination[ templateKey ] = source[ templateKey ];
+                }
+            }
+            else
+            {
+                destination[ templateKey ] = source[ templateKey ];
+            }
+        }
+        return destination;
+    }
+    
+    return nil;
 }
 
 @end

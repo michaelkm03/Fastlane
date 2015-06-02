@@ -270,7 +270,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     }
     if (name)
     {
-        [params setObject:name forKey:@"name"];
+        [params setObject:[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:@"name"];
     }
     if (location)
     {

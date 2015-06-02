@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol VStreamWebViewControllerDelegate <NSObject>
+
+- (void)streamWebViewControllerContentIsVisible;
+
+@end
+
 @interface VStreamWebViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *url;
+@property (nonatomic, weak) id <VStreamWebViewControllerDelegate> delegate;
 
 @end

@@ -78,6 +78,11 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
+    if ( eventName == nil || eventName.length == 0 )
+    {
+        return;
+    }
+    
     NSDictionary *googleAnalyticsParams = [self dictionaryWithParametersFromEventName:eventName params:parameters];
     if ( googleAnalyticsParams )
     {

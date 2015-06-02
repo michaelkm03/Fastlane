@@ -90,6 +90,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)marqueeItemsUpdated
 {
     [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -170,10 +171,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = self.stream.marqueeItems[indexPath.row];
-    VAbstractMarqueeStreamItemCell *cell = (VAbstractMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *previewImage = cell.previewImageView.image;
     
-    [self.selectionDelegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
+    [self.selectionDelegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:nil];
     [self.autoScrollTimerManager invalidate];
 }
 

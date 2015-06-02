@@ -22,11 +22,6 @@
 @dynamic videoSkip;
 @dynamic videoStall;
 @dynamic viewStart;
-@dynamic ballisticCount;
-@dynamic appEnterForeground;
-@dynamic appLaunch;
-@dynamic appInstall;
-@dynamic appEnterBackground;
 @dynamic share;
 @dynamic sequence;
 @dynamic voteType;

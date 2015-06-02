@@ -10,7 +10,6 @@
 
 #import "VContentViewFactory.h"
 #import "VDeeplinkHandler.h"
-#import "VDependencyManager+VTracking.h"
 #import "VNavigationDestination.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -28,18 +27,30 @@
 #import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "VDependencyManager+VTracking.h"
+#import "VSessionTimer.h"
+#import "VRootViewController.h"
 #import "VCoachmarkManager.h"
+#import "VRootViewController.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
+NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
+NSString * const VTrackingWelcomeVideoEndKey = @"welcome_video_end";
+NSString * const VTrackingWelcomeStartKey = @"welcome_start";
+NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder>
+static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
+
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
 @property (nonatomic) BOOL pushNotificationsRegistered;
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 
 @property (nonatomic, strong) VFollowingHelper *followHelper;
+@property (nonatomic, readonly) VDependencyManager *firstTimeContentDependency;
+@property (nonatomic, strong) VSessionTimer *sessionTimer;
 
 @end
 
@@ -52,6 +63,7 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
     {
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
+        _coachmarkManager.allowCoachmarks = [self hasShownFirstTimeUserExperience];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
     }
@@ -60,9 +72,24 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - Lifecyle Methods
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
+    if (shouldShowLogin && !self.hasBeenShown )
+    {
+        [self.authorizedAction prepareInViewController:self
+                                               context:VAuthorizationContextDefault
+                                            completion:^(BOOL authorized) {}];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.sessionTimer = [VRootViewController rootViewController].sessionTimer;
     
     BOOL didShowFirstTimeUserExperience = NO;
     if ( !self.hasBeenShown )
@@ -83,38 +110,44 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 {
     VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
 
-    if ( ![firstTimeInstallHelper hasBeenShown] )
+    if ( ![self hasShownFirstTimeUserExperience] )
     {
-        [firstTimeInstallHelper savePlaybackDefaults];
         VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                        forKey:VScaffoldViewControllerFirstTimeContentKey];
         if ( lightweightContentVC != nil )
         {
             lightweightContentVC.delegate = self;
-            [self presentViewController:lightweightContentVC animated:YES completion:^(void)
+            [self presentViewController:lightweightContentVC animated:YES completion:^
             {
-                [self trackFirstTimeContentView];
+                //Finished presenting the FTUE VC, save that we showed the first time user experience.
+                [firstTimeInstallHelper savePlaybackDefaults];
+                self.coachmarkManager.allowCoachmarks = YES;
             }];
-            
+            [self trackFirstTimeContentView];
             return YES;
+        }
+        else
+        {
+            //Didn't have a valid FTUE VC to show, but we wanted to show it,
+            //so we should save that we tried to show it as to not try again.
+            [firstTimeInstallHelper savePlaybackDefaults];
+            self.coachmarkManager.allowCoachmarks = YES;
         }
     }
     
     return NO;
 }
 
-- (void)trackFirstTimeContentView
+- (BOOL)hasShownFirstTimeUserExperience
 {
-    // Tracking
-    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
-    
-    NSArray *trackingUrlArray = [childDependencyManager trackingURLsForKey:VTrackingStartKey];
-    if ( trackingUrlArray != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
-    }
+    VFirstTimeInstallHelper *firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
+    return [firstTimeInstallHelper hasBeenShown] || [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
+}
+
+- (VDependencyManager *)firstTimeContentDependency
+{
+    NSDictionary *configuration = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
+    return [self.dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
 }
 
 #pragma mark - Content View
@@ -145,8 +178,26 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 #pragma mark - VLightweightContentViewControllerDelegate
 
+- (void)trackFirstTimeContentView
+{
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeStartKey],
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeDidStart parameters:params];
+}
+
+- (void)videoHasStartedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
+{
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeVideoStartKey],
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeVideoDidStart parameters:params];
+}
+
 - (void)videoHasCompletedInLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeVideoEndKey],
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventWelcomeVideoDidEnd parameters:params];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -157,6 +208,10 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
 
 - (void)userWantsToDismissLightweightContentView:(VLightweightContentViewController *)lightweightContentViewController
 {
+    NSDictionary *params = @{ VTrackingKeyUrls : [self.firstTimeContentDependency trackingURLsForKey:VTrackingWelcomeGetStartedTapKey],
+                              VTrackingKeySessionTime : @(self.sessionTimer.sessionDuration) };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWelcomeGetStarted parameters:params];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -306,6 +361,13 @@ NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent
         }
         [self presentViewController:contentView animated:YES completion:nil];
     }
+}
+
+#pragma mark - VRootViewControllerContainedViewController
+
+- (void)onLoadingCompletion
+{
+    [self.authorizedAction execute];
 }
 
 @end

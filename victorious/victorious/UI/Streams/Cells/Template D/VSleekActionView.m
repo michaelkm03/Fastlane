@@ -53,27 +53,36 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 #pragma mark - Reuse Identifiers
 
-+ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
-                          baseIdentifier:(NSString *)baseIdentifier
++ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
+                            baseIdentifier:(NSString *)baseIdentifier
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
 
-    if ([sequence canComment])
+    if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        [identifier appendString:@"Comment."];
+        VSequence *sequence = (VSequence *)streamItem;
+        if ([sequence canComment])
+        {
+            [identifier appendString:@"Comment."];
+        }
+        [identifier appendString:@"Share."];
+        if ([sequence canRepost])
+        {
+            [identifier appendString:@"Repost."];
+        }
+        if ([sequence canMeme])
+        {
+            [identifier appendString:@"Meme."];
+        }
+        if ([sequence canGif])
+        {
+            [identifier appendString:@"Gif."];
+        }
     }
-    [identifier appendString:@"Share."];
-    if ([sequence canRepost])
+    else
     {
-        [identifier appendString:@"Repost."];
-    }
-    if ([sequence canMeme])
-    {
-        [identifier appendString:@"Meme."];
-    }
-    if ([sequence canGif])
-    {
-        [identifier appendString:@"Gif."];
+        NSString *errorString = [NSString stringWithFormat:@"This action view isn't prepared to handle streamItems of class %@", NSStringFromClass([streamItem class])];
+        NSAssert(false, errorString);
     }
     
     return [NSString stringWithString:identifier];

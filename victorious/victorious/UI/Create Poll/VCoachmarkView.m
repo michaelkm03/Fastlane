@@ -101,7 +101,7 @@ static const CGFloat kBezierRadius = 10.0f;
     
     VCoachmarkView *coachmarkView = [[VCoachmarkView alloc] initWithCoachmark:coachmark];
     NSString *text = coachmark.currentScreenText;
-    coachmarkView.captionLabel.text = text;
+    coachmarkView.captionLabel.text = NSLocalizedString(text, @"");
     CGRect frame = [coachmarkView frameForText:text withWidth:width];
     coachmarkView.frame = frame;
     coachmarkView.arrowDirection = VTooltipArrowDirectionInvalid;
@@ -118,7 +118,7 @@ static const CGFloat kBezierRadius = 10.0f;
    
     VCoachmarkView *coachmarkView = [[VCoachmarkView alloc] initWithCoachmark:coachmark];
     NSString *text = coachmark.relatedScreenText;
-    coachmarkView.captionLabel.text = text;
+    coachmarkView.captionLabel.text = NSLocalizedString(text, @"");
     CGRect frame = [coachmarkView frameForText:text withWidth:width];
     CGFloat boxHeight = CGRectGetHeight(frame);
     frame.size.height += kTooltipArrowHeight;

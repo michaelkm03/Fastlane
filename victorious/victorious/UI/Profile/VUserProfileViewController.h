@@ -8,10 +8,12 @@
 
 #import "VDependencyManager.h"
 #import "VStreamCollectionViewController.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
 @class VUser;
 
-@interface VUserProfileViewController : VStreamCollectionViewController
+@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, readonly) VUser *user;
 

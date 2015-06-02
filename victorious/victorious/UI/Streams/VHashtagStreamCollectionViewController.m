@@ -20,16 +20,20 @@
 #import "VNoContentView.h"
 #import "VAuthorizedAction.h"
 #import <FBKVOController.h>
+#import "VDependencyManager+VNavigationItem.h"
+#import "VBarButton.h"
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
 static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
-@interface VHashtagStreamCollectionViewController ()
+@interface VHashtagStreamCollectionViewController () <VAccessoryNavigationSource>
 
 @property (nonatomic, assign, getter=isFollowingSelectedHashtag) BOOL followingSelectedHashtag;
 @property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
+@property (nonatomic, readonly) UIBarButtonItem *followBarButton;
+@property (nonatomic, assign, getter=isFollowingEnabled) BOOL followingEnabled;
 
 @end
 
@@ -39,6 +43,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    
     NSAssert([NSThread isMainThread], @"This method needs to be called on the main thread");
     NSString *hashtag = [dependencyManager stringForKey:kHashtagKey];
     NSString *streamURL = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
@@ -73,6 +78,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     [super viewDidLoad];
     
+    self.followingEnabled = NO;
+    
     [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -91,9 +98,22 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     [self updateUserFollowingStatus];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Must also call here since navigation items are set after viewDidAppear:
+    [self updateUserFollowingStatus];
+}
+
 - (void)hashtagsUpdated
 {
     [self updateUserFollowingStatus];
+}
+
+- (void)updateNavigationItems
+{
+    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
 }
 
 #pragma mark - Fetch Users Tags
@@ -122,6 +142,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
      {
          [self updateUserFollowingStatus];
          [self dataSourceDidRefresh];
+         [self updateNavigationItems];
      }];
 }
 
@@ -186,14 +207,14 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)followHashtag
 {
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.followingEnabled = NO;
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Animate follow button
         self.followingSelectedHashtag = YES;
         
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.followingEnabled = YES;
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -203,7 +224,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
         [self.failureHUD hide:YES afterDelay:3.0f];
         
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.followingEnabled = YES;
     };
     
     // Backend Subscribe to Hashtag call
@@ -214,13 +235,13 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)unfollowHashtag
 {
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.followingEnabled = NO;
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         self.followingSelectedHashtag = NO;
         
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.followingEnabled = YES;
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -230,7 +251,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
         [self.failureHUD hide:YES afterDelay:3.0f];
         
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.followingEnabled = YES;
     };
     
     // Backend Unsubscribe to Hashtag call
@@ -248,26 +269,69 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     [self updateFollowingStatus];
 }
 
-- (UIImage *)followButtonImage
+- (VBarButton *)followBarButton
 {
-    NSString *imageName = self.isFollowingSelectedHashtag ? @"followedHashtag" : @"streamFollowHashtag";
-    return [UIImage imageNamed:imageName];
+    return [self.dependencyManager barButtonFromNavigationItem:self.navigationItem
+                                                 forIdentifier:VDependencyManagerAccessoryItemFollowHashtag];
 }
 
 - (void)updateFollowingStatus
 {
-    if ( self.streamDataSource.count == 0 )
-    {
-        self.navigationItem.rightBarButtonItem = nil;
-        return;
-    }
+    VNavigationMenuItem *menuItem = [self.dependencyManager menuItemWithIdentifier:VDependencyManagerAccessoryItemFollowHashtag];
     
-    // Reset the hashtag button image
-    UIImage *hashtagButtonImage = [[self followButtonImage] imageWithRenderingMode:UIImageRenderingModeAutomatic];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:hashtagButtonImage
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(toggleFollowHashtag)];
+    if ( self.streamDataSource.count == 0 || menuItem == nil )
+    {
+        self.followingEnabled = NO;
+    }
+    else
+    {
+        self.followingEnabled = YES;
+        if ( self.isFollowingSelectedHashtag )
+        {
+            [self.followBarButton setImage:menuItem.selectedIcon];
+        }
+        else
+        {
+            [self.followBarButton setImage:menuItem.icon];
+        }
+    }
+}
+
+- (void)setFollowingEnabled:(BOOL)followingEnabled
+{
+    _followingEnabled = followingEnabled;
+    self.followBarButton.enabled = followingEnabled;
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemFollowHashtag] )
+    {
+        [self toggleFollowHashtag];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    // Becase the backend doesn't assign text posts to hashtags based on tags in the text,
+    // Text posts will allow you to view a hastag stream for hashtag that doesn't exist.
+    // If you're viewing a hashtag stream with no items, the backend returns an error if you
+    // attempt to follow it. This prevents showing the button in that case.
+    return self.streamDataSource.count > 0;
+}
+
+- (BOOL)menuItem:(VNavigationMenuItem *)menuItem requiresAuthorizationWithContext:(VAuthorizationContext *)context
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemFollowHashtag] )
+    {
+        *context = VAuthorizationContextFollowHashtag;
+        return YES;
+    }
+    return NO;
 }
 
 @end

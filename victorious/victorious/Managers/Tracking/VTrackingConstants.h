@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 04/24/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 05/26/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -75,7 +75,7 @@ extern NSString * const VTrackingEventLoginDidShow; //< Params: CurrentSection
 extern NSString * const VTrackingEventUserDidCancelLogin; //< User exited out of the login prompt
 extern NSString * const VTrackingEventUserDidLogOut; 
 
-extern NSString * const VTrackingEventUserDidSelectSignupWithEmail; 
+extern NSString * const VTrackingEventUserDidSelectSignupWithEmail;
 extern NSString * const VTrackingEventUserDidSelectLoginWithEmail; 
 extern NSString * const VTrackingEventSignupWithEmailDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventSignupWithEmailDidSucceed; 
@@ -134,7 +134,7 @@ extern NSString * const VTrackingEventUserDidViewHashtagStream; //< Params: Hash
 extern NSString * const VTrackingEventUserDidViewStream; //< "Params: StreamName, Context, StreamId, CurrentSection"
 extern NSString * const VTrackingEventFirstTimeUserVideoPlayed; 
 
-extern NSString * const VTrackingEventUserDidVoteSequence; 
+extern NSString * const VTrackingEventUserDidVoteSequence; //< Backend: ballistic_count
 extern NSString * const VTrackingEventUserDidRepost; //< "Params: SequenceId, TimeCurrent"
 extern NSString * const VTrackingEventRepostDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidFlagPost; //< Params: Context
@@ -221,6 +221,18 @@ extern NSString * const VTrackingEventUserDidSelectSetting; //< User tapped one 
 extern NSString * const VTrackingEventUserDidSelectReplayVideo; 
 extern NSString * const VTrackingEventUserDidSelectPlayNextVideo; 
 extern NSString * const VTrackingEventNextVideoDidAutoPlay; 
+
+// First Time User Experience (FTUE)
+extern NSString * const VTrackingEventUserDidStartCreateProfile; //< Backend mapping: create_profile_start
+extern NSString * const VTrackingEventUserDidStartRegistration; //<  Backend mapping: registration_start
+extern NSString * const VTrackingEventUserDidFinishRegistration; //< Backend mapping: registration_end
+extern NSString * const VTrackingEventUserDidSelectRegistrationDone; //< Backend mapping: done_button_tap
+extern NSString * const VTrackingEventUserDidSelectWelcomeGetStarted; //< Backend mapping: get_started_tap
+extern NSString * const VTrackingEventWelcomeVideoDidStart; //< Backend mapping: welcome_video_start
+extern NSString * const VTrackingEventWelcomeVideoDidEnd; //< Backend mapping: welcome_video_end
+extern NSString * const VTrackingEventWelcomeDidStart; //< Backend mapping: welcome_start
+extern NSString * const VTrackingEventUserDidSelectRegistrationOption; //< Backend mapping: register_button_tap
+extern NSString * const VTrackingEventUserDidSelectSignUpSubmit; //< Backend mapping: sign_up_button_tap
 
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc.",
