@@ -124,7 +124,7 @@ static const CGFloat kThresholdPercent = 0.25f;
                 return;
             }
             
-            if ( ABS(translation) >= self.navigationBarHeight * kThresholdPercent )
+            if ( ABS(translation) >= self.navigationBarHeight * kThresholdPercent && (*targetContentOffset).y > self.navigationBarHeight )
             {
                 [UIView animateWithDuration:[self timeIntervalWithVelocity:velocity.y distance:(self.navigationBarHeight - ABS(self.translation))]
                                       delay:0
