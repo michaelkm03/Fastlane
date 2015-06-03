@@ -697,6 +697,7 @@
 		D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D858E0C81B1FAD2F00437DDE /* VModernLandingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D858E0CA1B1FAD2F00437DDE /* VModernLandingViewController.storyboard */; };
+		D858E0D31B1FC32300437DDE /* VModernEnterNameViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D858E0D51B1FC32300437DDE /* VModernEnterNameViewController.storyboard */; };
 		D85B706B1B0EAF3F0038CA5B /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D85B702D1B0EAF3F0038CA5B /* login.storyboard */; };
 		D85B706C1B0EAF3F0038CA5B /* VLoginButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70311B0EAF3F0038CA5B /* VLoginButton.m */; };
 		D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70331B0EAF3F0038CA5B /* VTemplateBackgroundView.m */; };
@@ -804,7 +805,6 @@
 		D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D3B7231AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m */; };
 		D8D8129E1B13849E00E93B37 /* VModernLoginViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D8129D1B13849E00E93B37 /* VModernLoginViewController.storyboard */; };
 		D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */; };
-		D8D812A31B13CBA000E93B37 /* VModernEnterNameViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D812A21B13CBA000E93B37 /* VModernEnterNameViewController.storyboard */; };
 		D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812AA1B14EA0200E93B37 /* VModernResetPasswordViewController.m */; };
 		D8D812AD1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D812AC1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard */; };
 		D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */; };
@@ -2241,6 +2241,11 @@
 		D858E0CE1B1FAD5C00437DDE /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VModernLandingViewController.strings; sourceTree = "<group>"; };
 		D858E0D01B1FAD6000437DDE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VModernLandingViewController.strings; sourceTree = "<group>"; };
 		D858E0D21B1FAD6200437DDE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VModernLandingViewController.strings; sourceTree = "<group>"; };
+		D858E0D41B1FC32300437DDE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VModernEnterNameViewController.storyboard; sourceTree = "<group>"; };
+		D858E0D71B1FC32500437DDE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
+		D858E0D91B1FC32700437DDE /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
+		D858E0DB1B1FC32900437DDE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
+		D858E0DD1B1FC32B00437DDE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
 		D85B702E1B0EAF3F0038CA5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/login.storyboard; sourceTree = "<group>"; };
 		D85B70301B0EAF3F0038CA5B /* VLoginButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginButton.h; sourceTree = "<group>"; };
 		D85B70311B0EAF3F0038CA5B /* VLoginButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginButton.m; sourceTree = "<group>"; };
@@ -2449,7 +2454,6 @@
 		D8D8129D1B13849E00E93B37 /* VModernLoginViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VModernLoginViewController.storyboard; sourceTree = "<group>"; };
 		D8D8129F1B13CB9300E93B37 /* VModernEnterNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernEnterNameViewController.h; sourceTree = "<group>"; };
 		D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernEnterNameViewController.m; sourceTree = "<group>"; };
-		D8D812A21B13CBA000E93B37 /* VModernEnterNameViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VModernEnterNameViewController.storyboard; sourceTree = "<group>"; };
 		D8D812A91B14EA0200E93B37 /* VModernResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernResetPasswordViewController.h; sourceTree = "<group>"; };
 		D8D812AA1B14EA0200E93B37 /* VModernResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernResetPasswordViewController.m; sourceTree = "<group>"; };
 		D8D812AC1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VModernResetPasswordViewController.storyboard; sourceTree = "<group>"; };
@@ -5503,7 +5507,7 @@
 				D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */,
 				D8D8129F1B13CB9300E93B37 /* VModernEnterNameViewController.h */,
 				D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */,
-				D8D812A21B13CBA000E93B37 /* VModernEnterNameViewController.storyboard */,
+				D858E0D51B1FC32300437DDE /* VModernEnterNameViewController.storyboard */,
 				D8D812B61B15819600E93B37 /* VModernFlowControllerAnimationController.h */,
 				D8D812B71B15819600E93B37 /* VModernFlowControllerAnimationController.m */,
 				D85B708D1B0ECC6D0038CA5B /* VModernLandingViewController.h */,
@@ -6392,7 +6396,7 @@
 				D85B706B1B0EAF3F0038CA5B /* login.storyboard in Resources */,
 				036F38701A0C4DEA0014DF66 /* JosefinSlab-SemiBold.ttf in Resources */,
 				D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */,
-				D8D812A31B13CBA000E93B37 /* VModernEnterNameViewController.storyboard in Resources */,
+				D858E0D31B1FC32300437DDE /* VModernEnterNameViewController.storyboard in Resources */,
 				036F38921A0C4DEA0014DF66 /* Signika-Semibold.ttf in Resources */,
 				036F387F1A0C4DEA0014DF66 /* Montserrat-Regular.ttf in Resources */,
 				035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */,
@@ -7617,6 +7621,18 @@
 				D858E0D21B1FAD6200437DDE /* de */,
 			);
 			name = VModernLandingViewController.storyboard;
+			sourceTree = "<group>";
+		};
+		D858E0D51B1FC32300437DDE /* VModernEnterNameViewController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D858E0D41B1FC32300437DDE /* Base */,
+				D858E0D71B1FC32500437DDE /* en */,
+				D858E0D91B1FC32700437DDE /* es */,
+				D858E0DB1B1FC32900437DDE /* fr */,
+				D858E0DD1B1FC32B00437DDE /* de */,
+			);
+			name = VModernEnterNameViewController.storyboard;
 			sourceTree = "<group>";
 		};
 		D85B702D1B0EAF3F0038CA5B /* login.storyboard */ = {
