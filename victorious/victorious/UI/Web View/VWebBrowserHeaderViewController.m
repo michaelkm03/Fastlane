@@ -55,7 +55,7 @@
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         button.tintColor = tintColor;
     }
-    self.backgroundContainerView.backgroundColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerBackgroundColorKey];
+    [dependenciesForNavigationBar addBackgroundToBackgroundHost:self];
     self.labelTitle.textColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerMainTextColorKey];
     self.labelTitle.font = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];
 }
@@ -91,6 +91,13 @@
 - (void)setTitle:(NSString *)title
 {
     [self.labelTitle setText:title];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return _backgroundContainerView;
 }
 
 #pragma mark - Header Actions

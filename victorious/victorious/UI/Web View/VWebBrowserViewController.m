@@ -71,11 +71,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 #pragma mark - UIViewController
 
-- (BOOL)v_prefersNavigationBarHidden
-{
-    return YES;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -171,6 +166,11 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (BOOL)v_prefersNavigationBarHidden
+{
+    return [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutTopNavigation];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
