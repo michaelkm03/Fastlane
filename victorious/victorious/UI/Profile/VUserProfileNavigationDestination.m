@@ -69,6 +69,7 @@
     
     VUserProfileViewController *destination = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
                                                                          andDependencyManager:self.dependencyManager];
+    destination.representsMainUser = YES;
     *alternateViewController = destination;
     self.displayedBadgeProvider = destination;
     
