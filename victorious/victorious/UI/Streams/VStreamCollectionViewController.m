@@ -787,7 +787,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSArray *visibleCells = self.collectionView.visibleCells;
     [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
      {
-         if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
+         if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
          {
              return;
          }
