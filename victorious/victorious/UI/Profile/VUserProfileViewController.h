@@ -8,7 +8,7 @@
 
 #import "VDependencyManager.h"
 #import "VStreamCollectionViewController.h"
-#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 
 @class VUser;

@@ -119,6 +119,21 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [super viewDidAppear:animated];
     
     self.actionsDisabled = NO;
+    
+    if ( self.isBeingPresented )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartRegistration];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishRegistration];
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -186,6 +201,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     {
         return;
     }
+        
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
     
     [self pushViewController:[self.loginScreens firstObject]
                     animated:YES];
@@ -200,6 +217,9 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     [self pushViewController:[self nextScreenAfter:self.topViewController inArray:self.registrationScreens]
                     animated:YES];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
 - (void)selectedTwitterAuthorization
@@ -219,6 +239,9 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
             [self onAuthenticationFinishedWithSuccess:success];
         }
     }];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
 - (void)selectedFacebookAuthorization
@@ -238,6 +261,9 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
             [self onAuthenticationFinishedWithSuccess:success];
         }
     }];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
 - (void)loginWithEmail:(NSString *)email
@@ -282,6 +308,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
              [self continueRegistrationFlow];
          }
      }];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignUpSubmit];
 }
 
 - (void)setUsername:(NSString *)username
@@ -300,6 +328,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
             [welf continueRegistrationFlow];
         }
     }];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartCreateProfile];
 }
 
 - (void)forgotPasswordWithInitialEmail:(NSString *)initialEmail
@@ -436,6 +466,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
              self.completionBlock(success);
          }
      }];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
 }
 
 - (UIViewController *)nextScreenAfter:(UIViewController *)viewController

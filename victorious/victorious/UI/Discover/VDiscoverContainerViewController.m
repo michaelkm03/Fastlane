@@ -20,6 +20,7 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 
 // Users and Tags Search
@@ -65,7 +66,6 @@
 {
     VDiscoverContainerViewController *discoverContainer = [self instantiateFromStoryboard:@"Discover"];
     discoverContainer.dependencyManager = dependencyManager;
-    //[dependencyManager configureNavigationItem:discoverContainer.navigationItem]
     return discoverContainer;
 }
 
@@ -113,6 +113,8 @@
                                                                             constant:0];
     self.searchTopConstraint.constant = self.v_layoutInsets.top;
     [self.view addConstraint:self.searchTopConstraint];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -125,7 +127,7 @@
 {
     [super viewDidAppear:animated];
     
-    [self updateNavigationItem];
+    [self updateAccessoryScreens];
 }
 
 - (void)dealloc
@@ -227,14 +229,14 @@
     }
 }
 
-- (void)updateNavigationItem
+- (void)updateAccessoryScreens
 {
     UINavigationItem *navigationItem = self.navigationItem;
     if ( self.multipleContainerChildDelegate != nil )
     {
         navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
-    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
 #pragma mark - VMultipleContainerChild
@@ -245,7 +247,7 @@
     NSDictionary *params = @{ VTrackingKeyStreamName : [self.dependencyManager stringForKey:VDependencyManagerTitleKey] ?: @"Discover" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
     
-    [self updateNavigationItem];
+    [self updateAccessoryScreens];
 }
 
 #pragma mark - UINavigationControllerDelegate methods

@@ -184,17 +184,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     
     self.searchButton.hidden = !self.allowPhotos;
     
-    VCameraControlCaptureMode captureMode = 0;
-    if (self.allowVideo)
-    {
-        captureMode = captureMode | VCameraControlCaptureModeVideo;
-    }
-    if (self.allowPhotos)
-    {
-        captureMode = captureMode | VCameraControlCaptureModeImage;
-    }
-    
-    self.cameraControl.captureMode = captureMode;
+    [self configureCaptureMode];
     
     self.captureController = [[VCameraCaptureController alloc] init];
     [self.captureController setSessionPreset:self.initialCaptureMode completion:nil];
@@ -329,6 +319,20 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
 }
 
+- (void)configureCaptureMode
+{
+    VCameraControlCaptureMode captureMode = 0;
+    if (self.allowVideo)
+    {
+        captureMode = captureMode | VCameraControlCaptureModeVideo;
+    }
+    if (self.allowPhotos)
+    {
+        captureMode = captureMode | VCameraControlCaptureModeImage;
+    }
+    self.cameraControl.captureMode = captureMode;
+}
+
 - (void)checkPermissionsAndStartCaptureSession
 {
     // Set state back to initialization
@@ -378,8 +382,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                   {
                       if (granted)
                       {
-                          // Set capture mode back to video so we can hold to record
-                          self.cameraControl.captureMode = VCameraControlCaptureModeVideo;
+                          // Reconfigure capture mode so we can hold to record
+                          [self configureCaptureMode];
                           self.userDeniedPermissionsPrePrompt = NO;
                           startCapture(YES);
                       }

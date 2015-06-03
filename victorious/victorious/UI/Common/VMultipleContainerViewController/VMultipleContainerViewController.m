@@ -8,7 +8,6 @@
 
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VScaffoldViewController.h"
-#import "VDependencyManager+VNavigationItem.h"
 #import "VMultipleContainer.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
@@ -20,6 +19,7 @@
 #import "UIView+AutoLayout.h"
 #import "VCoachmarkDisplayResponder.h"
 #import "VCoachmarkDisplayer.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate, VProvidesNavigationMenuItemBadge, VCoachmarkDisplayResponder, VCoachmarkDisplayer>
 
@@ -104,6 +104,8 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     if ( !self.didShowInitial )
     {

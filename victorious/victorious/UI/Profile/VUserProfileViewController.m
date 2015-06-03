@@ -38,6 +38,8 @@
 #import "VNavigationController.h"
 #import "VBarButton.h"
 #import "VAuthorizedAction.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -152,6 +154,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
     [self updateCollectionViewDataSource];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)updateProfileHeader
@@ -233,7 +237,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateAccessoryItems
 {
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -530,9 +535,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.currentStream = [VStream streamForUser:self.user];
     
-    NSString *profileName = user.name ?: @"Profile";
-    
-    self.title = self.isCurrentUser ? nil : profileName;
+    self.title = self.isCurrentUser ? NSLocalizedString( @"me", nil ) : user.name;
     
     [self updateProfileHeader];
     

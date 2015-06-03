@@ -46,7 +46,6 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        
         _preDisplayBadgeProvider = [self createProfileForLoggedInUser];
     }
     return self;
@@ -65,7 +64,7 @@
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    // Once this destination is selected, it will handle providing bades and this is no longer needed
+    // Once this destination is selected, it will handle providing badges and this is no longer needed
     self.preDisplayBadgeProvider = nil;
     
     VUserProfileViewController *destination = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
