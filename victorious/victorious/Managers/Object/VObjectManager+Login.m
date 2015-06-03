@@ -323,15 +323,20 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
         if (profileImageURL)
         {
-            NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-            
-            NSManagedObjectContext *context =user.managedObjectContext;
-            NSEntityDescription *description = [NSEntityDescription entityForName:[VImageAsset entityName] inManagedObjectContext:context];
-            VImageAsset *imageAsset = [[VImageAsset alloc] initWithEntity:description insertIntoManagedObjectContext:context];
-            imageAsset.imageURL = profileImageURL.absoluteString;
-            imageAsset.isLocal = @(YES);
-            
-            [user addPreviewAssetsObject:imageAsset];
+            VImageAsset *imageAsset = user.previewAssets.allObjects.firstObject;
+            if ( imageAsset != nil )
+            {
+                imageAsset.imageURL = profileImageURL.absoluteString;
+                imageAsset.isLocal = @(YES);
+                imageAsset.height = nil;
+                imageAsset.width = nil;
+                imageAsset.type = nil;
+                user.previewAssets = [NSSet set];
+            }
+            else
+            {
+                user.previewAssets = [NSSet set];
+            }
             user.pictureUrl = profileImageURL.absoluteString;
         }
         [user.managedObjectContext save:nil];

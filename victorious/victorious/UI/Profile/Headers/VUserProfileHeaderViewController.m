@@ -14,7 +14,7 @@
 #import "VDefaultProfileImageView.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VDependencyManager+VBackgroundContainer.h"
-
+#import "VImageAssetFinder.h"
 #import <KVOController/FBKVOController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -120,6 +120,11 @@
     [self setupKVOControllerWithUser:self.user];
 }
 
+- (void)reloadProfileImage
+{
+    NSAssert( NO, @"Must be overridden by subclasses." );
+}
+
 - (void)updateProfileImage
 {
     NSAssert( NO, @"Must be overridden by subclasses." );
@@ -133,7 +138,8 @@
     // Try to load high-res from server and make sure it's valid and large enough to display
     if ( self.user.previewAssets.count > 0 )
     {
-        VImageAsset *imageAsset = [VImageAsset assetWithPreferredMinimumSize:minimumSize fromAssets:self.user.previewAssets];
+        VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
+        VImageAsset *imageAsset = [assetFinder assetWithPreferredMinimumSize:minimumSize fromAssets:self.user.previewAssets];
         imageURL = [NSURL URLWithString:imageAsset.imageURL];
         const BOOL isURLValid = imageURL != nil && imageURL.absoluteString.length > 0;
         canUseHighResAsset = isURLValid;

@@ -124,6 +124,12 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     }
 }
 
+- (void)reloadProfileImage
+{
+    [self.backgroundImageView clearDownloadCache];
+    [self updateProfileImage];
+}
+
 - (void)updateProfileImage
 {
     NSURL *imageURL = [self getBestAvailableImageForMinimuimSize:self.view.bounds.size];

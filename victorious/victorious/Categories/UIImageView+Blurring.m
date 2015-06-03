@@ -184,6 +184,11 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     return [objc_getAssociatedObject(self, &kAssociatedURLKey) isEqual:url];
 }
 
+- (void)clearDownloadCache
+{
+    objc_removeAssociatedObjects( self );
+}
+
 - (void)downloadImageWithURL:(NSURL *)url toCallbackBlock:(void (^)(UIImage *, NSError *))callbackBlock
 {
     __weak typeof(self) weakSelf = self;

@@ -48,4 +48,6 @@
 
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock;
 
+- (void)clearDownloadCache;
+
 @end
