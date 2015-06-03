@@ -328,8 +328,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
         [user.managedObjectContext save:nil];
         
-        NSLog( @"Assets: %@", user.previewAssets.allObjects );
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
