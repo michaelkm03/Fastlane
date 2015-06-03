@@ -587,7 +587,7 @@
 "Upload failure" = "Upload failure";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
-"Thank you for joining the community! Add a profile picture now." = "Thank you for joining the community! Add a profile picture now.";
+"Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?";
 "Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Before you can record and share videos, we need access to your microphone. Allow microphone access now?";
 
 "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!";
