@@ -19,8 +19,7 @@
 @interface VUserProfileNavigationDestination () <VCoachmarkDisplayer, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) id<VProvidesNavigationMenuItemBadge> preDisplayBadgeProvider;
-@property (nonatomic, weak) VUserProfileViewController *displayedBadgeProvider;
+@property (nonatomic, weak) VUserProfileViewController *profileViewController;
 
 @end
 
@@ -46,12 +45,12 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _preDisplayBadgeProvider = [self createProfileForLoggedInUser];
+        self.profileViewController = [self createProfileForLoggedInUser];
     }
     return self;
 }
 
-- (id<VProvidesNavigationMenuItemBadge>)createProfileForLoggedInUser
+- (VUserProfileViewController *)createProfileForLoggedInUser
 {
     VUserProfileViewController *profile = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
                                                                      andDependencyManager:self.dependencyManager];
@@ -64,15 +63,7 @@
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    // Once this destination is selected, it will handle providing badges and this is no longer needed
-    self.preDisplayBadgeProvider = nil;
-    
-    VUserProfileViewController *destination = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
-                                                                         andDependencyManager:self.dependencyManager];
-    destination.representsMainUser = YES;
-    *alternateViewController = destination;
-    self.displayedBadgeProvider = destination;
-    
+    *alternateViewController = self.profileViewController;
     return YES;
 }
 
@@ -97,14 +88,7 @@
 - (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
 {
     _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
-    if ( self.displayedBadgeProvider != nil )
-    {
-        self.displayedBadgeProvider.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
-    }
-    else if ( self.preDisplayBadgeProvider != nil )
-    {
-        self.preDisplayBadgeProvider.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
-    }
+    self.profileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end
