@@ -13,18 +13,6 @@
 @interface VImageAssetFinder : NSObject
 
 /**
- When set to YES, the asset finder will check for any VImageAssets marked `isLocal`
- and return those first, regardless of any size calculations.
- */
-@property (nonatomic, assign) BOOL preferLocalImageAssets;
-
-/**
- Returns the first asset marked `isLocal`, which is not sorted nor does the asset size
- (presumed to be known) factor in.
- */
-- (VImageAsset *)localAssetFromAssets:(NSSet *)imageAssets;
-
-/**
  From the supplied set of VImageAssets, returns the smallest asset by area whose width
  and height are greater than or equal to the provided minimum size.
  */

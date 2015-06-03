@@ -14,7 +14,6 @@
 @dynamic width;
 @dynamic type;
 @dynamic imageURL;
-@dynamic isLocal;
 @dynamic user;
 @dynamic sequence;
 

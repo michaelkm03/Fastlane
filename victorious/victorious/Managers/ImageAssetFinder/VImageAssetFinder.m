@@ -11,27 +11,11 @@
 
 @implementation VImageAssetFinder
 
-- (VImageAsset *)localAssetFromAssets:(NSSet *)imageAssets
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isLocal == YES"];
-    return [imageAssets filteredSetUsingPredicate:predicate].allObjects.firstObject;
-}
-
 - (VImageAsset *)assetWithPreferredMinimumSize:(CGSize)minimumSize fromAssets:(NSSet *)imageAssets
 {
     if ( imageAssets == nil || imageAssets.count == 0 )
     {
         return nil;
-    }
-    
-    if ( self.preferLocalImageAssets )
-    {
-        VImageAsset *localAsset = [self localAssetFromAssets:imageAssets];
-        if ( localAsset != nil )
-        {
-            NSLog( @"^V^V^V^V^V^V^V^ Using lcoal asset" );
-            return localAsset;
-        }
     }
     
     NSArray *assetsByAscendingArea = [self arrayAscendingByAreaFromAssets:imageAssets];
@@ -51,15 +35,6 @@
     if ( imageAssets == nil || imageAssets.count == 0 )
     {
         return nil;
-    }
-    
-    if ( self.preferLocalImageAssets )
-    {
-        VImageAsset *localAsset = [self localAssetFromAssets:imageAssets];
-        if ( localAsset != nil )
-        {
-            return localAsset;
-        }
     }
     
     NSArray *assetsByDescendingArea = [self arrayDescendingByAreaFromAssets:imageAssets];

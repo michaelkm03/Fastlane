@@ -323,20 +323,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
         if (profileImageURL)
         {
-            VImageAsset *imageAsset = user.previewAssets.allObjects.firstObject;
-            if ( imageAsset != nil )
-            {
-                imageAsset.imageURL = profileImageURL.absoluteString;
-                imageAsset.isLocal = @(YES);
-                imageAsset.height = nil;
-                imageAsset.width = nil;
-                imageAsset.type = nil;
-                user.previewAssets = [NSSet set];
-            }
-            else
-            {
-                user.previewAssets = [NSSet set];
-            }
+            user.previewAssets = [NSSet set];
             user.pictureUrl = profileImageURL.absoluteString;
         }
         [user.managedObjectContext save:nil];
