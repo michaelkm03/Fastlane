@@ -112,6 +112,8 @@
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
+	<key>comments.screen</key>
+	<string>VCommentsContainerViewController</string>
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
 	<key>collections.directoryCell</key>
