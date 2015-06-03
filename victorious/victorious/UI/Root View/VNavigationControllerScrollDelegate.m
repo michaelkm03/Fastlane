@@ -25,7 +25,6 @@ static const CGFloat kThresholdPercent = 0.25f;
 @property (nonatomic) CGFloat offset;
 @property (nonatomic) CGFloat navigationBarHeight;
 @property (nonatomic) CGFloat translation;
-//@property (nonatomic) BOOL dragging; ///< In order to keep track of whether the user flicked outside of the catch offset
 
 @end
 
