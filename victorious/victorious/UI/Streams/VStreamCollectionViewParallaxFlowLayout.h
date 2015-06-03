@@ -11,7 +11,8 @@
 #import "VAbstractMarqueeController.h"
 
 /**
- A collection view flow layout that allows for a parallax effect on the header cell
+ A collection view flow layout that applies a parallax effect on collection view
+ cells which conform to the VParallaxScrolling protocol.
  */
 @interface VStreamCollectionViewParallaxFlowLayout : UICollectionViewFlowLayout
 
