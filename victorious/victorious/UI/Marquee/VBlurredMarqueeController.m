@@ -51,11 +51,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     return kVisibilityDuration;
 }
 
-- (NSString *)cellSuggestedReuseIdentifier
-{
-    return [VBlurredMarqueeStreamItemCell suggestedReuseIdentifier];
-}
-
 - (void)animateToVisible
 {
     self.backgroundCellIsVisible = YES;
@@ -117,6 +112,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     }
     
     [self.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[self labelTextAttributes]];
+    self.crossfadingLabel.hidden = !self.showedInitialDisplayAnimation;
     
     //Set the content offset to a safe value
     CGFloat maxOffset = (marqueeItemsCount - 1) * CGRectGetWidth(self.collectionView.bounds);
@@ -148,16 +144,13 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         
         //Populate visible subviews with the newly loaded image
         NSUInteger cellIndex = [[strongSelf.collectionView indexPathsForVisibleItems] indexOfObject:indexPath];
+        loadedPreviewView.frame = [VBlurredMarqueeStreamItemCell frameForPreviewViewInCellWithBounds:self.collectionView.bounds];
         if ( cellIndex != NSNotFound )
         {
             //The streamItemCell we need to update is already on screen, update it with animation (if it's a new image)
             VBlurredMarqueeStreamItemCell *streamItemCell = (VBlurredMarqueeStreamItemCell *)strongSelf.collectionView.visibleCells[cellIndex];
             [streamItemCell updateToPreviewView:loadedPreviewView];
             backgroundShouldAnimate = YES; //Animate if we're the we're also animating the streamItemCell in front of it
-        }
-        else
-        {
-            loadedPreviewView.frame = [VBlurredMarqueeStreamItemCell frameForPreviewViewInCellWithBounds:self.collectionView.bounds];
         }
         
         [strongSelf renderPreviewView:loadedPreviewView atIndex:indexPath.row animated:backgroundShouldAnimate];
@@ -183,11 +176,12 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            if ( self.collectionView.hidden && self.firstImageLoaded )
+            if ( self.collectionView.hidden )
             {
                 self.collectionView.hidden = NO;
             }
             
+            self.crossfadingLabel.hidden = NO;
             [self.collectionView layoutIfNeeded];
             CGPoint startOffset = CGPointMake( - CGRectGetWidth(self.collectionView.bounds), 0.0f );
             [self.collectionView setContentOffset:startOffset animated:NO];
@@ -251,9 +245,9 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     self.shouldAnimateToTarget = NO;
 }
 
-- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+- (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VBlurredMarqueeCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]];
+    [collectionView registerNib:[[VBlurredMarqueeCollectionViewCell class] nibForCell] forCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]];
 }
 
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
@@ -292,11 +286,25 @@ static const CGFloat kOffsetOvershoot = 20.0f;
             self.firstImageLoaded = YES;
             animations = ^void
             {
-                [self animateToVisible];
+                [self attemptToPerformInitialDisplayAnimation];
             };
         }
         [self.crossfadingBlurredImageView updateBlurredImageViewForImage:image fromPreviewView:previewView withTintColor:[self tintColorForCrossFadingBlurredImageView] atIndex:index animated:animated withConcurrentAnimations:animations];
     }];
+}
+
+- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
+{
+    streamItemCell.dependencyManager = dependencyManager;
+    if ( self.showedInitialDisplayAnimation )
+    {
+        streamItemCell.streamItem = streamItem;
+    }
+}
+
++ (Class)marqueeStreamItemCellClass
+{
+    return [VBlurredMarqueeStreamItemCell class];
 }
 
 @end

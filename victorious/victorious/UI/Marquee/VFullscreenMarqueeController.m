@@ -40,11 +40,6 @@
     return kVDetailVisibilityDuration + kVDetailHideDuration;
 }
 
-- (NSString *)cellSuggestedReuseIdentifier
-{
-    return [VFullscreenMarqueeStreamItemCell suggestedReuseIdentifier];
-}
-
 - (void)scrolledToPage:(NSInteger)currentPage
 {
     [super scrolledToPage:currentPage];
@@ -82,9 +77,9 @@
 
 #pragma mark - VMarqueeCellDelegate
 
-- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+- (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VFullscreenMarqueeCollectionCell nibForCell] forCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]];
+    [collectionView registerClass:[VFullscreenMarqueeCollectionCell class] forCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]];
 }
 
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
@@ -99,6 +94,17 @@
     
     [self enableTimer];
     return cell;
+}
+
+- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
+{
+    streamItemCell.dependencyManager = dependencyManager;
+    streamItemCell.streamItem = streamItem;
+}
+
++ (Class)marqueeStreamItemCellClass
+{
+    return [VFullscreenMarqueeStreamItemCell class];
 }
 
 @end

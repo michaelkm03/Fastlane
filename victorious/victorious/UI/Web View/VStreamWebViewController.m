@@ -32,7 +32,18 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.5f;
     UIColor *backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.view.backgroundColor = backgroundColor;
     
-    self.webView = [[WKWebView alloc] init];
+    //This spot of javascript tells the webview to resize it's content to the width of the view it's being presented in
+    //Adapted from here: http://stackoverflow.com/a/26583062
+    NSString *javaScript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
+    
+    WKUserScript *userScript = [[WKUserScript alloc] initWithSource:javaScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+    WKUserContentController *userContentController = [[WKUserContentController alloc] init];
+    [userContentController addUserScript:userScript];
+    
+    WKWebViewConfiguration *webViewConfiguration = [[WKWebViewConfiguration alloc] init];
+    webViewConfiguration.userContentController = userContentController;
+    
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:webViewConfiguration];
     self.webView.navigationDelegate = self;
     self.webView.userInteractionEnabled = NO;
     self.webView.backgroundColor = [UIColor clearColor];
@@ -49,7 +60,7 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.5f;
 
 - (void)setUrl:(NSURL *)url
 {
-    if ( _url != nil && [_url isEqual:url] )
+    if ( url == nil || [_url isEqual:url] )
     {
         // Don't reload the same URL
         return;

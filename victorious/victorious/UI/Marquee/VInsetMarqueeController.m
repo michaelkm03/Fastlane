@@ -12,9 +12,9 @@
 
 @implementation VInsetMarqueeController
 
-- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+- (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VInsetMarqueeCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VInsetMarqueeCollectionViewCell suggestedReuseIdentifier]];
+    [collectionView registerClass:[VInsetMarqueeCollectionViewCell class] forCellWithReuseIdentifier:[VInsetMarqueeCollectionViewCell suggestedReuseIdentifier]];
 }
 
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
@@ -26,14 +26,20 @@
     return collectionViewCell;
 }
 
-- (NSString *)cellSuggestedReuseIdentifier
-{
-    return [VInsetMarqueeStreamItemCell suggestedReuseIdentifier];
-}
-
 - (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return [VInsetMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
+}
+
+- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
+{
+    streamItemCell.dependencyManager = dependencyManager;
+    streamItemCell.streamItem = streamItem;
+}
+
++ (Class)marqueeStreamItemCellClass
+{
+    return [VInsetMarqueeStreamItemCell class];
 }
 
 @end

@@ -34,6 +34,7 @@
     {
         _dependencyManager = dependencyManager;
         _noContentCollectionViewCellFactory = [[VNoContentCollectionViewCellFactory alloc] initWithAcceptableContentClasses:@[[VSequence class]]];
+        _registeredReuseIdentifiers = [[NSMutableSet alloc] init];
     }
     return self;
 }
