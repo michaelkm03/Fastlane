@@ -1,5 +1,5 @@
 //
-//  VUserProfileHeaderViewController.m
+//  VAbstractUserProfileHeaderViewController.m
 //  victorious
 //
 //  Created by Patrick Lynch on 4/20/15.

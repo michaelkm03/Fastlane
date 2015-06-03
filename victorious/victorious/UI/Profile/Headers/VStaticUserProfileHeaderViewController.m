@@ -49,7 +49,7 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
     return 319.0f;
 }
 
-#pragma mark - VUserProfileHeaderViewController overrides
+#pragma mark - VAbstractUserProfileHeaderViewController overrides
 
 - (VDefaultProfileImageView *)profileImageView
 {
