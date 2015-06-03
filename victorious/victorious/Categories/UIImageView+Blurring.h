@@ -48,4 +48,11 @@
 
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock;
 
+/**
+ Removes any cached URL (as well as all associated objects) added to the UIImageView instance by this category.
+ This is useful if you want to prevent the category from exercising an optimization that prevents re-downloading
+ an image that is the same as the URL used to populated the last image.
+ */
+- (void)clearDownloadCache;
+
 @end
