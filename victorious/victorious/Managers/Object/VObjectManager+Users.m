@@ -510,7 +510,7 @@ static NSString * const kVAPIParamContext = @"context";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if (success)
+        if ( success != nil )
         {
             success(operation, fullResponse, resultObjects);
         }

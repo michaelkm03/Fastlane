@@ -327,6 +327,7 @@
             cell.shouldAnimateFollowing = YES;
             [cell updateFollowStatus];
         }
+        mainUser.numberOfFollowing = @(mainUser.following.count);
     };
     [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];
 }
