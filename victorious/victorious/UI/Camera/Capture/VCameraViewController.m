@@ -396,7 +396,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                               [self notifyUserOfFailedMicPermission];
                           }
                       }
-                      
                   }];
              }
          }
@@ -404,14 +403,16 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
          {
              self.userDeniedPermissionsPrePrompt = YES;
              self.state = VCameraViewControllerStatePermissionDenied;
-             BOOL stateDenied = ((state == VPermissionStatePromptDenied) || (state == VPermissionStateSystemDenied));
-             if (stateDenied && ([cameraPermission isKindOfClass:[VPermissionProfilePicture class]]))
+             if (state != VPermissionStatePromptDenied)
              {
-                 self.completionBlock(NO, nil, nil);
+                 [self notifyUserOfFailedCameraPermission];
              }
              else
              {
-                 [self notifyUserOfFailedCameraPermission];
+                 if (self.completionBlock)
+                 {
+                     self.completionBlock(NO, nil, nil);
+                 }
              }
          }
      }];
