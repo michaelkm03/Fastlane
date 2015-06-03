@@ -222,6 +222,12 @@ static const CGFloat kThresholdPercent = 0.25f;
     }
 }
 
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+    [self.navigationController setNavigationBarHidden:NO];
+}
+
 - (CGPoint)adjustedContentOffset:(CGPoint)offset
 {
     return CGPointMake(offset.x, offset.y - self.catchOffset);
