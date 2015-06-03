@@ -11,6 +11,7 @@
 #import "VBackgroundContainer.h"
 #import "VStreamCellSpecialization.h"
 #import "VStreamCellFocus.h"
+#import "VStreamCellTracking.h"
 
 @class VSequence;
 
@@ -18,7 +19,7 @@
  * VSleekStreamCollectionCell is a stream cell component more commonly known as 
  *  template D or Hera. It represents a sequence.
  */
-@interface VSleekStreamCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus>
+@interface VSleekStreamCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus, VStreamCellTracking>
 
 /**
  *  Sizing method. All parameters are required.

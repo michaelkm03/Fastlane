@@ -459,4 +459,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     return self.previewView.frame;
 }
 
+#pragma mark - VStreamCellTracking
+
+- (VSequence *)sequenceToTrack
+{
+    return self.sequence;
+}
+
 @end

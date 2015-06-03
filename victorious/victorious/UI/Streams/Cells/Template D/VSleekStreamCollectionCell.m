@@ -308,4 +308,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
                               fromView:self];
 }
 
+#pragma mark - VStreamCellTracking
+
+- (VSequence *)sequenceToTrack
+{
+    return self.sequence;
+}
+
 @end

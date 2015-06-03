@@ -11,6 +11,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
+#import "VStreamCellTracking.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 
 //Controllers
@@ -850,10 +851,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
     {
-        NSIndexPath *indexPathForCell = [self.collectionView indexPathForCell:cell];
-        VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPathForCell.row];
-        [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
-                                                                 sequence:sequence];
+        if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
+        {
+            VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
+            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
+                                                                     sequence:sequenceToTrack];
+        }
     }
 }
 

@@ -323,4 +323,11 @@ static const CGFloat maxCaptionHeight = 80.0f;
     return self.contentContainer.frame;
 }
 
+#pragma mark - VStreamCellTracking
+
+- (VSequence *)sequenceToTrack
+{
+    return self.sequence;
+}
+
 @end
