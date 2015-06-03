@@ -224,6 +224,7 @@ static const CGFloat kThresholdPercent = 0.25f;
 
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
 {
+    // Restore nav bar after user taps the status bar to scroll to top
     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
     [self.navigationController setNavigationBarHidden:NO];
 }
