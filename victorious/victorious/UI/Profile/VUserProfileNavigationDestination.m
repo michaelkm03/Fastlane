@@ -13,10 +13,13 @@
 #import "VUserProfileViewController.h"
 #import "VUser.h"
 #import "VProfileDeeplinkHandler.h"
+#import "VCoachmarkDisplayer.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
-@interface VUserProfileNavigationDestination ()
+@interface VUserProfileNavigationDestination () <VCoachmarkDisplayer, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VUserProfileViewController *profileViewController;
 
 @end
 
@@ -42,22 +45,28 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        [self createProfile];
+        [self.profileViewController updateAccessoryItems];
     }
     return self;
+}
+
+- (void)createProfile
+{
+    if ( self.profileViewController == nil )
+    {
+        self.profileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
+                                                                andDependencyManager:self.dependencyManager];
+        self.profileViewController.representsMainUser = YES;
+    }
 }
 
 #pragma mark - VNavigationDestination conformance
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser andDependencyManager:self.dependencyManager];
-    userProfileViewController.representsMainUser = YES;
-    if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        [userProfileViewController setDependencyManager:self.dependencyManager];
-    }
-    *alternateViewController = userProfileViewController;
-    
+    [self createProfile];
+    *alternateViewController = self.profileViewController;
     return YES;
 }
 
@@ -66,6 +75,23 @@
 - (id<VDeeplinkHandler>)deepLinkHandler
 {
     return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+#pragma mark - VProvidesNavigationMenuItemBadge
+
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+- (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
+{
+    _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    self.profileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end

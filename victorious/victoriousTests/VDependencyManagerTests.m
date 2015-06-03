@@ -134,7 +134,10 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                                                                           },
                                                                                        @"font.heading1": @{
                                                                                                
-                                                                                               }
+                                                                                               },
+                                                                                       @"font.heading2": @{ @"fontName": @"Not Your Father's Font",
+                                                                                                            @"fontSize": @36
+                                                                                               },
                                                                                        }
                                                   dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
 }
@@ -215,6 +218,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:24];
     UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testAnotherKindOfInvalidFontDefaultsToParent
+{
+    UIFont *expected = [UIFont fontWithName:@"STHeitiSC-Light" size:20];
+    UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     XCTAssertEqualObjects(expected, actual);
 }
 
@@ -460,16 +470,16 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 - (void)testImageWithName
 {
-    UIImage *expected = [UIImage imageNamed:@"Menu"];
+    UIImage *expected = [UIImage imageNamed:@"C_menu"];
+    XCTAssertNotNil(expected); // This assert will fail if the "C_menu" image is ever removed from our project
     UIImage *actual = [self.dependencyManager imageForKey:@"myImage"];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testImage
 {
-    // This test may fail if the "Menu" image is ever removed from our project, but that should be
-    // around the same time that the logic of this method will need to be updated anyway.
-    UIImage *sampleImage = [UIImage imageNamed:@"Menu"];
+    // This test will fail if the "C_menu" image is ever removed from our project
+    UIImage *sampleImage = [UIImage imageNamed:@"C_menu"];
     VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
                                                                                 configuration:@{ @"myImage": sampleImage }
                                                             dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];

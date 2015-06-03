@@ -8,7 +8,6 @@
 
 #import "VTagStringFormatter.h"
 #import "VTag.h"
-#import "VThemeManager.h"
 #import "VDependencyManager.h"
 #import "VHashtag.h"
 #import "VUser.h"

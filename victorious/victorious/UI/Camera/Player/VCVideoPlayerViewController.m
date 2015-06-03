@@ -7,8 +7,8 @@
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
 #import "VTracking.h"
-#import "VSettingManager.h"
 #import "VVideoUtils.h"
+#import "VCVideoPlayerView.h"
 
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
@@ -27,7 +27,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, strong) VElapsedTimeFormatter *timeFormatter;
 @property (nonatomic) BOOL toolbarAnimating;
 @property (nonatomic) BOOL sliderTouchActive;
-@property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong) id timeObserver;
 @property (nonatomic, strong) AVPlayerItem *playerItemBeingObserved;
 @property (nonatomic) BOOL delegateNotifiedOfReadinessToPlay;
@@ -130,14 +129,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)loadView
 {
-    self.view = [[UIView alloc] init];
+    self.view = [[VCVideoPlayerView alloc] init];
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [UIColor clearColor];
-    
-    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    self.playerLayer.backgroundColor = [UIColor clearColor].CGColor;
-    [self.view.layer addSublayer:self.playerLayer];
     
     if (self.shouldShowToolbar)
     {
@@ -168,20 +162,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.overlayView = [[UIView alloc] init];
     
     [self updateViewForShowToolbarValue];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [CATransaction begin];
-    CAAnimation *boundsAnimation = [self.view.layer animationForKey:NSStringFromSelector(@selector(bounds))];
-    if (boundsAnimation)
-    {
-        [CATransaction setAnimationDuration:boundsAnimation.duration];
-        [CATransaction setAnimationTimingFunction:boundsAnimation.timingFunction];
-    }
-    
-    self.playerLayer.frame = self.view.layer.bounds;
-    [CATransaction commit];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -270,10 +250,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     const BOOL shouldLoopWithComposition = loop && !self.loopWithoutComposition;
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition
-                               readyCallback:^(AVPlayerItem *playerItem, CMTime duration)
+    [self.videoUtils createPlayerItemWithURL:itemURL
+                                        loop:shouldLoopWithComposition
+                               readyCallback:^(AVPlayerItem *playerItem, CMTime originalAssetDuration)
      {
-         self.originalAssetDuration = duration;
+         self.originalAssetDuration = originalAssetDuration;
          [self.player replaceCurrentItemWithPlayerItem:playerItem];
      }];
 }
@@ -362,12 +343,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)setVideoPlayerLayerVideoGravity:(NSString *)videoPlayerLayerVideoGravity
 {
-    self.playerLayer.videoGravity = videoPlayerLayerVideoGravity;
+    [(VCVideoPlayerView *)self.view setVideoGravity:videoPlayerLayerVideoGravity];
 }
 
 - (NSString *)videoPlayerLayerVideoGravity
 {
-    return self.playerLayer.videoGravity;
+    return [(VCVideoPlayerView *)self.view videoGravity];
 }
 
 #pragma mark - Toolbar
@@ -495,7 +476,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     CMTime output = CMTimeSubtract( time, adjustment );
     
     // Uncomment to debug adjusted time and current loop:
-    // VLog( @"adjusted time (%i): %.2f", currentLoop, CMTimeGetSeconds( output ) );
+//     VLog( @"adjusted time (%i): %.2f", currentLoop, CMTimeGetSeconds( output ) );
     
     return output;
 }
@@ -516,7 +497,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         self.toolbarView.slider.value = percentElapsed;
     }
     
-    CMTime duration = [self playerItemDuration];
+    CMTime duration = self.originalAssetDuration;
     Float64 playedSeconds = round(CMTimeGetSeconds(time));
     Float64 durationSeconds = round(CMTimeGetSeconds(duration));
     self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:CMTimeMakeWithSeconds(playedSeconds, time.timescale)];
@@ -675,6 +656,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                                 }
                                 weakSelf.naturalSize = assetTrack.naturalSize;
                                 weakSelf.hasCalculatedItemSize = YES;
+                                [(VCVideoPlayerView *)weakSelf.view setPlayer:self.player];
                                 [self notifyDelegateReadyToPlayIfReallyReady];
                             }
                         });
@@ -728,7 +710,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)videoFrameDoubleTapped:(UITapGestureRecognizer *)sender
 {
-    self.playerLayer.videoGravity = ([self.playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
+    NSString *oldVideoGravity = [(VCVideoPlayerView *)self.view videoGravity];
+    NSString *newVideoGravity = [oldVideoGravity isEqualToString:AVLayerVideoGravityResizeAspectFill] ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
+    [(VCVideoPlayerView *)self.view setVideoGravity:newVideoGravity];
 }
 
 - (IBAction)sliderTouchDown:(UISlider *)sender

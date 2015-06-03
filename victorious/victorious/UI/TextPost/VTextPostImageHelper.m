@@ -34,14 +34,16 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
                        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:assetURL]];
                        if ( image != nil )
                        {
-                           UIImage *tintentImage = [self tintedImageWithImage:image color:color];
-                           NSData *imageData = UIImageJPEGRepresentation( tintentImage, 1 );
-                           NSError *error;
-                           BOOL success = [imageData writeToURL:exportURL options:NSDataWritingAtomic error:&error];
-                           dispatch_async( dispatch_get_main_queue(), ^
-                                          {
-                                              completion( success ? exportURL : nil, error );
-                                          });
+                           [self renderImage:image color:color completion:^(UIImage *renderedImage, UIColor *color)
+                           {   
+                               NSData *imageData = UIImageJPEGRepresentation( renderedImage, 1 );
+                               NSError *error;
+                               BOOL success = [imageData writeToURL:exportURL options:NSDataWritingAtomic error:&error];
+                               dispatch_async( dispatch_get_main_queue(), ^
+                                              {
+                                                  completion( success ? exportURL : nil, error );
+                                              });
+                           }];
                            return;
                        }
                        
@@ -89,8 +91,8 @@ static const CGBlendMode kTintedBackgroundImageBlendMode    = kCGBlendModeLumino
                                           orientation:UIImageOrientationUp];
         }
         
-        UIImage *tintentImage = [self tintedImageWithImage:imageToRender
-                                                     color:color];
+        UIImage *tintentImage = [self tintedImageWithImage:imageToRender color:color];
+        
         dispatch_async( dispatch_get_main_queue(), ^
                        {
                            [self.cache setObject:tintentImage forKey:color];

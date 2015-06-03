@@ -65,7 +65,7 @@ LoginDidShow,Params: CurrentSection
 UserDidCancelLogin,User exited out of the login prompt
 UserDidLogOut,
 ,
-UserDidSelectSignupWithEmail,
+UserDidSelectSignupWithEmail,Backend mapping: sign_up_button_tap
 UserDidSelectLoginWithEmail,
 SignupWithEmailDidFail,Params: ErrorMessage
 SignupWithEmailDidSucceed,
@@ -124,7 +124,7 @@ UserDidViewHashtagStream,Params: Hashtag
 UserDidViewStream,"Params: StreamName, Context, StreamId, CurrentSection"
 FirstTimeUserVideoPlayed,
 ,
-UserDidVoteSequence,
+UserDidVoteSequence,Backend: ballistic_count
 UserDidRepost,"Params: SequenceId, TimeCurrent"
 RepostDidFail,Params: ErrorMessage
 UserDidFlagPost,Params: Context
@@ -211,3 +211,15 @@ UserDidSelectSetting,User tapped one of the options in the settings section. Par
 UserDidSelectReplayVideo,
 UserDidSelectPlayNextVideo,
 NextVideoDidAutoPlay,
+,
+// First Time User Experience (FTUE),
+UserDidStartCreateProfile,Backend mapping: create_profile_start
+ApplicationDidBoot,Backend mapping: first_boot
+UserDidStartRegistration, Backend mapping: registration_start
+UserDidFinishRegistration,Backend mapping: registration_end
+UserDidSelectRegistrationDone,Backend mapping: done_button_tap
+UserDidSelectWelcomeGetStarted,Backend mapping: get_started_tap
+WelcomeVideoDidStart,Backend mapping: welcome_video_start
+WelcomeVideoDidEnd,Backend mapping: welcome_video_end
+WelcomeDidStart,Backend mapping: welcome_start
+UserDidSelectRegister,Backend mapping: register_button_tap

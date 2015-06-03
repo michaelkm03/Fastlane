@@ -9,9 +9,6 @@
 #import "VNewContentViewController.h"
 #import "VObjectManager+ContentCreation.h"
 
-// Theme
-#import "VThemeManager.h"
-
 // SubViews
 #import "VExperienceEnhancerBar.h"
 #import "VHistogramBarView.h"
@@ -70,7 +67,6 @@
 #import "VExperienceEnhancer.h"
 
 // Experiments
-#import "VSettingManager.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 
 #import "VSequence+Fetcher.h"
@@ -102,14 +98,20 @@
 #import "VAuthorizedAction.h"
 #import "VNode+Fetcher.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VLinkSelectionResponder.h"
+#import "VHashtagSelectionResponder.h"
+#import "VURLSelectionResponder.h"
+#import "VDependencyManager+VScaffoldViewController.h"
+#import "VContentViewFactory.h"
+#import "VCoachmarkDisplayer.h"
+#import "VDependencyManager+VCoachmarkManager.h"
+#import "VCoachmarkManager.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VLinkSelectionResponder>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -559,6 +561,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
     [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
     
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
+    
 #if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
@@ -586,7 +590,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
     
     if ( self.isBeingDismissed )
@@ -1399,9 +1404,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
          [inputAccessoryView clearTextAndResign];
          welf.mediaURL = nil;
          
-         if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
+         NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+         if (experimentValue != nil)
          {
-             [welf.videoCell play];
+             if ([experimentValue boolValue])
+             {
+                 [welf.videoCell play];
+             }
          }
      }];
 }
@@ -1443,11 +1452,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
         return;
     }
     
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
+    NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+    if (experimentValue != nil)
     {
-        [self.videoCell pause];
+        if ([experimentValue boolValue])
+        {
+            [self.videoCell pause];
+        }
     }
-    
     __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
@@ -1748,6 +1760,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)showNextSequence:(VSequence *)nextSequence
 {
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence
+                                                                                     streamID:self.viewModel.streamId
                                                                              depenencyManager:self.dependencyManager];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
@@ -1817,13 +1830,32 @@ referenceSizeForHeaderInSection:(NSInteger)section
     return NO;
 }
 
-#pragma mark - VLinkSelectionResponder
+#pragma mark - VHashtagSelectionResponder
 
-- (void)linkWithTextSelected:(NSString *)text
+- (void)hashtagSelected:(NSString *)text
 {
     //Tapped a hashtag, show a hashtag view controller
     VHashtagStreamCollectionViewController *hashtagViewController = [self.dependencyManager hashtagStreamWithHashtag:text];
     [self.navigationController pushViewController:hashtagViewController animated:YES];
+}
+
+#pragma mark - VURLSelectionResponder
+
+- (void)URLSelected:(NSURL *)URL
+{
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *webContentView = [contentViewFactory webContentViewControllerWithURL:URL];
+    if ( webContentView != nil )
+    {
+        [self presentViewController:webContentView animated:YES completion:nil];
+    }
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 @end

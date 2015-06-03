@@ -7,7 +7,6 @@
 //
 
 #import "VAppDelegate.h"
-#import "VThemeManager.h"
 #import "VReachability.h"
 
 #import "VFacebookManager.h"
@@ -20,14 +19,12 @@
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VConstants.h"
-#import "VSettingManager.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
 
-#import "VApplicationTracking.h"
 #import "VFlurryTracking.h"
 #import "VGoogleAnalyticsTracking.h"
 #import "VPurchaseManager.h"
@@ -60,11 +57,10 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
     
-    [VObjectManager setupObjectManager];
+    [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
 
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
-    [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
     VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
@@ -77,6 +73,11 @@ static BOOL isRunningTests(void) __attribute__((const));
     [self.window makeKeyAndVisible];
     
     return YES;
+}
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 - (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -103,7 +104,7 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:url];
+    [[VRootViewController rootViewController] applicationOpenURL:url sourceApplication:sourceApplication annotation:annotation];
     return YES;
 }
 

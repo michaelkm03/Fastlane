@@ -8,15 +8,13 @@
 
 #import "VDependencyManager.h"
 #import "VDependencyManager+VScaffoldViewController.h"
-#import "VHamburgerButton.h"
+#import "VBarButton.h"
 #import "VMenuController.h"
 #import "VNavigationController.h"
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
-#import "VSettingManager.h"
 #import "VSideMenuViewController.h"
 #import "VStreamCollectionViewController.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VLaunchScreenProvider.h"
@@ -27,8 +25,7 @@
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
-@property (strong, readwrite, nonatomic) VHamburgerButton *hamburgerButton;
-@property (strong, readwrite, nonatomic) UIViewController *menuViewController;
+@property (strong, readwrite, nonatomic) UIViewController<VProvidesNavigationMenuItemBadge> *menuViewController;
 
 @end
 
@@ -56,32 +53,12 @@
         
         _bouncesHorizontally = YES;
         
-        _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
-        
-        [self registerBadgeUpdateBlock];
+        id viewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
+        NSParameterAssert( [viewController isKindOfClass:[VMenuController class]] );
+        NSParameterAssert( [viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] );
+        _menuViewController = (UIViewController<VProvidesNavigationMenuItemBadge> *)viewController;
     }
     return self;
-}
-
-- (void)registerBadgeUpdateBlock
-{
-    __weak typeof(self) weakSelf = self;
-    VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
-    {
-        [weakSelf.hamburgerButton setBadgeNumber:badgeNumber];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
-    };
-    
-    if ( [self.menuViewController respondsToSelector:@selector(setBadgeNumberUpdateBlock:)] )
-    {
-        [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
-    }
-    
-    if ( [self.menuViewController respondsToSelector:@selector(badgeNumber)] )
-    {
-        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController badgeNumber];
-        badgeNumberUpdateBlock(badgeNumber);
-    }
 }
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -99,10 +76,6 @@
     self.view = [[UIView alloc] init];
     
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-    
-    self.hamburgerButton = [VHamburgerButton newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
-    [self.hamburgerButton addTarget:self action:@selector(presentMenuViewController) forControlEvents:UIControlEventTouchUpInside];
-    self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.hamburgerButton];
     
     if (!_contentViewInLandscapeOffsetCenterX)
     {
@@ -441,6 +414,39 @@
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
     return UIStatusBarAnimationFade;
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] )
+    {
+        [self presentMenuViewController];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] )
+    {
+        return source.navigationController.viewControllers.count == 1;
+    }
+    
+    return YES;
+}
+                            
+- (id<VProvidesNavigationMenuItemBadge>)customBadgeProviderForMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] )
+    {
+        return self.menuViewController;
+    }
+    
+    return nil;
 }
 
 @end

@@ -13,7 +13,6 @@
 #import "VVoteType.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VSettingManager.h"
 #import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
 #import "VPurchaseStringMaker.h"
@@ -147,7 +146,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
         else
         {
             VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
-            cell.isCentered = YES;
+            cell.centered = YES;
             [cell setMessage:NSLocalizedString( @"SettingsRestorePurchasesPrompt", nil)];
             return cell;
         }

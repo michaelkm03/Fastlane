@@ -9,6 +9,21 @@
 #import "VSideMenuViewController.h"
 #import "VDeeplinkReceiver.h"
 
+@class VSessionTimer;
+
+/**
+ *  ViewControllers that will be contained by the rootViewController can conform 
+ *  to this protocol to be notified about events.
+ */
+@protocol VRootViewControllerContainedViewController <NSObject>
+
+/**
+ *  Informs the contained viewController that the loading animation has finished.
+ */
+- (void)onLoadingCompletion;
+
+@end
+
 /**
  Posted at the same time as UIApplicationDidBecomeActiveNotification, but
  only if a new session is NOT starting.
@@ -23,6 +38,11 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 @property (nonatomic, strong, readonly) UIViewController *currentViewController;
 
 /**
+ A session timer that monitors start/stop events and computes duration.
+ */
+@property (nonatomic, strong, readonly) VSessionTimer *sessionTimer;
+
+/**
  NOT A CONSTRUCTOR/FACTORY METHOD. Returns the instance of VRootViewController that is 
  set as the main window's rootViewController property. If no such instance exists,
  returns nil.
@@ -34,14 +54,16 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  */
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo;
 
-- (void)presentForceUpgradeScreen;
-
-#warning Temporary
-@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+/**
+ Please call this method from UIApplicationDelegate's method of the same name.
+ */
+- (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
 
 /**
- An object that receives deep links and forwads to appropriate handlers
+ Opens a deeplink URL
  */
-@property (nonatomic, readonly) VDeeplinkReceiver *deepLinkReceiver;
+- (void)openURL:(NSURL *)url;
+
+- (void)presentForceUpgradeScreen;
 
 @end

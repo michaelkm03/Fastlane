@@ -9,10 +9,13 @@
 #import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
 
-static NSString * const kIdentifierKey = @"identifier";
-static NSString * const kDestinationKey = @"destination";
-static NSString * const kIconKey = @"icon";
-static NSString * const kSelectedIconKey = @"selectedIcon";
+NSString * const VDependencyManagerPositionKey      = @"position";
+NSString * const VDependencyManagerDestinationKey   = @"destination";
+NSString * const VDependencyManagerIdentifierKey    = @"identifier";
+NSString * const VDependencyManagerIconKey          = @"icon";
+NSString * const VDependencyManagerSelectedIconKey  = @"selectedIcon";
+NSString * const VDependencyManagerPositionLeft     = @"left";
+NSString * const VDependencyManagerPositionRight    = @"right";
 
 @implementation VNavigationMenuItem
 
@@ -21,6 +24,8 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                          icon:(UIImage *)icon
                  selectedIcon:(UIImage *)selectedIcon
                   destination:(id)destination
+                     position:(NSString *)position
+                    tintColor:(UIColor *)tintColor
 {
     self = [super init];
     if (self)
@@ -30,6 +35,8 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         _icon = icon;
         _selectedIcon = selectedIcon;
         _destination = destination;
+        _tintColor = tintColor;
+        _position = position;
     }
     return self;
 }
@@ -38,25 +45,44 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 {
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     title = NSLocalizedString(title, "");
-    NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
-    UIImage *icon = [dependencyManager imageForKey:kIconKey];
-    UIImage *selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
-    id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
-    return [self initWithTitle:title identifier:identifier icon:icon selectedIcon:selectedIcon destination:destination];
+    NSString *identifier = [dependencyManager stringForKey:VDependencyManagerIdentifierKey];
+    UIImage *icon = [dependencyManager imageForKey:VDependencyManagerIconKey];
+    UIImage *selectedIcon = [dependencyManager imageForKey:VDependencyManagerSelectedIconKey];
+    id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:VDependencyManagerDestinationKey];
+    NSString *position = [dependencyManager stringForKey:VDependencyManagerPositionKey];
+    UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    return [self initWithTitle:title
+                    identifier:identifier
+                          icon:icon
+                  selectedIcon:selectedIcon
+                   destination:destination
+                      position:position tintColor:tintColor];
 }
 
 - (BOOL)isEqual:(id)object
 {
-    VNavigationMenuItem *menuItem = object;
-    
-    if ( ![menuItem isKindOfClass:[VNavigationMenuItem class]] )
+    if ( [object isKindOfClass:[VNavigationMenuItem class]] )
     {
-        return NO;
+        VNavigationMenuItem *menuItem = object;
+        return [self.identifier isEqualToString:menuItem.identifier];
     }
-    return [self.title isEqualToString:menuItem.title] &&
-        [self.icon isEqual:menuItem.icon] &&
-        [self.destination isEqual:menuItem.destination] &&
-        [self.identifier isEqual:menuItem.identifier];
+    
+    return [super isEqual:object];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@: %@ (%@)", NSStringFromClass([self class]), self.identifier, self.position];
+}
+
+- (NSUInteger)hash
+{
+    return [self.identifier hash];
+}
+
+- (BOOL)hasValidDestination
+{
+    return self.description != nil && ![self.destination isKindOfClass:[NSNull class]];
 }
 
 @end

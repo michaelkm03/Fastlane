@@ -2,6 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>addProfilePicture.screen</key>
+	<string>VEnterProfilePictureCameraViewController</string>
+	<key>modernResetPassword.screen</key>
+	<string>VModernResetPasswordViewController</string>
+	<key>modernResetToken.screen</key>
+	<string>VModernResetTokenViewController</string>
+	<key>modernEnterNameScreen.screen</key>
+	<string>VModernEnterNameViewController</string>
+	<key>modernRegisterEmailAndPassword.screen</key>
+	<string>VModernRegisterViewController</string>
+	<key>modernLoginEmailAndPassword.screen</key>
+	<string>VModernLoginViewController</string>
+	<key>modernLanding.screen</key>
+	<string>VModernLandingViewController</string>
+	<key>modernLoginAndRegistration.screen</key>
+	<string>VModernLoginAndRegistrationFlowViewController</string>
+	<key>standard.loginAndRegistrationView</key>
+	<string>VStandardLoginFlowViewController</string>
 	<key>hiddenWorkspace</key>
 	<string>VWorkspaceFlowController</string>
 	<key>translucent.background</key>
@@ -12,6 +30,8 @@
 	<string>VSolidColorBackground</string>
 	<key>tilePattern.background</key>
 	<string>VTilePatternBackground</string>
+	<key>video.background</key>
+	<string>VVideoBackground</string>
 	<key>trim.video.tool</key>
 	<string>VTrimVideoTool</string>
 	<key>snapshot.video.tool</key>
@@ -62,12 +82,8 @@
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
-	<key>showcase.screen</key>
-	<string>VShowcaseCollectionViewController</string>
-	<key>streamDirectory.screen</key>
+	<key>directory.screen</key>
 	<string>VDirectoryCollectionViewController</string>
-	<key>collections.screen</key>
-	<string>VCollectionsCollectionViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>
@@ -78,8 +94,12 @@
 	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VInboxViewController</string>
+	<key>message.screen</key>
+	<string>VMessageContainerViewController</string>
 	<key>notifications.screen</key>
 	<string>VNotificationsViewController</string>
+	<key>findFriends.screen</key>
+	<string>VFindFriendsViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
 	<key>staticProfile.streamHeader</key>
@@ -92,8 +112,16 @@
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
+	<key>comments.screen</key>
+	<string>VCommentsContainerViewController</string>
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
+	<key>collections.directoryCell</key>
+	<string>VCollectionsDirectoryCellFactory</string>
+	<key>showcase.directoryCell</key>
+	<string>VShowcaseDirectoryCellFactory</string>
+	<key>card.directoryCell</key>
+	<string>VCardDirectoryCellFactory</string>
 	<key>inset.streamCell</key>
 	<string>VInsetStreamCellFactory</string>
 	<key>sleek.streamCell</key>
@@ -106,5 +134,11 @@
 	<string>VBlurredMarqueeController</string>
 	<key>inset.marqueeCell</key>
 	<string>VInsetMarqueeController</string>
+	<key>webView.screen</key>
+	<string>VWebBrowserViewController</string>
+	<key>standard.coachmark</key>
+	<string>VCoachmark</string>
+	<key>standard.permissionsAlert</key>
+	<string>VPermissionAlertViewController</string>
 </dict>
 </plist>

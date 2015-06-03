@@ -7,31 +7,17 @@
 //
 
 #import "VDependencyManager.h"
+#import "VNavigationMenuItem.h"
 
 extern NSString * const VDependencyManagerTitleImageKey; ///< The key that specifies a title image
 
 @interface VDependencyManager (VNavigationItem)
 
 /**
- Internally calls addPropertiesToNavigationItem:pushAccessoryMenuItemsOn: 
- with nil for navigationController.
+ Internally calls configureNavigationItem:source: with nil for navigationController.
  
  @param navigationItem the navigation item to configure
- 
  */
-- (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem;
-
-/**
- Adds properties to the given navigation item according to
- this VDependencyManager's configuration. Things like
- title and titleView.
- 
- @param navigationItem the navigation item to configure
- 
- @param navigationController the navigationController where accessories will be pushed on to
- 
- */
-- (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem
-             pushAccessoryMenuItemsOn:(UINavigationController *)navigationController;
+- (void)configureNavigationItem:(UINavigationItem *)navigationItem;
 
 @end

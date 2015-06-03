@@ -14,6 +14,7 @@
 #import "VWebBrowserViewController.h"
 #import "NSURL+VCustomScheme.h"
 #import "VRootViewController.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 static NSString * const kContentViewComponentKey = @"contentView";
 
@@ -35,14 +36,15 @@ static NSString * const kContentViewComponentKey = @"contentView";
     return self;
 }
 
-- (UIViewController *)contentViewForSequence:(VSequence *)sequence commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage
+- (UIViewController *)contentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage
 {
     if ( [sequence isWebContent] )
     {
-        return [self webContentViewControllerWithSequence:sequence];
+        NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
+        return [self webContentViewControllerWithURL:sequenceContentURL sequence:sequence];
     }
     
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence depenencyManager:self.dependencyManager];
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence streamID:streamId depenencyManager:self.dependencyManager];
     contentViewModel.deepLinkCommentId = commentID;
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:self.dependencyManager];
     contentViewController.placeholderImage = placeholderImage;
@@ -64,7 +66,6 @@ static NSString * const kContentViewComponentKey = @"contentView";
         NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
         if ( [sequenceContentURL v_isThisAppGenericScheme] )
         {
-            [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:sequenceContentURL];
             return YES;
         }
         else if ( [sequenceContentURL v_hasCustomScheme] )
@@ -93,25 +94,37 @@ static NSString * const kContentViewComponentKey = @"contentView";
     }
 }
 
-- (UIViewController *)webContentViewControllerWithSequence:(VSequence *)sequence
+- (UIViewController *)webContentViewControllerWithURL:(NSURL *)url
 {
-    NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
-    if ( [sequenceContentURL v_isThisAppGenericScheme] )
+    return [self webContentViewControllerWithURL:url sequence:nil];
+}
+
+- (UIViewController *)webContentViewControllerWithURL:(NSURL *)url sequence:(VSequence *)sequence
+{
+    if ( [url v_isThisAppGenericScheme] )
     {
-        [[VRootViewController rootViewController].deepLinkReceiver receiveDeeplink:sequenceContentURL];
+        [[VRootViewController rootViewController] openURL:url];
         return nil;
     }
-    else if ( [sequenceContentURL v_hasCustomScheme] )
+    else if ( [url v_hasCustomScheme] )
     {
-        [[UIApplication sharedApplication] openURL:sequenceContentURL];
+        [[UIApplication sharedApplication] openURL:url];
         return nil;  return nil;
     }
     else
     {
-        VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:self.dependencyManager];
+        VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+        VWebBrowserViewController *viewController = [VWebBrowserViewController newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
+        viewController.isLandscapeOrientationSupported = YES;
         viewController.sequence = sequence;
-        return viewController;
+        if ( url != nil )
+        {
+            [viewController loadUrl:url];
+        }
+        navigationController.innerNavigationController.viewControllers = @[viewController];
+        return navigationController;
     }
+    return nil;
 }
 
 @end

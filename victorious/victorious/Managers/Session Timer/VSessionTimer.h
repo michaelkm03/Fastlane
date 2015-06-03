@@ -19,6 +19,7 @@ extern NSString * const VSessionTimerNewSessionShouldStart; ///< Notification th
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, readonly) BOOL started; ///< returns YES if -start has already been called
+@property (nonatomic, readonly) NSUInteger sessionDuration; ///< Length of the current (if active) or most recently ended session in milliseconds
 
 - (void)start; ///< Start monitoring application state
 - (BOOL)shouldNewSessionStartNow; ///< Returns YES if enough time has passed for a new session to start

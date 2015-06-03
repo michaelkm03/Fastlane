@@ -7,6 +7,7 @@
 //
 
 #import "VBaseCollectionViewCell.h"
+#import "VHasManagedDependencies.h"
 
 @class VDependencyManager, VNotAuthorizedProfileCollectionViewCell;
 
@@ -27,16 +28,11 @@
  *  that they are not currently logged in and provides a call
  *  to action button for them to do so.
  */
-@interface VNotAuthorizedProfileCollectionViewCell : VBaseCollectionViewCell
+@interface VNotAuthorizedProfileCollectionViewCell : VBaseCollectionViewCell <VHasManagedDependencies>
 
 /**
  *  A delegate conforming to VNotAuthorizedProfileCollectionViewCellDelegate.
  */
 @property (nonatomic, weak) id <VNotAuthorizedProfileCollectionViewCellDelegate> delegate;
-
-/**
- A source of style information for this cell
- */
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

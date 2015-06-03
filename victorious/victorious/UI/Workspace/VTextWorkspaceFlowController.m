@@ -7,7 +7,7 @@
 //
 
 #import "VTextWorkspaceFlowController.h"
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 #import "VWorkspaceViewController.h"
 #import "VTextToolController.h"
 #import "VRootViewController.h"
@@ -27,6 +27,7 @@
 @property (nonatomic, strong) VTextToolController *textToolController;
 
 @property (nonatomic, strong) UIViewController *mediaCaptureViewController;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -34,7 +35,8 @@
 
 + (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VDependencyManager *dependencyManagerToUse = dependencyManager ?: [[VRootViewController rootViewController] dependencyManager];
+    NSAssert(dependencyManager != nil, @"Workspace flow controller needs a dependency manager");
+    VDependencyManager *dependencyManagerToUse = dependencyManager;
     return [dependencyManagerToUse templateValueOfType:[VTextWorkspaceFlowController class] forKey:VDependencyManagerTextWorkspaceFlowKey];
 }
 
@@ -56,6 +58,9 @@
         _textToolController.delegate = _textWorkspaceViewController;
         _textWorkspaceViewController.toolController = _textToolController;
         _textWorkspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
+        
+        // Set our dependency manager
+        _dependencyManager = dependencyManager;
         
         // Add tools to the tool controller
         [_textWorkspaceViewController.toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
@@ -139,6 +144,10 @@
 {
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
     cameraViewController.shouldSkipPreview = YES;
+    if ([cameraViewController respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [cameraViewController setDependencyManager:self.dependencyManager];
+    }
     __weak typeof(self) welf = self;
     cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {

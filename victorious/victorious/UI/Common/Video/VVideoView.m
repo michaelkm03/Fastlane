@@ -7,6 +7,7 @@
 //
 
 #import "VVideoView.h"
+#import <KVOController/FBKVOController.h>
 #import "VVideoUtils.h"
 
 @import AVFoundation;
@@ -46,6 +47,17 @@
         self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         [self.layer addSublayer:self.playerLayer];
         self.playerLayer.frame = self.bounds;
+        self.playerLayer.opacity = 0.0f;
+        [self.KVOController observe:self.playerLayer
+                           keyPaths:@[@"readyForDisplay"]
+                            options:NSKeyValueObservingOptionNew
+                              block:^(id observer, AVPlayerLayer *playerLayer, NSDictionary *change)
+         {
+             if (playerLayer.isReadyForDisplay)
+             {
+                 playerLayer.opacity = 1.0f;
+             }
+         }];
         
         self.backgroundColor = [UIColor blackColor];
         
@@ -61,6 +73,11 @@
      {
          [self didFinishAssetCreation:playerItem];
      }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(play)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
 
 - (void)setBounds:(CGRect)bounds

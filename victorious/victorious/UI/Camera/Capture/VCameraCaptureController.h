@@ -61,9 +61,11 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
 /**
  Fires up the camera.
  
+ @param videoEnabled Determines whether ot not the camera tries to initialize
+ audio input and video & audio outputs.
  @param completion Will be called on a private queue when the camera is fully ready.
  */
-- (void)startRunningWithCompletion:(void(^)(NSError *))completion;
+- (void)startRunningWithVideoEnabled:(BOOL)videoEnabled andCompletion:(void(^)(NSError *))completion;
 
 /**
  Changes the current capture device

@@ -172,11 +172,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        NSString *apiPath = [NSString stringWithFormat:@"/api/notification/notifications_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
-        VAbstractFilter *listFilter = [self.paginationManager filterForPath:apiPath
-                                                                 entityName:[VAbstractFilter entityName]
-                                                       managedObjectContext:context];
-        
+        VAbstractFilter *listFilter = [self notificationFilterForCurrentUserFromManagedObjectContext:context];
         requestOperation = [self.paginationManager loadFilter:listFilter withPageType:pageType successBlock:success failBlock:fail];
     }];
     return requestOperation;
@@ -438,13 +434,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //If this is the first page, break the relationship to all the old objects.
+        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
         if ( pageType == VPageTypeFirst )
         {
             stream.streamItems = [[NSOrderedSet alloc] init];
+            marqueeItems = [[NSMutableOrderedSet alloc] init];
         }
         
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
-        NSMutableOrderedSet *marqueeItems = [stream.marqueeItems mutableCopy];
         
         VStream *fullStream = [resultObjects lastObject];
 
@@ -461,13 +458,18 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
-        stream.marqueeItems = marqueeItems;
+        if ( ![marqueeItems isEqualToOrderedSet:stream.marqueeItems] )
+        {
+            stream.marqueeItems = marqueeItems;
+        }
+        NSString *streamId = fullResponse[ @"stream_id" ];
+        stream.streamId = streamId;
         
         // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
-        stream.trackingIdentifier = fullResponse[ @"stream_id" ];
+        stream.trackingIdentifier = streamId;
         stream.isUserPostAllowed = fullResponse[ @"ugc_post_allowed" ];
         
-        if (success)
+        if ( success != nil )
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -509,6 +511,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 - (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     return [self.paginationManager filterForPath:[NSString stringWithFormat:@"/api/message/conversation_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro]
+                                      entityName:[VAbstractFilter entityName]
+                            managedObjectContext:managedObjectContext];
+}
+
+- (VAbstractFilter *)notificationFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
+    NSString *apiPath = [NSString stringWithFormat:@"/api/notification/notifications_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+    return [self.paginationManager filterForPath:apiPath
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:managedObjectContext];
 }

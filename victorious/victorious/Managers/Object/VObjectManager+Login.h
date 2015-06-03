@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager.h"
+#import "VLoginType.h"
 
 @class VDependencyManager;
 
@@ -14,9 +15,13 @@ extern NSString * const kLoggedInChangedNotification;
 
 @interface VObjectManager (Login)
 
-@property (nonatomic, readonly) BOOL mainUserProfileComplete;
-@property (nonatomic, readonly) BOOL mainUserLoggedIn;
-@property (nonatomic, readonly) BOOL authorized;
+@property (nonatomic, readonly) BOOL mainUserProfileComplete; ///< Has the main user completed their profile according to the `status` field
+
+@property (nonatomic, readonly) BOOL mainUserLoggedIn; ///< Is there a main user that is currently logged in
+
+@property (nonatomic, readonly) BOOL authorized; ///< Is there a currently logged in user and is his or her profile complete
+
+@property (nonatomic, readonly) BOOL mainUserLoggedInWithSocial; ///< Did the currently logged in user connect with Facebook or Twitter
 
 /**
  Retrieves the template from the server
@@ -71,7 +76,19 @@ extern NSString * const kLoggedInChangedNotification;
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail;
 
+/**
+ Performs a logout with the server by calling the logout endpoint.
+ This should only be called if the request is expected to succeed, i.e. the user
+ is currently authorized, as in the case when the user manually logs out.
+ */
 - (RKManagedObjectRequestOperation *)logout;
+
+/**
+ Updates internals the reflect a logged out state.  Also called interally by `logout` method.
+ Call this when you want to set the app in a logged out state by do not want to send
+ a request to the logout endpoint.
+ */
+- (void)logoutLocally;
 
 - (RKManagedObjectRequestOperation *)requestPasswordResetForEmail:(NSString *)email
                                                      successBlock:(VSuccessBlock)success
@@ -82,5 +99,7 @@ extern NSString * const kLoggedInChangedNotification;
                                                     newPassword:(NSString *)newPassword
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
+
+- (BOOL)loginWithExistingToken;
 
 @end

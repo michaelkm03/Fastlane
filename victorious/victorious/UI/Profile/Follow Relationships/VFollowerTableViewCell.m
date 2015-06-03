@@ -9,7 +9,7 @@
 #import "VFollowerTableViewCell.h"
 
 // Commands
-#import "VFollowing.h"
+#import "VFollowResponder.h"
 
 // Models + Helpers
 #import "VObjectManager+Users.h"
@@ -22,6 +22,7 @@
 // Views + Helpers
 #import "VDefaultProfileButton.h"
 #import "VFollowUserControl.h"
+#import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <KVOController/FBKVOController.h>
 
@@ -29,7 +30,7 @@ static const CGFloat kFollowerCellHeight = 50.0f;
 
 @interface VFollowerTableViewCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *profileName;
 @property (nonatomic, weak) IBOutlet UILabel *profileLocation;
 @property (nonatomic, weak) IBOutlet VFollowUserControl *followControl;
@@ -94,11 +95,7 @@ static const CGFloat kFollowerCellHeight = 50.0f;
          [welf updateFollowingAnimated:YES];
      }];
     
-    UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
-    [self.profileImageView fadeInImageAtURL:[NSURL URLWithString:profile.pictureUrl]
-                           placeholderImage:defaultImage];
-    self.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    [self.profileImageView setProfileImageURL:[NSURL URLWithString:profile.pictureUrl]];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
     self.followControl.enabled = YES;
@@ -122,13 +119,13 @@ static const CGFloat kFollowerCellHeight = 50.0f;
 
 - (IBAction)tappedFollowControl:(VFollowUserControl *)sender
 {
-    id<VFollowing> followCommandHandler = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                       withSender:nil];
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                           withSender:nil];
+    NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
     sender.enabled = NO;
     if (sender.following)
     {
-        
-        [followCommandHandler unfollowUser:self.profile
+        [followResponder unfollowUser:self.profile
                             withCompletion:^(VUser *userActedOn)
         {
             sender.enabled = YES;
@@ -136,7 +133,7 @@ static const CGFloat kFollowerCellHeight = 50.0f;
     }
     else
     {
-        [followCommandHandler followUser:self.profile
+        [followResponder followUser:self.profile
                           withCompletion:^(VUser *userActedOn)
          {
              sender.enabled = YES;

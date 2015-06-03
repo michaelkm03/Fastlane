@@ -34,15 +34,18 @@
 #import "VNavigationController.h"
 #import "VAuthorizedAction.h"
 #import "VNavigationController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
+#import "VProvidesNavigationMenuItemBadge.h"
+#import "UIResponder+VResponderChain.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
-@interface VInboxViewController () <VUserSearchViewControllerDelegate>
+@interface VInboxViewController () <VUserSearchViewControllerDelegate, VProvidesNavigationMenuItemBadge>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic) NSInteger badgeNumber;
-@property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
@@ -54,7 +57,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 @implementation VInboxViewController
 
-@synthesize multipleContainerChildDelegate;
+@synthesize multipleContainerChildDelegate = _multipleContainerChildDelegate;
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
 
 + (instancetype)inboxViewController
 {
@@ -69,10 +73,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         viewController.dependencyManager = dependencyManager;
         viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
         viewController.title = NSLocalizedString(@"Messages", @"");
-        viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:viewController
-                                                                                 action:@selector(userSearchAction:)];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
@@ -91,7 +91,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    
+    [self updateNavigationItem];
 }
 
 #pragma mark - View Lifecycle
@@ -106,6 +106,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -121,6 +123,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
+    
+    [self updateNavigationItem];
+    
+    self.badgeNumber = [self.messageCountCoordinator unreadMessageCount];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -139,6 +145,16 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 }
 
 #pragma mark - Properties
+
+- (void)updateNavigationItem
+{
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleContainerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
+    }
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+}
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
 {
@@ -161,15 +177,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-    if ( badgeNumber == _badgeNumber )
-    {
-        return;
-    }
     _badgeNumber = badgeNumber;
     
     if ( self.badgeNumberUpdateBlock != nil )
     {
-        self.badgeNumberUpdateBlock(self.badgeNumber);
+        self.badgeNumberUpdateBlock( badgeNumber );
     }
 }
 
@@ -199,7 +211,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     RKObjectManager *manager = [RKObjectManager sharedManager];
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(postedAt)) ascending:NO];
 
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
@@ -229,7 +241,16 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     if ( messageViewController == nil )
     {
-        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:self.dependencyManager];
+        NSString *title = NSLocalizedString( @"More", @"" );
+        NSString *imageName = @"A_more";
+        NSDictionary *moreAcessory = @{ VDependencyManagerDestinationKey: [NSNull null],
+                                        VDependencyManagerTitleKey: title,
+                                        VDependencyManagerIconKey: @{ VDependencyManagerImageURLKey: imageName },
+                                        VDependencyManagerIdentifierKey: VDependencyManagerAccessoryItemMore,
+                                        VDependencyManagerPositionKey: VDependencyManagerPositionRight };
+        NSDictionary *childCondifuration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
+        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childCondifuration];
+        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:childDependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }
     [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
@@ -261,11 +282,13 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         VNoContentView *noMessageView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
-        noMessageView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
-        noMessageView.titleLabel.textColor = [UIColor whiteColor];
-        noMessageView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
-        noMessageView.messageLabel.textColor = [UIColor whiteColor];
-        noMessageView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
+        if ( [noMessageView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noMessageView.dependencyManager = self.dependencyManager;
+        }
+        noMessageView.title = NSLocalizedString(@"NoMessagesTitle", @"");
+        noMessageView.message = NSLocalizedString(@"NoMessagesMessage", @"");
+        noMessageView.icon = [UIImage imageNamed:@"noMessagesIcon"];
         self.tableView.backgroundView = noMessageView;
     }
     else
@@ -399,18 +422,38 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     };
 
     self.refreshRequest = [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
-                                                                              successBlock:success failBlock:fail];
+                                                                              successBlock:success
+                                                                                 failBlock:fail];
 }
 
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeNext
-                                                        successBlock:nil failBlock:nil];
+                                                        successBlock:nil
+                                                           failBlock:nil];
+}
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    {
+        [self showUserSearch];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    return YES;
 }
 
 #pragma mark - Search
 
-- (IBAction)userSearchAction:(id)sender
+- (void)showUserSearch
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
     
@@ -428,7 +471,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)didSelectUser:(VUser *)user inUserSearchViewController:(VUserSearchViewController *)userSearchViewController
 {
-    [self displayConversationForUser:user animated:NO];
+    if ( user != nil )
+    {
+        [self displayConversationForUser:user animated:NO];
+    }
     
     /*
      Call this to update the top bar before dismissing since UINavigationDelegate methods will not fire
@@ -445,20 +491,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
     VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:context];
-                               CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
     
-    if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&
-        [[self.fetchedResultsController sections][0] numberOfObjects] &&
-        ![[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
+    if ( [self scrollView:scrollView shouldLoadNextPageOfFilter:filter] )
     {
         [self loadNextPageAction];
-    }
-    
-    //Notify the container about the scroll so it can handle the header
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-    {
-        [self.delegate scrollViewDidScroll:scrollView];
     }
 }
 
@@ -514,6 +550,13 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
             self.badgeNumber = [newUnreadCount integerValue];
         }
     }
+}
+
+#pragma mark - VNavigationDestination
+
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
+{
+    return YES;
 }
 
 @end

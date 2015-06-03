@@ -11,13 +11,16 @@
 
 static NSString *const kVNoContentTableViewCellIdentifier   = @"VNoContentTableViewCell";
 static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue Light Italic";
+static const UIEdgeInsets kTextViewMargins = { 10.0f, 10.0f, 62.0f, 10.0f };
 
 @interface VNoContentTableViewCell()
 
-@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (weak, nonatomic) IBOutlet UIButton *actionButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionButtonHeightConstraint;
+@property (nonatomic, weak) IBOutlet UITextView *messageTextView;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, weak) IBOutlet UIButton *actionButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionButtonHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionButtonSpaceTopToTextView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionButtonBottomSpaceToContainer;
 @property (nonatomic, assign) CGFloat actionButtonVisibleHeight;
 @property (nonatomic, weak) void (^actionButtonBlock)(void);
 
@@ -37,6 +40,29 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     [tableView registerNib:[UINib nibWithNibName:kVNoContentTableViewCellIdentifier bundle:nil] forCellReuseIdentifier:kVNoContentTableViewCellIdentifier];
 }
 
+/**
+ Creates and returns a sample cell that can be used to calculate sizing
+ */
++ (VNoContentTableViewCell *)sampleCellForSizing
+{
+    static VNoContentTableViewCell *cell = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+    {
+        UINib *nib = [UINib nibWithNibName:kVNoContentTableViewCellIdentifier bundle:[NSBundle bundleForClass:self]];
+        NSArray *objects = [nib instantiateWithOwner:nil options:nil];
+        for (id object in objects)
+        {
+            if ([object isKindOfClass:self])
+            {
+                cell = object;
+                return;
+            }
+        }
+    });
+    return cell;
+}
+
 #pragma mark - UITableViewCell life cycle
 
 - (void)awakeFromNib
@@ -48,6 +74,7 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     [self.actionButton setTitle:@"" forState:UIControlStateNormal];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.userInteractionEnabled = YES;
+    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
 }
 
 - (void)prepareForReuse
@@ -59,7 +86,7 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
 
 #pragma mark - Public properties for configuration
 
-- (void)setIsCentered:(BOOL)isCentered
+- (void)setCentered:(BOOL)isCentered
 {
     self.messageTextView.textAlignment = isCentered ? NSTextAlignmentCenter : NSTextAlignmentLeft;
 }
@@ -79,11 +106,6 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     CGFloat currentSize = self.messageTextView.font.pointSize;
     UIFont *font = [UIFont fontWithName:kVNoContentMessageFontName size:currentSize];
     self.messageTextView.font = font;
-}
-
-- (NSString *)message
-{
-    return nil;
 }
 
 - (void)setIsLoading:(BOOL)isLoading
@@ -111,12 +133,16 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
 - (void)hideActionButton
 {
     self.actionButtonHeightConstraint.constant = 0.0;
+    self.actionButtonBottomSpaceToContainer.constant = 0.0f;
+    self.actionButtonSpaceTopToTextView.constant = 0.0f;
     [self setNeedsLayout];
 }
 
 - (void)showActionButton
 {
     self.actionButtonHeightConstraint.constant = self.actionButtonVisibleHeight;
+    self.actionButtonSpaceTopToTextView.constant = 16.0f;
+    self.actionButtonBottomSpaceToContainer.constant = 5.0f;
     [self setNeedsLayout];
 }
 
@@ -138,6 +164,25 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     {
         self.actionButtonBlock();
     }
+}
+
+#pragma mark - Sizing
+
++ (CGFloat)heightWithMessage:(NSString *)message andWidth:(CGFloat)width
+{
+    VNoContentTableViewCell *sizingCell = [self sampleCellForSizing];
+    CGFloat fontSize = sizingCell.messageTextView.font.pointSize;
+    UIFont *font = [UIFont fontWithName:kVNoContentMessageFontName size:fontSize];
+    
+    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
+    context.minimumScaleFactor = sizingCell.messageTextView.minimumZoomScale;
+    
+    CGFloat textViewWidth = width - kTextViewMargins.left - kTextViewMargins.right;
+    CGRect textRect = [message boundingRectWithSize:CGSizeMake(textViewWidth, CGFLOAT_MAX)
+                                             options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                          attributes:@{ NSFontAttributeName: font }
+                                             context:context];
+    return VCEIL(CGRectGetHeight(textRect) + kTextViewMargins.top + kTextViewMargins.bottom);
 }
 
 @end

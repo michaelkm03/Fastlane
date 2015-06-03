@@ -33,7 +33,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Sequence.h"
-#import "VThemeManager.h"
 
 #pragma mark - Categories
 #import "NSString+VParseHelp.h"
@@ -63,9 +62,7 @@
 
 - (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController newWithDependencyManager:self.dependencyManager];
-    commentsTable.sequence = sequence;
-    [viewController.navigationController pushViewController:commentsTable animated:YES];
+    [viewController.navigationController pushViewController:[self.dependencyManager commentsContainerWithSequence:sequence] animated:YES];
 }
 
 #pragma mark - User

@@ -9,7 +9,7 @@
 #import "VAbstractStreamCollectionViewController.h"
 
 #import "VStreamCollectionViewDataSource.h"
-#import "VDirectoryItemCell.h"
+#import "VCardDirectoryCell.h"
 
 #import "MBProgressHUD.h"
 
@@ -28,7 +28,6 @@
 #import "VSequence.h"
 #import "VAbstractFilter.h"
 
-#import "VSettingManager.h"
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
@@ -175,7 +174,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
 }
 
-- (void)updateUserPostAllowed
+- (void)updateNavigationItems
 {
     // Nothing to do here, provided to override in subclasses
 }
@@ -198,7 +197,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
         [self.streamTrackingHelper multipleContainerDidSetSelected:self.currentStream];
     }
     
-    [self updateUserPostAllowed];
+    [self updateNavigationItems];
 }
 
 #pragma mark - Property Setters
@@ -261,6 +260,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
         return;
     }
     
+    const BOOL wasUserPostAllowed = self.currentStream.isUserPostAllowed.boolValue;
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
          [self.refreshControl endRefreshing];
@@ -269,7 +269,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
          BOOL viewIsVisible = self.parentViewController != nil;
          if ( viewIsVisible )
          {
-             [self updateUserPostAllowed];
+             if ( wasUserPostAllowed != self.currentStream.isUserPostAllowed.boolValue )
+             {
+                 [self updateNavigationItems];
+             }
          }
          
          if (completionBlock)

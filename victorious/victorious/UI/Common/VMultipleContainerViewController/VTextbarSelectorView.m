@@ -37,6 +37,18 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     return self;
 }
 
+- (CGRect)frameOfButtonAtIndex:(NSUInteger)index
+{
+    NSUInteger numberOfButtons = self.buttons.count;
+    if ( index > numberOfButtons )
+    {
+        return CGRectZero;
+    }
+    
+    UIButton *button = self.buttons[index];
+    return [button convertRect:button.bounds toView:self.window];
+}
+
 - (void)setViewControllers:(NSArray *)viewControllers
 {
     [super setViewControllers:viewControllers];
@@ -147,7 +159,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
         //Create a button, set it's text to the title, give it constraints that fit it to it's spot in the view
         UIButton *button = [[UIButton alloc] init];
         button.translatesAutoresizingMaskIntoConstraints = NO;
-        [button setTitle:viewController.title forState:UIControlStateNormal];
+        [button setTitle:viewController.navigationItem.title forState:UIControlStateNormal];
         [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
         button.titleLabel.font = buttonFont;
         button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;

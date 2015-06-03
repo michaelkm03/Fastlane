@@ -7,32 +7,22 @@
 //
 
 #import "VWebBrowserHeaderViewController.h"
-#import "VSettingManager.h"
-#import "VThemeManager.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
+#import "VWebBrowserHeaderLayoutManager.h"
+#import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
-static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
-static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
-static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
-
-@interface VWebBrowserHeaderViewController()
+@interface VWebBrowserHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) NSURL *currentURL;
-
-@property (nonatomic, weak) IBOutlet UIButton *buttonBack;
 @property (nonatomic, weak) IBOutlet UIButton *buttonOpenURL;
 @property (nonatomic, weak) IBOutlet UIButton *buttonExit;
-@property (nonatomic, weak) IBOutlet UILabel *labelTitle;
-@property (nonatomic, weak) IBOutlet VProgressBarView *progressBar;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *pageTitleX1Constraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonBackX1Constraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *buttonExitX2Constraint;
-
-@property (nonatomic, assign) CGFloat startingButtonWidth;
-@property (nonatomic, assign) CGFloat startingPageTitleX1;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton *buttonBack;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel *labelTitle;
+@property (nonatomic, weak, readwrite) IBOutlet VProgressBarView *progressBar;
+@property (nonatomic, strong, readwrite) IBOutlet VWebBrowserHeaderLayoutManager *layoutManager;
+@property (nonatomic, weak) IBOutlet UIView *backgroundContainerView;
 
 @end
 
@@ -44,26 +34,7 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
     
     [self applyTheme];
     
-    self.labelTitle.text = NSLocalizedString( @"Loading...", @"" );
-    
-    self.startingButtonWidth = self.buttonBackWidthConstraint.constant;
-    self.startingPageTitleX1 = self.pageTitleX1Constraint.constant;
-    
-    [self hideNavigationControls];
-    
-    [self.view layoutIfNeeded];
-}
-
-- (void)hideNavigationControls
-{
-    self.buttonBackWidthConstraint.constant = 0.0f;
-    self.pageTitleX1Constraint.constant = 10.0f;
-}
-
-- (void)showNavigationControls
-{
-    self.buttonBackWidthConstraint.constant = self.startingButtonWidth;
-    self.pageTitleX1Constraint.constant = self.startingPageTitleX1;
+    [self.layoutManager update];
 }
 
 - (void)applyTheme
@@ -72,44 +43,21 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
     {
         return;
     }
+    
     UIColor *progressColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.progressBar setProgressColor:progressColor];
     
-    UIColor *tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    // These dependencies should matchup with VDependencyManager+VScaffoldViewController.m
+    VDependencyManager *dependenciesForNavigationBar = [self.dependencyManager dependencyManagerForNavigationBar];
+    UIColor *tintColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerMainTextColorKey];
     for ( UIButton *button in @[ self.buttonBack, self.buttonExit, self.buttonOpenURL ])
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-        [button setTitleColor:tintColor forState:UIControlStateNormal];
         button.tintColor = tintColor;
     }
-    
-    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    self.labelTitle.textColor = tintColor;
-    
-    self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-}
-
-- (void)updateHeaderState
-{
-    [UIView animateWithDuration:kLayoutChangeAnimationDuration
-                          delay:0.0f
-         usingSpringWithDamping:kLayoutChangeAnimationSpringDampening
-          initialSpringVelocity:kLayoutChangeAnimationSpringVelocity
-                        options:kNilOptions
-                     animations:^void
-     {
-         if ( [self.browserDelegate canGoBack] )
-         {
-             [self showNavigationControls];
-         }
-         else
-         {
-             [self hideNavigationControls];
-         }
-         [self.view layoutIfNeeded];
-     } completion:nil];
-    
-    self.buttonBack.enabled = [self.browserDelegate canGoBack];
+    [dependenciesForNavigationBar addBackgroundToBackgroundHost:self];
+    self.labelTitle.textColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerMainTextColorKey];
+    self.labelTitle.font = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -145,36 +93,43 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
     [self.labelTitle setText:title];
 }
 
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return _backgroundContainerView;
+}
+
 #pragma mark - Header Actions
 
 - (IBAction)backSelected:(id)sender
 {
-    [self.browserDelegate goBack];
-    [self updateHeaderState];
+    [self.delegate goBack];
+    [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)forwardSelected:(id)sender
 {
-    [self.browserDelegate goForward];
-    [self updateHeaderState];
+    [self.delegate goForward];
+    [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)exportSelected:(id)sender
 {
-    [self.browserDelegate export];
-    [self updateHeaderState];
+    [self.delegate exportURL];
+    [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)exitSelected:(id)sender
 {
-    [self.browserDelegate exit];
-    [self updateHeaderState];
+    [self.delegate exit];
+    [self.layoutManager updateAnimated:YES];
 }
 
 - (IBAction)refreshSelected:(id)sender
 {
-    [self.browserDelegate reload];
-    [self updateHeaderState];
+    [self.delegate reload];
+    [self.layoutManager updateAnimated:YES];
 }
 
 @end

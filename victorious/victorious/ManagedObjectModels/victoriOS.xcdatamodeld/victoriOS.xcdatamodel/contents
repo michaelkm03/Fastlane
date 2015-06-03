@@ -98,6 +98,7 @@
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="previewAssets" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="previewAssets" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
@@ -202,6 +203,7 @@
         <relationship name="parentEndCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EndCard" inverseName="nextSequence" inverseEntity="EndCard" syncable="YES"/>
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
+        <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="sequence" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="remixers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="remixedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="sequence" inverseEntity="Tracking" syncable="YES"/>
@@ -214,6 +216,7 @@
         <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hashtag" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="marqueeItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="marquees" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="streams" inverseEntity="StreamItem" syncable="YES"/>
@@ -227,11 +230,6 @@
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItems" inverseEntity="Stream" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
-        <attribute name="appEnterBackground" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="appEnterForeground" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="appInstall" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="appLaunch" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="ballisticCount" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="share" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -290,7 +288,7 @@
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="EndCard" positionX="693" positionY="-648" width="128" height="165"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
-        <element name="ImageAsset" positionX="693" positionY="-648" width="128" height="120"/>
+        <element name="ImageAsset" positionX="423" positionY="-594" width="128" height="135"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="180"/>
@@ -301,9 +299,9 @@
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="510"/>
-        <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
+        <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
-        <element name="Tracking" positionX="828" positionY="-630" width="128" height="300"/>
+        <element name="Tracking" positionX="828" positionY="-630" width="128" height="225"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="450"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
     </elements>

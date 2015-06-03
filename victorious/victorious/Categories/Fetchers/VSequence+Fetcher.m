@@ -16,6 +16,12 @@
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
 #import "VPermissions.h"
+#import "NSURL+MediaType.h"
+#import "VImageAsset+Fetcher.h"
+#import "VImageAssetFinder.h"
+
+static const CGFloat kMinimumAspectRatio = 0.5f;
+static const CGFloat kMaximumAspectRatio = 2.0f;
 
 @implementation VSequence (Fetcher)
 
@@ -97,6 +103,18 @@
     return [self.category isEqualToString:kVOwnerAnnouncementCategory];
 }
 
+- (BOOL)isPreviewImageContent
+{
+    BOOL isImageURL = NO;
+    if ([self.previewData isKindOfClass:[NSString class]])
+    {
+        NSURL *previewURL = [NSURL URLWithString:self.previewData];
+        isImageURL = [previewURL v_hasImageExtension];
+    }
+    
+    return [self.previewType isEqualToString:kVAssetTypeMedia] && isImageURL;
+}
+
 - (BOOL)isPreviewWebContent
 {
     return [self.previewType isEqualToString:kVAssetTypeURL];
@@ -173,6 +191,42 @@
     return primaryAsset;
 }
 
+- (CGFloat)previewAssetAspectRatio
+{
+    VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
+    VImageAsset *previewAsset = [assetFinder largestAssetFromAssets:self.previewAssets];
+    if (previewAsset != nil)
+    {
+        // Make sure we have a valid width and height
+        if (previewAsset.width <= 0 || previewAsset.height <= 0)
+        {
+            return 1.0f;
+        }
+        
+        // Get aspect ratio of preview asset
+        CGFloat aspectRatio = [previewAsset.width floatValue] / [previewAsset.height floatValue];
+        // Make sure aspect ratio is within bounds
+        return [self clamp:aspectRatio max:kMaximumAspectRatio min:kMinimumAspectRatio];
+    }
+    
+    return 1.0f;
+}
+
+- (CGFloat)clamp:(CGFloat)value max:(CGFloat)max min:(CGFloat)min
+{
+    if (value > max)
+    {
+        return max;
+    }
+    else if (value < min)
+    {
+        return min;
+    }
+    
+    return value;
+}
+
+
 - (NSArray *)initialImageURLs
 {
     NSMutableArray *urls = [[NSMutableArray alloc] initWithCapacity:10];
@@ -244,6 +298,30 @@
 - (VPermissions *)permissions
 {
     return [VPermissions permissionsWithNumber:self.permissionsMask];
+}
+
+- (VUser *)displayOriginalPoster
+{
+    return [self.isRepost boolValue] ? self.parentUser : self.user;
+}
+
+- (VUser *)displayParentUser
+{
+    return [self.isRepost boolValue] ? self.user : self.parentUser;
+}
+
+- (NSURL *)inStreamPreviewImageURL
+{
+    NSURL *imageUrl;
+    if ([self isImage])
+    {
+        imageUrl = [NSURL URLWithString:[self.firstNode imageAsset].data];
+    }
+    else
+    {
+        imageUrl = [self previewImageUrl];
+    }
+    return imageUrl;
 }
 
 @end

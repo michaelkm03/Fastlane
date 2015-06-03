@@ -18,14 +18,16 @@
 #import "VFollowerTableViewCell.h"
 #import "VNoContentView.h"
 #import "UIVIew+AutoLayout.h"
-#import "VFollowerEventResponder.h"
+#import "VFollowingHelper.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VFollowingHelper.h"
+#import "VFollowResponder.h"
 
-@interface VUserSearchResultsViewController ()
+@interface VUserSearchResultsViewController () <VFollowResponder>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIView *dismissTapView;
-@property (nonatomic, strong) VFollowerEventResponder *followCommandHandler;
+@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @end
 
@@ -37,18 +39,9 @@
 {
     VUserSearchResultsViewController *searchResultsVC = [[VUserSearchResultsViewController alloc] init];
     searchResultsVC.dependencyManager = dependencyManager;
+    searchResultsVC.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
+                                                             viewControllerToPresentOn:searchResultsVC];
     return searchResultsVC;
-}
-
-#pragma mark - UIResponder
-
-- (UIResponder *)nextResponder
-{
-    self.followCommandHandler = [[VFollowerEventResponder alloc] initWithNextResponder:[super nextResponder]];
-    self.followCommandHandler.viewControllerToPresentAuthorizationOn = self;
-    self.followCommandHandler.dependencyManager = self.dependencyManager;
-    
-    return self.followCommandHandler;
 }
 
 #pragma mark - View Lifecycle
@@ -197,6 +190,22 @@
     VUser  *user = self.searchResults[indexPath.row];
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
+}
+
+#pragma mark - VFollowing
+
+- (void)followUser:(VUser *)user
+    withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper followUser:user
+                   withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user
+      withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followHelper unfollowUser:user
+                     withCompletion:completion];
 }
 
 @end

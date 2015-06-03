@@ -26,7 +26,7 @@ extern NSString * const kMarqueeURLKey;
 
 @property (nonatomic, strong) UICollectionView *collectionView; ///< The colletion view used to display the streamItems
 @property (nonatomic, readonly) VStreamItem *currentStreamItem; ///< The stream item currently being displayed
-@property (nonatomic, readonly) VStream *stream; ///< The Marquee Stream
+@property (nonatomic, strong) VStream *stream; ///< The Marquee Stream
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
 
 /**

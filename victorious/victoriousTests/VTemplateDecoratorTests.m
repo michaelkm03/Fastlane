@@ -81,6 +81,28 @@
     XCTAssertEqualObjects( output[ @"key2" ][ @"subkey0" ][ @"subkey1" ][ @"subkey3" ], component[ @"subkey3" ] );
 }
 
+- (void)testModifyAddedComponent
+{
+    NSDictionary *template = @{ @"key0" : @{ @"key1" : @[ @{ @"key2" : @{ @"key3" : @"value1" } } ] } };
+    
+    VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+    
+    NSDictionary *component = @{ @"componenyKey0" : @"componenyValue0",
+                                 @"componenyKey1" : @"componenyValue1",
+                                 @"componenyKey2" : @"componenyValue2" };
+    
+    BOOL didSucceed = [templateDecorator setTemplateValue:component forKeyPath:@"key0/key1/0/key2/key3"];
+    XCTAssert( didSucceed, @"Failed to set component value" );
+    
+    NSString *templateValue = @"templateValue";
+    didSucceed = [templateDecorator setTemplateValue:templateValue forKeyPath:@"key0/key1/0/key2/key3/componentKey0"];
+    XCTAssert( didSucceed, @"Failed to set component value" );
+    
+    NSDictionary *output = templateDecorator.decoratedTemplate;
+    
+    XCTAssertEqualObjects( output[ @"key0" ][ @"key1" ][ 0 ][ @"key2" ][ @"key3" ][ @"componentKey0" ], templateValue );
+}
+
 - (void)testAddInTemplate
 {
     NSDictionary *template = @{ @"key1" : @"value1",
@@ -204,6 +226,37 @@
     XCTAssertEqual( keyPaths.count, 0u );
     
     XCTAssertThrows( [templateDecorator keyPathsForKey:nil] );
+}
+
+- (void)testValueReplacement
+{
+    NSDictionary *template = @{ @"key1" : @"value9",
+                                @"key2" : @{ @"subkey0" : @{ @"key4" : @"subvalue0",
+                                                             @"key5" : @{ @"key4" : @"subvalue1",
+                                                                          @"key5" : @"subvalue2" } } },
+                                @"key3" : @[ @{ @"key6" : @"subarrayvalue1" } ],
+                                @"key4" : @[ @{ @"key6" : @"subvalue3" } ] };
+    
+    VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:template];
+    
+    NSString *replacementString = @"__REPLACEMENT__";
+    NSInteger replacementCount;
+    
+    replacementCount = [templateDecorator replaceOccurencesOfString:@"value9" withString:replacementString];
+    XCTAssertEqual( replacementCount, 1 );
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key1" ], replacementString );
+    
+    replacementCount = [templateDecorator replaceOccurencesOfString:@"subvalue" withString:replacementString];
+    XCTAssertEqual( replacementCount, 4 );
+    
+    NSString *expected = [NSString stringWithFormat:@"%@0", replacementString];
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key2" ][ @"subkey0" ][ @"key4" ], expected );
+    expected = [NSString stringWithFormat:@"%@1", replacementString];
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key2" ][ @"subkey0" ][ @"key5" ][ @"key4" ], expected );
+    expected = [NSString stringWithFormat:@"%@2", replacementString];
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key2" ][ @"subkey0" ][ @"key5" ][ @"key5" ], expected );
+    expected = [NSString stringWithFormat:@"%@3", replacementString];
+    XCTAssertEqualObjects( templateDecorator.decoratedTemplate[ @"key4" ][ 0 ][ @"key6" ], expected );
 }
 
 @end

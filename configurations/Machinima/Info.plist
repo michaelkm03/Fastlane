@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}Machinima</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}machinima</string>
+	<string>com.favoritemedium.${ProductPrefix}Machinima</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

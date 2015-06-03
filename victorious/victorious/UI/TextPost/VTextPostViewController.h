@@ -27,15 +27,19 @@
 @property (nonatomic, copy) NSString *text;
 
 /**
- Sets the background image, which will display and size accodingly.
- */
-@property (nonatomic, strong) UIImage *backgroundImage;
-
-/**
  Sets the background iamge URL, which will load asynchronously and then
  display using the same `backgroundImage` property setter.
  */
 @property (nonatomic, copy) NSURL *imageURL;
+
+/**
+ Sets the background iamge URL, which will load asynchronously and then
+ display with or without animation.
+ @param imageURL The url of the image that should be loaded.
+ @param animated Whether or not the image should animate (fade in) when loading completes.
+ @param completion The block to execute when the image finishes loading
+ */
+- (void)setImageURL:(NSURL *)imageURL animated:(BOOL)animated completion:(void (^)(UIImage *))completion;
 
 /**
  Sets the background color.
@@ -65,5 +69,10 @@
  unless you know exactly what you're doing.
  */
 @property (nonatomic, weak, readonly) IBOutlet UIImageView *backgroundImageView;
+
+/**
+ Sets the background image, which will display and size accodingly.
+ */
+- (void)setBackgroundImage:(UIImage *)backgroundImage;
 
 @end

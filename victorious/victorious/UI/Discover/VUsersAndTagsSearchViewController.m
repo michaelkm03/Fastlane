@@ -388,6 +388,10 @@ static NSInteger const kVMaxSearchResults = 1000;
     UIImage *messageIcon;
     
     VNoContentView *noResultsFoundView = [VNoContentView noContentViewWithFrame:self.searchResultsContainerView.frame];
+    if ( [noResultsFoundView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        noResultsFoundView.dependencyManager = self.dependencyManager;
+    }
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
         messageTitle = NSLocalizedString(@"No People Found In Search Title", @"");
@@ -405,10 +409,9 @@ static NSInteger const kVMaxSearchResults = 1000;
         self.tagsSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
 
-    noResultsFoundView.titleLabel.text = messageTitle;
-    noResultsFoundView.messageLabel.text = messageText;
-    noResultsFoundView.iconImageView.image = messageIcon;
-    noResultsFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    noResultsFoundView.title = messageTitle;
+    noResultsFoundView.message = messageText;
+    noResultsFoundView.icon = messageIcon;
     [noResultsFoundView addGestureRecognizer:self.tapGestureRecognizer];
 
 }

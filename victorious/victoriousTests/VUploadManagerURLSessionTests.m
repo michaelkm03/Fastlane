@@ -60,7 +60,7 @@
         self.urlSessionHasBeenInitialized = YES;
     }] getTasksWithCompletionHandler:OCMOCK_ANY];
     
-    self.uploadManager = [[VUploadManager alloc] initWithObjectManager:nil];
+    self.uploadManager = [[VUploadManager alloc] init];
     
     self.bodyFileURL = [self.uploadManager urlForNewUploadBodyFile];
     NSURL *bodyFileDirectoryURL = [self.bodyFileURL URLByDeletingLastPathComponent];

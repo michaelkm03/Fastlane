@@ -13,6 +13,7 @@
 #import "VObjectManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Private.h"
+#import "VObjectManager+Login.h"
 #import "VPaginationManager.h"
 #import "VUploadManager.h"
 #import "VRootViewController.h"
@@ -40,14 +41,16 @@
 
 @interface VObjectManager ()
 
+@property (nonatomic, readwrite) VLoginType mainUserLoginType;
 @property (nonatomic, strong, readwrite) VPaginationManager *paginationManager;
-@property (nonatomic, strong, readwrite) VUploadManager *uploadManager;
+@property (nonatomic, strong) NSString *sessionID;
+@property (nonatomic, readwrite) VUploadManager *uploadManager; ///< An object responsible for uploading files
 
 @end
 
 @implementation VObjectManager
 
-+ (void)setupObjectManager
++ (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager
 {
 #if DEBUG && EnableRestKitLogs
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
@@ -58,8 +61,11 @@
 #endif
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
+    [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
-    manager.uploadManager = [[VUploadManager alloc] initWithObjectManager:manager];
+    
+    uploadManager.objectManager = manager;
+    manager.uploadManager = uploadManager;
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
@@ -176,15 +182,27 @@
             }
         }
         
-        if (error.errorCode == kVUnauthoizedError && self.mainUser)
+        NSArray *localizedErrorMessages = [error.errorMessages v_map:^id(NSString *message)
+                                           {
+                                               return NSLocalizedString(message, @"");
+                                           }];
+        
+        if ( error.errorCode == kVUnauthoizedError && self.mainUser )
         {
-            self.mainUser = nil;
-            [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+            [self logoutLocally];
+            NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
+                                               userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
+            if ( failBlock != nil )
+            {
+                failBlock( operation, nsError );
+            }
         }
         else if (!error.errorCode && successBlock)
         {
             //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
-            NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
+            NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData
+                                                                         options:0
+                                                                           error:nil] mutableCopy];
             id payload = JSON[kVPayloadKey];
             if (payload && ![payload isKindOfClass:[NSDictionary class]])
             {
@@ -194,18 +212,13 @@
         }
         else if (error.errorCode)
         {
-            NSArray *localizedErrorMessages = [error.errorMessages v_map:^id(NSString *message)
-            {
-                return NSLocalizedString(message, @"");
-            }];
-            
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                              userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
             
-            if (failBlock)
+            if ( failBlock != nil )
             {
-                failBlock(operation, nsError);
+                failBlock( operation, nsError );
             }
         }
     };
@@ -213,18 +226,17 @@
     VFailBlock rkFailBlock = ^(NSOperation *operation, NSError *error)
     {
         RKErrorMessage *rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
-        if (rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError && self.mainUser)
+        if ( rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError )
         {
-            self.mainUser = nil;
-            [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+            [self logoutLocally];
         }
         else
         {
             [self defaultErrorHandlingForCode:rkErrorMessage.errorMessage.integerValue];
             
-            if (failBlock)
+            if ( failBlock != nil )
             {
-                failBlock(operation, error);
+                failBlock( operation, error );
             }
         }
     };
@@ -236,18 +248,18 @@
 
 - (void)defaultErrorHandlingForCode:(NSInteger)errorCode
 {
-    if (errorCode == kVUpgradeRequiredError)
+    if ( errorCode == kVUpgradeRequiredError )
     {
         [[VRootViewController rootViewController] presentForceUpgradeScreen];
     }
-    else if(errorCode == kVUserBannedError)
+    else if( errorCode == kVUserBannedError && self.mainUser )
     {
-        self.mainUser = nil;
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
-                                                               message:NSLocalizedString(@"UserBannedMessage", @"")
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                     otherButtonTitles:nil];
+        [self logoutLocally];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+                                                        message:NSLocalizedString(@"UserBannedMessage", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                              otherButtonTitles:nil];
         [alert show];
     }
 }
@@ -471,9 +483,19 @@
     [request addValue:@"iOS" forHTTPHeaderField:@"X-Client-Platform"];
     [request addValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"X-Client-OS-Version"];
     [request addValue:appVersion forHTTPHeaderField:@"X-Client-App-Version"];
+    if ( self.sessionID != nil )
+    {
+        [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
+    }
+    
+    NSString *locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
+    if ( locale != nil )
+    {
+        [request addValue:locale forHTTPHeaderField:@"Accept-Language"];
+    }
     
     // Add location data to request if we have permission to collect it
-    dispatch_async(dispatch_get_main_queue(), ^
+    if ( [NSThread isMainThread] ) // locationManager can only be used from the main thread
     {
         VLocationManager *locationManager = [VLocationManager sharedInstance];
         NSString *locationString = [locationManager httpFormattedLocationString];
@@ -481,7 +503,7 @@
         {
             [request addValue:locationString forHTTPHeaderField:@"X-Geo-Location"];
         }
-    });
+    }
 }
 
 - (NSString *)rFC2822DateTimeString
@@ -515,6 +537,11 @@
     {
         return [object description];
     }
+}
+
+- (void)resetSessionID
+{
+    self.sessionID = [[NSUUID UUID] UUIDString];
 }
 
 @end

@@ -16,6 +16,7 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
 @interface VPushNotificationManager ()
 
 @property (nonatomic, strong) NSData *apnsToken;
+@property (nonatomic, readwrite) BOOL started;
 
 @end
 
@@ -42,6 +43,7 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound) categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    self.started = YES;
 }
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken

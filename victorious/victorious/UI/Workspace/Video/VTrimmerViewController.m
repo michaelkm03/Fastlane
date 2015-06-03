@@ -140,7 +140,7 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
 - (void)setTitle:(NSString *)title
 {
     [super setTitle:title];
-    self.titleLabel.text = title;
+    self.titleLabel.text = NSLocalizedString(title, @"");
 }
 
 - (BOOL)isInteracting
@@ -373,7 +373,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.view addSubview:self.thumbnailCollectionView];
 
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.titleLabel.text = self.title;
+    self.titleLabel.text = NSLocalizedString(self.title, @"");
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;

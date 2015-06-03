@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Quest Crew</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}questcrew</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1627435220801627</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1627435220801627</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>82bY3Gm8q3uTlLiCFVUSZ1OLM</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>fpEA7ZOj2vNhmZyBCKi0hTYAdupwhRSU5j9yMMmd1WRs1bpq23</string>
+	<key>VictoriousAppID</key>
+	<integer>52</integer>
+	<key>StagingAppID</key>
+	<integer>69</integer>
+	<key>QAAppID</key>
+	<integer>51</integer>
+	<key>CreatorSalutation</key>
+	<string>Quest Crew</string>
+	<key>FlurryAPIKey</key>
+	<string>GFNHF3FNWTT8ZC6XKF36</string>
+</dict>
+</plist>

@@ -51,6 +51,24 @@
 "NumStreams"            =   "%@ STREAMS";
 "NumItems"              =   "%@ ITEMS";
 
+"Keep up to date with users and hashtags you're following here" = "Keep up to date with users and hashtags you're following here";
+"View content from users and hashtags you're following here" = "View content from users and hashtags you're following here";
+"Tap here to view posts from the entire community" = "Tap here to view posts from the entire community";
+"Tap here to view posts from other fans" = "Tap here to view posts from other fans";
+"View posts from the entire community here" = "View posts from the entire community here";
+"View posts from other fans here" = "View posts from other fans here";
+"Tap here to watch my exclusive videos" = "Tap here to watch my exclusive videos";
+"Tap here to watch exclusive videos" = "Tap here to watch exclusive videos";
+"Tap here to watch my videos" = "Tap here to watch my videos";
+"Tap here to watch videos" = "Tap here to watch videos";
+"Watch my exclusive videos here" = "Watch my exclusive videos here";
+"Watch exclusive videos here" = "Watch exclusive videos here";
+"Watch my videos here" = "Watch my videos here";
+"Watch videos here" = "Watch videos here";
+"Tap here to create your first post" = "Tap here to create your first post";
+"Tap here to create a post" = "Tap here to create a post";
+"Tap here and create a post now!" = "Tap here and create a post now!";
+
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
@@ -70,7 +88,7 @@
 "PasswordNotMatching"   =   "Passwords do not match";
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
-"LoginFailMessage"      =   "Oops! Something has gone wrong.";
+"GenericFailMessage"    =   "Oops! Something has gone wrong.";
 "NotLoggedInMessage"    =   "Oops! It looks like you're not logged in.";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
@@ -82,6 +100,7 @@
 "ProfileAborted"        =   "You will be unable to use some features until your profile has been completed.";
 "ProfileRequired"       =   "Please provide the following:";
 "ProfileRequiredPhoto"  =   "Profile image";
+"ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
 "ProfileRequiredName"   =   "Name";
 "ProfileRequiredToS"    =   "Agree to our terms";
 "ProfileRequiredTagLine"=   "Your tagline";
@@ -89,6 +108,7 @@
 "Profile load failed!"  =   "Profile load failed!";
 
 "User already exists"   =   "User already exists";
+"Invalid email address or password" = "Invalid email address or password";
 "Sorry, I can't display that right now" = "Sorry, I can't display that right now";
 
 "WereSorry"             =   "We're Sorry";
@@ -369,7 +389,8 @@
 
 "AccessMicrophoneDenied" =  "To record video from your device, please grant access by going to Settings -> Privacy -> Microphone";
 "AccessMicrophoneRestricted" = "Unable to access your microphone due to restrictions on your device.";
-"AccessCameraDenied"    =   "To record video from your device, please grant access by going to Settings -> Privacy";
+"AccessLibraryRestricted" = "To access media from your camera roll, please grant access by going to Settings -> Privacy -> Photos";
+"AccessCameraDenied"    =   "In order to use the camera, please grant access by going to Settings -> Privacy";
 "AccessCameraRestricted" =  "Unable to access your camera due to restrictions on your device.";
 "UnableSelectVideo"     = "Unable to select video.";
 
@@ -424,9 +445,10 @@
 "RepostedContentView"   =   " REPOSTED";
 "Comment"               =   "Comment";
 
-"repostedByFormat"    =   "Reposted by %@";
+"repostedByFormat"      =   "Reposted by %@";
 "doubleRepostedByFormat" = "Reposted by %@ + 1 other";
 "multipleRepostedByFormat" = "Reposted by %@ + %lu others";
+"+ %lu others"          = "+ %lu others";
 "remixedFromFormat"     =   "Remix from %@";
 "giffedFromFormat"      =   "GIF from %@";
 
@@ -494,6 +516,7 @@
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
 "ErrorPushNotificationsNotSavedMessage" = "Please try again later.";
 
+"RestorePurchaseDescription"            = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle"                    = "Error Making Purchase";
 "PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available. Please try again later.";
 "PurchaseErrorTransaction"              = "Unable to complete transaction. Please try again later.";
@@ -528,7 +551,6 @@
 
 "No Color"  = "No Color";    // No color selected
 "Standard"  = "Standard";   // The default color before a selection is made
-"No Color"  = "No Color" ;  // The absence of a color selection
 "Red"       = "Red";        // The color red
 "Magenta"   = "Magenta";    // The color, a pink/red
 "Orange"    = "Orange";     // The color orange
@@ -563,3 +585,19 @@
 "Render failure" = "Render failure";
 "Publishing..." = "Publishing...";
 "Upload failure" = "Upload failure";
+
+"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
+"Thank you for joining the community! Add a profile picture now." = "Thank you for joining the community! Add a profile picture now.";
+"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Before you can record and share videos, we need access to your microphone. Allow microphone access now?";
+
+"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!";
+"Follow content from other fans." = "Follow content from other fans.";
+"Share creations with the community." = "Share creations with the community.";
+"Join in on the conversation." = "Join in on the conversation.";
+"By signing up you are agreeing to the ToS and Privacy Policy." = "By signing up you are agreeing to the ToS and Privacy Policy.";
+"Sign up with Email" = "Sign up with Email";
+"Sign up with Facebook" = "Sign up with Facebook";
+"Create an account and join the community." = "Create an account and join the community.";
+"Create a username and introduce yourself to the community." = "Create a username and introduce yourself to the community.";
+"Add photo" = "Add photo";
+"Add your profile picture." = "Add your profile picture.";

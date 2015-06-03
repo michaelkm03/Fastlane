@@ -10,7 +10,7 @@
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
-#import "VDependencyManager+VWorkspaceTool.h"
+#import "VDependencyManager+VWorkspace.h"
 #import "CIImage+VImage.h"
 #import "NSURL+MediaType.h"
 #import "UIImageView+Blurring.h"
@@ -20,8 +20,9 @@
 #import "VVideoToolController.h"
 #import "VImageToolController.h"
 #import "VCanvasView.h"
+#import "VCoachmarkDisplayer.h"
 
-@interface VWorkspaceViewController()
+@interface VWorkspaceViewController() <VCoachmarkDisplayer>
 
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 
@@ -37,7 +38,8 @@
     {
         [self.blurredBackgroundImageView blurAndAnimateImageToVisible:self.previewImage
                                                         withTintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
-                                                          andDuration:0.5f];
+                                                          andDuration:0.5f
+                                             withConcurrentAnimations:nil];
     }
     
     if ([self.toolController isKindOfClass:[VImageToolController class]])
@@ -83,7 +85,8 @@
         welf.previewImage = snapshotImage;
         [welf.blurredBackgroundImageView blurAndAnimateImageToVisible:snapshotImage
                                                         withTintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
-                                                          andDuration:0.5f];
+                                                          andDuration:0.5f
+                                             withConcurrentAnimations:nil];
     };
     self.toolController.mediaURL = mediaURL;
     self.toolController.delegate = self;
@@ -164,6 +167,13 @@
                                              }
                                                       otherButtonTitlesAndBlocks:nil, nil];
     [confirmExitActionSheet showInView:self.view];
+}
+
+#pragma mark - VCoachmarkDisplayer
+
+- (NSString *)screenIdentifier
+{
+    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
 @end

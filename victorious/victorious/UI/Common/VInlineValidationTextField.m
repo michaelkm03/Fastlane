@@ -74,25 +74,52 @@ static const CGFloat kBottomClearInset = 2.0f;
     [self addSubview:self.inlineValidationView];
 }
 
+#pragma mark -  Property Accessors
+
+- (void)setInactivePlaceholder:(NSAttributedString *)inactivePlaceholder
+{
+    _inactivePlaceholder = inactivePlaceholder;
+    
+    if ([self isFirstResponder])
+    {
+        self.attributedPlaceholder = self.activePlaceholder;
+    }
+    else
+    {
+        self.attributedPlaceholder = _inactivePlaceholder;
+    }
+}
+
+- (void)setActivePlaceholder:(NSAttributedString *)activePlaceholder
+{
+    _activePlaceholder = activePlaceholder;
+    
+    if ([self isFirstResponder])
+    {
+        self.attributedPlaceholder = self.activePlaceholder;
+    }
+    else
+    {
+        self.attributedPlaceholder = _inactivePlaceholder;
+    }
+}
+
 #pragma mark - UIResponder
 
 - (BOOL)becomeFirstResponder
 {
-    if (self.activePlaceholder != nil)
-    {
-        self.oldPlaceholder = self.attributedPlaceholder;
-        self.attributedPlaceholder = self.activePlaceholder;
-    }
+    self.attributedPlaceholder = self.activePlaceholder;
     return [super becomeFirstResponder];
 }
 
 - (BOOL)resignFirstResponder
 {
-    if (self.oldPlaceholder)
+    self.attributedPlaceholder = self.inactivePlaceholder;
+    if (self.isFirstResponder)
     {
-        self.attributedPlaceholder = self.oldPlaceholder;
+        self.hasResignedFirstResponder = YES;
     }
-    self.hasResignedFirstResponder = YES;
+
     return [super resignFirstResponder];
 }
 
@@ -206,6 +233,12 @@ static const CGFloat kBottomClearInset = 2.0f;
         default:
             break;
     }
+}
+
+- (void)clearValidation
+{
+    self.hasResignedFirstResponder = NO;
+    self.inlineValidationView.hidden = YES;
 }
 
 @end

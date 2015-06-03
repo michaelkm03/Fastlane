@@ -8,9 +8,6 @@
 
 #import "VNewContentViewController+Actions.h"
 
-// Theme
-#import "VThemeManager.h"
-
 // View Categories
 #import "UIActionSheet+VBlocks.h"
 #import "UIActionSheet+VBlocks.h"

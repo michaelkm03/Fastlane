@@ -153,10 +153,14 @@
     if (!hasComments)
     {
         VNoContentView *noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        if ( [noCommentsView respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            noCommentsView.dependencyManager = self.dependencyManager;
+        }
         self.tableView.backgroundView = noCommentsView;
-        noCommentsView.titleLabel.text = NSLocalizedString(@"NoCommentsTitle", @"");
-        noCommentsView.messageLabel.text = NSLocalizedString(@"NoCommentsMessage", @"");
-        noCommentsView.iconImageView.image = [UIImage imageNamed:@"noCommentIcon"];
+        noCommentsView.title = NSLocalizedString(@"NoCommentsTitle", @"");
+        noCommentsView.message = NSLocalizedString(@"NoCommentsMessage", @"");
+        noCommentsView.icon = [UIImage imageNamed:@"noCommentIcon"];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }

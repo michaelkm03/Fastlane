@@ -12,12 +12,6 @@
 #import "VSolidColorBackground.h"
 #import "VURLMacroReplacement.h"
 
-#if CGFLOAT_IS_DOUBLE
-#define CGFLOAT_VALUE doubleValue
-#else
-#define CGFLOAT_VALUE floatValue
-#endif
-
 typedef BOOL (^TypeTest)(Class);
 
 static NSString * const kTemplateClassesFilename = @"TemplateClasses";
@@ -33,6 +27,7 @@ NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
 NSString * const VDependencyManagerMainTextColorKey = @"color.text";
 NSString * const VDependencyManagerContentTextColorKey = @"color.text.content";
 NSString * const VDependencyManagerSecondaryTextColorKey = @"color.text.secondary";
+NSString * const VDependencyManagerPlaceholderTextColorKey = @"color.text.placeholder";
 NSString * const VDependencyManagerAccentColorKey = @"color.accent";
 NSString * const VDependencyManagerSecondaryAccentColorKey = @"color.accent.secondary";
 NSString * const VDependencyManagerLinkColorKey = @"color.link";
@@ -58,7 +53,7 @@ NSString * const VDependencyManagerButton1FontKey = @"font.button1";
 NSString * const VDependencyManagerButton2FontKey = @"font.button2";
 
 // Keys for dependency metadata
-static NSString * const kIDKey = @"id";
+NSString * const VDependencyManagerIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kClassNameKey = @"name";
 static NSString * const kFontNameKey = @"fontName";
@@ -68,6 +63,7 @@ static NSString * const kImageURLKey = @"imageURL";
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
 NSString * const VDependencyManagerProfileImageRequiredKey = @"require_profile_image";
+NSString * const VDependencyManagerPauseVideoWhenCommentingKey = @"pause_video_when_commenting";
 
 // Keys for view controllers
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
@@ -105,7 +101,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _parentManager = parentManager;
         _configuration = [self preparedConfigurationWithUnpreparedDictionary:configuration];
@@ -138,6 +134,11 @@ static NSString * const kMacroReplacement = @"XXXXX";
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@\n%@", NSStringFromClass([self class]), self.configuration];
+}
+
 #pragma mark - High-level dependency getters
 
 - (UIColor *)colorForKey:(NSString *)key
@@ -153,7 +154,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
-    UIColor *color = [self colorFromDictionary:colorDictionary];
+    UIColor *color = [[self class] colorFromDictionary:colorDictionary];
     
     if ( color == nil )
     {
@@ -165,7 +166,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
 }
 
-- (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary
++ (UIColor *)colorFromDictionary:(NSDictionary *)colorDictionary
 {
     if (![colorDictionary isKindOfClass:[NSDictionary class]])
     {
@@ -193,29 +194,45 @@ static NSString * const kMacroReplacement = @"XXXXX";
         return nil;
     }
     
-    UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] / 255.0f
-                                     green:[green CGFLOAT_VALUE] / 255.0f
-                                      blue:[blue CGFLOAT_VALUE] / 255.0f
-                                     alpha:[alpha CGFLOAT_VALUE] / 255.0f];
+    UIColor *color = [UIColor colorWithRed:[red VCGFLOAT_VALUE] / 255.0f
+                                     green:[green VCGFLOAT_VALUE] / 255.0f
+                                      blue:[blue VCGFLOAT_VALUE] / 255.0f
+                                     alpha:[alpha VCGFLOAT_VALUE] / 255.0f];
     return color;
+}
+
++ (NSDictionary *)dictionaryFromColor:(UIColor *)color
+{
+    CGFloat r, g, b, a;
+    if ( [color getRed:&r green:&g blue:&b alpha:&a] )
+    {
+        return @{ kRedKey : @(r * 255.0f), kGreenKey : @(g * 255.0f), kBlueKey : @(b * 255.0f), kAlphaKey : @(a * 255.0f) };
+    }
+    return nil;
 }
 
 - (UIFont *)fontForKey:(NSString *)key
 {
+    UIFont *font = nil;
     NSDictionary *fontDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     VJSONHelper *helper = [[VJSONHelper alloc] init];
     NSString *fontName = fontDictionary[kFontNameKey];
     NSNumber *fontSize = [helper numberFromJSONValue:fontDictionary[kFontSizeKey]];
     
-    if (![fontName isKindOfClass:[NSString class]] ||
-        ![fontSize isKindOfClass:[NSNumber class]])
+    if ([fontName isKindOfClass:[NSString class]] &&
+        [fontSize isKindOfClass:[NSNumber class]])
+    {
+        font = [UIFont fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
+    }
+    if ( font == nil )
     {
         return [self.parentManager fontForKey:key];
     }
-    
-    UIFont *font = [UIFont fontWithName:fontName size:[fontSize CGFLOAT_VALUE]];
-    return font;
+    else
+    {
+        return font;
+    }
 }
 
 - (NSString *)stringForKey:(NSString *)key
@@ -339,7 +356,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
         }
         else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] )
         {
-            dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kIDKey]];
+            dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:VDependencyManagerIDKey]];
         }
         else if ( typeTest([templateObject class]) )
         {
@@ -429,7 +446,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     else if ( !typeTest([NSDictionary class]) && [value isKindOfClass:[NSDictionary class]] )
     {
-        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value valueForKey:kIDKey]];
+        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value valueForKey:VDependencyManagerIDKey]];
         return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
     else if ( typeTest([value class]) )
@@ -446,7 +463,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
  */
 - (id)singletonObjectWhereTypePassesTest:(TypeTest)typeTest withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *objectID = [dependencyManager stringForKey:kIDKey];
+    NSString *objectID = [dependencyManager stringForKey:VDependencyManagerIDKey];
     if ( objectID == nil )
     {
         return nil;
@@ -564,7 +581,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     }
     else if ( [value isKindOfClass:[NSDictionary class]] && !typeTest([NSDictionary class]) )
     {
-        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:kIDKey]];
+        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:VDependencyManagerIDKey]];
         if ( dependencies != nil )
         {
             dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dependencies];
@@ -655,10 +672,10 @@ static NSString * const kMacroReplacement = @"XXXXX";
         {
             if ( value[kClassNameKey] != nil )
             {
-                if ( value[kIDKey] != nil )
+                if ( value[VDependencyManagerIDKey] != nil )
                 {
                     VDependencyManager *childDependencyManager = [self childDependencyManagerWithAddedConfiguration:value];
-                    [self setChildDependencyManager:childDependencyManager forID:value[kIDKey]];
+                    [self setChildDependencyManager:childDependencyManager forID:value[VDependencyManagerIDKey]];
                 }
             }
             else if ( value[kImageMacroKey] != nil )
@@ -690,10 +707,10 @@ static NSString * const kMacroReplacement = @"XXXXX";
         {
             if ( dictionary[kClassNameKey] != nil )
             {
-                if ( dictionary[kIDKey] != nil )
+                if ( dictionary[VDependencyManagerIDKey] != nil )
                 {
                     VDependencyManager *childDependencyManager = [self childDependencyManagerWithAddedConfiguration:dictionary];
-                    [self setChildDependencyManager:childDependencyManager forID:dictionary[kIDKey]];
+                    [self setChildDependencyManager:childDependencyManager forID:dictionary[VDependencyManagerIDKey]];
                 }
             }
             else
@@ -830,7 +847,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     if ( ![self componentHasID:component] )
     {
         NSMutableDictionary *preparedComponent = [component mutableCopy];
-        preparedComponent[kIDKey] = [[NSUUID UUID] UUIDString];
+        preparedComponent[VDependencyManagerIDKey] = [[NSUUID UUID] UUIDString];
         return preparedComponent;
     }
     else
@@ -846,7 +863,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
 
 - (BOOL)componentHasID:(NSDictionary *)component
 {
-    return component[kIDKey] != nil;
+    return component[VDependencyManagerIDKey] != nil;
 }
 
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration

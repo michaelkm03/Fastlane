@@ -31,14 +31,21 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 
 - (void)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-- (void)loginViaEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
+
+- (void)loginViaEmail:(NSString *)email
+             password:(NSString *)password
+         onCompletion:(VUserManagerLoginCompletionBlock)completion
+              onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
  Re-login to whatever service the user last logged in with
  */
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-- (void)logout;
+/**
+ Performs any cleanup necessary after user has logged out through the server (i.e. VObjectManager).
+ */
+- (void)userDidLogout;
 
 /**
  Saves the user's password in the keychain for automatic login in the future

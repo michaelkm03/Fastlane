@@ -7,17 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "VStreamCellSpecialization.h"
 #import "VSequenceActionsDelegate.h"
 
-@class VActionBar;
+@class VFlexBar;
 @class VSequence;
 
 /**
  *  VAbstractActionView provides a commmon interface for views that use a horizontal 
  *  list of action buttons for interactivity with a particlar sequence.
  */
-@interface VAbstractActionView : UIView
+@interface VAbstractActionView : UIView <VStreamCellComponentSpecialization>
 
 /**
  *  A sequence for this action view.
@@ -79,7 +79,7 @@
 /**
  *  Subclasses should install buttons on actionBar configured appropriately for the sequence.
  */
-- (void)updateActionItemsOnBar:(VActionBar *)actionBar
+- (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence;
 
 /**

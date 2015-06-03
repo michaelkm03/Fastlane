@@ -20,16 +20,26 @@ static const NSTimeInterval kDefaultAnimationDuration = 0.5f;
 
 static const char kAssociatedImageKey;
 static const char kAssociatedURLKey;
+static const char kAssociatedBlurredOriginalImageKey;
+
+static NSString * const kBlurredImageCachePathExtension = @"blurred";
 
 @implementation UIImageView (Blurring)
 
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
+    if ([image isEqual:objc_getAssociatedObject(self, &kAssociatedBlurredOriginalImageKey)])
+    {
+        return;
+    }
+    
     __weak typeof(self) weakSelf = self;
+    objc_setAssociatedObject(self, &kAssociatedBlurredOriginalImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     self.image = placeholderImage;
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
-         weakSelf.image = blurredImage;
+         weakSelf.alpha = 0.0f;
+         [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
      }];
 }
 
@@ -50,7 +60,7 @@ static const char kAssociatedURLKey;
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
-         [weakSelf blurAndAnimateImageToVisible:image withTintColor:tintColor andDuration:kDefaultAnimationDuration];
+         [weakSelf blurAndAnimateImageToVisible:image cacheURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration withConcurrentAnimations:nil];
      }];
 }
 
@@ -174,6 +184,11 @@ static const char kAssociatedURLKey;
     return [objc_getAssociatedObject(self, &kAssociatedURLKey) isEqual:url];
 }
 
+- (void)clearDownloadCache
+{
+    objc_removeAssociatedObjects( self );
+}
+
 - (void)downloadImageWithURL:(NSURL *)url toCallbackBlock:(void (^)(UIImage *, NSError *))callbackBlock
 {
     __weak typeof(self) weakSelf = self;
@@ -194,8 +209,33 @@ static const char kAssociatedURLKey;
      }];
 }
 
-- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration
+- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(void (^)(void))animations
 {
+    [self blurAndAnimateImageToVisible:image
+                              cacheURL:nil
+                         withTintColor:tintColor
+                           andDuration:duration
+              withConcurrentAnimations:animations];
+}
+
+- (void)blurAndAnimateImageToVisible:(UIImage *)image
+                            cacheURL:(NSURL *)cacheURL
+                       withTintColor:(UIColor *)tintColor
+                         andDuration:(NSTimeInterval)duration
+            withConcurrentAnimations:(void (^)(void))animations
+{
+    UIImage *cachedBlurredImage = [self cachedBlurredImageForURL:cacheURL];
+    if (cachedBlurredImage !=  nil)
+    {
+        if ( animations != nil )
+        {
+            animations();
+        }
+        self.image = cachedBlurredImage;
+        self.alpha = 1.0f;
+        return;
+    }
+    
     __weak UIImageView *weakSelf = self;
     self.alpha = 0.0f;
     objc_setAssociatedObject(weakSelf, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -215,10 +255,39 @@ static const char kAssociatedURLKey;
                              options:UIViewAnimationOptionCurveEaseInOut
                           animations:^
           {
+              if ( animations != nil )
+              {
+                  animations();
+              }
               weakSelf.alpha = 1.0f;
           }
-                          completion:nil];
+                          completion:^(BOOL finished)
+          {
+              [weakSelf addBlurredImage:blurredImage toCacheWithURL:cacheURL];
+          }];
      }];
+}
+
+- (void)addBlurredImage:(UIImage *)image toCacheWithURL:(NSURL *)imageURL
+{
+    if ( imageURL == nil )
+    {
+        return;
+    }
+    
+    [[[SDWebImageManager sharedManager] imageCache] storeImage:image
+                                                        forKey:[[imageURL URLByAppendingPathComponent:kBlurredImageCachePathExtension] absoluteString]];
+}
+
+- (UIImage *)cachedBlurredImageForURL:(NSURL *)cacheURL
+{
+    NSURL *blurredURL = cacheURL != nil ? [cacheURL URLByAppendingPathComponent:kBlurredImageCachePathExtension] : nil;
+    NSString *blurredKey = [blurredURL absoluteString];
+    if ( blurredKey != nil )
+    {
+        return [[[SDWebImageManager sharedManager] imageCache] imageFromMemoryCacheForKey:blurredKey];
+    }
+    return nil;
 }
 
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock

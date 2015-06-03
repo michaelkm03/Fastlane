@@ -28,6 +28,11 @@ static const int64_t kAssetLoopClippingScale = 100;
 
 - (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset
 {
+    if (!asset.composable)
+    {
+        return nil;
+    }
+    
     AVMutableComposition *composition = [[AVMutableComposition alloc] init];
     CMTime clipping = CMTimeMake( kAssetLoopClippingValue, kAssetLoopClippingScale );
     CMTime duration = CMTimeSubtract( asset.duration, clipping );
@@ -42,22 +47,27 @@ static const int64_t kAssetLoopClippingScale = 100;
     {
         [composition insertTimeRange:editRange ofAsset:asset atTime:composition.duration error:nil];
     }
-    
+
     return composition;
 }
 
-- (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *, CMTime duration))onReady
+- (void)createPlayerItemWithURL:(NSURL *)itemURL
+                           loop:(BOOL)loop
+                  readyCallback:(void(^)(AVPlayerItem *, CMTime originalAssetDuration))onReady
 {
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^void
                    {
-                       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
-                       [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration))]
+                       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL
+                                                               options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
+                       [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration)),
+                                                                NSStringFromSelector(@selector(tracks))]
                                             completionHandler:^{
                                                 __block AVPlayerItem *playerItem = nil;
                                                 if ( loop )
                                                 {
                                                     AVComposition *composition = [self loopingCompositionWithAsset:asset];
-                                                    playerItem = [AVPlayerItem playerItemWithAsset:composition];
+                                                    // Fallback to normal playback if we can't loop.
+                                                    playerItem = [AVPlayerItem playerItemWithAsset:composition ?: asset];
                                                 }
                                                 else
                                                 {

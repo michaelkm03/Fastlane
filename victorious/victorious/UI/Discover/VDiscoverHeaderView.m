@@ -33,6 +33,7 @@
     if ( dependencyManager != nil )
     {
         self.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+        self.titleLabel.textColor = [dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     }
 }
 

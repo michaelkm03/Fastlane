@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
 #import "VUserTaggingTextStorageDelegate.h"
 
 @class VKeyboardBarViewController;
@@ -24,8 +25,9 @@
 
 @end
 
-@interface VKeyboardBarViewController : UIViewController
+@interface VKeyboardBarViewController : UIViewController <VHasManagedDependencies>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong, readonly) UITextView *textView;
 @property (nonatomic, weak)   id<VKeyboardBarDelegate>  delegate;
 @property (nonatomic, strong) NSAttributedString       *textViewText;

@@ -7,12 +7,13 @@
 //
 
 #import "VScaffoldViewController.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 #import <UIKit/UIKit.h>
 
 @class VNavigationController;
 
-@interface VSideMenuViewController : VScaffoldViewController
+@interface VSideMenuViewController : VScaffoldViewController <VAccessoryNavigationSource>
 
 @property (assign, readwrite, nonatomic) NSTimeInterval animationDuration;
 @property (strong, readwrite, nonatomic) UIImage *backgroundImage;

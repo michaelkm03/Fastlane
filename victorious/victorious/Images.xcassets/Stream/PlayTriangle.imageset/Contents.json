@@ -1,17 +1,20 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone"
+    },
+    {
+      "idiom" : "iphone",
       "scale" : "1x",
       "filename" : "stream-btn-play-triangle.png"
     },
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "2x",
       "filename" : "stream-btn-play-triangle@2x.png"
     },
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "3x"
     }
   ],

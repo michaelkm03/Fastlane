@@ -28,6 +28,22 @@
     return self;
 }
 
+- (CGRect)frameOfButtonAtIndex:(NSUInteger)index
+{
+    NSUInteger numberOfSegments = self.segmentedControl.numberOfSegments;
+    if ( index > numberOfSegments )
+    {
+        return CGRectZero;
+    }
+    
+    CGRect segmentFrame = self.segmentedControl.frame;
+    segmentFrame.origin = [self.segmentedControl convertPoint:self.segmentedControl.bounds.origin toView:self.window];
+    CGFloat segmentWidth = CGRectGetWidth(segmentFrame) / numberOfSegments;
+    segmentFrame.size.width = segmentWidth;
+    segmentFrame.origin.x += segmentWidth * index;
+    return segmentFrame;
+}
+
 #pragma mark - Properties
 
 - (void)setViewControllers:(NSArray *)viewControllers
@@ -57,7 +73,7 @@
     
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:[self.viewControllers v_map:^(UIViewController *viewController)
                                                                                       {
-                                                                                          return viewController.title;
+                                                                                          return viewController.navigationItem.title ?: @"";
                                                                                       }]];
     segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
     [segmentedControl setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];

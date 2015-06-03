@@ -25,10 +25,8 @@
 #import "VInboxViewController.h"
 #import "VProfileHeaderCell.h"
 #import "VAuthorizedAction.h"
-#import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
-#import "VSettingManager.h"
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
 #import "VDependencyManager+VScaffoldViewController.h"
@@ -38,9 +36,15 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VStreamNavigationViewFloatingController.h"
 #import "VNavigationController.h"
+#import "VBarButton.h"
+#import "VAuthorizedAction.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
+
+static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
 
 // According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
@@ -57,7 +61,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) NSNumber *remoteId;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
-@property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
 @property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
@@ -76,6 +79,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
+    [viewController addLoginStatusChangeObserver];
     
     VUser *mainUser = [VObjectManager sharedManager].mainUser;
     const BOOL isCurrentUser = (mainUser != nil && [remoteId isEqualToNumber:mainUser.remoteId]);
@@ -98,6 +102,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
+    [viewController addLoginStatusChangeObserver];
     
     viewController.user = aUser;
     
@@ -121,24 +126,16 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return nil;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
+- (void)dealloc
 {
-    self = [super initWithCoder:aDecoder];
-    if (self != nil)
-    {
-        [self userProfileSharedInit];
-    }
-    return self;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
 }
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)addLoginStatusChangeObserver
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self != nil)
-    {
-        [self userProfileSharedInit];
-    }
-    return self;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginStateDidChange:)
+                                                 name:kLoggedInChangedNotification object:nil];
 }
 
 #pragma mark - LifeCycle
@@ -146,13 +143,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginStateDidChange:)
-                                                 name:kLoggedInChangedNotification object:nil];
-    
-    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
-                                 pushAccessoryMenuItemsOn:self.navigationController];
     
     [self updateProfileHeader];
     
@@ -164,6 +154,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
     [self updateCollectionViewDataSource];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)updateProfileHeader
@@ -176,6 +168,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             if ( self.profileHeaderViewController != nil )
             {
                 self.profileHeaderViewController.delegate = self;
+                [self setInitialHeaderState];
             }
         }
         
@@ -196,22 +189,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewWillAppear:animated];
     
-    [self setInitialHeaderState];
-    
-    if ( self.isCurrentUser )
-    {
-        [self addFriendsButton];
-    }
-    else if ( self.user == nil && self.remoteId != nil )
+    if ( !self.isCurrentUser && self.user == nil && self.remoteId != nil )
     {
         [self loadUserWithRemoteId:self.remoteId];
-    }
-    else if (!self.isCurrentUser && !self.user.isDirectMessagingDisabled.boolValue)
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(composeMessage:)];
     }
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
@@ -220,20 +200,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if ( self.streamDataSource.count != 0 )
     {
         [self shrinkHeaderAnimated:YES];
-    }
-    
-    //If we came from the inbox we can get into a loop with the compose button, so hide it
-    BOOL fromInbox = NO;
-    for (UIViewController *vc in self.navigationController.viewControllers)
-    {
-        if ([vc isKindOfClass:[VInboxViewController class]])
-        {
-            fromInbox = YES;
-        }
-    }
-    if (fromInbox)
-    {
-        self.navigationItem.rightBarButtonItem = nil;
     }
     
     self.didEndViewWillAppear = YES;
@@ -258,11 +224,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -270,6 +231,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
     
     [self setupFloatingView];
+    
+    [self updateAccessoryItems];
+}
+
+- (void)updateAccessoryItems
+{
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -302,11 +271,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 }
 
 #pragma mark -
-
-- (void)userProfileSharedInit
-{
-    self.canShowContent = NO;
-}
 
 - (BOOL)canShowMarquee
 {
@@ -396,7 +360,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         self.retryHUD.margin = self.defaultMBProgressHUDMargin;
         self.retryHUD.mode = MBProgressHUDModeIndeterminate;
     }
-
+    
     [[VObjectManager sharedManager] fetchUser:self.remoteId
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
@@ -491,6 +455,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 {
                     completionBlock();
                 }
+                [self.profileHeaderViewController reloadProfileImage];
             };
             [super refreshWithCompletion:fullCompletionBlock];
         }
@@ -551,38 +516,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-#pragma mark - Find Friends
-
-- (void)addFriendsButton
-{
-    //Previously was C_findFriendsIcon in template C
-    UIImage *findFriendsIcon = [self.dependencyManager imageForKey:VDependencyManagerFindFriendsIconKey];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(findFriendsAction:)];
-}
-
-#pragma mark - Actions
-
-- (IBAction)findFriendsAction:(id)sender
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
-    
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         VFindFriendsViewController *ffvc = [VFindFriendsViewController newWithDependencyManager:self.dependencyManager];
-         [ffvc setShouldAutoselectNewFriends:NO];
-         [self.navigationController pushViewController:ffvc animated:YES];
-     }];
-}
-
 - (void)setUser:(VUser *)user
 {
     NSAssert(self.dependencyManager != nil, @"dependencyManager should not be nil in VUserProfileViewController when the profile is set");
@@ -603,10 +536,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.currentStream = [VStream streamForUser:self.user];
     
-    NSString *profileName = user.name ?: @"Profile";
-    
-    //Update title AFTER updating current stream as that update resets the title to nil (because there is nil name in the stream)
-    self.title = self.isCurrentUser ? NSLocalizedString(@"me", "") : profileName;
+    self.title = self.isCurrentUser ? NSLocalizedString( @"me", nil ) : user.name;
     
     [self updateProfileHeader];
     
@@ -627,31 +557,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (BOOL)isDisplayingFloatingProfileHeader
 {
     return self.profileHeaderViewController.floatingProfileImage != nil;
-}
-
-- (IBAction)composeMessage:(id)sender
-{
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         
-         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.user dependencyManager:self.dependencyManager];
-         composeController.presentingFromProfile = YES;
-         
-         if ([self.navigationController.viewControllers containsObject:composeController])
-         {
-             [self.navigationController popToViewController:composeController animated:YES];
-         }
-         else
-         {
-             [self.navigationController pushViewController:composeController animated:YES];
-         }
-     }];
 }
 
 #pragma mark - VUserProfileHeaderDelegate
@@ -677,7 +582,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
          
          if ( self.isCurrentUser )
          {
-             [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+             [self performSegueWithIdentifier:kEditProfileSegueIdentifier sender:self];
          }
          else
          {
@@ -781,8 +686,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{    
-    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+{
+    BOOL isNoContentCell = [[collectionView cellForItemAtIndexPath:indexPath] isKindOfClass:[VNotAuthorizedProfileCollectionViewCell class]];
+    if ( ( self.streamDataSource.hasHeaderCell && indexPath.section == 0 ) || isNoContentCell )
     {
         return;
     }
@@ -791,7 +697,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateCollectionViewDataSource
 {
-    if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
+    if ( ![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser )
     {
         self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView dependencyManager:self.dependencyManager];
         self.notLoggedInDataSource.delegate = self;
@@ -803,6 +709,25 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         self.collectionView.dataSource = self.streamDataSource;
         [self.collectionView addSubview:self.refreshControl];
     }
+}
+
+- (BOOL)array:(NSArray *)array containsObjectOfClass:(Class)objectClass
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings)
+    {
+        if ( [evaluatedObject conformsToProtocol:@protocol(VMultipleContainer)] )
+        {
+            id<VMultipleContainer> multipleContainer = evaluatedObject;
+            return [self array:multipleContainer.children containsObjectOfClass:objectClass];
+        }
+        return [evaluatedObject isKindOfClass:objectClass];
+    }];
+    return [array filteredArrayUsingPredicate:predicate].count > 0;
+}
+
+- (BOOL)navigationHistoryContainsInbox
+{
+    return [self array:self.navigationController.viewControllers containsObjectOfClass:[VInboxViewController class]];
 }
 
 #pragma mark - KVO
@@ -852,10 +777,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource
 {
-    VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    VAuthorizedAction *authorizationAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                            dependencyManager:self.dependencyManager];
+    [authorizationAction performFromViewController:self
+                                           context:VAuthorizationContextUserProfile
+                                        completion:^(BOOL authorized) { }];
 }
 
 #pragma mark - VNavigationViewFloatingControllerDelegate
@@ -873,5 +799,69 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(tagline))];
     [self.KVOController unobserve:_user keyPath:NSStringFromSelector(@selector(pictureUrl))];
 }
+
+#pragma mark - VAccessoryNavigationSource
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    const BOOL didNavigateFromInbox = [self navigationHistoryContainsInbox];
+    const BOOL isCurrentUserLoggedIn = [VObjectManager sharedManager].authorized;
+    const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
+    
+    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    {
+        if ( didNavigateFromInbox )
+        {
+            return NO;
+        }
+        else if ( isCurrentUser )
+        {
+            return NO;
+        }
+        else
+        {
+            if ( isCurrentUserLoggedIn )
+            {
+                return !self.user.isDirectMessagingDisabled.boolValue;
+            }
+            else
+            {
+                return NO;
+            }
+        }
+    }
+    else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
+    {
+        return isCurrentUser;
+    }
+    return YES;
+}
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    const BOOL isCurrentUser = self.user != nil && self.user == [VObjectManager sharedManager].mainUser;
+    
+    if ( [menuItem.destination isKindOfClass:[VMessageContainerViewController class]] )
+    {
+        if ( isCurrentUser )
+        {
+            return NO;
+        }
+        else
+        {
+            ((VMessageContainerViewController *)menuItem.destination).otherUser = self.user;
+        }
+    }
+    else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
+    }
+    
+    return YES;
+}
+
+#pragma mark - VProvidesNavigationMenuItemBadge
+
+@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
 
 @end

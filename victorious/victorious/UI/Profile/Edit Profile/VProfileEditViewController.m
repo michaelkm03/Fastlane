@@ -7,13 +7,11 @@
 //
 
 #import "VProfileEditViewController.h"
-#import "VSettingManager.h"
 #import "VUser.h"
 #import "MBProgressHUD.h"
 
 #import "VObjectManager+Login.h"
-#import "VThemeManager.h"
-
+#import "VDependencyManager.h"
 #import "VUserProfileViewController.h"
 
 @interface VProfileEditViewController ()
@@ -28,12 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.nameLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
+    
     if (!self.profile)
     {
         [self.navigationController.viewControllers enumerateObjectsWithOptions:NSEnumerationReverse
@@ -47,7 +40,10 @@
              }
          }];
     }
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     self.nameLabel.text = self.profile.name;
@@ -73,6 +69,15 @@
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+#pragma mark - VHasManagedDependencies
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    
+    [self.nameLabel setTextColor:[dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
 }
 
 #pragma mark - Actions
@@ -128,30 +133,46 @@
  */
 - (BOOL)validateInputs
 {
-    if (self.usernameTextField.text.length)
+    if (self.usernameTextField.text.length == 0)
     {
-        return YES;
-    }
-    
-    // Identify Which Form Field is Missing
-    NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
-    
-    if (!self.usernameTextField.text.length)
-    {
+        NSMutableString *errorMsg = [[NSMutableString alloc] initWithString:NSLocalizedString(@"ProfileRequired", @"")];
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredName", @"")];
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditProfileValidationDidFail parameters:params];
+        [self showAlertControllerWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                   message:errorMsg];
+        return NO;
     }
-        
-    NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditProfileValidationDidFail parameters:params];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
-                                                    message:errorMsg
-                                                   delegate:nil
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-    [alert show];
+    // Test only spaces
+    NSString *stringByRemovingSpaces = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (stringByRemovingSpaces.length == 0)
+    {
+        [self showAlertControllerWithTitle:NSLocalizedString(@"ProfileIncomplete", nil)
+                                   message:NSLocalizedString(@"ProfileNameSpaces", nil)];
+        return NO;
+    }
+
+    return YES;
+}
+
+- (void)showAlertControllerWithTitle:(NSString *)title
+                             message:(NSString *)message
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       [self dismissViewControllerAnimated:YES completion:nil];
+                                   }];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController
+                       animated:YES
+                     completion:nil];
     
-    return NO;
 }
 
 - (IBAction)goBack:(id)sender

@@ -12,39 +12,35 @@
 #import "VStreamItem+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
-#import "VSettingManager.h"
-#import "VStreamWebViewController.h"
 
 // Views + Helpers
 #import "VDefaultProfileButton.h"
 #import "UIView+Autolayout.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
+#import "VCompatibility.h"
+#import "VStreamItemPreviewView.h"
 
 // Dependencies
 #import "VDependencyManager.h"
 
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;
-static CGFloat const kVDetailHideTime = 0.3f;
-static CGFloat const kVDetailBounceHeight = 8.0f;
-static CGFloat const kVDetailBounceTime = 0.15f;
-static CGFloat const kTitleOffsetForTemplateC = 6.5f;
+static NSTimeInterval const kVDetailHideTime = 0.2f;
+static CGFloat const kVDetailBounceOffset = 38.0f;
+static CGFloat const kVDetailStartOverflowOffset = 42.0f;
+static NSTimeInterval const kVDetailBounceTime = 0.35f;
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
-static NSString * const kVOrIconKey = @"orIcon";
 
 @interface VFullscreenMarqueeStreamItemCell ()
 
+@property (nonatomic, assign) BOOL detailsVisible;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
-
-@property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsContainerTopToStreamItemBottom;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
-
-@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 
 @property (nonatomic, strong) NSTimer *hideTimer;
 
@@ -52,55 +48,16 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 @implementation VFullscreenMarqueeStreamItemCell
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.profileImageButton.layer.borderWidth = CGRectGetHeight(self.profileImageButton.bounds) / 2;
-}
-
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     [super setStreamItem:streamItem];
-    
-    self.nameLabel.text = streamItem.name;
-
-    NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
-    [self.previewImageView fadeInImageAtURL:previewImageUrl
-                           placeholderImage:nil];
-    
-    BOOL populateProfileImage = [streamItem isKindOfClass:[VSequence class]] && !self.hideMarqueePosterImage;
-    
-    if ( populateProfileImage )
-    {
-        VSequence *sequence = (VSequence *)streamItem;
         
-        [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
-                                           forState:UIControlStateNormal];
-    }
-    
-    self.profileImageButton.hidden = !populateProfileImage;
-    
+    self.nameLabel.text = streamItem.name;
+    [self layoutIfNeeded];
+
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];
     [self restartHideTimer];
-}
-
-- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
-{
-    if ( self.hideMarqueePosterImage == hideMarqueePosterImage )
-    {
-        return;
-    }
-    
-    _hideMarqueePosterImage = hideMarqueePosterImage;
-    self.profileImageButton.hidden = self.hideMarqueePosterImage;
-    if ( self.hideMarqueePosterImage )
-    {
-        self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
-        self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
-        [self layoutIfNeeded];
-    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -109,14 +66,9 @@ static NSString * const kVOrIconKey = @"orIcon";
     
     if ( dependencyManager != nil )
     {
-        self.detailsBackgroundView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileImageButton.layer.borderColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
-        self.profileImageButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.detailsContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-        UIImage *orIcon = [dependencyManager imageForKey:kVOrIconKey];
-        self.pollOrImageView.image = orIcon;
-        
     }
 }
 
@@ -140,41 +92,57 @@ static NSString * const kVOrIconKey = @"orIcon";
 
 - (void)setDetailsContainerVisible:(BOOL)visible animated:(BOOL)animated
 {
-    CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
+    if (_detailsVisible == visible)
+    {
+        return;
+    }
+    _detailsVisible = visible;
+    
+    CGFloat detailsContainerHeight = CGRectGetHeight(self.detailsContainer.bounds);
+    
+    CGFloat targetConstraintValue = visible ? - kVDetailStartOverflowOffset : - detailsContainerHeight;
     
     [self cancelDetailsAnimation];
     if ( animated )
     {
-        [UIView animateWithDuration:kVDetailBounceTime animations:^
-        {
-            self.detailsBottomLayoutConstraint.constant = 0.0f;
-            [self layoutIfNeeded];
-        }
-        completion:^(BOOL finished)
-        {
-            [UIView animateWithDuration:kVDetailHideTime animations:^
+        [UIView animateKeyframesWithDuration:kVDetailBounceTime + kVDetailHideTime
+                                       delay:0.0f
+                                     options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                                  animations:^
+         {
+            [UIView addKeyframeWithRelativeStartTime:0.0f
+                                    relativeDuration:kVDetailBounceTime / (kVDetailBounceTime + kVDetailHideTime)
+                                          animations:^
              {
-                 self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+                 self.detailsContainerTopToStreamItemBottom.constant = -kVDetailBounceOffset;
                  [self layoutIfNeeded];
              }];
-        }];
+             [UIView addKeyframeWithRelativeStartTime:kVDetailBounceTime / (kVDetailBounceTime + kVDetailHideTime)
+                                     relativeDuration:kVDetailHideTime
+                                           animations:^
+              {
+                  self.detailsContainerTopToStreamItemBottom.constant = targetConstraintValue;
+                  [self layoutIfNeeded];
+              }];
+         }
+                                  completion:nil];
     }
     else
     {
-        self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+        self.detailsContainerTopToStreamItemBottom.constant = targetConstraintValue;
     }
 }
 
 - (void)cancelDetailsAnimation
 {
-    [((UIView *)self.detailsBottomLayoutConstraint.firstItem).layer removeAllAnimations];
-    [((UIView *)self.detailsBottomLayoutConstraint.secondItem).layer removeAllAnimations];
+    [((UIView *)self.detailsContainerTopToStreamItemBottom.firstItem).layer removeAllAnimations];
+    [((UIView *)self.detailsContainerTopToStreamItemBottom.secondItem).layer removeAllAnimations];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = floorf(width * kVCellHeightRatio);
+    CGFloat height = VFLOOR(width * kVCellHeightRatio);
     return CGSizeMake(width, height);
 }
 
@@ -185,19 +153,11 @@ static NSString * const kVOrIconKey = @"orIcon";
     [self setDetailsContainerVisible:YES animated:NO];
 }
 
-- (IBAction)userSelected:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(cell:selectedUser:)])
-    {
-        [self.delegate cell:self selectedUser:((VSequence *)self.streamItem).user];
-    }
-}
-
 #pragma mark - VBackgroundContainer
 
 - (UIView *)loadingBackgroundContainerView
 {
-    return self.loadingBackgroundContainer;
+    return self.previewContainer;
 }
 
 @end

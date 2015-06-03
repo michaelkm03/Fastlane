@@ -7,7 +7,7 @@
 //
 
 #import "VBaseWorkspaceViewController.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspace.h"
 
 // Views
 #import "VCanvasView.h"
@@ -31,6 +31,7 @@
 
 static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
+static CGFloat const kMinimumToolViewHeight = 100.0f;
 
 @interface VBaseWorkspaceViewController ()
 
@@ -479,12 +480,23 @@ static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
                                                                                            metrics:nil
                                                                                              views:@{@"picker":toolViewController.view}]];
     
-    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
-    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
+    // Add a lower priority constraint to fill difference between canvas and toolbar on bigger devices
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:toolViewController.view
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.canvasView
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+    topConstraint.priority = UILayoutPriorityDefaultHigh;
+    
+    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds)), @"minimumToolViewHeight":@(kMinimumToolViewHeight)};
+    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[picker(>=minimumToolViewHeight)]-toolbarHeight-|"
                                                                                            options:kNilOptions
                                                                                            metrics:verticalMetrics
                                                                                              views:@{@"picker":toolViewController.view,
                                                                                                      @"canvas":self.canvasView}]];
+    [self.inspectorConstraints addObject:topConstraint];
     [self.view addConstraints:self.inspectorConstraints];
 }
 
