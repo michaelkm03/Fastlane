@@ -59,7 +59,7 @@ static BOOL isRunningTests(void) __attribute__((const));
     
     [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
 
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     

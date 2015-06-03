@@ -48,8 +48,8 @@
         _userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
                                                                 andDependencyManager:self.dependencyManager];
         _userProfileViewController.representsMainUser = YES;
-        [_userProfileViewController.dependencyManager configureNavigationItem:_userProfileViewController.navigationItem
-                                                            forViewController:_userProfileViewController];
+        [_userProfileViewController.dependencyManager addAccessoryScreensToNavigationItem:_userProfileViewController.navigationItem
+                                                                       fromViewController:_userProfileViewController];
     }
     return self;
 }

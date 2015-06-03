@@ -20,6 +20,7 @@
 #import "VThemeManager.h"
 #import "VDependencyManager.h"
 #import "VAppInfo.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 @import MessageUI;
 
@@ -60,7 +61,8 @@
 {
     [super viewDidAppear:animated];
     
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self.dependencyManager configureNavigationItem:self.navigationItem ];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (void)viewDidLoad
