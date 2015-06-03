@@ -81,7 +81,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [super viewDidLoad];
 
     [self.v_navigationController setNavigationBarHidden:YES];
-    self.headerViewController.showCloseButton = (self.presentingViewController != nil);
+    self.headerViewController.layoutManager.exitButtonVisible = (self.presentingViewController != nil);
     
     self.actions = [[VWebBrowserActions alloc] init];
     
