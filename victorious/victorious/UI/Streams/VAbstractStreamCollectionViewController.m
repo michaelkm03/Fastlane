@@ -141,6 +141,13 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self addScrollDelegate];
     }
+    
+    // Adjust our scroll indicator insets to account for nav bar
+    CGRect navBarFrame = self.v_navigationController.innerNavigationController.navigationBar.frame;
+    CGRect supplementaryViewFrame = self.v_navigationController.supplementaryHeaderView.frame;
+    CGFloat indicatorTopOffset = CGRectGetMaxY(navBarFrame) + CGRectGetHeight(supplementaryViewFrame);
+    UIEdgeInsets scrollIndicatorInsets = UIEdgeInsetsMake(indicatorTopOffset, 0, 0, 0);
+    self.collectionView.scrollIndicatorInsets = scrollIndicatorInsets;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
