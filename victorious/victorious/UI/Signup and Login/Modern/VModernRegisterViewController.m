@@ -20,6 +20,7 @@
 #import "VEmailValidator.h"
 #import "VBackgroundContainer.h"
 #import "VLoginFlowControllerResponder.h"
+#import "UIColor+VBrightness.h"
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
@@ -95,17 +96,28 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                      NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
                                                      NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
                                                      };
+    UIColor *normalColor = textFieldAttributes[NSForegroundColorAttributeName];
+    UIColor *highlightedColor = ([normalColor v_colorLuminance] == VColorLuminanceBright) ? [normalColor v_colorDarkenedBy:0.3f] : [normalColor v_colorDarkenedBy:0.3f];
+    NSDictionary *activePlaceholderAttributes = @{
+                                                  NSFontAttributeName: placeholderTextFieldAttributes[NSFontAttributeName],
+                                                  NSForegroundColorAttributeName: highlightedColor,
+                                                  };
+    
     self.emailField.font = textFieldAttributes[NSFontAttributeName];
     self.emailField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Email", nil)
+    self.emailField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Email", nil)
                                                                             attributes:placeholderTextFieldAttributes];
     self.emailField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
+    self.emailField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.emailField.placeholder
+                                                                        attributes:activePlaceholderAttributes];
 
-    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
+    self.passwordField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
                                                                                attributes:placeholderTextFieldAttributes];
     self.passwordField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
+    self.passwordField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"")
+                                                                           attributes:activePlaceholderAttributes];
     
     self.nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"")
                                                        style:UIBarButtonItemStylePlain
