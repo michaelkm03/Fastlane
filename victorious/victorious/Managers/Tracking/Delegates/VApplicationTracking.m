@@ -27,7 +27,7 @@ static NSString * const kMacroNotificationID         = @"%%NOTIF_ID%%";
 static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 
-#define APPLICATION_TRACKING_LOGGING_ENABLED 0
+#define APPLICATION_TRACKING_LOGGING_ENABLED 1
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
 
 #if APPLICATION_TRACKING_LOGGING_ENABLED || APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
@@ -67,7 +67,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
                                  VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
-                                 VTrackingEventUserDidSelectRegistrationDone       : VTrackingDoneButtonTapKey,
+                                 VTrackingEventUserDidSelectRegistrationDone       : VTrackingCreateProfileDoneButtonTapKey,
                                  VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
                                  VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey };
         
