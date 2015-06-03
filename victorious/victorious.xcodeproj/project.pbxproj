@@ -507,8 +507,8 @@
 		A7B98A3F1A264D0900C58335 /* VNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */; };
 		A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */; };
 		A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */; };
-		A7CD87591B1E74AE002532A9 /* VImageAssetFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87581B1E74AE002532A9 /* VImageAssetFinder.m */; };
 		A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */; };
+		A7CD87591B1E74AE002532A9 /* VImageAssetFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87581B1E74AE002532A9 /* VImageAssetFinder.m */; };
 		A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B619FAF64700726772 /* landscape_left.m4v */; };
 		A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B719FAF64700726772 /* landscape_right.m4v */; };
 		A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */; };
@@ -525,7 +525,7 @@
 		A7D378421AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D3783A1AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.xib */; };
 		A7D378431AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3783C1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m */; };
 		A7D378441AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D3783D1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib */; };
-		A7D378451AEF4ED5007FF197 /* VUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3783F1AEF4ED5007FF197 /* VUserProfileHeaderViewController.m */; };
+		A7D378451AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3783F1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m */; };
 		A7D378481AF0578A007FF197 /* VImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378471AF0578A007FF197 /* VImageAsset.m */; };
 		A7D3784B1AF057FF007FF197 /* VImageAsset+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3784A1AF057FF007FF197 /* VImageAsset+RestKit.m */; };
 		A7D3784E1AF060AD007FF197 /* VImageAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3784D1AF060AD007FF197 /* VImageAsset+Fetcher.m */; };
@@ -1865,10 +1865,10 @@
 		A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsStateManager.h; sourceTree = "<group>"; };
 		A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManager.m; sourceTree = "<group>"; };
 		A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManagerTests.m; sourceTree = "<group>"; };
-		A7CD87571B1E74AE002532A9 /* VImageAssetFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImageAssetFinder.h; path = ImageAssetFinder/VImageAssetFinder.h; sourceTree = "<group>"; };
-		A7CD87581B1E74AE002532A9 /* VImageAssetFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImageAssetFinder.m; path = ImageAssetFinder/VImageAssetFinder.m; sourceTree = "<group>"; };
 		A7CD87501B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VAccessoryScreens.h"; sourceTree = "<group>"; };
 		A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VAccessoryScreens.m"; sourceTree = "<group>"; };
+		A7CD87571B1E74AE002532A9 /* VImageAssetFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImageAssetFinder.h; path = ImageAssetFinder/VImageAssetFinder.h; sourceTree = "<group>"; };
+		A7CD87581B1E74AE002532A9 /* VImageAssetFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImageAssetFinder.m; path = ImageAssetFinder/VImageAssetFinder.m; sourceTree = "<group>"; };
 		A7CFC1B619FAF64700726772 /* landscape_left.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_left.m4v; sourceTree = "<group>"; };
 		A7CFC1B719FAF64700726772 /* landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1B819FAF64700726772 /* portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = portrait_upsidedown.m4v; sourceTree = "<group>"; };
@@ -1892,8 +1892,8 @@
 		A7D3783B1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStaticUserProfileHeaderViewController.h; sourceTree = "<group>"; };
 		A7D3783C1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStaticUserProfileHeaderViewController.m; sourceTree = "<group>"; };
 		A7D3783D1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStaticUserProfileHeaderViewController.xib; sourceTree = "<group>"; };
-		A7D3783E1AEF4ED5007FF197 /* VUserProfileHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserProfileHeaderViewController.h; sourceTree = "<group>"; };
-		A7D3783F1AEF4ED5007FF197 /* VUserProfileHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserProfileHeaderViewController.m; sourceTree = "<group>"; };
+		A7D3783E1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractUserProfileHeaderViewController.h; sourceTree = "<group>"; };
+		A7D3783F1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractUserProfileHeaderViewController.m; sourceTree = "<group>"; };
 		A7D378461AF0578A007FF197 /* VImageAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageAsset.h; sourceTree = "<group>"; };
 		A7D378471AF0578A007FF197 /* VImageAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAsset.m; sourceTree = "<group>"; };
 		A7D378491AF057FF007FF197 /* VImageAsset+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VImageAsset+RestKit.h"; sourceTree = "<group>"; };
@@ -4805,8 +4805,8 @@
 				A7D3783B1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.h */,
 				A7D3783C1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m */,
 				A7D3783D1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib */,
-				A7D3783E1AEF4ED5007FF197 /* VUserProfileHeaderViewController.h */,
-				A7D3783F1AEF4ED5007FF197 /* VUserProfileHeaderViewController.m */,
+				A7D3783E1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.h */,
+				A7D3783F1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m */,
 			);
 			path = Headers;
 			sourceTree = "<group>";
@@ -6993,7 +6993,7 @@
 				D85B70781B0EAF3F0038CA5B /* VFindFriendsViewController.m in Sources */,
 				A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */,
 				F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m in Sources */,
-				A7D378451AEF4ED5007FF197 /* VUserProfileHeaderViewController.m in Sources */,
+				A7D378451AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
 				D85B70851B0EAF3F0038CA5B /* VSignupWithEmailViewController.m in Sources */,
 				F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */,

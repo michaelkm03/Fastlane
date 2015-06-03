@@ -7,7 +7,7 @@
 //
 
 #import "VImageAsset+Fetcher.h"
-#import "VUserProfileHeaderViewController.h"
+#import "VAbstractUserProfileHeaderViewController.h"
 #import "VUser+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VLargeNumberFormatter.h"
@@ -18,13 +18,13 @@
 #import <KVOController/FBKVOController.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface VUserProfileHeaderViewController() <VBackgroundContainer>
+@interface VAbstractUserProfileHeaderViewController() <VBackgroundContainer>
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 
 @end
 
-@implementation VUserProfileHeaderViewController
+@implementation VAbstractUserProfileHeaderViewController
 
 @synthesize user = _user;
 @synthesize state = _state;

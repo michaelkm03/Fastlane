@@ -13,7 +13,7 @@
 
 @class VUser, VDefaultProfileImageView, VDependencyManager;
 
-@interface VUserProfileHeaderViewController : UIViewController <VUserProfileHeader, VHasManagedDependencies>
+@interface VAbstractUserProfileHeaderViewController : UIViewController <VUserProfileHeader, VHasManagedDependencies>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, strong, readonly) VDefaultProfileImageView *profileImageView;
