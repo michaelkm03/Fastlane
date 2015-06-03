@@ -74,7 +74,8 @@
 #import "VHashtagSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VDependencyManager+VNavigationItem.h"
-
+#import "VDependencyManager+VAccessoryScreens.h"
+#import "VDependencyManager+VNavigationItem.h"
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
@@ -250,6 +251,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                         keyPath:NSStringFromSelector(@selector(hasHeaderCell))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(dataSourceDidChange)];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -361,8 +364,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
-    
-    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault

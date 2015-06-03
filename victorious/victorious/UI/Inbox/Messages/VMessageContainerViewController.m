@@ -23,8 +23,9 @@
 #import "VUserTaggingTextStorage.h"
 #import "MBProgressHUD.h"
 #import "VLaunchScreenProvider.h"
-#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VAccessoryNavigationSource.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 static const NSUInteger kCharacterLimit = 1024;
 
@@ -66,6 +67,8 @@ static const NSUInteger kCharacterLimit = 1024;
     [self hideKeyboardBarIfNeeded];
     
     [self.view bringSubviewToFront:self.busyView];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -79,7 +82,7 @@ static const NSUInteger kCharacterLimit = 1024;
 {
     [super viewDidAppear:animated];
     
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
     [self updateTitle];
 }
 
