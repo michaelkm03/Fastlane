@@ -19,7 +19,7 @@
 @interface VUserProfileNavigationDestination () <VCoachmarkDisplayer, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
-@property (nonatomic, weak) VUserProfileViewController *profileViewController;
+@property (nonatomic, strong) VUserProfileViewController *profileViewController;
 
 @end
 
@@ -45,24 +45,27 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        self.profileViewController = [self createProfileForLoggedInUser];
+        [self createProfile];
+        [self.profileViewController updateAccessoryItems];
     }
     return self;
 }
 
-- (VUserProfileViewController *)createProfileForLoggedInUser
+- (void)createProfile
 {
-    VUserProfileViewController *profile = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
-                                                                     andDependencyManager:self.dependencyManager];
-    profile.representsMainUser = YES;
-    [profile updateAccessoryItems];
-    return profile;
+    if ( self.profileViewController == nil )
+    {
+        self.profileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
+                                                                andDependencyManager:self.dependencyManager];
+        self.profileViewController.representsMainUser = YES;
+    }
 }
 
 #pragma mark - VNavigationDestination conformance
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
+    [self createProfile];
     *alternateViewController = self.profileViewController;
     return YES;
 }
