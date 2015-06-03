@@ -17,6 +17,7 @@
 #import "VAsset+Fetcher.h"
 #import "NSURL+MediaType.h"
 #import "VImageAsset+Fetcher.h"
+#import "VImageAssetFinder.h"
 
 static const CGFloat kMinimumAspectRatio = 0.5f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
@@ -201,7 +202,8 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (CGFloat)previewAssetAspectRatio
 {
-    VImageAsset *previewAsset = [VImageAsset largestAssetFromAssets:self.previewAssets];
+    VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
+    VImageAsset *previewAsset = [assetFinder largestAssetFromAssets:self.previewAssets];
     if (previewAsset != nil)
     {
         // Make sure we have a valid width and height

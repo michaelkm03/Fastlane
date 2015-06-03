@@ -33,6 +33,11 @@
 @property (nonatomic, assign) VWebBrowserHeaderContentAlignment contentAlignment;
 
 /**
+ Whether or not the exit button should be visible.
+ */
+@property (nonatomic, assign) BOOL exitButtonVisible;
+
+/**
  Reference to the header component configured in interface builder, necessary
  for applying layout changes.
  */

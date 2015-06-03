@@ -38,6 +38,8 @@
 #import "VNavigationController.h"
 #import "VBarButton.h"
 #import "VAuthorizedAction.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -59,7 +61,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) NSNumber *remoteId;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
-@property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
 @property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
@@ -78,6 +79,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
+    [viewController addLoginStatusChangeObserver];
     
     VUser *mainUser = [VObjectManager sharedManager].mainUser;
     const BOOL isCurrentUser = (mainUser != nil && [remoteId isEqualToNumber:mainUser.remoteId]);
@@ -100,6 +102,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
+    [viewController addLoginStatusChangeObserver];
     
     viewController.user = aUser;
     
@@ -123,15 +126,23 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return nil;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
+}
+
+- (void)addLoginStatusChangeObserver
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginStateDidChange:)
+                                                 name:kLoggedInChangedNotification object:nil];
+}
+
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginStateDidChange:)
-                                                 name:kLoggedInChangedNotification object:nil];
     
     [self updateProfileHeader];
     
@@ -143,6 +154,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
     [self updateCollectionViewDataSource];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)updateProfileHeader
@@ -211,11 +224,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -224,7 +232,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     [self setupFloatingView];
     
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self updateAccessoryItems];
+}
+
+- (void)updateAccessoryItems
+{
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -346,7 +360,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         self.retryHUD.margin = self.defaultMBProgressHUDMargin;
         self.retryHUD.mode = MBProgressHUDModeIndeterminate;
     }
-
+    
     [[VObjectManager sharedManager] fetchUser:self.remoteId
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
@@ -441,6 +455,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 {
                     completionBlock();
                 }
+                [self.profileHeaderViewController reloadProfileImage];
             };
             [super refreshWithCompletion:fullCompletionBlock];
         }
@@ -521,9 +536,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.currentStream = [VStream streamForUser:self.user];
     
-    NSString *profileName = user.name ?: @"Profile";
-    
-    self.title = self.isCurrentUser ? nil : profileName;
+    self.title = self.isCurrentUser ? NSLocalizedString( @"me", nil ) : user.name;
     
     [self updateProfileHeader];
     

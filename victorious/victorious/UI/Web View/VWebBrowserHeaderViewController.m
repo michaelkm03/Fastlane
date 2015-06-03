@@ -11,6 +11,7 @@
 #import "VDependencyManager.h"
 #import "VWebBrowserHeaderLayoutManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 @interface VWebBrowserHeaderViewController() <VBackgroundContainer>
 
@@ -42,21 +43,21 @@
     {
         return;
     }
+    
     UIColor *progressColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.progressBar setProgressColor:progressColor];
     
-    UIColor *tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    // These dependencies should matchup with VDependencyManager+VScaffoldViewController.m
+    VDependencyManager *dependenciesForNavigationBar = [self.dependencyManager dependencyManagerForNavigationBar];
+    UIColor *tintColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerMainTextColorKey];
     for ( UIButton *button in @[ self.buttonBack, self.buttonExit, self.buttonOpenURL ])
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-        [button setTitleColor:tintColor forState:UIControlStateNormal];
         button.tintColor = tintColor;
     }
-    
-    [self.dependencyManager addBackgroundToBackgroundHost:self];
-    
-    self.labelTitle.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.labelTitle.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    [dependenciesForNavigationBar addBackgroundToBackgroundHost:self];
+    self.labelTitle.textColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerMainTextColorKey];
+    self.labelTitle.font = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -90,6 +91,13 @@
 - (void)setTitle:(NSString *)title
 {
     [self.labelTitle setText:title];
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return _backgroundContainerView;
 }
 
 #pragma mark - Header Actions

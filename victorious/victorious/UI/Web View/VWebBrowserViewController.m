@@ -21,6 +21,7 @@
 #import "UIView+AutoLayout.h"
 #import "VWebBrowserHeaderLayoutManager.h"
 #import "VDependencyManager+VWebBrowser.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 static NSString * const kURLKey = @"url";
 
@@ -74,6 +75,9 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self.v_navigationController setNavigationBarHidden:YES];
+    self.headerViewController.layoutManager.exitButtonVisible = (self.presentingViewController != nil);
     
     self.actions = [[VWebBrowserActions alloc] init];
     
@@ -141,6 +145,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
                                   VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
+    
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -167,7 +173,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (BOOL)v_prefersNavigationBarHidden
 {
-    return self.layoutIdentifier == VDependencyManagerWebBrowserLayoutTopNavigation;
+    return [self.layoutIdentifier isEqualToString:VDependencyManagerWebBrowserLayoutTopNavigation];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

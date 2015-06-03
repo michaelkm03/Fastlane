@@ -47,6 +47,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 @property (nonatomic, strong) NSArray *captionConstraints;
 @property (nonatomic, strong) NSArray *noCaptionConstraints;
 @property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *commentToCaptionBottomConstraint;
 
 @end
 
@@ -132,13 +133,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     [self.contentView v_addPinToLeadingTrailingToSubview:_commentsLabel
                                                  leading:kTextMargins.left
                                                 trailing:kTextMargins.right];
-    NSLayoutConstraint *captionTextViewBottomToCommentsLabelTop = [NSLayoutConstraint constraintWithItem:_captionTextView
-                                                                                               attribute:NSLayoutAttributeBottom
-                                                                                               relatedBy:NSLayoutRelationEqual
-                                                                                                  toItem:_commentsLabel
-                                                                                               attribute:NSLayoutAttributeTop
-                                                                                              multiplier:1.0f
-                                                                                                constant:-kTextSeparatorHeight];
+    self.commentToCaptionBottomConstraint = [NSLayoutConstraint constraintWithItem:_captionTextView
+                                                                         attribute:NSLayoutAttributeBottom
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:_commentsLabel
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0f
+                                                                          constant:-kTextSeparatorHeight];
     
     _actionView = [[VInsetActionView alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_actionView];
@@ -161,7 +162,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
                                                                                           multiplier:1.0f
                                                                                             constant:-kTextMargins.top];
     
-    self.captionConstraints = @[previewContainerBottomToCaptionTop, captionTextViewBottomToCommentsLabelTop, commentsLabelBottomToActionViewTop];
+    self.captionConstraints = @[previewContainerBottomToCaptionTop, self.commentToCaptionBottomConstraint, commentsLabelBottomToActionViewTop];
     self.noCaptionConstraints = @[previewViewBottomToCommentsLabelTop, commentsLabelBottomToActionViewTop];
     [self.contentView addConstraints:self.captionConstraints];
     [self.contentView addConstraints:self.noCaptionConstraints];
@@ -280,6 +281,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 {
     NSAttributedString *commentText = [[self class] attributedCommentTextForSequence:sequence andDependencyManager:self.dependencyManager];
     [self.commentsLabel setAttributedText:commentText];
+    self.commentToCaptionBottomConstraint.constant = commentText.length == 0 ? 0.0f : -kTextSeparatorHeight;
 }
 
 #pragma mark - VBackgroundContainer
@@ -323,13 +325,22 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     NSNumber *commentCount = [sequence commentCount];
     NSString *commentsString = nil;
     NSInteger cCount = [commentCount integerValue];
-    if (cCount == 0)
+    if ( [sequence canComment] )
     {
-        commentsString = NSLocalizedString(@"LeaveAComment", @"");
+        //Users can comment on this sequence, return a string based on comment count
+        if (cCount == 0)
+        {
+            commentsString = NSLocalizedString(@"LeaveAComment", @"");
+        }
+        else
+        {
+            commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
+        }
     }
     else
     {
-        commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
+        //Users aren't allowed to comment on this, so return an empty string
+        commentsString = @"";
     }
     return commentsString;
 }
@@ -397,23 +408,31 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Comment size
     CGFloat textAreaWidth = sizeWithText.width - kTextMargins.left - kTextMargins.right;
-    CGSize commentSize = [[self stringForCommentTextWithSequence:sequence] frameSizeForWidth:textAreaWidth
-                                                                               andAttributes:[self sequenceCommentCountAttributesWithDependencyManager:dependencyManager]];
-    sizeWithText.height = sizeWithText.height + commentSize.height;
+    NSString *commentsString = [self stringForCommentTextWithSequence:sequence];
+    BOOL hasCommentString = commentsString.length != 0;
+    CGSize commentSize = CGSizeZero;
+    if ( hasCommentString )
+    {
+        commentSize = [[self stringForCommentTextWithSequence:sequence] frameSizeForWidth:textAreaWidth
+                                                                            andAttributes:[self sequenceCommentCountAttributesWithDependencyManager:dependencyManager]];
+    }
+    sizeWithText.height += VCEIL(commentSize.height);
     if (sequence.name.length > 0)
     {
-        // Inter-Text spacing
-        sizeWithText.height = sizeWithText.height + kTextSeparatorHeight;
+        if ( hasCommentString )
+        {
+            // Inter-Text spacing
+            sizeWithText.height += kTextSeparatorHeight;
+        }
 
         // Caption view size
-
         CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
                                                 andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        sizeWithText.height = sizeWithText.height + captionSize.height + 4.0f;
+        sizeWithText.height += VCEIL(captionSize.height);
     }
     
     // Bottom Margins
-    sizeWithText.height = sizeWithText.height + kTextMargins.bottom;
+    sizeWithText.height += kTextMargins.bottom;
     [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
                              forKey:sequence.remoteId];
     return sizeWithText;
@@ -457,6 +476,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (CGRect)contentArea
 {
     return self.previewView.frame;
+}
+
+#pragma mark - VStreamCellTracking
+
+- (VSequence *)sequenceToTrack
+{
+    return self.sequence;
 }
 
 @end

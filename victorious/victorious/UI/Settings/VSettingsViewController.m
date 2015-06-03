@@ -27,6 +27,7 @@
 #import "VVideoSettings.h"
 #import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VAuthorizedAction.h"
 #import "VDependencyManager+VCoachmarkManager.h"
@@ -108,6 +109,8 @@ static NSString * const kSupportEmailKey = @"email.support";
     
     self.versionString.text = appVersionString;
     self.versionString.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -155,7 +158,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
     
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (void)updateResetCoachmarksCell
