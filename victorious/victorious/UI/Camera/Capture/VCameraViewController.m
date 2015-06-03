@@ -372,6 +372,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              {
                  self.userDeniedPermissionsPrePrompt = NO;
                  startCapture(NO);
+                 self.completionBlock(NO, nil, nil);
              }
              else
              {
@@ -404,7 +405,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
          {
              self.userDeniedPermissionsPrePrompt = YES;
              self.state = VCameraViewControllerStatePermissionDenied;
-             if (state != VPermissionStatePromptDenied)
+             if ((state == VPermissionStatePromptDenied) && ([cameraPermission isKindOfClass:[VPermissionProfilePicture class]]))
+             {
+                 self.completionBlock(NO, nil, nil);
+             }
+             else
              {
                  [self notifyUserOfFailedCameraPermission];
              }
