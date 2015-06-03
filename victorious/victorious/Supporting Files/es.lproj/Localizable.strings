@@ -51,23 +51,23 @@
 "NumStreams" = "%@ CORRIENTES";
 "NumItems" = "%@ ARTÍCULOS";
 
-"Keep up to date with users and hashtags you're following here" = "Keep up to date with users and hashtags you're following here";
-"View content from users and hashtags you're following here" = "View content from users and hashtags you're following here";
-"Tap here to view posts from the entire community" = "Tap here to view posts from the entire community";
-"Tap here to view posts from other fans" = "Tap here to view posts from other fans";
-"View posts from the entire community here" = "View posts from the entire community here";
-"View posts from other fans here" = "View posts from other fans here";
-"Tap here to watch my exclusive videos" = "Tap here to watch my exclusive videos";
-"Tap here to watch exclusive videos" = "Tap here to watch exclusive videos";
-"Tap here to watch my videos" = "Tap here to watch my videos";
-"Tap here to watch videos" = "Tap here to watch videos";
-"Watch my exclusive videos here" = "Watch my exclusive videos here";
-"Watch exclusive videos here" = "Watch exclusive videos here";
-"Watch my videos here" = "Watch my videos here";
-"Watch videos here" = "Watch videos here";
-"Tap here to create your first post" = "Tap here to create your first post";
-"Tap here to create a post" = "Tap here to create a post";
-"Tap here and create a post now!" = "Tap here and create a post now!";
+"Keep up to date with users and hashtags you're following here" = "Mantente al día con los usuarios y hashtags que sigues aquí";
+"View content from users and hashtags you're following here" = "Ve el contenido de los usuarios y hashtags que sigues aquí";
+"Tap here to view posts from the entire community" = "Toca aquí para ver los mensajes de toda la comunidad";
+"Tap here to view posts from other fans" = "Toqca aquí para ver las publicaciones de otros fans";
+"View posts from the entire community here" = "Ve aquí las publicaciones de toda la comunidad";
+"View posts from other fans here" = "Ve aquí las publicaciones de otros fans";
+"Tap here to watch my exclusive videos" = "Toca aquí para ver mis videos exclusivos";
+"Tap here to watch exclusive videos" = "Toca aquí para ver videos exclusivos";
+"Tap here to watch my videos" = "Toca aquí para ver mis videos";
+"Tap here to watch videos" = "Toca aquí para ver videos";
+"Watch my exclusive videos here" = "Ve aquí mis videos exclusivos";
+"Watch exclusive videos here" = "Ve aquí videos exclusivos";
+"Watch my videos here" = "Ve aquí mis videos";
+"Watch videos here" = "Ve aquí videos";
+"Tap here to create your first post" = "Toca aquí para crear tu primera publicación";
+"Tap here to create a post" = "Toca aquí para crear una publicación";
+"Tap here and create a post now!" = "¡Toca aquí y crea una publicación ahora!";
 
 "TimeSeparator" = ":";
 "InvalidTimePlaceholder" = "-:--";
@@ -100,7 +100,7 @@
 "ProfileAborted" = "No podrás usar algunas funciones hasta que hayas completado tu perfil.";
 "ProfileRequired" = "Por favor, incluye lo siguiente";
 "ProfileRequiredPhoto" = "Imagen del perfil";
-"ProfileNameSpaces" = "Your profile name cannot be only spaces.";
+"ProfileNameSpaces" = "Tu nombre de perfil no puede contener sólo espacios.";
 "ProfileRequiredName" = "Nombre";
 "ProfileRequiredToS" = "Acuerda nuestros términos";
 "ProfileRequiredTagLine" = "Tu eslogan";
@@ -400,8 +400,8 @@
 
 "AccessMicrophoneDenied" = "Para grabar video desde el dispositivo, por favor, ve a a Configuración -> Privacidad -> Micrófono";
 "AccessMicrophoneRestricted" = "No se puede acceder a su micrófono debido a restricciones en su dispositivo.";
-"AccessLibraryRestricted" = "To access media from your camera roll, please grant access by going to Settings -> Privacy -> Photos";
-"AccessCameraDenied" = "Para grabar víieos desde el dispositivo, por favor, ir ir a Configuración-> Privacidad";
+"AccessLibraryRestricted" = "Para acceder a los medios desde tu rollo de la cámara, da acceso llendo a Settings -> Privacy -> Photos";
+"AccessCameraDenied" = "Para usar la cámara, da acceso llendo a Settings -> Privacy";
 "AccessCameraRestricted" = "No se pudo acceder a la cámara debido a restricciones en su dispositivo.";
 "UnableSelectVideo" = "Imposible seleccionar video.";
 
@@ -460,7 +460,7 @@
 "repostedByFormat" = "Vuelto a publicar por %@";
 "doubleRepostedByFormat" = "Vuelto a publicar por %@ + un otro";
 "multipleRepostedByFormat" = "Vuelto a publicar por %@ más %lu otros";
-"+ %lu others" = "+ %lu others";
+"+ %lu others" = "+ %lu otros";
 "remixedFromFormat" = "Remix de %@";
 "giffedFromFormat" = "GIF de %@";
 
@@ -528,7 +528,7 @@
 "ErrorPushNotificationsNotSaved" = "Error al guardar las preferencias";
 "ErrorPushNotificationsNotSavedMessage" = "Por favor, intentar más tarde.";
 
-"RestorePurchaseDescription" = "Already purchased on another device?\nTap below to restore all of your purchases.";
+"RestorePurchaseDescription" = "¿Ya lo compraste en otro dispositivo?\nToca abajo para restaurar todas tus compras.";
 "PurchaseErrorTitle" = "Error al hacer la comora";
 "PurchaseErrorProductNotAvailable" = "Lo sentimos, error en las compras";
 "PurchaseErrorTransaction" = "No puede completarse la transsación. Por favor, intentar más tarde.t";
@@ -611,18 +611,18 @@
 "Render failure" = "Error de reproducción";
 "Upload failure" = "Error al cargar";
 
-"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
-"Thank you for joining the community! Add a profile picture now." = "Thank you for joining the community! Add a profile picture now.";
-"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Before you can record and share videos, we need access to your microphone. Allow microphone access now?";
+"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Antes de poder tomar y compartir fotos con la comunidad, necesitamos tener acceso a tu cámara. ¿Permites el acceso a la cámara ahora?";
+"Thank you for joining the community! Add a profile picture now." = "¡Gracias por unirte a la comunidad! Ahora, añade una imagen para tu perfil .";
+"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Antes de poder grabar y compartir videos, necesitamos acceder a tu micrófono. ¿Permites el acceso al micrófono?";
 
-"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!";
-"Follow content from other fans." = "Follow content from other fans.";
-"Share creations with the community." = "Share creations with the community.";
-"Join in on the conversation." = "Join in on the conversation.";
-"By signing up you are agreeing to the ToS and Privacy Policy." = "By signing up you are agreeing to the ToS and Privacy Policy.";
-"Sign up with Email" = "Sign up with Email";
-"Sign up with Facebook" = "Sign up with Facebook";
-"Create an account and join the community." = "Create an account and join the community.";
-"Create a username and introduce yourself to the community." = "Create a username and introduce yourself to the community.";
-"Add photo" = "Add photo";
-"Add your profile picture." = "Add your profile picture.";
+"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "¡Estamos muy contentos de que te unas a nuestra comunidad! ¡Abre una cuenta y podrás crear, publicar y compartir!";
+"Follow content from other fans." = "Sigue el contenido de otros fans.";
+"Share creations with the community." = "Comparte las creaciones con la comunidad.";
+"Join in on the conversation." = "Únete a la conversación.";
+"By signing up you are agreeing to the ToS and Privacy Policy." = "Al suscribirte aceptas los Términos de Uso y la Política de Privacidad.";
+"Sign up with Email" = "Regístrate con un email";
+"Sign up with Facebook" = "Regístrate con Facebook";
+"Create an account and join the community." = "Crea una cuenta y únete a la comunidad.";
+"Create a username and introduce yourself to the community." = "Crea un nombre de usuario y preséntate a la comunidad.";
+"Add photo" = "Añade una foto";
+"Add your profile picture." = "Añade tu imagen de perfil";
