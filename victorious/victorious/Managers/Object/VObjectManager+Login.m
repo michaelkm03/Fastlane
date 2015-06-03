@@ -22,6 +22,9 @@
 #import "NSDictionary+VJSONLogging.h"
 #import "VStoredLogin.h"
 #import "VLoginType.h"
+#import "VImageAsset+Fetcher.h"
+
+@import CoreData;
 
 @implementation VObjectManager (Login)
 
@@ -320,8 +323,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
         if (profileImageURL)
         {
-            user.pictureUrl = profileImageURL.absoluteString;
             user.previewAssets = [NSSet set];
+            user.pictureUrl = profileImageURL.absoluteString;
         }
         [user.managedObjectContext save:nil];
         

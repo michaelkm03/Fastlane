@@ -425,6 +425,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         return;
     }
     
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
+    
     if (profilePictureFilePath == nil)
     {
         [self onAuthenticationFinishedWithSuccess:YES];
@@ -466,8 +468,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
              self.completionBlock(success);
          }
      }];
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
 }
 
 - (UIViewController *)nextScreenAfter:(UIViewController *)viewController
