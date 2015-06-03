@@ -187,7 +187,7 @@
 "Facebook" = "Facebook";
 "FacebookFailed" = "Échec de connexion à Facebook";
 
-"Search people and hashtags" = "Rechercher des personnes ou mots dièse";
+"Search people and hashtags" = "Rechercher des personnes ou hashtags";
 "No People Found In Search Title" = "AUCUN UTILISATEUR TROUVÉ";
 "No people found in search" = "Affinez votre recherche et réessayez.";
 "No Hashtags Found In Search Title" = "AUCUNE ÉTIQUETTE TROUVÉE !";
@@ -479,9 +479,9 @@
 "SupportEmailSubjectWithName" = "Commentaires sur %@";
 
 "DiscoverSuggestedPeopleError" = "Désolés, les personnes suggérées n'ont pas pu être chargées.";
-"DiscoverTrendingTagsError" = "Désolés, les étiquettes tendance n'ont pas pu être chargées.";
+"DiscoverTrendingTagsError" = "Désolés, les hashtags tendance n'ont pas pu être chargées.";
 "Suggested People" = "Personnes suggérées";
-"Trending Tags" = "Étiquettes tendance";
+"Trending Tags" = "Hashtags tendance";
 "Voters" = "Votants";
 
 "HashtagSubscribeError" = "Désolés, une erreur s'est produite suite à la tentative d'abonnement à ce mot dièse. Veuillez réessayer.";
