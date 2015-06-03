@@ -76,7 +76,6 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
     {
         [self.backgroundImageView applyTintAndBlurToImageWithURL:imageURL
                                                    withTintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-        self.backgroundImageView.alpha = 1.0f;
     }
 }
 
