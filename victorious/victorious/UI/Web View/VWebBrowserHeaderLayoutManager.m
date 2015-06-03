@@ -14,7 +14,6 @@ static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
 static const CGFloat kLayoutChangeAnimationSpringVelocity   = 0.1f;
 static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 static const CGFloat kButtonBackLeadingOffsetMultipler      = 0.25f;
-static const CGFloat kExitButtonWidth                       = 32.0f;
 
 @interface VWebBrowserHeaderLayoutManager()
 
@@ -60,6 +59,12 @@ static const CGFloat kExitButtonWidth                       = 32.0f;
 - (void)setProgressBarAlignment:(VWebBrowserHeaderProgressBarAlignment)progressBarAlignment
 {
     _progressBarAlignment = progressBarAlignment;
+    [self update];
+}
+
+- (void)setExitButtonVisible:(BOOL)exitButtonVisible
+{
+    _exitButtonVisible = exitButtonVisible;
     [self update];
 }
 
@@ -138,7 +143,6 @@ static const CGFloat kExitButtonWidth                       = 32.0f;
             [self.header.view removeConstraint:self.progressBarBottomConstraint];
             [self.header.view addConstraint:self.progressBarTopConstraint];
             self.progressBarTopConstraint.constant = 0.0f;
-            self.buttonExitWidthConstraint.constant = self.exitButtonVisible ? kExitButtonWidth : 0.0f;
             break;
             
         case VWebBrowserHeaderProgressBarAlignmentBottom:
@@ -161,7 +165,7 @@ static const CGFloat kExitButtonWidth                       = 32.0f;
         case VWebBrowserHeaderContentAlignmentLeft:
         {
             self.header.labelTitle.textAlignment = NSTextAlignmentLeft;
-            self.buttonExitWidthConstraint.constant = self.startingButtonExitWidth;
+            self.buttonExitWidthConstraint.constant = self.exitButtonVisible ? self.startingButtonExitWidth : 0.0f;
             self.pageTitleLeadingConstraint.constant = self.startingPageTitleLeading + (self.shouldHideNavigationControls ? kDefaultLeadingSpace : 0.0f);
             break;
         }
