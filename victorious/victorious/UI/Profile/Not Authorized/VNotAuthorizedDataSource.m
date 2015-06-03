@@ -50,8 +50,7 @@
 
 - (void)notAuthorizedProfileCellWantsLogin:(VNotAuthorizedProfileCollectionViewCell *)cell
 {
-    __weak typeof(self) welf = self;
-    [self.delegate dataSourceWantsAuthorization:welf];
+    [self.delegate dataSourceWantsAuthorization:self];
 }
 
 @end

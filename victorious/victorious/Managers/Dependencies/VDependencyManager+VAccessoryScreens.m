@@ -127,19 +127,26 @@ static const char kAssociatedObjectSourceViewControllerKey;
 
 - (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton fromSource:(id)source withDestination:(id)destination isCustom:(BOOL)isCustom
 {
-    __weak typeof (barButton) weakBarButton = barButton;
     if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
     {
+        __weak typeof (barButton) weakBarButton = barButton;
+        __weak id weakSource = source;
         id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)destination;
         VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
         {
-            [weakBarButton setBadgeNumber:badgeNumber];
-            if ( [source conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] && !isCustom )
+            typeof (weakBarButton) strongBarButton = weakBarButton;
+            typeof (weakSource) strongSource = weakSource;
+            
+            if ( strongBarButton != nil && strongSource != nil )
             {
-                id<VProvidesNavigationMenuItemBadge> sourceBadgeProvider = (id<VProvidesNavigationMenuItemBadge>)source;
-                if ( sourceBadgeProvider.badgeNumberUpdateBlock != nil )
+                [strongBarButton setBadgeNumber:badgeNumber];
+                if ( [strongSource conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] && !isCustom )
                 {
-                    sourceBadgeProvider.badgeNumberUpdateBlock( badgeNumber );
+                    id<VProvidesNavigationMenuItemBadge> sourceBadgeProvider = (id<VProvidesNavigationMenuItemBadge>)strongSource;
+                    if ( sourceBadgeProvider.badgeNumberUpdateBlock != nil )
+                    {
+                        sourceBadgeProvider.badgeNumberUpdateBlock( badgeNumber );
+                    }
                 }
             }
         };
