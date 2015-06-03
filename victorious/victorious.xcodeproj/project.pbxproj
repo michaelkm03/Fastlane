@@ -195,7 +195,6 @@
 		037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */; };
 		037FCF0A1A8B0CE500E8ABFC /* VFollowUserControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF091A8B0CE500E8ABFC /* VFollowUserControl.m */; };
 		037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF121A8DAF0E00E8ABFC /* VBarButton.m */; };
-		037FCF191A8DAF0E00E8ABFC /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */; };
 		037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */; };
 		037FCF1E1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF1D1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m */; };
@@ -460,6 +459,7 @@
 		A77AD4FB1A1FF33100142F24 /* VAlertControllerAdvancedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FA1A1FF33100142F24 /* VAlertControllerAdvancedTests.m */; };
 		A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */; };
 		A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */; };
+		A77B43CE1B1FA6980016F47B /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		A77FB9231A897201003E9AA2 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */; };
 		A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED4C1A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m */; };
 		A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = A780ED4D1A933D9300A8CD5D /* filters.xml */; };
@@ -6342,7 +6342,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = V;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
@@ -6515,8 +6515,7 @@
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
-				037FCF191A8DAF0E00E8ABFC /* VBarButton.xib in Resources */,
-				037FCF191A8DAF0E00E8ABFC /* VBarButton.xib in Resources */,
+				A77B43CE1B1FA6980016F47B /* VBarButton.xib in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7299E951AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib in Resources */,

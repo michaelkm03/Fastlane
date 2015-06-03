@@ -46,7 +46,6 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
     [self.collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
     ((UICollectionViewFlowLayout *)self.collectionViewLayout).sectionInset = kCollectionViewEdgeInsets;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(followingDidUpdate:) name:VMainUserDidChangeFollowingUserNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
 }
 
@@ -59,44 +58,7 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
 - (void)loginStatusDidChange:(NSNotification *)note
 {
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    
-    if ( objectManager.mainUserLoggedIn )
-    {
-        [objectManager loadFollowingsForUser:objectManager.mainUser
-                                    pageType:VPageTypeFirst
-                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [self followingDidLoad];
-         } failBlock:nil];
-        
-        self.suggestedUsers = [self usersByRemovingUser:objectManager.mainUser fromUsers:self.suggestedUsers];
-    }
-    
-    [self updateFollowingInUsers:self.suggestedUsers];
     [self.collectionView reloadData];
-}
-
-- (void)followingDidUpdate:(NSNotification *)note
-{
-    [self updateFollowingInUsers:self.suggestedUsers];
-}
-
-- (void)updateFollowingInUsers:(NSArray *)users
-{
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    
-    [users enumerateObjectsUsingBlock:^(VUser *user, NSUInteger idx, BOOL *stop)
-     {
-         if ( objectManager.mainUserLoggedIn )
-         {
-             user.isFollowing = @( [objectManager.mainUser.following containsObject:user] );
-         }
-         else
-         {
-             user.isFollowing = @NO;
-         }
-     }];
 }
 
 #pragma mark - Loading data
@@ -134,7 +96,6 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
     else
     {
         _suggestedUsers = users;
-        [self updateFollowingInUsers:self.suggestedUsers];  // Will also reload data, so no need to call reloadData again
     }
     
     self.hasLoadedOnce = YES;
@@ -162,35 +123,6 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 - (void)clearData
 {
     _suggestedUsers = @[];
-    [self.collectionView reloadData];
-}
-
-- (NSArray *)usersByRemovingUser:(VUser *)user fromUsers:(NSArray *)users
-{
-    if ( ![users containsObject:user] )
-    {
-        return users;
-    }
-    
-    NSMutableArray *usersToKeep = [NSMutableArray arrayWithArray:users];
-    [usersToKeep removeObject:user];
-    return [NSArray arrayWithArray:usersToKeep];
-}
-
-- (void)followingDidLoad
-{
-    [self updateFollowingInUsers:self.suggestedUsers];
-    
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    [objectManager loadFollowingsForUser:objectManager.mainUser
-                                pageType:VPageTypeNext
-                            successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [self followingDidLoad];
-     } failBlock:^(NSOperation *operation, NSError *error)
-     {
-         
-     }];
     [self.collectionView reloadData];
 }
 
