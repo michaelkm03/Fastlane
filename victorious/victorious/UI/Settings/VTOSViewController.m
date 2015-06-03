@@ -38,15 +38,6 @@
 {
     [super viewDidLoad];
     
-    if (self.navigationItem.leftBarButtonItem == nil)
-    {
-        //Need to create a fake "back" button so that we can get off of this screen
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BackButton", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedBack)];
-        [backButton setTintColor:[UIColor blackColor]];
-        [self.navigationItem setLeftBarButtonItem:backButton];
-
-    }
-    
     self.shouldShowLoadingState = YES;
     
     [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)

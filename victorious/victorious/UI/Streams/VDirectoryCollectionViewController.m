@@ -26,6 +26,7 @@
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VCoachmarkManager.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -154,7 +155,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
 }
 

@@ -37,6 +37,7 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "UIResponder+VResponderChain.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -105,6 +106,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -150,7 +153,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
-    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 @class VDependencyManager;
 

@@ -20,6 +20,7 @@
 #import "VNoContentView.h"
 #import "VAuthorizedAction.h"
 #import <FBKVOController.h>
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VBarButton.h"
 
@@ -113,7 +114,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)updateNavigationItems
 {
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    [self updateFollowingStatus];
 }
 
 #pragma mark - Fetch Users Tags

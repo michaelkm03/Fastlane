@@ -19,7 +19,7 @@
 @interface VUserProfileNavigationDestination () <VCoachmarkDisplayer, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VUserProfileViewController *userProfileViewController;
+@property (nonatomic, strong) VUserProfileViewController *profileViewController;
 
 @end
 
@@ -45,25 +45,28 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
-                                                                andDependencyManager:self.dependencyManager];
-        _userProfileViewController.representsMainUser = YES;
-        [_userProfileViewController.dependencyManager configureNavigationItem:_userProfileViewController.navigationItem
-                                                            forViewController:_userProfileViewController];
+        [self createProfile];
+        [self.profileViewController updateAccessoryItems];
     }
     return self;
+}
+
+- (void)createProfile
+{
+    if ( self.profileViewController == nil )
+    {
+        self.profileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
+                                                                andDependencyManager:self.dependencyManager];
+        self.profileViewController.representsMainUser = YES;
+    }
 }
 
 #pragma mark - VNavigationDestination conformance
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    if ( [self.userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        [self.userProfileViewController setDependencyManager:self.dependencyManager];
-    }
-    *alternateViewController = self.userProfileViewController;
-    
+    [self createProfile];
+    *alternateViewController = self.profileViewController;
     return YES;
 }
 
@@ -88,7 +91,7 @@
 - (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
 {
     _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
-    self.userProfileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    self.profileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end

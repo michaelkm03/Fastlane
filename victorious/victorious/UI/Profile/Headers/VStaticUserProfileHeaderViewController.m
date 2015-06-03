@@ -49,11 +49,17 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
     return 319.0f;
 }
 
-#pragma mark - VUserProfileHeaderViewController overrides
+#pragma mark - VAbstractUserProfileHeaderViewController overrides
 
 - (VDefaultProfileImageView *)profileImageView
 {
     return self.staticProfileImageView;
+}
+
+- (void)reloadProfileImage
+{
+    [self.backgroundImageView clearDownloadCache];
+    [self updateProfileImage];
 }
 
 - (void)updateProfileImage
@@ -62,11 +68,9 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
     NSURL *imageURL = [self getBestAvailableImageForMinimuimSize:minimumSize];
     if ( imageURL == nil || imageURL.absoluteString.length == 0 )
     {
-        
         [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
                                                placeholderImage:nil
                                                       tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-        return;
     }
     else if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
     {

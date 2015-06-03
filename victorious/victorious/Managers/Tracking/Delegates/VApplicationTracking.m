@@ -67,7 +67,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
                                  VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
-                                 VTrackingEventUserDidSelectRegistrationDone       : VTrackingDoneButtonTapKey,
+                                 VTrackingEventUserDidSelectRegistrationDone       : VTrackingCreateProfileDoneButtonTapKey,
                                  VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
                                  VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey };
         

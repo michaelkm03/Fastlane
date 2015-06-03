@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VUserProfileHeaderViewController.h"
+#import "VAbstractUserProfileHeaderViewController.h"
 
-@interface VFloatingUserProfileHeaderViewController : VUserProfileHeaderViewController
+@interface VFloatingUserProfileHeaderViewController : VAbstractUserProfileHeaderViewController
 
 @end

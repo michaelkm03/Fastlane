@@ -21,6 +21,11 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
 @interface VInlineValidationTextField : UITextField
 
 /**
+ *  When VInlineValidationTextField is not first responder this will replace the current placeholder.
+ */
+@property (nonatomic, strong) NSAttributedString *inactivePlaceholder;
+
+/**
  *  When VTextField is first responder this will replace the current placeholder.
  */
 @property (nonatomic, strong) NSAttributedString *activePlaceholder;

@@ -63,6 +63,11 @@ static NSString * const kPromptDurationKey = @"promptDuration";
 {
     [super viewWillAppear:animated];
     
+    if (_prompts.count == 1)
+    {
+        self.pageControl.hidden = YES;
+    }
+    
     self.collectionView.alpha = 0.0f;
     [self.flowLayout invalidateLayout];
 }

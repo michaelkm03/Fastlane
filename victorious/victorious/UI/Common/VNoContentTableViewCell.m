@@ -15,10 +15,12 @@ static const UIEdgeInsets kTextViewMargins = { 10.0f, 10.0f, 62.0f, 10.0f };
 
 @interface VNoContentTableViewCell()
 
-@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (weak, nonatomic) IBOutlet UIButton *actionButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionButtonHeightConstraint;
+@property (nonatomic, weak) IBOutlet UITextView *messageTextView;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, weak) IBOutlet UIButton *actionButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionButtonHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionButtonSpaceTopToTextView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionButtonBottomSpaceToContainer;
 @property (nonatomic, assign) CGFloat actionButtonVisibleHeight;
 @property (nonatomic, weak) void (^actionButtonBlock)(void);
 
@@ -131,12 +133,16 @@ static const UIEdgeInsets kTextViewMargins = { 10.0f, 10.0f, 62.0f, 10.0f };
 - (void)hideActionButton
 {
     self.actionButtonHeightConstraint.constant = 0.0;
+    self.actionButtonBottomSpaceToContainer.constant = 0.0f;
+    self.actionButtonSpaceTopToTextView.constant = 0.0f;
     [self setNeedsLayout];
 }
 
 - (void)showActionButton
 {
     self.actionButtonHeightConstraint.constant = self.actionButtonVisibleHeight;
+    self.actionButtonSpaceTopToTextView.constant = 16.0f;
+    self.actionButtonBottomSpaceToContainer.constant = 5.0f;
     [self setNeedsLayout];
 }
 

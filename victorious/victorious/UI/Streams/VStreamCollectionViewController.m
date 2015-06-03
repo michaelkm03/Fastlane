@@ -11,6 +11,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
+#import "VStreamCellTracking.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VStreamCollectionViewParallaxFlowLayout.h"
 
@@ -75,7 +76,8 @@
 #import "VHashtagSelectionResponder.h"
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VDependencyManager+VNavigationItem.h"
-
+#import "VDependencyManager+VAccessoryScreens.h"
+#import "VDependencyManager+VNavigationItem.h"
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
@@ -255,6 +257,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                         keyPath:NSStringFromSelector(@selector(hasHeaderCell))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(dataSourceDidChange)];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -385,8 +389,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
-    
-    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
@@ -811,7 +814,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSArray *visibleCells = self.collectionView.visibleCells;
     [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
      {
-         if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
+         if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
          {
              return;
          }
@@ -874,10 +877,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
     {
-        NSIndexPath *indexPathForCell = [self.collectionView indexPathForCell:cell];
-        VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPathForCell.row];
-        [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
-                                                                 sequence:sequence];
+        if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
+        {
+            VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
+            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
+                                                                     sequence:sequenceToTrack];
+        }
     }
 }
 
