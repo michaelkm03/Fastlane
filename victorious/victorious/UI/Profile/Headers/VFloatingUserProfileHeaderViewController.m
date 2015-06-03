@@ -90,7 +90,7 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     [self.delegate primaryActionHandler];
 }
 
-#pragma mark - VUserProfileHeaderViewController overrides
+#pragma mark - VAbstractUserProfileHeaderViewController overrides
 
 - (void)setState:(VUserProfileHeaderState)state
 {
@@ -122,6 +122,12 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
         default:
             break;
     }
+}
+
+- (void)reloadProfileImage
+{
+    [self.backgroundImageView clearDownloadCache];
+    [self updateProfileImage];
 }
 
 - (void)updateProfileImage

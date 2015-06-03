@@ -17,7 +17,7 @@
 #import "VObjectManager+Login.h"
 #import "VPaginationManager.h"
 #import "VRootViewController.h"
-#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"

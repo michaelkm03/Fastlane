@@ -57,10 +57,12 @@ typedef NS_ENUM( NSInteger, VUserProfileHeaderState)
 
 /**
  A subcomponent of a user profile stream that exists in the fits cell of the stream
- that displays user profile data and provides UI to take furhter action to display
+ that displays user profile data and provides UI to take further action to display
  more information about the user.
  */
 @protocol VUserProfileHeader <NSObject>
+
+- (void)reloadProfileImage;
 
 /**
  Delegate that will receive forwarded input from the user.
