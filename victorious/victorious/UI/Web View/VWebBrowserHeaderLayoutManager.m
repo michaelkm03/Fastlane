@@ -14,6 +14,7 @@ static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
 static const CGFloat kLayoutChangeAnimationSpringVelocity   = 0.1f;
 static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 static const CGFloat kButtonBackLeadingOffsetMultipler      = 0.25f;
+static const CGFloat kExitButtonWidth                       = 32.0f;
 
 @interface VWebBrowserHeaderLayoutManager()
 
@@ -137,6 +138,7 @@ static const CGFloat kButtonBackLeadingOffsetMultipler      = 0.25f;
             [self.header.view removeConstraint:self.progressBarBottomConstraint];
             [self.header.view addConstraint:self.progressBarTopConstraint];
             self.progressBarTopConstraint.constant = 0.0f;
+            self.buttonExitWidthConstraint.constant = self.exitButtonVisible ? kExitButtonWidth : 0.0f;
             break;
             
         case VWebBrowserHeaderProgressBarAlignmentBottom:

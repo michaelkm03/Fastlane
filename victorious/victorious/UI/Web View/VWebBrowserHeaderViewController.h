@@ -49,6 +49,8 @@
 @property (nonatomic, weak, readonly) IBOutlet UILabel *labelTitle;
 @property (nonatomic, weak, readonly) IBOutlet VProgressBarView *progressBar;
 
+@property (nonatomic, assign) BOOL showCloseButton;
+
 - (void)setTitle:(NSString *)title;
 - (void)setLoadingStarted;
 - (void)setLoadingComplete:(BOOL)didFail;

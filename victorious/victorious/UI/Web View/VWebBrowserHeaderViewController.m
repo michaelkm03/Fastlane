@@ -92,6 +92,13 @@
     [self.labelTitle setText:title];
 }
 
+- (void)setShowCloseButton:(BOOL)showCloseButton
+{
+    _showCloseButton = showCloseButton;
+    self.layoutManager.exitButtonVisible = showCloseButton;
+    [self.layoutManager update];
+}
+
 #pragma mark - Header Actions
 
 - (IBAction)backSelected:(id)sender

@@ -71,9 +71,17 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 #pragma mark - UIViewController
 
+- (BOOL)v_prefersNavigationBarHidden
+{
+    return YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self.v_navigationController setNavigationBarHidden:YES];
+    self.headerViewController.showCloseButton = (self.presentingViewController != nil);
     
     self.actions = [[VWebBrowserActions alloc] init];
     
@@ -163,11 +171,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
-}
-
-- (BOOL)v_prefersNavigationBarHidden
-{
-    return self.layoutIdentifier == VDependencyManagerWebBrowserLayoutTopNavigation;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
