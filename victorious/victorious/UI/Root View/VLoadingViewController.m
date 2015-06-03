@@ -216,10 +216,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSLog( @"%@", [templateDecorator keyPathsForKey:@"layout"] );
-        [templateDecorator setTemplateValue:@"bottomNavigation" forKeyPath:@"scaffold/menu/items/1/3/destination/layout"];
-        [templateDecorator setTemplateValue:@"Store" forKeyPath:@"scaffold/menu/items/1/3/title"];
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
