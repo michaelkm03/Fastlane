@@ -7,27 +7,15 @@
 //
 
 #import "VStreamCollectionViewParallaxFlowLayout.h"
+#import "VParallaxScrolling.h"
 
 static const CGFloat kHeaderFadeoutBuffer = 20.0f;
 
 @interface VStreamCollectionViewParallaxFlowLayout ()
 
-@property (nonatomic, strong) VStreamCollectionViewDataSource *collectionViewDataSource;
-
 @end
 
 @implementation VStreamCollectionViewParallaxFlowLayout
-
-- (instancetype)initWithStreamDataSource:(VStreamCollectionViewDataSource *)dataSource
-{
-    self = [super init];
-    if (self != nil)
-    {
-        _collectionViewDataSource = dataSource;
-        _marqueeParallaxRatio = 1.0f;
-    }
-    return self;
-}
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
@@ -39,14 +27,19 @@ static const CGFloat kHeaderFadeoutBuffer = 20.0f;
     NSArray *attributes = [super layoutAttributesForElementsInRect:rect];
     for (UICollectionViewLayoutAttributes *layoutAttributes in attributes)
     {
-        if (self.collectionViewDataSource.hasHeaderCell && layoutAttributes.indexPath.section == 0 && self.marqueeParallaxRatio < 1.0f)
+        UICollectionReusableView *cell = [self.collectionView cellForItemAtIndexPath:layoutAttributes.indexPath];
+        
+        if ([cell conformsToProtocol:@protocol(VParallaxScrolling)])
         {
+            CGFloat parallaxRatio = [(id<VParallaxScrolling>)cell parallaxRatio];
+            
             CGRect headerFrame = layoutAttributes.frame;
+            
             CGPoint contentOffset = self.collectionView.contentOffset;
             if (contentOffset.y > 0)
             {
                 // Offset the frame of the header to create parallax effect
-                headerFrame.origin.y += contentOffset.y * self.marqueeParallaxRatio;
+                headerFrame.origin.y += contentOffset.y * parallaxRatio;
                 
                 // Adjust alpha to create smooth fade out of header if its still visible behind cells
                 if (contentOffset.y > headerFrame.size.height - kHeaderFadeoutBuffer)

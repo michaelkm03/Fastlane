@@ -244,8 +244,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.streamDataSource.collectionView = self.collectionView;
     
     // Setup custom flow layout for parallax
-    VStreamCollectionViewParallaxFlowLayout *flowLayout = [[VStreamCollectionViewParallaxFlowLayout alloc] initWithStreamDataSource:self.streamDataSource];
-    flowLayout.marqueeParallaxRatio = VStreamMarqueeParallaxRatio;
+    VStreamCollectionViewParallaxFlowLayout *flowLayout = [[VStreamCollectionViewParallaxFlowLayout alloc] init];
     self.collectionView.collectionViewLayout = flowLayout;
     
     [self.KVOController observe:self.streamDataSource.stream

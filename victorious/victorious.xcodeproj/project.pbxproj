@@ -2156,6 +2156,7 @@
 		C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewParallaxFlowLayout.m; sourceTree = "<group>"; };
 		C395E86C1AFAEAFA00B6E3DB /* UIImage+Round.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Round.h"; sourceTree = "<group>"; };
 		C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Round.m"; sourceTree = "<group>"; };
+		C39864AF1B1E7FD900694AB3 /* VParallaxScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VParallaxScrolling.h; path = Parallax/VParallaxScrolling.h; sourceTree = "<group>"; };
 		C39B22091B0A58EF00D3DFE7 /* VPermissionMicrophone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionMicrophone.h; path = Permissions/VPermissionMicrophone.h; sourceTree = "<group>"; };
 		C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionMicrophone.m; path = Permissions/VPermissionMicrophone.m; sourceTree = "<group>"; };
 		C39B220C1B0A693600D3DFE7 /* VPermissionProfilePicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionProfilePicture.h; path = Permissions/VPermissionProfilePicture.h; sourceTree = "<group>"; };
@@ -3351,6 +3352,7 @@
 		0314D43319B46B5E00FA363C /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				C39864AE1B1E7F7700694AB3 /* Parallax */,
 				A7AEF96C1A83F1C300A3D3A0 /* Cells */,
 				F06F10C31AC201B90062E1D1 /* Directory */,
 				D8DF71DA1AFBDF81002EA7A5 /* Headers */,
@@ -3368,8 +3370,6 @@
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,
 				A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */,
-				C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */,
-				C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */,
 			);
 			path = Streams;
 			sourceTree = "<group>";
@@ -5396,6 +5396,16 @@
 				C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */,
 			);
 			name = Permissions;
+			sourceTree = "<group>";
+		};
+		C39864AE1B1E7F7700694AB3 /* Parallax */ = {
+			isa = PBXGroup;
+			children = (
+				C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */,
+				C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */,
+				C39864AF1B1E7FD900694AB3 /* VParallaxScrolling.h */,
+			);
+			name = Parallax;
 			sourceTree = "<group>";
 		};
 		D80A94D31A535DFA0035D788 /* Video */ = {

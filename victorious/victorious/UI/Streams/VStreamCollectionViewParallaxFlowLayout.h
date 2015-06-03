@@ -15,12 +15,4 @@
  */
 @interface VStreamCollectionViewParallaxFlowLayout : UICollectionViewFlowLayout
 
-/**
- How much parallax effect you want. A value of 0.5 will cause the header cell to scroll
- half as fast as the rest of the collection view.
- */
-@property (nonatomic, assign) CGFloat marqueeParallaxRatio;
-
-- (instancetype)initWithStreamDataSource:(VStreamCollectionViewDataSource *)dataSource;
-
 @end
