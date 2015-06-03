@@ -21,6 +21,7 @@
 #import "UIView+AutoLayout.h"
 #import "VWebBrowserHeaderLayoutManager.h"
 #import "VDependencyManager+VWebBrowser.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 static NSString * const kURLKey = @"url";
 
@@ -144,6 +145,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
                                   VTrackingKeyUrls : self.sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
+    
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

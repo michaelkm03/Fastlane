@@ -12,7 +12,6 @@
 static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
 static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
 static const CGFloat kLayoutChangeAnimationSpringVelocity   = 0.1f;
-static const CGFloat kDefaultLeadingSpace                   = 8.0f;
 static const CGFloat kButtonBackLeadingOffsetMultipler      = 0.25f;
 
 @interface VWebBrowserHeaderLayoutManager()
@@ -166,7 +165,7 @@ static const CGFloat kButtonBackLeadingOffsetMultipler      = 0.25f;
         {
             self.header.labelTitle.textAlignment = NSTextAlignmentLeft;
             self.buttonExitWidthConstraint.constant = self.exitButtonVisible ? self.startingButtonExitWidth : 0.0f;
-            self.pageTitleLeadingConstraint.constant = self.startingPageTitleLeading + (self.shouldHideNavigationControls ? kDefaultLeadingSpace : 0.0f);
+            self.pageTitleLeadingConstraint.constant = 0.0f;
             break;
         }
     }
