@@ -69,16 +69,15 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     UIImageView *headerImageView = [[UIImageView alloc] initWithImage:headerImage];
     self.navigationItem.titleView = headerImageView;
     
-    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login"
+    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Login", @"")
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self
                                                                    action:@selector(login)];
     self.navigationItem.rightBarButtonItem = loginButton;
 
     // Legal Text
-    NSString *legalTextBeginnning = NSLocalizedString(@"By signing up you are agreeing to our \n", nil);
+    NSString *fullLegalText = NSLocalizedString(@"By signing up you are agreeing to our \nterms of service and privacy policy.", nil);
     NSString *termsOfServiceLinkText = NSLocalizedString(@"terms of service", nil);
-    NSString *andText = NSLocalizedString(@" and ", nil);
     NSString *privacyPolicyLinkText = NSLocalizedString(@"privacy policy.", nil);
     NSDictionary *legalTextAttributes = @{
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
@@ -88,7 +87,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
                                                    NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                                    NSForegroundColorAttributeName: [[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] colorWithAlphaComponent:0.5f],
                                                    };
-    NSMutableAttributedString *attributedLegalText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@%@", legalTextBeginnning, termsOfServiceLinkText, andText, privacyPolicyLinkText]
+    NSMutableAttributedString *attributedLegalText = [[NSMutableAttributedString alloc] initWithString:fullLegalText
                                                                                             attributes:legalTextAttributes];
     NSRange rangeOfTOSLink = [attributedLegalText.string rangeOfString:termsOfServiceLinkText];
     NSRange rangeOfPrivacyPolicyLink = [attributedLegalText.string rangeOfString:privacyPolicyLinkText];

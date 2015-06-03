@@ -73,6 +73,7 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
+"Login"                 =   "Login";
 "Log in here"           =   "Log in here";
 "Already Registered?"   =   "Already Registered?";
 "Get Started"           =   "Get Started!";
@@ -594,10 +595,12 @@
 "Follow content from other fans." = "Follow content from other fans.";
 "Share creations with the community." = "Share creations with the community.";
 "Join in on the conversation." = "Join in on the conversation.";
-"By signing up you are agreeing to the ToS and Privacy Policy." = "By signing up you are agreeing to the ToS and Privacy Policy.";
+"By signing up you are agreeing to our terms of service and privacy policy." = "By signing up you are agreeing to our terms of service and privacy policy.";
 "Sign up with Email" = "Sign up with Email";
 "Sign up with Facebook" = "Sign up with Facebook";
 "Create an account and join the community." = "Create an account and join the community.";
 "Create a username and introduce yourself to the community." = "Create a username and introduce yourself to the community.";
 "Add photo" = "Add photo";
 "Add your profile picture." = "Add your profile picture.";
+"Enter Email" = "Enter Email";
+"Enter Password" = "Enter Password";
