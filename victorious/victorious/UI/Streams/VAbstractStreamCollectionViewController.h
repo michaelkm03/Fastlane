@@ -12,6 +12,9 @@
 #import "VStreamTrackingHelper.h"
 #import "VMultipleContainer.h"
 #import "VNavigationViewFloatingController.h"
+#import "VNavigationControllerScrollDelegate.h"
+
+static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 
 @class VStream, VNavigationHeaderView, VCollectionRefreshControl;
 
@@ -34,6 +37,7 @@
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper; ///< An aide for sending tracking events
+@property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
 @property (nonatomic, strong) id<VNavigationViewFloatingController> navigationViewfloatingController;
 
 /**
