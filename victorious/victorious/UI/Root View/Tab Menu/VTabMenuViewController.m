@@ -176,14 +176,10 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
             if ( [containerViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
             {
                 const BOOL isViewControllerTabDestination = containerViewController.navigationDestination == (id<VNavigationDestination>)viewController;
-                if ( isViewControllerTabDestination )
-                {
-                    self.willSelectContainerViewController = containerViewController;
-                    break;
-                }
+                const BOOL isAlternateViewControllerTabDestination  = [containerViewController.navigationDestination respondsToSelector:@selector(alternateViewController)] &&
+                    viewController == [containerViewController.navigationDestination alternateViewController];
                 
-                const BOOL isAlternateViewControllerTabDestination  = [containerViewController.navigationDestination respondsToSelector:@selector(alternateViewController)] && viewController == [containerViewController.navigationDestination alternateViewController] ;
-                if ( isAlternateViewControllerTabDestination )
+                if ( isAlternateViewControllerTabDestination || isViewControllerTabDestination )
                 {
                     self.willSelectContainerViewController = containerViewController;
                     break;
