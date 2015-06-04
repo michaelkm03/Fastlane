@@ -40,4 +40,6 @@ extern NSString * const VDependencyManagerAccessoryScreensKey; // An arry of acc
  */
 - (NSArray *)accessoryMenuItems;
 
+- (NSArray *)accessoryMenuItemsWithInheritance:(BOOL)withInheritance;
+
 @end

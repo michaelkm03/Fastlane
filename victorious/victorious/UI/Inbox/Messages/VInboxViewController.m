@@ -47,6 +47,7 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic) NSInteger badgeNumber;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
+@property (nonatomic, strong) VUser *userWithQueuedConversation;
 
 @end
 
@@ -127,6 +128,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self updateNavigationItem];
     
     self.badgeNumber = [self.messageCountCoordinator unreadMessageCount];
+    
+    if ( self.userWithQueuedConversation != nil )
+    {
+        [self displayConversationForUser:self.userWithQueuedConversation animated:YES];
+        self.userWithQueuedConversation = nil;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -366,7 +373,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
     
-    if ( [self.navigationController.viewControllers containsObject:detailVC] )
+    if ( self.navigationController == nil )
+    {
+        self.userWithQueuedConversation = user;
+    }
+    else if ( [self.navigationController.viewControllers containsObject:detailVC] )
     {
         if ( self.navigationController.topViewController != detailVC )
         {

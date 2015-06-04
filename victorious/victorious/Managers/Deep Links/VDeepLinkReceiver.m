@@ -16,7 +16,7 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
-#define FORCE_DEEPLINK 1
+#define FORCE_DEEPLINK 0
 
 @interface VDeeplinkReceiver()
 
@@ -142,16 +142,23 @@
         
         if ( destinationViewController != nil )
         {
-            for ( id object in navigationStack )
+            NSMutableOrderedSet *completeNavigationStack = [NSMutableOrderedSet orderedSetWithSet:navigationStack.reversedOrderedSet.set];
+            [completeNavigationStack addObject:destinationViewController];
+            
+            id parentDestination = nil;
+            for ( id destination in completeNavigationStack )
             {
-                if ( [object conformsToProtocol:@protocol(VMultipleContainer)] )
+                if ( [parentDestination conformsToProtocol:@protocol(VMultipleContainer)] )
                 {
-                    id<VMultipleContainer> multipleContainer = object;
-                    [self.scaffold navigateToDestination:multipleContainer];
-                    [multipleContainer selectChild:(id<VMultipleContainerChild>)supporter];
+                    id<VMultipleContainer> multipleContainer = parentDestination;
+                    [multipleContainer selectChild:destination];
                 }
+                else
+                {
+                    [self.scaffold navigateToDestination:destination];
+                }
+                parentDestination = destination;
             }
-            [self.scaffold navigateToDestination:destinationViewController];
         }
     };
     
@@ -171,9 +178,9 @@
             // Search accessory items for another deep link handler
             id<VNavigationDestination> navigationDestination = object;
             NSMutableArray *destinations = [[NSMutableArray alloc] init];
-            for ( VNavigationMenuItem *menuItem in navigationDestination.dependencyManager.accessoryMenuItems )
+            for ( VNavigationMenuItem *menuItem in [navigationDestination.dependencyManager accessoryMenuItemsWithInheritance:NO] )
             {
-                if ( menuItem.destination != nil && menuItem.destination != navigationDestination )
+                if ( menuItem.destination != nil )
                 {
                     [destinations addObject:menuItem.destination];
                 }
