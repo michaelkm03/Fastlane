@@ -96,6 +96,11 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
              user.isFollowing = @NO;
          }
      }];
+    
+    for ( VSuggestedPersonCollectionViewCell *cell in self.collectionView.visibleCells )
+    {
+        [cell populateData];
+    }
 }
 
 #pragma mark - Loading data
