@@ -31,7 +31,6 @@
 
 @end
 
-NSString * const VMainUserDidChangeFollowingUserNotification  = @"VMainUserDidChangeFollowingUserNotification";
 NSString * const VMainUserDidChangeFollowingUserKeyUser = @"VMainUserDidChangeFollowingUserKeyUser";
 
 NSString * const VObjectManagerSearchContextMessage = @"message";
@@ -238,11 +237,10 @@ static NSString * const kVAPIParamContext = @"context";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
         [self.mainUser addFollowingObject:user];
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
-        user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
         
-        [self notifyIsFollowingUpdated];
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser];
         if (success)
         {
@@ -276,12 +274,9 @@ static NSString * const kVAPIParamContext = @"context";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        [mainUser removeFollowingObject:user];
-        
-        self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
-        [self notifyIsFollowingUpdated];
+        [self.mainUser removeFollowingObject:user];
+        self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser];
         
@@ -510,6 +505,12 @@ static NSString * const kVAPIParamContext = @"context";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        for ( VUser *user in users )
+        {
+            [self.mainUser addFollowingObject:user];
+            user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
+        }
+        self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -545,11 +546,6 @@ static NSString * const kVAPIParamContext = @"context";
     }];
     
     return results;
-}
-
-- (void)notifyIsFollowingUpdated
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:VMainUserDidChangeFollowingUserNotification object:nil userInfo:nil];
 }
 
 @end

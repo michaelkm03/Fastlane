@@ -40,6 +40,8 @@
 #import "VAuthorizedAction.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
+#import "VProfileDeeplinkHandler.h"
+#import "VInboxDeepLinkHandler.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -170,6 +172,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 self.profileHeaderViewController.delegate = self;
                 [self setInitialHeaderState];
             }
+        }
+        else
+        {
+            [self reloadUserFollowCounts];
         }
         
         BOOL hasHeader = self.profileHeaderViewController != nil;
@@ -536,8 +542,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.currentStream = [VStream streamForUser:self.user];
     
-    self.title = self.isCurrentUser ? NSLocalizedString( @"me", nil ) : user.name;
-    
     [self updateProfileHeader];
     
     [self attemptToRefreshProfileUI];
@@ -551,6 +555,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         return nil;
     }
+    else if ( !self.isCurrentUser )
+    {
+        return self.user.name;
+    }
+    
     return [super title];
 }
 
@@ -863,5 +872,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 #pragma mark - VProvidesNavigationMenuItemBadge
 
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+#pragma mark - VDeepLinkSupporter
+
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
+{
+    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
 
 @end

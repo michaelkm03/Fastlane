@@ -21,6 +21,11 @@
 @property (nonatomic, weak, readonly) VNavigationController *navigationController; ///< The navigation controller that was passed into the -init method
 
 /**
+ Scroll offset at which the navigation bar will start moving off screen
+*/
+@property (nonatomic, assign) CGFloat catchOffset;
+
+/**
  Initializes a new instance of this class
  
  @param navigationController The navigation controller whose navigation bar we are hiding/showing
@@ -32,5 +37,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset; ///< This method promises not to modify targetContentOffset. If you would like to modify it, do so before calling this method.
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView;
 
 @end

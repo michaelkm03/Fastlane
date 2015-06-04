@@ -144,7 +144,7 @@ static char kKVOContext;
     NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueHamburgerMenu, VTrackingKeySection : menuItem.title };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
     
-    [[self.dependencyManager scaffoldViewController] navigateToDestination:menuItem.destination completion:^void
+    [[self.dependencyManager scaffoldViewController] navigateToDestination:menuItem.destination animated:YES completion:^void
      {
          [[VTrackingManager sharedInstance] setValue:menuItem.title forSessionParameterWithKey:VTrackingKeyCurrentSection];
      }];

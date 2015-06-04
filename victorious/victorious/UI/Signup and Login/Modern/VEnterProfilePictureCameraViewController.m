@@ -71,7 +71,7 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                        };
     
-    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:prompt
+    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(prompt, nil)
                                                                                          attributes:promptAttributes];
 
     self.promptLabel.attributedText = attributedPrompt;
@@ -198,7 +198,7 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 - (void)showCameraOnViewController:(UIViewController *)viewController
 {
     NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
-                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImage) };
+                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImageRegistration) };
     VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;

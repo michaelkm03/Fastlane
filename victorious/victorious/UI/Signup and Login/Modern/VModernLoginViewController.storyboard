@@ -57,7 +57,7 @@
                                     <constraint firstAttribute="height" constant="1" id="JPf-K5-v5W"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Forgot your password? Click Here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vZF-5p-8fb" customClass="CCHLinkTextView">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Forgot your password? Tap Here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vZF-5p-8fb" customClass="CCHLinkTextView">
                                 <rect key="frame" x="20" y="245" width="560" height="33"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>

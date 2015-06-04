@@ -8,7 +8,6 @@
 
 #import "VObjectManager.h"
 
-extern NSString *const VMainUserDidChangeFollowingUserNotification;
 extern NSString *const VMainUserDidChangeFollowingUserKeyUser;
 
 extern NSString * const VObjectManagerSearchContextMessage; ///< A search context for finding messagable users

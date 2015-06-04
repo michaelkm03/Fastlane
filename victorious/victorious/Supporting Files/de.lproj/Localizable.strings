@@ -619,7 +619,8 @@
 "Follow content from other fans." = "Folge den Inhalten anderer Fans.";
 "Share creations with the community." = "Teile Kreationen mit der Community.";
 "Join in on the conversation." = "Nimm an Diskussionen teil.";
-"By signing up you are agreeing to the ToS and Privacy Policy." = "Mit der Anmeldung stimmst du den Nutzungsbedingungen und der Datenschutzrichtlinie zu.";
+"terms of service" = "terms of service";
+"privacy policy." = "privacy policy.";
 "Sign up with Email" = "Per E-Mail registrieren";
 "Sign up with Facebook" = "Über Facebook registrieren";
 "Create an account and join the community." = "Erstelle ein Konto und tritt der Community bei.";

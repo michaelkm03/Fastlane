@@ -16,7 +16,7 @@
 	<string>VModernLoginViewController</string>
 	<key>modernLanding.screen</key>
 	<string>VModernLandingViewController</string>
-	<key>modernLoginAndRegistration.screen</key>
+	<key>modernLoginAndRegistration.flow</key>
 	<string>VModernLoginAndRegistrationFlowViewController</string>
 	<key>standard.loginAndRegistrationView</key>
 	<string>VStandardLoginFlowViewController</string>
