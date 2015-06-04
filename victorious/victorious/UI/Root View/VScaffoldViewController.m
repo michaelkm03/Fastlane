@@ -229,7 +229,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 #pragma mark - VDeeplinkSupporter
 
-- (id<VDeeplinkHandler>)deepLinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
@@ -241,13 +241,15 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     return @[];
 }
 
-- (void)navigateToDestination:(id)navigationDestination
+- (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated
 {
     [self navigateToDestination:navigationDestination
+                       animated:animated
                      completion:nil];
 }
 
 - (void)navigateToDestination:(id)navigationDestination
+                     animated:(BOOL)animated
                    completion:(void(^)())completion
 {
     [self checkAuthorizationOnNavigationDestination:navigationDestination
@@ -256,6 +258,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
          if (shouldNavigate)
          {
              [self _navigateToDestination:navigationDestination
+                                 animated:animated
                                completion:completion];
          }
      }];
@@ -292,6 +295,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 }
 
 - (void)_navigateToDestination:(id)navigationDestination
+                      animated:(BOOL)animated
                    completion:(void(^)())completion
 {
     UIViewController *alternateDestination = nil;
@@ -312,12 +316,12 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     
     if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
     {
-        [self navigateToDestination:alternateDestination completion:completion];
+        [self navigateToDestination:alternateDestination animated:animated completion:completion];
     }
     else
     {
         NSAssert([navigationDestination isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-        [self displayResultOfNavigation:navigationDestination];
+        [self displayResultOfNavigation:navigationDestination animated:animated];
         
         if ( completion != nil )
         {
@@ -326,7 +330,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     }
 }
 
-- (void)displayResultOfNavigation:(UIViewController *)viewController
+- (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated
 {
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
 }

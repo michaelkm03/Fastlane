@@ -40,6 +40,8 @@
 #import "VAuthorizedAction.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
+#import "VProfileDeeplinkHandler.h"
+#import "VInboxDeepLinkHandler.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -870,5 +872,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 #pragma mark - VProvidesNavigationMenuItemBadge
 
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+#pragma mark - VDeepLinkSupporter
+
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
+{
+    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
 
 @end

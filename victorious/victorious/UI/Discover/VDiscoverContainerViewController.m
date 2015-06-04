@@ -147,7 +147,7 @@
 
 #pragma mark - mark
 
-- (id<VDeeplinkHandler>)deepLinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     VDiscoverDeepLinkHandler *handler = [[VDiscoverDeepLinkHandler alloc] init];
     handler.navigationDestination = self;
