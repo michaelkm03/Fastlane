@@ -66,7 +66,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
     {
         UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
                                                                                                                            forKey:kLoginAndRegistrationViewKey];
-        
         if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
         {
             [loginFlowController setAuthorizationContext:authorizationContext];

@@ -16,7 +16,7 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
-#define FORCE_DEEPLINK 1
+#define FORCE_DEEPLINK 0
 
 @interface VDeeplinkReceiver()
 
