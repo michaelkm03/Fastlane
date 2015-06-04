@@ -679,6 +679,7 @@
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D814040B1AB372320099EC4B /* VWorkspacePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = D814040A1AB372320099EC4B /* VWorkspacePresenter.m */; };
 		D816F7E41A966A0B00120798 /* UIScrollView+VCenterContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */; };
+		D825B8821B20B9A8004179B4 /* VModernResetTokenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D825B8841B20B9A8004179B4 /* VModernResetTokenViewController.storyboard */; };
 		D8282B1E1AE74074005D9DCF /* VRoundedCommentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D8282B1D1AE74074005D9DCF /* VRoundedCommentButton.m */; };
 		D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */; };
 		D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */; };
@@ -808,7 +809,6 @@
 		D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812AA1B14EA0200E93B37 /* VModernResetPasswordViewController.m */; };
 		D8D812AD1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D812AC1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard */; };
 		D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */; };
-		D8D812B21B14EAB200E93B37 /* VModernResetTokenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D812B11B14EAB200E93B37 /* VModernResetTokenViewController.storyboard */; };
 		D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812B41B14FE5B00E93B37 /* VLoginFlowAPIHelper.m */; };
 		D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D812B71B15819600E93B37 /* VModernFlowControllerAnimationController.m */; };
 		D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */; };
@@ -2203,6 +2203,10 @@
 		D814040A1AB372320099EC4B /* VWorkspacePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspacePresenter.m; sourceTree = "<group>"; };
 		D816F7E21A966A0B00120798 /* UIScrollView+VCenterContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+VCenterContent.h"; sourceTree = "<group>"; };
 		D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+VCenterContent.m"; sourceTree = "<group>"; };
+		D825B8831B20B9A8004179B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VModernResetTokenViewController.storyboard; sourceTree = "<group>"; };
+		D825B8861B20B9AB004179B4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VModernResetTokenViewController.strings; sourceTree = "<group>"; };
+		D825B8881B20B9AD004179B4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VModernResetTokenViewController.strings; sourceTree = "<group>"; };
+		D825B88A1B20B9AE004179B4 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VModernResetTokenViewController.strings; sourceTree = "<group>"; };
 		D8282B181AE72E44005D9DCF /* VActionBarFlexibleWidth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionBarFlexibleWidth.h; sourceTree = "<group>"; };
 		D8282B1C1AE74074005D9DCF /* VRoundedCommentButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRoundedCommentButton.h; sourceTree = "<group>"; };
 		D8282B1D1AE74074005D9DCF /* VRoundedCommentButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRoundedCommentButton.m; sourceTree = "<group>"; };
@@ -2459,7 +2463,6 @@
 		D8D812AC1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VModernResetPasswordViewController.storyboard; sourceTree = "<group>"; };
 		D8D812AE1B14EAA200E93B37 /* VModernResetTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernResetTokenViewController.h; sourceTree = "<group>"; };
 		D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernResetTokenViewController.m; sourceTree = "<group>"; };
-		D8D812B11B14EAB200E93B37 /* VModernResetTokenViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VModernResetTokenViewController.storyboard; sourceTree = "<group>"; };
 		D8D812B31B14FE5B00E93B37 /* VLoginFlowAPIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginFlowAPIHelper.h; sourceTree = "<group>"; };
 		D8D812B41B14FE5B00E93B37 /* VLoginFlowAPIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginFlowAPIHelper.m; sourceTree = "<group>"; };
 		D8D812B61B15819600E93B37 /* VModernFlowControllerAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernFlowControllerAnimationController.h; sourceTree = "<group>"; };
@@ -5526,7 +5529,7 @@
 				D8D812AC1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard */,
 				D8D812AE1B14EAA200E93B37 /* VModernResetTokenViewController.h */,
 				D8D812AF1B14EAA200E93B37 /* VModernResetTokenViewController.m */,
-				D8D812B11B14EAB200E93B37 /* VModernResetTokenViewController.storyboard */,
+				D825B8841B20B9A8004179B4 /* VModernResetTokenViewController.storyboard */,
 				D80536221B17B4310049B77A /* VPromptCarouselViewController.h */,
 				D80536231B17B4310049B77A /* VPromptCarouselViewController.m */,
 				D80536251B17B5CB0049B77A /* VPromptCollectionViewCell.h */,
@@ -6411,7 +6414,7 @@
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */,
-				D8D812B21B14EAB200E93B37 /* VModernResetTokenViewController.storyboard in Resources */,
+				D825B8821B20B9A8004179B4 /* VModernResetTokenViewController.storyboard in Resources */,
 				03848F951B0A41090092C660 /* InfoPlist.strings in Resources */,
 				F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */,
 				036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */,
@@ -7610,6 +7613,17 @@
 				03F6E26C1AB79E150017826E /* de */,
 			);
 			name = Workspace.storyboard;
+			sourceTree = "<group>";
+		};
+		D825B8841B20B9A8004179B4 /* VModernResetTokenViewController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D825B8831B20B9A8004179B4 /* Base */,
+				D825B8861B20B9AB004179B4 /* es */,
+				D825B8881B20B9AD004179B4 /* fr */,
+				D825B88A1B20B9AE004179B4 /* de */,
+			);
+			name = VModernResetTokenViewController.storyboard;
 			sourceTree = "<group>";
 		};
 		D858E0CA1B1FAD2F00437DDE /* VModernLandingViewController.storyboard */ = {

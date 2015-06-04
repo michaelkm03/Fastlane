@@ -605,3 +605,11 @@
 "Enter Email" = "Enter Email";
 "Enter name" = "Enter name";
 "Enter Password" = "Enter Password";
+"Tap Here" = "Tap Here";
+"Forgot your password?" = "Forgot your password?";
+"Enter Code" = "Enter Code";
+"Code" = "Code"; // A code the user can use to verify their identitiy when resetting their password via email
+"Create a new password" = "Create a new password";
+"Enter a new Password" = "Enter a new Password";
+"Confirm your new password" = "Confirm your new password";
+"Welcome Back!" = "Welcome Back!";
