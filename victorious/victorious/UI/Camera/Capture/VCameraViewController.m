@@ -410,7 +410,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                      self.completionBlock(NO, nil, nil);
                  }
              }
-             else
+             else if (state == VPermissionStateSystemDenied)
              {
                  [self notifyUserOfFailedCameraPermission];
              }
