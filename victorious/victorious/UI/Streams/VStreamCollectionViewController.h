@@ -55,3 +55,4 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 - (VStreamCollectionViewController *)remixStreamForSequence:(VSequence *)sequence;
 
 @end
+

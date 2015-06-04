@@ -27,6 +27,7 @@
 #import "VHashTagTextView.h"
 #import "VStreamHeaderTimeSince.h"
 #import "VCompatibility.h"
+#import "VStreamCollectionViewController.h"
 
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
 static const CGFloat kInsetCellHeaderHeight = 50.0f;
@@ -171,6 +172,26 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Fixes constraint errors when resizing for certain aspect ratios
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
+    
+    // Makes the comment label clickable
+    [_commentsLabel setUserInteractionEnabled:YES];
+    
+    UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureForCommentLabel:)];
+    [_commentsLabel addGestureRecognizer: tapGesture];
+    
+}
+
+- (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
+{
+    [self commentLabelWasTapped];
+}
+
+- (void)commentLabelWasTapped
+{
+    NSLog(@"posing notification");
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"commentButtonWasPressedNotification"
+     object:self];
 }
 
 #pragma mark - UIView
@@ -342,6 +363,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         //Users aren't allowed to comment on this, so return an empty string
         commentsString = @"";
     }
+    
     return commentsString;
 }
 
