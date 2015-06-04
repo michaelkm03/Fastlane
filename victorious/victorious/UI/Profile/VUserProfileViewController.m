@@ -171,6 +171,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 [self setInitialHeaderState];
             }
         }
+        else
+        {
+            [self reloadUserFollowCounts];
+        }
         
         BOOL hasHeader = self.profileHeaderViewController != nil;
         if ( hasHeader )
