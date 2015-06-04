@@ -46,7 +46,6 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
     [self.collectionView registerNib:[UINib nibWithNibName:kSuggestedPersonCellIdentifier bundle:nil] forCellWithReuseIdentifier:kSuggestedPersonCellIdentifier];
     ((UICollectionViewFlowLayout *)self.collectionViewLayout).sectionInset = kCollectionViewEdgeInsets;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(followingDidUpdate:) name:VMainUserDidChangeFollowingUserNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
 }
 
@@ -77,7 +76,7 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
     [self.collectionView reloadData];
 }
 
-- (void)followingDidUpdate:(NSNotification *)note
+- (void)updateFollowingStateOfUsers
 {
     [self updateFollowingInUsers:self.suggestedUsers];
 }
@@ -97,6 +96,11 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
              user.isFollowing = @NO;
          }
      }];
+    
+    for ( VSuggestedPersonCollectionViewCell *cell in self.collectionView.visibleCells )
+    {
+        [cell populateData];
+    }
 }
 
 #pragma mark - Loading data

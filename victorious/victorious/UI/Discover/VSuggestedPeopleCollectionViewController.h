@@ -23,6 +23,8 @@
 
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
+- (void)updateFollowingStateOfUsers;
+
 @property (nonatomic, weak) id<VSuggestedPeopleCollectionViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSError *error;

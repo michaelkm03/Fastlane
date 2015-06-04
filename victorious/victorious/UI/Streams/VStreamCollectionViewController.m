@@ -238,7 +238,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.marqueeCellController.stream = self.currentStream;
     self.marqueeCellController.dataDelegate = self;
     self.marqueeCellController.selectionDelegate = self;
-    [self.marqueeCellController registerCellsWithCollectionView:self.collectionView];
+    [self.marqueeCellController registerCollectionViewCellWithCollectionView:self.collectionView];
     self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
     
     self.collectionView.dataSource = self.streamDataSource;

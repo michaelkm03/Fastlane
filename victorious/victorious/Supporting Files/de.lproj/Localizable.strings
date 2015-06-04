@@ -611,18 +611,19 @@
 "Render failure" = "Wiedergabe fehlgeschlagen";
 "Upload failure" = "Upload fehlgeschlagen";
 
-"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
-"Thank you for joining the community! Add a profile picture now." = "Thank you for joining the community! Add a profile picture now.";
-"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Before you can record and share videos, we need access to your microphone. Allow microphone access now?";
+"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Bevor du Fotos machen und mit der Community teilen kannst, benötigen wir Zugriff auf deine Kamera. Zugriff auf die Kamera jetzt erlauben?";
+"Thank you for joining the community! Add a profile picture now." = "Danke, dass du der Community beigetreten bist! Füge jetzt ein Profilbild hinzu.";
+"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Bevor du Videos aufnehmen und teilen kannst, benötigen wir Zugriff auf dein Mikrofon. Zugriff auf das Mikrofon jetzt erlauben?";
 
-"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!";
-"Follow content from other fans." = "Follow content from other fans.";
-"Share creations with the community." = "Share creations with the community.";
-"Join in on the conversation." = "Join in on the conversation.";
-"By signing up you are agreeing to the ToS and Privacy Policy." = "By signing up you are agreeing to the ToS and Privacy Policy.";
-"Sign up with Email" = "Sign up with Email";
-"Sign up with Facebook" = "Sign up with Facebook";
-"Create an account and join the community." = "Create an account and join the community.";
-"Create a username and introduce yourself to the community." = "Create a username and introduce yourself to the community.";
-"Add photo" = "Add photo";
-"Add your profile picture." = "Add your profile picture.";
+"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "Wir freuen uns riesig, dich in unserer Community zu haben! Erstelle ein Konto, und du kannst Dinge kreieren, veröffentlichen und teilen!";
+"Follow content from other fans." = "Folge den Inhalten anderer Fans.";
+"Share creations with the community." = "Teile Kreationen mit der Community.";
+"Join in on the conversation." = "Nimm an Diskussionen teil.";
+"terms of service" = "terms of service";
+"privacy policy." = "privacy policy.";
+"Sign up with Email" = "Per E-Mail registrieren";
+"Sign up with Facebook" = "Über Facebook registrieren";
+"Create an account and join the community." = "Erstelle ein Konto und tritt der Community bei.";
+"Create a username and introduce yourself to the community." = "Erstelle einen Benutzernamen und stelle dich der Community vor.";
+"Add photo" = "Foto hinzufügen";
+"Add your profile picture." = "Füge ein Profilbild hinzu.";
