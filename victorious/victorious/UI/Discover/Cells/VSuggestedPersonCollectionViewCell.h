@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) VUser *user;
 
+- (void)populateData;
 - (void)setUser:(VUser *)user
        animated:(BOOL)animated;
 
