@@ -16,7 +16,7 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
-#define FORCE_DEEPLINK 0
+#define FORCE_DEEPLINK 1
 
 @interface VDeeplinkReceiver()
 
@@ -142,12 +142,15 @@
         
         if ( destinationViewController != nil )
         {
+            // Re-order the navigation stack that we'll be executing as part of the deep link
             NSMutableOrderedSet *completeNavigationStack = [NSMutableOrderedSet orderedSetWithSet:navigationStack.reversedOrderedSet.set];
             [completeNavigationStack addObject:destinationViewController];
             
             id parentDestination = nil;
             for ( id destination in completeNavigationStack )
             {
+                // If an item in here is a multiple container, instead of using `navigateToDestination:`,
+                // we want to the destination as the seleted child in its parent multiple container
                 if ( [parentDestination conformsToProtocol:@protocol(VMultipleContainer)] )
                 {
                     id<VMultipleContainer> multipleContainer = parentDestination;
