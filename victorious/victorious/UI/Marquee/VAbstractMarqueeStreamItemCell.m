@@ -14,7 +14,7 @@
 #import "UIView+AutoLayout.h"
 #import "VStreamItemPreviewView.h"
 
-@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, VStreamCellComponentSpecialization>
+@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods>
 
 @end
 
@@ -48,7 +48,10 @@
     
     if ( [self.previewView canHandleStreamItem:streamItem] )
     {
-        [self.previewView setStreamItem:streamItem];
+        if ( ![streamItem isEqual:self.previewView.streamItem] )
+        {
+            [self.previewView setStreamItem:streamItem];
+        }
         return;
     }
     

@@ -49,7 +49,7 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.5f;
 
 - (void)setUrl:(NSURL *)url
 {
-    if ( _url != nil && [_url isEqual:url] )
+    if ( url == nil || [_url isEqual:url] )
     {
         // Don't reload the same URL
         return;
