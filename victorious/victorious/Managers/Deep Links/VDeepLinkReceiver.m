@@ -167,7 +167,7 @@
 }
 
 - (id<VDeeplinkSupporter>)deepLinkSupporterWithHandlerForURL:(NSURL *)url
-                                             navigationStack:(id *)navigationStack
+                                             navigationStack:(NSMutableOrderedSet **)navigationStack
                                 fromRecursiveSearchInObjects:(NSArray *)objects
 {
     for ( id object in objects )
@@ -191,7 +191,7 @@
             id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
             if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
             {
-                [(*navigationStack) addObject:navigationDestination];
+                [*navigationStack addObject:navigationDestination];
                 return supporter;
             }
         }
@@ -206,7 +206,7 @@
             id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
             if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
             {
-                [(*navigationStack) addObject:multipleContainer];
+                [*navigationStack addObject:multipleContainer];
                 return supporter;
             }
         }
