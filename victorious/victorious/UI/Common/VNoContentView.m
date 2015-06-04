@@ -9,13 +9,16 @@
 #import "VNoContentView.h"
 #import "VDependencyManager.h"
 
-CGFloat const kPaddingTop = 96.0f;
-CGFloat const kImageHeight = 53.0f;
-CGFloat const kVerticleSpace1 = 40.0f;
-CGFloat const kVerticleSpace2 = 20.0f;
-CGFloat const kPaddingBottom = 40.0f;
-CGFloat const kPreferredWidthOfMessage = 190.0f;
+// Should match constraints from xib
+static CGFloat const kPaddingTop = 96.0f;
+static CGFloat const kImageHeight = 53.0f;
+static CGFloat const kIconToTitleSpace = 40.0f;
+static CGFloat const kTitleToMessageSpace = 20.0f;
+static CGFloat const kPaddingBottom = 50.0f;
+static CGFloat const kPreferredWidthOfMessage = 190.0f;
 
+static NSString * const kTitleFontKey = @"font.heading1";
+static NSString * const kMessageFontKey = @"font.heading4";
 
 @interface VNoContentView ()
 
@@ -45,8 +48,8 @@ CGFloat const kPreferredWidthOfMessage = 190.0f;
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
-        self.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
-        self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+        self.titleLabel.font = [dependencyManager fontForKey:kTitleFontKey];
+        self.messageLabel.font = [dependencyManager fontForKey:kMessageFontKey];
         self.titleLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.messageLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.iconImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
@@ -87,18 +90,28 @@ CGFloat const kPreferredWidthOfMessage = 190.0f;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds withTitleString:(NSString *)titleString withMessageString:(NSString *)messageString withDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSAssert( dependencyManager != nil, @"dependency manager was not set");
+    
     CGSize size = CGSizeZero;
-    UIFont *titleFont = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
-    UIFont *messageFont = [dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
-    CGRect frameTitle = [titleString boundingRectWithSize:CGSizeMake(kPreferredWidthOfMessage, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:titleFont } context:nil];
-    CGFloat titleHeight = CGRectGetHeight(frameTitle);
-    CGRect frameMessage = [messageString boundingRectWithSize:CGSizeMake(kPreferredWidthOfMessage, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:messageFont } context:nil];
-    CGFloat messageHeight = CGRectGetHeight(frameMessage);
     
-    CGFloat totalHeight = kPaddingTop + kPaddingBottom + kImageHeight + kVerticleSpace1 + kVerticleSpace2 + titleHeight + messageHeight;
-    
-    size = CGSizeMake(CGRectGetWidth(bounds), totalHeight);
-    
+    if ( dependencyManager != nil )
+    {
+        UIFont *titleFont = [dependencyManager fontForKey:kTitleFontKey];
+        UIFont *messageFont = [dependencyManager fontForKey:kMessageFontKey];
+        CGRect frameTitle = [titleString boundingRectWithSize:CGSizeMake(kPreferredWidthOfMessage, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:titleFont } context:nil];
+        CGFloat titleHeight = CGRectGetHeight(frameTitle);
+        CGRect frameMessage = [messageString boundingRectWithSize:CGSizeMake(kPreferredWidthOfMessage, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:messageFont } context:nil];
+        CGFloat messageHeight = CGRectGetHeight(frameMessage);
+        
+        CGFloat totalHeight = kPaddingTop + kPaddingBottom + kImageHeight + kIconToTitleSpace + kTitleToMessageSpace + titleHeight + messageHeight;
+        
+        size = CGSizeMake(CGRectGetWidth(bounds), totalHeight);
+    }
+    else
+    {
+        size = CGSizeMake(CGRectGetWidth(bounds), 400);
+    }
+
     return size;
 }
 
