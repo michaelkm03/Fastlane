@@ -21,7 +21,7 @@ typedef NS_OPTIONS(NSInteger, VPermission)
     VPermissionCanFlagSequence  = 1 << 7,
     VPermissionCanMeme          = 1 << 8,
     VPermissionCanGif           = 1 << 9,
-    VPermissionCanShare         = 1 << 10,
+    VPermissionCanQuote         = 1 << 10,
 };
 
 @interface VPermissions()
@@ -87,9 +87,9 @@ typedef NS_OPTIONS(NSInteger, VPermission)
     return self.integerValue & VPermissionCanGif;
 }
 
-- (BOOL)canShare
+- (BOOL)canQuote
 {
-    return self.integerValue & VPermissionCanShare;
+    return self.integerValue & VPermissionCanQuote;
 }
 
 @end

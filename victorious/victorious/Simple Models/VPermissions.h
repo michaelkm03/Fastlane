@@ -22,6 +22,6 @@
 @property (nonatomic, readonly) BOOL canRepost;
 @property (nonatomic, readonly) BOOL canMeme;
 @property (nonatomic, readonly) BOOL canGIF;
-@property (nonatomic, readonly) BOOL canShare;
+@property (nonatomic, readonly) BOOL canQuote;
 
 @end

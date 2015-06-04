@@ -92,10 +92,11 @@
     {
         [actions addObject:[self actionForRespost]];
     }
-    if ( sequence.endCard.permissions.canShare )
+#warning SHARE?
+    /*if ( sequence.endCard.permissions.canShare )
     {
         [actions addObject:[self actionForShare]];
-    }
+    }*/
     if ( sequence.endCard.permissions.canMeme )
     {
         [actions addObject:[self actionForMeme]];
@@ -148,17 +149,15 @@
 {
     VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
     endCardModel.videoTitle = sequence.sequenceDescription;
-    endCardModel.nextSequenceId = nil;
-    endCardModel.nextVideoTitle = nil;
-    endCardModel.nextVideoThumbailImageURL = nil;
+    endCardModel.nextSequenceId = sequence.remoteId;
+    endCardModel.nextVideoTitle = sequence.name;
+    endCardModel.nextVideoThumbailImageURL = sequence.previewImageUrl;
     endCardModel.streamName = sequence.endCard.streamName ?: @"";
-    endCardModel.videoAuthorName = nil;
-    endCardModel.videoAuthorProfileImageURL = nil;
+    endCardModel.videoAuthorName = sequence.user.name;
+    endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:sequence.user.pictureUrl];
     endCardModel.countdownDuration = 10;
     endCardModel.dependencyManager = self.dependencyManager;
-    NSMutableArray *actions = [[NSMutableArray alloc] init];
     endCardModel.actions = [self createActionsWithSequence:sequence];
-    
     return endCardModel;
 }
 
