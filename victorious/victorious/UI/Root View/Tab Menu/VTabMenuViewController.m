@@ -184,16 +184,19 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     
     if (self.willSelectContainerViewController != nil)
     {
-        if (self.willSelectContainerViewController.containedViewController == nil)
+        VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+        if ( ![navigationController.innerNavigationController.viewControllers containsObject:viewController] )
         {
-            VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-            [navigationController.innerNavigationController pushViewController:viewController
-                                                                      animated:NO];
-            [self.willSelectContainerViewController setContainedViewController:navigationController];
+            if (self.willSelectContainerViewController.containedViewController == nil)
+            {
+                [navigationController.innerNavigationController pushViewController:viewController
+                                                                          animated:NO];
+                [self.willSelectContainerViewController setContainedViewController:navigationController];
+            }
+            [self.internalTabBarViewController setSelectedViewController:self.willSelectContainerViewController];
+            [self setNeedsStatusBarAppearanceUpdate];
+            self.willSelectContainerViewController = nil;
         }
-        [self.internalTabBarViewController setSelectedViewController:self.willSelectContainerViewController];
-        [self setNeedsStatusBarAppearanceUpdate];
-        self.willSelectContainerViewController = nil;
     }
     else if ( [self.internalTabBarViewController.selectedViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
     {
@@ -201,7 +204,10 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         if ( [containerViewController.containedViewController isKindOfClass:[VNavigationController class]] )
         {
             VNavigationController *navigationController = (VNavigationController *)containerViewController.containedViewController;
-            [navigationController.innerNavigationController pushViewController:viewController animated:YES];
+            if ( ![navigationController.innerNavigationController.viewControllers containsObject:viewController] )
+            {
+                [navigationController.innerNavigationController pushViewController:viewController animated:YES];
+            }
         }
     }
 }
