@@ -10,7 +10,6 @@
 #import <UIKit/UIKit.h>
 #import "VAuthorizationContextProvider.h"
 #import "VInitialViewController.h"
-#import "VDeepLinkHandler.h"
 
 /**
  *  Similar to a UITabBarController, except the tab bar
@@ -19,7 +18,7 @@
  *  Forwards VAuthorizationContextProvider methods to the
  *  currently selected viewController.
  */
-@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider, VInitialViewController, VDeeplinkSupporter>
+@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider, VInitialViewController>
 
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The view controllers to be displayed
 @property (nonatomic, assign) BOOL isInitialViewController;
