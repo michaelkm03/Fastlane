@@ -13,7 +13,7 @@
 #import "VUser.h"
 #import "VEndCardActionModel.h"
 
-#define FORCE_SHOW_DEBUG_END_CARD 0
+#define FORCE_SHOW_DEBUG_END_CARD 1
 
 @interface VEndCardModelBuilder()
 

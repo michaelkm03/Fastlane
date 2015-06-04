@@ -17,11 +17,11 @@ typedef NS_OPTIONS(NSInteger, VPermission)
     VPermissionCanComment       = 1 << 3,
     VPermissionCanRepost        = 1 << 4,
     VPermissionCanEditComment   = 1 << 5,
-    VPermissionCanDeletecomment = 1 << 6,
+    VPermissionCanDeleteComment = 1 << 6,
     VPermissionCanFlagSequence  = 1 << 7,
     VPermissionCanMeme          = 1 << 8,
     VPermissionCanGif           = 1 << 9,
-    VPermissionCanShare         = 1 << 9,
+    VPermissionCanShare         = 1 << 10,
 };
 
 @interface VPermissions()
