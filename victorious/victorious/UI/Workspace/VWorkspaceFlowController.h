@@ -58,6 +58,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerContext)
 {
     VWorkspaceFlowControllerContextProfileImage,
+    VWorkspaceFlowControllerContextProfileImageRegistration,
     VWorkspaceFlowControllerContextContentCreation,
 };
 

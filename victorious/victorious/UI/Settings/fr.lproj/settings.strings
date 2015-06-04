@@ -34,6 +34,9 @@
 /* Class = "UITextField"; placeholder = "New Password"; ObjectID = "FC0-A4-y0n"; */
 "FC0-A4-y0n.placeholder" = "Nouveau mot de passe";
 
+/* Class = "UILabel"; text = "Reset Coachmarks"; ObjectID = "FNb-Ni-uJN"; */
+"FNb-Ni-uJN.text" = "Réinitialiser les astuces";
+
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "Confirmer le mot de passe";
 

@@ -68,7 +68,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                        };
-    self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:prompt
+    self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(prompt, nil)
                                                                       attributes:promptAttributes];
     
     NSDictionary *textFieldAttributes = @{
