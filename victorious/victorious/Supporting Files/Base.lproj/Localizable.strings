@@ -361,6 +361,7 @@
 "Please check your network connection or try again later." = "Please check your network connection or try again later.";
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
+"An email was sent to this address containing reset password instructions." = "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
 "Resend Email"           =   "Resend Email";
 
