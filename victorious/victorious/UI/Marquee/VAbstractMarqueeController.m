@@ -179,7 +179,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     VStreamItem *item = [self.stream.marqueeItems objectAtIndex:indexPath.row];
     VAbstractMarqueeStreamItemCell *cell;
     Class marqueeStreamItemCellClass = [[self class] marqueeStreamItemCellClass];
-    
+    NSAssert([marqueeStreamItemCellClass isSubclassOfClass:[VAbstractMarqueeStreamItemCell class]], @"Class returned from marqueeStreamItemCellClass must be a subclass of VAbstractMarqueeStreamItemCell");
+
     NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil];
     
     if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
