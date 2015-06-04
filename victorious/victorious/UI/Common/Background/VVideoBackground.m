@@ -51,7 +51,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
              }
                                                     failBlock:^(NSOperation *operation, NSError *error)
              {
-                 self.videoView.backgroundColor = [UIColor purpleColor];
+                 self.videoView.backgroundColor = [UIColor blackColor];
              }];
         }
     }
