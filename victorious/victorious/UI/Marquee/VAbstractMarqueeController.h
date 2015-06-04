@@ -12,7 +12,7 @@
 
 extern NSString * const kMarqueeURLKey;
 
-@class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell;
+@class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell, VAbstractMarqueeStreamItemCell;
 
 /**
     A controller responsible for managing the content offset of the collection view, updating the collection view when marquee content changes,
@@ -45,12 +45,7 @@ extern NSString * const kMarqueeURLKey;
     Sends -registerClass:forCellWithReuseIdentifier: and -registerNib:forCellWithReuseIdentifier:
         messages to the collection view. Should be called as soon as the collection view is initialized.
  */
-- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
-
-/**
-    Returns a configured marquee cell. This MUST be overridden by subclasses
- */
-- (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
+- (void)registerStreamItemCellsWithCollectionView:(UICollectionView *)collectionView forMarqueeItems:(NSArray *)marqueeItems;
 
 /**
     Invalidates the auto-scrolling timer
@@ -83,14 +78,17 @@ extern NSString * const kMarqueeURLKey;
 - (void)scrolledToPage:(NSInteger)currentPage;
 
 /**
-    Overridden by subclasses to provide the reuse identifier that will be used to register cells
-        with the collection view managed by this marquee controller. In most instances, subclasses
-        should just return the reuseIdentifier of their associated VAbstractMarqueeStreamItemmCell subclass
- 
-    @return An NSString representing the reuse identifier of cells that will be registered with the
-        collection view managed by this marquee controller.
+ Spot for subclasses to override to respond to changes in marquee content, will be called after changes to the "marqueeItems" array associated with our stream
  */
-- (NSString *)cellSuggestedReuseIdentifier;
+- (void)marqueeItemsUpdated;
+
+#pragma mark - Abstract methods
+
+/**
+    Overridden by subclasses to provide a fully configured marquee cell for use in the provided collectionView.
+    This should use the same reuse identifier
+ */
+- (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
 
 /**
     Overridden by subclasses to surface the desired size for the collection view that this marquee controller manages.
@@ -102,8 +100,29 @@ extern NSString * const kMarqueeURLKey;
 - (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
 
 /**
-    Spot for subclasses to override to respond to changes in marquee content, will be called after changes to the "marqueeItems" array associated with our stream
+    Overridden by subclasses to register the proper VAbstractMarqueeCollectionViewCell subclass with the provided collectionView.
  */
-- (void)marqueeItemsUpdated;
+- (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView;
+
+/**
+    Overridden by subclasses to provide the dependency manager and stream item to the provided cell as necessary.
+    Most cases will simply use the following implementation:
+
+    - (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
+    {
+        streamItemCell.dependencyManager = dependencyManager;
+        streamItemCell.streamItem = streamItem;
+    }
+ 
+    @param streamItemCell The stream item cell that should be populated with the provided dependency manager and stream item.
+    @param dependencyManager The dependency manager that should be used to style the cell.
+    @param streamItem The stream item whose content should populate the streamItemCell.
+ */
+- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem;
+
+/**
+    Overridden by subclasses to provide an appropriate subclass of VAbstractMarqueeStreamItemCell whose reuse will be managed by this class.
+ */
++ (Class)marqueeStreamItemCellClass;
 
 @end

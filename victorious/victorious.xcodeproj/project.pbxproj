@@ -4393,8 +4393,8 @@
 			isa = PBXGroup;
 			children = (
 				A73A877B1A76BD71008C6355 /* VStreamWebViewController.h */,
-				A74679691AFC3318005EB1D9 /* VWebBrowserLayout.h */,
 				A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */,
+				A74679691AFC3318005EB1D9 /* VWebBrowserLayout.h */,
 				A769C3D91A13176700698D0C /* VWebBrowserActions.h */,
 				A769C3DA1A13176700698D0C /* VWebBrowserActions.m */,
 				A746795D1AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.h */,
