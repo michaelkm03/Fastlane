@@ -109,6 +109,12 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  navigation, see -navigateToDestination:completion:)
  
  Subclasses MUST override. The base implementation does nothing.
+ 
+ @param viewController The view controller to display as part of the scaffold's navgiation
+ @param animated Whether subsequent navigation actions should be animated.  This will be propagated
+ through to any navitgations that occur, and should be respected by subcomponents where appropriate for
+ any built-in navigations ('presentViewController:animated:completion:` and `pushViewController:animated:`),
+ as well as anything custom.
  */
 - (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated;
 
