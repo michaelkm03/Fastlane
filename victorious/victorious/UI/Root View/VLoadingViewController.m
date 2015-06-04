@@ -216,6 +216,21 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+        NSArray *screens = [templateDecorator templateValueForKeyPath:[[templateDecorator keyPathsForKey:@"screens"] firstObject]];
+        
+        NSMutableArray *mutableScreensArray = [screens mutableCopy];
+        for (NSDictionary *dict in screens)
+        {
+            if ([dict[@"name"] isEqualToString:@"followingStream.screen"])
+            {
+                NSMutableDictionary *mutableDict = [dict mutableCopy];
+                mutableDict[@"hasHeaderParallax"] = [NSNumber numberWithBool:YES];
+                mutableScreensArray[[screens indexOfObject:dict]] = mutableDict;
+            }
+        }
+        
+        [templateDecorator setTemplateValue:mutableScreensArray forKeyPath:[[templateDecorator keyPathsForKey:@"screens"] firstObject]];
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
