@@ -52,7 +52,7 @@ static const CGFloat kShadowOpacity = 0.4f;
         return;
     }
     
-    if ( ![self.previewView isEqual:previewView] )
+    if ( ![self.previewView.streamItem isEqual:previewView.streamItem] )
     {
         [self.previewView removeFromSuperview];
         self.previewView = previewView;

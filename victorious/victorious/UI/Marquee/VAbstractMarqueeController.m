@@ -29,6 +29,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @property (nonatomic, readwrite) NSUInteger currentPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
 @property (nonatomic, readwrite) VStreamItem *currentStreamItem;
+@property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
 
 @end
 
@@ -40,6 +41,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _registeredReuseIdentifiers = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -51,11 +53,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         _collectionView.delegate = nil;
     }
     [_autoScrollTimerManager invalidate];
-}
-
-- (NSString *)cellSuggestedReuseIdentifier
-{
-    return [VAbstractMarqueeStreamItemCell suggestedReuseIdentifier];
 }
 
 #pragma mark - stream updating
@@ -90,6 +87,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)marqueeItemsUpdated
 {
     [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
+    [self registerStreamItemCellsWithCollectionView:self.collectionView forMarqueeItems:[self.stream.marqueeItems array]];
     [self.collectionView reloadData];
 }
 
@@ -180,8 +178,19 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     VStreamItem *item = [self.stream.marqueeItems objectAtIndex:indexPath.row];
     VAbstractMarqueeStreamItemCell *cell;
+    Class marqueeStreamItemCellClass = [[self class] marqueeStreamItemCellClass];
+    NSAssert([marqueeStreamItemCellClass isSubclassOfClass:[VAbstractMarqueeStreamItemCell class]], @"Class returned from marqueeStreamItemCellClass must be a subclass of VAbstractMarqueeStreamItemCell");
+
+    NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil];
     
-    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[self cellSuggestedReuseIdentifier] forIndexPath:indexPath];
+    if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
+    {
+        [collectionView registerClass:marqueeStreamItemCellClass
+           forCellWithReuseIdentifier:reuseIdentifierForSequence];
+        [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
+    }
+    
+    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.streamItem = item;
     
@@ -191,6 +200,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)setCollectionView:(UICollectionView *)collectionView
 {
     _collectionView = collectionView;
+    [self registerStreamItemCellsWithCollectionView:collectionView forMarqueeItems:[self.stream.marqueeItems array]];
     collectionView.delegate = self;
     collectionView.dataSource = self;
     ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset = UIEdgeInsetsZero;
@@ -205,14 +215,38 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     }
 }
 
-- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
+- (void)registerStreamItemCellsWithCollectionView:(UICollectionView *)collectionView forMarqueeItems:(NSArray *)marqueeItems
 {
-    NSAssert(false, @"registerCellsWithCollectionView: must be implemented by subclasses of VAbstractMarqueeCellFactory");
+    if ( collectionView == nil || marqueeItems == nil )
+    {
+        return;
+    }
+    
+    Class marqueeStreamItemCellClass = [[self class] marqueeStreamItemCellClass];
+    NSAssert([marqueeStreamItemCellClass isSubclassOfClass:[VAbstractMarqueeStreamItemCell class]], @"Class returned from marqueeStreamItemCellClass must be a subclass of VAbstractMarqueeStreamItemCell");
+    for (VStreamItem *marqueeItem in marqueeItems)
+    {
+        NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:marqueeItem
+                                                                                         baseIdentifier:nil];
+        
+        if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
+        {
+            UINib *nib = [marqueeStreamItemCellClass nibForCell];
+            [collectionView registerNib:nib
+             forCellWithReuseIdentifier:reuseIdentifierForSequence];
+            [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
+        }
+    }
+}
+
+- (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView
+{
+    NSAssert(false, @"registerCollectionViewCellWithCollectionView: must be implemented by subclasses of VAbstractMarqueeController");
 }
 
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
-    NSAssert(false, @"marqueeCellForCollectionView:atIndexPath: must be implemented by subclasses of VAbstractMarqueeCellFactory");
+    NSAssert(false, @"marqueeCellForCollectionView:atIndexPath: must be implemented by subclasses of VAbstractMarqueeController");
     return nil;
 }
 
@@ -220,6 +254,17 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     NSAssert(false, @"Subclasses must override desiredSizeWithCollectionViewBounds: in VAbstractMarqueeController");
     return CGSizeZero;
+}
+
+- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
+{
+    NSAssert(false, @"Subclasses must override setupStreamItemCell:withDependencyManager:andStreamItem: in VAbstractMarqueeController");
+}
+
++ (Class)marqueeStreamItemCellClass
+{
+    NSAssert(false, @"Subclasses must override marqueeStreamItemCellClass in VAbstractMarqueeController");
+    return [VAbstractMarqueeStreamItemCell class];
 }
 
 @end
