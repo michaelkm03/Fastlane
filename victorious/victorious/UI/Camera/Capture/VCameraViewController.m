@@ -403,7 +403,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
          {
              self.userDeniedPermissionsPrePrompt = YES;
              self.state = VCameraViewControllerStatePermissionDenied;
-             if (state == VPermissionStatePromptDenied && (initialContext == VWorkspaceFlowControllerContextProfileImage))
+             if (state == VPermissionStatePromptDenied && (initialContext == VWorkspaceFlowControllerContextProfileImageRegistration))
              {
                  if (self.completionBlock)
                  {
