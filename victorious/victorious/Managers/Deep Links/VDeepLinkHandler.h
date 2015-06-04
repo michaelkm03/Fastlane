@@ -13,7 +13,7 @@
 
 /**
  Conformers of this protocol are indicating they provide deep link support by implementing
- the `deepLinkHandlerForURL:` methopd, returning a `VDeeplinkHanlder` object that is dedicated to
+ the `deepLinkHandlerForURL:` method, returning a `VDeeplinkHandler` object that is dedicated to
  validating and responding to deep link URLs.
  */
 @protocol VDeeplinkSupporter <NSObject>
