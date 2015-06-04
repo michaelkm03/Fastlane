@@ -71,7 +71,7 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                        };
     
-    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:prompt
+    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(prompt, nil)
                                                                                          attributes:promptAttributes];
 
     self.promptLabel.attributedText = attributedPrompt;
