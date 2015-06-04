@@ -96,14 +96,15 @@
     id<VDeeplinkSupporter> supporter = [self deepLinkSupporterWithHandlerForURL:url
                                                                 parentContainer:&parentContainer
                                                    fromRecursiveSearchInObjects:possibleDeeplinkSupporters];
-    if ( supporter != nil && supporter.deepLinkHandler != nil )
+    id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
+    if ( supporter != nil && handler != nil )
     {
-        if ( supporter.deepLinkHandler.requiresAuthorization )
+        if ( handler.requiresAuthorization )
         {
             VAuthorizationContext context = VAuthorizationContextDefault;
-            if ( [supporter.deepLinkHandler respondsToSelector:@selector(authorizationContext)] )
+            if ( [handler respondsToSelector:@selector(authorizationContext)] )
             {
-                context = supporter.deepLinkHandler.authorizationContext;
+                context = handler.authorizationContext;
             }
             typeof(self) __weak welf = self;
             [self.authorizedAction performFromViewController:self.scaffold context:context completion:^(BOOL authorized)
@@ -145,7 +146,9 @@
             [self.scaffold navigateToDestination:destinationViewController];
         }
     };
-    [supporter.deepLinkHandler displayContentForDeeplinkURL:url completion:completion];
+    
+    id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
+    [handler displayContentForDeeplinkURL:url completion:completion];
 }
 
 - (id<VDeeplinkSupporter>)deepLinkSupporterWithHandlerForURL:(NSURL *)url
@@ -161,7 +164,7 @@
             id<VDeeplinkSupporter> supporter = [self deepLinkSupporterWithHandlerForURL:url
                                                                         parentContainer:parentContainer
                                                            fromRecursiveSearchInObjects:multipleContainer.children];
-            id<VDeeplinkHandler> handler = supporter.deepLinkHandler;
+            id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
             if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
             {
                 *parentContainer = multipleContainer;
@@ -175,7 +178,7 @@
             id<VDeeplinkSupporter> supporter = (id<VDeeplinkSupporter>)object;
             if ( [supporter conformsToProtocol:@protocol(VDeeplinkSupporter)] )
             {
-                id<VDeeplinkHandler> handler = supporter.deepLinkHandler;
+                id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
                 if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
                 {
                     return supporter;

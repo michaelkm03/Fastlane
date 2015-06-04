@@ -197,9 +197,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return VAuthorizationContextInbox;
 }
 
-#pragma mark -
+#pragma mark - VDeepLinkSupporter
 
-- (id<VDeeplinkHandler>)deepLinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }

@@ -416,4 +416,23 @@ static NSString * const kInitialKey = @"initial";
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
+#pragma mark - VDeepLinkSupporter
+
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
+{
+    for ( id child in self.children )
+    {
+        if ( [child conformsToProtocol:@protocol(VDeeplinkSupporter)] )
+        {
+            id<VDeeplinkSupporter> supporter = child;
+            id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
+            if ( handler != nil )
+            {
+                return handler;
+            }
+        }
+    }
+    return nil;
+}
+
 @end

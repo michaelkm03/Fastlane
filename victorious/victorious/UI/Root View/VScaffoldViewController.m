@@ -229,7 +229,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 #pragma mark - VDeeplinkSupporter
 
-- (id<VDeeplinkHandler>)deepLinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
