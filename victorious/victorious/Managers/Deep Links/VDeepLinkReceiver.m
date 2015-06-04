@@ -155,7 +155,7 @@
                 }
                 else
                 {
-                    [self.scaffold navigateToDestination:destination];
+                    [self.scaffold navigateToDestination:destination animated:NO];
                 }
                 parentDestination = destination;
             }

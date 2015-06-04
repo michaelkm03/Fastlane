@@ -69,6 +69,11 @@
     return YES;
 }
 
+- (UIViewController *)alternateViewController
+{
+    return self.profileViewController;
+}
+
 #pragma mark - VDeepLinkSupporter methods
 
 - (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url

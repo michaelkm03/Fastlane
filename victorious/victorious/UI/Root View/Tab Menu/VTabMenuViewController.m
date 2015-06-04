@@ -95,7 +95,7 @@ NSString * const kMenuKey = @"menu";
         {
             [(UIViewController <VInitialViewController> *)initialVC setIsInitialViewController:YES];
         }
-        [self displayResultOfNavigation:initialVC];
+        [self displayResultOfNavigation:initialVC animated:YES];
     }
 }
 
@@ -156,13 +156,13 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     }
     
     self.willSelectContainerViewController = viewController;
-    [self navigateToDestination:viewController.navigationDestination];
+    [self navigateToDestination:viewController.navigationDestination animated:YES];
     return NO;
 }
 
 #pragma mark - VScaffoldViewController Overrides
 
-- (void)displayResultOfNavigation:(UIViewController *)viewController
+- (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated
 {
     if ( self.presentedViewController != nil )
     {
@@ -173,11 +173,21 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     {
         for ( VNavigationDestinationContainerViewController *containerViewController in self.internalTabBarViewController.viewControllers )
         {
-            if ( [containerViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] &&
-                 (id)containerViewController.navigationDestination == viewController)
+            if ( [containerViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
             {
-                self.willSelectContainerViewController = containerViewController;
-                break;
+                const BOOL isViewControllerTabDestination = containerViewController.navigationDestination == (id<VNavigationDestination>)viewController;
+                if ( isViewControllerTabDestination )
+                {
+                    self.willSelectContainerViewController = containerViewController;
+                    break;
+                }
+                
+                const BOOL isAlternateViewControllerTabDestination  = [containerViewController.navigationDestination respondsToSelector:@selector(alternateViewController)] && viewController == [containerViewController.navigationDestination alternateViewController] ;
+                if ( isAlternateViewControllerTabDestination )
+                {
+                    self.willSelectContainerViewController = containerViewController;
+                    break;
+                }
             }
         }
     }
@@ -189,8 +199,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         {
             if (self.willSelectContainerViewController.containedViewController == nil)
             {
-                [navigationController.innerNavigationController pushViewController:viewController
-                                                                          animated:NO];
+                [navigationController.innerNavigationController pushViewController:viewController animated:NO];
                 [self.willSelectContainerViewController setContainedViewController:navigationController];
             }
             [self.internalTabBarViewController setSelectedViewController:self.willSelectContainerViewController];
@@ -206,7 +215,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
             VNavigationController *navigationController = (VNavigationController *)containerViewController.containedViewController;
             if ( ![navigationController.innerNavigationController.viewControllers containsObject:viewController] )
             {
-                [navigationController.innerNavigationController pushViewController:viewController animated:YES];
+                [navigationController.innerNavigationController pushViewController:viewController animated:animated];
             }
         }
     }
