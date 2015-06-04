@@ -58,7 +58,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                        };
-    self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:prompt
+    self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(prompt, @"")
                                                                       attributes:promptAttributes];
     self.enterCodeLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Code", nil)
                                                                          attributes:promptAttributes];
