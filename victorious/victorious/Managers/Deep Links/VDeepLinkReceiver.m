@@ -13,7 +13,7 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDeeplinkHandler.h"
 
-#define FORCE_DEEPLINK 0
+#define FORCE_DEEPLINK 1
 
 @interface VDeeplinkReceiver()
 
@@ -128,6 +128,7 @@
 
 - (void)executeDeeplinkWithURL:(NSURL *)url supporter:(id<VDeeplinkSupporter>)supporter parentContainer:(id<VMultipleContainer>)parentContainer
 {
+    __block typeof(parentContainer) multipleContainer = parentContainer;
     VDeeplinkHandlerCompletionBlock completion = ^( BOOL didSucceed, UIViewController *destinationViewController )
     {
         if ( !didSucceed )
@@ -136,10 +137,22 @@
             return;
         }
         
-        if ( parentContainer != nil )
+        // This is a bit hacky, and should be fixed in some kind of refactor that incorporates both accessory screens and multiple
+        // containers so that a chain of items can be drilled into and selected as if navigated to by a user
+        if ( multipleContainer == nil  && [destinationViewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
         {
-            [self.scaffold navigateToDestination:parentContainer];
-            [parentContainer selectChild:(id<VMultipleContainerChild>)supporter];
+            id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)destinationViewController;
+            id<VMultipleContainerChildDelegate> delegate = child.multipleContainerChildDelegate;
+            if ( [delegate conformsToProtocol:@protocol(VMultipleContainer)] )
+            {
+                multipleContainer = (id<VMultipleContainer>)delegate;
+            }
+        }
+        
+        if ( multipleContainer != nil )
+        {
+            [self.scaffold navigateToDestination:multipleContainer];
+            [multipleContainer selectChild:(id<VMultipleContainerChild>)supporter];
         }
         else if ( destinationViewController != nil )
         {
