@@ -129,14 +129,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                                            attributes:highlightedPlaceholderAttributes];
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
-    NSString *forgotPasswordText = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Forgot your password?", nil), NSLocalizedString(@"Click Here", nil)];
+    NSString *forgotPasswordText = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Forgot your password?", nil), NSLocalizedString(@"Tap Here", nil)];
     NSDictionary *forgotPasswordAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                                NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]};
     NSDictionary *forgotHighlightedAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                                   NSForegroundColorAttributeName: [[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] colorWithAlphaComponent:0.5f]};
     NSMutableAttributedString *mutableForgotPasswordText = [[NSMutableAttributedString alloc] initWithString:forgotPasswordText
                                                                                                   attributes:forgotPasswordAttributes];
-    NSRange clickHereRange = [forgotPasswordText rangeOfString:NSLocalizedString(@"Click Here", nil)];
+    NSRange clickHereRange = [forgotPasswordText rangeOfString:NSLocalizedString(@"Tap Here", nil)];
     [mutableForgotPasswordText addAttribute:CCHLinkAttributeName
                                       value:@"forgotPasswordLink"
                                       range:clickHereRange];

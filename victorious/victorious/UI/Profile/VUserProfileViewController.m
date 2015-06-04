@@ -171,6 +171,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 [self setInitialHeaderState];
             }
         }
+        else
+        {
+            [self reloadUserFollowCounts];
+        }
         
         BOOL hasHeader = self.profileHeaderViewController != nil;
         if ( hasHeader )
@@ -524,8 +528,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.currentStream = [VStream streamForUser:self.user];
     
-    self.title = self.isCurrentUser ? NSLocalizedString( @"me", nil ) : user.name;
-    
     [self updateProfileHeader];
     
     [self attemptToRefreshProfileUI];
@@ -539,6 +541,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         return nil;
     }
+    else if ( !self.isCurrentUser )
+    {
+        return self.user.name;
+    }
+    
     return [super title];
 }
 
