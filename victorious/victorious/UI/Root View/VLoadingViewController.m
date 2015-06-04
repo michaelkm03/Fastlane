@@ -216,14 +216,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSString *discoverKeyPath = @"scaffold/menu/items/0/destination/screens/1";
-        NSDictionary *discoverScreen = [templateDecorator templateValueForKeyPath:discoverKeyPath];
-        NSParameterAssert( [templateDecorator removeTemplateValueForKeyPath:discoverKeyPath] );
-        NSParameterAssert( [templateDecorator setTemplateValue:@{} forKeyPath:@"scaffold/menu/items/1"] );
-        NSParameterAssert( [templateDecorator setTemplateValue:discoverScreen forKeyPath:@"scaffold/menu/items/1/destination"] );
-        NSParameterAssert( [templateDecorator setTemplateValue:@{ @"imageURL" : @"C_store" } forKeyPath:@"scaffold/menu/items/1/icon"] );
-                          NSParameterAssert( [templateDecorator setTemplateValue:@{ @"imageURL" : @"C_store_selected" } forKeyPath:@"scaffold/menu/items/1/selectedIcon"] );
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
