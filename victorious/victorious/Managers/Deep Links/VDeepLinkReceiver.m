@@ -13,7 +13,7 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDeeplinkHandler.h"
 
-#define FORCE_DEEPLINK 1
+#define FORCE_DEEPLINK 0
 
 @interface VDeeplinkReceiver()
 
@@ -135,18 +135,6 @@
         {
             [self showBadDeeplinkError];
             return;
-        }
-        
-        // This is a bit hacky, and should be fixed in some kind of refactor that incorporates both accessory screens and multiple
-        // containers so that a chain of items can be drilled into and selected as if navigated to by a user
-        if ( multipleContainer == nil  && [destinationViewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-        {
-            id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)destinationViewController;
-            id<VMultipleContainerChildDelegate> delegate = child.multipleContainerChildDelegate;
-            if ( [delegate conformsToProtocol:@protocol(VMultipleContainer)] )
-            {
-                multipleContainer = (id<VMultipleContainer>)delegate;
-            }
         }
         
         if ( multipleContainer != nil )
