@@ -46,6 +46,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 @property (nonatomic, strong) NSArray *sectionHeaderTitles;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL loadedUserFollowing;
+@property (nonatomic, assign) BOOL shouldReloadSuggestedUsersOnAppear;
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
 
@@ -101,6 +102,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     if ( self.hasLoadedOnce )
     {
         [self.tableView reloadData];
+        
+        if (self.shouldReloadSuggestedUsersOnAppear)
+        {
+            [self.suggestedPeopleViewController refresh:YES];
+        }
     }
 }
 
@@ -222,6 +228,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)updatedFollowedUsers
 {
     [self.suggestedPeopleViewController updateFollowingStateOfUsers];
+    self.shouldReloadSuggestedUsersOnAppear = YES;
 }
 
 #pragma mark - VDiscoverViewControllerProtocol
