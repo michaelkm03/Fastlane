@@ -79,7 +79,7 @@
 
 - (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerClass:[VFullscreenMarqueeCollectionCell class] forCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]];
+    [collectionView registerNib:[VFullscreenMarqueeCollectionCell nibForCell] forCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]];
 }
 
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath

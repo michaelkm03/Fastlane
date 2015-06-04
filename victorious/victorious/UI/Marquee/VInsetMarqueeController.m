@@ -14,7 +14,7 @@
 
 - (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerClass:[VInsetMarqueeCollectionViewCell class] forCellWithReuseIdentifier:[VInsetMarqueeCollectionViewCell suggestedReuseIdentifier]];
+    [collectionView registerNib:[VInsetMarqueeCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VInsetMarqueeCollectionViewCell suggestedReuseIdentifier]];
 }
 
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath

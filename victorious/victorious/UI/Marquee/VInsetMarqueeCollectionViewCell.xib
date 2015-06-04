@@ -37,7 +37,7 @@
             <connections>
                 <outlet property="marqueeCollectionView" destination="JCJ-KS-Zfd" id="iQY-SV-RCB"/>
             </connections>
-            <point key="canvasLocation" x="284.5" y="342"/>
+            <point key="canvasLocation" x="284" y="342"/>
         </collectionViewCell>
     </objects>
 </document>
