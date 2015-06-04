@@ -174,10 +174,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
     
     // Makes the comment label clickable
-    [_commentsLabel setUserInteractionEnabled:YES];
-    
-    UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureForCommentLabel:)];
-    [_commentsLabel addGestureRecognizer: tapGesture];
+
     
 }
 
@@ -188,7 +185,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)commentLabelWasTapped
 {
-    NSLog(@"posing notification");
     [[NSNotificationCenter defaultCenter]
      postNotificationName:@"commentButtonWasPressedNotification"
      object:self];
@@ -303,6 +299,21 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     NSAttributedString *commentText = [[self class] attributedCommentTextForSequence:sequence andDependencyManager:self.dependencyManager];
     [self.commentsLabel setAttributedText:commentText];
     self.commentToCaptionBottomConstraint.constant = commentText.length == 0 ? 0.0f : -kTextSeparatorHeight;
+    
+    NSString *noCommentString = NSLocalizedString(@"LeaveAComment", @"");
+    
+    if ([noCommentString isEqualToString:_commentsLabel.text])
+    {
+        [_commentsLabel setUserInteractionEnabled:YES];
+        UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureForCommentLabel:)];
+        [_commentsLabel addGestureRecognizer: tapGesture];
+    }
+    else
+    {
+        // commentLabel button is disabled
+        [_commentsLabel setUserInteractionEnabled:NO];
+        _commentsLabel.textColor = [UIColor darkGrayColor];
+    }
 }
 
 #pragma mark - VBackgroundContainer

@@ -672,7 +672,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)commentButtonWasPressed:(NSNotification *)notification
 {
-    NSLog(@"notification was recieved");
     if ( [[notification name] isEqualToString:@"commentButtonWasPressedNotification"] )
     {
         CGRect visibleRect = (CGRect){.origin = self.collectionView.contentOffset, .size = self.collectionView.bounds.size};
