@@ -15,7 +15,6 @@
 
 static const CGFloat kCornderRadius = 3.0f;
 
-
 @interface VNotAuthorizedProfileCollectionViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *noContentViewContainer;
@@ -32,7 +31,7 @@ static const CGFloat kCornderRadius = 3.0f;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds withTitleString:(NSString *)titleString withMessageString:(NSString *)messageString withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    CGSize size = [VNoContentView desiredSizeWithCollectionViewBounds:bounds withTitleString:titleString withMessageString:messageString withDependencyManager:dependencyManager];
+    CGSize size = [VNoContentView desiredSizeWithCollectionViewBounds:bounds titleString:titleString messageString:messageString andDependencyManager:dependencyManager];
     
     return size;
 }
