@@ -88,9 +88,9 @@ static NSString * const kMessageFontKey = @"font.heading4";
     return self.iconImageView.image;
 }
 
-+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds titleString:(NSString *)titleString messageString:(NSString *)messageString andDependencyManager:(VDependencyManager *)dependencyManager
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds withTitleString:(NSString *)titleString withMessageString:(NSString *)messageString withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSAssert( dependencyManager != nil, @"dependency manager provided to desiredSizeWithCollectionViewBounds: withTitleString: withMessageString: should not be nil");
+    NSAssert( dependencyManager != nil, @"dependency manager was not set");
     
     CGSize size = CGSizeZero;
     
