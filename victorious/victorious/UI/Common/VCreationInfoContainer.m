@@ -401,7 +401,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
         }
         else
         {
-            formattedString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat ;lk jdfs;lkjasdf;lkjl;kajdfskl;jasdfkl;kl;adfsk;ljadfs;jkl;lajks", nil), parentUserString];
+            formattedString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), parentUserString, self.sequence.repostCount];
         }
     }
     
