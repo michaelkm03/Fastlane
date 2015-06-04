@@ -221,7 +221,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)updatedFollowedUsers
 {
-    [self.suggestedPeopleViewController updateFollowingStateOfUsers];
+    [self reloadSection:VDiscoverViewControllerSectionSuggestedPeople];
 }
 
 #pragma mark - VDiscoverViewControllerProtocol
