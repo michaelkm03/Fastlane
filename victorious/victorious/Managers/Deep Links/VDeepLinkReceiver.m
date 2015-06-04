@@ -12,8 +12,11 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VDeeplinkHandler.h"
+#import "VNavigationDestination.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 
-#define FORCE_DEEPLINK 0
+#define FORCE_DEEPLINK 1
 
 @interface VDeeplinkReceiver()
 
@@ -92,9 +95,10 @@
     
     NSArray *possibleDeeplinkSupporters = [[self.scaffold navigationDestinations] arrayByAddingObject:self.scaffold];
     
-    id<VMultipleContainer> parentContainer;
+    NSMutableOrderedSet *navigationStack = [[NSMutableOrderedSet alloc] init];
+    
     id<VDeeplinkSupporter> supporter = [self deepLinkSupporterWithHandlerForURL:url
-                                                                parentContainer:&parentContainer
+                                                                navigationStack:&navigationStack
                                                    fromRecursiveSearchInObjects:possibleDeeplinkSupporters];
     id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
     if ( supporter != nil && handler != nil )
@@ -111,13 +115,13 @@
              {
                  if ( authorized )
                  {
-                     [welf executeDeeplinkWithURL:url supporter:supporter parentContainer:parentContainer];
+                     [welf executeDeeplinkWithURL:url supporter:supporter navigationStack:navigationStack.copy];
                  }
              }];
         }
         else
         {
-            [self executeDeeplinkWithURL:url supporter:supporter parentContainer:parentContainer];
+            [self executeDeeplinkWithURL:url supporter:supporter navigationStack:navigationStack.copy];
         }
     }
     else
@@ -126,9 +130,8 @@
     }
 }
 
-- (void)executeDeeplinkWithURL:(NSURL *)url supporter:(id<VDeeplinkSupporter>)supporter parentContainer:(id<VMultipleContainer>)parentContainer
+- (void)executeDeeplinkWithURL:(NSURL *)url supporter:(id<VDeeplinkSupporter>)supporter navigationStack:(NSOrderedSet *)navigationStack
 {
-    __block typeof(parentContainer) multipleContainer = parentContainer;
     VDeeplinkHandlerCompletionBlock completion = ^( BOOL didSucceed, UIViewController *destinationViewController )
     {
         if ( !didSucceed )
@@ -137,13 +140,17 @@
             return;
         }
         
-        if ( multipleContainer != nil )
+        if ( destinationViewController != nil )
         {
-            [self.scaffold navigateToDestination:multipleContainer];
-            [multipleContainer selectChild:(id<VMultipleContainerChild>)supporter];
-        }
-        else if ( destinationViewController != nil )
-        {
+            for ( id object in navigationStack )
+            {
+                if ( [object conformsToProtocol:@protocol(VMultipleContainer)] )
+                {
+                    id<VMultipleContainer> multipleContainer = object;
+                    [self.scaffold navigateToDestination:multipleContainer];
+                    [multipleContainer selectChild:(id<VMultipleContainerChild>)supporter];
+                }
+            }
             [self.scaffold navigateToDestination:destinationViewController];
         }
     };
@@ -153,22 +160,46 @@
 }
 
 - (id<VDeeplinkSupporter>)deepLinkSupporterWithHandlerForURL:(NSURL *)url
-                                             parentContainer:(id<VMultipleContainer> *)parentContainer
+                                             navigationStack:(id *)navigationStack
                                 fromRecursiveSearchInObjects:(NSArray *)objects
 {
     for ( id object in objects )
     {
+        if ( [object conformsToProtocol:@protocol(VNavigationDestination)] &&
+             [object respondsToSelector:@selector(dependencyManager)] )
+        {
+            // Search accessory items for another deep link handler
+            id<VNavigationDestination> navigationDestination = object;
+            NSMutableArray *destinations = [[NSMutableArray alloc] init];
+            for ( VNavigationMenuItem *menuItem in navigationDestination.dependencyManager.accessoryMenuItems )
+            {
+                if ( menuItem.destination != nil && menuItem.destination != navigationDestination )
+                {
+                    [destinations addObject:menuItem.destination];
+                }
+            }
+            id<VDeeplinkSupporter> supporter = [self deepLinkSupporterWithHandlerForURL:url
+                                                                        navigationStack:navigationStack
+                                                           fromRecursiveSearchInObjects:destinations];
+            id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
+            if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
+            {
+                [(*navigationStack) addObject:navigationDestination];
+                return supporter;
+            }
+        }
+        
         // Check first for conformance among and children of a VMultipleContainer
         if ( [object conformsToProtocol:@protocol(VMultipleContainer)] )
         {
-            id<VMultipleContainer> multipleContainer = (id<VMultipleContainer>)object;
+            id<VMultipleContainer> multipleContainer = object;
             id<VDeeplinkSupporter> supporter = [self deepLinkSupporterWithHandlerForURL:url
-                                                                        parentContainer:parentContainer
+                                                                        navigationStack:navigationStack
                                                            fromRecursiveSearchInObjects:multipleContainer.children];
             id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];
             if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
             {
-                *parentContainer = multipleContainer;
+                [(*navigationStack) addObject:multipleContainer];
                 return supporter;
             }
         }
@@ -176,7 +207,7 @@
         // including a VMultipleContainerViewController who supports deepLinks but whose children do not
         if ( [object conformsToProtocol:@protocol(VDeeplinkSupporter)] )
         {
-            id<VDeeplinkSupporter> supporter = (id<VDeeplinkSupporter>)object;
+            id<VDeeplinkSupporter> supporter = object;
             if ( [supporter conformsToProtocol:@protocol(VDeeplinkSupporter)] )
             {
                 id<VDeeplinkHandler> handler = [supporter deepLinkHandlerForURL:url];

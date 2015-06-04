@@ -870,20 +870,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
-    // Search accessory items for another deep link handler
-    for ( VNavigationMenuItem *menuItem in self.dependencyManager.accessoryMenuItems )
-    {
-        if ( [menuItem.destination conformsToProtocol:@protocol(VDeeplinkSupporter)] )
-        {
-            id<VDeeplinkHandler> handler = [((id<VDeeplinkSupporter>)menuItem.destination) deepLinkHandlerForURL:url];
-            if ( handler != nil && [handler canDisplayContentForDeeplinkURL:url] )
-            {
-                return handler;
-            }
-        }
-    }
-    
-    // If none is found, use the profile deep link handler
     return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
