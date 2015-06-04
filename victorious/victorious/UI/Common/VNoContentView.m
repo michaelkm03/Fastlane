@@ -9,6 +9,14 @@
 #import "VNoContentView.h"
 #import "VDependencyManager.h"
 
+CGFloat const kPaddingTop = 96.0f;
+CGFloat const kImageHeight = 53.0f;
+CGFloat const kVerticleSpace1 = 40.0f;
+CGFloat const kVerticleSpace2 = 20.0f;
+CGFloat const kPaddingBottom = 40.0f;
+CGFloat const kPreferredWidthOfMessage = 190.0f;
+
+
 @interface VNoContentView ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -75,6 +83,23 @@
 - (UIImage *)icon
 {
     return self.iconImageView.image;
+}
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds withTitleString:(NSString *)titleString withMessageString:(NSString *)messageString withDependencyManager:(VDependencyManager *)dependencyManager
+{
+    CGSize size = CGSizeZero;
+    UIFont *titleFont = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    UIFont *messageFont = [dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+    CGRect frameTitle = [titleString boundingRectWithSize:CGSizeMake(kPreferredWidthOfMessage, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:titleFont } context:nil];
+    CGFloat titleHeight = CGRectGetHeight(frameTitle);
+    CGRect frameMessage = [messageString boundingRectWithSize:CGSizeMake(kPreferredWidthOfMessage, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:messageFont } context:nil];
+    CGFloat messageHeight = CGRectGetHeight(frameMessage);
+    
+    CGFloat totalHeight = kPaddingTop + kPaddingBottom + kImageHeight + kVerticleSpace1 + kVerticleSpace2 + titleHeight + messageHeight;
+    
+    size = CGSizeMake(CGRectGetWidth(bounds), totalHeight);
+    
+    return size;
 }
 
 @end

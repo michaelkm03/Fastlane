@@ -15,12 +15,14 @@
 
 static const CGFloat kCornderRadius = 3.0f;
 
+
 @interface VNotAuthorizedProfileCollectionViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *noContentViewContainer;
 @property (weak, nonatomic) VNoContentView *noContentView;
 @property (weak, nonatomic) IBOutlet VButton *loginButton;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (weak, nonatomic) NSString *textTemp;
 
 @end
 
@@ -28,24 +30,29 @@ static const CGFloat kCornderRadius = 3.0f;
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
-+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds withTitleString:(NSString *)titleString withMessageString:(NSString *)messageString withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return CGSizeMake(CGRectGetWidth(bounds), 400.0f);
+    CGSize size = [VNoContentView desiredSizeWithCollectionViewBounds:bounds withTitleString:titleString withMessageString:messageString withDependencyManager:dependencyManager];
+    
+    return size;
 }
 
 #pragma mark - NSObject
 
 - (void)awakeFromNib
 {
+    NSString *messageString = NSLocalizedString(@"ProfileNotLoggedInMessage", @"User is not logged in message.");
+
     VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.noContentViewContainer.bounds];
     noContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.noContentViewContainer addSubview:noContentView];
     [self.noContentViewContainer v_addFitToParentConstraintsToSubview:noContentView];
     noContentView.icon = [[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     noContentView.title = NSLocalizedString(@"You're not logged in!", @"");
-    noContentView.message = NSLocalizedString(@"ProfileNotLoggedInMessage", @"User is not logged in message.");
+    noContentView.message = messageString;
+
     self.noContentView = noContentView;
-    
+ 
     [self.loginButton setStyle:VButtonStylePrimary];
     [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
     
@@ -53,7 +60,7 @@ static const CGFloat kCornderRadius = 3.0f;
     self.noContentViewContainer.layer.masksToBounds = YES;
 }
 
-#pragma mark - VHasMangaedDependencies
+#pragma mark - VHasManagedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {

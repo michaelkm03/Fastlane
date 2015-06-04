@@ -676,7 +676,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
-        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+        NSString *messageString = NSLocalizedString(@"ProfileNotLoggedInMessage", @"User is not logged in message.");
+        NSString *titleString = NSLocalizedString(@"You're not logged in!", @"");
+        
+        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds withTitleString:titleString withMessageString:messageString withDependencyManager:self.dependencyManager];
     }
     else if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {

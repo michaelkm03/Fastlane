@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
+extern float const kPaddingTop;
+extern float const kImageHeight;
+extern float const kVerticleSpace1;
+extern float const kVerticleSpace2;
+extern float const kPaddingBottom;
+
+extern float const kPreferredWidthOfMessage;
+
 @interface VNoContentView : UIView <VHasManagedDependencies>
 
 /**
@@ -30,5 +38,7 @@
  *  An icon to display about the missing content.
  */
 @property (nonatomic, strong) UIImage *icon;
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds withTitleString:(NSString *)titleString withMessageString:(NSString *)messageString withDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
