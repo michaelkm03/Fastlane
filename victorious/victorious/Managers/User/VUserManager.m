@@ -51,7 +51,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     {
         case kVLastLoginTypeFacebook:
         {
-            [self loginViaFacebookWithStoredToken:YES onCompletion:completion onError:errorBlock];
+            [self loginViaFacebookWithStoredToken:YES isModern:NO onCompletion:completion onError:errorBlock];
             break;
         }
             
@@ -81,12 +81,26 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     }
 }
 
+- (void)loginViaFacebookModern:(BOOL)isModern
+                  OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                       onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    [self loginViaFacebookWithStoredToken:NO
+                                 isModern:isModern
+                             onCompletion:completion
+                                  onError:errorBlock];
+}
+
 - (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    [self loginViaFacebookWithStoredToken:NO onCompletion:completion onError:errorBlock];
+    [self loginViaFacebookWithStoredToken:NO
+                                 isModern:NO
+                             onCompletion:completion
+                                  onError:errorBlock];
 }
 
 - (void)loginViaFacebookWithStoredToken:(BOOL)stored
+                               isModern:(BOOL)isModern
                            onCompletion:(VUserManagerLoginCompletionBlock)completion
                                 onError:(VUserManagerLoginErrorBlock)errorBlock
 {
@@ -135,9 +149,19 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
         };
-        [[VObjectManager sharedManager] createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
-                                                   SuccessBlock:success
-                                                      failBlock:failed];
+        if (isModern)
+        {
+            [[VObjectManager sharedManager] modernCreateFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                             SuccessBlock:success
+                                                                failBlock:failed];
+        }
+        else
+        {
+            [[VObjectManager sharedManager]  createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                        SuccessBlock:success
+                                                           failBlock:failed];
+            
+        }
     };
     
     void (^failureBlock)() = ^(NSError *error)
