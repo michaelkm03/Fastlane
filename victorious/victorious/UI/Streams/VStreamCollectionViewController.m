@@ -269,10 +269,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentButtonWasPressed:)
-                                                 name:@"commentButtonWasPressedNotification"
-                                               object:nil];
 
     if ( self.streamDataSource.count == 0 )
     {
@@ -307,10 +303,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillDisappear:animated];
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:@"commentButtonWasPressedNotification"
-                                                  object:nil];
 }
 
 - (BOOL)shouldAutorotate
@@ -668,25 +660,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
     [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence streamID:streamId commentId:nil placeHolderImage:previewImage];
-}
-
-- (void)commentButtonWasPressed:(NSNotification *)notification
-{
-    if ( [[notification name] isEqualToString:@"commentButtonWasPressedNotification"] )
-    {
-        CGRect visibleRect = (CGRect){.origin = self.collectionView.contentOffset, .size = self.collectionView.bounds.size};
-        CGPoint visiblePoint = CGPointMake(CGRectGetMidX(visibleRect), CGRectGetMidY(visibleRect));
-        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:visiblePoint];
-        
-        NSAssert(indexPath, @"comment was selected at no index path");
-        
-        if (indexPath)
-        {
-            self.lastSelectedIndexPath = indexPath;
-            VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-            [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
-        }
-    }
 }
 
 #pragma mark - Upload Progress View

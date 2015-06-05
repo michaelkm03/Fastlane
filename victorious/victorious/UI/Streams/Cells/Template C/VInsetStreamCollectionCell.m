@@ -177,18 +177,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
 {
-    [self commentLabelWasTapped];
-}
-
-- (void)commentLabelWasTapped
-{
     UIResponder<VSequenceActionsDelegate> *targetForCommentLabelSelection = [self targetForAction:@selector(willCommentOnSequence:fromView:)
                                                                                        withSender:self];
     if (targetForCommentLabelSelection == nil)
     {
         NSAssert(false, @"We need an object in the responder chain for hash tag selection.!");
     }
-   
+    
     [targetForCommentLabelSelection willCommentOnSequence:self.sequence fromView:self];
 }
 
