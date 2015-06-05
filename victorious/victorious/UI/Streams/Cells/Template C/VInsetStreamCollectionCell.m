@@ -297,9 +297,9 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     [self.commentsLabel setAttributedText:commentText];
     self.commentToCaptionBottomConstraint.constant = commentText.length == 0 ? 0.0f : -kTextSeparatorHeight;
     
-    [_commentsLabel setUserInteractionEnabled:YES];
+    [self.commentsLabel setUserInteractionEnabled:YES];
     UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureForCommentLabel:)];
-    [_commentsLabel addGestureRecognizer: tapGesture];
+    [self.commentsLabel addGestureRecognizer: tapGesture];
 }
 
 #pragma mark - VBackgroundContainer

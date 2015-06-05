@@ -480,7 +480,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-   
     if ( indexPath.section != [self.streamDataSource sectionIndexForContent] )
     {
         return;
