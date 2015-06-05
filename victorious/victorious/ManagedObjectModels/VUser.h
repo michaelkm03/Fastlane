@@ -16,7 +16,7 @@
 @property (nonatomic, retain) NSString * accessLevel;
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
-@property (nonatomic, retain) NSNumber * isFollowing;
+@property (nonatomic, retain) NSNumber * isFollowedByMainUser;
 @property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numberOfFollowers;

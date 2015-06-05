@@ -109,8 +109,8 @@
          {
              return;
          }
-         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-         if ([mainUser.following containsObject:cell.profile])
+         
+         if ( cell.profile.isFollowedByMainUser.boolValue )
          {
              NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
              [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser parameters:params];

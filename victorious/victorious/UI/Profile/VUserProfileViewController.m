@@ -333,19 +333,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ([VObjectManager sharedManager].mainUser)
     {
-        header.loading = YES;
-        [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                     following:self.user
-                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             header.loading = NO;
-             const BOOL isFollowingUser = [resultObjects.firstObject boolValue];
-             header.state = isFollowingUser ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
-         }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-         {
-             header.loading = NO;
-         }];
+        header.state = self.user.isFollowedByMainUser.boolValue ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
     }
     else
     {

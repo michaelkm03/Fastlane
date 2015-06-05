@@ -67,20 +67,6 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 
 #pragma mark - Loading / Filtering / Presenting Data
 
-- (void)loadFollowingForLoggedInUser
-{
-    VSuccessBlock successBlock = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
-    {
-        [self presentLoadedData:resultObjects];
-    };
-
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    [[VObjectManager sharedManager] loadFollowingsForUser:mainUser
-                                                 pageType:VPageTypeFirst
-                                             successBlock:successBlock
-                                                failBlock:nil];
-}
-
 - (void)searchFollowingList:(NSString *)searchText
 {
     [self.searchOperation cancel];
