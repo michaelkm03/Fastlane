@@ -21,7 +21,6 @@ static const CGFloat kCornderRadius = 3.0f;
 @property (weak, nonatomic) VNoContentView *noContentView;
 @property (weak, nonatomic) IBOutlet VButton *loginButton;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (weak, nonatomic) NSString *textTemp;
 
 @end
 
@@ -29,26 +28,42 @@ static const CGFloat kCornderRadius = 3.0f;
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
-+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds withTitleString:(NSString *)titleString withMessageString:(NSString *)messageString withDependencyManager:(VDependencyManager *)dependencyManager
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds andDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSString *titleString = [VNotAuthorizedProfileCollectionViewCell titleString];
+    NSString *messageString = [VNotAuthorizedProfileCollectionViewCell messageString];
+    
     CGSize size = [VNoContentView desiredSizeWithCollectionViewBounds:bounds titleString:titleString messageString:messageString andDependencyManager:dependencyManager];
     
     return size;
+}
+
++ (NSString *)messageString
+{
+    NSString *messageString = NSLocalizedString(@"ProfileNotLoggedInMessage", @"User is not logged in message.");
+    return messageString;
+}
+
++ (NSString *)titleString
+{
+    NSString *titleString = NSLocalizedString(@"You're not logged in!", @"");
+    return titleString;
 }
 
 #pragma mark - NSObject
 
 - (void)awakeFromNib
 {
-    NSString *messageString = NSLocalizedString(@"ProfileNotLoggedInMessage", @"User is not logged in message.");
+    NSString *messageString = [VNotAuthorizedProfileCollectionViewCell messageString];
+    NSString *titleString = [VNotAuthorizedProfileCollectionViewCell titleString];
 
     VNoContentView *noContentView = [VNoContentView noContentViewWithFrame:self.noContentViewContainer.bounds];
     noContentView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.noContentViewContainer addSubview:noContentView];
     [self.noContentViewContainer v_addFitToParentConstraintsToSubview:noContentView];
     noContentView.icon = [[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    noContentView.title = NSLocalizedString(@"You're not logged in!", @"");
     noContentView.message = messageString;
+    noContentView.title = titleString;
 
     self.noContentView = noContentView;
  
