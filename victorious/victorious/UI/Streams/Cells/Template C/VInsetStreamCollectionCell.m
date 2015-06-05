@@ -165,7 +165,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     self.captionConstraints = @[previewContainerBottomToCaptionTop, self.commentToCaptionBottomConstraint, commentsLabelBottomToActionViewTop];
     self.noCaptionConstraints = @[previewViewBottomToCommentsLabelTop, commentsLabelBottomToActionViewTop];
-    
     [self.contentView addConstraints:self.captionConstraints];
     [self.contentView addConstraints:self.noCaptionConstraints];
     [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
@@ -179,10 +178,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 {
     UIResponder<VSequenceActionsDelegate> *targetForCommentLabelSelection = [self targetForAction:@selector(willCommentOnSequence:fromView:)
                                                                                        withSender:self];
-    if (targetForCommentLabelSelection == nil)
-    {
-        NSAssert(false, @"We need an object in the responder chain for hash tag selection.!");
-    }
+    NSAssert(targetForCommentLabelSelection != nil, @"We need an object in the responder chain for hash tag selection.!");
     
     [targetForCommentLabelSelection willCommentOnSequence:self.sequence fromView:self];
 }
