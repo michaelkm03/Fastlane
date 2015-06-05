@@ -136,7 +136,7 @@ class VTextFragmentsBuilder: NSObject
     /**
     Applies spacing adjustments to the rects of each VTextFragment to match up within the layout
     of the textView when rending those rects as background frames.  The spacing values all derive from
-    readable properties of attribtues of the text and are all based on how it looks when rendered.char
+    readable properties of attribtues of the text and are all based on how it looks when rendered.
     */
     func applySpacingToFragments( fragments: [VTextFragment], spacing: CGFloat, horizontalOffset: CGFloat )
     {
@@ -163,7 +163,7 @@ class VTextFragmentsBuilder: NSObject
             }
             else
             {
-                fragment.rect.size.width += horizontalOffset
+                fragment.rect.size.width += horizontalOffset * 2
             }
         }
     }
