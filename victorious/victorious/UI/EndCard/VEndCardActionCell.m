@@ -11,7 +11,7 @@
 static const CGFloat kScaleInactive     = 0.8f;
 static const CGFloat kScaleActive       = 1.0f;
 static const CGFloat kScaleScaledUp     = 1.2f;
-static const CGFloat kDisabledAlpha     = 0.5f;
+static const CGFloat kInactiveAlpha     = 0.5f;
 
 @interface VEndCardActionCell ()
 
@@ -81,6 +81,37 @@ static const CGFloat kDisabledAlpha     = 0.5f;
     [super setSelected:selected];
 }
 
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    if ( self.highlighted )
+    {
+        [UIView animateWithDuration:0.15f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.8f
+                            options:kNilOptions animations:^
+         {
+             self.alpha = kInactiveAlpha;
+             CGFloat scale = kScaleScaledUp;
+             self.transform = CGAffineTransformMakeScale( scale, scale );
+         } completion:nil];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:0.8f
+              initialSpringVelocity:0.9f
+                            options:kNilOptions animations:^
+         {
+             self.alpha = 1.0f;
+             self.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
+         } completion:nil];
+    }
+}
+
 - (void)showDefaultState
 {
     self.actionLabel.text = self.model.textLabelDefault;
@@ -106,7 +137,7 @@ static const CGFloat kDisabledAlpha     = 0.5f;
 {
     _enabled = enabled;
     
-    self.containerView.alpha = enabled ? 1.0f : kDisabledAlpha;
+    self.containerView.alpha = enabled ? 1.0f : kInactiveAlpha;
 }
 
 - (void)playActionCompleteAnimation

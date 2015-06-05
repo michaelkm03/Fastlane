@@ -1727,6 +1727,19 @@ referenceSizeForHeaderInSection:(NSInteger)section
                               forSessionParameterWithKey:VTrackingKeyContext];
          }];
     }
+    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierMeme] )
+    {
+        [self.sequenceActionController showRemixOnViewController:self.navigationController
+                                                    withSequence:self.viewModel.sequence
+                                            andDependencyManager:self.dependencyManager
+                                                  preloadedImage:nil
+                                                defaultVideoEdit:VDefaultVideoEditSnapshot
+                                                      completion:^(BOOL finished)
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
+    }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
     {
         [self.sequenceActionController repostActionFromViewController:self.navigationController

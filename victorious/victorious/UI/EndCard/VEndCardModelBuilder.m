@@ -92,15 +92,13 @@
     {
         [actions addObject:[self actionForRespost]];
     }
-#warning SHARE?
-    /*if ( sequence.endCard.permissions.canShare )
-    {
-        [actions addObject:[self actionForShare]];
-    }*/
     if ( sequence.endCard.permissions.canMeme )
     {
         [actions addObject:[self actionForMeme]];
     }
+    
+    [actions addObject:[self actionForShare]];
+    
     return [NSArray arrayWithArray:actions];
 }
 
@@ -155,7 +153,7 @@
     endCardModel.streamName = sequence.endCard.streamName ?: @"";
     endCardModel.videoAuthorName = sequence.user.name;
     endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:sequence.user.pictureUrl];
-    endCardModel.countdownDuration = 10;
+    endCardModel.countdownDuration = 10000;
     endCardModel.dependencyManager = self.dependencyManager;
     endCardModel.actions = [self createActionsWithSequence:sequence];
     return endCardModel;
