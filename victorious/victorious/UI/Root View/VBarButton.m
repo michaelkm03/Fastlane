@@ -10,6 +10,7 @@
 #import "VDependencyManager.h"
 #import "VBarButton.h"
 #import "VNumericalBadgeView.h"
+#import "UIImage+Alpha.h"
 
 @interface VBarButton ()
 
@@ -53,6 +54,8 @@
 - (void)setImage:(UIImage *)image
 {
     [self.button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    UIImage *semiTransparent = [image imageByApplyingAlpha:0.4f];
+    [self.button setImage:[semiTransparent imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateHighlighted];
 }
 
 - (void)setEnabled:(BOOL)enabled
