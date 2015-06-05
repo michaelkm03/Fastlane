@@ -165,6 +165,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     self.captionConstraints = @[previewContainerBottomToCaptionTop, self.commentToCaptionBottomConstraint, commentsLabelBottomToActionViewTop];
     self.noCaptionConstraints = @[previewViewBottomToCommentsLabelTop, commentsLabelBottomToActionViewTop];
+    
     [self.contentView addConstraints:self.captionConstraints];
     [self.contentView addConstraints:self.noCaptionConstraints];
     [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
@@ -172,10 +173,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Fixes constraint errors when resizing for certain aspect ratios
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
-    
-    // Makes the comment label clickable
-
-    
 }
 
 - (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
@@ -185,9 +182,14 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)commentLabelWasTapped
 {
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"commentButtonWasPressedNotification"
-     object:self];
+    UIResponder<VSequenceActionsDelegate> *targetForCommentLabelSelection = [self targetForAction:@selector(willCommentOnSequence:fromView:)
+                                                                                       withSender:self];
+    if (targetForCommentLabelSelection == nil)
+    {
+        NSAssert(false, @"We need an object in the responder chain for hash tag selection.!");
+    }
+   
+    [targetForCommentLabelSelection willCommentOnSequence:self.sequence fromView:self];
 }
 
 #pragma mark - UIView
@@ -300,20 +302,9 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     [self.commentsLabel setAttributedText:commentText];
     self.commentToCaptionBottomConstraint.constant = commentText.length == 0 ? 0.0f : -kTextSeparatorHeight;
     
-    NSString *noCommentString = NSLocalizedString(@"LeaveAComment", @"");
-    
-    if ([noCommentString isEqualToString:_commentsLabel.text])
-    {
-        [_commentsLabel setUserInteractionEnabled:YES];
-        UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureForCommentLabel:)];
-        [_commentsLabel addGestureRecognizer: tapGesture];
-    }
-    else
-    {
-        // commentLabel button is disabled
-        [_commentsLabel setUserInteractionEnabled:NO];
-        _commentsLabel.textColor = [UIColor darkGrayColor];
-    }
+    [_commentsLabel setUserInteractionEnabled:YES];
+    UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureForCommentLabel:)];
+    [_commentsLabel addGestureRecognizer: tapGesture];
 }
 
 #pragma mark - VBackgroundContainer
@@ -487,6 +478,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 {
     UIResponder<VSequenceActionsDelegate> *targetForHashTagSelection = [self targetForAction:@selector(hashTag:tappedFromSequence:fromView:)
                                                                                   withSender:self];
+    
     if (targetForHashTagSelection == nil)
     {
         NSAssert(false, @"We need an object in the responder chain for hash tag selection.!");
