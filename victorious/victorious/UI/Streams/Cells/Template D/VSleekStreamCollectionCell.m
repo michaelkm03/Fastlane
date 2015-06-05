@@ -107,25 +107,25 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     
     if (highlighted)
     {
-        if (self.dimmingView == nil)
-        {
-            self.dimmingView = [UIView new];
-            self.dimmingView.backgroundColor = [UIColor blackColor];
-            self.dimmingView.alpha = 0.0f;
-            self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-        }
-        
-        [self.contentView addSubview:self.dimmingView];
-        [self v_addFitToParentConstraintsToSubview:self.dimmingView];
-        
-        [UIView animateWithDuration:0.15 animations:^
-        {
-            self.dimmingView.alpha = 0.4f;
-        }];
+//        if (self.dimmingView == nil)
+//        {
+//            self.dimmingView = [UIView new];
+//            self.dimmingView.backgroundColor = [UIColor blackColor];
+//            self.dimmingView.alpha = 0.0f;
+//            self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+//        }
+//        
+//        [self.contentView addSubview:self.dimmingView];
+//        [self v_addFitToParentConstraintsToSubview:self.dimmingView];
+//        
+//        [UIView animateWithDuration:0.1 animations:^
+//        {
+//            self.dimmingView.alpha = 0.4f;
+//        }];
     }
     else
     {
-        [UIView animateWithDuration:0.15 animations:^
+        [UIView animateWithDuration:0.1 animations:^
         {
             self.dimmingView.alpha = 0.0f;
         } completion:^(BOOL finished)
@@ -133,6 +133,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
             [_dimmingView removeFromSuperview];
         }];
     }
+    
+    [UIView animateWithDuration:0.1 animations:^
+     {
+         highlighted ? self.previewView.transform = CGAffineTransformMakeScale(0.9, 0.9) : CGAffineTransformIdentity;
+     }];
 }
 
 #pragma mark - Internal Methods

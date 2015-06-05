@@ -36,6 +36,7 @@ static const CGFloat maxCaptionHeight = 80.0f;
 
 @property (nonatomic, strong) UIView *loadingBackgroundContainer;
 @property (nonatomic, strong) UIView *contentContainer;
+@property (nonatomic, strong) UIView *dimmingView;
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VPassthroughContainerView *overlayContainer;
@@ -85,6 +86,13 @@ static const CGFloat maxCaptionHeight = 80.0f;
     _overlayContainer = [[VPassthroughContainerView alloc] initWithFrame:self.contentView.bounds];
     [self.contentView addSubview:_overlayContainer];
     [self.contentView v_addFitToParentConstraintsToSubview:_overlayContainer];
+    
+    // Dimming view
+    _dimmingView = [UIView new];
+    _dimmingView.backgroundColor = [UIColor blackColor];
+    _dimmingView.alpha = 0;
+    [_overlayContainer addSubview:_dimmingView];
+    [_overlayContainer v_addFitToParentConstraintsToSubview:_dimmingView];
     
     // Within overlay place gradients
     _topGradient = [[VLinearGradientView alloc] initWithFrame:CGRectZero];
@@ -151,6 +159,8 @@ static const CGFloat maxCaptionHeight = 80.0f;
                                                                  attribute:NSLayoutAttributeTop
                                                                 multiplier:1.0f
                                                                   constant:0.0f]];
+    
+   
 }
 
 #pragma mark - Property Accessors
@@ -163,6 +173,16 @@ static const CGFloat maxCaptionHeight = 80.0f;
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
     [self updateOverlayGradientsForSequence:sequence];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    [UIView animateWithDuration:0.1 animations:^
+    {
+        self.dimmingView.alpha = highlighted ? 0.6f : 0;
+    }];
 }
 
 #pragma mark - Internal Methods

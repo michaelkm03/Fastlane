@@ -495,6 +495,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     self.lastSelectedIndexPath = indexPath;
     
+    [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
 }
