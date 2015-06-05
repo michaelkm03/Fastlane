@@ -91,6 +91,7 @@ static const CGFloat maxCaptionHeight = 80.0f;
     _dimmingView = [UIView new];
     _dimmingView.backgroundColor = [UIColor blackColor];
     _dimmingView.alpha = 0;
+    _dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
     [_overlayContainer addSubview:_dimmingView];
     [_overlayContainer v_addFitToParentConstraintsToSubview:_dimmingView];
     

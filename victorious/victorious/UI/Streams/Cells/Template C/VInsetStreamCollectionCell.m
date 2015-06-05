@@ -39,6 +39,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VStreamHeaderTimeSince *header;
 @property (nonatomic, strong) UIView *previewContainer;
+@property (nonatomic, strong) UIView *dimmingView;
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) UILabel *commentsLabel;
@@ -100,6 +101,42 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
                                                                       constant:0.0f];
     [self.contentView addConstraint:heightToWidth];
     _previewViewHeightConstraint = heightToWidth;
+    
+    // Dimming view
+    _dimmingView = [UIView new];
+    _dimmingView.backgroundColor = [UIColor blackColor];
+    _dimmingView.alpha = 0;
+    _dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.contentView addSubview:_dimmingView];
+    NSLayoutConstraint *dimmingViewHeight = [NSLayoutConstraint constraintWithItem:_dimmingView
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:_previewContainer
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+    NSLayoutConstraint *dimmingViewWidth = [NSLayoutConstraint constraintWithItem:_dimmingView
+                                                                         attribute:NSLayoutAttributeWidth
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:_previewContainer
+                                                                         attribute:NSLayoutAttributeWidth
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f];
+    NSLayoutConstraint *dimmingViewCenterY = [NSLayoutConstraint constraintWithItem:_dimmingView
+                                                                        attribute:NSLayoutAttributeCenterY
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:_previewContainer
+                                                                        attribute:NSLayoutAttributeCenterY
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    NSLayoutConstraint *dimmingViewCenterX = [NSLayoutConstraint constraintWithItem:_dimmingView
+                                                                          attribute:NSLayoutAttributeCenterX
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:_previewContainer
+                                                                          attribute:NSLayoutAttributeCenterX
+                                                                         multiplier:1.0f
+                                                                           constant:0.0f];
+    [self.contentView addConstraints:@[dimmingViewHeight, dimmingViewWidth, dimmingViewCenterX, dimmingViewCenterY]];
 
     // Now the caption text view
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
@@ -241,6 +278,16 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     // Remove current height constraint on preview view to account for potential new aspect ratio
     [self.contentView removeConstraint:self.previewViewHeightConstraint];
     [self setNeedsUpdateConstraints];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    [UIView animateWithDuration:0.1 animations:^
+     {
+         self.dimmingView.alpha = highlighted ? 0.6f : 0;
+     }];
 }
 
 #pragma mark - Internal Methods
