@@ -468,7 +468,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 {
     UIResponder<VSequenceActionsDelegate> *targetForHashTagSelection = [self targetForAction:@selector(hashTag:tappedFromSequence:fromView:)
                                                                                   withSender:self];
-    
     if (targetForHashTagSelection == nil)
     {
         NSAssert(false, @"We need an object in the responder chain for hash tag selection.!");
