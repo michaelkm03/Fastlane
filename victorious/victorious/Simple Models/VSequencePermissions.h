@@ -16,7 +16,6 @@
 
 @property (nonatomic, readonly) BOOL canDelete;
 @property (nonatomic, readonly) BOOL canRemix;
-@property (nonatomic, readonly) BOOL canVote;
 @property (nonatomic, readonly) BOOL canComment;
 @property (nonatomic, readonly) BOOL canShowVoteCount;
 @property (nonatomic, readonly) BOOL canRepost;

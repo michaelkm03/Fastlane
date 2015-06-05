@@ -28,12 +28,26 @@
 
 - (void)testExample
 {
-    NSInteger value = 0 << 1;
-    VSequencePermissions *permissions = [[VSequencePermissions alloc] initWithNumber:@(value)];
+    VSequencePermissions *permissions;
+    NSInteger value = 1;
+    
+    value <<= 0;
+    permissions = [[VSequencePermissions alloc] initWithNumber:@(value)];
+    
     XCTAssert( permissions.canDelete );
-    XCTAssertFalse( permissions.canDelete );
     XCTAssertFalse( permissions.canRemix );
-    XCTAssertFalse( permissions.canVote );
+    XCTAssertFalse( permissions.canComment );
+    XCTAssertFalse( permissions.canShowVoteCount );
+    XCTAssertFalse( permissions.canRepost );
+    XCTAssertFalse( permissions.canMeme );
+    XCTAssertFalse( permissions.canGIF );
+    XCTAssertFalse( permissions.canQuote );
+    
+    value <<= 1;
+    permissions = [[VSequencePermissions alloc] initWithNumber:@(value)];
+    
+    XCTAssert( permissions.canDelete );
+    XCTAssert( permissions.canRemix );
     XCTAssertFalse( permissions.canComment );
     XCTAssertFalse( permissions.canShowVoteCount );
     XCTAssertFalse( permissions.canRepost );

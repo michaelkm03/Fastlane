@@ -57,11 +57,6 @@ typedef NS_OPTIONS(NSInteger, VSequencePermission)
     return self.integerValue & VSequencePermissionCanRemix;
 }
 
-- (BOOL)canVote
-{
-    return self.integerValue & VSequencePermissionCanDelete;
-}
-
 - (BOOL)canComment
 {
     return self.integerValue & VSequencePermissionCanComment;
