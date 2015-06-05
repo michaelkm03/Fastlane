@@ -7,10 +7,10 @@
 //
 
 #import "VEndCard.h"
-#import "VPermissions.h"
+#import "VSequencePermissions.h"
 
 @interface VEndCard (Fetcher)
 
-@property (nonatomic, readonly) VPermissions *permissions;
+@property (nonatomic, readonly) VSequencePermissions *permissions;
 
 @end

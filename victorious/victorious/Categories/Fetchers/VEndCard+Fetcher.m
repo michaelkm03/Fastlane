@@ -10,9 +10,9 @@
 
 @implementation VEndCard (Fetcher)
 
-- (VPermissions *)permissions
+- (VSequencePermissions *)permissions
 {
-    return [VPermissions permissionsWithNumber:self.permissionsMask];
+    return [VSequencePermissions permissionsWithNumber:self.permissionsMask];
 }
 
 @end

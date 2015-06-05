@@ -1,5 +1,5 @@
 //
-//  VPermissions.h
+//  VSequencePermissions.h
 //  victorious
 //
 //  Created by Patrick Lynch on 5/1/15.
@@ -8,9 +8,9 @@
 
 @import Foundation;
 
-@interface VPermissions : NSObject
+@interface VSequencePermissions : NSObject
 
-+ (VPermissions *)permissionsWithNumber:(NSNumber *)numberValue;
++ (VSequencePermissions *)permissionsWithNumber:(NSNumber *)numberValue;
 
 - (instancetype)initWithNumber:(NSNumber *)numberValue;
 

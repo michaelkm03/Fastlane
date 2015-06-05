@@ -15,7 +15,7 @@
 #import "VUser.h"
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
-#import "VPermissions.h"
+#import "VSequencePermissions.h"
 #import "NSURL+MediaType.h"
 #import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
@@ -295,9 +295,9 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     return YES;
 }
 
-- (VPermissions *)permissions
+- (VSequencePermissions *)permissions
 {
-    return [VPermissions permissionsWithNumber:self.permissionsMask];
+    return [VSequencePermissions permissionsWithNumber:self.permissionsMask];
 }
 
 - (VUser *)displayOriginalPoster

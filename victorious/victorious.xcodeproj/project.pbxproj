@@ -538,7 +538,7 @@
 		A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3785D1AF2D830007FF197 /* VStoredLogin.m */; };
 		A7D378631AF2F369007FF197 /* VStoredLoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378621AF2F368007FF197 /* VStoredLoginTests.m */; };
 		A7D378641AF308B3007FF197 /* component.json in Resources */ = {isa = PBXBuildFile; fileRef = A7D3784F1AF0682B007FF197 /* component.json */; };
-		A7D378691AF45B7C007FF197 /* VPermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378681AF45B7C007FF197 /* VPermissions.m */; };
+		A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378681AF45B7C007FF197 /* VSequencePermissions.m */; };
 		A7D3786C1AF4625D007FF197 /* VEndCard+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D3786B1AF4625D007FF197 /* VEndCard+Fetcher.m */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
@@ -1915,8 +1915,8 @@
 		A7D3785C1AF2D830007FF197 /* VStoredLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStoredLogin.h; sourceTree = "<group>"; };
 		A7D3785D1AF2D830007FF197 /* VStoredLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStoredLogin.m; sourceTree = "<group>"; };
 		A7D378621AF2F368007FF197 /* VStoredLoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStoredLoginTests.m; sourceTree = "<group>"; };
-		A7D378671AF45B7C007FF197 /* VPermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissions.h; sourceTree = "<group>"; };
-		A7D378681AF45B7C007FF197 /* VPermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissions.m; sourceTree = "<group>"; };
+		A7D378671AF45B7C007FF197 /* VSequencePermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequencePermissions.h; sourceTree = "<group>"; };
+		A7D378681AF45B7C007FF197 /* VSequencePermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequencePermissions.m; sourceTree = "<group>"; };
 		A7D3786A1AF4625D007FF197 /* VEndCard+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VEndCard+Fetcher.h"; sourceTree = "<group>"; };
 		A7D3786B1AF4625D007FF197 /* VEndCard+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VEndCard+Fetcher.m"; sourceTree = "<group>"; };
 		A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutoplaySettingsViewController.h; sourceTree = "<group>"; };
@@ -4757,12 +4757,8 @@
 				A7D707931A7C144C00D9993F /* VEndCardBannerViewController.m */,
 				A7D707941A7C144C00D9993F /* VEndCardModel.h */,
 				A7D707951A7C144C00D9993F /* VEndCardModel.m */,
-				A7D707961A7C144C00D9993F /* VEndCardViewController.h */,
-				A7D707971A7C144C00D9993F /* VEndCardViewController.m */,
 				A776EF641AD45A760093992F /* VEndCardModelBuilder.h */,
 				A776EF651AD45A760093992F /* VEndCardModelBuilder.m */,
-				A776EF641AD45A760093992F /* VEndCardModelFactory.h */,
-				A776EF651AD45A760093992F /* VEndCardModelFactory.m */,
 				A7D707961A7C144C00D9993F /* VEndCardViewController.h */,
 				A7D707971A7C144C00D9993F /* VEndCardViewController.m */,
 			);
@@ -5796,8 +5792,6 @@
 		D8B0500E19AD2A740048E2BE /* Simple Models */ = {
 			isa = PBXGroup;
 			children = (
-				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,
-				F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */,
 				0314D2E719B46B2200FA363C /* VErrorMessage.h */,
 				0314D2E819B46B2200FA363C /* VErrorMessage.m */,
 				A7EB574A1AF82159006AA1CF /* VLoginType.h */,
@@ -5807,8 +5801,8 @@
 				03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */,
 				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,
 				F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */,
-				A7D378671AF45B7C007FF197 /* VPermissions.h */,
-				A7D378681AF45B7C007FF197 /* VPermissions.m */,
+				A7D378671AF45B7C007FF197 /* VSequencePermissions.h */,
+				A7D378681AF45B7C007FF197 /* VSequencePermissions.m */,
 			);
 			path = "Simple Models";
 			sourceTree = "<group>";
@@ -7190,8 +7184,7 @@
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
-				D8C8F5761A0403D4006BE3E8 /* VStream.m in Sources */,
-				A7D378691AF45B7C007FF197 /* VPermissions.m in Sources */,
+				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
 				F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
@@ -7380,7 +7373,6 @@
 				A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				A7D3786C1AF4625D007FF197 /* VEndCard+Fetcher.m in Sources */,
-				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
