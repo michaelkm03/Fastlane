@@ -105,42 +105,56 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super setHighlighted:highlighted];
     
-    if (highlighted)
+    if (highlighted && self.dimmingView == nil)
     {
-//        if (self.dimmingView == nil)
-//        {
-//            self.dimmingView = [UIView new];
-//            self.dimmingView.backgroundColor = [UIColor blackColor];
-//            self.dimmingView.alpha = 0.0f;
-//            self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-//        }
-//        
-//        [self.contentView addSubview:self.dimmingView];
-//        [self v_addFitToParentConstraintsToSubview:self.dimmingView];
-//        
-//        [UIView animateWithDuration:0.1 animations:^
-//        {
-//            self.dimmingView.alpha = 0.4f;
-//        }];
-    }
-    else
-    {
-        [UIView animateWithDuration:0.1 animations:^
-        {
-            self.dimmingView.alpha = 0.0f;
-        } completion:^(BOOL finished)
-        {
-            [_dimmingView removeFromSuperview];
-        }];
+        [self setupDimmingView];
     }
     
     [UIView animateWithDuration:0.1 animations:^
      {
-         highlighted ? self.previewView.transform = CGAffineTransformMakeScale(0.9, 0.9) : CGAffineTransformIdentity;
+         self.dimmingView.alpha = highlighted ? 0.6f : 0;
      }];
 }
 
 #pragma mark - Internal Methods
+
+- (void)setupDimmingView
+{
+    self.dimmingView = [UIView new];
+    self.dimmingView.backgroundColor = [UIColor blackColor];
+    self.dimmingView.alpha = 0;
+    self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.contentView addSubview:self.dimmingView];
+    NSLayoutConstraint *dimmingViewHeight = [NSLayoutConstraint constraintWithItem:self.dimmingView
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.previewContainer
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f];
+    NSLayoutConstraint *dimmingViewWidth = [NSLayoutConstraint constraintWithItem:self.dimmingView
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.previewContainer
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+    NSLayoutConstraint *dimmingViewCenterY = [NSLayoutConstraint constraintWithItem:self.dimmingView
+                                                                          attribute:NSLayoutAttributeCenterY
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.previewContainer
+                                                                          attribute:NSLayoutAttributeCenterY
+                                                                         multiplier:1.0f
+                                                                           constant:0.0f];
+    NSLayoutConstraint *dimmingViewCenterX = [NSLayoutConstraint constraintWithItem:self.dimmingView
+                                                                          attribute:NSLayoutAttributeCenterX
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.previewContainer
+                                                                          attribute:NSLayoutAttributeCenterX
+                                                                         multiplier:1.0f
+                                                                           constant:0.0f];
+    [self.contentView addConstraints:@[dimmingViewHeight, dimmingViewWidth, dimmingViewCenterX, dimmingViewCenterY]];
+}
 
 - (void)updateConstraints
 {
