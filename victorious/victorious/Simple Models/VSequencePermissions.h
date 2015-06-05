@@ -33,9 +33,15 @@ typedef NS_OPTIONS( NSInteger, VSequencePermission )
  */
 @interface VSequencePermissions : NSObject
 
+/**
+ Convenience initializer that internally calls `initWithNumber:`
+ */
 + (VSequencePermissions *)permissionsWithNumber:(NSNumber *)numberValue;
 
-- (instancetype)initWithNumber:(NSNumber *)numberValue;
+/**
+ Designated initializer with required raw bit mark value as NSNumber.
+ */
+- (instancetype)initWithNumber:(NSNumber *)numberValue NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly) BOOL canDelete;
 @property (nonatomic, readonly) BOOL canRemix;

@@ -74,29 +74,30 @@
     endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
     endCardModel.countdownDuration = sequence.endCard.countdownDuration.unsignedIntegerValue;
     endCardModel.dependencyManager = self.dependencyManager;
-    endCardModel.actions = [self createActionsWithSequence:sequence];
+    endCardModel.actions = [self createActionsWithPermissions:sequence.endCard.permissions];
     
     return endCardModel;
 }
 
 #pragma mark - Action creation
 
-- (NSArray *)createActionsWithSequence:(VSequence *)sequence
+- (NSArray *)createActionsWithPermissions:(VSequencePermissions *)permissions
 {
     NSMutableArray *actions = [[NSMutableArray alloc] init];
-    if ( sequence.endCard.permissions.canRemix )
+    if ( permissions.canRemix )
     {
         [actions addObject:[self actionForGIF]];
     }
-    if ( sequence.endCard.permissions.canRepost )
+    if ( permissions.canRepost )
     {
         [actions addObject:[self actionForRespost]];
     }
-    if ( sequence.endCard.permissions.canMeme )
+    if ( permissions.canMeme )
     {
         [actions addObject:[self actionForMeme]];
     }
     
+    // There is not currently a permission for sharing, so it is always allowed
     [actions addObject:[self actionForShare]];
     
     return [NSArray arrayWithArray:actions];
@@ -106,7 +107,7 @@
 {
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierGIF;
-    action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+    action.textLabelDefault = NSLocalizedString( @"GIF", @"Create a GIF from this video" );
     action.iconImageNameDefault = @"action_gif";
     return action;
 }
@@ -135,7 +136,7 @@
 {
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierMeme;
-    action.textLabelDefault = NSLocalizedString( @"Meme", @"Meme this video" );
+    action.textLabelDefault = NSLocalizedString( @"Meme", @"Create a meme from this video" );
     action.iconImageNameDefault = @"action_meme";
     return action;
 }
@@ -155,7 +156,7 @@
     endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:sequence.user.pictureUrl];
     endCardModel.countdownDuration = 10000;
     endCardModel.dependencyManager = self.dependencyManager;
-    endCardModel.actions = [self createActionsWithSequence:sequence];
+    endCardModel.actions = [self createActionsWithPermissions:sequence.endCard.permissions];
     return endCardModel;
 }
 

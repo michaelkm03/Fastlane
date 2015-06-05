@@ -21,8 +21,15 @@
     return [[VSequencePermissions alloc] initWithNumber:numberValue];
 }
 
+- (instancetype)init
+{
+    return [self initWithNumber:nil];
+}
+
 - (instancetype)initWithNumber:(NSNumber *)numberValue
 {
+    NSParameterAssert( numberValue != nil );
+    
     self = [super init];
     if ( self != nil )
     {

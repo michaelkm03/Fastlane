@@ -28,6 +28,13 @@
     [super tearDown];
 }
 
+- (void)testInvalidInitialization
+{
+    XCTAssertThrows( [[VSequencePermissions alloc] init] );
+    XCTAssertThrows( [[VSequencePermissions alloc] initWithNumber:nil] );
+    XCTAssertThrows( [VSequencePermissions permissionsWithNumber:nil] );
+}
+
 - (void)testPermissionToPropety
 {
     // The order of these properties should match the order in which the equivalent
