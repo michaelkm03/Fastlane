@@ -216,6 +216,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+        NSParameterAssert( [templateDecorator setTemplateValue:@"A_tickets"
+                                                    forKeyPath:@"scaffold/menu/items/4/icon/imageURL"] );
+        NSParameterAssert( [templateDecorator setTemplateValue:@"A_tickets_selected"
+                                                    forKeyPath:@"scaffold/menu/items/4/selectedIcon/imageURL"] );
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

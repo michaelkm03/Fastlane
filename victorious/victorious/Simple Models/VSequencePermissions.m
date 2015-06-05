@@ -8,25 +8,9 @@
 
 #import "VSequencePermissions.h"
 
-typedef NS_OPTIONS(NSInteger, VSequencePermission)
-{
-    VSequencePermissionNone             = 0,
-    VSequencePermissionCanDelete        = 1 << 0,
-    VSequencePermissionCanRemix         = 1 << 1,
-    VSequencePermissionCanShowVoteCount = 1 << 2,
-    VSequencePermissionCanComment       = 1 << 3,
-    VSequencePermissionCanRepost        = 1 << 4,
-    VSequencePermissionCanEditComment   = 1 << 5,
-    VSequencePermissionCanDeleteComment = 1 << 6,
-    VSequencePermissionCanFlagSequence  = 1 << 7,
-    VSequencePermissionCanMeme          = 1 << 8,
-    VSequencePermissionCanGif           = 1 << 9,
-    VSequencePermissionCanQuote         = 1 << 10,
-};
-
 @interface VSequencePermissions()
 
-@property (nonatomic, readonly) NSInteger integerValue;
+@property (nonatomic, readonly) NSUInteger value;
 
 @end
 
@@ -42,49 +26,81 @@ typedef NS_OPTIONS(NSInteger, VSequencePermission)
     self = [super init];
     if ( self != nil )
     {
-        _integerValue = numberValue.integerValue;
+        _value = numberValue.unsignedIntegerValue;
     }
     return self;
 }
 
 - (BOOL)canDelete
 {
-    return self.integerValue & VSequencePermissionCanDelete;
+    return self.value & VSequencePermissionCanDelete;
 }
 
 - (BOOL)canRemix
 {
-    return self.integerValue & VSequencePermissionCanRemix;
+    return self.value & VSequencePermissionCanRemix;
 }
 
 - (BOOL)canComment
 {
-    return self.integerValue & VSequencePermissionCanComment;
+    return self.value & VSequencePermissionCanComment;
 }
 
 - (BOOL)canRepost
 {
-    return self.integerValue & VSequencePermissionCanRepost;
+    return self.value & VSequencePermissionCanRepost;
 }
 
-- (BOOL)canShowVoteCount
+- (BOOL)canDeleteComment
 {
-    return self.integerValue & VSequencePermissionCanShowVoteCount;
+    return self.value & VSequencePermissionCanDeleteComment;
+}
+
+- (BOOL)canFlagSequence
+{
+    return self.value & VSequencePermissionCanFlagSequence;
+}
+
+- (BOOL)canEditComment
+{
+    return self.value & VSequencePermissionCanEditComment;
 }
 
 - (BOOL)canMeme
 {
-    return self.integerValue & VSequencePermissionCanMeme;
+    return self.value & VSequencePermissionCanMeme;
 }
 
 - (BOOL)canGIF
 {
-    return self.integerValue & VSequencePermissionCanGif;
+    return self.value & VSequencePermissionCanGif;
 }
 
 - (BOOL)canQuote
 {
-    return self.integerValue & VSequencePermissionCanQuote;
+    return self.value & VSequencePermissionCanQuote;
+}
+
+- (NSString *)description
+{
+    NSMutableString *stringBits = [[NSMutableString alloc] init];
+    NSUInteger spacing = pow( 2, 3 );
+    NSUInteger width = ( sizeof( self.value ) ) * spacing;
+    NSUInteger binaryDigit = 0;
+    NSUInteger integer = self.value;
+    
+    while ( binaryDigit < width )
+    {
+        binaryDigit++;
+        [stringBits insertString:( (integer & 1) ? @"1" : @"0" )atIndex:0];
+        if ( binaryDigit % spacing == 0 && binaryDigit != width )
+        {
+            [stringBits insertString:@" " atIndex:0];
+        }
+        integer = integer >> 1;
+    }
+    
+    return [NSString stringWithFormat:@"VSequencePermissions = %@", stringBits];
 }
 
 @end
