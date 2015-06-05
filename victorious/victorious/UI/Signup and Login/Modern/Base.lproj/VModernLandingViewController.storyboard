@@ -68,7 +68,7 @@
                                     <constraint firstAttribute="height" constant="50" id="ygi-E7-03h"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="-35" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Sign Up With Facebook" image="signup_facebook_">
+                                <state key="normal" title="Sign Up with Facebook" image="signup_facebook_">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
