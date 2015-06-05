@@ -129,14 +129,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     
     // Note if we're pushing another view controller onto the nav stack or if we're presenting
     // a modal view controller
-    if (self.navigationController.viewControllers.count > 1 || self.presentedViewController)
-    {
-        self.wasHiddenByAnotherViewController = YES;
-    }
-    else
-    {
-        self.wasHiddenByAnotherViewController = NO;
-    }
+    self.wasHiddenByAnotherViewController = (self.navigationController.viewControllers.count > 1 || self.presentedViewController);
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
