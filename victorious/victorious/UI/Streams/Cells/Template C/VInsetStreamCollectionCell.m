@@ -365,7 +365,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
         //Users aren't allowed to comment on this, so return an empty string
         commentsString = @"";
     }
-    
     return commentsString;
 }
 
