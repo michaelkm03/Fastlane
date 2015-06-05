@@ -28,33 +28,45 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testPermissionToPropety
 {
-    NSDictionary *mapping = @{ @(VSequencePermissionCanDelete)          : VSelectorName(canDelete),
-                               @(VSequencePermissionCanRemix)           : VSelectorName(canRemix),
-                               @(VSequencePermissionCanShowVoteCount)   : VSelectorName(canShowVoteCount),
-                               @(VSequencePermissionCanComment)         : VSelectorName(canComment),
-                               @(VSequencePermissionCanRepost)          : VSelectorName(canRepost),
-                               @(VSequencePermissionCanEditComment)     : VSelectorName(canEditComment),
-                               @(VSequencePermissionCanDeleteComment)   : VSelectorName(canDeleteComment),
-                               @(VSequencePermissionCanFlagSequence)    : VSelectorName(canFlagSequence),
-                               @(VSequencePermissionCanMeme)            : VSelectorName(canMeme),
-                               @(VSequencePermissionCanGif)             : VSelectorName(canGIF),
-                               @(VSequencePermissionCanQuote)           : VSelectorName(canQuote) };
+    // The order of these properties should match the order in which the equivalent
+    // values of the VSequencePermission enum are defined
+    NSArray *selectorNames = @[ VSelectorName( canDelete ),
+                                VSelectorName( canRemix ),
+                                VSelectorName( canShowVoteCount ),
+                                VSelectorName( canComment ),
+                                VSelectorName( canRepost ),
+                                VSelectorName( canEditComments ),
+                                VSelectorName( canDeleteComments ),
+                                VSelectorName( canFlagSequence ),
+                                VSelectorName( canMeme ),
+                                VSelectorName( canGIF ),
+                                VSelectorName( canQuote ) ];
     
-    VSequencePermissions *permissions;
-    unsigned long long value = 1;
-    
-    for ( NSNumber *key in mapping )
+    // This loop sets one permission, then iterates throguh all permissions and makes sure that
+    // only the one that was set in the raw bitmask value now reads YES while all others read NO
+    for ( NSUInteger i = 0; i < selectorNames.count; i++ )
     {
-        
+        NSUInteger rawValue = 1 << i;
+        VSequencePermissions *permissions = [[VSequencePermissions alloc] initWithNumber:@(rawValue)];
+        for ( NSUInteger j = 0; j < selectorNames.count; j++ )
+        {
+            NSString *selectorName = selectorNames[ j ];
+            SEL selector = NSSelectorFromString( selectorName );
+            IMP imp = [permissions methodForSelector:selector];
+            BOOL (*func)(id, SEL) = (void *)imp;
+            BOOL result = func( permissions, selector );
+            if ( i == j )
+            {
+                XCTAssert( result, @"Failed to read BOOL property (%@) from bitmask (%@)", selectorName, permissions );
+            }
+            else
+            {
+                XCTAssertFalse( result, @"Failed to read BOOL property (%@) from bitmask (%@)", selectorName, permissions );
+            }
+        }
     }
-    
-    
-    
-    value = VSequencePermissionCanDelete | VSequencePermissionCanShowVoteCount;
-    permissions = [[VSequencePermissions alloc] initWithNumber:@(value)];
-    NSLog( @"%@", permissions.description );
 }
 
 @end

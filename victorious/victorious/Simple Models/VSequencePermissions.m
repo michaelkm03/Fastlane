@@ -51,9 +51,14 @@
     return self.value & VSequencePermissionCanRepost;
 }
 
-- (BOOL)canDeleteComment
+- (BOOL)canDeleteComments
 {
-    return self.value & VSequencePermissionCanDeleteComment;
+    return self.value & VSequencePermissionCanDeleteComments;
+}
+
+- (BOOL)canShowVoteCount
+{
+    return self.value & VSequencePermissionCanShowVoteCount;
 }
 
 - (BOOL)canFlagSequence
@@ -61,9 +66,9 @@
     return self.value & VSequencePermissionCanFlagSequence;
 }
 
-- (BOOL)canEditComment
+- (BOOL)canEditComments
 {
-    return self.value & VSequencePermissionCanEditComment;
+    return self.value & VSequencePermissionCanEditComments;
 }
 
 - (BOOL)canMeme
