@@ -209,6 +209,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewDidLoad];
     
+//    self.collectionView.delaysContentTouches = NO;
+    
     self.hasRefreshed = NO;
     self.sequenceActionController = [[VSequenceActionController alloc] init];
     self.sequenceActionController.dependencyManager = self.dependencyManager;

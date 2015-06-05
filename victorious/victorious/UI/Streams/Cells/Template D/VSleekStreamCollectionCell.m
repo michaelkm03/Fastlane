@@ -45,8 +45,10 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
+@property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
+
+@property (nonatomic, strong) UIView *dimmingView;
 
 @end
 
@@ -97,6 +99,40 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self updateCaptionViewForSequence:sequence];
     [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
     [self setNeedsUpdateConstraints];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    if (highlighted)
+    {
+        if (self.dimmingView == nil)
+        {
+            self.dimmingView = [UIView new];
+            self.dimmingView.backgroundColor = [UIColor blackColor];
+            self.dimmingView.alpha = 0.0f;
+            self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+        }
+        
+        [self.contentView addSubview:self.dimmingView];
+        [self v_addFitToParentConstraintsToSubview:self.dimmingView];
+        
+        [UIView animateWithDuration:0.15 animations:^
+        {
+            self.dimmingView.alpha = 0.4f;
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.15 animations:^
+        {
+            self.dimmingView.alpha = 0.0f;
+        } completion:^(BOOL finished)
+        {
+            [_dimmingView removeFromSuperview];
+        }];
+    }
 }
 
 #pragma mark - Internal Methods
