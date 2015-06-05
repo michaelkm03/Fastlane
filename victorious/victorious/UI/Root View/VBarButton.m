@@ -10,7 +10,6 @@
 #import "VDependencyManager.h"
 #import "VBarButton.h"
 #import "VNumericalBadgeView.h"
-#import "UIImage+Alpha.h"
 #import "VFadeButton.h"
 
 @interface VBarButton ()
