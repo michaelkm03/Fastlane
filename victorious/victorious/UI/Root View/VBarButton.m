@@ -11,10 +11,11 @@
 #import "VBarButton.h"
 #import "VNumericalBadgeView.h"
 #import "UIImage+Alpha.h"
+#import "VFadeButton.h"
 
 @interface VBarButton ()
 
-@property (nonatomic, weak) IBOutlet UIButton *button;
+@property (nonatomic, weak) IBOutlet VFadeButton *button;
 @property (nonatomic, weak) IBOutlet VNumericalBadgeView *badgeView;
 @property (nonatomic, weak) IBOutlet VBadgeBackgroundView *badgeBorder;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -54,8 +55,6 @@
 - (void)setImage:(UIImage *)image
 {
     [self.button setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    UIImage *semiTransparent = [image imageByApplyingAlpha:0.4f];
-    [self.button setImage:[semiTransparent imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateHighlighted];
 }
 
 - (void)setEnabled:(BOOL)enabled
