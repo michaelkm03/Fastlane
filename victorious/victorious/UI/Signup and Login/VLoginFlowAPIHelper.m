@@ -105,7 +105,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
-    [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
+    [[VUserManager sharedInstance] loginViaFacebookModern:YES
+                                             OnCompletion:^(VUser *user, BOOL created)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {
@@ -113,7 +114,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                             completion(YES);
                         });
      }
-                                                        onError:^(NSError *error, BOOL thirdPartyAPIFailed)
+                                                  onError:^(NSError *error, BOOL thirdPartyAPIFailed)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {
