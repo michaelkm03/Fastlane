@@ -15,7 +15,6 @@
 
 #import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "VNavigationControllerScrollDelegate.h"
 #import "VObjectManager+Login.h"
 
 //View Controllers
@@ -44,7 +43,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
-@property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
 @property (nonatomic, readwrite) CGFloat topInset;
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
@@ -143,6 +141,13 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self addScrollDelegate];
     }
+    
+    // Adjust our scroll indicator insets to account for nav bar
+    CGRect navBarFrame = self.v_navigationController.innerNavigationController.navigationBar.frame;
+    CGRect supplementaryViewFrame = self.v_navigationController.supplementaryHeaderView.frame;
+    CGFloat indicatorTopOffset = CGRectGetMaxY(navBarFrame) + CGRectGetHeight(supplementaryViewFrame);
+    UIEdgeInsets scrollIndicatorInsets = UIEdgeInsetsMake(indicatorTopOffset, 0, 0, 0);
+    self.collectionView.scrollIndicatorInsets = scrollIndicatorInsets;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -428,6 +433,16 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
     [self.navigationControllerScrollDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self.navigationControllerScrollDelegate scrollViewDidEndDecelerating:scrollView];
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    [self.navigationControllerScrollDelegate scrollViewDidScrollToTop:scrollView];
 }
 
 #pragma mark - VStreamCollectionDataDelegate

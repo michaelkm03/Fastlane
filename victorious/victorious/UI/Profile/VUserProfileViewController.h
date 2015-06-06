@@ -10,10 +10,11 @@
 #import "VStreamCollectionViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VProvidesNavigationMenuItemBadge.h"
+#import "VDeepLinkHandler.h"
 
 @class VUser;
 
-@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge>
+@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge, VDeeplinkSupporter>
 
 @property (nonatomic, strong) VUser *user;
 

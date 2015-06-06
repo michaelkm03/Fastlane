@@ -660,6 +660,7 @@
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
+		C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */; };
 		C395E86E1AFAEAFA00B6E3DB /* UIImage+Round.m in Sources */ = {isa = PBXBuildFile; fileRef = C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */; };
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
@@ -1212,6 +1213,25 @@
 		035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
 		035926D01B1EA33400E910A7 /* Quicksand-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Light.ttf"; sourceTree = "<group>"; };
 		035926D11B1EA33400E910A7 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Regular.ttf"; sourceTree = "<group>"; };
+		035926EA1B2141DD00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Camera.strings"; sourceTree = "<group>"; };
+		035926EB1B2141DD00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/ActionSheet.strings"; sourceTree = "<group>"; };
+		035926EC1B2141DD00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/VKeyboardInputAccessoryView.strings"; sourceTree = "<group>"; };
+		035926ED1B2141DD00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/VNoContentView.strings"; sourceTree = "<group>"; };
+		035926EE1B2141DD00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Discover.strings"; sourceTree = "<group>"; };
+		035926EF1B2141DD00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/VForceUpgradeViewController.strings"; sourceTree = "<group>"; };
+		035926F01B2141DD00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Main.strings"; sourceTree = "<group>"; };
+		035926F11B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Profile.strings"; sourceTree = "<group>"; };
+		035926F21B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Purchases.strings"; sourceTree = "<group>"; };
+		035926F31B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/settings.strings"; sourceTree = "<group>"; };
+		035926F41B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/VModernEnterNameViewController.strings"; sourceTree = "<group>"; };
+		035926F51B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/VModernLandingViewController.strings"; sourceTree = "<group>"; };
+		035926F61B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/VModernResetTokenViewController.strings"; sourceTree = "<group>"; };
+		035926F71B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/FindFriendsTableView.strings"; sourceTree = "<group>"; };
+		035926F81B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/login.strings"; sourceTree = "<group>"; };
+		035926F91B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/VPublishViewController.strings"; sourceTree = "<group>"; };
+		035926FA1B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Workspace.strings"; sourceTree = "<group>"; };
+		035926FB1B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		035926FC1B2141DE00E910A7 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = defaultTemplate.json; sourceTree = "<group>"; };
 		035ABE7A1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VDefaultTemplate.h"; sourceTree = "<group>"; };
 		035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VDefaultTemplate.m"; sourceTree = "<group>"; };
@@ -2163,8 +2183,11 @@
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertTextView.h; path = "UI/Permission Alert/VPermissionAlertTextView.h"; sourceTree = "<group>"; };
 		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertTextView.m; path = "UI/Permission Alert/VPermissionAlertTextView.m"; sourceTree = "<group>"; };
+		C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewParallaxFlowLayout.h; sourceTree = "<group>"; };
+		C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewParallaxFlowLayout.m; sourceTree = "<group>"; };
 		C395E86C1AFAEAFA00B6E3DB /* UIImage+Round.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Round.h"; sourceTree = "<group>"; };
 		C395E86D1AFAEAFA00B6E3DB /* UIImage+Round.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Round.m"; sourceTree = "<group>"; };
+		C39864AF1B1E7FD900694AB3 /* VParallaxScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VParallaxScrolling.h; path = Parallax/VParallaxScrolling.h; sourceTree = "<group>"; };
 		C39864B01B1E9F6100694AB3 /* VStreamCellTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellTracking.h; sourceTree = "<group>"; };
 		C39B22091B0A58EF00D3DFE7 /* VPermissionMicrophone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionMicrophone.h; path = Permissions/VPermissionMicrophone.h; sourceTree = "<group>"; };
 		C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionMicrophone.m; path = Permissions/VPermissionMicrophone.m; sourceTree = "<group>"; };
@@ -3371,6 +3394,7 @@
 		0314D43319B46B5E00FA363C /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				C39864AE1B1E7F7700694AB3 /* Parallax */,
 				A7AEF96C1A83F1C300A3D3A0 /* Cells */,
 				F06F10C31AC201B90062E1D1 /* Directory */,
 				D8DF71DA1AFBDF81002EA7A5 /* Headers */,
@@ -5440,6 +5464,16 @@
 			name = Permissions;
 			sourceTree = "<group>";
 		};
+		C39864AE1B1E7F7700694AB3 /* Parallax */ = {
+			isa = PBXGroup;
+			children = (
+				C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */,
+				C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */,
+				C39864AF1B1E7FD900694AB3 /* VParallaxScrolling.h */,
+			);
+			name = Parallax;
+			sourceTree = "<group>";
+		};
 		D80A94D31A535DFA0035D788 /* Video */ = {
 			isa = PBXGroup;
 			children = (
@@ -6379,6 +6413,7 @@
 				Base,
 				fr,
 				de,
+				"pt-BR",
 			);
 			mainGroup = BE171D6D1868BE64004E5202;
 			productRefGroup = BE171D771868BE64004E5202 /* Products */;
@@ -6825,6 +6860,7 @@
 				A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
+				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
@@ -7532,6 +7568,7 @@
 				034D1A8F1AAFF00F00EB7B2D /* es */,
 				034D1A911AAFF01000EB7B2D /* fr */,
 				0308B0EC1AB20B2B00144E53 /* de */,
+				035926F91B2141DE00E910A7 /* pt-BR */,
 			);
 			name = VPublishViewController.xib;
 			sourceTree = "<group>";
@@ -7543,6 +7580,7 @@
 				03803DE51B0C271B00B63F05 /* es */,
 				03803DE71B0C271D00B63F05 /* fr */,
 				03803DE91B0C272300B63F05 /* de */,
+				035926F21B2141DE00E910A7 /* pt-BR */,
 			);
 			name = Purchases.storyboard;
 			path = Purchases;
@@ -7555,6 +7593,7 @@
 				03848F981B0A410C0092C660 /* es */,
 				03848F991B0A410C0092C660 /* fr */,
 				03848F9A1B0A410D0092C660 /* de */,
+				035926FB1B2141DE00E910A7 /* pt-BR */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -7566,6 +7605,7 @@
 				0390084A19F37B2800FD7EDF /* es */,
 				034D1A631AAF5A8900EB7B2D /* fr */,
 				0308B0FE1AB20B3000144E53 /* de */,
+				035926EA1B2141DD00E910A7 /* pt-BR */,
 			);
 			name = Camera.storyboard;
 			sourceTree = "<group>";
@@ -7577,6 +7617,7 @@
 				0390085819F38BC800FD7EDF /* es */,
 				034D1A561AAF5A8600EB7B2D /* fr */,
 				0308B0FA1AB20B2F00144E53 /* de */,
+				035926EB1B2141DD00E910A7 /* pt-BR */,
 			);
 			name = ActionSheet.storyboard;
 			sourceTree = "<group>";
@@ -7588,6 +7629,7 @@
 				0390086119F38D5F00FD7EDF /* es */,
 				034D1A551AAF5A8600EB7B2D /* fr */,
 				0308B0EE1AB20B2C00144E53 /* de */,
+				035926EC1B2141DD00E910A7 /* pt-BR */,
 			);
 			name = VKeyboardInputAccessoryView.xib;
 			sourceTree = "<group>";
@@ -7599,6 +7641,7 @@
 				0390086619F38FDB00FD7EDF /* es */,
 				034D1A621AAF5A8900EB7B2D /* fr */,
 				0308B0FC1AB20B3000144E53 /* de */,
+				035926EE1B2141DD00E910A7 /* pt-BR */,
 			);
 			name = Discover.storyboard;
 			sourceTree = "<group>";
@@ -7610,6 +7653,7 @@
 				03F6E26A1AB79E100017826E /* es */,
 				03F6E26B1AB79E130017826E /* fr */,
 				03F6E26C1AB79E150017826E /* de */,
+				035926FA1B2141DE00E910A7 /* pt-BR */,
 			);
 			name = Workspace.storyboard;
 			sourceTree = "<group>";
@@ -7621,6 +7665,7 @@
 				D825B8861B20B9AB004179B4 /* es */,
 				D825B8881B20B9AD004179B4 /* fr */,
 				D825B88A1B20B9AE004179B4 /* de */,
+				035926F61B2141DE00E910A7 /* pt-BR */,
 			);
 			name = VModernResetTokenViewController.storyboard;
 			sourceTree = "<group>";
@@ -7632,6 +7677,7 @@
 				D858E0CE1B1FAD5C00437DDE /* es */,
 				D858E0D01B1FAD6000437DDE /* fr */,
 				D858E0D21B1FAD6200437DDE /* de */,
+				035926F51B2141DE00E910A7 /* pt-BR */,
 			);
 			name = VModernLandingViewController.storyboard;
 			sourceTree = "<group>";
@@ -7644,6 +7690,7 @@
 				D858E0D91B1FC32700437DDE /* es */,
 				D858E0DB1B1FC32900437DDE /* fr */,
 				D858E0DD1B1FC32B00437DDE /* de */,
+				035926F41B2141DE00E910A7 /* pt-BR */,
 			);
 			name = VModernEnterNameViewController.storyboard;
 			sourceTree = "<group>";
@@ -7652,6 +7699,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				D85B702E1B0EAF3F0038CA5B /* Base */,
+				035926F81B2141DE00E910A7 /* pt-BR */,
 			);
 			name = login.storyboard;
 			sourceTree = "<group>";
@@ -7670,6 +7718,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				D85B703A1B0EAF3F0038CA5B /* Base */,
+				035926F71B2141DE00E910A7 /* pt-BR */,
 			);
 			name = FindFriendsTableView.xib;
 			sourceTree = "<group>";
@@ -7691,6 +7740,7 @@
 				0390084B19F386E200FD7EDF /* Base */,
 				034D1A611AAF5A8900EB7B2D /* fr */,
 				0308B0FB1AB20B2F00144E53 /* de */,
+				035926FC1B2141DE00E910A7 /* pt-BR */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -7702,6 +7752,7 @@
 				0390086819F39E0B00FD7EDF /* es */,
 				034D1A661AAF5A8A00EB7B2D /* fr */,
 				0308B1011AB20B3100144E53 /* de */,
+				035926F01B2141DD00E910A7 /* pt-BR */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -7713,6 +7764,7 @@
 				0390085C19F38C9F00FD7EDF /* es */,
 				034D1A641AAF5A8A00EB7B2D /* fr */,
 				0308B1001AB20B3100144E53 /* de */,
+				035926ED1B2141DD00E910A7 /* pt-BR */,
 			);
 			name = VNoContentView.xib;
 			sourceTree = "<group>";
@@ -7724,6 +7776,7 @@
 				0390086A19F39EC200FD7EDF /* es */,
 				034D1A5F1AAF5A8800EB7B2D /* fr */,
 				0308B0F81AB20B2E00144E53 /* de */,
+				035926EF1B2141DD00E910A7 /* pt-BR */,
 			);
 			name = VForceUpgradeViewController.xib;
 			sourceTree = "<group>";
@@ -7735,6 +7788,7 @@
 				0390087819F3A14E00FD7EDF /* es */,
 				034D1A541AAF5A8500EB7B2D /* fr */,
 				0308B0ED1AB20B2C00144E53 /* de */,
+				035926F11B2141DE00E910A7 /* pt-BR */,
 			);
 			name = Profile.storyboard;
 			sourceTree = "<group>";
@@ -7746,6 +7800,7 @@
 				0390087E19F3A4B400FD7EDF /* es */,
 				034D1A671AAF5A8B00EB7B2D /* fr */,
 				0308B0FD1AB20B3000144E53 /* de */,
+				035926F31B2141DE00E910A7 /* pt-BR */,
 			);
 			name = settings.storyboard;
 			sourceTree = "<group>";

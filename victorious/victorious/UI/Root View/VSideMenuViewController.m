@@ -122,7 +122,7 @@
     UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
     if (initialVC != nil)
     {
-        [self displayResultOfNavigation:initialVC];
+        [self displayResultOfNavigation:initialVC animated:YES];
     }
 }
 
@@ -312,9 +312,9 @@
     }
 }
 
-- (void)navigateToDestination:(id)navigationDestination completion:(void (^)())completion
+- (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated completion:(void (^)())completion
 {
-    [super navigateToDestination:navigationDestination completion:^void
+    [super navigateToDestination:navigationDestination animated:animated completion:^void
      {
          if ( self.visible )
          {
@@ -327,7 +327,7 @@
      }];
 }
 
-- (void)displayResultOfNavigation:(UIViewController *)viewController
+- (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated
 {
     NSAssert(viewController != nil, @"Can't display a nil view controller");
     
