@@ -130,6 +130,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     // Note if we're pushing another view controller onto the nav stack or if we're presenting
     // a modal view controller
     self.wasHiddenByAnotherViewController = (self.navigationController.viewControllers.count > 1 || self.presentedViewController);
+    self.followingStatusHasChanged = NO;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -237,7 +238,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)updatedFollowedUsers
 {
-    [self.suggestedPeopleViewController refresh:YES];
     self.followingStatusHasChanged = YES;
 }
 
