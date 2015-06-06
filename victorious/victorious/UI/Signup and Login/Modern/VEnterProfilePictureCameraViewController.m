@@ -22,8 +22,11 @@
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
 
+@import AVFoundation;
+
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kButtonPromptKey = @"buttonPrompt";
+static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPermissions";
 
 @interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate>
 
@@ -197,14 +200,53 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 
 - (void)showCameraOnViewController:(UIViewController *)viewController
 {
-    NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
-                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImageRegistration) };
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
-    workspaceFlowController.delegate = self;
-    workspaceFlowController.videoEnabled = NO;
-    [viewController presentViewController:workspaceFlowController.flowRootViewController
-                                 animated:YES
-                               completion:nil];
+    BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:kShouldRequestCameraPermissionsKey].boolValue;
+    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+
+    void (^showCamera)(void) = ^void(void)
+    {
+        NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
+                                             VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImageRegistration) };
+        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
+        workspaceFlowController.delegate = self;
+        workspaceFlowController.videoEnabled = NO;
+        [viewController presentViewController:workspaceFlowController.flowRootViewController
+                                     animated:YES
+                                   completion:nil];
+    };
+    
+    if (!shouldRequestPermissions)
+    {
+        showCamera();
+    }
+    else
+    {
+        if (status == AVAuthorizationStatusNotDetermined)
+        {
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
+                                     completionHandler:^(BOOL granted)
+             {
+                 if (granted)
+                 {
+                     showCamera();
+                 }
+                 else
+                 {
+                     // We don't have permissions just continue
+                     [self userPressedDone];
+                 }
+             }];
+        }
+        else if ((status == AVAuthorizationStatusDenied) || (status == AVAuthorizationStatusRestricted))
+        {
+            // We don't have permissions just continue
+            [self userPressedDone];
+        }
+        else if (status == AVAuthorizationStatusAuthorized)
+        {
+            showCamera();
+        }
+    }
 }
 
 @end
