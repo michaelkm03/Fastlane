@@ -203,11 +203,9 @@
     self.usersFollowing = [[NSMutableArray alloc] init];
     self.usersNotFollowing = [[NSMutableArray alloc] init];
     
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-
     for (VUser *user in users)
     {
-        if ([mainUser.following containsObject:user])
+        if ( user.isFollowedByMainUser.boolValue )
         {
             [self.usersFollowing addObject:user];
         }
@@ -539,7 +537,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     VUser *profile;
 
     VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
@@ -567,7 +564,7 @@
                  return;
              }
              
-             if ([mainUser.following containsObject:profile])
+             if ( profile.isFollowedByMainUser.boolValue )
              {
                  [self unfollowFriendAction:profile];
              }

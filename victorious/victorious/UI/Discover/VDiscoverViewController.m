@@ -89,10 +89,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedTags)];
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
-                        keyPath:NSStringFromSelector(@selector(following))
-                        options:NSKeyValueObservingOptionNew
-                         action:@selector(updatedFollowedUsers)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -217,11 +213,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     self.loadedUserFollowing = YES;
     [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
-}
-
-- (void)updatedFollowedUsers
-{
-    [self.suggestedPeopleViewController updateFollowingStateOfUsers];
 }
 
 #pragma mark - VDiscoverViewControllerProtocol
