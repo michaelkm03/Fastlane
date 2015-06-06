@@ -15,7 +15,7 @@
 "Community" = "Comunidade";
 "Owner" = "Proprietário";
 "Inbox" = "Caixa de Entrada";
-"Store" = "Store";
+"Store" = "Loja";
 "Messages" = "Mensagens";
 "Notifications" = "Notificações";
 "Comments" = "Comentários";
@@ -373,7 +373,7 @@
 "Please check your network connection or try again later." = "Verifique sua conexão com a rede ou tente novamente mais tarde.";
 
 "EnterResetCodeMessage" = "Um e-mail foi enviado a este endereço contendo instruções para redefinir a senha.";
-"An email was sent to this address containing reset password instructions." = "An email was sent to this address containing reset password instructions.";
+"An email was sent to this address containing reset password instructions." = "Um e-mail foi enviado a este endereço contendo instruções para redefinir a senha.";
 "EnterCodeTitle" = "INSERIR CÓDIGO";
 "Resend Email" = "Reenviar E-mail";
 
@@ -614,29 +614,29 @@
 "Upload failure" = "Falha ao carregar";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Antes de você poder tirar e compartilhar fotos com a comunidade, precisamos de acesso à sua câmera. Permitir acesso à câmera agora?";
-"Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?";
+"Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Obrigado por fazer parte da comunidade! Para adicionar uma foto, precisamos acessar a sua câmera. Permitir acesso à câmera agora?";
 "Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Antes de você poder gravar e compartilhar vídeos, precisamos de acesso ao seu microfone. Permitir acesso ao microfone agora?";
 
 "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "Estamos animados em ter você como parte da nossa comunidade! Crie uma conta, e você poderá criar, postar e compartilhar conteúdo!";
 "Follow content from other fans." = "Siga o conteúdo de outros fãs.";
 "Share creations with the community." = "Compartilhe criações com a comunidade.";
 "Join in on the conversation." = "Participe da conversa.";
-"By signing up you are agreeing to our \\nterms of service and privacy policy." = "By signing up you are agreeing to our \nterms of service and privacy policy.";
+"By signing up you are agreeing to our \\nterms of service and privacy policy." = "Ao se cadastrar, você concorda com os os nossos \ntermos de serviço e a política de privacidade.";
 "Sign up with Email" = "Cadastre-se com E-mail";
 "Sign up with Facebook" = "Cadastre-se com o Facebook";
 "Create an account and join the community." = "Crie uma conta e faça parte da comunidade.";
 "Create a username and introduce yourself to the community." = "Crie um nome de usuário e apresente-se à comunidade.";
 "Add photo" = "Adicionar foto";
 "Add your profile picture." = "Adicione sua imagem de perfil.";
-"Enter Email" = "Enter Email";
-"Enter name" = "Enter name";
-"Enter Password" = "Enter Password";
-"Tap Here" = "Tap Here";
-"Forgot your password?" = "Forgot your password?";
-"Enter Code" = "Enter Code";
+"Enter Email" = "Inserir E-mail";
+"Enter name" = "Inserir Nome";
+"Enter Password" = "Inserir Senha";
+"Tap Here" = "Clique Aqui";
+"Forgot your password?" = "Esqueceu sua senha?";
+"Enter Code" = "Inserir Código";
 /* A code the user can use to verify their identitiy when resetting their password via email */
-"Code" = "Code";
-"Create a new password" = "Create a new password";
-"Enter a new Password" = "Enter a new Password";
-"Confirm your new password" = "Confirm your new password";
-"Welcome Back!" = "Welcome Back!";
+"Code" = "Código";
+"Create a new password" = "Criar uma nova senha";
+"Enter a new Password" = "Inserir uma nova Senha";
+"Confirm your new password" = "Confirmar sua nova senha";
+"Welcome Back!" = "Bem-vindo de volta!";
