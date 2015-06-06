@@ -237,7 +237,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)updatedFollowedUsers
 {
-    [self.suggestedPeopleViewController updateFollowingStateOfUsers];
+    [self.suggestedPeopleViewController refresh:YES];
     self.followingStatusHasChanged = YES;
 }
 
@@ -247,7 +247,8 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (BOOL)isShowingNoData
 {
-    return self.trendingTags.count == 0 || self.error != nil || !self.loadedUserFollowing;
+    BOOL tagFollowStatesAreValid = [[VObjectManager sharedManager] mainUser] == nil || self.loadedUserFollowing;
+    return self.trendingTags.count == 0 || self.error != nil || !tagFollowStatesAreValid;
 }
 
 #pragma mark - UI setup
@@ -533,10 +534,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 [trendingCell updateSubscribeStatusAnimated:YES];
                 return;
             }
-        }
-        else if ( [cell isKindOfClass:[VNoContentTableViewCell class]] )
-        {
-            return;
         }
     }
 }

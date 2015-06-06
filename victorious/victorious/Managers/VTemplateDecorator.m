@@ -150,6 +150,7 @@ static NSString * const kKeyPathDelimiter = @"/";
         NSInteger index = [self.numberFormatter numberFromString:currentKey].integerValue;
         NSMutableArray *sourceArray = (NSMutableArray *)source;
         NSMutableArray *destination = [[NSMutableArray alloc] initWithCapacity:sourceArray.count];
+        NSInteger skipped = 0;
         for ( NSInteger i = 0; i < (NSInteger)sourceArray.count; i++ )
         {
             if ( i == index && !(*didSetTemplateValue) )
@@ -159,13 +160,17 @@ static NSString * const kKeyPathDelimiter = @"/";
                     // If templateValue is nil, it will be skipped, thereby removing that value for the index
                     if ( templateValue != nil )
                     {
-                        destination[i] = templateValue;
+                        destination[i - skipped] = templateValue;
+                    }
+                    else
+                    {
+                        skipped++;
                     }
                     *didSetTemplateValue = YES;
                 }
                 else
                 {
-                    destination[i] = [self collectionFromCollection:source[i]
+                    destination[i - skipped] = [self collectionFromCollection:source[i]
                                              bySettingTemplateValue:templateValue
                                                      forKeyPathKeys:keyPathKeys
                                                              didSet:didSetTemplateValue];
@@ -173,7 +178,7 @@ static NSString * const kKeyPathDelimiter = @"/";
             }
             else
             {
-                destination[i] = source[i];
+                destination[i - skipped] = source[i];
             }
         }
         

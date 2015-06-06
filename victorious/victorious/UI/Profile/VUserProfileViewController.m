@@ -40,6 +40,8 @@
 #import "VAuthorizedAction.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
+#import "VProfileDeeplinkHandler.h"
+#import "VInboxDeepLinkHandler.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -331,19 +333,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ([VObjectManager sharedManager].mainUser)
     {
-        header.loading = YES;
-        [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                     following:self.user
-                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             header.loading = NO;
-             const BOOL isFollowingUser = [resultObjects.firstObject boolValue];
-             header.state = isFollowingUser ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
-         }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-         {
-             header.loading = NO;
-         }];
+        header.state = self.user.isFollowedByMainUser.boolValue ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
     }
     else
     {
@@ -870,5 +860,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 #pragma mark - VProvidesNavigationMenuItemBadge
 
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+#pragma mark - VDeepLinkSupporter
+
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
+{
+    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
 
 @end

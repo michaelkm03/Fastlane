@@ -40,6 +40,20 @@
 
 @optional
 
+/**
+ Optionally exposes a stored dependency manager of this navigation destination which
+ could be used to gather data and references to other related components for larger 
+ systems in the app's architecture, such as accessory screens.  Calling code should always
+ check for `respondsToSelector:` and check against nil.
+ */
 - (VDependencyManager *)dependencyManager;
+
+/**
+ Optionally exposes a stored alternate view controller of this navigation destination
+ which could be used to gather data and references to other related components for larger
+ systems in the app's architecture, such as deep linking.  Calling code should always
+ check for `respondsToSelector:` and check against nil.
+ */
+- (UIViewController *)alternateViewController;
 
 @end

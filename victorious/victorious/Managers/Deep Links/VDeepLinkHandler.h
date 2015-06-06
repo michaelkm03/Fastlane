@@ -13,7 +13,7 @@
 
 /**
  Conformers of this protocol are indicating they provide deep link support by implementing
- the `deepLinkHandler` property, returning a `VDeeplinkHanlder` object that is dedicated to
+ the `deepLinkHandlerForURL:` method, returning a `VDeeplinkHandler` object that is dedicated to
  validating and responding to deep link URLs.
  */
 @protocol VDeeplinkSupporter <NSObject>
@@ -23,7 +23,7 @@
  that will handle deep links on behalf of the current object (usually a UIViewController conforming
  to VNavigationDestination).
  */
-@property (nonatomic, readonly) id<VDeeplinkHandler> deepLinkHandler;
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url;
 
 @end
 
