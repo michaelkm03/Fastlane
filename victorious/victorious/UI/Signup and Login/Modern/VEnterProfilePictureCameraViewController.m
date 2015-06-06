@@ -226,15 +226,18 @@ static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPe
             [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
                                      completionHandler:^(BOOL granted)
              {
-                 if (granted)
+                 dispatch_async(dispatch_get_main_queue(), ^
                  {
-                     showCamera();
-                 }
-                 else
-                 {
-                     // We don't have permissions just continue
-                     [self userPressedDone];
-                 }
+                     if (granted)
+                     {
+                         showCamera();
+                     }
+                     else
+                     {
+                         // We don't have permissions just continue
+                         [self userPressedDone];
+                     }
+                 });
              }];
         }
         else if ((status == AVAuthorizationStatusDenied) || (status == AVAuthorizationStatusRestricted))
