@@ -190,9 +190,14 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     {
         return;
     }
-    
     [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
+                                                      completion:^
+     {
+         if (self.completionBlock != nil)
+         {
+             self.completionBlock(NO);
+         }
+     }];
 }
 
 - (void)selectedLogin
