@@ -316,8 +316,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-   // NSLog(@"should navigate");
-    
     if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemFollowHashtag] )
     {
         [self toggleFollowHashtag];
