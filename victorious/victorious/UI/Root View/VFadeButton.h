@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ A UIButton subclass that demonstrates a fade effect on touch down. Helpful
+ when creating a bar button item with a custom view, which will prevent
+ a normal UIButton's default down state.
+ */
 @interface VFadeButton : UIButton
 
 @end
