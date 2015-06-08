@@ -15,6 +15,7 @@
 "Community" = "Comunidad";
 "Owner" = "Propietario";
 "Inbox" = "Correos";
+"Store" = "Guardar";
 "Messages" = "Mensajes";
 "Notifications" = "Notificaciones";
 "Comments" = "Comentarios";
@@ -73,6 +74,7 @@
 "InvalidTimePlaceholder" = "-:--";
 "%ld+" = "%ld+";
 
+"Login" = "Ingresar";
 "Log in here" = "Ingresa aquí";
 "Already Registered?" = "¿Ya estás registrado?";
 "Get Started" = "¡Empieza!";
@@ -371,6 +373,7 @@
 "Please check your network connection or try again later." = "Por favor, comprueba la conexión de red o intenta de nuevo más tarde.";
 
 "EnterResetCodeMessage" = "Se envió un correo  que contiene instrucciones cómo cambiar su contraseña..";
+"An email was sent to this address containing reset password instructions." = "Se envió un correo a esta dirección con las instrucciones para cambiar la contraseña";
 "EnterCodeTitle" = "INGRESAR CÓDIGO";
 "Resend Email" = "Reenviar email";
 
@@ -420,7 +423,6 @@
 "Connect to Instagram" = "Connectar con Instagram";
 
 "Logout" = "Salir";
-"Login" = "Ingresar";
 
 "UserBannedTitle" = "¡Ruh Roh!";
 "UserBannedMessage" = "Desafortunadamente, eres un miembro prohibido de la comunidad. No puedes ver el contenido ni interactuar con los demás.";
@@ -612,16 +614,29 @@
 "Upload failure" = "Error al cargar";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Antes de poder tomar y compartir fotos con la comunidad, necesitamos tener acceso a tu cámara. ¿Permites el acceso a la cámara ahora?";
-"Thank you for joining the community! Add a profile picture now." = "¡Gracias por unirte a la comunidad! Ahora, añade una imagen para tu perfil .";
+"Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "¡Gracias por unirte a la comunidad! Para agregar una foto de perfil, necesitamos tener acceso a tu cámara. ¿Permites el acceso a la cámara ahora?";
 "Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Antes de poder grabar y compartir videos, necesitamos acceder a tu micrófono. ¿Permites el acceso al micrófono?";
 
 "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "¡Estamos muy contentos de que te unas a nuestra comunidad! ¡Abre una cuenta y podrás crear, publicar y compartir!";
 "Follow content from other fans." = "Sigue el contenido de otros fans.";
 "Share creations with the community." = "Comparte las creaciones con la comunidad.";
 "Join in on the conversation." = "Únete a la conversación.";
+"By signing up you are agreeing to our \\nterms of service and privacy policy." = "Al suscribirte aceptas nuestros \nTérminos de Servicio y Política de Privacidad.";
 "Sign up with Email" = "Regístrate con un email";
 "Sign up with Facebook" = "Regístrate con Facebook";
 "Create an account and join the community." = "Crea una cuenta y únete a la comunidad.";
 "Create a username and introduce yourself to the community." = "Crea un nombre de usuario y preséntate a la comunidad.";
 "Add photo" = "Añade una foto";
 "Add your profile picture." = "Añade tu imagen de perfil";
+"Enter Email" = "Ingresa tu email";
+"Enter name" = "Ingresa tu nombre";
+"Enter Password" = "Ingresa una contraseña";
+"Tap Here" = "Toca aquí";
+"Forgot your password?" = "¿Olvidaste tu contraseña?";
+"Enter Code" = "Ingresa el código";
+/* A code the user can use to verify their identitiy when resetting their password via email */
+"Code" = "Código";
+"Create a new password" = "Crea una contraseña nueva";
+"Enter a new Password" = "Ingresa una contraseña nueva";
+"Confirm your new password" = "Confirma tu contraseña nueva";
+"Welcome Back!" = "¡Bienvenido de vuelta!";

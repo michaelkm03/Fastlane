@@ -95,6 +95,27 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed
 {
+    return [self createFacebookWithToken:accessToken
+                                isModern:NO
+                            SuccessBlock:success
+                               failBlock:failed];
+}
+
+- (RKManagedObjectRequestOperation *)modernCreateFacebookWithToken:(NSString *)accessToken
+                                                      SuccessBlock:(VSuccessBlock)success
+                                                         failBlock:(VFailBlock)failed
+{
+    return [self createFacebookWithToken:accessToken
+                                isModern:YES
+                            SuccessBlock:success
+                               failBlock:failed];
+}
+
+- (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString *)accessToken
+                                                    isModern:(BOOL)isModern
+                                                SuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)failed
+{
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -106,7 +127,9 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
     };
     
-    return [self POST:@"/api/account/create/via_facebook"
+    NSString *url = isModern ? @"/api/account/create/via_facebook_modern" : @"/api/account/create/via_facebook";
+    
+    return [self POST:url
                object:nil
            parameters:parameters
          successBlock:fullSuccess
