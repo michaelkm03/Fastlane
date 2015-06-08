@@ -70,6 +70,7 @@ static const CGFloat kShadowOpacity = 0.4f;
     if ( self.streamItem.name == nil || [self.streamItem.name isEqualToString:@""] )
     {
         [self.gradientLayer removeFromSuperlayer];
+        self.gradientLayer = nil;
         return;
     }
     
