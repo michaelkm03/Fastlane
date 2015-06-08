@@ -8,25 +8,29 @@
 
 #import "VInsetMarqueeCollectionViewFlowLayout.h"
 
-static CGFloat const kPerspectiveTransform = -1.0/500.0;
-static CGFloat const kMaxRotation = 2 * M_PI_4 / 3;
-static CGFloat const kMaxZoom = 60;
+static CGFloat const kPerspectiveTransform = -1.0f/500.0f;
+static CGFloat const kMaxRotation = 2.0f * M_PI_4 / 3.0f;
+static CGFloat const kMaxHorizontalOffsetDivisor = 5.0f;
+static CGFloat const kMaxZoomDivisor = 15.0f;
 
 @implementation VInsetMarqueeCollectionViewFlowLayout
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
-    CGFloat newOffset = self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.bounds);
+    CGFloat screenWidth = CGRectGetWidth(self.collectionView.bounds);
+    CGFloat newOffset = self.collectionView.contentOffset.x / screenWidth;
+    CGFloat maxHorizontalOffset = screenWidth / kMaxHorizontalOffsetDivisor;
+    CGFloat maxZoom = screenWidth / kMaxZoomDivisor;
     for ( UICollectionViewLayoutAttributes *attributes in layoutAttributes )
     {
         CGFloat difference = newOffset - attributes.indexPath.row;
-        CGFloat clampedRotationMultiplier = MIN(1.0f, MAX(difference, -1.0f));
+        CGFloat clampedTransformMultiplier = MIN(1.0f, MAX(difference, -1.0f));
         
         CATransform3D transform = CATransform3DIdentity;
         transform.m34 = kPerspectiveTransform;
-        transform = CATransform3DRotate(transform, kMaxRotation * clampedRotationMultiplier, 0, 1, 0);
-        transform = CATransform3DTranslate(transform, 0, 0, kMaxZoom * -fabs(clampedRotationMultiplier));
+        transform = CATransform3DRotate(transform, kMaxRotation * clampedTransformMultiplier, 0, 1, 0);
+        transform = CATransform3DTranslate(transform, maxHorizontalOffset * clampedTransformMultiplier, 0, maxZoom * -fabs(clampedTransformMultiplier));
 
         attributes.transform3D = transform;
     }
