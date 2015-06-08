@@ -69,7 +69,8 @@ static const CGFloat kShadowOpacity = 0.4f;
     CGRect gradientBounds = self.gradientContainer.bounds;
     if ( self.streamItem.name == nil || [self.streamItem.name isEqualToString:@""] )
     {
-        gradientBounds.size.height = 0.0f;
+        [self.gradientLayer removeFromSuperlayer];
+        return;
     }
     
     if ( CGRectEqualToRect(self.gradientLayer.frame, gradientBounds) )
