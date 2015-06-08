@@ -199,6 +199,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [self loadUserWithRemoteId:self.remoteId];
     }
+    else
+    {
+        
+    }
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.view.backgroundColor = backgroundColor;
@@ -419,6 +423,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             [self shrinkHeaderAnimated:YES];
             [self.collectionView reloadData];
+            [self reloadUserFollowingRelationship];
         }
     }
 }
