@@ -231,9 +231,13 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     };
     
     // Backend Subscribe to Hashtag call
-    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
-                                          successBlock:successBlock
-                                             failBlock:failureBlock];
+    [[VObjectManager sharedManager] fetchHashtags:^{
+        
+        [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
+                                              successBlock:successBlock
+                                                 failBlock:failureBlock];
+        
+    }];
 }
 
 - (void)unfollowHashtag
@@ -258,9 +262,11 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     };
     
     // Backend Unsubscribe to Hashtag call
-    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
-                                            successBlock:successBlock
-                                               failBlock:failureBlock];
+    [[VObjectManager sharedManager] fetchHashtags:^{
+        [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
+                                                successBlock:successBlock
+                                                   failBlock:failureBlock];
+    }];
 }
 
 #pragma mark - UIBarButtonItem state management
@@ -310,6 +316,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
+   // NSLog(@"should navigate");
+    
     if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemFollowHashtag] )
     {
         [self toggleFollowHashtag];

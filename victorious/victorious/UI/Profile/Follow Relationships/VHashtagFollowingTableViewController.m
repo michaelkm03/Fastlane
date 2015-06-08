@@ -255,9 +255,12 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     };
     
     // Backend Call to Subscribe to Hashtag
-    [[VObjectManager sharedManager] subscribeToHashtagUsingVHashtagObject:hashtag
-                                                             successBlock:successBlock
-                                                                failBlock:failureBlock];
+    
+    [[VObjectManager sharedManager] fetchHashtags:^{
+        [[VObjectManager sharedManager] subscribeToHashtagUsingVHashtagObject:hashtag
+                                                                 successBlock:successBlock
+                                                                    failBlock:failureBlock];
+    }];
 }
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
@@ -273,9 +276,11 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     };
     
     // Backend Call to Unsubscribe to Hashtag
-    [[VObjectManager sharedManager] unsubscribeToHashtagUsingVHashtagObject:hashtag
-                                                               successBlock:successBlock
-                                                                  failBlock:failureBlock];
+    [[VObjectManager sharedManager] fetchHashtags:^{
+        [[VObjectManager sharedManager] unsubscribeToHashtagUsingVHashtagObject:hashtag
+                                                                   successBlock:successBlock
+                                                                      failBlock:failureBlock];
+    }];
 }
 
 - (void)showFailureHUD

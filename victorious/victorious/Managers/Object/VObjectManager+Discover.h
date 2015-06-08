@@ -44,5 +44,6 @@
                                                    limitPerPage:(NSInteger)pageLimit
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
+- (void)fetchHashtags:(void (^)(void))completionBlock;
 
 @end
