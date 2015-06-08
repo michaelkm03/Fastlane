@@ -46,7 +46,7 @@
 		<key>appID</key>
 		<integer>1</integer>
 		<key>baseURL</key>
-		<string>http://staging-euw1.getvictorious.com</string>
+		<string>https://staging-euw1.getvictorious.com</string>
 		<key>name</key>
 		<string>Staging EUW1</string>
 	</dict>
