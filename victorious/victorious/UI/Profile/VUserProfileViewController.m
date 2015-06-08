@@ -411,8 +411,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         CGFloat width = CGRectGetWidth(self.view.bounds);
         self.currentProfileSize = CGSizeMake(width, height);
         
-        [self reloadUserFollowingRelationship];
-        
         if ( self.streamDataSource.count == 0 )
         {
             [self refresh:nil];
@@ -421,6 +419,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             [self shrinkHeaderAnimated:YES];
             [self.collectionView reloadData];
+            [self reloadUserFollowingRelationship];
         }
     }
 }
@@ -450,6 +449,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                     completionBlock();
                 }
                 [self.profileHeaderViewController reloadProfileImage];
+                [self reloadUserFollowingRelationship];
             };
             [super refreshWithCompletion:fullCompletionBlock];
         }
@@ -673,7 +673,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
-        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds andDependencyManager:self.dependencyManager];
     }
     else if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
