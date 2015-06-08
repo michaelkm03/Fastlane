@@ -673,7 +673,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
-        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds andDependencyManager:self.dependencyManager];
     }
     else if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
