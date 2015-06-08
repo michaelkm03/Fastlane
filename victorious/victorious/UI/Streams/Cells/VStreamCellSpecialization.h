@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString * const kStreamCellShowsHighlightedStateKey = @"showsHighlightedState";
+
 @class VStreamItem;
 
 /**

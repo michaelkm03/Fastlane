@@ -106,10 +106,15 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super setHighlighted:highlighted];
     
-    [UIView animateWithDuration:0.1 animations:^
-     {
-         self.dimmingView.alpha = highlighted ? 0.6f : 0;
-     }];
+    // Determine if this cell shows its highlighted state
+    BOOL showsHighlight = [[self.dependencyManager numberForKey:kStreamCellShowsHighlightedStateKey] boolValue];
+    if (showsHighlight)
+    {
+        [UIView animateWithDuration:0.1 animations:^
+         {
+             self.dimmingView.alpha = highlighted ? 0.6f : 0;
+         }];
+    }
 }
 
 #pragma mark - Internal Methods

@@ -178,10 +178,15 @@ static const CGFloat maxCaptionHeight = 80.0f;
 {
     [super setHighlighted:highlighted];
     
-    [UIView animateWithDuration:0.1 animations:^
+    // Determine if this cell shows its highlighted state
+    BOOL showsHighlight = [[self.dependencyManager numberForKey:kStreamCellShowsHighlightedStateKey] boolValue];
+    if (showsHighlight)
     {
-        self.dimmingView.alpha = highlighted ? 0.6f : 0;
-    }];
+        [UIView animateWithDuration:0.1 animations:^
+         {
+             self.dimmingView.alpha = highlighted ? 0.6f : 0;
+         }];
+    }
 }
 
 #pragma mark - Internal Methods
