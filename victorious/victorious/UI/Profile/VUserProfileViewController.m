@@ -411,8 +411,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         CGFloat width = CGRectGetWidth(self.view.bounds);
         self.currentProfileSize = CGSizeMake(width, height);
         
-        [self reloadUserFollowingRelationship];
-        
         if ( self.streamDataSource.count == 0 )
         {
             [self refresh:nil];
@@ -450,6 +448,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                     completionBlock();
                 }
                 [self.profileHeaderViewController reloadProfileImage];
+                [self reloadUserFollowingRelationship];
             };
             [super refreshWithCompletion:fullCompletionBlock];
         }
