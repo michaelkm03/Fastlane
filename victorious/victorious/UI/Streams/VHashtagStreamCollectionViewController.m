@@ -356,4 +356,3 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 }
 
 @end
-
