@@ -17,7 +17,7 @@ static NSString * const kPlist = @"plist";
 
 @implementation VObjectManager (Environment)
 
-+ (VEnvironment *)currentEnvironment
+- (VEnvironment *)currentEnvironment
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
@@ -30,25 +30,30 @@ static NSString * const kPlist = @"plist";
     });
     
     NSString *environmentName = [[NSUserDefaults standardUserDefaults] stringForKey:kCurrentEnvironmentKey];
-    return [[self.bundleEnvironments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name==%@", environmentName]] lastObject];
+    return [[self.allEnvironments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name==%@", environmentName]] lastObject];
 }
 
-+ (void)setCurrentEnvironment:(VEnvironment *)currentEnvironment
+- (void)setCurrentEnvironment:(VEnvironment *)currentEnvironment
 {
-    if ([self.bundleEnvironments containsObject:currentEnvironment])
+    if ([self.allEnvironments containsObject:currentEnvironment])
     {
         [[NSUserDefaults standardUserDefaults] setObject:currentEnvironment.name forKey:kCurrentEnvironmentKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
-+ (NSArray *)bundleEnvironments
+- (void)addEnvironment:(VEnvironment *)currentEnvironment
 {
-    static NSArray *bundleEnvironments;
+    
+}
+
+- (NSArray *)allEnvironments
+{
+    static NSArray *allEnvironments;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
     {
-        NSURL *environmentsConfigurationURL = [[NSBundle bundleForClass:self] URLForResource:kEnvironmentsFilename withExtension:kPlist];
+        NSURL *environmentsConfigurationURL = [[NSBundle bundleForClass:[self class]] URLForResource:kEnvironmentsFilename withExtension:kPlist];
         NSInputStream *fileStream = [[NSInputStream alloc] initWithURL:environmentsConfigurationURL];
         [fileStream open];
         NSArray *environmentsPlist = [NSPropertyListSerialization propertyListWithStream:fileStream options:0 format:nil error:nil];
@@ -66,9 +71,15 @@ static NSString * const kPlist = @"plist";
                 }
             }
         }
-        bundleEnvironments = [NSArray arrayWithArray:environments];
+        allEnvironments = [NSArray arrayWithArray:environments];
     });
-    return bundleEnvironments;
+    return allEnvironments;
+}
+
+- (NSURL *)documentsDirectoryWithPath:(NSString *)path
+{
+    NSString *documentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
+    return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:path]];
 }
 
 @end

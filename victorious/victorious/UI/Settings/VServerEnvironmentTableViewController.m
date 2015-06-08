@@ -23,7 +23,7 @@
 
 - (void)awakeFromNib
 {
-    self.serverEnvironments = [VObjectManager bundleEnvironments];
+    self.serverEnvironments = [[VObjectManager sharedManager] allEnvironments];
 }
 
 - (void)viewDidLoad
@@ -32,13 +32,13 @@
     
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    self.startingEnvironment = [VObjectManager currentEnvironment];
+    self.startingEnvironment = [[VObjectManager sharedManager] currentEnvironment];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    if (![self.startingEnvironment isEqual:[VObjectManager currentEnvironment]])
+    if (![self.startingEnvironment isEqual:[[VObjectManager sharedManager] currentEnvironment]])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
     }
@@ -78,7 +78,7 @@
     cell.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     cell.textLabel.text = [(VEnvironment *)self.serverEnvironments[indexPath.row] name];
     
-    VEnvironment *environment = [VObjectManager currentEnvironment];
+    VEnvironment *environment = [[VObjectManager sharedManager] currentEnvironment];
     if ([environment isEqual:self.serverEnvironments[indexPath.row]])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -101,7 +101,7 @@
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    [VObjectManager setCurrentEnvironment:self.serverEnvironments[indexPath.row]];
+    [[VObjectManager sharedManager] setCurrentEnvironment:self.serverEnvironments[indexPath.row]];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

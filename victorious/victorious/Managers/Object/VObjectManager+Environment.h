@@ -15,8 +15,12 @@
  */
 @interface VObjectManager (Environment)
 
-+ (VEnvironment *)currentEnvironment;
-+ (void)setCurrentEnvironment:(VEnvironment *)newEnvironment;
-+ (NSArray *)bundleEnvironments; ///< array of VEnvironment objects
+- (VEnvironment *)currentEnvironment;
+
+- (void)setCurrentEnvironment:(VEnvironment *)newEnvironment;
+
+- (NSArray *)allEnvironments; ///< array of VEnvironment objects
+
+- (void)addEnvironment:(VEnvironment *)currentEnvironment;
 
 @end

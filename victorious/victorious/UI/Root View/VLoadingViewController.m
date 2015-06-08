@@ -152,8 +152,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 - (void)loadTemplate
 {
     self.templateDownloadManager = [[VTemplateDownloadManager alloc] initWithDownloader:[VObjectManager sharedManager]];
-    self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[VObjectManager currentEnvironment]];
-    self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[VObjectManager currentEnvironment]];
+    self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[[VObjectManager sharedManager] currentEnvironment]];
+    self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[[VObjectManager sharedManager] currentEnvironment]];
     
     __weak typeof(self) weakSelf = self;
     [self.templateDownloadManager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)

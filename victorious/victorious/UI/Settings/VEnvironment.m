@@ -8,9 +8,9 @@
 
 #import "VEnvironment.h"
 
-static NSString * const kNameKey = @"name";
-static NSString * const kAppIDKey = @"appID";
-static NSString * const kBaseURLKey = @"baseURL";
+NSString * const VNameKey = @"name";
+NSString * const VAppIDKey = @"appID";
+NSString * const VBaseURLKey = @"baseURL";
 
 @implementation VEnvironment
 
@@ -28,9 +28,9 @@ static NSString * const kBaseURLKey = @"baseURL";
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
-    NSString *name = dictionary[kNameKey];
-    NSNumber *appID = dictionary[kAppIDKey];
-    NSString *baseURL = dictionary[kBaseURLKey];
+    NSString *name = dictionary[ VNameKey ];
+    NSNumber *appID = dictionary[ VAppIDKey ];
+    NSString *baseURL = dictionary[ VBaseURLKey ];
     
     if ( ![name isKindOfClass:[NSString class]] ||
          ![appID isKindOfClass:[NSNumber class]] ||

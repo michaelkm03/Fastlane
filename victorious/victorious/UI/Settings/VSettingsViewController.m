@@ -119,7 +119,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     
     [self updateLogoutButtonState];
     
-    self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
+    self.serverEnvironmentCell.detailTextLabel.text = [[[VObjectManager sharedManager] currentEnvironment] name];
     
     self.videoAutoplayCell.detailTextLabel.text = [self.videoSettings displayNameForCurrentSetting];
     

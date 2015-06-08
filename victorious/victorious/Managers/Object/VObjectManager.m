@@ -60,7 +60,7 @@
     RKLogConfigureByName("*", RKLogLevelOff);
 #endif
     
-    VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
+    VObjectManager *manager = [self managerWithBaseURL:[[[VObjectManager sharedManager] currentEnvironment] baseURL]];
     [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
     
@@ -453,7 +453,7 @@
     NSString *userAgent = (self.HTTPClient.defaultHeaders)[kVUserAgentHeader];
     NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
     NSString *appVersion = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    NSNumber *appID = [VObjectManager currentEnvironment].appID;
+    NSNumber *appID = [[VObjectManager sharedManager] currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
     [request setValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
     

@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const VNameKey;
+extern NSString * const VAppIDKey;
+extern NSString * const VBaseURLKey;
+
+
 /**
  A VEnvironment object represents a server environment, like Dev, QA or Production.
  */

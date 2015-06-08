@@ -7,6 +7,8 @@
 //
 
 #import "VNewServerEnvironmentViewController.h"
+#import "VObjectManager+Environment.h"
+#import "VEnvironment.h"
 
 @interface VNewServerEnvironmentViewController ()
 
@@ -26,8 +28,10 @@
 {
     NSString *name = self.nameTextField.text;
     NSString *url = self.urlTextField.text;
+    NSNumber *appId = [[NSBundle mainBundle] objectForInfoDictionaryKey:VAppIDKey];
     
-    
+    VEnvironment *environment = [[VEnvironment alloc] initWithName:name baseURL:[NSURL URLWithString:url] appID:appId];
+    [[VObjectManager sharedManager] addEnvironment:environment];
 }
 
 @end
