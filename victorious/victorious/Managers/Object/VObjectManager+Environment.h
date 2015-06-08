@@ -17,6 +17,6 @@
 
 + (VEnvironment *)currentEnvironment;
 + (void)setCurrentEnvironment:(VEnvironment *)newEnvironment;
-+ (NSArray *)allEnvironments; ///< array of VEnvironment objects
++ (NSArray *)bundleEnvironments; ///< array of VEnvironment objects
 
 @end

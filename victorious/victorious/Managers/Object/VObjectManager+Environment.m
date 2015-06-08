@@ -30,21 +30,21 @@ static NSString * const kPlist = @"plist";
     });
     
     NSString *environmentName = [[NSUserDefaults standardUserDefaults] stringForKey:kCurrentEnvironmentKey];
-    return [[self.allEnvironments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name==%@", environmentName]] lastObject];
+    return [[self.bundleEnvironments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name==%@", environmentName]] lastObject];
 }
 
 + (void)setCurrentEnvironment:(VEnvironment *)currentEnvironment
 {
-    if ([self.allEnvironments containsObject:currentEnvironment])
+    if ([self.bundleEnvironments containsObject:currentEnvironment])
     {
         [[NSUserDefaults standardUserDefaults] setObject:currentEnvironment.name forKey:kCurrentEnvironmentKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
-+ (NSArray *)allEnvironments
++ (NSArray *)bundleEnvironments
 {
-    static NSArray *allEnvironments;
+    static NSArray *bundleEnvironments;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
     {
@@ -66,9 +66,9 @@ static NSString * const kPlist = @"plist";
                 }
             }
         }
-        allEnvironments = [NSArray arrayWithArray:environments];
+        bundleEnvironments = [NSArray arrayWithArray:environments];
     });
-    return allEnvironments;
+    return bundleEnvironments;
 }
 
 @end

@@ -23,7 +23,7 @@
 
 - (void)awakeFromNib
 {
-    self.serverEnvironments = [VObjectManager allEnvironments];
+    self.serverEnvironments = [VObjectManager bundleEnvironments];
 }
 
 - (void)viewDidLoad
