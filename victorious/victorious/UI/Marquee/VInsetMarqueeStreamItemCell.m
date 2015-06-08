@@ -18,7 +18,9 @@
 static const CGFloat kOverlayOpacity = 0.2f;
 static const CGFloat kOverlayWhiteAmount = 0.0f;
 static const CGFloat kGadientEndOpacity = 0.6f;
-static const CGFloat kShadowOpacity = 0.4f;
+static const CGFloat kShadowOpacity = 0.5f;
+static const CGFloat kShadowRadius = 6.0f;
+static const CGSize kShadowOffset = { 0.0f, 2.0f };
 
 @interface VInsetMarqueeStreamItemCell ()
 
@@ -37,7 +39,8 @@ static const CGFloat kShadowOpacity = 0.4f;
     [super awakeFromNib];
     
     self.contentContainer.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.contentContainer.layer.shadowOffset = CGSizeZero;
+    self.contentContainer.layer.shadowOffset = kShadowOffset;
+    self.contentContainer.layer.shadowRadius = kShadowRadius;
     self.contentContainer.layer.shadowOpacity = kShadowOpacity;
     
     self.overlayContainer.backgroundColor = [UIColor colorWithWhite:kOverlayWhiteAmount alpha:kOverlayOpacity];
