@@ -160,8 +160,6 @@ static const CGFloat maxCaptionHeight = 80.0f;
                                                                  attribute:NSLayoutAttributeTop
                                                                 multiplier:1.0f
                                                                   constant:0.0f]];
-    
-   
 }
 
 #pragma mark - Property Accessors
