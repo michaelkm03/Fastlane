@@ -88,7 +88,7 @@
     _user = user;
     
     __weak typeof(self) welf = self;
-    [self.KVOController observe:_user
+    [self.KVOController observe:user
                        keyPaths:@[NSStringFromSelector(@selector(isFollowedByMainUser))]
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)

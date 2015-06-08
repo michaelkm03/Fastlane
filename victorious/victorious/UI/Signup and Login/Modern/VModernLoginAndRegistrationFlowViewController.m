@@ -80,6 +80,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         // Login + Registration
         _registrationScreens = [dependencyManager arrayOfValuesOfType:[UIViewController class]
                                                                forKey:kRegistrationScreens];
+        _registrationScreens = @[ _registrationScreens[2], _registrationScreens[1], _registrationScreens[0] ];
         _loginScreens = [dependencyManager arrayOfValuesOfType:[UIViewController class]
                                                         forKey:kLoginScreens];
         _loginFlowHelper = [[VLoginFlowAPIHelper alloc] initWithViewControllerToPresentOn:self
