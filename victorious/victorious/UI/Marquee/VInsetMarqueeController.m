@@ -37,6 +37,12 @@
     streamItemCell.streamItem = streamItem;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
 + (Class)marqueeStreamItemCellClass
 {
     return [VInsetMarqueeStreamItemCell class];
