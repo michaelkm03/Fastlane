@@ -56,7 +56,7 @@ static const CGFloat kShadowOpacity = 0.4f;
     {
         [self.previewView removeFromSuperview];
         self.previewView = previewView;
-        [self.previewContainer addSubview:self.previewView];
+        [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingView];
         [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     }
 }

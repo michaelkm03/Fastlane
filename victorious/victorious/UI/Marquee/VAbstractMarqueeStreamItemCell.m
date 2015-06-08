@@ -26,11 +26,37 @@
     return CGSizeZero;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    // Dimming view
+    self.dimmingView = [UIView new];
+    self.dimmingView.backgroundColor = [UIColor blackColor];
+    self.dimmingView.alpha = 0;
+    self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewContainer addSubview:self.dimmingView];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.dimmingView];
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     
     self.streamItem = nil;
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    // Determine if this cell shows its highlighted state
+    BOOL showsHighlight = [[self.dependencyManager numberForKey:kStreamCellShowsHighlightedStateKey] boolValue];
+    if (showsHighlight)
+    {
+        [UIView animateWithDuration:0.1 animations:^
+         {
+             self.dimmingView.alpha = highlighted ? 0.6f : 0;
+         }];
+    }
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -57,7 +83,7 @@
     
     [self.previewView removeFromSuperview];
     self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
-    [self.previewContainer addSubview:self.previewView];
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingView];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {

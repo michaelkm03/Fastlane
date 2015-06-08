@@ -21,5 +21,6 @@
 @property (nonatomic, strong) IBOutlet UIView *previewContainer; ///< The view that will be filled with a VSequencePreviewView to display 
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependencyManager that is used to style the cell and the content it displays
 @property (nonatomic, strong) VStreamItemPreviewView *previewView;
+@property (nonatomic, strong) UIView *dimmingView;
 
 @end
