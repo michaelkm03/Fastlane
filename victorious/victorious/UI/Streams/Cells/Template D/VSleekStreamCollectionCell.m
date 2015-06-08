@@ -61,6 +61,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.previewContainer.clipsToBounds = YES;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
+    [self setupDimmingView];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -105,11 +106,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super setHighlighted:highlighted];
     
-    if (highlighted && self.dimmingView == nil)
-    {
-        [self setupDimmingView];
-    }
-    
     [UIView animateWithDuration:0.1 animations:^
      {
          self.dimmingView.alpha = highlighted ? 0.6f : 0;
@@ -124,36 +120,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.dimmingView.backgroundColor = [UIColor blackColor];
     self.dimmingView.alpha = 0;
     self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView addSubview:self.dimmingView];
-    NSLayoutConstraint *dimmingViewHeight = [NSLayoutConstraint constraintWithItem:self.dimmingView
-                                                                         attribute:NSLayoutAttributeHeight
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.previewContainer
-                                                                         attribute:NSLayoutAttributeHeight
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-    NSLayoutConstraint *dimmingViewWidth = [NSLayoutConstraint constraintWithItem:self.dimmingView
-                                                                        attribute:NSLayoutAttributeWidth
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.previewContainer
-                                                                        attribute:NSLayoutAttributeWidth
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    NSLayoutConstraint *dimmingViewCenterY = [NSLayoutConstraint constraintWithItem:self.dimmingView
-                                                                          attribute:NSLayoutAttributeCenterY
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.previewContainer
-                                                                          attribute:NSLayoutAttributeCenterY
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f];
-    NSLayoutConstraint *dimmingViewCenterX = [NSLayoutConstraint constraintWithItem:self.dimmingView
-                                                                          attribute:NSLayoutAttributeCenterX
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.previewContainer
-                                                                          attribute:NSLayoutAttributeCenterX
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f];
-    [self.contentView addConstraints:@[dimmingViewHeight, dimmingViewWidth, dimmingViewCenterX, dimmingViewCenterY]];
+    [self.previewContainer addSubview:self.dimmingView];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.dimmingView];
 }
 
 - (void)updateConstraints
@@ -183,7 +151,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     
     [self.previewView removeFromSuperview];
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
-    [self.previewContainer addSubview:self.previewView];
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingView];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
