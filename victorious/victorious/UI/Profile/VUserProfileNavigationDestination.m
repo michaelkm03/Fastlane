@@ -12,7 +12,6 @@
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
 #import "VUser.h"
-#import "VProfileDeeplinkHandler.h"
 #import "VCoachmarkDisplayer.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 
@@ -70,11 +69,16 @@
     return YES;
 }
 
+- (UIViewController *)alternateViewController
+{
+    return self.profileViewController;
+}
+
 #pragma mark - VDeepLinkSupporter methods
 
-- (id<VDeeplinkHandler>)deepLinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
-    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    return [self.profileViewController deepLinkHandlerForURL:url];
 }
 
 #pragma mark - VCoachmarkDisplayer

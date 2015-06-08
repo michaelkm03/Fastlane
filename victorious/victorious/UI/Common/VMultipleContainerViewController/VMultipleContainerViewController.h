@@ -7,11 +7,8 @@
 //
 
 #import "VHasManagedDependencies.h"
-
 #import <UIKit/UIKit.h>
-
 #import "VAuthorizationContextProvider.h"
-
 #import "VInitialViewController.h"
 
 /**

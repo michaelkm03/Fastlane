@@ -89,10 +89,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                         keyPath:NSStringFromSelector(@selector(hashtags))
                         options:NSKeyValueObservingOptionNew
                          action:@selector(updatedFollowedTags)];
-    [self.KVOController observe:[[VObjectManager sharedManager] mainUser]
-                        keyPath:NSStringFromSelector(@selector(following))
-                        options:NSKeyValueObservingOptionNew
-                         action:@selector(updatedFollowedUsers)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -219,18 +215,14 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
 }
 
-- (void)updatedFollowedUsers
-{
-    [self.suggestedPeopleViewController updateFollowingStateOfUsers];
-}
-
 #pragma mark - VDiscoverViewControllerProtocol
 
 @synthesize hasLoadedOnce;
 
 - (BOOL)isShowingNoData
 {
-    return self.trendingTags.count == 0 || self.error != nil || !self.loadedUserFollowing;
+    BOOL tagFollowStatesAreValid = [[VObjectManager sharedManager] mainUser] == nil || self.loadedUserFollowing;
+    return self.trendingTags.count == 0 || self.error != nil || !tagFollowStatesAreValid;
 }
 
 #pragma mark - UI setup
@@ -516,10 +508,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 [trendingCell updateSubscribeStatusAnimated:YES];
                 return;
             }
-        }
-        else if ( [cell isKindOfClass:[VNoContentTableViewCell class]] )
-        {
-            return;
         }
     }
 }

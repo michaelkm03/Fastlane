@@ -18,7 +18,17 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 /**
  Make sure we have access to the user's Facebook accounts before calling this
  */
-- (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion
+                             onError:(VUserManagerLoginErrorBlock)errorBlock;
+
+/**
+ Make sure we have access to the user's Facebook accounts before calling this
+ 
+ @param isModern Set to yes for the monder login flow. Will return a status of "complete" on users vs "incomplete".
+ */
+- (void)loginViaFacebookModern:(BOOL)isModern
+                  OnCompletion:(VUserManagerLoginCompletionBlock)completion
+                       onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 /**
  Make sure we have access to the user's Twitter accounts before calling this

@@ -228,8 +228,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)startAppWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self.dependencyManager = dependencyManager;
-    self.deepLinkReceiver.dependencyManager = dependencyManager;
     self.applicationTracking.dependencyManager = dependencyManager;
+    
+    NSDictionary *scaffoldConfig = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
+    self.deepLinkReceiver.dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
     
     [self seedMonetizationNetworks:[dependencyManager templateValueOfType:[NSArray class] forKey:kAdSystemsKey]];
     

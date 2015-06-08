@@ -27,6 +27,7 @@
 #import "VHashTagTextView.h"
 #import "VStreamHeaderTimeSince.h"
 #import "VCompatibility.h"
+#import "VStreamCollectionViewController.h"
 
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
 static const CGFloat kInsetCellHeaderHeight = 50.0f;
@@ -182,6 +183,15 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
 }
 
+- (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
+{
+    UIResponder<VSequenceActionsDelegate> *targetForCommentLabelSelection = [self targetForAction:@selector(willCommentOnSequence:fromView:)
+                                                                                       withSender:self];
+    NSAssert(targetForCommentLabelSelection != nil, @"We need an object in the responder chain for hash tag selection.!");
+    
+    [targetForCommentLabelSelection willCommentOnSequence:self.sequence fromView:self];
+}
+
 #pragma mark - UIView
 
 - (void)updateConstraints
@@ -301,6 +311,10 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     NSAttributedString *commentText = [[self class] attributedCommentTextForSequence:sequence andDependencyManager:self.dependencyManager];
     [self.commentsLabel setAttributedText:commentText];
     self.commentToCaptionBottomConstraint.constant = commentText.length == 0 ? 0.0f : -kTextSeparatorHeight;
+    
+    [self.commentsLabel setUserInteractionEnabled:YES];
+    UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureForCommentLabel:)];
+    [self.commentsLabel addGestureRecognizer: tapGesture];
 }
 
 #pragma mark - VBackgroundContainer

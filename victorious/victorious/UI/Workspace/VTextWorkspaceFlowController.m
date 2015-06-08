@@ -48,7 +48,7 @@
         // Create the text workspace
         _textWorkspaceViewController = [self createTextWorkspaceWithDependencyManager:dependencyManager];
         
-        // Create the worksapce canvas
+        // Create the workspace canvas
         _textCanvasToolViewController = [VTextCanvasToolViewController newWithDependencyManager:dependencyManager];
         _textCanvasToolViewController.delegate = self;
         
