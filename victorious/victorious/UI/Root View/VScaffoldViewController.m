@@ -44,10 +44,10 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 @interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
-@property (nonatomic) BOOL pushNotificationsRegistered;
-@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
+@property (nonatomic, assign) BOOL isForcedRegistrationComplete;
 
+@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, strong) VFollowingHelper *followHelper;
 @property (nonatomic, readonly) VDependencyManager *firstTimeContentDependency;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
@@ -70,18 +70,26 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     return self;
 }
 
+- (BOOL)shouldForceRegistration
+{
+    return [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
+}
+
 #pragma mark - Lifecyle Methods
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
-    if (shouldShowLogin && !self.hasBeenShown )
+    if ( self.shouldForceRegistration && !self.hasBeenShown )
     {
         [self.authorizedAction prepareInViewController:self
                                                context:VAuthorizationContextDefault
-                                            completion:^(BOOL authorized) {}];
+                                            completion:^(BOOL authorized)
+         {
+             self.isForcedRegistrationComplete = YES;
+             [self askForPushNotificationsPermission];
+         }];
     }
 }
 
@@ -98,7 +106,20 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
         didShowFirstTimeUserExperience = [self showFirstTimeUserExperience];
     }
     
-    if ( !didShowFirstTimeUserExperience && ![[VPushNotificationManager sharedPushNotificationManager] started] )
+    if ( !didShowFirstTimeUserExperience )
+    {
+        [self askForPushNotificationsPermission];
+    }
+}
+
+- (void)askForPushNotificationsPermission
+{
+    // If conditions are correct, ask for push notifications permission
+    const BOOL hasAskedForPushNotificationsPermission = [[VPushNotificationManager sharedPushNotificationManager] started];
+    const BOOL forceRegistrationNotRequired = !self.shouldForceRegistration;
+    const BOOL forceRegistrationComplete = self.shouldForceRegistration && self.isForcedRegistrationComplete;
+    
+    if ( !hasAskedForPushNotificationsPermission && (forceRegistrationComplete || forceRegistrationNotRequired) )
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     }
