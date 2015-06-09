@@ -47,15 +47,13 @@ NSString * const VBaseURLKey = @"baseURL";
 {
     NSString *name = [coder decodeObjectForKey:VNameKey];
     NSNumber *appID = [coder decodeObjectForKey:VAppIDKey ];
-    NSString *baseURL = [coder decodeObjectForKey:VBaseURLKey ];
+    NSURL *baseURL = [coder decodeObjectForKey:VBaseURLKey ];
     
-    if ( ![name isKindOfClass:[NSString class]] ||
-        ![appID isKindOfClass:[NSNumber class]] ||
-        ![baseURL isKindOfClass:[NSString class]] )
+    if ( name == nil || appID == nil || baseURL == nil )
     {
         return nil;
     }
-    return [self initWithName:name baseURL:[NSURL URLWithString:baseURL] appID:appID];
+    return [self initWithName:name baseURL:baseURL appID:appID];
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder

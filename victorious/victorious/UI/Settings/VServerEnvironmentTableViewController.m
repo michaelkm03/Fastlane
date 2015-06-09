@@ -32,7 +32,16 @@
     
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
+    self.automaticallyAdjustsScrollViewInsets = YES;
     self.startingEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.serverEnvironments = [[VEnvironmentManager sharedInstance] allEnvironments];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

@@ -20,6 +20,6 @@
 
 + (instancetype)sharedInstance;
 
-- (void)addEnvironment:(VEnvironment *)currentEnvironment;
+- (BOOL)addEnvironment:(VEnvironment *)currentEnvironment;
 
 @end

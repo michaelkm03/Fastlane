@@ -13,13 +13,13 @@
 
 static NSString * const kCurrentEnvironmentKey = @"com.victorious.VEnvironmentManager.Environment.currentEnvironment";
 static NSString * const kEnvironmentsFilename = @"environments";
-static NSString * const kUserEnvironmentsFilename = @"user_environments";
+static NSString * const kUserEnvironmentsFilename = @"user_environments.plist";
 static NSString * const kPlist = @"plist";
 
 @interface VEnvironmentManager()
 
 @property (nonatomic, readonly) NSArray *bundleEnvironments;
-@property (nonatomic, strong) NSArray *userEnvironments;
+@property (nonatomic, readonly) NSArray *userEnvironments;
 
 @end
 
@@ -57,14 +57,36 @@ static NSString * const kPlist = @"plist";
     }
 }
 
-- (void)addEnvironment:(VEnvironment *)currentEnvironment
+- (BOOL)addEnvironment:(VEnvironment *)environment
 {
-    self.userEnvironments = [(self.userEnvironments ?: @[]) arrayByAddingObject:currentEnvironment];
-    NSString *filepath = [self userEnvironmentsFilePathWithFilename:kUserEnvironmentsFilename];
-    if ( [self.userEnvironments writeToFile:filepath atomically:YES] )
+    if ( environment == nil )
     {
-        NSLog( @"Error adding user environment." );
+        return NO;
     }
+    if ( environment.name == nil || environment.name.length == 0 )
+    {
+        return NO;
+    }
+    if ( environment.baseURL == nil || environment.baseURL.absoluteString.length == 0 )
+    {
+        return NO;
+    }
+    if ( environment.appID == nil || environment.appID.integerValue == 0 )
+    {
+        return NO;
+    }
+    
+    NSArray *environments = [(self.userEnvironments ?: @[]) arrayByAddingObject:environment];
+    NSString *filepath = [self userEnvironmentsFilePathWithFilename:kUserEnvironmentsFilename];
+    BOOL success = [NSKeyedArchiver archiveRootObject:environments toFile:filepath];
+    return success;
+}
+
+- (NSArray *)userEnvironments
+{
+    NSString *filepath = [self userEnvironmentsFilePathWithFilename:kUserEnvironmentsFilename];
+    NSArray *environments = [NSKeyedUnarchiver unarchiveObjectWithFile:filepath];
+    return environments;
 }
 
 - (NSString *)userEnvironmentsFilePathWithFilename:(NSString *)path
