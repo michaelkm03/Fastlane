@@ -32,6 +32,7 @@
 #import "VRootViewController.h"
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
+#import "VHashtagHelper.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -49,6 +50,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 
 @property (nonatomic, strong) VFollowingHelper *followHelper;
+@property (nonatomic, strong) VHashtagHelper *hashtagHelper;
 @property (nonatomic, readonly) VDependencyManager *firstTimeContentDependency;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 
@@ -66,6 +68,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
         _coachmarkManager.allowCoachmarks = [self hasShownFirstTimeUserExperience];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
+        _hashtagHelper = [[VHashtagHelper alloc] init];
     }
     return self;
 }
@@ -349,6 +352,18 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 {
     [self.followHelper unfollowUser:user
                      withCompletion:completion];
+}
+
+#pragma mark - VHashtag
+
+- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure
+{
+    [self.hashtagHelper followHashtag:hashtag successBlock:success failureBlock:failure];
+}
+
+- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure
+{
+    [self.hashtagHelper unfollowHashtag:hashtag successBlock:success failureBlock:failure];
 }
 
 #pragma mark - VURLSelectionResponder
