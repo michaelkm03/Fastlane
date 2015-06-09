@@ -123,7 +123,7 @@ applyConfiguration(){
             CPP_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$CUSTOM_PROVISIONING_PROFILE_PATH")`
             cp "$CUSTOM_PROVISIONING_PROFILE_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
             if [ $? != 0 ]; then
-                >&2 echo "codesigning.plist specifies a provisioning profile that could not be found."
+                >&2 echo "Error: \"$CODESIGNING_PLIST_FILE\" specifies a provisioning profile that could not be found."
                 exit 1
             fi
         fi
