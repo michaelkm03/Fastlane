@@ -22,8 +22,10 @@
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
 
-static NSString * const kPromptKey = @"prompt";
+static NSString * const kScreenPromptKey = @"screenPrompt";
+static NSString * const kScreenSuccessMessageKey = @"screenSuccessMessage";
 static NSString * const kButtonPromptKey = @"buttonPrompt";
+static NSString * const kButtonSuccessMessageKey = @"buttonSuccessMessage";
 
 @interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate>
 
@@ -65,25 +67,11 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
     self.avatarButton.imageView.image = [self.avatarButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.avatarButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
-    NSString *prompt = [self.dependencyManager stringForKey:kPromptKey] ?: @"";
-    NSDictionary *promptAttributes = @{
-                                       NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
-                                       NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
-                                       };
+    NSString *prompt = [self.dependencyManager stringForKey:kScreenPromptKey] ?: @"";
+    [self setScreenPrompt:prompt];
     
-    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(prompt, nil)
-                                                                                         attributes:promptAttributes];
-
-    self.promptLabel.attributedText = attributedPrompt;
-    NSDictionary *addProfileTextAttributes = @{
-                                               NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey],
-                                               NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey],
-                                               };
     NSString *buttonPrompt = [self.dependencyManager stringForKey:kButtonPromptKey] ?: @"";
-    NSAttributedString *addProfilePictureButtonTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(buttonPrompt, nil)
-                                                                                  attributes:addProfileTextAttributes];
-    [self.addProfilePictureButton setAttributedTitle:addProfilePictureButtonTitle
-                                            forState:UIControlStateNormal];
+    [self setButtonPrompt:buttonPrompt];
     
     self.avatarButton.layer.cornerRadius = CGRectGetHeight(self.avatarButton.bounds) / 2;
     self.avatarButton.layer.masksToBounds = YES;
@@ -154,6 +142,18 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
          }
          [flowController setProfilePictureFilePath:capturedMediaURL];
          [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
+         
+         NSString *screenSuccessMessage = [self.dependencyManager stringForKey:kScreenSuccessMessageKey];
+         if (screenSuccessMessage != nil)
+         {
+             [self setScreenPrompt:screenSuccessMessage];
+         }
+         
+         NSString *buttonSuccessMessage = [self.dependencyManager stringForKey:kButtonSuccessMessageKey];
+         if (buttonSuccessMessage != nil)
+         {
+             [self setButtonPrompt:buttonSuccessMessage];
+         }
      }];
 }
 
@@ -163,6 +163,30 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 }
 
 #pragma mark - Private Methods
+
+- (void)setScreenPrompt:(NSString *)message
+{
+    NSDictionary *screenPromptTextAttributes = @{
+                                                 NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
+                                                 NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
+                                                 };
+    
+    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(message, nil)
+                                                                                         attributes:screenPromptTextAttributes];
+    self.promptLabel.attributedText = attributedPrompt;
+}
+
+- (void)setButtonPrompt:(NSString *)message
+{
+    NSDictionary *buttonPromptTextAttributes = @{
+                                                 NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey],
+                                                 NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                                                 };
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(message, nil)
+                                                                                       attributes:buttonPromptTextAttributes];
+    [self.addProfilePictureButton setAttributedTitle:attributedTitle
+                                            forState:UIControlStateNormal];
+}
 
 - (void)showAvatarValidationFailedAnimation
 {
