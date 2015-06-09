@@ -19,8 +19,6 @@
 
 @end
 
-
-
 @implementation VHashtagHelper
 
 - (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure
@@ -100,16 +98,6 @@
              failure();
          }];
     }
-}
-
-
-- (void)showFailureHUD
-{
-    /*
-     self.failureHud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-     self.failureHud.mode = MBProgressHUDModeText;
-     self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
-     [self.failureHud hide:YES afterDelay:3.0f];*/
 }
 
 @end
