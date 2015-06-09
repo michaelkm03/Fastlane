@@ -12,6 +12,9 @@
 
 /**
  *  ATTENTION: Do not modify the navigation controller's delegate.
+ *
+ *  This flow controller dismisses itself when finished. The VLoginRegistrationFlow completion
+ *  block will be called after any dismissal has completed.
  */
 @interface VModernLoginAndRegistrationFlowViewController : UINavigationController <VLoginRegistrationFlow, VHasManagedDependencies>
 

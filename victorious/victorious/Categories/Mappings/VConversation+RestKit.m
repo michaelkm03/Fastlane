@@ -24,6 +24,7 @@
                                   @"text" : VSelectorName(lastMessageText),
                                   @"posted_at": VSelectorName(postedAt),
                                   @"is_read": VSelectorName(isRead),
+                                  @"media_type" : VSelectorName(lastMessageContentType),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
