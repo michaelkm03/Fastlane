@@ -1,9 +1,9 @@
 //
 //  VConversation.m
-//  victorious
+//  
 //
-//  Created by Will Long on 9/5/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 6/2/15.
+//
 //
 
 #import "VConversation.h"
@@ -13,11 +13,12 @@
 
 @implementation VConversation
 
+@dynamic isRead;
 @dynamic lastMessageText;
 @dynamic other_interlocutor_user_id;
 @dynamic postedAt;
 @dynamic remoteId;
-@dynamic isRead;
+@dynamic lastMessageContentType;
 @dynamic messages;
 @dynamic user;
 
