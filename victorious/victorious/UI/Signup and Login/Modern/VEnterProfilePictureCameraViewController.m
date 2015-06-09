@@ -25,7 +25,7 @@
 
 #import "VDependencyManager+VBackgroundContainer.h"
 
-static NSString * const kScreenPromptKey                    = @"screenPrompt";
+static NSString * const kScreenPromptKey                    = @"prompt";
 static NSString * const kScreenSuccessMessageKey            = @"screenSuccessMessage";
 static NSString * const kButtonPromptKey                    = @"buttonPrompt";
 static NSString * const kButtonSuccessMessageKey            = @"buttonSuccessMessage";
