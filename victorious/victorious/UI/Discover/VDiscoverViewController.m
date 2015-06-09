@@ -48,6 +48,9 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL loadedUserFollowing;
 
+@property (nonatomic, assign) BOOL followingStatusHasChanged;
+@property (nonatomic, assign) BOOL wasHiddenByAnotherViewController;
+
 @property (nonatomic, weak) MBProgressHUD *failureHud;
 
 @end
@@ -102,6 +105,15 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     if ( self.hasLoadedOnce )
     {
         [self.tableView reloadData];
+        
+        // Only refresh suggested users if main user has followed someone since the last time they visited
+        // and if we're navigating to this view controller from somewhere other than it's own navigation
+        // controller or presented view controller
+        if (self.followingStatusHasChanged && !self.wasHiddenByAnotherViewController)
+        {
+            [self.suggestedPeopleViewController refresh:YES];
+            self.followingStatusHasChanged = NO;
+        }
     }
 }
 
@@ -115,6 +127,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     [super viewWillDisappear:animated];
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+    
+    // Note if we're pushing another view controller onto the nav stack or if we're presenting
+    // a modal view controller
+    self.wasHiddenByAnotherViewController = (self.navigationController.viewControllers.count > 1 || self.presentedViewController);
+    self.followingStatusHasChanged = NO;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -222,7 +239,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)updatedFollowedUsers
 {
-    [self.suggestedPeopleViewController updateFollowingStateOfUsers];
+    self.followingStatusHasChanged = YES;
 }
 
 #pragma mark - VDiscoverViewControllerProtocol

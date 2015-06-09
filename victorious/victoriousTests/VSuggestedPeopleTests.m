@@ -44,34 +44,6 @@
     self.userNotPresent = [VDummyModels createUsers:1].firstObject;
 }
 
-- (void)testRemoveUser
-{
-    NSArray *updatedUsers = [self.viewController usersByRemovingUser:self.userToRemove fromUsers:self.users];
-    XCTAssertEqual( updatedUsers.count, self.startCount - 1 );
-    
-    updatedUsers = [self.viewController usersByRemovingUser:self.userToRemove fromUsers:self.users];
-    // Once removed, the array should return unchanged
-    XCTAssertEqual( updatedUsers.count, self.startCount - 1 );
-}
-
-- (void)testRemoveUserNotPresent
-{
-    NSArray *updatedUsers = [self.viewController usersByRemovingUser:self.userNotPresent fromUsers:self.users];
-    XCTAssertEqual( updatedUsers.count, self.startCount );
-}
-
-- (void)testInvalidInput
-{
-    NSArray *updatedUsers = [self.viewController usersByRemovingUser:nil fromUsers:self.users];
-    XCTAssertEqual( updatedUsers.count, self.startCount );
-    
-    updatedUsers = [self.viewController usersByRemovingUser:self.userToRemove fromUsers:nil];
-    XCTAssertNil( updatedUsers );
-    
-    updatedUsers = [self.viewController usersByRemovingUser:self.userToRemove fromUsers:@[]];
-    XCTAssertEqual( updatedUsers.count, (NSUInteger)0 );
-}
-
 - (void)testRefresh
 {
     IMP imp = [VSuggestedPeopleCollectionViewController v_swizzleMethod:@selector(reload) withBlock:^{}];

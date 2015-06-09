@@ -23,7 +23,7 @@
 
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
-- (void)updateFollowingStateOfUsers;
+- (void)refresh:(BOOL)shouldClearCurrentContent;
 
 @property (nonatomic, weak) id<VSuggestedPeopleCollectionViewControllerDelegate> delegate;
 

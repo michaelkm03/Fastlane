@@ -190,9 +190,14 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     {
         return;
     }
-    
     [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:nil];
+                                                      completion:^
+     {
+         if (self.completionBlock != nil)
+         {
+             self.completionBlock(NO);
+         }
+     }];
 }
 
 - (void)selectedLogin
@@ -425,8 +430,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         return;
     }
     
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
-    
     if (profilePictureFilePath == nil)
     {
         [self onAuthenticationFinishedWithSuccess:YES];
@@ -459,6 +462,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 
 - (void)onAuthenticationFinishedWithSuccess:(BOOL)success
 {
+    if ( success )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationDone];
+    }
+    
     [self.view endEditing:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:^

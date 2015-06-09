@@ -17,6 +17,9 @@
 #import "UIView+AutoLayout.h"
 #import "VNoContentCollectionViewCellFactory.h"
 
+// Highlight
+#import "VDependencyManager+VHighlightContainer.h"
+
 @interface VInsetStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
@@ -88,6 +91,7 @@
     cell.sequence = sequence;
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     [self.dependencyManager addBackgroundToBackgroundHost:cell];
+    [self.dependencyManager addHighlightViewToHost:cell];
     
     return cell;
 }

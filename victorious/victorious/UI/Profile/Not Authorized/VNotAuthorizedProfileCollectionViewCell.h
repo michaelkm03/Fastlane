@@ -30,6 +30,8 @@
  */
 @interface VNotAuthorizedProfileCollectionViewCell : VBaseCollectionViewCell <VHasManagedDependencies>
 
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds andDependencyManager:(VDependencyManager *)dependencyManager;
+
 /**
  *  A delegate conforming to VNotAuthorizedProfileCollectionViewCellDelegate.
  */
