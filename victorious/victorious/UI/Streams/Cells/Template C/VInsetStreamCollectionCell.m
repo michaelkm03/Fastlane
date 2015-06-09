@@ -40,7 +40,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VStreamHeaderTimeSince *header;
 @property (nonatomic, strong) UIView *previewContainer;
-@property (nonatomic, strong) UIView *dimmingView;
+@property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) UILabel *commentsLabel;
@@ -104,12 +104,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     _previewViewHeightConstraint = heightToWidth;
     
     // Dimming view
-    _dimmingView = [UIView new];
-    _dimmingView.backgroundColor = [UIColor blackColor];
-    _dimmingView.alpha = 0;
-    _dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.previewContainer addSubview:_dimmingView];
-    [self.previewContainer v_addFitToParentConstraintsToSubview:_dimmingView];
+    _dimmingContainer = [UIView new];
+    _dimmingContainer.alpha = 0;
+    _dimmingContainer.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewContainer addSubview:_dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:_dimmingContainer];
 
     // Now the caption text view
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
@@ -266,15 +265,10 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 {
     [super setHighlighted:highlighted];
     
-    // Determine if this cell shows its highlighted state
-    BOOL showsHighlight = [[self.dependencyManager numberForKey:kStreamCellShowsHighlightedStateKey] boolValue];
-    if (showsHighlight)
-    {
-        [UIView animateWithDuration:0.1 animations:^
-         {
-             self.dimmingView.alpha = highlighted ? 0.6f : 0;
-         }];
-    }
+    [UIView animateWithDuration:kHighlightTimeInterval animations:^
+     {
+         self.dimmingContainer.alpha = highlighted ? kHighlightViewAlpha : 0;
+     }];
 }
 
 #pragma mark - Internal Methods
@@ -289,7 +283,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
     [self.previewView removeFromSuperview];
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
-    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingView];
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
@@ -514,6 +508,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (CGRect)contentArea
 {
     return self.previewView.frame;
+}
+
+#pragma mark - VHighlightContainer
+
+- (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
 }
 
 #pragma mark - VStreamCellTracking

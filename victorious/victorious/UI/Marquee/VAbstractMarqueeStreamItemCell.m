@@ -31,12 +31,11 @@
     [super awakeFromNib];
     
     // Dimming view
-    self.dimmingView = [UIView new];
-    self.dimmingView.backgroundColor = [UIColor blackColor];
-    self.dimmingView.alpha = 0;
-    self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.previewContainer addSubview:self.dimmingView];
-    [self.previewContainer v_addFitToParentConstraintsToSubview:self.dimmingView];
+    self.dimmingContainer = [UIView new];
+    self.dimmingContainer.alpha = 0;
+    self.dimmingContainer.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewContainer addSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.dimmingContainer];
 }
 
 - (void)prepareForReuse
@@ -48,15 +47,12 @@
 
 - (void)setHighlighted:(BOOL)highlighted
 {
-    // Determine if this cell shows its highlighted state
-    BOOL showsHighlight = [[self.dependencyManager numberForKey:kStreamCellShowsHighlightedStateKey] boolValue];
-    if (showsHighlight)
-    {
-        [UIView animateWithDuration:0.1 animations:^
-         {
-             self.dimmingView.alpha = highlighted ? 0.6f : 0;
-         }];
-    }
+    [super setHighlighted:highlighted];
+    
+    [UIView animateWithDuration:kHighlightTimeInterval animations:^
+     {
+         self.dimmingContainer.alpha = highlighted ? kHighlightViewAlpha : 0;
+     }];
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -83,7 +79,7 @@
     
     [self.previewView removeFromSuperview];
     self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
-    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingView];
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
@@ -102,6 +98,13 @@
     identifier = [VStreamItemPreviewView reuseIdentifierForStreamItem:streamItem
                                                        baseIdentifier:identifier];
     return identifier;
+}
+
+#pragma mark - VHighlightContainer
+
+- (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
 }
 
 @end

@@ -48,7 +48,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
 
-@property (nonatomic, strong) UIView *dimmingView;
+@property (nonatomic, strong) UIView *dimmingContainer;
 
 @end
 
@@ -61,7 +61,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.previewContainer.clipsToBounds = YES;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
-    [self setupDimmingView];
+    [self setupDimmingContainer];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -106,27 +106,21 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super setHighlighted:highlighted];
     
-    // Determine if this cell shows its highlighted state
-    BOOL showsHighlight = [[self.dependencyManager numberForKey:kStreamCellShowsHighlightedStateKey] boolValue];
-    if (showsHighlight)
-    {
-        [UIView animateWithDuration:0.1 animations:^
-         {
-             self.dimmingView.alpha = highlighted ? 0.6f : 0;
-         }];
-    }
+    [UIView animateWithDuration:kHighlightTimeInterval animations:^
+     {
+         self.dimmingContainer.alpha = highlighted ? kHighlightViewAlpha : 0;
+     }];
 }
 
 #pragma mark - Internal Methods
 
-- (void)setupDimmingView
+- (void)setupDimmingContainer
 {
-    self.dimmingView = [UIView new];
-    self.dimmingView.backgroundColor = [UIColor blackColor];
-    self.dimmingView.alpha = 0;
-    self.dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.previewContainer addSubview:self.dimmingView];
-    [self.previewContainer v_addFitToParentConstraintsToSubview:self.dimmingView];
+    self.dimmingContainer = [UIView new];
+    self.dimmingContainer.alpha = 0;
+    self.dimmingContainer.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewContainer addSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.dimmingContainer];
 }
 
 - (void)updateConstraints
@@ -156,7 +150,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     
     [self.previewView removeFromSuperview];
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
-    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingView];
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
@@ -334,6 +328,13 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [targetForHashTagSelection hashTag:value
                     tappedFromSequence:self.sequence
                               fromView:self];
+}
+
+#pragma mark - VHighlightContainer
+
+- (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
 }
 
 #pragma mark - VStreamCellTracking
