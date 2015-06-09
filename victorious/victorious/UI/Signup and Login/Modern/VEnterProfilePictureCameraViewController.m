@@ -21,9 +21,11 @@
 // Camera + Workspace
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
+#import "VPermissionCamera.h"
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kButtonPromptKey = @"buttonPrompt";
+static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPermissions";
 
 @interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate>
 
@@ -197,14 +199,41 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 
 - (void)showCameraOnViewController:(UIViewController *)viewController
 {
-    NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
-                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImageRegistration) };
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
-    workspaceFlowController.delegate = self;
-    workspaceFlowController.videoEnabled = NO;
-    [viewController presentViewController:workspaceFlowController.flowRootViewController
-                                 animated:YES
-                               completion:nil];
+    BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:kShouldRequestCameraPermissionsKey].boolValue;
+
+    void (^showCamera)(void) = ^void(void)
+    {
+        NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
+                                             VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImageRegistration) };
+        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
+        workspaceFlowController.delegate = self;
+        workspaceFlowController.videoEnabled = NO;
+        [viewController presentViewController:workspaceFlowController.flowRootViewController
+                                     animated:YES
+                                   completion:nil];
+    };
+    
+    if (!shouldRequestPermissions)
+    {
+        showCamera();
+    }
+    else
+    {
+        VPermissionCamera *cameraPermission = [[VPermissionCamera alloc] init];
+        cameraPermission.shouldShowInitialPrompt = NO;
+        [cameraPermission requestSystemPermissionWithCompletion:^(BOOL granted, VPermissionState state, NSError *error)
+        {
+            if (granted)
+            {
+                showCamera();
+            }
+            else
+            {
+                // We don't have permissions just continue
+                [self userPressedDone];
+            }
+        }];
+    }
 }
 
 @end
