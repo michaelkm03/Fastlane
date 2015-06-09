@@ -11,7 +11,7 @@
 
 @protocol VHashtagResponder <NSObject>
 
-- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure;
-- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure;
+- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure;
+- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure;
 
 @end

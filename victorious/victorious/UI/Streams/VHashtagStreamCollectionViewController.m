@@ -215,12 +215,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
     NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder followHashtag:self.selectedHashtag successBlock:^
+    [responder followHashtag:self.selectedHashtag successBlock:^(NSArray *success)
     {
         self.followingSelectedHashtag = YES;
         self.followingEnabled = YES;
     } 
-    failureBlock:^
+    failureBlock:^(NSError *error)
     {
         self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHUD.mode = MBProgressHUDModeText;
@@ -237,12 +237,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
     NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder unfollowHashtag:self.selectedHashtag successBlock:^
+    [responder unfollowHashtag:self.selectedHashtag successBlock:^(NSArray *success)
     {
         self.followingSelectedHashtag = NO;
         self.followingEnabled = YES;
     } 
-    failureBlock:^
+    failureBlock:^(NSError *error)
     {
         self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHUD.mode = MBProgressHUDModeText;

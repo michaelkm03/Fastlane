@@ -11,7 +11,14 @@
 
 @interface VHashtagHelper : NSObject
 
-- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure;
-- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure;
+/**
+ * Follows the hashtag passed in, with a success and failure block. Ensures the user has his hashtags fetched.
+ */
+- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure;
+
+/**
+ * Unfollows the hashtag passed in, with a success and failure block. Ensures the user has his hashtags fetched.
+ */
+- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure;
 
 @end

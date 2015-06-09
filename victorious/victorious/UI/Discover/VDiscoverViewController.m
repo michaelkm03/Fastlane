@@ -478,11 +478,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
     NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder followHashtag:hashtag.tag successBlock:^
+    [responder followHashtag:hashtag.tag successBlock:^(NSArray *success)
      {
          [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
      }
-                  failureBlock:^
+                  failureBlock:^(NSError *error)
      {
          [self showFailureHUD];
      }];
@@ -494,14 +494,16 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
     NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder unfollowHashtag:hashtag.tag successBlock:^
+    [responder unfollowHashtag:hashtag.tag successBlock:^(NSArray *success)
      {
          [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
      }
-                failureBlock:^
+            failureBlock:^(NSError *error)
      {
          [self showFailureHUD];
      }];
+    
+ 
 }
 
 - (void)showFailureHUD

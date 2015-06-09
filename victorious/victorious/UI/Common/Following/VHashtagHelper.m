@@ -21,7 +21,7 @@
 
 @implementation VHashtagHelper
 
-- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure
+- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
 {
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
@@ -33,18 +33,25 @@
              [[VObjectManager sharedManager] subscribeToHashtag:hashtag
                                                    successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
               {
-                  success();
+                  if (success != nil)
+                  {
+                      success(resultObjects);
+                  }
               }
                                                       failBlock:^(NSOperation *operation, NSError *error)
               {
-                  failure();
-                  
-                  
+                  if (failure != nil)
+                  {
+                      failure(error);
+                  }
               }];
              
          } failBlock:^(NSOperation *operation, NSError *error)
          {
-             failure();
+             if (failure != nil)
+             {
+                 failure(error);
+             }
          }];
     }
     else
@@ -52,17 +59,22 @@
         [[VObjectManager sharedManager] subscribeToHashtag:hashtag
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             success();
+             if (success != nil)
+             {
+                 success(resultObjects);
+             }
          }
                                                  failBlock:^(NSOperation *operation, NSError *error)
          {
-             failure();
-             
+             if (failure != nil)
+             {
+                 failure(error);
+             }
          }];
     }
 }
 
-- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure
+- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
 {
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
@@ -74,16 +86,22 @@
              [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
                                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
               {
-                  success();
+                  if (success != nil)
+                  {
+                      success(resultObjects);
+                  }
               }
                                                         failBlock:^(NSOperation *operation, NSError *error)
               {
-                  failure();
+                  if (failure != nil)
+                  {
+                      failure(error);
+                  }
               }];
              
          } failBlock:^(NSOperation *operation, NSError *error)
          {
-             failure();
+             failure(error);
          }];
     }
     else
@@ -91,11 +109,17 @@
         [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             success();
+             if (success != nil)
+             {
+                 success(resultObjects);
+             }
          }
-                                                 failBlock:^(NSOperation *operation, NSError *error)
+                                                   failBlock:^(NSOperation *operation, NSError *error)
          {
-             failure();
+             if (failure != nil)
+             {
+                 failure(error);
+             }
          }];
     }
 }

@@ -246,25 +246,25 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 {
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
     NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder followHashtag:hashtag.tag successBlock:^
-    {
-        [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-    } 
-    failureBlock:^
-    {
-        [self showFailureHUD];
-    }];
+    [responder followHashtag:hashtag.tag successBlock:^(NSArray *success)
+     {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
+     }
+                failureBlock:^(NSError *error)
+     {
+         [self showFailureHUD];
+     }];
 }
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
 {
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
     NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
-    [responder unfollowHashtag:hashtag.tag successBlock:^
+    [responder unfollowHashtag:hashtag.tag successBlock:^(NSArray *success)
      {
          [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
      }
-                  failureBlock:^
+                  failureBlock:^(NSError *error)
      {
          [self showFailureHUD];
      }];

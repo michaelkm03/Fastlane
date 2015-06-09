@@ -356,12 +356,12 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 #pragma mark - VHashtag
 
-- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure
+- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
 {
     [self.hashtagHelper followHashtag:hashtag successBlock:success failureBlock:failure];
 }
 
-- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(void))success failureBlock:(void (^)(void))failure
+- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
 {
     [self.hashtagHelper unfollowHashtag:hashtag successBlock:success failureBlock:failure];
 }
