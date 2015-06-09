@@ -17,14 +17,15 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspace.h"
-#import "VDependencyManager+VBackgroundContainer.h"
 
 // Camera + Workspace
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
 #import "VPermissionCamera.h"
 
-static NSString * const kScreenPromptKey                    = @"screenPrompt";
+#import "VDependencyManager+VBackgroundContainer.h"
+
+static NSString * const kScreenPromptKey                    = @"prompt";
 static NSString * const kScreenSuccessMessageKey            = @"screenSuccessMessage";
 static NSString * const kButtonPromptKey                    = @"buttonPrompt";
 static NSString * const kButtonSuccessMessageKey            = @"buttonSuccessMessage";
