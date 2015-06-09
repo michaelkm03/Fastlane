@@ -486,7 +486,7 @@
                                     <constraint firstAttribute="height" constant="50" id="KpL-WW-vxY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9tC-Cp-OD5" userLabel="Separator">
                                 <rect key="frame" x="18" y="131" width="284" height="1"/>
@@ -503,7 +503,7 @@
                                     <constraint firstAttribute="height" constant="50" id="uIk-Wi-anZ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gxr-az-l7p" userLabel="Separator">
                                 <rect key="frame" x="18" y="180" width="284" height="1"/>

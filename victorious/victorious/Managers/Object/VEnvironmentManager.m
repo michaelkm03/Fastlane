@@ -13,12 +13,13 @@
 
 static NSString * const kCurrentEnvironmentKey = @"com.victorious.VEnvironmentManager.Environment.currentEnvironment";
 static NSString * const kEnvironmentsFilename = @"environments";
+static NSString * const kUserEnvironmentsFilename = @"user_environments";
 static NSString * const kPlist = @"plist";
 
 @interface VEnvironmentManager()
 
 @property (nonatomic, readonly) NSArray *bundleEnvironments;
-@property (nonatomic, strong) NSArray *customEnvironments;
+@property (nonatomic, strong) NSArray *userEnvironments;
 
 @end
 
@@ -58,12 +59,23 @@ static NSString * const kPlist = @"plist";
 
 - (void)addEnvironment:(VEnvironment *)currentEnvironment
 {
-    self.customEnvironments = [(self.customEnvironments ?: @[]) arrayByAddingObject:currentEnvironment];
+    self.userEnvironments = [(self.userEnvironments ?: @[]) arrayByAddingObject:currentEnvironment];
+    NSString *filepath = [self userEnvironmentsFilePathWithFilename:kUserEnvironmentsFilename];
+    if ( [self.userEnvironments writeToFile:filepath atomically:YES] )
+    {
+        NSLog( @"Error adding user environment." );
+    }
+}
+
+- (NSString *)userEnvironmentsFilePathWithFilename:(NSString *)path
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
+    return [[paths firstObject] stringByAppendingPathComponent:path];
 }
 
 - (NSArray *)allEnvironments
 {
-    return [self.bundleEnvironments arrayByAddingObjectsFromArray:self.customEnvironments];
+    return [self.bundleEnvironments arrayByAddingObjectsFromArray:self.userEnvironments];
 }
 
 - (NSArray *)bundleEnvironments

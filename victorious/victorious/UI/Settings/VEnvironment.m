@@ -41,6 +41,8 @@ NSString * const VBaseURLKey = @"baseURL";
     return [self initWithName:name baseURL:[NSURL URLWithString:baseURL] appID:appID];
 }
 
+#pragma mark - NSCoding
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     NSString *name = [coder decodeObjectForKey:VNameKey];
@@ -62,6 +64,8 @@ NSString * const VBaseURLKey = @"baseURL";
     [aCoder encodeObject:self.appID forKey:VAppIDKey ];
     [aCoder encodeObject:self.baseURL forKey:VBaseURLKey ];
 }
+
+#pragma mark - NSObject overrides
 
 - (BOOL)isEqual:(VEnvironment *)object
 {
