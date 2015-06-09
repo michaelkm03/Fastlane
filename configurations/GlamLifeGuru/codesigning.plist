@@ -5,9 +5,9 @@
     <key>ProvisioningProfiles</key>
     <dict>
         <key>QA</key>
-        <string>GlamLifeGuru QA In-House Distribution</string>
+        <string>qa.mobileprovision</string>
         <key>Staging</key>
-        <string>GlamLifeGuru Staging In-House Distribution</string>
+        <string>staging.mobileprovision</string>
     </dict>
 </dict>
 </plist>
