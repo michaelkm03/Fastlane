@@ -4,14 +4,12 @@
 # IPA and DSYM files will be placed in the 'products' folder.
 #
 # Requires Shenzhen:  see https://github.com/nomad/shenzhen
-# Requires Cupertino: see https://github.com/nomad/cupertino
 ###########
 
 SCHEME=$1
 CONFIGURATION=$2
-DEFAULT_PROVISIONING_PROFILE_NAME="Victorious Wildcard In-House Distribution"
+DEFAULT_PROVISIONING_PROFILE_PATH="build-scripts/victorious.mobileprovision"
 DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
-DEFAULT_DEV_ACCOUNT="build.server@getvictorious.com"
 
 shift 2
 
@@ -36,20 +34,10 @@ else
     MACROS=""
 fi
 
-### Find and update provisioning profile
-# If this step fails or hangs, you may need to store or update the dev center credentials
-# in the keychain. Use the "ios login" command.
+### Copy provisioning profile into Xcode
 
-ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type distribution -u "$DEFAULT_DEV_ACCOUNT"
-
-if [ $? != 0 ]; then
-    echo "Unable to download provisioning profile \"$DEFAULT_PROVISIONING_PROFILE_NAME\""
-    exit 1
-fi
-
-PROVISIONING_PROFILE_PATH=$(find . -iname *.mobileprovision -depth 1 -print -quit)
-DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
-mv "$PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
+DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
+cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
 
 
 ### Clean products folder
@@ -127,26 +115,17 @@ applyConfiguration(){
     DEV_ACCOUNT=$DEFAULT_DEV_ACCOUNT
     CODESIGNING_PLIST_FILE="configurations/$1/codesigning.plist"
 
-    # Check for special dev account
-    if [ -e "$CODESIGNING_PLIST_FILE" ]; then
-        CUSTOM_DEV_ACCOUNT=$(/usr/libexec/PlistBuddy -c "Print DevAccounts:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
-        if [ $? == 0 ]; then
-            DEV_ACCOUNT=$CUSTOM_DEV_ACCOUNT
-        fi
-    fi
-
     # Check for special provisioning profile
     if [ -e "$CODESIGNING_PLIST_FILE" ]; then
-        CUSTOM_PROVISIONING_PROFILE=$(/usr/libexec/PlistBuddy -c "Print ProvisioningProfiles:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
+        CUSTOM_PROVISIONING_PROFILE_PATH=$(/usr/libexec/PlistBuddy -c "Print ProvisioningProfiles:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
+        CUSTOM_PROVISIONING_PROFILE_PATH="configurations/$1/$CUSTOM_PROVISIONING_PROFILE_PATH"
         if [ $? == 0 ]; then
-            ios profiles:download "$CUSTOM_PROVISIONING_PROFILE" --type distribution -u "$DEV_ACCOUNT"
+            CPP_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$CUSTOM_PROVISIONING_PROFILE_PATH")`
+            cp "$CUSTOM_PROVISIONING_PROFILE_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
             if [ $? != 0 ]; then
-                echo "Unable to download provisioning profile \"$CUSTOM_PROVISIONING_PROFILE\" for app \"$1\""
+                >&2 echo "Error: \"$CODESIGNING_PLIST_FILE\" specifies a provisioning profile that could not be found."
                 exit 1
             fi
-            CPP_PATH=$(find . -iname *.mobileprovision -depth 1 -print -quit)
-            CPP_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$CPP_PATH")`
-            mv "$CPP_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
         fi
     fi
 
