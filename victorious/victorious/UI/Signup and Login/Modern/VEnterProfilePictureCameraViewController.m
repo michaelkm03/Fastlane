@@ -23,13 +23,15 @@
 #import "VImageToolController.h"
 #import "VPermissionCamera.h"
 
-static NSString * const kScreenPromptKey = @"screenPrompt";
-static NSString * const kScreenSuccessMessageKey = @"screenSuccessMessage";
-static NSString * const kButtonPromptKey = @"buttonPrompt";
-static NSString * const kButtonSuccessMessageKey = @"buttonSuccessMessage";
-static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPermissions";
+#import "VDependencyManager+VBackgroundContainer.h"
 
-@interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate>
+static NSString * const kScreenPromptKey                    = @"screenPrompt";
+static NSString * const kScreenSuccessMessageKey            = @"screenSuccessMessage";
+static NSString * const kButtonPromptKey                    = @"buttonPrompt";
+static NSString * const kButtonSuccessMessageKey            = @"buttonSuccessMessage";
+static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraPermissions";
+
+@interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -77,6 +79,8 @@ static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPe
     
     self.avatarButton.layer.cornerRadius = CGRectGetHeight(self.avatarButton.bounds) / 2;
     self.avatarButton.layer.masksToBounds = YES;
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 #pragma mark - Target/Action
@@ -118,6 +122,13 @@ static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPe
         }
         [flowController continueRegistrationFlow];
     }
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate
