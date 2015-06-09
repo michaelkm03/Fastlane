@@ -168,6 +168,7 @@ extern NSString * const VTrackingEventVideoDidComplete100; //< Backend mapping: 
 extern NSString * const VTrackingEventVideoDidFail; //< Backend mapping: video-error
 extern NSString * const VTrackingEventVideoDidStall; //< Backend mapping: video-stall
 extern NSString * const VTrackingEventVideoDidSkip; //< Backend mapping: video-skip
+extern NSString * const VTrackingEventVideoDidStop; //< Backend mapping: video_start
 
 // Find Friends
 extern NSString * const VTrackingEventUserDidSelectFindFriends; 

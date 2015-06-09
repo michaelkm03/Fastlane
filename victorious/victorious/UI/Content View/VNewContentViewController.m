@@ -574,7 +574,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 #endif
     
-    if ( !self.hasBeenPresented )
+    if ( !self.hasBeenPresented && self.videoCell == nil )
     {
         self.hasBeenPresented = YES;
         
@@ -591,6 +591,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillDisappear:animated];
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+    
+    if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
+    {
+        Float64 currentTimeSeconds = CMTimeGetSeconds(self.videoCell.currentTime);
+        NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
+                                  VTrackingKeyTimeCurrent : @( (NSUInteger)(currentTimeSeconds * 1000) ) };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
+    }
 
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
     

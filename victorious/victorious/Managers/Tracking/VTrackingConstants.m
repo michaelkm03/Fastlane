@@ -168,6 +168,7 @@ NSString * const VTrackingEventVideoDidComplete100 = @"VideoDidComplete100";
 NSString * const VTrackingEventVideoDidFail = @"VideoDidFail";
 NSString * const VTrackingEventVideoDidStall = @"VideoDidStall";
 NSString * const VTrackingEventVideoDidSkip = @"VideoDidSkip";
+NSString * const VTrackingEventVideoDidStop = @"VideoDidStop";
 
 // Find Friends
 NSString * const VTrackingEventUserDidSelectFindFriends = @"UserDidSelectFindFriends";
