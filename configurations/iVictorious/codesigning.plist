@@ -5,7 +5,7 @@
     <key>ProvisioningProfiles</key>
     <dict>
         <key>Staging</key>
-        <string>iVictorious Staging In-House Distribution</string>
+        <string>staging.mobileprovision</string>
     </dict>
 </dict>
 </plist>
