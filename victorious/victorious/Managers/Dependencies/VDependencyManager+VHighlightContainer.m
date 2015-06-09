@@ -28,10 +28,10 @@ static const char kHighlightBackgroundKey;
         return;
     }
     
-    UIView *existingBackground = objc_getAssociatedObject(containerView, &kHighlightBackgroundKey);
+    UIView *existingHighlightView = objc_getAssociatedObject(containerView, &kHighlightBackgroundKey);
     BOOL shouldShowHighlight = [[self numberForKey:kShowsHighlightedStateKey] boolValue];
     
-    if (existingBackground == nil && shouldShowHighlight)
+    if (existingHighlightView == nil && shouldShowHighlight)
     {
         // Dimming view
         UIView *dimmingView = [UIView new];
@@ -43,11 +43,31 @@ static const char kHighlightBackgroundKey;
         
         objc_setAssociatedObject(containerView, &kHighlightBackgroundKey, dimmingView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    else if (existingBackground != nil && !shouldShowHighlight)
+    else if (existingHighlightView != nil && !shouldShowHighlight)
     {
-        [existingBackground removeFromSuperview];
+        [existingHighlightView removeFromSuperview];
         objc_setAssociatedObject(containerView, &kHighlightBackgroundKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
+}
+
+- (void)setHighlighted:(BOOL)highlighted onHost:(id<VHighlightContainer>)highlightHost
+{
+    if (![highlightHost respondsToSelector:@selector(highlightActionView)])
+    {
+        return;
+    }
+    
+    UIView *actionView = [highlightHost highlightActionView];
+    
+    if (actionView == nil)
+    {
+        return;
+    }
+    
+    [UIView animateWithDuration:kHighlightTimeInterval animations:^
+     {
+         actionView.alpha = highlighted ? kHighlightViewAlpha : 0;
+     }];
 }
 
 @end

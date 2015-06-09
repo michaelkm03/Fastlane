@@ -18,6 +18,7 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VDependencyManager+VHighlightContainer.h"
 
 // Views + Helpers
 #import "VSequencePreviewView.h"
@@ -265,10 +266,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 {
     [super setHighlighted:highlighted];
     
-    [UIView animateWithDuration:kHighlightTimeInterval animations:^
-     {
-         self.dimmingContainer.alpha = highlighted ? kHighlightViewAlpha : 0;
-     }];
+    [self.dependencyManager setHighlighted:highlighted onHost:self];
 }
 
 #pragma mark - Internal Methods
@@ -513,6 +511,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 #pragma mark - VHighlightContainer
 
 - (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
+}
+
+- (UIView *)highlightActionView
 {
     return self.dimmingContainer;
 }

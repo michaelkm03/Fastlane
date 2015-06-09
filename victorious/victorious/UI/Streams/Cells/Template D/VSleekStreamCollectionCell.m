@@ -16,6 +16,7 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VDependencyManager+VHighlightContainer.h"
 
 // Views + Helpers
 #import "VSequencePreviewView.h"
@@ -106,10 +107,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super setHighlighted:highlighted];
     
-    [UIView animateWithDuration:kHighlightTimeInterval animations:^
-     {
-         self.dimmingContainer.alpha = highlighted ? kHighlightViewAlpha : 0;
-     }];
+    [self.dependencyManager setHighlighted:highlighted onHost:self];
 }
 
 #pragma mark - Internal Methods
@@ -333,6 +331,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 #pragma mark - VHighlightContainer
 
 - (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
+}
+
+- (UIView *)highlightActionView
 {
     return self.dimmingContainer;
 }

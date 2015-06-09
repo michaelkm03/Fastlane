@@ -27,4 +27,12 @@ static const NSTimeInterval kHighlightTimeInterval = 0.1;
  */
 - (UIView *)highlightContainerView;
 
+/**
+ *  Protocol conformers implement this method to provide a view in which the highlight action is applied. For most cases
+ *  this means fading this view in and out with the highlight state.
+ *
+ *  @return A view on which the highlight action takes place
+ */
+- (UIView *)highlightActionView;
+
 @end

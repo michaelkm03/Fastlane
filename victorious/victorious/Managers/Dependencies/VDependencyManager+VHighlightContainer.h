@@ -15,4 +15,6 @@ static NSString * const kShowsHighlightedStateKey = @"showsHighlightedState";
 
 - (void)addHighlightViewToHost:(id <VHighlightContainer>)highlightHost;
 
+- (void)setHighlighted:(BOOL)highlighted onHost:(id <VHighlightContainer>)highlightHost;
+
 @end

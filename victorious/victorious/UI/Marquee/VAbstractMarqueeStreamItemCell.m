@@ -9,6 +9,7 @@
 #import "VAbstractMarqueeStreamItemCell.h"
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamWebViewController.h"
 #import "VSequence+Fetcher.h"
 #import "UIView+AutoLayout.h"
@@ -49,10 +50,7 @@
 {
     [super setHighlighted:highlighted];
     
-    [UIView animateWithDuration:kHighlightTimeInterval animations:^
-     {
-         self.dimmingContainer.alpha = highlighted ? kHighlightViewAlpha : 0;
-     }];
+    [self.dependencyManager setHighlighted:highlighted onHost:self];
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -103,6 +101,11 @@
 #pragma mark - VHighlightContainer
 
 - (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
+}
+
+- (UIView *)highlightActionView
 {
     return self.dimmingContainer;
 }

@@ -14,6 +14,7 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VDependencyManager+VHighlightContainer.h"
 
 // Views + Helpers
 #import "VSequencePreviewView.h"
@@ -177,10 +178,7 @@ static const CGFloat maxCaptionHeight = 80.0f;
 {
     [super setHighlighted:highlighted];
     
-    [UIView animateWithDuration:kHighlightTimeInterval animations:^
-     {
-         self.dimmingContainer.alpha = highlighted ? kHighlightViewAlpha : 0;
-     }];
+    [self.dependencyManager setHighlighted:highlighted onHost:self];
 }
 
 #pragma mark - Internal Methods
@@ -344,6 +342,11 @@ static const CGFloat maxCaptionHeight = 80.0f;
 #pragma mark - VHighlightContainer
 
 - (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
+}
+
+- (UIView *)highlightActionView
 {
     return self.dimmingContainer;
 }
