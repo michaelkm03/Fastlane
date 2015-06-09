@@ -13,6 +13,7 @@
 #import "VStreamCellFactory.h"
 #import "VStreamCellTracking.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
+#import "VStreamCollectionViewParallaxFlowLayout.h"
 
 //Controllers
 #import "VAlertController.h"
@@ -84,6 +85,7 @@
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
 static NSString * const kCanAddContentKey = @"canAddContent";
+static NSString * const kHasHeaderParallaxKey = @"hasHeaderParallax";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 
@@ -244,6 +246,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.dataSource = self.streamDataSource;
     self.streamDataSource.collectionView = self.collectionView;
     
+    // Setup custom flow layout for parallax
+    BOOL hasParallax = [[self.dependencyManager numberForKey:kHasHeaderParallaxKey] boolValue];
+    if (hasParallax)
+    {
+        VStreamCollectionViewParallaxFlowLayout *flowLayout = [[VStreamCollectionViewParallaxFlowLayout alloc] init];
+        self.collectionView.collectionViewLayout = flowLayout;
+    }
+    
     [self.KVOController observe:self.streamDataSource.stream
                         keyPath:NSStringFromSelector(@selector(streamItems))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -285,6 +295,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self updateNavigationItems];
 
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
+    
+    [self updateNavigationBarScrollOffset];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -335,6 +347,31 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     if ( self.canShowMarquee )
     {
         self.streamDataSource.hasHeaderCell = self.currentStream.marqueeItems.count > 0;
+    }
+    
+    // Update scroll offset to account for marquee
+    [self updateNavigationBarScrollOffset];
+}
+
+- (void)updateNavigationBarScrollOffset
+{
+    // Currently the navigation bar catch offset only changes if our header cell has parallax,
+    // so return if it does not
+    BOOL hasParallax = [[self.dependencyManager numberForKey:kHasHeaderParallaxKey] boolValue];
+    if (!hasParallax)
+    {
+        return;
+    }
+    
+    // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
+    if (self.streamDataSource.hasHeaderCell)
+    {
+        CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
+        self.navigationControllerScrollDelegate.catchOffset = marqueeSize.height;
+    }
+    else
+    {
+        self.navigationControllerScrollDelegate.catchOffset = 0;
     }
 }
 
@@ -455,7 +492,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     self.lastSelectedIndexPath = indexPath;
-    
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
     [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
 }

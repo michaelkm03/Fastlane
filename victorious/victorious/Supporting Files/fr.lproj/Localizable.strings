@@ -15,6 +15,7 @@
 "Community" = "Communauté";
 "Owner" = "Propriétaire";
 "Inbox" = "Messages";
+"Store" = "Boutique";
 "Messages" = "Messages";
 "Notifications" = "Notifications";
 "Comments" = "Commentaires";
@@ -73,6 +74,7 @@
 "InvalidTimePlaceholder" = "-:--";
 "%ld+" = "%ld+";
 
+"Login" = "Se connecter";
 "Log in here" = "Se connecter ici";
 "Already Registered?" = "Déjà inscrit?";
 "Get Started" = "Commencez !";
@@ -371,6 +373,7 @@
 "Please check your network connection or try again later." = "Veuillez vérifier votre connexion internet ou réessayer ultérieurement.";
 
 "EnterResetCodeMessage" = "Un e-mail contenant les instructions de réinitialisation du mot de passe a été envoyé à cette adresse.";
+"An email was sent to this address containing reset password instructions." = "Un e-mail contenant les instructions de réinitialisation du mot de passe a été envoyé à cette adresse.";
 "EnterCodeTitle" = "SAISIR LE CODE";
 "Resend Email" = "Renvoyer l'e-mail";
 
@@ -420,7 +423,6 @@
 "Connect to Instagram" = "Se connecter à Instagram";
 
 "Logout" = "Déconnexion";
-"Login" = "Se connecter";
 
 "UserBannedTitle" = "Oh oh !";
 "UserBannedMessage" = "Malheureusement, vous êtes un membre banni de la communauté. Vous pourrez toujours visualiser le contenu, mais ne pourrez ni publier, ni interagir avec d'autres utilisateurs.";
@@ -612,17 +614,29 @@
 "Upload failure" = "Échec de téléchargement";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Avant de pouvoir prendre des photos et les partager avec la communauté, nous devons accéder à votre appareil photo. Autoriser l'accès à l'appareil-photo maintenant ?";
-"Thank you for joining the community! Add a profile picture now." = "Merci d'avoir rejoint la communauté ! Ajoutez une photo de profil maintenant.";
+"Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Merci d'avoir rejoint la communauté ! Pour ajouter une photo de profil, nous devons accéder à votre appareil-photo. Autoriser l'accès à l'appareil-photo maintenant ?";
 "Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "Avant de pouvoir enregistrer des vidéos et les partager avec la communauté, nous devons accéder à votre microphone. Autoriser l'accès au microphone maintenant ?";
 
 "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "Nous sommes ravis que vous ayez rejoint notre communauté ! Ouvrez un compte et vous pourrez créer, publier et partager !";
 "Follow content from other fans." = "Suivez le contenu d'autres fans.";
 "Share creations with the community." = "Partagez des créations avec la communauté.";
 "Join in on the conversation." = "Rejoignez la conversation.";
-"By signing up you are agreeing to the ToS and Privacy Policy." = "En vous inscrivant, vous acceptez les conditions générales et la politique de confidentialité.";
+"By signing up you are agreeing to our \\nterms of service and privacy policy." = "En vous inscrivant, vous acceptez nos\nconditions générales et politique de confidentialité.";
 "Sign up with Email" = "S'inscrire via e-mail";
 "Sign up with Facebook" = "S'inscrire via Facebook";
 "Create an account and join the community." = "Créez un compte et rejoignez la communauté.";
 "Create a username and introduce yourself to the community." = "Créez un nom d'utilisateur et présentez-vous à la communauté.";
 "Add photo" = "Ajoutez une photo";
 "Add your profile picture." = "Ajoutez votre image de profil.";
+"Enter Email" = "Saisir l'e-mail";
+"Enter name" = "Saisir le nom";
+"Enter Password" = "Saisir le mot de passe";
+"Tap Here" = "Tapez ici";
+"Forgot your password?" = "Mot de passe oublié ? ";
+"Enter Code" = "Saisir le code";
+/* A code the user can use to verify their identitiy when resetting their password via email */
+"Code" = "Code";
+"Create a new password" = "Créez un nouveau mot de passe";
+"Enter a new Password" = "Saisissez un nouveau mot de passe";
+"Confirm your new password" = "Confirmez votre nouveau mot de passe";
+"Welcome Back!" = "Contents de vous revoir !";

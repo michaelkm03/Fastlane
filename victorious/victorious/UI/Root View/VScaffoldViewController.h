@@ -90,7 +90,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  @param navigationDestination Either an instance of UIViewController or an object conforming to VNavigationDestination
  @param completion Block that will be executed when navigation action is completed.
  */
-- (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion;
+- (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated completion:(void(^)())completion;
 
 /**
  Attempt to navigate to a destination (the destination will
@@ -99,7 +99,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  
  @param navigationDestination Either an instance of UIViewController or an object conforming to VNavigationDestination
  */
-- (void)navigateToDestination:(id)navigationDestination;
+- (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated;
 
 /**
  Displays the view controller that the user has navigated to through
@@ -109,7 +109,13 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  navigation, see -navigateToDestination:completion:)
  
  Subclasses MUST override. The base implementation does nothing.
+ 
+ @param viewController The view controller to display as part of the scaffold's navgiation
+ @param animated Whether subsequent navigation actions should be animated.  This will be propagated
+ through to any navitgations that occur, and should be respected by subcomponents where appropriate for
+ any built-in navigations ('presentViewController:animated:completion:` and `pushViewController:animated:`),
+ as well as anything custom.
  */
-- (void)displayResultOfNavigation:(UIViewController *)viewController;
+- (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated;
 
 @end

@@ -13,6 +13,12 @@
 NSString * const VDependencyManagerMenuItemsKey = @"items";
 NSString * const VDependencyManagerAccessoryScreensKey = @"accessoryScreens";
 
+@interface VDependencyManager ()
+
+@property (nonatomic, strong) NSDictionary *configuration;
+
+@end
+
 @implementation VDependencyManager (VNavigationMenuItem)
 
 - (NSArray *)menuItemSections
@@ -44,6 +50,18 @@ NSString * const VDependencyManagerAccessoryScreensKey = @"accessoryScreens";
 
 - (NSArray *)accessoryMenuItems
 {
+    return [self accessoryMenuItemsWithInheritance:YES];
+}
+
+- (NSArray *)accessoryMenuItemsWithInheritance:(BOOL)withInheritance
+{
+    if ( !withInheritance )
+    {
+        if ( self.configuration[ VDependencyManagerAccessoryScreensKey ] == nil )
+        {
+            return nil;
+        }
+    }
     NSArray *accessoryMenuItems = [self arrayForKey:VDependencyManagerAccessoryScreensKey];
     return [self menuItemsWithArrayOfDictionaryRepresentations:accessoryMenuItems];
 }

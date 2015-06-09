@@ -16,6 +16,7 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VDependencyManager+VHighlightContainer.h"
 
 // Views + Helpers
 #import "VSequencePreviewView.h"
@@ -45,8 +46,10 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
+@property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
+
+@property (nonatomic, strong) UIView *dimmingContainer;
 
 @end
 
@@ -59,6 +62,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.previewContainer.clipsToBounds = YES;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
+    [self setupDimmingContainer];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -99,7 +103,23 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self setNeedsUpdateConstraints];
 }
 
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    [self.dependencyManager setHighlighted:highlighted onHost:self];
+}
+
 #pragma mark - Internal Methods
+
+- (void)setupDimmingContainer
+{
+    self.dimmingContainer = [UIView new];
+    self.dimmingContainer.alpha = 0;
+    self.dimmingContainer.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewContainer addSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.dimmingContainer];
+}
 
 - (void)updateConstraints
 {
@@ -128,7 +148,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     
     [self.previewView removeFromSuperview];
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
-    [self.previewContainer addSubview:self.previewView];
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
@@ -306,6 +326,18 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [targetForHashTagSelection hashTag:value
                     tappedFromSequence:self.sequence
                               fromView:self];
+}
+
+#pragma mark - VHighlightContainer
+
+- (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
+}
+
+- (UIView *)highlightActionView
+{
+    return self.dimmingContainer;
 }
 
 #pragma mark - VStreamCellTracking

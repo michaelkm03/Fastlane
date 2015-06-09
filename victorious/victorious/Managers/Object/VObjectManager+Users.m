@@ -240,6 +240,7 @@ static NSString * const kVAPIParamContext = @"context";
         user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
         [self.mainUser addFollowingObject:user];
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
+        user.isFollowedByMainUser = @YES;
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser];
         if (success)
@@ -277,6 +278,7 @@ static NSString * const kVAPIParamContext = @"context";
         user.numberOfFollowers = @(user.numberOfFollowers.integerValue - 1);
         [self.mainUser removeFollowingObject:user];
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
+        user.isFollowedByMainUser = @NO;
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser];
         

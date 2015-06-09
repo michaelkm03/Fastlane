@@ -17,15 +17,20 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspace.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 // Camera + Workspace
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
+#import "VPermissionCamera.h"
 
-static NSString * const kPromptKey = @"prompt";
-static NSString * const kButtonPromptKey = @"buttonPrompt";
+static NSString * const kScreenPromptKey                    = @"screenPrompt";
+static NSString * const kScreenSuccessMessageKey            = @"screenSuccessMessage";
+static NSString * const kButtonPromptKey                    = @"buttonPrompt";
+static NSString * const kButtonSuccessMessageKey            = @"buttonSuccessMessage";
+static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraPermissions";
 
-@interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate>
+@interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -65,28 +70,16 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
     self.avatarButton.imageView.image = [self.avatarButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.avatarButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
-    NSString *prompt = [self.dependencyManager stringForKey:kPromptKey] ?: @"";
-    NSDictionary *promptAttributes = @{
-                                       NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
-                                       NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
-                                       };
+    NSString *prompt = [self.dependencyManager stringForKey:kScreenPromptKey] ?: @"";
+    [self setScreenPrompt:prompt];
     
-    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:prompt
-                                                                                         attributes:promptAttributes];
-
-    self.promptLabel.attributedText = attributedPrompt;
-    NSDictionary *addProfileTextAttributes = @{
-                                               NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey],
-                                               NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey],
-                                               };
     NSString *buttonPrompt = [self.dependencyManager stringForKey:kButtonPromptKey] ?: @"";
-    NSAttributedString *addProfilePictureButtonTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(buttonPrompt, nil)
-                                                                                  attributes:addProfileTextAttributes];
-    [self.addProfilePictureButton setAttributedTitle:addProfilePictureButtonTitle
-                                            forState:UIControlStateNormal];
+    [self setButtonPrompt:buttonPrompt];
     
     self.avatarButton.layer.cornerRadius = CGRectGetHeight(self.avatarButton.bounds) / 2;
     self.avatarButton.layer.masksToBounds = YES;
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
 
 #pragma mark - Target/Action
@@ -130,6 +123,13 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
     }
 }
 
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
+}
+
 #pragma mark - VWorkspaceFlowControllerDelegate
 
 - (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
@@ -154,6 +154,18 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
          }
          [flowController setProfilePictureFilePath:capturedMediaURL];
          [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
+         
+         NSString *screenSuccessMessage = [self.dependencyManager stringForKey:kScreenSuccessMessageKey];
+         if (screenSuccessMessage != nil)
+         {
+             [self setScreenPrompt:screenSuccessMessage];
+         }
+         
+         NSString *buttonSuccessMessage = [self.dependencyManager stringForKey:kButtonSuccessMessageKey];
+         if (buttonSuccessMessage != nil)
+         {
+             [self setButtonPrompt:buttonSuccessMessage];
+         }
      }];
 }
 
@@ -163,6 +175,30 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 }
 
 #pragma mark - Private Methods
+
+- (void)setScreenPrompt:(NSString *)message
+{
+    NSDictionary *screenPromptTextAttributes = @{
+                                                 NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
+                                                 NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
+                                                 };
+    
+    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(message, nil)
+                                                                                         attributes:screenPromptTextAttributes];
+    self.promptLabel.attributedText = attributedPrompt;
+}
+
+- (void)setButtonPrompt:(NSString *)message
+{
+    NSDictionary *buttonPromptTextAttributes = @{
+                                                 NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey],
+                                                 NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                                                 };
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(message, nil)
+                                                                                       attributes:buttonPromptTextAttributes];
+    [self.addProfilePictureButton setAttributedTitle:attributedTitle
+                                            forState:UIControlStateNormal];
+}
 
 - (void)showAvatarValidationFailedAnimation
 {
@@ -197,14 +233,41 @@ static NSString * const kButtonPromptKey = @"buttonPrompt";
 
 - (void)showCameraOnViewController:(UIViewController *)viewController
 {
-    NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
-                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImageRegistration) };
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
-    workspaceFlowController.delegate = self;
-    workspaceFlowController.videoEnabled = NO;
-    [viewController presentViewController:workspaceFlowController.flowRootViewController
-                                 animated:YES
-                               completion:nil];
+    BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:kShouldRequestCameraPermissionsKey].boolValue;
+
+    void (^showCamera)(void) = ^void(void)
+    {
+        NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
+                                             VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImageRegistration) };
+        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
+        workspaceFlowController.delegate = self;
+        workspaceFlowController.videoEnabled = NO;
+        [viewController presentViewController:workspaceFlowController.flowRootViewController
+                                     animated:YES
+                                   completion:nil];
+    };
+    
+    if (!shouldRequestPermissions)
+    {
+        showCamera();
+    }
+    else
+    {
+        VPermissionCamera *cameraPermission = [[VPermissionCamera alloc] init];
+        cameraPermission.shouldShowInitialPrompt = NO;
+        [cameraPermission requestSystemPermissionWithCompletion:^(BOOL granted, VPermissionState state, NSError *error)
+        {
+            if (granted)
+            {
+                showCamera();
+            }
+            else
+            {
+                // We don't have permissions just continue
+                [self userPressedDone];
+            }
+        }];
+    }
 }
 
 @end

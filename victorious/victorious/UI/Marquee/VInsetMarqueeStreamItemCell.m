@@ -70,6 +70,13 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     [self layoutIfNeeded];
     
     CGRect gradientBounds = self.gradientContainer.bounds;
+    if ( self.streamItem.name == nil || [self.streamItem.name isEqualToString:@""] )
+    {
+        [self.gradientLayer removeFromSuperlayer];
+        self.gradientLayer = nil;
+        return;
+    }
+    
     if ( CGRectEqualToRect(self.gradientLayer.frame, gradientBounds) )
     {
         return;

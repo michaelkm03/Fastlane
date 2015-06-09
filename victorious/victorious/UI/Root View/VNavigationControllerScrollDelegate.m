@@ -38,6 +38,7 @@ static const CGFloat kThresholdPercent = 0.25f;
         _navigationController = navigationController;
         _state = VNavigationControllerScrollDelegateStateInactive;
         _offset = 0;
+        _catchOffset = 0;
     }
     return self;
 }
@@ -46,8 +47,16 @@ static const CGFloat kThresholdPercent = 0.25f;
 {
     if ( self.state == VNavigationControllerScrollDelegateStateHiding || self.state == VNavigationControllerScrollDelegateStateShowing )
     {
-        self.translation = [self translationWithNewContentOffset:scrollView.contentOffset];
+        self.translation = [self translationWithNewContentOffset:[self adjustedContentOffset:scrollView.contentOffset]];
         [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, self.translation)];
+        
+        // If user has released their finger and nav bar has scrolled off screen, set it to hidden and return state to default
+        if (fabs(self.translation) >= self.navigationBarHeight && !scrollView.tracking)
+        {
+            [self.navigationController setNavigationBarHidden:YES];
+            [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+            self.state = VNavigationControllerScrollDelegateStateInactive;
+        }
     }
 }
 
@@ -77,12 +86,13 @@ static const CGFloat kThresholdPercent = 0.25f;
     navigationBarHeight += CGRectGetHeight(self.navigationController.supplementaryHeaderView.frame);
     self.navigationBarHeight = navigationBarHeight;
 
-    self.offset = MAX(scrollView.contentOffset.y, self.navigationBarHeight * kThresholdPercent);
+    CGFloat threshold = self.catchOffset == 0 ? kThresholdPercent : 0;
+    self.offset = MAX([self adjustedContentOffset:scrollView.contentOffset].y, self.navigationBarHeight * threshold);
 
     if ( self.state == VNavigationControllerScrollDelegateStateShowing )
     {
         [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
-        self.offset = scrollView.contentOffset.y - self.navigationBarHeight;
+        self.offset = [self adjustedContentOffset:scrollView.contentOffset].y - self.navigationBarHeight;
     }
 }
 
@@ -101,25 +111,32 @@ static const CGFloat kThresholdPercent = 0.25f;
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    CGFloat const translation = [self translationWithNewContentOffset:*targetContentOffset];
+    CGFloat const translation = [self translationWithNewContentOffset:[self adjustedContentOffset:*targetContentOffset]];
     
     switch (self.state)
     {
         case VNavigationControllerScrollDelegateStateHiding:
-            if ( ABS(translation) >= self.navigationBarHeight * kThresholdPercent )
+            
+            // Only adjust nav bar on release if we're outside of the catch offset
+            if (scrollView.contentOffset.y < self.catchOffset)
+            {
+                return;
+            }
+            
+            if ( ABS(translation) >= self.navigationBarHeight * kThresholdPercent && (*targetContentOffset).y > self.navigationBarHeight )
             {
                 [UIView animateWithDuration:[self timeIntervalWithVelocity:velocity.y distance:(self.navigationBarHeight - ABS(self.translation))]
                                       delay:0
                                     options:UIViewAnimationOptionCurveLinear
                                  animations:^(void)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
-                }
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
+                 }
                                  completion:^(BOOL finished)
-                {
-                    [self.navigationController setNavigationBarHidden:YES];
-                    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                }];
+                 {
+                     [self.navigationController setNavigationBarHidden:YES];
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                 }];
             }
             else
             {
@@ -127,11 +144,12 @@ static const CGFloat kThresholdPercent = 0.25f;
                                       delay:0
                                     options:UIViewAnimationOptionCurveEaseOut
                                  animations:^(void)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                }
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                 }
                                  completion:nil];
             }
+            
             break;
             
         case VNavigationControllerScrollDelegateStateShowing:
@@ -141,9 +159,9 @@ static const CGFloat kThresholdPercent = 0.25f;
                                       delay:0
                                     options:UIViewAnimationOptionCurveLinear
                                  animations:^(void)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                }
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                 }
                                  completion:nil];
             }
             else
@@ -152,21 +170,67 @@ static const CGFloat kThresholdPercent = 0.25f;
                                       delay:0
                                     options:UIViewAnimationOptionCurveEaseOut
                                  animations:^(void)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
-                }
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
+                 }
                                  completion:^(BOOL finished)
-                {
-                    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
-                    [self.navigationController setNavigationBarHidden:YES];
-                }];
+                 {
+                     [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+                     [self.navigationController setNavigationBarHidden:YES];
+                 }];
             }
             break;
             
         default:
             break;
     }
+    
     self.state = VNavigationControllerScrollDelegateStateInactive;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (self.catchOffset == 0)
+    {
+        return;
+    }
+    
+    // Hide nav bar if it gets stuck in the middle after flick
+    CGRect navBarFrame = self.navigationController.innerNavigationController.navigationBar.frame;
+    BOOL semiOffscreen = CGRectGetMaxY(navBarFrame) >= 0 && CGRectGetMaxY(navBarFrame) < self.navigationBarHeight;
+    
+    if (!self.navigationController.innerNavigationController.navigationBarHidden &&
+        scrollView.contentOffset.y > self.catchOffset &&
+        semiOffscreen &&
+        self.state != VNavigationControllerScrollDelegateStateInactive)
+    {
+        [UIView animateWithDuration:kAnimationDuration
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^(void)
+         {
+             [self.navigationController transformNavigationBar:CGAffineTransformMakeTranslation(0, -self.navigationBarHeight)];
+         }
+                         completion:^(BOOL finished)
+         {
+             [self.navigationController setNavigationBarHidden:YES];
+             [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+         }];
+        
+        self.state = VNavigationControllerScrollDelegateStateInactive;
+    }
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    // Restore nav bar after user taps the status bar to scroll to top
+    [self.navigationController transformNavigationBar:CGAffineTransformIdentity];
+    [self.navigationController setNavigationBarHidden:NO];
+}
+
+- (CGPoint)adjustedContentOffset:(CGPoint)offset
+{
+    return CGPointMake(offset.x, offset.y - self.catchOffset);
 }
 
 @end
