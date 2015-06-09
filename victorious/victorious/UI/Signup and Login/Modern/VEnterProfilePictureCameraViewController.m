@@ -199,7 +199,7 @@ static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPe
 
 - (void)showCameraOnViewController:(UIViewController *)viewController
 {
-    BOOL shouldRequestPermissions = YES;//[self.dependencyManager numberForKey:kShouldRequestCameraPermissionsKey].boolValue;
+    BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:kShouldRequestCameraPermissionsKey].boolValue;
 
     void (^showCamera)(void) = ^void(void)
     {
