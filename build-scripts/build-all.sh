@@ -118,8 +118,8 @@ applyConfiguration(){
     # Check for special provisioning profile
     if [ -e "$CODESIGNING_PLIST_FILE" ]; then
         CUSTOM_PROVISIONING_PROFILE_PATH=$(/usr/libexec/PlistBuddy -c "Print ProvisioningProfiles:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
-        CUSTOM_PROVISIONING_PROFILE_PATH="configurations/$1/$CUSTOM_PROVISIONING_PROFILE_PATH"
         if [ $? == 0 ]; then
+            CUSTOM_PROVISIONING_PROFILE_PATH="configurations/$1/$CUSTOM_PROVISIONING_PROFILE_PATH"
             CPP_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$CUSTOM_PROVISIONING_PROFILE_PATH")`
             cp "$CUSTOM_PROVISIONING_PROFILE_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
             if [ $? != 0 ]; then
