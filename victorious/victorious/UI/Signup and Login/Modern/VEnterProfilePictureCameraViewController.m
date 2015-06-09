@@ -21,8 +21,7 @@
 // Camera + Workspace
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
-
-@import AVFoundation;
+#import "VPermissionCamera.h"
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kButtonPromptKey = @"buttonPrompt";
@@ -200,8 +199,7 @@ static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPe
 
 - (void)showCameraOnViewController:(UIViewController *)viewController
 {
-    BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:kShouldRequestCameraPermissionsKey].boolValue;
-    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    BOOL shouldRequestPermissions = YES;//[self.dependencyManager numberForKey:kShouldRequestCameraPermissionsKey].boolValue;
 
     void (^showCamera)(void) = ^void(void)
     {
@@ -221,34 +219,20 @@ static NSString * const kShouldRequestCameraPermissionsKey = @"shouldAskCameraPe
     }
     else
     {
-        if (status == AVAuthorizationStatusNotDetermined)
+        VPermissionCamera *cameraPermission = [[VPermissionCamera alloc] init];
+        cameraPermission.shouldShowInitialPrompt = NO;
+        [cameraPermission requestSystemPermissionWithCompletion:^(BOOL granted, VPermissionState state, NSError *error)
         {
-            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
-                                     completionHandler:^(BOOL granted)
-             {
-                 dispatch_async(dispatch_get_main_queue(), ^
-                 {
-                     if (granted)
-                     {
-                         showCamera();
-                     }
-                     else
-                     {
-                         // We don't have permissions just continue
-                         [self userPressedDone];
-                     }
-                 });
-             }];
-        }
-        else if ((status == AVAuthorizationStatusDenied) || (status == AVAuthorizationStatusRestricted))
-        {
-            // We don't have permissions just continue
-            [self userPressedDone];
-        }
-        else if (status == AVAuthorizationStatusAuthorized)
-        {
-            showCamera();
-        }
+            if (granted)
+            {
+                showCamera();
+            }
+            else
+            {
+                // We don't have permissions just continue
+                [self userPressedDone];
+            }
+        }];
     }
 }
 
