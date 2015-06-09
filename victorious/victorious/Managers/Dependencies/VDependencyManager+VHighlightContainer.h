@@ -13,8 +13,8 @@ static NSString * const kShowsHighlightedStateKey = @"showsHighlightedState";
 
 @interface VDependencyManager (VHighlightContainer)
 
-- (void)addHighlightViewToHost:(id <VHighlightContainer>)highlightHost;
+- (void)addHighlightViewToHost:(id <VHighlighting>)highlightHost;
 
-- (void)setHighlighted:(BOOL)highlighted onHost:(id <VHighlightContainer>)highlightHost;
+- (void)setHighlighted:(BOOL)highlighted onHost:(id <VHighlighting>)highlightHost;
 
 @end

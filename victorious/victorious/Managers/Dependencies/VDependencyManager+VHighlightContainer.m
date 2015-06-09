@@ -14,7 +14,7 @@ static const char kHighlightBackgroundKey;
 
 @implementation VDependencyManager (VHighlightContainer)
 
-- (void)addHighlightViewToHost:(id<VHighlightContainer>)highlightHost
+- (void)addHighlightViewToHost:(id<VHighlighting>)highlightHost
 {
     if (![highlightHost respondsToSelector:@selector(highlightContainerView)])
     {
@@ -50,7 +50,7 @@ static const char kHighlightBackgroundKey;
     }
 }
 
-- (void)setHighlighted:(BOOL)highlighted onHost:(id<VHighlightContainer>)highlightHost
+- (void)setHighlighted:(BOOL)highlighted onHost:(id<VHighlighting>)highlightHost
 {
     if (![highlightHost respondsToSelector:@selector(highlightActionView)])
     {

@@ -16,7 +16,7 @@
 /**
     A collection view cell that displays stream item content in a marquee
  */
-@interface VAbstractMarqueeStreamItemCell : VBaseCollectionViewCell <VStreamCellComponentSpecialization, VHighlightContainer>
+@interface VAbstractMarqueeStreamItemCell : VBaseCollectionViewCell <VStreamCellComponentSpecialization, VHighlighting>
 
 @property (nonatomic, strong) VStreamItem *streamItem; ///< Stream item to display
 @property (nonatomic, strong) IBOutlet UIView *previewContainer; ///< The view that will be filled with a VSequencePreviewView to display 

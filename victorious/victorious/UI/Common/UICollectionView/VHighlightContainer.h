@@ -14,7 +14,7 @@ static const NSTimeInterval kHighlightTimeInterval = 0.1;
 /**
  *  VHighlightContainer defines a common interface for any cell to provide a container view for a highlight view.
  */
-@protocol VHighlightContainer <NSObject>
+@protocol VHighlighting <NSObject>
 
 @optional
 
