@@ -18,6 +18,7 @@
 #import "VDependencyManager+VObjectManager.h"
 #import <FBKVOController.h>
 #import "VURLMacroReplacement.h"
+#import "VDependencyManager+VHighlightContainer.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
@@ -193,6 +194,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.streamItem = item;
+    
+    // Add highlight view
+    [self.dependencyManager addHighlightViewToHost:cell];
     
     return cell;
 }

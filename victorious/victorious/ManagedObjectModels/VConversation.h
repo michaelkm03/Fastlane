@@ -1,9 +1,9 @@
 //
 //  VConversation.h
-//  victorious
+//  
 //
-//  Created by Will Long on 9/5/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 6/2/15.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -14,11 +14,12 @@
 
 @interface VConversation : VAbstractFilter
 
+@property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSString * lastMessageText;
 @property (nonatomic, retain) NSNumber * other_interlocutor_user_id;
 @property (nonatomic, retain) NSDate * postedAt;
 @property (nonatomic, retain) NSNumber * remoteId;
-@property (nonatomic, retain) NSNumber * isRead;
+@property (nonatomic, retain) NSString * lastMessageContentType;
 @property (nonatomic, retain) NSOrderedSet *messages;
 @property (nonatomic, retain) VUser *user;
 @end

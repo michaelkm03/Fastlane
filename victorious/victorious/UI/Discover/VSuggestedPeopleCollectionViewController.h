@@ -23,6 +23,8 @@
 
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
+- (void)refresh:(BOOL)shouldClearCurrentContent;
+
 @property (nonatomic, weak) id<VSuggestedPeopleCollectionViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSError *error;
