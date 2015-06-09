@@ -1,5 +1,5 @@
 //
-//  VObjectManager+Environment.m
+//  VEnvironmentManager+Environment.m
 //  victorious
 //
 //  Created by Josh Hinman on 5/5/14.
@@ -8,26 +8,40 @@
 
 #import "NSArray+VMap.h"
 #import "VEnvironment.h"
-#import "VObjectManager+Environment.h"
+#import "VEnvironmentManager.h"
 #import "VConstants.h"
 
-static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager.Environment.currentEnvironment";
+static NSString * const kCurrentEnvironmentKey = @"com.victorious.VEnvironmentManager.Environment.currentEnvironment";
 static NSString * const kEnvironmentsFilename = @"environments";
 static NSString * const kPlist = @"plist";
 
-@implementation VObjectManager (Environment)
+@interface VEnvironmentManager()
+
+@property (nonatomic, readonly) NSArray *bundleEnvironments;
+@property (nonatomic, strong) NSArray *customEnvironments;
+
+@end
+
+@implementation VEnvironmentManager
+
++ (instancetype)sharedInstance
+{
+    static VEnvironmentManager *_sharedInstance = nil;
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sharedInstance = [[self alloc] init];
+    });
+    
+    return _sharedInstance;
+}
 
 - (VEnvironment *)currentEnvironment
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
+    NSString *defaultEnvironment = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"VictoriousServerEnvironment"];
+    if (defaultEnvironment)
     {
-        NSString *defaultEnvironment = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"VictoriousServerEnvironment"];
-        if (defaultEnvironment)
-        {
-            [[NSUserDefaults standardUserDefaults] registerDefaults:@{ kCurrentEnvironmentKey: defaultEnvironment }];
-        }
-    });
+        [[NSUserDefaults standardUserDefaults] registerDefaults:@{ kCurrentEnvironmentKey: defaultEnvironment }];
+    }
     
     NSString *environmentName = [[NSUserDefaults standardUserDefaults] stringForKey:kCurrentEnvironmentKey];
     return [[self.allEnvironments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name==%@", environmentName]] lastObject];
@@ -44,12 +58,17 @@ static NSString * const kPlist = @"plist";
 
 - (void)addEnvironment:(VEnvironment *)currentEnvironment
 {
-    
+    self.customEnvironments = [(self.customEnvironments ?: @[]) arrayByAddingObject:currentEnvironment];
 }
 
 - (NSArray *)allEnvironments
 {
-    static NSArray *allEnvironments;
+    return [self.bundleEnvironments arrayByAddingObjectsFromArray:self.customEnvironments];
+}
+
+- (NSArray *)bundleEnvironments
+{
+    static NSArray *bundleEnvironments;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
     {
@@ -71,9 +90,9 @@ static NSString * const kPlist = @"plist";
                 }
             }
         }
-        allEnvironments = [NSArray arrayWithArray:environments];
+        bundleEnvironments = [NSArray arrayWithArray:environments];
     });
-    return allEnvironments;
+    return bundleEnvironments;
 }
 
 - (NSURL *)documentsDirectoryWithPath:(NSString *)path

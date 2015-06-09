@@ -11,19 +11,15 @@
 #import "VErrorMessage.h"
 #import "VMultipartFormDataWriter.h"
 #import "VObjectManager.h"
-#import "VObjectManager+Environment.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
 #import "VPaginationManager.h"
 #import "VUploadManager.h"
 #import "VRootViewController.h"
 #import "VLocationManager.h"
-
 #import "VConstants.h"
-
 #import "NSString+SHA1Digest.h"
 #import "NSString+VParseHelp.h"
-
 #import "VUser+RestKit.h"
 #import "VHashtag+RestKit.h"
 #import "VSequence+RestKit.h"
@@ -36,6 +32,7 @@
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
+#import "VEnvironmentManager.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -59,8 +56,10 @@
 #else
     RKLogConfigureByName("*", RKLogLevelOff);
 #endif
+    ;
     
-    VObjectManager *manager = [self managerWithBaseURL:[[[VObjectManager sharedManager] currentEnvironment] baseURL]];
+    VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
+    VObjectManager *manager = [self managerWithBaseURL:currentEnvironment.baseURL];
     [manager.HTTPClient setDefaultHeader:@"Accept-Language" value:nil];
     manager.paginationManager = [[VPaginationManager alloc] initWithObjectManager:manager];
     
@@ -453,7 +452,7 @@
     NSString *userAgent = (self.HTTPClient.defaultHeaders)[kVUserAgentHeader];
     NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
     NSString *appVersion = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    NSNumber *appID = [[VObjectManager sharedManager] currentEnvironment].appID;
+    NSNumber *appID = [[VEnvironmentManager sharedInstance] currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
     [request setValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
     

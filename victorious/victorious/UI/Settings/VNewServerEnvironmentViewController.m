@@ -7,8 +7,7 @@
 //
 
 #import "VNewServerEnvironmentViewController.h"
-#import "VObjectManager+Environment.h"
-#import "VEnvironment.h"
+#import "VEnvironmentManager.h"
 
 @interface VNewServerEnvironmentViewController ()
 
@@ -31,7 +30,7 @@
     NSNumber *appId = [[NSBundle mainBundle] objectForInfoDictionaryKey:VAppIDKey];
     
     VEnvironment *environment = [[VEnvironment alloc] initWithName:name baseURL:[NSURL URLWithString:url] appID:appId];
-    [[VObjectManager sharedManager] addEnvironment:environment];
+    [[VEnvironmentManager sharedInstance] addEnvironment:environment];
 }
 
 @end

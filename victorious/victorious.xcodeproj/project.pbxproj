@@ -35,7 +35,7 @@
 		0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09719B4698800FA363C /* VObjectManager+ContentCreation.m */; };
 		0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09919B4698800FA363C /* VObjectManager+DeviceRegistration.m */; };
 		0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09B19B4698800FA363C /* VObjectManager+DirectMessaging.m */; };
-		0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09D19B4698800FA363C /* VObjectManager+Environment.m */; };
+		0314D0B219B4698800FA363C /* VEnvironmentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09D19B4698800FA363C /* VEnvironmentManager.m */; };
 		0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */; };
 		0314D0B419B4698800FA363C /* VObjectManager+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0A119B4698800FA363C /* VObjectManager+Login.m */; };
 		0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0A319B4698800FA363C /* VObjectManager+Pagination.m */; };
@@ -1054,8 +1054,8 @@
 		0314D09919B4698800FA363C /* VObjectManager+DeviceRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+DeviceRegistration.m"; sourceTree = "<group>"; };
 		0314D09A19B4698800FA363C /* VObjectManager+DirectMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+DirectMessaging.h"; sourceTree = "<group>"; };
 		0314D09B19B4698800FA363C /* VObjectManager+DirectMessaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+DirectMessaging.m"; sourceTree = "<group>"; };
-		0314D09C19B4698800FA363C /* VObjectManager+Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Environment.h"; sourceTree = "<group>"; };
-		0314D09D19B4698800FA363C /* VObjectManager+Environment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Environment.m"; sourceTree = "<group>"; };
+		0314D09C19B4698800FA363C /* VEnvironmentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironmentManager.h; sourceTree = "<group>"; };
+		0314D09D19B4698800FA363C /* VEnvironmentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironmentManager.m; sourceTree = "<group>"; };
 		0314D09E19B4698800FA363C /* VObjectManager+ImageSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+ImageSearch.h"; sourceTree = "<group>"; };
 		0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ImageSearch.m"; sourceTree = "<group>"; };
 		0314D0A019B4698800FA363C /* VObjectManager+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Login.h"; sourceTree = "<group>"; };
@@ -2898,6 +2898,8 @@
 		0314D09119B4698800FA363C /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				0314D09C19B4698800FA363C /* VEnvironmentManager.h */,
+				0314D09D19B4698800FA363C /* VEnvironmentManager.m */,
 				0306F7A41ADDF939009FE3AA /* VJSONHelper.h */,
 				0306F7A51ADDF939009FE3AA /* VJSONHelper.m */,
 				0314D0AB19B4698800FA363C /* VObjectManager.h */,
@@ -2914,8 +2916,6 @@
 				0314D09B19B4698800FA363C /* VObjectManager+DirectMessaging.m */,
 				A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */,
 				A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */,
-				0314D09C19B4698800FA363C /* VObjectManager+Environment.h */,
-				0314D09D19B4698800FA363C /* VObjectManager+Environment.m */,
 				0314D09E19B4698800FA363C /* VObjectManager+ImageSearch.h */,
 				0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */,
 				0314D0A019B4698800FA363C /* VObjectManager+Login.h */,
@@ -7399,7 +7399,7 @@
 				035FA78E1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
-				0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */,
+				0314D0B219B4698800FA363C /* VEnvironmentManager.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
 				A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */,

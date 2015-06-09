@@ -41,6 +41,21 @@ NSString * const VBaseURLKey = @"baseURL";
     return [self initWithName:name baseURL:[NSURL URLWithString:baseURL] appID:appID];
 }
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super init];
+    if (self)
+    {
+        
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    
+}
+
 - (BOOL)isEqual:(VEnvironment *)object
 {
     if (![object isKindOfClass:[VEnvironment class]])

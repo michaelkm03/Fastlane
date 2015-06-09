@@ -12,7 +12,6 @@
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
-#import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"
 #import "VUser.h"
@@ -32,6 +31,7 @@
 #import "VAuthorizedAction.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
+#import "VEnvironmentManager.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -119,7 +119,7 @@ static NSString * const kSupportEmailKey = @"email.support";
     
     [self updateLogoutButtonState];
     
-    self.serverEnvironmentCell.detailTextLabel.text = [[[VObjectManager sharedManager] currentEnvironment] name];
+    self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
     
     self.videoAutoplayCell.detailTextLabel.text = [self.videoSettings displayNameForCurrentSetting];
     

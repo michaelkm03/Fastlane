@@ -16,11 +16,13 @@ extern NSString * const VBaseURLKey;
 /**
  A VEnvironment object represents a server environment, like Dev, QA or Production.
  */
-@interface VEnvironment : NSObject
+@interface VEnvironment : NSObject <NSCoding>
 
 @property (nonatomic, readonly) NSString *name;
-@property (nonatomic, readonly) NSURL    *baseURL;
+@property (nonatomic, readonly) NSURL *baseURL;
 @property (nonatomic, readonly) NSNumber *appID;
+
+@property (nonatomic, readonly) NSDictionary *dictionaryRespresentation;
 
 - (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID NS_DESIGNATED_INITIALIZER;
 

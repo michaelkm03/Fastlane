@@ -12,7 +12,6 @@
 #import "VConstants.h"
 #import "VDependencyManager.h"
 #import "VEnvironment.h"
-#import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
@@ -24,7 +23,7 @@
 #import "VUserManager.h"
 #import "VLaunchScreenProvider.h"
 #import "UIView+AutoLayout.h"
-
+#import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
 
 static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
@@ -151,9 +150,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 
 - (void)loadTemplate
 {
+    VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
+    
     self.templateDownloadManager = [[VTemplateDownloadManager alloc] initWithDownloader:[VObjectManager sharedManager]];
-    self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[[VObjectManager sharedManager] currentEnvironment]];
-    self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[[VObjectManager sharedManager] currentEnvironment]];
+    self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[environmentManager currentEnvironment]];
+    self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[environmentManager currentEnvironment]];
     
     __weak typeof(self) weakSelf = self;
     [self.templateDownloadManager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
