@@ -457,6 +457,10 @@
 		A779511F1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A779511D1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib */; };
 		A77951241B28C95E00D9DB0A /* VCreatorMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951221B28C95E00D9DB0A /* VCreatorMessageViewController.m */; };
 		A77951251B28C95E00D9DB0A /* VCreatorMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77951231B28C95E00D9DB0A /* VCreatorMessageViewController.xib */; };
+		A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A779512D1B28F61C00D9DB0A /* VContentThumbnailsViewController.m */; };
+		A77951311B28F7F400D9DB0A /* VContentThumbnailsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951301B28F7F400D9DB0A /* VContentThumbnailsDataSource.m */; };
+		A77951351B29021D00D9DB0A /* VContentThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951331B29021D00D9DB0A /* VContentThumbnailCell.m */; };
+		A77951361B29021D00D9DB0A /* VContentThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77951341B29021D00D9DB0A /* VContentThumbnailCell.xib */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -1793,6 +1797,13 @@
 		A77951221B28C95E00D9DB0A /* VCreatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreatorMessageViewController.m; path = "Creator Message/VCreatorMessageViewController.m"; sourceTree = "<group>"; };
 		A77951231B28C95E00D9DB0A /* VCreatorMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VCreatorMessageViewController.xib; path = "Creator Message/VCreatorMessageViewController.xib"; sourceTree = "<group>"; };
 		A779512B1B28DCFB00D9DB0A /* VSuggestedUsersResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUsersResponder.h; path = "victorious/UI/Suggested Users/VSuggestedUsersResponder.h"; sourceTree = SOURCE_ROOT; };
+		A779512C1B28F61C00D9DB0A /* VContentThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentThumbnailsViewController.h; path = "victorious/UI/Suggested Users/VContentThumbnailsViewController.h"; sourceTree = SOURCE_ROOT; };
+		A779512D1B28F61C00D9DB0A /* VContentThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentThumbnailsViewController.m; path = "victorious/UI/Suggested Users/VContentThumbnailsViewController.m"; sourceTree = SOURCE_ROOT; };
+		A779512F1B28F7F400D9DB0A /* VContentThumbnailsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentThumbnailsDataSource.h; path = "victorious/UI/Suggested Users/VContentThumbnailsDataSource.h"; sourceTree = SOURCE_ROOT; };
+		A77951301B28F7F400D9DB0A /* VContentThumbnailsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentThumbnailsDataSource.m; path = "victorious/UI/Suggested Users/VContentThumbnailsDataSource.m"; sourceTree = SOURCE_ROOT; };
+		A77951321B29021D00D9DB0A /* VContentThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentThumbnailCell.h; path = "victorious/UI/Suggested Users/VContentThumbnailCell.h"; sourceTree = SOURCE_ROOT; };
+		A77951331B29021D00D9DB0A /* VContentThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentThumbnailCell.m; path = "victorious/UI/Suggested Users/VContentThumbnailCell.m"; sourceTree = SOURCE_ROOT; };
+		A77951341B29021D00D9DB0A /* VContentThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VContentThumbnailCell.xib; path = "victorious/UI/Suggested Users/VContentThumbnailCell.xib"; sourceTree = SOURCE_ROOT; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -4538,6 +4549,13 @@
 		A77951031B27D1C800D9DB0A /* Suggested Users */ = {
 			isa = PBXGroup;
 			children = (
+				A77951321B29021D00D9DB0A /* VContentThumbnailCell.h */,
+				A77951331B29021D00D9DB0A /* VContentThumbnailCell.m */,
+				A77951341B29021D00D9DB0A /* VContentThumbnailCell.xib */,
+				A779512F1B28F7F400D9DB0A /* VContentThumbnailsDataSource.h */,
+				A77951301B28F7F400D9DB0A /* VContentThumbnailsDataSource.m */,
+				A779512C1B28F61C00D9DB0A /* VContentThumbnailsViewController.h */,
+				A779512D1B28F61C00D9DB0A /* VContentThumbnailsViewController.m */,
 				A779510F1B27DDB800D9DB0A /* VSuggestedUserCell.h */,
 				A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */,
 				A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */,
@@ -4546,9 +4564,9 @@
 				A779511B1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.h */,
 				A779511C1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.m */,
 				A779511D1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib */,
+				A779512B1B28DCFB00D9DB0A /* VSuggestedUsersResponder.h */,
 				A77951041B27D22D00D9DB0A /* VSuggestedUsersViewController.h */,
 				A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */,
-				A779512B1B28DCFB00D9DB0A /* VSuggestedUsersResponder.h */,
 			);
 			name = "Suggested Users";
 			path = Workspace;
@@ -6593,6 +6611,7 @@
 				D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */,
 				D85B706F1B0EAF3F0038CA5B /* FindFriendsTableView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
+				A77951361B29021D00D9DB0A /* VContentThumbnailCell.xib in Resources */,
 				035926D31B1EA33400E910A7 /* Quicksand-Light.ttf in Resources */,
 				A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */,
 				03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */,
@@ -6897,6 +6916,7 @@
 				A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */,
 				A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */,
 				0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */,
+				A77951351B29021D00D9DB0A /* VContentThumbnailCell.m in Sources */,
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
 				03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
@@ -7004,6 +7024,7 @@
 				D85B70761B0EAF3F0038CA5B /* VFindTwitterFriendsTableViewController.m in Sources */,
 				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
 				D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */,
+				A77951311B28F7F400D9DB0A /* VContentThumbnailsDataSource.m in Sources */,
 				D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */,
 				A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */,
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
@@ -7254,6 +7275,7 @@
 				BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
+				A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				D8758D251B100571008C6C0D /* VTwitterAccountsHelper.m in Sources */,

@@ -14,6 +14,8 @@
 #import "UIView+AutoLayout.h"
 #import "UIResponder+VResponderChain.h"
 #import "VDefaultProfileImageView.h"
+#import "VContentThumbnailsViewController.h"
+#import "VContentThumbnailsDataSource.h"
 
 static NSString * const kTextTitleColorKey = @"color.text.label1";
 static NSString * const kTextBodyColorKey = @"color.text.label2";
@@ -21,7 +23,8 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 @interface VSuggestedUserCell ()
 
 @property (nonatomic, strong) VFollowUserControl *followButton;
-
+@property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
+@property (nonatomic, strong) VContentThumbnailsDataSource *thumbnailsDataSource;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
 @property (nonatomic, weak) IBOutlet UITextView *userTagLingTextView;
@@ -45,6 +48,12 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     [self.followButtonContainerView addSubview:self.followButton];
     [self.followButtonContainerView v_addFitToParentConstraintsToSubview:self.followButton];
     [self.followButton addTarget:self action:@selector(followButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.thumbnailsViewController = [[VContentThumbnailsViewController alloc] init];
+    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] init];
+    [self.userStreamContainerView addSubview:self.thumbnailsViewController.view];
+    [self.userStreamContainerView v_addFitToParentConstraintsToSubview:self.thumbnailsViewController.view];
+    self.userStreamContainerView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -60,6 +69,9 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     
     self.usernameTextView.text = _user.name;
     self.userTagLingTextView.text = _user.tagline;
+    
+    self.thumbnailsViewController.collectionView.dataSource = self.thumbnailsDataSource;
+    [self.thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
 
     if ( _user.pictureUrl != nil )
     {
