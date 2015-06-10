@@ -34,12 +34,10 @@
              [[VObjectManager sharedManager] subscribeToHashtag:hashtag
                                                    successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
               {
-                  failure(nil);
-            /*
                   if (success != nil)
                   {
                       success(resultObjects);
-                  }*/
+                  }
               }
                                                       failBlock:^(NSOperation *operation, NSError *error)
               {
@@ -62,12 +60,10 @@
         [[VObjectManager sharedManager] subscribeToHashtag:hashtag
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             failure(nil);
-             /*
               if (success != nil)
               {
-              success(resultObjects);
-              }*/
+                  success(resultObjects);
+              }
          }
                                                  failBlock:^(NSOperation *operation, NSError *error)
          {
@@ -82,8 +78,7 @@
 - (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
 {
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    failure(nil);
-    return;
+    
     if (mainUser.hashtags.count == 0)
     {
         [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst perPageLimit:1000
