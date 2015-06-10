@@ -16,7 +16,7 @@
 #import "VDiscoverConstants.h"
 #import "VAuthorizedAction.h"
 
-static NSString * const kSuggestedPersonCellIdentifier          = @"VSuggestedPersonCollectionViewCell";
+static NSString * const kSuggestedPersonCellIdentifier          = @"VDiscoverSuggestedPersonCell";
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
 static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 

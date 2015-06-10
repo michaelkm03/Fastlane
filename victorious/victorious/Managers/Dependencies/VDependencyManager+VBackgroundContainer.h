@@ -16,7 +16,16 @@
 @interface VDependencyManager (VBackgroundContainer)
 
 /**
- *  Looks for a background at the current dependency manager level and adds 
+ *  Looks for a background for the specified key and adds
+ *  it to the background host. Fitting to the container's full size with autolayout.
+ *
+ *  @param backgroundHost An object that conforms to <VBackgroundContainer>
+ *  @param key A string used to read the background property.
+ */
+- (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundHost forKey:(NSString *)key;
+
+/**
+ *  Looks for a background at the current dependency manager level and adds
  *  it to the background host. Fitting to the container's full size with autolayout.
  *
  *  @param backgroundHost An object that conforms to <VBackgroundContainer>

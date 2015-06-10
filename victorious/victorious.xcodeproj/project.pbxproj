@@ -451,6 +451,9 @@
 		A7792FDE1AE8497200E2ECC1 /* VTemplateDecoratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */; };
 		A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */; };
 		A77951081B27D49700D9DB0A /* suggestedUsers.json in Resources */ = {isa = PBXBuildFile; fileRef = A77951071B27D49700D9DB0A /* suggestedUsers.json */; };
+		A779510E1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */; };
+		A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */; };
+		A77951131B27DDB800D9DB0A /* VSuggestedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -1777,6 +1780,11 @@
 		A77951041B27D22D00D9DB0A /* VSuggestedUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUsersViewController.h; path = "victorious/UI/Suggested Users/VSuggestedUsersViewController.h"; sourceTree = SOURCE_ROOT; };
 		A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSuggestedUsersViewController.m; path = "victorious/UI/Suggested Users/VSuggestedUsersViewController.m"; sourceTree = SOURCE_ROOT; };
 		A77951071B27D49700D9DB0A /* suggestedUsers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = suggestedUsers.json; sourceTree = "<group>"; };
+		A779510C1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUsersDataSource.h; path = "victorious/UI/Suggested Users/VSuggestedUsersDataSource.h"; sourceTree = SOURCE_ROOT; };
+		A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSuggestedUsersDataSource.m; path = "victorious/UI/Suggested Users/VSuggestedUsersDataSource.m"; sourceTree = SOURCE_ROOT; };
+		A779510F1B27DDB800D9DB0A /* VSuggestedUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUserCell.h; path = "victorious/UI/Suggested Users/VSuggestedUserCell.h"; sourceTree = SOURCE_ROOT; };
+		A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSuggestedUserCell.m; path = "victorious/UI/Suggested Users/VSuggestedUserCell.m"; sourceTree = SOURCE_ROOT; };
+		A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUserCell.xib; path = "victorious/UI/Suggested Users/VSuggestedUserCell.xib"; sourceTree = SOURCE_ROOT; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -4525,6 +4533,11 @@
 			children = (
 				A77951041B27D22D00D9DB0A /* VSuggestedUsersViewController.h */,
 				A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */,
+				A779510C1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.h */,
+				A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */,
+				A779510F1B27DDB800D9DB0A /* VSuggestedUserCell.h */,
+				A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */,
+				A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */,
 			);
 			name = "Suggested Users";
 			path = Workspace;
@@ -6491,6 +6504,7 @@
 				F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */,
 				036F386D1A0C4DEA0014DF66 /* JosefinSans-Bold.ttf in Resources */,
 				036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */,
+				A77951131B27DDB800D9DB0A /* VSuggestedUserCell.xib in Resources */,
 				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
@@ -7188,6 +7202,7 @@
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
 				DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
+				A779510E1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m in Sources */,
 				669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */,
@@ -7221,6 +7236,7 @@
 				D8E5A4ED1AAA72C30019F231 /* VBlurOverPresentationController.m in Sources */,
 				D8DF71E01AFC1A9F002EA7A5 /* VTimeSinceWidget.m in Sources */,
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
+				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,

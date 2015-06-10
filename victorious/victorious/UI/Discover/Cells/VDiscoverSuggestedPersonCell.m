@@ -1,5 +1,5 @@
 //
-//  VSuggestedPersonCollectionViewCell.m
+//  VDiscoverSuggestedPersonCell.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/3/14.
