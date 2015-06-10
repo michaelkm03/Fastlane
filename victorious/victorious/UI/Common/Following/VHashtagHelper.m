@@ -12,10 +12,6 @@
 #import "VObjectManager+Discover.h"
 #import "VAbstractFilter+RestKit.h"
 
-@interface VHashtagHelper ()
-
-@end
-
 @implementation VHashtagHelper
 
 - (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure

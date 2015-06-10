@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 @class VHashtag;
 
+/*
+ * This protocol should be implemented by objects in the responder chain
+ * that want to respond to messages about following and unfollowing users
+ */
+
 @protocol VHashtagResponder <NSObject>
 
 /**
