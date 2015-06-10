@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /**
-    A UICollectionViewFlowLayout subclass that skews cells are they come to be centered on screen
+    A UICollectionViewFlowLayout subclass that skews cells as they come to be centered on screen
  */
 @interface VInsetMarqueeCollectionViewFlowLayout : UICollectionViewFlowLayout
 

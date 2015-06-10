@@ -9,6 +9,7 @@
 #import "VInsetMarqueeCollectionViewCell.h"
 #import "VInsetMarqueeStreamItemCell.h"
 #import "VDependencyManager.h"
+#import "VInsetMarqueeCollectionViewFlowLayout.h"
 
 @implementation VInsetMarqueeCollectionViewCell
 
@@ -16,6 +17,9 @@
 {
     [super awakeFromNib];
     [self.marqueeCollectionView registerNib:[VInsetMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VInsetMarqueeStreamItemCell suggestedReuseIdentifier]];
+    VInsetMarqueeCollectionViewFlowLayout *collectionViewFlowLayout = [[VInsetMarqueeCollectionViewFlowLayout alloc] init];
+    self.marqueeCollectionView.collectionViewLayout = collectionViewFlowLayout;
+    [self.marqueeCollectionView.collectionViewLayout invalidateLayout];
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds

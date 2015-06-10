@@ -15,6 +15,19 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
 
 @implementation VInsetMarqueeCollectionViewFlowLayout
 
+- (instancetype)init
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        self.sectionInset = UIEdgeInsetsZero;
+        self.minimumInteritemSpacing = 0;
+        self.minimumLineSpacing = 0;
+    }
+    return self;
+}
+
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
