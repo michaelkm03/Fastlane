@@ -1,0 +1,12 @@
+{
+	"name" : "suggestedUsers.screen",
+	"background": {
+		"name": "solidColor.background",
+		"color": {
+			"red": 255,
+			"green": 0,
+			"blue": 255,
+			"alpha": 1
+		}
+	},
+}
