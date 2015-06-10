@@ -175,8 +175,10 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
                      VEnvironment *currentEnvironment = [manager currentEnvironment];
                      if ( currentEnvironment.isUserEnvironment && [manager revertToPreviousEnvironment] )
                      {
+                         NSDictionary *userInfo = @{ @"enviornmentError" : error };
                          [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
-                                                                             object:weakSelf];
+                                                                             object:weakSelf
+                                                                           userInfo:userInfo];
                      }
                  }
 #endif

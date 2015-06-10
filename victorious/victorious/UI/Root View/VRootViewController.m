@@ -425,6 +425,22 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         return;
     }
     
+#if !V_NO_SWITCH_ENVIRONMENTS
+    NSError *enviornmentError = notification.userInfo[ @"enviornmentError" ];
+    if ( enviornmentError != nil )
+    {
+        NSString *message = [NSString stringWithFormat:@"%@\nReverting back to default environment.", enviornmentError.localizedDescription];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Environment Error" message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [self presentViewController:alert animated:YES completion:nil];
+                       });
+    }
+#endif
+    
     if ( self.queuedNotificationID != nil )
     {
         [[VTrackingManager sharedInstance] setValue:self.queuedNotificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
