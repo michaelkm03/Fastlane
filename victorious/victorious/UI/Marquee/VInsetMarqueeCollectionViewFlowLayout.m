@@ -28,6 +28,11 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
     return self;
 }
 
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
+{
+    return YES;
+}
+
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
