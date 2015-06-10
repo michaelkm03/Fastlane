@@ -11,11 +11,8 @@
 #import "VObjectManager.h"
 #import "VObjectManager+Discover.h"
 #import "VAbstractFilter+RestKit.h"
-#import "MBProgressHUD.h"
 
 @interface VHashtagHelper ()
-
-@property (nonatomic, weak) MBProgressHUD *failureHud;
 
 @end
 
