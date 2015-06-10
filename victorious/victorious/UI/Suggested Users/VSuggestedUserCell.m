@@ -12,6 +12,7 @@
 #import "VFollowResponder.h"
 #import "VUser.h"
 #import "UIView+AutoLayout.h"
+#import "UIResponder+VResponderChain.h"
 
 @interface VSuggestedUserCell ()
 
@@ -64,6 +65,8 @@
 
 - (IBAction)followButtonPressed:(VFollowUserControl *)sender
 {
+    [self v_logResponderChain];
+    
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                       withSender:nil];
     NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
