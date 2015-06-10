@@ -14,6 +14,7 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VDependencyManager+VHighlightContainer.h"
 
 // Views + Helpers
 #import "VSequencePreviewView.h"
@@ -36,6 +37,7 @@ static const CGFloat maxCaptionHeight = 80.0f;
 
 @property (nonatomic, strong) UIView *loadingBackgroundContainer;
 @property (nonatomic, strong) UIView *contentContainer;
+@property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VPassthroughContainerView *overlayContainer;
@@ -85,6 +87,13 @@ static const CGFloat maxCaptionHeight = 80.0f;
     _overlayContainer = [[VPassthroughContainerView alloc] initWithFrame:self.contentView.bounds];
     [self.contentView addSubview:_overlayContainer];
     [self.contentView v_addFitToParentConstraintsToSubview:_overlayContainer];
+    
+    // Dimming view
+    _dimmingContainer = [UIView new];
+    _dimmingContainer.translatesAutoresizingMaskIntoConstraints = NO;
+    _dimmingContainer.alpha = 0;
+    [_overlayContainer addSubview:_dimmingContainer];
+    [_overlayContainer v_addFitToParentConstraintsToSubview:_dimmingContainer];
     
     // Within overlay place gradients
     _topGradient = [[VLinearGradientView alloc] initWithFrame:CGRectZero];
@@ -163,6 +172,13 @@ static const CGFloat maxCaptionHeight = 80.0f;
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
     [self updateOverlayGradientsForSequence:sequence];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    [self.dependencyManager setHighlighted:highlighted onHost:self];
 }
 
 #pragma mark - Internal Methods
@@ -321,6 +337,25 @@ static const CGFloat maxCaptionHeight = 80.0f;
 - (CGRect)contentArea
 {
     return self.contentContainer.frame;
+}
+
+#pragma mark - VHighlightContainer
+
+- (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
+}
+
+- (UIView *)highlightActionView
+{
+    return self.dimmingContainer;
+}
+
+#pragma mark - VStreamCellTracking
+
+- (VSequence *)sequenceToTrack
+{
+    return self.sequence;
 }
 
 @end

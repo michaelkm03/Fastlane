@@ -62,7 +62,7 @@ static NSString * const kImageURLKey = @"imageURL";
 
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
-NSString * const VDependencyManagerProfileImageRequiredKey = @"require_profile_image";
+NSString * const VDependencyManagerProfileImageRequiredKey = @"requireProfileImage";
 NSString * const VDependencyManagerPauseVideoWhenCommentingKey = @"pause_video_when_commenting";
 
 // Keys for view controllers
@@ -101,7 +101,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _parentManager = parentManager;
         _configuration = [self preparedConfigurationWithUnpreparedDictionary:configuration];

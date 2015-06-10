@@ -52,11 +52,11 @@ static const CGFloat kShadowOpacity = 0.4f;
         return;
     }
     
-    if ( ![self.previewView isEqual:previewView] )
+    if ( ![self.previewView.streamItem isEqual:previewView.streamItem] )
     {
         [self.previewView removeFromSuperview];
         self.previewView = previewView;
-        [self.previewContainer addSubview:self.previewView];
+        [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
         [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     }
 }

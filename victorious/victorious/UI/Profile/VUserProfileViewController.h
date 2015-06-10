@@ -8,14 +8,15 @@
 
 #import "VDependencyManager.h"
 #import "VStreamCollectionViewController.h"
-#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VProvidesNavigationMenuItemBadge.h"
+#import "VDeepLinkHandler.h"
 
 @class VUser;
 
-@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge>
+@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge, VDeeplinkSupporter>
 
-@property (nonatomic, readonly) VUser *user;
+@property (nonatomic, strong) VUser *user;
 
 /**
  *  While this property is YES, the viewController will listen for
@@ -29,5 +30,12 @@
  use the -userProfileViewControllerWithUser: category on VDependencyManager.
  */
 + (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ Allows calling code to trigger the creating of accessory screen bar button items
+ for cases when this view controller needs to propagate badge updates from one of its accessory
+ screens before it is ready to be displayed.
+ */
+- (void)updateAccessoryItems;
 
 @end

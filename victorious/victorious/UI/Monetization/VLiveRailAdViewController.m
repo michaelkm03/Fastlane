@@ -9,6 +9,11 @@
 #import "VLiveRailAdViewController.h"
 #import "LiveRailAdManager.h"
 #import "VAdBreakFallback+RestKit.h"
+#import "VAdBreak.h"
+#import "VSequence.h"
+
+static NSString * const kLiveRailPublisherIDKey = @"LR_PUBLISHER_ID";
+static NSString * const kLiveRailSequenceIDKey = @"LR_VIDEO_AMID";
 
 #define EnableLiveRailLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
@@ -18,6 +23,7 @@
 @property (nonatomic, assign) BOOL adViewAppeared;
 @property (nonatomic, assign) BOOL adPlaying;
 @property (nonatomic, strong) NSString *pubID;
+@property (nonatomic, strong) NSString *sequenceID;
 
 @end
 
@@ -82,7 +88,12 @@
 - (void)setPubID:(NSString *)pubID
 {
     _pubID = pubID;
-    [self.adManager initAd:@{@"LR_PUBLISHER_ID":self.pubID}];
+    [self.adManager initAd:@{kLiveRailPublisherIDKey:self.pubID, kLiveRailSequenceIDKey:self.sequenceID}];
+}
+
+- (NSString *)sequenceID
+{
+    return _sequenceID ?: @"";
 }
 
 #pragma mark - Ad Methods
@@ -121,6 +132,10 @@
         return;
     }
     
+    // Set sequence ID for tracking purposes
+    self.sequenceID = adBreak.adbreak.sequence.remoteId;
+    
+    // Set publisher ID to start the ad
     self.pubID = publisherId;
 }
 

@@ -44,10 +44,10 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 @interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
-@property (nonatomic) BOOL pushNotificationsRegistered;
-@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
+@property (nonatomic, assign) BOOL isForcedRegistrationComplete;
 
+@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, strong) VFollowingHelper *followHelper;
 @property (nonatomic, readonly) VDependencyManager *firstTimeContentDependency;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
@@ -70,18 +70,26 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     return self;
 }
 
+- (BOOL)shouldForceRegistration
+{
+    return [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
+}
+
 #pragma mark - Lifecyle Methods
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
-    if (shouldShowLogin && !self.hasBeenShown )
+    if ( self.shouldForceRegistration && !self.hasBeenShown )
     {
         [self.authorizedAction prepareInViewController:self
                                                context:VAuthorizationContextDefault
-                                            completion:^(BOOL authorized) {}];
+                                            completion:^(BOOL authorized)
+         {
+             self.isForcedRegistrationComplete = YES;
+             [self askForPushNotificationsPermission];
+         }];
     }
 }
 
@@ -98,7 +106,20 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
         didShowFirstTimeUserExperience = [self showFirstTimeUserExperience];
     }
     
-    if ( !didShowFirstTimeUserExperience && ![[VPushNotificationManager sharedPushNotificationManager] started] )
+    if ( !didShowFirstTimeUserExperience )
+    {
+        [self askForPushNotificationsPermission];
+    }
+}
+
+- (void)askForPushNotificationsPermission
+{
+    // If conditions are correct, ask for push notifications permission
+    const BOOL hasAskedForPushNotificationsPermission = [[VPushNotificationManager sharedPushNotificationManager] started];
+    const BOOL forceRegistrationNotRequired = !self.shouldForceRegistration;
+    const BOOL forceRegistrationComplete = self.shouldForceRegistration && self.isForcedRegistrationComplete;
+    
+    if ( !hasAskedForPushNotificationsPermission && (forceRegistrationComplete || forceRegistrationNotRequired) )
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     }
@@ -229,7 +250,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 #pragma mark - VDeeplinkSupporter
 
-- (id<VDeeplinkHandler>)deepLinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
@@ -241,13 +262,15 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     return @[];
 }
 
-- (void)navigateToDestination:(id)navigationDestination
+- (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated
 {
     [self navigateToDestination:navigationDestination
+                       animated:animated
                      completion:nil];
 }
 
 - (void)navigateToDestination:(id)navigationDestination
+                     animated:(BOOL)animated
                    completion:(void(^)())completion
 {
     [self checkAuthorizationOnNavigationDestination:navigationDestination
@@ -256,6 +279,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
          if (shouldNavigate)
          {
              [self _navigateToDestination:navigationDestination
+                                 animated:animated
                                completion:completion];
          }
      }];
@@ -292,6 +316,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 }
 
 - (void)_navigateToDestination:(id)navigationDestination
+                      animated:(BOOL)animated
                    completion:(void(^)())completion
 {
     UIViewController *alternateDestination = nil;
@@ -312,12 +337,12 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     
     if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
     {
-        [self navigateToDestination:alternateDestination completion:completion];
+        [self navigateToDestination:alternateDestination animated:animated completion:completion];
     }
     else
     {
         NSAssert([navigationDestination isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-        [self displayResultOfNavigation:navigationDestination];
+        [self displayResultOfNavigation:navigationDestination animated:animated];
         
         if ( completion != nil )
         {
@@ -326,7 +351,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     }
 }
 
-- (void)displayResultOfNavigation:(UIViewController *)viewController
+- (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated
 {
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
 }

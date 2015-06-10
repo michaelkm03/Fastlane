@@ -37,6 +37,7 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "UIResponder+VResponderChain.h"
+#import "VDependencyManager+VNavigationItem.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -46,6 +47,7 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic) NSInteger badgeNumber;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
+@property (nonatomic, strong) VUser *userWithQueuedConversation;
 
 @end
 
@@ -99,12 +101,14 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidLoad];
 
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.automaticallyAdjustsScrollViewInsets = YES;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -124,6 +128,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self updateNavigationItem];
     
     self.badgeNumber = [self.messageCountCoordinator unreadMessageCount];
+    
+    if ( self.userWithQueuedConversation != nil )
+    {
+        [self displayConversationForUser:self.userWithQueuedConversation animated:YES];
+        self.userWithQueuedConversation = nil;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -150,7 +160,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
     }
-    [self.dependencyManager configureNavigationItem:navigationItem forViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
@@ -194,9 +204,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return VAuthorizationContextInbox;
 }
 
-#pragma mark -
+#pragma mark - VDeepLinkSupporter
 
-- (id<VDeeplinkHandler>)deepLinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }
@@ -363,7 +373,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
     
-    if ( [self.navigationController.viewControllers containsObject:detailVC] )
+    if ( self.navigationController == nil )
+    {
+        self.userWithQueuedConversation = user;
+    }
+    else if ( [self.navigationController.viewControllers containsObject:detailVC] )
     {
         if ( self.navigationController.topViewController != detailVC )
         {

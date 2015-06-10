@@ -77,4 +77,11 @@
     [self.marquee enableTimer];
 }
 
+#pragma mark - Parallax Scrolling
+
+- (CGFloat)parallaxRatio
+{
+    return 0.5f;
+}
+
 @end

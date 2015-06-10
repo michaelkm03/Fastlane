@@ -23,7 +23,7 @@
 @dynamic accessLevel;
 @dynamic email;
 @dynamic isDirectMessagingDisabled;
-@dynamic isFollowing;
+@dynamic isFollowedByMainUser;
 @dynamic location;
 @dynamic name;
 @dynamic numberOfFollowers;

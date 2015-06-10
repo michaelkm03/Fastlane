@@ -56,6 +56,12 @@
         "blue": 11,
         "alpha": 255
     },
+    "color.standard.textPost": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "alpha": 255
+    },
     "font.header": {
         "fontName": "HelveticaNeue",
         "fontSize": 18

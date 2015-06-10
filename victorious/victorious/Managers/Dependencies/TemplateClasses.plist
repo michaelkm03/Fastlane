@@ -16,7 +16,7 @@
 	<string>VModernLoginViewController</string>
 	<key>modernLanding.screen</key>
 	<string>VModernLandingViewController</string>
-	<key>modernLoginAndRegistration.screen</key>
+	<key>modernLoginAndRegistration.flow</key>
 	<string>VModernLoginAndRegistrationFlowViewController</string>
 	<key>standard.loginAndRegistrationView</key>
 	<string>VStandardLoginFlowViewController</string>
@@ -112,6 +112,8 @@
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
+	<key>comments.screen</key>
+	<string>VCommentsContainerViewController</string>
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
 	<key>collections.directoryCell</key>

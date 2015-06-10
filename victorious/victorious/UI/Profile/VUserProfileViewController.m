@@ -38,6 +38,10 @@
 #import "VNavigationController.h"
 #import "VBarButton.h"
 #import "VAuthorizedAction.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VAccessoryScreens.h"
+#import "VProfileDeeplinkHandler.h"
+#import "VInboxDeepLinkHandler.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -59,7 +63,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) NSNumber *remoteId;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
-@property (nonatomic, strong) VUser *user;
 @property (nonatomic, strong) UIViewController<VUserProfileHeader> *profileHeaderViewController;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
 @property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
@@ -78,6 +81,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
+    [viewController addLoginStatusChangeObserver];
     
     VUser *mainUser = [VObjectManager sharedManager].mainUser;
     const BOOL isCurrentUser = (mainUser != nil && [remoteId isEqualToNumber:mainUser.remoteId]);
@@ -100,6 +104,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
+    [viewController addLoginStatusChangeObserver];
     
     viewController.user = aUser;
     
@@ -123,15 +128,23 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return nil;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
+}
+
+- (void)addLoginStatusChangeObserver
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginStateDidChange:)
+                                                 name:kLoggedInChangedNotification object:nil];
+}
+
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginStateDidChange:)
-                                                 name:kLoggedInChangedNotification object:nil];
     
     [self updateProfileHeader];
     
@@ -143,6 +156,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
     [self updateCollectionViewDataSource];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)updateProfileHeader
@@ -157,6 +172,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 self.profileHeaderViewController.delegate = self;
                 [self setInitialHeaderState];
             }
+        }
+        else
+        {
+            [self reloadUserFollowCounts];
         }
         
         BOOL hasHeader = self.profileHeaderViewController != nil;
@@ -211,11 +230,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -224,7 +238,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     [self setupFloatingView];
     
-    [self.dependencyManager configureNavigationItem:self.navigationItem forViewController:self];
+    [self updateAccessoryItems];
+}
+
+- (void)updateAccessoryItems
+{
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -313,19 +333,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ([VObjectManager sharedManager].mainUser)
     {
-        header.loading = YES;
-        [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                     following:self.user
-                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             header.loading = NO;
-             const BOOL isFollowingUser = [resultObjects.firstObject boolValue];
-             header.state = isFollowingUser ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
-         }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-         {
-             header.loading = NO;
-         }];
+        header.state = self.user.isFollowedByMainUser.boolValue ? VUserProfileHeaderStateFollowingUser : VUserProfileHeaderStateNotFollowingUser;
     }
     else
     {
@@ -346,7 +354,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         self.retryHUD.margin = self.defaultMBProgressHUDMargin;
         self.retryHUD.mode = MBProgressHUDModeIndeterminate;
     }
-
+    
     [[VObjectManager sharedManager] fetchUser:self.remoteId
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
@@ -403,8 +411,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         CGFloat width = CGRectGetWidth(self.view.bounds);
         self.currentProfileSize = CGSizeMake(width, height);
         
-        [self reloadUserFollowingRelationship];
-        
         if ( self.streamDataSource.count == 0 )
         {
             [self refresh:nil];
@@ -413,6 +419,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         {
             [self shrinkHeaderAnimated:YES];
             [self.collectionView reloadData];
+            [self reloadUserFollowingRelationship];
         }
     }
 }
@@ -441,6 +448,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                 {
                     completionBlock();
                 }
+                [self.profileHeaderViewController reloadProfileImage];
+                [self reloadUserFollowingRelationship];
             };
             [super refreshWithCompletion:fullCompletionBlock];
         }
@@ -521,10 +530,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.currentStream = [VStream streamForUser:self.user];
     
-    NSString *profileName = user.name ?: @"Profile";
-    
-    self.title = self.isCurrentUser ? nil : profileName;
-    
     [self updateProfileHeader];
     
     [self attemptToRefreshProfileUI];
@@ -538,6 +543,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         return nil;
     }
+    else if ( !self.isCurrentUser )
+    {
+        return self.user.name;
+    }
+    
     return [super title];
 }
 
@@ -663,7 +673,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
-        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds andDependencyManager:self.dependencyManager];
     }
     else if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
@@ -850,5 +860,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 #pragma mark - VProvidesNavigationMenuItemBadge
 
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
+
+#pragma mark - VDeepLinkSupporter
+
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
+{
+    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
 
 @end

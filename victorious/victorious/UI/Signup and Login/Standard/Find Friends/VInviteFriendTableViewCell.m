@@ -77,8 +77,7 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 - (BOOL)haveRelationship
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL relationship = [mainUser.following containsObject:self.profile];
+    BOOL relationship = self.profile.isFollowedByMainUser.boolValue;
     return relationship;
 }
 

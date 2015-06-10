@@ -9,6 +9,17 @@
 #import "VNoContentView.h"
 #import "VDependencyManager.h"
 
+// Should match constraints from xib
+static CGFloat const kPaddingTop = 96.0f;
+static CGFloat const kImageHeight = 53.0f;
+static CGFloat const kIconToTitleSpace = 40.0f;
+static CGFloat const kTitleToMessageSpace = 20.0f;
+static CGFloat const kPaddingBottom = 50.0f;
+static CGFloat const kPreferredWidthOfMessage = 190.0f;
+
+static NSString * const kTitleFontKey = @"font.heading1";
+static NSString * const kMessageFontKey = @"font.heading4";
+
 @interface VNoContentView ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -37,8 +48,8 @@
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
-        self.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
-        self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+        self.titleLabel.font = [dependencyManager fontForKey:kTitleFontKey];
+        self.messageLabel.font = [dependencyManager fontForKey:kMessageFontKey];
         self.titleLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.messageLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.iconImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
@@ -75,6 +86,33 @@
 - (UIImage *)icon
 {
     return self.iconImageView.image;
+}
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds titleString:(NSString *)titleString messageString:(NSString *)messageString andDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSAssert( dependencyManager != nil, @"dependency manager was not set");
+    
+    CGSize size = CGSizeZero;
+    
+    if ( dependencyManager != nil )
+    {
+        UIFont *titleFont = [dependencyManager fontForKey:kTitleFontKey];
+        UIFont *messageFont = [dependencyManager fontForKey:kMessageFontKey];
+        CGRect frameTitle = [titleString boundingRectWithSize:CGSizeMake(kPreferredWidthOfMessage, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:titleFont } context:nil];
+        CGFloat titleHeight = CGRectGetHeight(frameTitle);
+        CGRect frameMessage = [messageString boundingRectWithSize:CGSizeMake(kPreferredWidthOfMessage, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:messageFont } context:nil];
+        CGFloat messageHeight = CGRectGetHeight(frameMessage);
+        
+        CGFloat totalHeight = kPaddingTop + kPaddingBottom + kImageHeight + kIconToTitleSpace + kTitleToMessageSpace + titleHeight + messageHeight;
+        
+        size = CGSizeMake(CGRectGetWidth(bounds), totalHeight);
+    }
+    else
+    {
+        size = CGSizeMake(CGRectGetWidth(bounds), 400);
+    }
+
+    return size;
 }
 
 @end

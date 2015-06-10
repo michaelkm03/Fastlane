@@ -20,6 +20,7 @@
 #import "VTextPostCalloutHelper.h"
 
 static const CGFloat kAnimationDuration = 0.35f;
+static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost";
 
 @interface VTextPostViewController () <CCHLinkTextViewDelegate>
 
@@ -123,7 +124,7 @@ static const CGFloat kAnimationDuration = 0.35f;
 {
     _color = color;
     
-    self.view.backgroundColor = _color ?: [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.view.backgroundColor = _color ?: [self.dependencyManager colorForKey:kStandardBackgroundColorKey];
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage

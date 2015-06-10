@@ -83,13 +83,13 @@
     }
     
     [self.KVOController unobserve:_user
-                          keyPath:NSStringFromSelector(@selector(followers))];
+                          keyPath:NSStringFromSelector(@selector(isFollowedByMainUser))];
     
     _user = user;
     
     __weak typeof(self) welf = self;
     [self.KVOController observe:user
-                       keyPaths:@[NSStringFromSelector(@selector(followers))]
+                       keyPaths:@[NSStringFromSelector(@selector(isFollowedByMainUser))]
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
@@ -134,8 +134,7 @@
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followButton.hidden = (self.user == me);
-    [self.followButton setFollowing:[me.following containsObject:self.user]
-                           animated:animated];
+    [self.followButton setFollowing:self.user.isFollowedByMainUser.boolValue animated:animated];
 }
 
 - (IBAction)onFollow:(VFollowUserControl *)sender

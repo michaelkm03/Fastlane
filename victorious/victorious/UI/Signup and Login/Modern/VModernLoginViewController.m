@@ -23,6 +23,7 @@
 #import "VEmailValidator.h"
 #import "VPasswordValidator.h"
 #import "VLoginFlowControllerResponder.h"
+#import "UIColor+VBrightness.h"
 
 @import CoreText;
 
@@ -104,28 +105,38 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                      NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
                                                      NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
                                                      };
-    self.emailField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
+    UIColor *normalColor = textFieldAttributes[NSForegroundColorAttributeName];
+    UIColor *highlightedColor = ([normalColor v_colorLuminance] == VColorLuminanceBright) ? [normalColor v_colorDarkenedBy:0.3f] : [normalColor v_colorDarkenedBy:0.3f];
+    NSDictionary *highlightedPlaceholderAttributes = @{
+                                                       NSFontAttributeName:textFieldAttributes[NSFontAttributeName],
+                                                       NSForegroundColorAttributeName:highlightedColor,
+                                                       };
+    self.emailField.textColor = normalColor;
     self.emailField.font = textFieldAttributes[NSFontAttributeName];
     self.emailField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Email", nil)
+    self.emailField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Email", nil)
                                                                             attributes:placeholderTextFieldAttributes];
+    self.emailField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.emailField.placeholder
+                                                                        attributes:highlightedPlaceholderAttributes];
     self.emailField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     self.passwordField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.passwordField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
+    self.passwordField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
                                                                                attributes:placeholderTextFieldAttributes];
+    self.passwordField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"")
+                                                                           attributes:highlightedPlaceholderAttributes];
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
-    NSString *forgotPasswordText = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Forgot your password?", nil), NSLocalizedString(@"Click Here", nil)];
+    NSString *forgotPasswordText = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Forgot your password?", nil), NSLocalizedString(@"Tap Here", nil)];
     NSDictionary *forgotPasswordAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                                NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]};
     NSDictionary *forgotHighlightedAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                                   NSForegroundColorAttributeName: [[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] colorWithAlphaComponent:0.5f]};
     NSMutableAttributedString *mutableForgotPasswordText = [[NSMutableAttributedString alloc] initWithString:forgotPasswordText
                                                                                                   attributes:forgotPasswordAttributes];
-    NSRange clickHereRange = [forgotPasswordText rangeOfString:NSLocalizedString(@"Click Here", nil)];
+    NSRange clickHereRange = [forgotPasswordText rangeOfString:NSLocalizedString(@"Tap Here", nil)];
     [mutableForgotPasswordText addAttribute:CCHLinkAttributeName
                                       value:@"forgotPasswordLink"
                                       range:clickHereRange];

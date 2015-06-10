@@ -12,14 +12,13 @@
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
 #import "VUser.h"
-#import "VProfileDeeplinkHandler.h"
 #import "VCoachmarkDisplayer.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 
 @interface VUserProfileNavigationDestination () <VCoachmarkDisplayer, VProvidesNavigationMenuItemBadge>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VUserProfileViewController *userProfileViewController;
+@property (nonatomic, strong) VUserProfileViewController *profileViewController;
 
 @end
 
@@ -45,33 +44,41 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
-                                                                andDependencyManager:self.dependencyManager];
-        _userProfileViewController.representsMainUser = YES;
-        [_userProfileViewController.dependencyManager configureNavigationItem:_userProfileViewController.navigationItem
-                                                            forViewController:_userProfileViewController];
+        [self createProfile];
+        [self.profileViewController updateAccessoryItems];
     }
     return self;
+}
+
+- (void)createProfile
+{
+    if ( self.profileViewController == nil )
+    {
+        self.profileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
+                                                                andDependencyManager:self.dependencyManager];
+        self.profileViewController.representsMainUser = YES;
+    }
 }
 
 #pragma mark - VNavigationDestination conformance
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    if ( [self.userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        [self.userProfileViewController setDependencyManager:self.dependencyManager];
-    }
-    *alternateViewController = self.userProfileViewController;
-    
+    [self createProfile];
+    *alternateViewController = self.profileViewController;
     return YES;
+}
+
+- (UIViewController *)alternateViewController
+{
+    return self.profileViewController;
 }
 
 #pragma mark - VDeepLinkSupporter methods
 
-- (id<VDeeplinkHandler>)deepLinkHandler
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
-    return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    return [self.profileViewController deepLinkHandlerForURL:url];
 }
 
 #pragma mark - VCoachmarkDisplayer
@@ -88,7 +95,7 @@
 - (void)setBadgeNumberUpdateBlock:(VNavigationMenuItemBadgeNumberUpdateBlock)badgeNumberUpdateBlock
 {
     _badgeNumberUpdateBlock = badgeNumberUpdateBlock;
-    self.userProfileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
+    self.profileViewController.badgeNumberUpdateBlock = badgeNumberUpdateBlock;
 }
 
 @end

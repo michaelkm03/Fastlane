@@ -1,0 +1,87 @@
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "3e0-qS-x7b"; */
+"3e0-qS-x7b.normalTitle" = "Cancelar";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "3pO-cP-eTE"; */
+"3pO-cP-eTE.placeholder" = "Senha";
+
+/* Class = "UILabel"; text = "Connect with Twitter"; ObjectID = "3q4-yP-lYm"; */
+"3q4-yP-lYm.text" = "Conectar-se com o Twitter";
+
+/* Class = "UIButton"; normalTitle = "Log In"; ObjectID = "5AW-ID-rMK"; */
+"5AW-ID-rMK.normalTitle" = "Fazer Login";
+
+/* Class = "UITextView"; text = "Already Registered? Log in here"; ObjectID = "5M9-eq-LWT"; */
+"5M9-eq-LWT.text" = "Já Registrado? Faça login aqui";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "7P1-3N-TQ4"; */
+"7P1-3N-TQ4.normalTitle" = "Cancelar";
+
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "9Wi-As-OwD"; */
+"9Wi-As-OwD.normalTitle" = "Concluído";
+
+/* Class = "UILabel"; text = "I'm at least 13 years old and agree to the Terms of Service"; ObjectID = "87v-KS-JzW"; */
+"87v-KS-JzW.text" = "Tenho pelo menos 13 anos de idade e concordo com os Termos do Serviço";
+
+/* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "A3z-ra-4Af"; */
+"A3z-ra-4Af.placeholder" = "E-mail";
+
+/* Class = "UILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
+"CGW-Kx-wFZ.text" = "INSERIR CÓDIGO";
+
+/* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "Jbh-n4-soS"; */
+"Jbh-n4-soS.placeholder" = "E-mail";
+
+/* Class = "UIButton"; normalTitle = "Sign Up"; ObjectID = "KC8-6n-wgW"; */
+"KC8-6n-wgW.normalTitle" = "Registre-se";
+
+/* Class = "UILabel"; text = "Thanks!"; ObjectID = "Lji-XP-yck"; */
+"Lji-XP-yck.text" = "Obrigado!";
+
+/* Class = "UINavigationItem"; title = "Find Friends"; ObjectID = "NwV-bN-un0"; */
+"NwV-bN-un0.title" = "Encontrar Amigos";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "UDE-m8-fBQ"; */
+"UDE-m8-fBQ.placeholder" = "Senha";
+
+/* Class = "UITextField"; placeholder = "New Password"; ObjectID = "aDr-Jw-10s"; */
+"aDr-Jw-10s.placeholder" = "Nova Senha";
+
+/* Class = "UITextView"; text = "Forgot Password? Reset here"; ObjectID = "bMr-K0-Coy"; */
+"bMr-K0-Coy.text" = "Esqueceu a Senha? Redefina aqui";
+
+/* Class = "UINavigationItem"; title = "Login with E-mail"; ObjectID = "d29-FA-lll"; */
+"d29-FA-lll.title" = "Fazer Login com E-mail";
+
+/* Class = "UILabel"; text = "Sign up with Email"; ObjectID = "gWK-fr-OZX"; */
+"gWK-fr-OZX.text" = "Cadastre-se com E-mail";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "jhx-0Z-CyE"; */
+"jhx-0Z-CyE.normalTitle" = "Cancelar";
+
+/* Class = "UITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
+"pDv-b6-X4m.placeholder" = "Localização";
+
+/* Class = "UIButton"; normalTitle = "Update"; ObjectID = "pg3-qh-eDX"; */
+"pg3-qh-eDX.normalTitle" = "Atualizar";
+
+/* Class = "UITextField"; placeholder = "Name"; ObjectID = "qGa-ti-Owy"; */
+"qGa-ti-Owy.placeholder" = "Nome";
+
+/* Class = "UIViewController"; title = "Find Friends"; ObjectID = "qXP-WV-BMp"; */
+"qXP-WV-BMp.title" = "Encontrar Amigos";
+
+/* Class = "UILabel"; text = "An email was sent to this address containing a code to verify your account"; ObjectID = "sxb-gV-KJX"; */
+"sxb-gV-KJX.text" = "Um e-mail foi enviado a este endereço contendo um código para a verificação da sua conta";
+
+/* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "tdl-Dc-Ep6"; */
+"tdl-Dc-Ep6.placeholder" = "Confirmar Senha";
+
+/* Class = "UILabel"; text = "Connect with Facebook"; ObjectID = "tgS-Dw-MLG"; */
+"tgS-Dw-MLG.text" = "Conectar-se com o Facebook";
+
+/* Class = "UITextView"; text = "Resend Email"; ObjectID = "ucd-V3-oVY"; */
+"ucd-V3-oVY.text" = "Reenviar E-mail";
+
+/* Class = "UILabel"; text = "Create Profile"; ObjectID = "xl3-0J-ghm"; */
+"xl3-0J-ghm.text" = "Criar Perfil";
+

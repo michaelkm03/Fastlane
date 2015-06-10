@@ -58,8 +58,24 @@ static const CGFloat kBaselineOffset = 0.5f;
     paragraphStyle.minimumLineHeight = kMinimumLineHeight;
     paragraphStyle.lineSpacing = kLineSpacing;
     
-    NSString *safeText = conversation.lastMessageText == nil ? @"" : conversation.lastMessageText;
-    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:safeText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
+    NSString *lastMessageText = conversation.lastMessageText;
+    if ( lastMessageText == nil || lastMessageText.length == 0 )
+    {
+        //We recieved an empty message, check if we got an image or video along with it.
+        NSString *mediaType = conversation.lastMessageContentType;
+        if ( mediaType != nil )
+        {
+            //Got a valid media type string from the backend, use that to set the text.
+            lastMessageText = mediaType;
+        }
+        else if ( lastMessageText == nil )
+        {
+            //Got only an empty message, just make the string non-nil to prevent a crash.
+            lastMessageText = @"";
+        }
+    }
+    
+    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:lastMessageText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
     self.dateLabel.text = [conversation.postedAt timeSince];
     [self.profileButton setProfileImageURL:[NSURL URLWithString:conversation.user.pictureUrl] forState:UIControlStateNormal];
 

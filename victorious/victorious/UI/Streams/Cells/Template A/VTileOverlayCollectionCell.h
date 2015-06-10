@@ -11,13 +11,15 @@
 #import "VBackgroundContainer.h"
 #import "VStreamCellSpecialization.h"
 #import "VStreamCellFocus.h"
+#import "VStreamCellTracking.h"
+#import "VHighlightContainer.h"
 
 @class VSequence;
 
 /**
  *  VTileOverlayCollectionCell a.k.a. Template A cell.
  */
-@interface VTileOverlayCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus>
+@interface VTileOverlayCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus, VStreamCellTracking, VHighlighting>
 
 /**
  *  Sizing method. All parameters are required.
