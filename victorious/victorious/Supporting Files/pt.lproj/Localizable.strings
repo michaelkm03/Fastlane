@@ -448,8 +448,8 @@
 "Report/Flag" = "Denunciar/Sinalizar";
 "CreatedBy" = "CRIADO POR";
 "remixes" = "remixagens";
-"Remix" = "Remixagem";
-"RemixVerb" = "Remixagem";
+"Remix" = "Remixar";
+"RemixVerb" = "Remixar";
 "reposts" = "repostagens";
 "REPOSTS" = "Repostagens";
 "REMIXES" = "Remixagens";
@@ -463,7 +463,7 @@
 "doubleRepostedByFormat" = "Repostado por %@ + 1 outro";
 "multipleRepostedByFormat" = "Repostado por %@ + %lu outros";
 "+ %lu others" = "'+ %lu outros";
-"remixedFromFormat" = "Remixagem de %@";
+"remixedFromFormat" = "Remixar de %@";
 "giffedFromFormat" = "GIF de %@";
 
 "leaveACommentFormat" = "Deixe um comentário em %@";
