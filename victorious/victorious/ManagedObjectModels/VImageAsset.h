@@ -18,6 +18,15 @@
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * imageURL;
 @property (nonatomic, retain) VUser * user;
-@property (nonatomic, retain) VSequence * sequence;
+@property (nonatomic, retain) NSSet * sequences;
+
+@end
+
+@interface VImageAsset (CoreDataGeneratedAccessors)
+
+- (void)addSequencesObject:(VSequence *)values;
+- (void)removeSequencesObject:(VSequence *)values;
+- (void)addSequences:(NSSet *)values;
+- (void)removeSequences:(NSSet *)values;
 
 @end
