@@ -484,7 +484,10 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
      }
                   failureBlock:^(NSError *error)
      {
-         [self showFailureHUD];
+         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+         self.failureHud.mode = MBProgressHUDModeText;
+         self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
+         [self.failureHud hide:YES afterDelay:3.0f];
      }];
 }
 
@@ -500,18 +503,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
      }
             failureBlock:^(NSError *error)
      {
-         [self showFailureHUD];
+         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+         self.failureHud.mode = MBProgressHUDModeText;
+         self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+         [self.failureHud hide:YES afterDelay:3.0f];
      }];
-    
- 
-}
-
-- (void)showFailureHUD
-{
-    self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    self.failureHud.mode = MBProgressHUDModeText;
-    self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
-    [self.failureHud hide:YES afterDelay:3.0f];
 }
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond
