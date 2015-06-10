@@ -105,8 +105,6 @@ setAppIDs(){
             /usr/libexec/PlistBuddy -c "Set :$N:appID $QA_APP_ID" "$ENVIRONMENTS_PLIST"
         elif [ "$NAME" == "Staging" ]; then
             /usr/libexec/PlistBuddy -c "Set :$N:appID $STAGING_APP_ID" "$ENVIRONMENTS_PLIST"
-        elif [ "$NAME" == "Staging EUW1" ]; then
-            /usr/libexec/PlistBuddy -c "Set :$N:appID $STAGING_APP_ID" "$ENVIRONMENTS_PLIST"
         elif [ "$NAME" == "Production" ]; then
             /usr/libexec/PlistBuddy -c "Set :$N:appID $PRODUCTION_APP_ID" "$ENVIRONMENTS_PLIST"
         fi
