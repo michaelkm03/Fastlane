@@ -127,7 +127,12 @@
 {
     hashtag = hashtag.lowercaseString;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+    
+    if ([self doesSet:mainUser.hashtags containString:hashtag])
+    {
+        success(nil, nil, nil);
+        return nil;
+    }
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -136,6 +141,8 @@
         VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
                                                                        subclass:[VHashtag class]];
         newTag.tag = hashtag;
+        
+        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
         
         [hashtagSet addObject:newTag];
         mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
@@ -156,12 +163,6 @@
             fail(operation, error);
         }
     };
-    
-    if ([self doesSet:hashtagSet containString:hashtag])
-    {
-        success(nil, nil, nil);
-        return nil;
-    }
     
     return [self POST:@"/api/hashtag/follow"
                object:nil
@@ -185,10 +186,17 @@
 {
     hashtag = hashtag.lowercaseString;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+    
+    if (![self doesSet:mainUser.hashtags containString:hashtag])
+    {
+        success(nil, nil, nil);
+        return nil;
+    }
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+
         for (VHashtag *aTag in hashtagSet)
         {
             if ([aTag.tag isEqualToString:hashtag])
@@ -215,12 +223,6 @@
             fail(operation, error);
         }
     };
-    
-    if (![self doesSet:hashtagSet containString:hashtag])
-    {
-        success(nil, nil, nil);
-        return nil;
-    }
     
     return [self POST:@"/api/hashtag/unfollow"
               object:nil
@@ -296,28 +298,7 @@
     return YES;
 }
 
-- (void)fetchHashtags:(void (^)(void))completionBlock
-{
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-
-    if (mainUser.hashtags.count == 0)
-    {
-        [self getHashtagsSubscribedToWithPageType:VPageTypeFirst perPageLimit:1000 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-        {
-            completionBlock();
-            
-        } failBlock:^(NSOperation *operation, NSError *error)
-        {
-            //fail block:
-        }];
-    }
-    else
-    {
-        completionBlock();
-    }
-}
-
-- (BOOL)doesSet:(NSMutableOrderedSet *)orderedSet containString:(NSString *)string
+- (BOOL)doesSet:(NSOrderedSet *)orderedSet containString:(NSString *)string
 {
     for (VHashtag *tag in orderedSet)
     {
