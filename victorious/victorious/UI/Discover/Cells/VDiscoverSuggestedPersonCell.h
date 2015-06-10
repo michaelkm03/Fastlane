@@ -11,7 +11,7 @@
 
 @class VDependencyManager;
 
-@interface VSuggestedPersonCollectionViewCell : UICollectionViewCell
+@interface VDiscoverSuggestedPersonCell : UICollectionViewCell
 
 @property (nonatomic, strong) VUser *user;
 

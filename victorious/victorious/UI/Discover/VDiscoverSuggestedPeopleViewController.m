@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSuggestedPeopleCollectionViewController.h"
-#import "VSuggestedPersonCollectionViewCell.h"
+#import "VDiscoverSuggestedPeopleViewController.h"
+#import "VDiscoverSuggestedPersonCell.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
@@ -20,18 +20,18 @@ static NSString * const kSuggestedPersonCellIdentifier          = @"VSuggestedPe
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
 static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
-@interface VSuggestedPeopleCollectionViewController ()
+@interface VDiscoverSuggestedPeopleViewController ()
 
 @property (nonatomic, strong) VUser *userToAnimate;
 
 @end
 
-@implementation VSuggestedPeopleCollectionViewController
+@implementation VDiscoverSuggestedPeopleViewController
 
-+ (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName
++ (VDiscoverSuggestedPeopleViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
-    VSuggestedPeopleCollectionViewController *vc = [storyboard instantiateViewControllerWithIdentifier:VStoryboardViewControllerIndentifier];
+    VDiscoverSuggestedPeopleViewController *vc = [storyboard instantiateViewControllerWithIdentifier:VStoryboardViewControllerIndentifier];
     return vc;
 }
 
@@ -144,7 +144,7 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kSuggestedPersonCellIdentifier forIndexPath:indexPath];
+    VDiscoverSuggestedPersonCell *cell = (VDiscoverSuggestedPersonCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kSuggestedPersonCellIdentifier forIndexPath:indexPath];
     BOOL animated = (self.suggestedUsers[ indexPath.row ] == self.userToAnimate);
     [cell setUser:self.suggestedUsers[ indexPath.row ]
          animated:animated];
@@ -159,7 +159,7 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VSuggestedPersonCollectionViewCell *cell, NSUInteger idx, BOOL *stop)
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VDiscoverSuggestedPersonCell *cell, NSUInteger idx, BOOL *stop)
     {
         
         cell.dependencyManager = dependencyManager;
@@ -171,7 +171,7 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+    VDiscoverSuggestedPersonCell *cell = (VDiscoverSuggestedPersonCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     VUser *user = cell.user;
     
     NSDictionary *params = @{ VTrackingKeyName : user.name ?: @"" };

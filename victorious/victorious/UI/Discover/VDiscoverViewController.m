@@ -9,11 +9,11 @@
 #import <MBProgressHUD.h>
 #import "VDiscoverViewController.h"
 #import "VDiscoverContainerViewController.h"
-#import "VSuggestedPeopleCell.h"
+#import "VDiscoverSuggestedPeopleSectionCell.h"
 #import "VStream+Fetcher.h"
 #import "VTrendingTagCell.h"
 #import "VDiscoverHeaderView.h"
-#import "VSuggestedPeopleCollectionViewController.h"
+#import "VDiscoverSuggestedPeopleViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Discover.h"
 #import "VHashtag.h"
@@ -40,7 +40,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 @interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate, VCoachmarkDisplayer>
 
-@property (nonatomic, strong) VSuggestedPeopleCollectionViewController *suggestedPeopleViewController;
+@property (nonatomic, strong) VDiscoverSuggestedPeopleViewController *suggestedPeopleViewController;
 
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaderTitles;
@@ -64,7 +64,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     [super loadView];
     
-    self.suggestedPeopleViewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Discover"];
+    self.suggestedPeopleViewController = [VDiscoverSuggestedPeopleViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.dependencyManager = self.dependencyManager;
     self.suggestedPeopleViewController.delegate = self;
     
@@ -256,7 +256,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kVTrendingTagIdentifier bundle:nil] forCellReuseIdentifier:kVTrendingTagIdentifier];
-    [self.tableView registerClass:[VSuggestedPeopleCell class] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
+    [self.tableView registerClass:[VDiscoverSuggestedPeopleSectionCell class] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
     [self.tableView registerNib:[VDiscoverHeaderView nibForHeader] forHeaderFooterViewReuseIdentifier:kVHeaderIdentifier];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
@@ -327,7 +327,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
         }
         else
         {
-            VSuggestedPeopleCell *customCell = (VSuggestedPeopleCell *) [tableView dequeueReusableCellWithIdentifier:kVSuggestedPeopleIdentifier forIndexPath:indexPath];
+            VDiscoverSuggestedPeopleSectionCell *customCell = (VDiscoverSuggestedPeopleSectionCell *) [tableView dequeueReusableCellWithIdentifier:kVSuggestedPeopleIdentifier forIndexPath:indexPath];
             
             if ( ![customCell.subviews containsObject:self.suggestedPeopleViewController.collectionView] )
             {
@@ -428,7 +428,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VSuggestedPeopleCell cellHeight] : [VTrendingTagCell cellHeight];
+    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VDiscoverSuggestedPeopleSectionCell cellHeight] : [VTrendingTagCell cellHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
