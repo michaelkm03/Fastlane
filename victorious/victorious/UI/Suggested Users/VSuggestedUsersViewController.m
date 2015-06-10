@@ -10,8 +10,9 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "UIView+AutoLayout.h"
 #import "VSuggestedUsersDataSource.h"
+#import "VSuggestedUsersResponder.h"
 
-@interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout>
+@interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VSuggestedUsersResponder>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -49,7 +50,6 @@
     {
         [self.collectionView reloadData];
     }];
-    
 }
 
 #pragma mark - VBackgroundContainer
@@ -66,6 +66,13 @@
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self.suggestedUsersDataSource collectionView:collectionView sizeForItemAtIndexPath:indexPath];
+}
+
+#pragma mark - VSuggestedUsersResponder
+
+- (void)onSuggestedUsersContinue
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -1792,6 +1792,7 @@
 		A77951211B28C95E00D9DB0A /* VCreatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreatorMessageViewController.h; path = "Creator Message/VCreatorMessageViewController.h"; sourceTree = "<group>"; };
 		A77951221B28C95E00D9DB0A /* VCreatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreatorMessageViewController.m; path = "Creator Message/VCreatorMessageViewController.m"; sourceTree = "<group>"; };
 		A77951231B28C95E00D9DB0A /* VCreatorMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VCreatorMessageViewController.xib; path = "Creator Message/VCreatorMessageViewController.xib"; sourceTree = "<group>"; };
+		A779512B1B28DCFB00D9DB0A /* VSuggestedUsersResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUsersResponder.h; path = "victorious/UI/Suggested Users/VSuggestedUsersResponder.h"; sourceTree = SOURCE_ROOT; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -4547,6 +4548,7 @@
 				A779511D1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib */,
 				A77951041B27D22D00D9DB0A /* VSuggestedUsersViewController.h */,
 				A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */,
+				A779512B1B28DCFB00D9DB0A /* VSuggestedUsersResponder.h */,
 			);
 			name = "Suggested Users";
 			path = Workspace;
