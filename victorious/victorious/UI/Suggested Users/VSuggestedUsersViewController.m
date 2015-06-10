@@ -49,6 +49,7 @@
     {
         [self.collectionView reloadData];
     }];
+    
 }
 
 #pragma mark - VBackgroundContainer

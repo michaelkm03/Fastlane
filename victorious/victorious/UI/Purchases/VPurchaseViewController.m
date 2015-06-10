@@ -14,7 +14,6 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VPurchaseStringMaker.h"
-#import "VCreatorInfoHelper.h"
 #import "VDependencyManager.h"
 
 static const CGFloat kRestorePurchaseDescriptionFontSize = 11.0f;
@@ -27,7 +26,8 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 @property (strong, nonatomic) VPurchaseStringMaker *stringMaker;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 
-@property (weak, nonatomic) IBOutlet VCreatorInfoHelper *creatorInfoHelper;
+#warning FIX
+//@property (weak, nonatomic) IBOutlet VCreatorInfoHelper *creatorInfoHelper;
 @property (weak, nonatomic) IBOutlet UILabel *productTitleLabel;
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
@@ -70,7 +70,8 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
     
     [self resetLoadingState];
     
-    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
+#warning FIX
+    //    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -174,7 +175,8 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
     
     [self populateDataWithProduct:self.product];
     [self populateDataWithVoteType:self.voteType];
-    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
+#warning FIX
+    //    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
     [self applyTheme];
 }
 

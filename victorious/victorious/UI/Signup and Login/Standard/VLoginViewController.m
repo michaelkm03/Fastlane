@@ -28,10 +28,11 @@
 #import "MBProgressHUD.h"
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager.h"
-#import "VCreatorInfoHelper.h"
+#import "VCreatorMessageViewController.h"
 #import "UIAlertView+VBlocks.h"
 #import "VDependencyManager+VTracking.h"
 #import "VTwitterAccountsHelper.h"
+#import "UIView+AutoLayout.h"
 
 @import Accounts;
 @import Social;
@@ -45,6 +46,7 @@
 @property (nonatomic, weak) IBOutlet VLoginButton *facebookButton;
 @property (nonatomic, weak) IBOutlet VLoginButton *twitterButton;
 @property (nonatomic, weak) IBOutlet VLoginButton *signupWithEmailButton;
+@property (nonatomic, weak) IBOutlet UIView *creatorMessgeContainerView;
 
 @property (nonatomic, weak) IBOutlet CCHLinkTextView *loginTextView;
 
@@ -52,9 +54,7 @@
 @property (nonatomic, strong) VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, weak) IBOutlet VAuthorizationContextHelper *authorizationContextHelper;
 
-@property (nonatomic, weak) IBOutlet UITextView *authorizationContextTextView;
-@property (nonatomic, weak) IBOutlet VCreatorInfoHelper *creatorInfoHelper;
-@property (nonatomic, weak) IBOutlet UIView *contentContainer;
+@property (nonatomic, strong) VCreatorMessageViewController *creatorMessageViewController;
 
 @end
 
@@ -122,21 +122,19 @@
     [self.view sendSubviewToBack:self.blurredBackgroundView];
     [self.view v_addFitToParentConstraintsToSubview:self.blurredBackgroundView];
     
+    NSString *authorizationContextText = [self.authorizationContextHelper textForContext:self.authorizationContextType];
+    self.creatorMessageViewController = [[VCreatorMessageViewController alloc] initWithDependencyManager:self.dependencyManager];
+    [self.creatorMessageViewController setMessage:authorizationContextText];
+    [self.creatorMessgeContainerView addSubview:self.creatorMessageViewController.view];
+    [self.creatorMessgeContainerView v_addFitToParentConstraintsToSubview:self.creatorMessageViewController.view];
+    
     // Some prep for VPresentWithBlurViewController animation (this is the order elements animate on screen)
-    NSArray *elementsArray = @[ self.contentContainer,
+    NSArray *elementsArray = @[ self.creatorMessageViewController.view,
                                 self.signupWithEmailButton,
                                 self.facebookButton,
                                 self.twitterButton,
                                 self.loginTextView ];
     self.stackedElements = [NSOrderedSet orderedSetWithArray:elementsArray];
-    
-    NSString *authorizationContextText = [self.authorizationContextHelper textForContext:self.authorizationContextType];
-    NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]
-                                                        color:[UIColor whiteColor]
-                                                   lineHeight:23.0f];
-    self.authorizationContextTextView.attributedText = [[NSAttributedString alloc] initWithString:authorizationContextText attributes:attributes];
-    
-    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidStartRegistration];
 }
@@ -209,17 +207,6 @@
 }
 
 #pragma mark - Helpers
-
-- (NSDictionary *)stringAttributesWithFont:(UIFont *)font color:(UIColor *)color lineHeight:(CGFloat)lineHeight
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = lineHeight;
-    
-    return @{ NSFontAttributeName: font ?: [NSNull null],
-              NSForegroundColorAttributeName: color,
-              NSParagraphStyleAttributeName: paragraphStyle };
-}
 
 - (UIView *)createBackgroundView:(CGRect)bounds
 {
@@ -363,7 +350,14 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     VRegistrationModel *registrationModelForUser = [VRegistrationModel registrationModelWithUser:self.profile];
-    if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
+    
+    if ( [segue.destinationViewController isKindOfClass:[VCreatorMessageViewController class]] )
+    {
+        // Get reference to the embedded container view from storybaord
+        self.creatorMessageViewController = segue.destinationViewController;
+        self.creatorMessageViewController.dependencyManager = self.dependencyManager;
+    }
+    else if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;

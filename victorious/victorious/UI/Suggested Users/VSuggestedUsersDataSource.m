@@ -92,7 +92,8 @@
                                                                                     forIndexPath:indexPath];
         if ( cell != nil )
         {
-            cell.backgroundColor = [UIColor redColor];
+            [cell setDependencyManager:self.dependencyManager];
+            [cell setMessage:@"FUCK"];
             return cell;
         }
     }

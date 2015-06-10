@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VDependencyManager.h"
 
 @interface VSuggestedUsersHeaderCell : UICollectionViewCell
 
 + (NSString *)suggestedReuseIdentifier;
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager;
+
+- (void)setMessage:(NSString *)message;
 
 @end
