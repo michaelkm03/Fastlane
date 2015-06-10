@@ -117,7 +117,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 #warning TESTING ONLY
     VSuggestedUsersViewController *vc = [self.dependencyManager templateValueOfType:[VSuggestedUsersViewController class]
                                                                              forKey:@"suggestedUsers"];
-    //[self presentViewController:vc animated:YES completion:nil];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)askForPushNotificationsPermission

@@ -13,11 +13,18 @@
 #import "VUser.h"
 #import "UIView+AutoLayout.h"
 #import "UIResponder+VResponderChain.h"
+#import "VDefaultProfileImageView.h"
+
+static NSString * const kTextTitleColorKey = @"color.text.label1";
+static NSString * const kTextBodyColorKey = @"color.text.label2";
 
 @interface VSuggestedUserCell ()
 
 @property (nonatomic, strong) VFollowUserControl *followButton;
 
+@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
+@property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
+@property (nonatomic, weak) IBOutlet UITextView *userTagLingTextView;
 @property (nonatomic, weak) IBOutlet UIView *followButtonContainerView;
 @property (nonatomic, weak) IBOutlet UIView *userStreamContainerView;
 
@@ -53,12 +60,23 @@
     
     self.usernameTextView.text = _user.name;
     self.userTagLingTextView.text = _user.tagline;
+
+    if ( _user.pictureUrl != nil )
+    {
+        [self.userProfileImage setProfileImageURL:[NSURL URLWithString:_user.pictureUrl]];
+    }
 }
 
 - (void)applyStyle
 {
     self.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey].CGColor;
     self.layer.borderWidth = 1.0f;
+    
+    self.usernameTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
+    
+    self.userTagLingTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+    self.userTagLingTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self forKey:@"background.detail"];
 }

@@ -15,9 +15,6 @@
 @interface VSuggestedUserCell : UICollectionViewCell <VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, weak) IBOutlet UIImageView *userProfileImage;
-@property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
-@property (nonatomic, weak) IBOutlet UITextView *userTagLingTextView;
 
 + (NSString *)suggestedReuseIdentifier;
 

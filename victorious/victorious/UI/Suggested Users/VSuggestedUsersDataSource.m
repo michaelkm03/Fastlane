@@ -8,6 +8,7 @@
 
 #import "VSuggestedUsersDataSource.h"
 #import "VSuggestedUserCell.h"
+#import "VSuggestedUsersHeaderCell.h"
 #import "VObjectManager+Discover.h"
 #import "VDependencyManager.h"
 #import "VUser.h"
@@ -37,6 +38,10 @@
     NSString *identifier = [VSuggestedUserCell suggestedReuseIdentifier];
     UINib *nib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
     [collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
+    
+    identifier = [VSuggestedUsersHeaderCell suggestedReuseIdentifier];
+    nib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
+    [collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
 - (void)refreshWithCompletion:(void(^)())completion
@@ -54,24 +59,55 @@
      }];
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( indexPath.section == 0 )
+    {
+        return CGSizeMake( CGRectGetWidth(collectionView.bounds), 160.0f );
+    }
+    else
+    {
+        return CGSizeMake( CGRectGetWidth(collectionView.bounds) - 20.0f, 140.0f );
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.suggestedUsers.count;
+    return section == 0 ? 1 : self.suggestedUsers.count;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 2;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = [VSuggestedUserCell suggestedReuseIdentifier];
-    VSuggestedUserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    
-    if ( cell != nil )
+    if ( indexPath.section == 0 )
     {
-        cell.dependencyManager = self.dependencyManager;
-        VUser *user = self.suggestedUsers[ indexPath.row ];
-        [cell setUser:user];
-        return cell;
+        NSString *identifier = [VSuggestedUsersHeaderCell suggestedReuseIdentifier];
+        VSuggestedUsersHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                                    forIndexPath:indexPath];
+        if ( cell != nil )
+        {
+            cell.backgroundColor = [UIColor redColor];
+            return cell;
+        }
+    }
+    else
+    {
+        NSString *identifier = [VSuggestedUserCell suggestedReuseIdentifier];
+        VSuggestedUserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                             forIndexPath:indexPath];
+        if ( cell != nil )
+        {
+            cell.dependencyManager = self.dependencyManager;
+            VUser *user = self.suggestedUsers[ indexPath.row ];
+            [cell setUser:user];
+            return cell;
+        }
     }
     return nil;
 }

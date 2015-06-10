@@ -16,4 +16,6 @@
 
 - (void)refreshWithCompletion:(void(^)())completion;
 
+- (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
