@@ -20,6 +20,9 @@
 @property (nonatomic, weak) IBOutlet UIImageView *creatorAvatarImageView;
 @property (nonatomic, weak) IBOutlet UITextView *messageTextView;
 
+@property (nonatomic, assign) CGFloat defaultMessageViewHeight;
+@property (nonatomic, assign) CGFloat defaulBoundsHeight;
+
 @end
 
 @implementation VCreatorMessageViewController
@@ -42,6 +45,9 @@
     
     self.view.backgroundColor = [UIColor clearColor];
     
+    self.defaultMessageViewHeight = CGRectGetHeight(self.messageTextView.bounds);
+    self.defaulBoundsHeight = CGRectGetHeight(self.view.bounds);
+    
     [self applyStyle];
     
     [self updateMessage];
@@ -63,9 +69,15 @@
     
     NSAssert( self.dependencyManager != nil, @"VCreatorMessageViewController must have a dependency manager before setting message." );
     NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]
-                                                        color:[UIColor whiteColor]
+                                                        color:[self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
                                                    lineHeight:23.0f];
     self.messageTextView.attributedText = [[NSAttributedString alloc] initWithString:self.message attributes:attributes];
+    
+    [self.view layoutIfNeeded];
+    
+    CGRect bounds = self.view.bounds;
+    bounds.size.height = self.defaulBoundsHeight + CGRectGetHeight(self.messageTextView.bounds) - self.defaultMessageViewHeight;
+    self.view.bounds = bounds;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

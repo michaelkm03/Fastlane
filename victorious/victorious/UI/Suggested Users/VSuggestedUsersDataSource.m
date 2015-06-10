@@ -14,10 +14,13 @@
 #import "VUser.h"
 #import "VFollowResponder.h"
 
+static NSString * const kPromptTextKey = @"prompt";
+
 @interface VSuggestedUsersDataSource()
 
 @property (nonatomic, strong) NSArray *suggestedUsers;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VSuggestedUsersHeaderCell *headerSizingCell;
 
 @end
 
@@ -29,8 +32,16 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _headerSizingCell = [self createHeaderSizingCell];
     }
     return self;
+}
+
+- (VSuggestedUsersHeaderCell *)createHeaderSizingCell
+{
+    NSString *identifier = [VSuggestedUsersHeaderCell suggestedReuseIdentifier];
+    UINib *cellNib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
+    return [cellNib instantiateWithOwner:nil options:nil].firstObject;
 }
 
 - (void)registerCellsForCollectionView:(UICollectionView *)collectionView
@@ -63,7 +74,9 @@
 {
     if ( indexPath.section == 0 )
     {
-        return CGSizeMake( CGRectGetWidth(collectionView.bounds), 160.0f );
+        [self.headerSizingCell setDependencyManager:self.dependencyManager];
+        [self.headerSizingCell setMessage:[self.dependencyManager stringForKey:kPromptTextKey]];
+        return [self.headerSizingCell desiredHeightWithCollectionView:collectionView];
     }
     else
     {
@@ -93,7 +106,7 @@
         if ( cell != nil )
         {
             [cell setDependencyManager:self.dependencyManager];
-            [cell setMessage:@"FUCK"];
+            [cell setMessage:[self.dependencyManager stringForKey:kPromptTextKey]];
             return cell;
         }
     }

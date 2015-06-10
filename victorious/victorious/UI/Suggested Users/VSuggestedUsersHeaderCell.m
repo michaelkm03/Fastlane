@@ -51,6 +51,11 @@ static NSString * const kTextBodyColorKey = @"color.text.label3";
     [self.creatorMessageViewController setMessage:message];
 }
 
+- (CGSize)desiredHeightWithCollectionView:(UICollectionView *)collectionView
+{
+    return CGSizeMake( CGRectGetWidth(collectionView.bounds), CGRectGetHeight(self.creatorMessageViewController.view.bounds) );
+}
+
 - (IBAction)continueButtonTapped:(id)sender
 {
     id<VSuggestedUsersResponder> responder = [self targetForAction:@selector(onSuggestedUsersContinue) withSender:self];

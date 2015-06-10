@@ -36,6 +36,8 @@
 {
     [super viewDidLoad];
     
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
     UICollectionViewLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
     self.collectionView.delegate = self;
@@ -45,11 +47,12 @@
     self.collectionView.dataSource = self.suggestedUsersDataSource;
     [self.view addSubview:self.collectionView];
     [self.view v_addFitToParentConstraintsToSubview:self.collectionView];
-    [self.dependencyManager addBackgroundToBackgroundHost:self];
     [self.suggestedUsersDataSource refreshWithCompletion:^
     {
         [self.collectionView reloadData];
     }];
+    
+    self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
 }
 
 #pragma mark - VBackgroundContainer

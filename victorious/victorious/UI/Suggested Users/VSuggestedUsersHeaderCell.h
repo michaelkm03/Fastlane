@@ -17,4 +17,6 @@
 
 - (void)setMessage:(NSString *)message;
 
+- (CGSize)desiredHeightWithCollectionView:(UICollectionView *)collectionView;
+
 @end
