@@ -35,7 +35,6 @@
 		0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09719B4698800FA363C /* VObjectManager+ContentCreation.m */; };
 		0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09919B4698800FA363C /* VObjectManager+DeviceRegistration.m */; };
 		0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09B19B4698800FA363C /* VObjectManager+DirectMessaging.m */; };
-		0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09D19B4698800FA363C /* VObjectManager+Environment.m */; };
 		0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */; };
 		0314D0B419B4698800FA363C /* VObjectManager+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0A119B4698800FA363C /* VObjectManager+Login.m */; };
 		0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0A319B4698800FA363C /* VObjectManager+Pagination.m */; };
@@ -88,7 +87,6 @@
 		0314D4D319B46B5E00FA363C /* VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */; };
 		0314D4D419B46B5E00FA363C /* VUserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3F119B46B5E00FA363C /* VUserSearchViewController.m */; };
 		0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3F519B46B5E00FA363C /* VChangePasswordViewController.m */; };
-		0314D4D719B46B5E00FA363C /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3F719B46B5E00FA363C /* VEnvironment.m */; };
 		0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3F919B46B5E00FA363C /* VPrivacyPoliciesViewController.m */; };
 		0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3FB19B46B5E00FA363C /* VServerEnvironmentTableViewController.m */; };
 		0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3FD19B46B5E00FA363C /* VSettingsViewController.m */; };
@@ -365,6 +363,7 @@
 		A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */; };
 		A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
+		A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */; };
 		A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */; };
 		A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
 		A73EAEC51A41F7BD0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
@@ -449,6 +448,8 @@
 		A776EF661AD45A760093992F /* VEndCardModelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF651AD45A760093992F /* VEndCardModelFactory.m */; };
 		A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */; };
 		A7792FDE1AE8497200E2ECC1 /* VTemplateDecoratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */; };
+		A77951191B28AB9A00D9DB0A /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
+		A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -1054,8 +1055,6 @@
 		0314D09919B4698800FA363C /* VObjectManager+DeviceRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+DeviceRegistration.m"; sourceTree = "<group>"; };
 		0314D09A19B4698800FA363C /* VObjectManager+DirectMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+DirectMessaging.h"; sourceTree = "<group>"; };
 		0314D09B19B4698800FA363C /* VObjectManager+DirectMessaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+DirectMessaging.m"; sourceTree = "<group>"; };
-		0314D09C19B4698800FA363C /* VObjectManager+Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Environment.h"; sourceTree = "<group>"; };
-		0314D09D19B4698800FA363C /* VObjectManager+Environment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Environment.m"; sourceTree = "<group>"; };
 		0314D09E19B4698800FA363C /* VObjectManager+ImageSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+ImageSearch.h"; sourceTree = "<group>"; };
 		0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ImageSearch.m"; sourceTree = "<group>"; };
 		0314D0A019B4698800FA363C /* VObjectManager+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Login.h"; sourceTree = "<group>"; };
@@ -1161,8 +1160,6 @@
 		0314D3F119B46B5E00FA363C /* VUserSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserSearchViewController.m; sourceTree = "<group>"; };
 		0314D3F419B46B5E00FA363C /* VChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VChangePasswordViewController.h; sourceTree = "<group>"; };
 		0314D3F519B46B5E00FA363C /* VChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VChangePasswordViewController.m; sourceTree = "<group>"; };
-		0314D3F619B46B5E00FA363C /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
-		0314D3F719B46B5E00FA363C /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
 		0314D3F819B46B5E00FA363C /* VPrivacyPoliciesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPrivacyPoliciesViewController.h; sourceTree = "<group>"; };
 		0314D3F919B46B5E00FA363C /* VPrivacyPoliciesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPrivacyPoliciesViewController.m; sourceTree = "<group>"; };
 		0314D3FA19B46B5E00FA363C /* VServerEnvironmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VServerEnvironmentTableViewController.h; sourceTree = "<group>"; };
@@ -1614,6 +1611,8 @@
 		A73A877B1A76BD71008C6355 /* VStreamWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamWebViewController.h; sourceTree = "<group>"; };
 		A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamWebViewController.m; sourceTree = "<group>"; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
+		A73C7E2D1B2608C70093F792 /* VAddServerEnvironmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAddServerEnvironmentViewController.h; sourceTree = "<group>"; };
+		A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAddServerEnvironmentViewController.m; sourceTree = "<group>"; };
 		A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Unicode_Tests.m"; sourceTree = "<group>"; };
 		A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Unicode.swift"; sourceTree = "<group>"; };
 		A74293991AAFE4A400532948 /* VAuthorizationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContext.h; sourceTree = "<group>"; };
@@ -1773,6 +1772,10 @@
 		A7792FD51AE8209200E2ECC1 /* VTemplateDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDecorator.h; sourceTree = "<group>"; };
 		A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecorator.m; sourceTree = "<group>"; };
 		A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecoratorTests.m; sourceTree = "<group>"; };
+		A77951151B28AB9A00D9DB0A /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEnvironment.h; path = Environment/VEnvironment.h; sourceTree = "<group>"; };
+		A77951161B28AB9A00D9DB0A /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEnvironment.m; path = Environment/VEnvironment.m; sourceTree = "<group>"; };
+		A77951171B28AB9A00D9DB0A /* VEnvironmentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEnvironmentManager.h; path = Environment/VEnvironmentManager.h; sourceTree = "<group>"; };
+		A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEnvironmentManager.m; path = Environment/VEnvironmentManager.m; sourceTree = "<group>"; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -2914,8 +2917,6 @@
 				0314D09B19B4698800FA363C /* VObjectManager+DirectMessaging.m */,
 				A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */,
 				A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */,
-				0314D09C19B4698800FA363C /* VObjectManager+Environment.h */,
-				0314D09D19B4698800FA363C /* VObjectManager+Environment.m */,
 				0314D09E19B4698800FA363C /* VObjectManager+ImageSearch.h */,
 				0314D09F19B4698800FA363C /* VObjectManager+ImageSearch.m */,
 				0314D0A019B4698800FA363C /* VObjectManager+Login.h */,
@@ -3356,12 +3357,12 @@
 				A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */,
 				0314D3F419B46B5E00FA363C /* VChangePasswordViewController.h */,
 				0314D3F519B46B5E00FA363C /* VChangePasswordViewController.m */,
-				0314D3F619B46B5E00FA363C /* VEnvironment.h */,
-				0314D3F719B46B5E00FA363C /* VEnvironment.m */,
 				0314D3F819B46B5E00FA363C /* VPrivacyPoliciesViewController.h */,
 				0314D3F919B46B5E00FA363C /* VPrivacyPoliciesViewController.m */,
 				0314D3FA19B46B5E00FA363C /* VServerEnvironmentTableViewController.h */,
 				0314D3FB19B46B5E00FA363C /* VServerEnvironmentTableViewController.m */,
+				A73C7E2D1B2608C70093F792 /* VAddServerEnvironmentViewController.h */,
+				A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */,
 				A734A04B1A98278100C3E86F /* VSettingsTableViewCell.h */,
 				A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */,
 				0314D3FC19B46B5E00FA363C /* VSettingsViewController.h */,
@@ -4516,6 +4517,17 @@
 			name = "Template Utils";
 			sourceTree = "<group>";
 		};
+		A77951141B28AB6700D9DB0A /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				A77951151B28AB9A00D9DB0A /* VEnvironment.h */,
+				A77951161B28AB9A00D9DB0A /* VEnvironment.m */,
+				A77951171B28AB9A00D9DB0A /* VEnvironmentManager.h */,
+				A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */,
+			);
+			name = Environment;
+			sourceTree = "<group>";
+		};
 		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
 			isa = PBXGroup;
 			children = (
@@ -5259,17 +5271,18 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				A7CD87561B1E7487002532A9 /* ImageAssetFinder */,
 				A7299E9C1AA699EE00B6BC1F /* Authorization */,
 				A79869DF1AD7124D00F2564A /* Deep Links */,
 				039D02A71A1043D300DB9236 /* Dependencies */,
 				03CE66FD19B640CD0011BB9E /* Device Info */,
 				D87AD2A51AD46A2E00C481D0 /* Download */,
+				A77951141B28AB6700D9DB0A /* Environment */,
 				03CE66F019B47B590011BB9E /* Facebook */,
 				A743E7DA1A08160300339CB3 /* FileCache */,
 				A7672B921A1BF6B40063AF46 /* First Install */,
 				A7AEF9C11A83F27600A3D3A0 /* Formatters */,
 				DB8D3A10198039BD005DD36D /* HashTags */,
+				A7CD87561B1E7487002532A9 /* ImageAssetFinder */,
 				0314D08D19B4694600FA363C /* Interaction */,
 				DBDD7D5C1A97F49C0023CBF9 /* Location */,
 				0314D09119B4698800FA363C /* Object */,
@@ -6821,6 +6834,7 @@
 				A7F711FB1AE1D5A00086F729 /* VFollowerTableViewController.m in Sources */,
 				A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */,
 				03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */,
+				A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */,
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
@@ -7170,6 +7184,7 @@
 				A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */,
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
+				A77951191B28AB9A00D9DB0A /* VEnvironment.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
@@ -7258,7 +7273,6 @@
 				A7F712021AE1D5A00086F729 /* VNotAuthorizedDataSource.m in Sources */,
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */,
-				0314D4D719B46B5E00FA363C /* VEnvironment.m in Sources */,
 				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
@@ -7399,7 +7413,6 @@
 				035FA78E1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
-				0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
 				A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */,
@@ -7431,6 +7444,7 @@
 				A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */,
 				D8282B1E1AE74074005D9DCF /* VRoundedCommentButton.m in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,
+				A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,
 				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,
