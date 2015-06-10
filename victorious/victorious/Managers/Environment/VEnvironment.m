@@ -8,10 +8,12 @@
 
 #import "VEnvironment.h"
 
-NSString * const VNameKey = @"name";
-NSString * const VAppIDKey = @"appID";
-NSString * const VBaseURLKey = @"baseURL";
-NSString * const VUserKey = @"isUser";
+NSString * const kNameKey = @"name";
+NSString * const kAppIDKey = @"appID";
+NSString * const kBaseURLKey = @"baseURL";
+NSString * const kUserKey = @"isUser";
+
+NSString * const VEnvironmentErrorKey = @"com.victorious.VEnvironment.ErrorKey";
 
 @implementation VEnvironment
 
@@ -29,9 +31,9 @@ NSString * const VUserKey = @"isUser";
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
-    NSString *name = dictionary[ VNameKey ];
-    NSNumber *appID = dictionary[ VAppIDKey ];
-    NSString *baseURL = dictionary[ VBaseURLKey ];
+    NSString *name = dictionary[ kNameKey ];
+    NSNumber *appID = dictionary[ kAppIDKey ];
+    NSString *baseURL = dictionary[ kBaseURLKey ];
     
     if ( ![name isKindOfClass:[NSString class]] ||
          ![appID isKindOfClass:[NSNumber class]] ||
@@ -46,10 +48,10 @@ NSString * const VUserKey = @"isUser";
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
-    NSString *name = [coder decodeObjectForKey:VNameKey];
-    NSNumber *appID = [coder decodeObjectForKey:VAppIDKey ];
-    NSURL *baseURL = [coder decodeObjectForKey:VBaseURLKey ];
-    NSNumber *isUserEnvironment = [coder decodeObjectForKey:VUserKey];
+    NSString *name = [coder decodeObjectForKey:kNameKey];
+    NSNumber *appID = [coder decodeObjectForKey:kAppIDKey ];
+    NSURL *baseURL = [coder decodeObjectForKey:kBaseURLKey ];
+    NSNumber *isUserEnvironment = [coder decodeObjectForKey:kUserKey];
     
     if ( name == nil || appID == nil || baseURL == nil )
     {
@@ -62,10 +64,10 @@ NSString * const VUserKey = @"isUser";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.name forKey:VNameKey ];
-    [aCoder encodeObject:self.appID forKey:VAppIDKey ];
-    [aCoder encodeObject:self.baseURL forKey:VBaseURLKey ];
-    [aCoder encodeObject:@(self.isUserEnvironment) forKey:VUserKey ];
+    [aCoder encodeObject:self.name forKey:kNameKey ];
+    [aCoder encodeObject:self.appID forKey:kAppIDKey ];
+    [aCoder encodeObject:self.baseURL forKey:kBaseURLKey ];
+    [aCoder encodeObject:@(self.isUserEnvironment) forKey:kUserKey ];
 }
 
 #pragma mark - NSObject overrides

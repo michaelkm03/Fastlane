@@ -134,7 +134,6 @@
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followButton.hidden = (self.user == me);
-    NSLog( @"updateFollowingAnimated %@ :: %@", self.user.name, self.user.isFollowedByMainUser );
     [self.followButton setFollowing:self.user.isFollowedByMainUser.boolValue animated:animated];
 }
 

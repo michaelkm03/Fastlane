@@ -25,7 +25,6 @@
     
     self.view.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    self.appIDTextField.text = [[NSBundle mainBundle] objectForInfoDictionaryKey:VAppIDKey];
     self.urlTextField.text = @"http://";
 }
 

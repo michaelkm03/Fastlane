@@ -751,7 +751,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Server Environment" id="Pog-vT-DdP">
-                        <barButtonItem key="rightBarButtonItem" title="Item" systemItem="add" id="aKy-FP-SPS">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="aKy-FP-SPS">
                             <connections>
                                 <segue destination="weE-Ki-5IQ" kind="push" id="xIr-VI-cmI"/>
                             </connections>

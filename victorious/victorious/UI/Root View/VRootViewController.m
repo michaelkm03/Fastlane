@@ -28,6 +28,7 @@
 #import "VAppInfo.h"
 #import "VUploadManager.h"
 #import "VApplicationTracking.h"
+#import "VEnvironment.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -426,10 +427,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
     
 #if !V_NO_SWITCH_ENVIRONMENTS
-    NSError *enviornmentError = notification.userInfo[ @"enviornmentError" ];
-    if ( enviornmentError != nil )
+    NSError *environmentError = notification.userInfo[ VEnvironmentErrorKey ];
+    if ( environmentError != nil )
     {
-        NSString *message = [NSString stringWithFormat:@"%@\nReverting back to default environment.", enviornmentError.localizedDescription];
+        NSString *message = [NSString stringWithFormat:@"%@\nReverting back to default environment.", environmentError.localizedDescription];
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Environment Error" message:message preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [alert dismissViewControllerAnimated:YES completion:nil];
