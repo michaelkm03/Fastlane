@@ -11,6 +11,7 @@
 NSString * const VNameKey = @"name";
 NSString * const VAppIDKey = @"appID";
 NSString * const VBaseURLKey = @"baseURL";
+NSString * const VUserKey = @"isUser";
 
 @implementation VEnvironment
 
@@ -48,12 +49,15 @@ NSString * const VBaseURLKey = @"baseURL";
     NSString *name = [coder decodeObjectForKey:VNameKey];
     NSNumber *appID = [coder decodeObjectForKey:VAppIDKey ];
     NSURL *baseURL = [coder decodeObjectForKey:VBaseURLKey ];
+    NSNumber *isUserEnvironment = [coder decodeObjectForKey:VUserKey];
     
     if ( name == nil || appID == nil || baseURL == nil )
     {
         return nil;
     }
-    return [self initWithName:name baseURL:baseURL appID:appID];
+    typeof(self) instance = [self initWithName:name baseURL:baseURL appID:appID];
+    instance.isUserEnvironment = isUserEnvironment.boolValue;
+    return instance;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
@@ -61,6 +65,7 @@ NSString * const VBaseURLKey = @"baseURL";
     [aCoder encodeObject:self.name forKey:VNameKey ];
     [aCoder encodeObject:self.appID forKey:VAppIDKey ];
     [aCoder encodeObject:self.baseURL forKey:VBaseURLKey ];
+    [aCoder encodeObject:@(self.isUserEnvironment) forKey:VUserKey ];
 }
 
 #pragma mark - NSObject overrides

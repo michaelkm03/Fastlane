@@ -469,7 +469,7 @@
         <!--New Environment-->
         <scene sceneID="WT7-1V-Wdy">
             <objects>
-                <viewController id="weE-Ki-5IQ" customClass="VNewServerEnvironmentViewController" sceneMemberID="viewController">
+                <viewController id="weE-Ki-5IQ" customClass="VAddServerEnvironmentViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3x5-8a-Khh"/>
                         <viewControllerLayoutGuide type="bottom" id="Ggd-Qm-83w"/>

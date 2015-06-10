@@ -12,6 +12,7 @@
 #import "VConstants.h"
 
 static NSString * const kCurrentEnvironmentKey = @"com.victorious.VEnvironmentManager.Environment.currentEnvironment";
+static NSString * const kPreviousEnvironmentKey = @"com.victorious.VEnvironmentManager.Environment.previousEnvironment";
 static NSString * const kEnvironmentsFilename = @"environments";
 static NSString * const kUserEnvironmentsFilename = @"user_environments.plist";
 static NSString * const kPlist = @"plist";
@@ -45,16 +46,45 @@ static NSString * const kPlist = @"plist";
     }
     
     NSString *environmentName = [[NSUserDefaults standardUserDefaults] stringForKey:kCurrentEnvironmentKey];
-    return [[self.allEnvironments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name==%@", environmentName]] lastObject];
+    return [self environmentWithName:environmentName];
+}
+
+- (VEnvironment *)environmentWithName:(NSString *)name
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name==%@", name];
+    VEnvironment *environment = [[self.allEnvironments filteredArrayUsingPredicate:predicate] lastObject];
+    return environment;
 }
 
 - (void)setCurrentEnvironment:(VEnvironment *)currentEnvironment
 {
     if ([self.allEnvironments containsObject:currentEnvironment])
     {
+        // Save the previous environment
+        NSString *currentEnvironmentName = [[NSUserDefaults standardUserDefaults] stringForKey:kCurrentEnvironmentKey];
+        if ( currentEnvironmentName != nil )
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:currentEnvironmentName forKey:kPreviousEnvironmentKey];
+        }
+        
         [[NSUserDefaults standardUserDefaults] setObject:currentEnvironment.name forKey:kCurrentEnvironmentKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
+}
+
+- (BOOL)revertToPreviousEnvironment
+{
+    NSString *previousEnvironmentName = [[NSUserDefaults standardUserDefaults] stringForKey:kPreviousEnvironmentKey];
+    if ( previousEnvironmentName != nil )
+    {
+        [self setCurrentEnvironment:[self environmentWithName:previousEnvironmentName]];
+        [[NSUserDefaults standardUserDefaults] setObject:previousEnvironmentName forKey:kCurrentEnvironmentKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (BOOL)addEnvironment:(VEnvironment *)environment
@@ -75,6 +105,8 @@ static NSString * const kPlist = @"plist";
     {
         return NO;
     }
+    
+    environment.isUserEnvironment = YES; // All added environments are considered user environments
     
     NSArray *environments = [(self.userEnvironments ?: @[]) arrayByAddingObject:environment];
     NSString *filepath = [self userEnvironmentsFilePathWithFilename:kUserEnvironmentsFilename];

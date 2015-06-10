@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VNewServerEnvironmentViewController.h"
+#import "VAddServerEnvironmentViewController.h"
 #import "VEnvironmentManager.h"
 
-@interface VNewServerEnvironmentViewController ()
+@interface VAddServerEnvironmentViewController ()
 
 @property (nonatomic, weak) IBOutlet UITextField *nameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *urlTextField;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation VNewServerEnvironmentViewController
+@implementation VAddServerEnvironmentViewController
 
 - (void)viewDidLoad
 {

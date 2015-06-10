@@ -22,4 +22,6 @@
 
 - (BOOL)addEnvironment:(VEnvironment *)currentEnvironment;
 
+- (BOOL)revertToPreviousEnvironment;
+
 @end

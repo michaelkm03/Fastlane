@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VNewServerEnvironmentViewController : UIViewController
+@interface VAddServerEnvironmentViewController : UIViewController
 
 @end

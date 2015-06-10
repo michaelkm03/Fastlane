@@ -22,6 +22,8 @@ extern NSString * const VBaseURLKey;
 @property (nonatomic, readonly) NSURL *baseURL;
 @property (nonatomic, readonly) NSNumber *appID;
 
+@property (nonatomic, assign) BOOL isUserEnvironment;
+
 @property (nonatomic, readonly) NSDictionary *dictionaryRespresentation;
 
 - (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID NS_DESIGNATED_INITIALIZER;

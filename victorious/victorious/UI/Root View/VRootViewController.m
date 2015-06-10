@@ -420,7 +420,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
-    if ( self.launchState != VAppLaunchStateLaunched )
+    if ( self.launchState == VAppLaunchStateLaunching )
     {
         return;
     }
