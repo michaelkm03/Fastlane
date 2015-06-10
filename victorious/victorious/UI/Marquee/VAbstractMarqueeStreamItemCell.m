@@ -9,6 +9,7 @@
 #import "VAbstractMarqueeStreamItemCell.h"
 #import "VSharedCollectionReusableViewMethods.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamWebViewController.h"
 #import "VSequence+Fetcher.h"
 #import "UIView+AutoLayout.h"
@@ -26,11 +27,30 @@
     return CGSizeZero;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    // Dimming view
+    self.dimmingContainer = [UIView new];
+    self.dimmingContainer.alpha = 0;
+    self.dimmingContainer.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewContainer addSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.dimmingContainer];
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     
     self.streamItem = nil;
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    [self.dependencyManager setHighlighted:highlighted onHost:self];
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -57,7 +77,7 @@
     
     [self.previewView removeFromSuperview];
     self.previewView = [VStreamItemPreviewView streamItemPreviewViewWithStreamItem:streamItem];
-    [self.previewContainer addSubview:self.previewView];
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
@@ -76,6 +96,18 @@
     identifier = [VStreamItemPreviewView reuseIdentifierForStreamItem:streamItem
                                                        baseIdentifier:identifier];
     return identifier;
+}
+
+#pragma mark - VHighlightContainer
+
+- (UIView *)highlightContainerView
+{
+    return self.dimmingContainer;
+}
+
+- (UIView *)highlightActionView
+{
+    return self.dimmingContainer;
 }
 
 @end

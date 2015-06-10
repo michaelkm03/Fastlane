@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "VImageAsset+Fetcher.h"
+#import "VImageAsset.h"
+#import "VImageAssetFinder.h"
 #import "VDummyModels.h"
 #import "NSArray+VMap.h"
 
@@ -16,6 +17,7 @@
 
 @property (nonatomic, strong) NSSet *testImageAssets;
 @property (nonatomic, strong) NSArray *ascendingImageAssetsByArea;
+@property (nonatomic, strong) VImageAssetFinder *assetFinder;
 
 @end
 
@@ -24,6 +26,8 @@
 - (void)setUp
 {
     [super setUp];
+    
+    self.assetFinder = [[VImageAssetFinder alloc] init];
     
     NSArray *imageAssets = [VDummyModels objectsWithEntityName:@"ImageAsset" subclass:[VImageAsset class] count:10];
     for ( NSInteger i = 0; i < (NSInteger)imageAssets.count; i++ )
@@ -34,7 +38,7 @@
     }
     
     self.testImageAssets = [NSSet setWithArray:imageAssets];
-    self.ascendingImageAssetsByArea = [VImageAsset arrayAscendingByAreaFromAssets:self.testImageAssets];
+    self.ascendingImageAssetsByArea = [self.assetFinder arrayAscendingByAreaFromAssets:self.testImageAssets];
 }
 
 - (void)tearDown
@@ -45,14 +49,14 @@
 - (void)testLargest
 {
     NSInteger numAssets = (NSInteger)self.testImageAssets.count;
-    VImageAsset *imageAsset = [VImageAsset largestAssetFromAssets:self.testImageAssets];
+    VImageAsset *imageAsset = [self.assetFinder largestAssetFromAssets:self.testImageAssets];
     XCTAssertEqual( imageAsset.width.integerValue, numAssets * 10 );
     XCTAssertEqual( imageAsset.height.integerValue, numAssets * 20 );
 }
 
 - (void)testSmallest
 {
-    VImageAsset *imageAsset = [VImageAsset smallestAssetFromAssets:self.testImageAssets];
+    VImageAsset *imageAsset = [self.assetFinder smallestAssetFromAssets:self.testImageAssets];
     XCTAssertEqual( imageAsset.width.integerValue, 10 );
     XCTAssertEqual( imageAsset.height.integerValue, 20 );
 }
@@ -65,7 +69,7 @@
     VImageAsset *nextImageAsset;
     
     minSize = CGSizeMake( 30, 30 );
-    imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.testImageAssets];
+    imageAsset = [self.assetFinder assetWithPreferredMinimumSize:minSize fromAssets:self.testImageAssets];
     XCTAssertGreaterThanOrEqual( imageAsset.width.floatValue, minSize.width );
     XCTAssertGreaterThanOrEqual( imageAsset.height.floatValue, minSize.height );
     
@@ -75,7 +79,7 @@
     XCTAssertLessThan( imageAsset.height.floatValue, nextImageAsset.height.floatValue );
     
     minSize = CGSizeMake( 50, 80 );
-    imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.testImageAssets];
+    imageAsset = [self.assetFinder assetWithPreferredMinimumSize:minSize fromAssets:self.testImageAssets];
     XCTAssertGreaterThanOrEqual( imageAsset.width.floatValue, minSize.width );
     XCTAssertGreaterThanOrEqual( imageAsset.height.floatValue, minSize.height );
     
@@ -85,8 +89,8 @@
     XCTAssertLessThan( imageAsset.height.floatValue, nextImageAsset.height.floatValue );
     
     minSize = CGSizeMake( 10000, 10000 ); // Larger than any assets in the set
-    imageAsset = [VImageAsset assetWithPreferredMinimumSize:minSize fromAssets:self.testImageAssets];
-    VImageAsset *largestAsset = [VImageAsset largestAssetFromAssets:self.testImageAssets];
+    imageAsset = [self.assetFinder assetWithPreferredMinimumSize:minSize fromAssets:self.testImageAssets];
+    VImageAsset *largestAsset = [self.assetFinder largestAssetFromAssets:self.testImageAssets];
     XCTAssertEqualObjects( imageAsset, largestAsset );
 }
 
@@ -98,7 +102,7 @@
     VImageAsset *previousImageAsset;
     
     maxSize = CGSizeMake( 50, 80 );
-    imageAsset = [VImageAsset assetWithPreferredMaximumSize:maxSize fromAssets:self.testImageAssets];
+    imageAsset = [self.assetFinder assetWithPreferredMaximumSize:maxSize fromAssets:self.testImageAssets];
     XCTAssertLessThanOrEqual( imageAsset.width.floatValue, maxSize.width );
     XCTAssertLessThanOrEqual( imageAsset.height.floatValue, maxSize.height );
     
@@ -108,7 +112,7 @@
     XCTAssertGreaterThan( imageAsset.height.floatValue, previousImageAsset.height.floatValue );
     
     maxSize = CGSizeMake( 80, 100 );
-    imageAsset = [VImageAsset assetWithPreferredMaximumSize:maxSize fromAssets:self.testImageAssets];
+    imageAsset = [self.assetFinder assetWithPreferredMaximumSize:maxSize fromAssets:self.testImageAssets];
     XCTAssertLessThanOrEqual( imageAsset.width.floatValue, maxSize.width );
     XCTAssertLessThanOrEqual( imageAsset.height.floatValue, maxSize.height );
     
@@ -118,8 +122,8 @@
     XCTAssertGreaterThan( imageAsset.height.floatValue, previousImageAsset.height.floatValue );
     
     maxSize = CGSizeMake( 1, 2 ); // Smaller than any assets in the set
-    imageAsset = [VImageAsset assetWithPreferredMaximumSize:maxSize fromAssets:self.testImageAssets];
-    VImageAsset *smallestAsset = [VImageAsset smallestAssetFromAssets:self.testImageAssets];
+    imageAsset = [self.assetFinder assetWithPreferredMaximumSize:maxSize fromAssets:self.testImageAssets];
+    VImageAsset *smallestAsset = [self.assetFinder smallestAssetFromAssets:self.testImageAssets];
     XCTAssertEqualObjects( imageAsset, smallestAsset );
 }
 

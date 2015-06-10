@@ -17,6 +17,7 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspace.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 // Camera + Workspace
 #import "VWorkspaceFlowController.h"

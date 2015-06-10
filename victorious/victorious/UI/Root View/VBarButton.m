@@ -10,10 +10,11 @@
 #import "VDependencyManager.h"
 #import "VBarButton.h"
 #import "VNumericalBadgeView.h"
+#import "VFadeButton.h"
 
 @interface VBarButton ()
 
-@property (nonatomic, weak) IBOutlet UIButton *button;
+@property (nonatomic, weak) IBOutlet VFadeButton *button;
 @property (nonatomic, weak) IBOutlet VNumericalBadgeView *badgeView;
 @property (nonatomic, weak) IBOutlet VBadgeBackgroundView *badgeBorder;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
