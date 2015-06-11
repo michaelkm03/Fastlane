@@ -6,14 +6,6 @@
 		<key>appID</key>
 		<integer>1</integer>
 		<key>baseURL</key>
-		<string>http://local.getvictorious.com</string>
-		<key>name</key>
-		<string>Local</string>
-	</dict>
-	<dict>
-		<key>appID</key>
-		<integer>1</integer>
-		<key>baseURL</key>
 		<string>http://dev.getvictorious.com</string>
 		<key>name</key>
 		<string>Dev</string>

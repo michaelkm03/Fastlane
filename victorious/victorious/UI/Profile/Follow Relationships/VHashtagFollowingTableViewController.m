@@ -22,6 +22,7 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
 #import <KVOController/FBKVOController.h>
+#import "VHashtagResponder.h"
 
 static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
@@ -243,39 +244,30 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)subscribeToTagAction:(VHashtag *)hashtag
 {
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        // Add tag to user tags object
-        [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        [self showFailureHUD];
-    };
-    
-    // Backend Call to Subscribe to Hashtag
-    [[VObjectManager sharedManager] subscribeToHashtagUsingVHashtagObject:hashtag
-                                                             successBlock:successBlock
-                                                                failBlock:failureBlock];
+    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
+    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
+    [responder followHashtag:hashtag.tag successBlock:^(NSArray *success)
+     {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
+     }
+                failureBlock:^(NSError *error)
+     {
+         [self showFailureHUD];
+     }];
 }
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
 {
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        [self showFailureHUD];
-    };
-    
-    // Backend Call to Unsubscribe to Hashtag
-    [[VObjectManager sharedManager] unsubscribeToHashtagUsingVHashtagObject:hashtag
-                                                               successBlock:successBlock
-                                                                  failBlock:failureBlock];
+    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
+    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
+    [responder unfollowHashtag:hashtag.tag successBlock:^(NSArray *success)
+     {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
+     }
+                  failureBlock:^(NSError *error)
+     {
+         [self showFailureHUD];
+     }];
 }
 
 - (void)showFailureHUD

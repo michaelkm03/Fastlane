@@ -23,6 +23,7 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VBarButton.h"
+#import "VHashtagResponder.h"
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
@@ -212,15 +213,14 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     self.followingEnabled = NO;
     
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
+    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
+    [responder followHashtag:self.selectedHashtag successBlock:^(NSArray *success)
     {
-        // Animate follow button
         self.followingSelectedHashtag = YES;
-        
         self.followingEnabled = YES;
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    } 
+    failureBlock:^(NSError *error)
     {
         self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHUD.mode = MBProgressHUDModeText;
@@ -228,39 +228,28 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         [self.failureHUD hide:YES afterDelay:3.0f];
         
         self.followingEnabled = YES;
-    };
-    
-    // Backend Subscribe to Hashtag call
-    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
-                                          successBlock:successBlock
-                                             failBlock:failureBlock];
+    }];
 }
 
 - (void)unfollowHashtag
 {
     self.followingEnabled = NO;
     
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
+    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
+    [responder unfollowHashtag:self.selectedHashtag successBlock:^(NSArray *success)
     {
         self.followingSelectedHashtag = NO;
-        
         self.followingEnabled = YES;
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    } 
+    failureBlock:^(NSError *error)
     {
         self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHUD.mode = MBProgressHUDModeText;
         self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
         [self.failureHUD hide:YES afterDelay:3.0f];
-        
         self.followingEnabled = YES;
-    };
-    
-    // Backend Unsubscribe to Hashtag call
-    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
-                                            successBlock:successBlock
-                                               failBlock:failureBlock];
+    }];
 }
 
 #pragma mark - UIBarButtonItem state management

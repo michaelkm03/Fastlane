@@ -9,6 +9,8 @@
 #import "VConstants.h"
 #import "VTemplateDownloadManager.h"
 #import "VTemplateSerialization.h"
+#import "VEnvironmentManager.h"
+#import "VSessionTimer.h"
 
 @interface VTemplateDownloadManager ()
 
@@ -158,8 +160,28 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
         {
             strongSelf.retryInterval *= 2.0;
             [strongSelf.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
-            {
-                [weakSelf downloadDidFinishWithData:templateData];
+             {
+#if V_NO_SWITCH_ENVIRONMENTS
+                 [weakSelf downloadDidFinishWithData:templateData];
+#else
+                 if ( error == nil )
+                 {
+                     [weakSelf downloadDidFinishWithData:templateData];
+                 }
+                 else
+                 {
+                     // If a retry failed and we're using a user environment, then we should switch back to the default
+                     VEnvironmentManager *manager = [VEnvironmentManager sharedInstance];
+                     VEnvironment *currentEnvironment = [manager currentEnvironment];
+                     if ( currentEnvironment.isUserEnvironment && [manager revertToPreviousEnvironment] )
+                     {
+                         NSDictionary *userInfo = @{ VEnvironmentErrorKey : error };
+                         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
+                                                                             object:weakSelf
+                                                                           userInfo:userInfo];
+                     }
+                 }
+#endif
             }];
         }
     });
