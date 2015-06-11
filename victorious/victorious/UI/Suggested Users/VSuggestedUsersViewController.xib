@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VSuggestedUsersViewController">
+            <connections>
+                <outlet property="activityIndicator" destination="gzt-T6-5Rq" id="5Xf-3v-Lyl"/>
+                <outlet property="collectionView" destination="Nf5-dV-4j7" id="nLJ-XO-gH8"/>
+                <outlet property="creatorMessageContainer" destination="Blj-Er-nbo" id="O2c-h0-4YG"/>
+                <outlet property="creatorMessageContainerHeight" destination="07u-z6-pkh" id="ZC8-8H-Mo3"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gzt-T6-5Rq">
+                    <rect key="frame" x="290" y="285" width="20" height="20"/>
+                </activityIndicatorView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Blj-Er-nbo" userLabel="Creator Message Container">
+                    <rect key="frame" x="30" y="0.0" width="540" height="250"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="250" id="07u-z6-pkh"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-dV-4j7">
+                    <rect key="frame" x="0.0" y="250" width="600" height="286"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zDq-TF-hOo">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Blj-Er-nbo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="0zA-Bl-XlH"/>
+                <constraint firstItem="gzt-T6-5Rq" firstAttribute="top" secondItem="Blj-Er-nbo" secondAttribute="bottom" constant="35" id="DO5-UW-pnO"/>
+                <constraint firstAttribute="bottom" secondItem="Nf5-dV-4j7" secondAttribute="bottom" id="RoS-Fz-vY0"/>
+                <constraint firstAttribute="centerX" secondItem="gzt-T6-5Rq" secondAttribute="centerX" id="XpC-8V-lt1"/>
+                <constraint firstItem="Blj-Er-nbo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hP8-jO-bBi"/>
+                <constraint firstAttribute="trailing" secondItem="Blj-Er-nbo" secondAttribute="trailing" constant="30" id="knu-Ls-Lkn"/>
+                <constraint firstItem="Nf5-dV-4j7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="sEu-6m-3gr"/>
+                <constraint firstItem="Nf5-dV-4j7" firstAttribute="top" secondItem="Blj-Er-nbo" secondAttribute="bottom" id="ucf-qs-aoq"/>
+                <constraint firstAttribute="trailing" secondItem="Nf5-dV-4j7" secondAttribute="trailing" id="xWR-TM-g74"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <point key="canvasLocation" x="487" y="596"/>
+        </view>
+    </objects>
+</document>

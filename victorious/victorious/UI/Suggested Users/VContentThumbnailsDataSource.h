@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class VUser;
+
 @interface VContentThumbnailsDataSource : NSObject <UICollectionViewDataSource>
+
+- (instancetype)initWithUser:(VUser *)user;
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
 

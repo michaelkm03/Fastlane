@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
@@ -267,7 +267,7 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="sender" inverseEntity="Message" syncable="YES"/>
         <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="user" inverseEntity="Notification" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
-        <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="user" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="remixedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="remixers" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="repostedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>

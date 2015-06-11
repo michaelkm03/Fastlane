@@ -8,15 +8,25 @@
 
 #import "VSuggestedUsersViewController.h"
 #import "VDependencyManager+VBackgroundContainer.h"
-#import "UIView+AutoLayout.h"
 #import "VSuggestedUsersDataSource.h"
 #import "VSuggestedUsersResponder.h"
+#import "VCreatorMessageViewController.h"
+#import "UIView+AutoLayout.h"
 
-@interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VSuggestedUsersResponder>
+static NSString * const kBarButtonTintColorKey = @"color.text.label3";
+
+@interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout>
+
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UIView *creatorMessageContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *creatorMessageContainerHeight;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) VSuggestedUsersDataSource *suggestedUsersDataSource;
+@property (nonatomic, strong) VCreatorMessageViewController *creatorMessageViewController;
+
+@property (nonatomic, assign) BOOL didTransitionIn;
 
 @end
 
@@ -24,7 +34,9 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [super init];
+    NSString *nib = NSStringFromClass([self class]);
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    self = [super initWithNibName:nib bundle:bundle];
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
@@ -38,21 +50,83 @@
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
-    UICollectionViewLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+    NSDictionary *mapping = @{ VDependencyManagerHeading3FontKey : [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey],
+                               VDependencyManagerLabel1FontKey : [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
+                               VDependencyManagerMainTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
+                               VDependencyManagerSecondaryTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey] };
+    VDependencyManager *creatorMessageComponent = [self.dependencyManager childDependencyManagerWithAddedConfiguration:mapping];
+    self.creatorMessageViewController = [[VCreatorMessageViewController alloc] initWithDependencyManager:creatorMessageComponent];
+    [self.creatorMessageViewController setMessage:[self.dependencyManager stringForKey:@"prompt"]];
+    [self.creatorMessageContainer addSubview:self.creatorMessageViewController.view];
+    [self.creatorMessageContainer v_addFitToParentConstraintsToSubview:self.creatorMessageViewController.view];
+    self.creatorMessageContainerHeight.constant = CGRectGetHeight(self.creatorMessageViewController.view.bounds);
+    [self.creatorMessageContainer layoutIfNeeded];
+    
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
     self.suggestedUsersDataSource = [[VSuggestedUsersDataSource alloc] initWithDependencyManager:self.dependencyManager];
     [self.suggestedUsersDataSource registerCellsForCollectionView:self.collectionView];
     self.collectionView.dataSource = self.suggestedUsersDataSource;
-    [self.view addSubview:self.collectionView];
-    [self.view v_addFitToParentConstraintsToSubview:self.collectionView];
+    
+    __weak typeof(self) welf = self;
+    [self.activityIndicator startAnimating];
     [self.suggestedUsersDataSource refreshWithCompletion:^
     {
-        [self.collectionView reloadData];
+        [welf suggestedUsersDidLoad];
     }];
     
     self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString( @"Continue", nil )
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(continueButtonTapped:)];
+    self.navigationController.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarButtonTintColorKey];
+    
+    self.automaticallyAdjustsScrollViewInsets = YES;
+    
+    UIImage *emptyImage = [[UIImage alloc] init];
+    [self.navigationController.navigationBar setBackgroundImage:emptyImage forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = emptyImage;
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+    
+    self.collectionView.transform = CGAffineTransformMakeTranslation( 0, CGRectGetHeight(self.collectionView.frame));
+}
+
+- (void)suggestedUsersDidLoad
+{
+    [self.activityIndicator stopAnimating];
+    
+    [self.collectionView reloadData];
+    
+    for ( UITableViewCell *cell in self.collectionView.visibleCells )
+    {
+        CATransform3D transform = CATransform3DIdentity;
+        transform.m34 = 1.0 / -500.0;
+        cell.layer.transform = CATransform3DMakeRotation( 20.0f * 180.0f / M_PI, 0.0f, 1.0f, 0.0f );
+    }
+    
+    if ( !self.didTransitionIn )
+    {
+        self.didTransitionIn = YES;
+        
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:0.8f
+              initialSpringVelocity:0.2f
+                            options:kNilOptions
+                         animations:^
+         {
+             self.collectionView.transform = CGAffineTransformMakeTranslation( 0, 0 );
+         } completion:nil];
+    }
+}
+
+- (void)continueButtonTapped:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - VBackgroundContainer
@@ -69,13 +143,6 @@
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self.suggestedUsersDataSource collectionView:collectionView sizeForItemAtIndexPath:indexPath];
-}
-
-#pragma mark - VSuggestedUsersResponder
-
-- (void)onSuggestedUsersContinue
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

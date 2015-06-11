@@ -8,7 +8,6 @@
 
 #import "VSuggestedUsersDataSource.h"
 #import "VSuggestedUserCell.h"
-#import "VSuggestedUsersHeaderCell.h"
 #import "VObjectManager+Discover.h"
 #import "VDependencyManager.h"
 #import "VUser.h"
@@ -20,7 +19,6 @@ static NSString * const kPromptTextKey = @"prompt";
 
 @property (nonatomic, strong) NSArray *suggestedUsers;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VSuggestedUsersHeaderCell *headerSizingCell;
 
 @end
 
@@ -32,26 +30,14 @@ static NSString * const kPromptTextKey = @"prompt";
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _headerSizingCell = [self createHeaderSizingCell];
     }
     return self;
-}
-
-- (VSuggestedUsersHeaderCell *)createHeaderSizingCell
-{
-    NSString *identifier = [VSuggestedUsersHeaderCell suggestedReuseIdentifier];
-    UINib *cellNib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
-    return [cellNib instantiateWithOwner:nil options:nil].firstObject;
 }
 
 - (void)registerCellsForCollectionView:(UICollectionView *)collectionView
 {
     NSString *identifier = [VSuggestedUserCell suggestedReuseIdentifier];
     UINib *nib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
-    [collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
-    
-    identifier = [VSuggestedUsersHeaderCell suggestedReuseIdentifier];
-    nib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
     [collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
@@ -72,56 +58,27 @@ static NSString * const kPromptTextKey = @"prompt";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section == 0 )
-    {
-        [self.headerSizingCell setDependencyManager:self.dependencyManager];
-        [self.headerSizingCell setMessage:[self.dependencyManager stringForKey:kPromptTextKey]];
-        return [self.headerSizingCell desiredHeightWithCollectionView:collectionView];
-    }
-    else
-    {
-        return CGSizeMake( CGRectGetWidth(collectionView.bounds) - 20.0f, 140.0f );
-    }
+    return CGSizeMake( CGRectGetWidth(collectionView.bounds) - 20.0f, 140.0f );
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return section == 0 ? 1 : self.suggestedUsers.count;
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 2;
+    return self.suggestedUsers.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section == 0 )
+    NSString *identifier = [VSuggestedUserCell suggestedReuseIdentifier];
+    VSuggestedUserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                         forIndexPath:indexPath];
+    if ( cell != nil )
     {
-        NSString *identifier = [VSuggestedUsersHeaderCell suggestedReuseIdentifier];
-        VSuggestedUsersHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                                                    forIndexPath:indexPath];
-        if ( cell != nil )
-        {
-            [cell setDependencyManager:self.dependencyManager];
-            [cell setMessage:[self.dependencyManager stringForKey:kPromptTextKey]];
-            return cell;
-        }
-    }
-    else
-    {
-        NSString *identifier = [VSuggestedUserCell suggestedReuseIdentifier];
-        VSuggestedUserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                                             forIndexPath:indexPath];
-        if ( cell != nil )
-        {
-            cell.dependencyManager = self.dependencyManager;
-            VUser *user = self.suggestedUsers[ indexPath.row ];
-            [cell setUser:user];
-            return cell;
-        }
+        cell.dependencyManager = self.dependencyManager;
+        VUser *user = self.suggestedUsers[ indexPath.row ];
+        [cell setUser:user];
+        return cell;
     }
     return nil;
 }

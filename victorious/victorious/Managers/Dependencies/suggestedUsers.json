@@ -18,11 +18,31 @@
 			"blue": 255,
 			"alpha": 1
 		}
-	},
-	"color.accent": {
-		"red": 176,
-		"green": 176,
-		"blue": 176,
-		"alpha": 1
-	}
+    },
+    "color.accent": {
+        "red": 176,
+        "green": 176,
+        "blue": 176,
+        "alpha": 1
+    },
+    "color.text": {
+        "red": 54,
+        "green": 54,
+        "blue": 54,
+        "alpha": 1
+    },
+    "color.text.secondary": {
+        "red": 54,
+        "green": 54,
+        "blue": 54,
+        "alpha": 1
+    },
+    "font.header": {
+        "fontName": "Roboto-Medium",
+        "fontSize": 13
+    },
+    "font.heading1": {
+        "fontName": "Roboto-Medium",
+        "fontSize": 13
+    }
 }

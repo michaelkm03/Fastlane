@@ -453,14 +453,14 @@
 		A779510E1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */; };
 		A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */; };
 		A77951131B27DDB800D9DB0A /* VSuggestedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */; };
-		A779511E1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A779511C1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.m */; };
-		A779511F1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A779511D1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib */; };
 		A77951241B28C95E00D9DB0A /* VCreatorMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951221B28C95E00D9DB0A /* VCreatorMessageViewController.m */; };
 		A77951251B28C95E00D9DB0A /* VCreatorMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77951231B28C95E00D9DB0A /* VCreatorMessageViewController.xib */; };
 		A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A779512D1B28F61C00D9DB0A /* VContentThumbnailsViewController.m */; };
 		A77951311B28F7F400D9DB0A /* VContentThumbnailsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951301B28F7F400D9DB0A /* VContentThumbnailsDataSource.m */; };
 		A77951351B29021D00D9DB0A /* VContentThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951331B29021D00D9DB0A /* VContentThumbnailCell.m */; };
 		A77951361B29021D00D9DB0A /* VContentThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77951341B29021D00D9DB0A /* VContentThumbnailCell.xib */; };
+		A77951381B2A16C000D9DB0A /* postedSequences.json in Resources */ = {isa = PBXBuildFile; fileRef = A77951371B2A16C000D9DB0A /* postedSequences.json */; };
+		A779513D1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -1790,9 +1790,6 @@
 		A779510F1B27DDB800D9DB0A /* VSuggestedUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUserCell.h; path = "victorious/UI/Suggested Users/VSuggestedUserCell.h"; sourceTree = SOURCE_ROOT; };
 		A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSuggestedUserCell.m; path = "victorious/UI/Suggested Users/VSuggestedUserCell.m"; sourceTree = SOURCE_ROOT; };
 		A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUserCell.xib; path = "victorious/UI/Suggested Users/VSuggestedUserCell.xib"; sourceTree = SOURCE_ROOT; };
-		A779511B1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUsersHeaderCell.h; path = "victorious/UI/Suggested Users/VSuggestedUsersHeaderCell.h"; sourceTree = SOURCE_ROOT; };
-		A779511C1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSuggestedUsersHeaderCell.m; path = "victorious/UI/Suggested Users/VSuggestedUsersHeaderCell.m"; sourceTree = SOURCE_ROOT; };
-		A779511D1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUsersHeaderCell.xib; path = "victorious/UI/Suggested Users/VSuggestedUsersHeaderCell.xib"; sourceTree = SOURCE_ROOT; };
 		A77951211B28C95E00D9DB0A /* VCreatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreatorMessageViewController.h; path = "Creator Message/VCreatorMessageViewController.h"; sourceTree = "<group>"; };
 		A77951221B28C95E00D9DB0A /* VCreatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreatorMessageViewController.m; path = "Creator Message/VCreatorMessageViewController.m"; sourceTree = "<group>"; };
 		A77951231B28C95E00D9DB0A /* VCreatorMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VCreatorMessageViewController.xib; path = "Creator Message/VCreatorMessageViewController.xib"; sourceTree = "<group>"; };
@@ -1804,6 +1801,8 @@
 		A77951321B29021D00D9DB0A /* VContentThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentThumbnailCell.h; path = "victorious/UI/Suggested Users/VContentThumbnailCell.h"; sourceTree = SOURCE_ROOT; };
 		A77951331B29021D00D9DB0A /* VContentThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentThumbnailCell.m; path = "victorious/UI/Suggested Users/VContentThumbnailCell.m"; sourceTree = SOURCE_ROOT; };
 		A77951341B29021D00D9DB0A /* VContentThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VContentThumbnailCell.xib; path = "victorious/UI/Suggested Users/VContentThumbnailCell.xib"; sourceTree = SOURCE_ROOT; };
+		A77951371B2A16C000D9DB0A /* postedSequences.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = postedSequences.json; sourceTree = "<group>"; };
+		A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUsersViewController.xib; path = "victorious/UI/Suggested Users/VSuggestedUsersViewController.xib"; sourceTree = SOURCE_ROOT; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -3836,6 +3835,7 @@
 				C39864BB1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.h */,
 				C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */,
 				A77951071B27D49700D9DB0A /* suggestedUsers.json */,
+				A77951371B2A16C000D9DB0A /* postedSequences.json */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -4561,12 +4561,10 @@
 				A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */,
 				A779510C1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.h */,
 				A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */,
-				A779511B1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.h */,
-				A779511C1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.m */,
-				A779511D1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib */,
 				A779512B1B28DCFB00D9DB0A /* VSuggestedUsersResponder.h */,
 				A77951041B27D22D00D9DB0A /* VSuggestedUsersViewController.h */,
 				A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */,
+				A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */,
 			);
 			name = "Suggested Users";
 			path = Workspace;
@@ -6546,6 +6544,7 @@
 				A77951131B27DDB800D9DB0A /* VSuggestedUserCell.xib in Resources */,
 				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
+				A779513D1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib in Resources */,
 				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
 				DB7460381A93A5BE006C2245 /* VInlineUserTableViewCell.xib in Resources */,
 				D8758D1C1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard in Resources */,
@@ -6581,6 +6580,7 @@
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
 				A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */,
 				03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */,
+				A77951381B2A16C000D9DB0A /* postedSequences.json in Resources */,
 				036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */,
 				A77951081B27D49700D9DB0A /* suggestedUsers.json in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
@@ -6651,7 +6651,6 @@
 				0390087619F3A11A00FD7EDF /* VFollowerTableViewCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
-				A779511F1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */,
@@ -7341,7 +7340,6 @@
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
-				A779511E1B28AF9C00D9DB0A /* VSuggestedUsersHeaderCell.m in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				D80BAB5A1A688D83003A3068 /* VWorkspaceFlowController.m in Sources */,

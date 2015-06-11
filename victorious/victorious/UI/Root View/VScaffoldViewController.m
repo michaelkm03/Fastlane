@@ -107,17 +107,18 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     {
         self.hasBeenShown = YES;
         didShowFirstTimeUserExperience = [self showFirstTimeUserExperience];
+        
+#warning REMOVE
+        VSuggestedUsersViewController *vc = [self.dependencyManager templateValueOfType:[VSuggestedUsersViewController class]
+                                                                                 forKey:@"suggestedUsers"];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+        [self presentViewController:navController animated:YES completion:nil];
     }
     
     if ( !didShowFirstTimeUserExperience )
     {
         [self askForPushNotificationsPermission];
     }
-    
-#warning TESTING ONLY
-    VSuggestedUsersViewController *vc = [self.dependencyManager templateValueOfType:[VSuggestedUsersViewController class]
-                                                                             forKey:@"suggestedUsers"];
-    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)askForPushNotificationsPermission

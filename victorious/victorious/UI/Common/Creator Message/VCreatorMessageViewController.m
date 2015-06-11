@@ -18,6 +18,7 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *creatorAvatarImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *quoteImageView;
 @property (nonatomic, weak) IBOutlet UITextView *messageTextView;
 
 @property (nonatomic, assign) CGFloat defaultMessageViewHeight;
@@ -62,7 +63,7 @@
 
 - (void)updateMessage
 {
-    if ( self.dependencyManager == nil )
+    if ( self.dependencyManager == nil || self.message == nil )
     {
         return;
     }
@@ -114,7 +115,11 @@
         self.creatorAvatarImageView.hidden = NO;
     }
     
+    self.quoteImageView.image = [self.quoteImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.quoteImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    
     self.creatorNameLabel.text = ownerName;
+    self.creatorNameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     
     self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle

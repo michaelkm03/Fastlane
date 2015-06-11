@@ -17,6 +17,7 @@
                 <outlet property="creatorAvatarImageView" destination="sIf-Kz-zE1" id="XPL-mg-o0u"/>
                 <outlet property="creatorNameLabel" destination="ndG-ND-XUR" id="9Ec-ge-2W6"/>
                 <outlet property="messageTextView" destination="aEi-MR-XFi" id="euR-uN-A5F"/>
+                <outlet property="quoteImageView" destination="Tch-CG-izx" id="fDR-BQ-arW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -28,7 +29,7 @@
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Pq-eX-erM" userLabel="Content Container">
                     <rect key="frame" x="0.0" y="0.0" width="252" height="329"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quote" translatesAutoresizingMaskIntoConstraints="NO" id="Tch-CG-izx" userLabel="Quote">
+                        <imageView userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quote" translatesAutoresizingMaskIntoConstraints="NO" id="Tch-CG-izx" userLabel="Quote">
                             <rect key="frame" x="0.0" y="35" width="31" height="23"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="31" id="Dkb-K3-UZg"/>

@@ -50,7 +50,6 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     [self.followButton addTarget:self action:@selector(followButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     self.thumbnailsViewController = [[VContentThumbnailsViewController alloc] init];
-    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] init];
     [self.userStreamContainerView addSubview:self.thumbnailsViewController.view];
     [self.userStreamContainerView v_addFitToParentConstraintsToSubview:self.thumbnailsViewController.view];
     self.userStreamContainerView.backgroundColor = [UIColor clearColor];
@@ -70,6 +69,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     self.usernameTextView.text = _user.name;
     self.userTagLingTextView.text = _user.tagline;
     
+    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithUser:user];
     self.thumbnailsViewController.collectionView.dataSource = self.thumbnailsDataSource;
     [self.thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
 

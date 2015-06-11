@@ -220,7 +220,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         
         NSLog( @"%@", [templateDecorator keyPathsForValue:@"modernLoginAndRegistration.flow"] );
         
-        NSParameterAssert( [templateDecorator setTemplateValue:@"standard.loginAndRegistrationView" forKeyPath:@"scaffold/loginAndRegistrationView/name"] );
+        //NSParameterAssert( [templateDecorator setTemplateValue:@"standard.loginAndRegistrationView" forKeyPath:@"scaffold/loginAndRegistrationView/name"] );
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

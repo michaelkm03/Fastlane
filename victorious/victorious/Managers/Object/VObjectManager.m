@@ -36,6 +36,7 @@
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
+#import "VTemplateDecorator.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -199,7 +200,6 @@
         }
         else if (!error.errorCode && successBlock)
         {
-            //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
             NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData
                                                                          options:0
                                                                            error:nil] mutableCopy];
