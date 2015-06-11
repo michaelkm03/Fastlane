@@ -217,13 +217,21 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSDictionary *menuItem1 = @{@"identifier":@"Create Image", @"title":@"Image",@"icon":@""};
-        NSDictionary *menuItem2 = @{@"identifier":@"Create Video", @"title":@"Video",@"icon":@""};
-        NSDictionary *menuItem3 = @{@"identifier":@"Create Poll", @"title":@"Poll",@"icon":@""};
-        NSDictionary *menuItem4 = @{@"identifier":@"Create Meme", @"title":@"Meme",@"icon":@""};
+        NSDictionary *menuItem1 = @{@"identifier":@"Create Image", @"title":@"IMAGE",@"icon":@""};
+        NSDictionary *menuItem2 = @{@"identifier":@"Create Video", @"title":@"VIDEO",@"icon":@""};
+        NSDictionary *menuItem3 = @{@"identifier":@"Create Poll", @"title":@"POLL",@"icon":@""};
+        NSDictionary *menuItem4 = @{@"identifier":@"Create Meme", @"title":@"MEME",@"icon":@""};
         NSDictionary *menuItem5 = @{@"identifier":@"Create GIF", @"title":@"GIF",@"icon":@""};
 
-        NSDictionary *createSheet = @{@"name" : @"standard.createSheet", @"items":@[menuItem1, menuItem2, menuItem3, menuItem4, menuItem5]};
+        NSDictionary *createSheet = @{@"name" : @"standard.createSheet",
+                                      @"items":@[menuItem3, menuItem2, menuItem1, menuItem4, menuItem5],
+                                      @"font.heading1":@{@"fontName":@"Lato-Bold", @"fontSize":@24},
+                                      @"color.text":@{@"red":@255, @"blue":@255, @"green":@255, @"alpha":@1},
+                                      @"font.heading4":@{@"fontName":@"Lato", @"fontSize":@15},
+                                      @"color.link":@{@"red":@255, @"blue":@255, @"green":@255, @"alpha":@1},
+                                      @"color.accent":@{@"red":@104, @"blue":@64, @"green":@12, @"alpha":@1},
+                                      @"background":@{@"name":@"solidColor.background", @"color":@{@"red":@104, @"blue":@64, @"green":@12, @"alpha":@1}}
+                                      };
         [templateDecorator setTemplateValue:createSheet forKeyPath:@"createSheet"];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager

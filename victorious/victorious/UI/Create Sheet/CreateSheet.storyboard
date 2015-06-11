@@ -34,7 +34,7 @@
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.89999999999999991" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="I49-cL-ivM">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="553"/>
-                                <color key="backgroundColor" red="0.40784313725490196" green="0.047058823529411764" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Yll-cx-yCR">
                                     <size key="itemSize" width="600" height="89"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -81,7 +81,7 @@
                                 </cells>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="I49-cL-ivM" secondAttribute="trailing" constant="-16" id="ARG-gU-Hxr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="qYu-7M-lGC" secondAttribute="trailing" constant="-16" id="LtN-4v-qhQ"/>

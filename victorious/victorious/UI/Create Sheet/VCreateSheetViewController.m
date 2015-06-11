@@ -11,6 +11,7 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VNavigationMenuItem.h"
+#import "VCreateSheetAnimator.h"
 
 static NSString * const kCreateImageIdentifier = @"Create Image";
 static NSString * const kCreateVideoIdentifier = @"Create Video";
@@ -27,8 +28,7 @@ static const CGFloat kLineSpacing = 20.0f;
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UIButton *dismissButton;
+@property (strong, nonatomic) VCreateSheetTransitionDelegate *transitionDelegate;
 
 @property (strong, nonatomic) NSArray *menuItems;
 
@@ -44,16 +44,46 @@ static const CGFloat kLineSpacing = 20.0f;
     return viewController;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        self.modalPresentationStyle = UIModalPresentationCustom;
+        _transitionDelegate = [[VCreateSheetTransitionDelegate alloc] init];
+        self.transitioningDelegate = _transitionDelegate;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    // Set delegate and data source
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     
+    // Make cells respond immediately to touch
     self.collectionView.delaysContentTouches = NO;
     
+    // Setup dismiss button
+    [self.dismissButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
+    [self.dismissButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
+    [self.dismissButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
+    
+    // Set line height for flow layout
     [(UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout setMinimumLineSpacing:kLineSpacing];
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationPortrait;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
 }
 
 #pragma mark - Properties
@@ -61,7 +91,12 @@ static const CGFloat kLineSpacing = 20.0f;
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
+    
+    // Setup menu items
     self.menuItems = [dependencyManager menuItems];
+    [self.collectionView reloadData];
+
+    [self.transitionDelegate setDependencyManager:dependencyManager];
 }
 
 #pragma mark - Actions

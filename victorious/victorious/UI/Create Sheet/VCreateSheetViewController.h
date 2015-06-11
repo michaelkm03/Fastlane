@@ -27,6 +27,9 @@ typedef NS_ENUM(NSInteger, VCreateSheetItemIdentifier)
  */
 @property (strong, nonatomic, readonly) VDependencyManager *dependencyManager;
 
+@property (weak, nonatomic) IBOutlet UIButton *dismissButton;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
 /**
  Block to call when user chooses an item
  */
