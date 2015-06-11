@@ -86,6 +86,11 @@ static const CGFloat kLineSpacing = 20.0f;
     return NO;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+   return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - Properties
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

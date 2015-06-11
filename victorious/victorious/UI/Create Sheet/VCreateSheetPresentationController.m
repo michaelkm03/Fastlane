@@ -12,6 +12,7 @@
 #import "UIView+AutoLayout.h"
 
 static const CGFloat kBackgroundFinalAlpha = 0.9f;
+static const CGFloat kBackgroundPresentAnimationDuration = 0.5;
 
 @interface VCreateSheetPresentationController () <VBackgroundContainer>
 
@@ -53,10 +54,7 @@ static const CGFloat kBackgroundFinalAlpha = 0.9f;
     [self.containerView addSubview:self.backgroundContainer];
     [self.containerView v_addFitToParentConstraintsToSubview:self.backgroundContainer];
     
-    CGAffineTransform translateDown = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.containerView.bounds));
-    self.backgroundContainer.transform = translateDown;
-    
-    [UIView animateWithDuration:0.2 animations:^
+    [UIView animateWithDuration:kBackgroundPresentAnimationDuration animations:^
     {
         self.backgroundContainer.transform = CGAffineTransformIdentity;
         self.backgroundContainer.alpha = kBackgroundFinalAlpha;
@@ -75,13 +73,10 @@ static const CGFloat kBackgroundFinalAlpha = 0.9f;
 
 - (void)dismissalTransitionWillBegin
 {
-    CGAffineTransform translateDown = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.containerView.bounds));
-
     [self.presentingViewController.transitionCoordinator
      animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
          self.backgroundContainer.alpha = 0.0f;
-         self.backgroundContainer.transform = translateDown;
      } completion:nil];
 }
 
