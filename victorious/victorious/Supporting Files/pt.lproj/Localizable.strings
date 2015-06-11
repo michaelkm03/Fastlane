@@ -481,7 +481,7 @@
 "SupportEmailSubjectWithName" = "Feedback sobre %@";
 
 "DiscoverSuggestedPeopleError" = "Lamentamos. Não é possível carregar as pessoas sugeridas.";
-"DiscoverTrendingTagsError" = "Lamentamos. Não é possível carregar tags de tendências.";
+"DiscoverTrendingTagsError" = "Lamentamos, não conseguiu carregar tags de tendências.";
 "Suggested People" = "Pessoas Sugeridas";
 "Trending Tags" = "Tags de Tendências";
 "Voters" = "Eleitores";
