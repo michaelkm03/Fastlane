@@ -247,7 +247,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     self.text = self.textView.text;
 
-    
     [self updateAddedAndDeletedHashtags];
     
     [self.delegate textDidUpdate:self.textOutput];
