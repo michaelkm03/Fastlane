@@ -222,8 +222,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         NSDictionary *menuItem3 = @{@"identifier":@"Create Poll", @"title":@"POLL",@"icon":@""};
         NSDictionary *menuItem4 = @{@"identifier":@"Create Meme", @"title":@"MEME",@"icon":@""};
         NSDictionary *menuItem5 = @{@"identifier":@"Create GIF", @"title":@"GIF",@"icon":@""};
-
+ 
         NSDictionary *createSheet = @{@"name" : @"standard.createSheet",
+                                      @"title.button1" : @"Nevermind",
                                       @"items":@[menuItem3, menuItem2, menuItem1, menuItem4, menuItem5],
                                       @"font.heading1":@{@"fontName":@"Lato-Bold", @"fontSize":@24},
                                       @"color.text":@{@"red":@255, @"blue":@255, @"green":@255, @"alpha":@1},

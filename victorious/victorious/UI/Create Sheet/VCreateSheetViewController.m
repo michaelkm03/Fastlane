@@ -22,6 +22,7 @@ static NSString * const kCreateGIFIdentifier = @"Create GIF";
 
 static NSString * const kStoryboardName = @"CreateSheet";
 static NSString * const kStatusBarStyleKey = @"statusBarStyle";
+static NSString * const kDismissButtonTitle = @"title.button1";
 
 static const CGFloat kLineSpacing = 20.0f;
 
@@ -67,6 +68,7 @@ static const CGFloat kLineSpacing = 20.0f;
     self.collectionView.delaysContentTouches = NO;
     
     // Setup dismiss button
+    [self.dismissButton setTitle:NSLocalizedString([self.dependencyManager stringForKey:kDismissButtonTitle], @"") forState:UIControlStateNormal];
     [self.dismissButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
     [self.dismissButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
     [self.dismissButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
@@ -122,9 +124,11 @@ static const CGFloat kLineSpacing = 20.0f;
     VNavigationMenuItem *menuItem = self.menuItems[indexPath.row];
     
     VCreateSheetCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"createSheetCell" forIndexPath:indexPath];
-    cell.itemLabel.text = menuItem.title;
+    cell.itemLabel.text = NSLocalizedString(menuItem.title, @"");
     cell.itemLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     cell.itemLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    [cell.iconImageView setImage:[menuItem.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    cell.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
     return cell;
 }
