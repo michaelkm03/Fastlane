@@ -11,11 +11,11 @@
 #import "VCreateSheetViewController.h"
 #import "VDependencyManager.h"
 
-static const CGFloat kCellPresentTime = 0.8;
-static const CGFloat kCellPresentDelay = 0.1;
-static const CGFloat kDismissTotalTime = 0.4;
-static const CGFloat kButtonUpTime = 0.3;
-static const CGFloat kButtonUpDelay = 0.4;
+static const NSTimeInterval kCellPresentTime = 0.8;
+static const NSTimeInterval kCellPresentDelay = 0.1;
+static const NSTimeInterval kDismissTotalTime = 0.4;
+static const NSTimeInterval kButtonUpTime = 0.3;
+static const NSTimeInterval kButtonUpDelay = 0.4;
 
 @implementation VCreateSheetAnimator
 
