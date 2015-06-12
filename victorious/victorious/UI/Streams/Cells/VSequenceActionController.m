@@ -354,6 +354,9 @@
 #pragma mark - Helpers
 
 //TODO: this is a duplicate of the action item class.  That class should eventually be refactored to utilize a VSequenceActionController, and should clean up the duplicate method.
+
+// will default to "Check this out!"
+
 - (NSString *)shareTextForSequence:(VSequence *)sequence
 {
     NSString *shareText = @"";
@@ -375,9 +378,17 @@
                 shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), sequence.user.name];
             }
         }
-        else
+        else if ([sequence isImage])
         {
             shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), sequence.user.name];
+        }
+        else if ([sequence isText])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareTextFormat", nil), sequence.user.name];
+        }
+        else
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareLinkFormat", nil), sequence.user.name];
         }
     }
     else
@@ -394,9 +405,17 @@
         {
             shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), sequence.name, sequence.user.name];
         }
-        else
+        else if ([sequence isImage])
         {
             shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), sequence.user.name];
+        }
+        else if ([sequence isText])
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareTextFormat", nil), sequence.user.name];
+        }
+        else
+        {
+            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareLinkFormat", nil), sequence.user.name];
         }
     }
     
