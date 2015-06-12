@@ -77,6 +77,14 @@ static const CGFloat kLineSpacing = 20.0f;
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     layout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), [VCreateSheetCollectionViewCell cellHeight]);
     [(UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout setMinimumLineSpacing:kLineSpacing];
+    
+    // Tap gesture foir dismissal
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedBackground:)];
+    UIView *collectionViewBackground = [UIView new];
+    collectionViewBackground.backgroundColor = [UIColor clearColor];
+    [self.collectionView setBackgroundView:collectionViewBackground];
+    [self.collectionView.backgroundView setUserInteractionEnabled:YES];
+    [self.collectionView.backgroundView addGestureRecognizer:tapGesture];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -108,6 +116,11 @@ static const CGFloat kLineSpacing = 20.0f;
 #pragma mark - Actions
 
 - (IBAction)pressedDismiss:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)tappedBackground:(UITapGestureRecognizer *)tap
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
