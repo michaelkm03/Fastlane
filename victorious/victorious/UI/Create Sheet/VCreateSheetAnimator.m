@@ -9,6 +9,7 @@
 #import "VCreateSheetAnimator.h"
 #import "VCreateSheetPresentationController.h"
 #import "VCreateSheetViewController.h"
+#import "VDependencyManager.h"
 
 static const CGFloat kCellPresentTime = 0.8;
 static const CGFloat kCellPresentDelay = 0.1;
@@ -116,6 +117,7 @@ static const CGFloat kButtonUpDelay = 0.4;
 {
     VCreateSheetAnimator *animatedTransitioner = [[VCreateSheetAnimator alloc] init];
     animatedTransitioner.presentation = YES;
+    animatedTransitioner.fromTop = [[self.dependencyManager numberForKey:kAnimateFromTopKey] boolValue];
     return animatedTransitioner;
 }
 

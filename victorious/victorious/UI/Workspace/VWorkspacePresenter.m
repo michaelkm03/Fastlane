@@ -44,52 +44,8 @@
 
 - (void)present
 {
-//    VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
-//    [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:^(VAlertAction *action)
-//                               {
-//                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateCancelSelected];
-//                               }]];
-//    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
-//                               {
-//                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
-//                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
-//                               }]];
-//    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
-//                               {
-//                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
-//                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
-//                               }]];
-//    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
-//                                                    handler:^(VAlertAction *action)
-//                               {
-//                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
-//                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
-//                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
-//                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
-//                               }]];
-//    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Text Post", @"Create a text post action button.")
-//                                                    handler:^(VAlertAction *action)
-//                               {
-//                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
-//                                   
-//                                   [self presentTextOnlyWorkspace];
-//                               }]];
-//    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
-//                               {
-//                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
-//                                   VCreatePollViewController *createViewController = [VCreatePollViewController newWithDependencyManager:self.dependencyManager];
-//                                   __weak typeof(self) welf = self;
-//                                   createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
-//                                   {
-//                                       [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES
-//                                                                completion:nil];
-//                                   };
-//                                   UINavigationController *wrapperNavStack = [[UINavigationController alloc] initWithRootViewController:createViewController];
-//                                   [self.viewControllerToPresentOn presentViewController:wrapperNavStack animated:YES completion:nil];
-//                               }]];
-//    [alertControler presentInViewController:self.viewControllerToPresentOn animated:YES completion:nil];
-    
-    VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:@"createSheet"];
+    NSDictionary *addedDependencies = @{kAnimateFromTopKey : @NO};
+    VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:@"createSheet" withAddedDependencies:addedDependencies];
     [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreateSheetItemIdentifier chosenItemIdentifier)
      {
          [createSheetViewController dismissViewControllerAnimated:YES completion:^

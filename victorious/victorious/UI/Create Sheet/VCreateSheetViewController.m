@@ -145,7 +145,6 @@ static const CGFloat kLineSpacing = 20.0f;
     }
 }
 
-
 - (VCreateSheetItemIdentifier)itemIdentifierFromString:(NSString *)identifierString
 {
     if ([identifierString isEqualToString:kCreateImageIdentifier])
