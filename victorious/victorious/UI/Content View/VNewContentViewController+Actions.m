@@ -64,6 +64,7 @@
     [self disableEndcardAutoplay];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+    [actionSheetViewController setDependencyManager:self.dependencyManager];
     VNewContentViewController *contentViewController = self;
     
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];

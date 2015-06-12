@@ -7,10 +7,14 @@
 //
 
 #import "CCHLinkTextView.h"
+@class VDependencyManager;
 
 /**
  * VHsahTagTextView is a convenience that provides hash tag detection and themed defaults. Overrides setAttributedText: to do hashTag detection and adds the "CCHLinkAttributeName" attribute with the hash tag text as the value. Implement the CCHLinkTextViewDelegate to be informed of hash tag taps. Provides Defaults for linkTextAttributes, and linkTextTouchAttributes and minimumPressDuration (removes the longPress effect).
  */
 @interface VHashTagTextView : CCHLinkTextView
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, assign) BOOL test;
 
 @end

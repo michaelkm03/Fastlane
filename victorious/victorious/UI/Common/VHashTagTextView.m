@@ -8,6 +8,7 @@
 
 #import "VHashTagTextView.h"
 
+#import "VDependencyManager.h"
 
 // Formatting
 #import "VThemeManager.h"
@@ -49,22 +50,38 @@
 - (void)sharedInit
 {
     self.minimumPressDuration = 99999.0f;
-    UIColor *linkForegroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    if (linkForegroundColor != nil)
+    UIColor *defaultColor = [UIColor darkTextColor];
+    self.linkTextAttributes = @{
+                                NSForegroundColorAttributeName : defaultColor,
+                                };
+    
+    UIColor *highlightedDefaultColor = [defaultColor colorWithAlphaComponent:0.5f];
+    self.linkTextTouchAttributes = @{
+                                     NSForegroundColorAttributeName : highlightedDefaultColor,
+                                     };
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if (dependencyManager != nil)
     {
-        self.linkTextAttributes = @{
-                                    NSForegroundColorAttributeName : linkForegroundColor,
+        UIColor *linkForegroundColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        if (linkForegroundColor != nil)
+        {
+            self.linkTextAttributes = @{
+                                        NSForegroundColorAttributeName : linkForegroundColor,
                                         };
+        }
+        
+        UIColor *highlightedLinkForegroundColor = [linkForegroundColor colorWithAlphaComponent:0.5f];
+        if (highlightedLinkForegroundColor)
+        {
+            self.linkTextTouchAttributes = @{
+                                             NSForegroundColorAttributeName : highlightedLinkForegroundColor,
+                                             };
+        }
     }
-    
-    UIColor *highlightedLinkForegroundColor = [linkForegroundColor colorWithAlphaComponent:0.5f];
-    if (highlightedLinkForegroundColor)
-    {
-        self.linkTextTouchAttributes = @{
-                                         NSForegroundColorAttributeName : highlightedLinkForegroundColor,
-                                         };
-    }
-    
 }
 
 #pragma mark - UITextView Overrides
