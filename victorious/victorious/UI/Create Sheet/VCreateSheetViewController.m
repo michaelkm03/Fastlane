@@ -73,6 +73,13 @@ static const CGFloat kLineSpacing = 20.0f;
     [self.dismissButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
     [self.dismissButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
     
+    // Shadow
+    self.dismissButton.layer.masksToBounds = YES;
+    self.dismissButton.layer.shadowOffset = CGSizeMake(0, -kShadowOffset);
+    self.dismissButton.layer.shadowRadius = 1;
+    self.dismissButton.layer.shadowOpacity = 0.5;
+    self.dismissButton.layer.masksToBounds = NO;
+    
     // Set line height and item size for flow layout
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     layout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), [VCreateSheetCollectionViewCell cellHeight]);

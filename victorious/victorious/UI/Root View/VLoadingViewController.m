@@ -231,7 +231,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                       @"font.heading4":@{@"fontName":@"Lato", @"fontSize":@15},
                                       @"color.link":@{@"red":@255, @"blue":@255, @"green":@255, @"alpha":@1},
                                       @"color.accent":@{@"red":@104, @"blue":@64, @"green":@12, @"alpha":@1},
-                                      @"background":@{@"name":@"solidColor.background", @"color":@{@"red":@104, @"blue":@64, @"green":@12, @"alpha":@229}},
+                                      @"background":@{@"name":@"solidColor.background", @"color":@{@"red":@104, @"blue":@64, @"green":@12, @"alpha":@255}},
                                       };
         [templateDecorator setTemplateValue:createSheet forKeyPath:@"createSheet"];
         

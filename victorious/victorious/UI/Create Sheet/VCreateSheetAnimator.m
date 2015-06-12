@@ -71,7 +71,7 @@ static const CGFloat kButtonUpDelay = 0.4;
         }
         
         UIButton *dismissButton = animatingViewController.dismissButton;
-        dismissButton.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(dismissButton.bounds));
+        dismissButton.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(dismissButton.bounds) + kShadowOffset);
         
         // Animate button from bottom without spring
         [UIView animateWithDuration:kButtonUpTime delay:kButtonUpDelay options:UIViewAnimationOptionCurveEaseOut animations:^

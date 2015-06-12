@@ -10,6 +10,7 @@
 
 #import "VHasManagedDependencies.h"
 
+static const CGFloat kShadowOffset = 3.0f;
 static NSString * const kAnimateFromTopKey = @"animateFromTop";
 
 /**
