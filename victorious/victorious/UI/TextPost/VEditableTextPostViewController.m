@@ -68,8 +68,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     self.textView.editable = YES;
     self.textView.selectable = YES;
     
-    self.textView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-    
     CGRect accessoryFrame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kAccessoryViewHeight );
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:accessoryFrame];
     inputAccessoryView.textInputView = self.textView;
@@ -246,7 +244,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [self hidePlaceholderText];
     
     self.text = self.textView.text;
-
+    
     [self updateAddedAndDeletedHashtags];
     
     [self.delegate textDidUpdate:self.textOutput];
