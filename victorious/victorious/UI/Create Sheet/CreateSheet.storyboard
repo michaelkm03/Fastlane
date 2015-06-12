@@ -49,11 +49,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rtN-lc-kWX">
-                                                    <rect key="frame" x="210" y="30" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rtN-lc-kWX">
+                                                    <rect key="frame" x="245" y="38" width="15" height="15"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="30" id="6ww-Mk-kub"/>
-                                                        <constraint firstAttribute="height" constant="30" id="zgm-BR-GBr"/>
+                                                        <constraint firstAttribute="width" constant="15" id="6ww-Mk-kub"/>
+                                                        <constraint firstAttribute="height" constant="15" id="zgm-BR-GBr"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSm-HQ-Pwi">
@@ -70,7 +70,7 @@
                                             <constraint firstAttribute="trailingMargin" secondItem="sSm-HQ-Pwi" secondAttribute="trailing" id="F4M-8Q-iCf"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="sSm-HQ-Pwi" secondAttribute="bottom" id="GP2-R4-cvJ"/>
                                             <constraint firstAttribute="centerY" secondItem="rtN-lc-kWX" secondAttribute="centerY" constant="-0.5" id="SZb-cu-cRv"/>
-                                            <constraint firstItem="sSm-HQ-Pwi" firstAttribute="leading" secondItem="rtN-lc-kWX" secondAttribute="trailing" constant="40" id="k24-yn-jOJ"/>
+                                            <constraint firstItem="sSm-HQ-Pwi" firstAttribute="leading" secondItem="rtN-lc-kWX" secondAttribute="trailing" constant="20" id="k24-yn-jOJ"/>
                                             <constraint firstItem="sSm-HQ-Pwi" firstAttribute="top" secondItem="Bv6-Lo-Kp4" secondAttribute="topMargin" id="xWX-Vc-MQR"/>
                                         </constraints>
                                         <connections>

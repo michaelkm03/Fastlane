@@ -194,7 +194,8 @@ static const CGFloat kLineSpacing = 20.0f;
     
     if (contentHeight >= CGRectGetHeight(collectionView.frame))
     {
-        return UIEdgeInsetsZero;
+        // Add some padding if collection view contents are larger than screen bounds
+        return UIEdgeInsetsMake(40, 0, 20, 0);
     }
     
     // Center content in middle of collection view

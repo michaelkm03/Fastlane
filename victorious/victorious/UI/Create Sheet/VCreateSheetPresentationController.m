@@ -11,7 +11,6 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "UIView+AutoLayout.h"
 
-static const CGFloat kBackgroundFinalAlpha = 0.9f;
 static const CGFloat kBackgroundPresentAnimationDuration = 0.5;
 
 @interface VCreateSheetPresentationController () <VBackgroundContainer>
@@ -57,7 +56,7 @@ static const CGFloat kBackgroundPresentAnimationDuration = 0.5;
     [UIView animateWithDuration:kBackgroundPresentAnimationDuration animations:^
     {
         self.backgroundContainer.transform = CGAffineTransformIdentity;
-        self.backgroundContainer.alpha = kBackgroundFinalAlpha;
+        self.backgroundContainer.alpha = 1.0f;
     } completion:nil];
 }
 

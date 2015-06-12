@@ -217,21 +217,21 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSDictionary *menuItem1 = @{@"identifier":@"Create Image", @"title":@"IMAGE",@"icon":@""};
-        NSDictionary *menuItem2 = @{@"identifier":@"Create Video", @"title":@"VIDEO",@"icon":@""};
-        NSDictionary *menuItem3 = @{@"identifier":@"Create Poll", @"title":@"POLL",@"icon":@""};
-        NSDictionary *menuItem4 = @{@"identifier":@"Create Meme", @"title":@"MEME",@"icon":@""};
-        NSDictionary *menuItem5 = @{@"identifier":@"Create GIF", @"title":@"GIF",@"icon":@""};
+        NSDictionary *menuItem1 = @{@"identifier":@"Create Image", @"title":@"IMAGE",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
+        NSDictionary *menuItem2 = @{@"identifier":@"Create Video", @"title":@"VIDEO",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
+        NSDictionary *menuItem3 = @{@"identifier":@"Create Poll", @"title":@"POLL",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
+        NSDictionary *menuItem4 = @{@"identifier":@"Create Meme", @"title":@"MEME",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
+        NSDictionary *menuItem5 = @{@"identifier":@"Create GIF", @"title":@"GIF",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
  
         NSDictionary *createSheet = @{@"name" : @"standard.createSheet",
                                       @"title.button1" : @"Nevermind",
-                                      @"items":@[menuItem3, menuItem2, menuItem1, menuItem4, menuItem5],
+                                      @"items":@[menuItem1, menuItem2, menuItem3, menuItem4, menuItem5],
                                       @"font.heading1":@{@"fontName":@"Lato-Bold", @"fontSize":@24},
                                       @"color.text":@{@"red":@255, @"blue":@255, @"green":@255, @"alpha":@1},
                                       @"font.heading4":@{@"fontName":@"Lato", @"fontSize":@15},
                                       @"color.link":@{@"red":@255, @"blue":@255, @"green":@255, @"alpha":@1},
                                       @"color.accent":@{@"red":@104, @"blue":@64, @"green":@12, @"alpha":@1},
-                                      @"background":@{@"name":@"solidColor.background", @"color":@{@"red":@104, @"blue":@64, @"green":@12, @"alpha":@1}}
+                                      @"background":@{@"name":@"solidColor.background", @"color":@{@"red":@104, @"blue":@64, @"green":@12, @"alpha":@229}},
                                       };
         [templateDecorator setTemplateValue:createSheet forKeyPath:@"createSheet"];
         
