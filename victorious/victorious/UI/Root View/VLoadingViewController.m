@@ -220,7 +220,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         NSDictionary *menuItem1 = @{@"identifier":@"Create Image", @"title":@"IMAGE",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
         NSDictionary *menuItem2 = @{@"identifier":@"Create Video", @"title":@"VIDEO",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
         NSDictionary *menuItem3 = @{@"identifier":@"Create Poll", @"title":@"POLL",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
-        NSDictionary *menuItem4 = @{@"identifier":@"Create Meme", @"title":@"MEME",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
+        NSDictionary *menuItem4 = @{@"identifier":@"Create Text", @"title":@"TEXT",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
         NSDictionary *menuItem5 = @{@"identifier":@"Create GIF", @"title":@"GIF",@"icon":@{@"imageURL":@"PostCamera", @"scale":@2}};
  
         NSDictionary *createSheet = @{@"name" : @"standard.createSheet",

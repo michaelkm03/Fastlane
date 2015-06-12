@@ -69,7 +69,7 @@
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
             [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
             break;
-        case VCreateSheetItemIdentifierMeme:
+        case VCreateSheetItemIdentifierText:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
             [self presentTextOnlyWorkspace];
             break;

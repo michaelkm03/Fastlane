@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, VCreateSheetItemIdentifier)
     VCreateSheetItemIdentifierImage,
     VCreateSheetItemIdentifierVideo,
     VCreateSheetItemIdentifierPoll,
-    VCreateSheetItemIdentifierMeme,
+    VCreateSheetItemIdentifierText,
     VCreateSheetItemIdentifierGIF,
     VCreateSheetItemIdentifierUnknown
 };

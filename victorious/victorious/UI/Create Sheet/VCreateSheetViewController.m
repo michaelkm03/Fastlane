@@ -17,7 +17,7 @@
 static NSString * const kCreateImageIdentifier = @"Create Image";
 static NSString * const kCreateVideoIdentifier = @"Create Video";
 static NSString * const kCreatePollIdentifier = @"Create Poll";
-static NSString * const kCreateMemeIdentifier = @"Create Meme";
+static NSString * const kCreateMemeIdentifier = @"Create Text";
 static NSString * const kCreateGIFIdentifier = @"Create GIF";
 
 static NSString * const kStoryboardName = @"CreateSheet";
@@ -77,7 +77,7 @@ static const CGFloat kLineSpacing = 20.0f;
     self.dismissButton.layer.masksToBounds = YES;
     self.dismissButton.layer.shadowOffset = CGSizeMake(0, -kShadowOffset);
     self.dismissButton.layer.shadowRadius = 1;
-    self.dismissButton.layer.shadowOpacity = 0.5f;
+    self.dismissButton.layer.shadowOpacity = 0.4f;
     self.dismissButton.layer.masksToBounds = NO;
     
     // Set line height and item size for flow layout
@@ -181,7 +181,7 @@ static const CGFloat kLineSpacing = 20.0f;
     }
     else if ([identifierString isEqualToString:kCreateMemeIdentifier])
     {
-        return VCreateSheetItemIdentifierMeme;
+        return VCreateSheetItemIdentifierText;
     }
     else if ([identifierString isEqualToString:kCreateGIFIdentifier])
     {
