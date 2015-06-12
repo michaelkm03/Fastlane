@@ -13,6 +13,8 @@
 
 @property (nonatomic, assign, getter=isPresentation) BOOL presentation;
 
+@property (nonatomic, assign) BOOL fromTop;
+
 @end
 
 @interface VCreateSheetTransitionDelegate : NSObject <UIViewControllerTransitioningDelegate, VHasManagedDependencies>

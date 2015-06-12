@@ -10,24 +10,17 @@
 #import "VCreateSheetPresentationController.h"
 #import "VCreateSheetViewController.h"
 
-static const CGFloat kCellPresentTime = 0.6;
+static const CGFloat kCellPresentTime = 0.8;
 static const CGFloat kCellPresentDelay = 0.1;
 static const CGFloat kDismissTotalTime = 0.4;
+static const CGFloat kButtonUpTime = 0.3;
+static const CGFloat kButtonUpDelay = 0.4;
 
 @implementation VCreateSheetAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
-{
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    VCreateSheetViewController *animatingViewController = (VCreateSheetViewController *)toViewController;
-    
-    if ([self isPresentation])
-    {
-        // Calculate total animation time depending on cells
-        return kCellPresentTime + (animatingViewController.menuItems.count - 1) * kCellPresentDelay;
-    }
-    
-    return kDismissTotalTime;
+{    
+    return [self isPresentation] ? kButtonUpTime + kButtonUpDelay : kDismissTotalTime;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -42,47 +35,50 @@ static const CGFloat kDismissTotalTime = 0.4;
     
     if (isPresentation)
     {
-        CGAffineTransform transitionDownTransform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(fromViewController.view.bounds));
-        
-        [containerView addSubview:animatingViewController.view];
-        
         // Layout collection view so we can animate cells
         UICollectionView *collectionView = animatingViewController.collectionView;
         [collectionView layoutIfNeeded];
         
-        // Animate each cell seperately with small delay
-        for (UICollectionViewCell *cell in collectionView.visibleCells)
-        {
-            NSUInteger item = [animatingViewController.collectionView indexPathForCell:cell].item;
-            
-            cell.transform = transitionDownTransform;
+        [containerView addSubview:animatingViewController.view];
 
+        CGFloat yTransition = CGRectGetHeight(collectionView.bounds);
+        CGAffineTransform transitionTransform = CGAffineTransformMakeTranslation(0, self.fromTop ? -yTransition : yTransition);
+        
+        // Sort our array of visible index paths so that the animation is always in order
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"item" ascending:YES];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        NSArray *sortedArray = [collectionView.indexPathsForVisibleItems sortedArrayUsingDescriptors:sortDescriptors];
+
+        // Animate each cell seperately with small delay
+        for (NSUInteger x = 0; x < collectionView.indexPathsForVisibleItems.count; x++)
+        {
+            NSUInteger adjustedIndex = self.fromTop ? sortedArray.count - (x + 1) : x;
+            NSIndexPath *cellIndexPath = [sortedArray objectAtIndex:adjustedIndex];
+            UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:cellIndexPath];
+            
+            cell.transform = transitionTransform;
+            
             [UIView animateWithDuration:kCellPresentTime
-                                  delay:kCellPresentDelay * item
-                 usingSpringWithDamping:0.7f
-                  initialSpringVelocity:0.0f
+                                  delay:kCellPresentDelay * x
+                 usingSpringWithDamping:0.6f
+                  initialSpringVelocity:0
                                 options:0
                              animations:^
              {
                  cell.transform = CGAffineTransformIdentity;
-                 cell.alpha = 1.0f;
-             } completion:^(BOOL finished)
-             {
-                 if (item == collectionView.visibleCells.count - 1)
-                 {
-                     [transitionContext completeTransition:YES];
-                 }
-             }];
+             } completion:nil];
         }
         
         UIButton *dismissButton = animatingViewController.dismissButton;
         dismissButton.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(dismissButton.bounds));
         
         // Animate button from bottom without spring
-        [UIView animateWithDuration:0.3 delay:0.4 options:UIViewAnimationOptionCurveEaseOut animations:^
+        [UIView animateWithDuration:kButtonUpTime delay:kButtonUpDelay options:UIViewAnimationOptionCurveEaseOut animations:^
         {
             dismissButton.transform = CGAffineTransformIdentity;
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            [transitionContext completeTransition:YES];
+        }];
     }
     else
     {

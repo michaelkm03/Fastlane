@@ -27,10 +27,8 @@ typedef NS_ENUM(NSInteger, VCreateSheetItemIdentifier)
  */
 @property (strong, nonatomic, readonly) VDependencyManager *dependencyManager;
 
-@property (weak, nonatomic) IBOutlet UIButton *dismissButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-
-@property (strong, nonatomic, readonly) NSArray *menuItems;
+@property (weak, nonatomic) IBOutlet UIButton *dismissButton;
 
 /**
  Block to call when user chooses an item

@@ -12,6 +12,7 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VNavigationMenuItem.h"
 #import "VCreateSheetAnimator.h"
+#import "VDependencyManager+VStatusBarStyle.h"
 
 static NSString * const kCreateImageIdentifier = @"Create Image";
 static NSString * const kCreateVideoIdentifier = @"Create Video";
@@ -20,16 +21,14 @@ static NSString * const kCreateMemeIdentifier = @"Create Meme";
 static NSString * const kCreateGIFIdentifier = @"Create GIF";
 
 static NSString * const kStoryboardName = @"CreateSheet";
-static NSString * const kMenuItemKey = @"menuItems";
+static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 
 static const CGFloat kLineSpacing = 20.0f;
 
 @interface VCreateSheetViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
-
 @property (strong, nonatomic) VCreateSheetTransitionDelegate *transitionDelegate;
-
 @property (strong, nonatomic) NSArray *menuItems;
 
 @end
@@ -72,7 +71,9 @@ static const CGFloat kLineSpacing = 20.0f;
     [self.dismissButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
     [self.dismissButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
     
-    // Set line height for flow layout
+    // Set line height and item size for flow layout
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    layout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), [VCreateSheetCollectionViewCell cellHeight]);
     [(UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout setMinimumLineSpacing:kLineSpacing];
 }
 
@@ -88,7 +89,7 @@ static const CGFloat kLineSpacing = 20.0f;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-   return UIStatusBarStyleLightContent;
+    return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
 }
 
 #pragma mark - Properties
@@ -99,8 +100,6 @@ static const CGFloat kLineSpacing = 20.0f;
     
     // Setup menu items
     self.menuItems = [dependencyManager menuItems];
-    [self.collectionView reloadData];
-
     [self.transitionDelegate setDependencyManager:dependencyManager];
 }
 
@@ -171,24 +170,19 @@ static const CGFloat kLineSpacing = 20.0f;
 
 #pragma mark - Flow Layout Delegate
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return CGSizeMake(CGRectGetWidth(collectionView.bounds), [VCreateSheetCollectionViewCell cellHeight]);
-}
-
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     NSInteger numberOfCells = [self.menuItems count];
     
     CGFloat contentHeight = numberOfCells * [VCreateSheetCollectionViewCell cellHeight] + (numberOfCells - 1) * kLineSpacing;
     
-    if (contentHeight >= CGRectGetHeight(collectionView.bounds))
+    if (contentHeight >= CGRectGetHeight(collectionView.frame))
     {
         return UIEdgeInsetsZero;
     }
     
     // Center content in middle of collection view
-    NSInteger verticalInset = (CGRectGetHeight(collectionView.bounds) - contentHeight) / 2;
+    NSInteger verticalInset = (CGRectGetHeight(collectionView.frame) - contentHeight) / 2;
     return UIEdgeInsetsMake(verticalInset, 0, verticalInset, 0);
 }
 
