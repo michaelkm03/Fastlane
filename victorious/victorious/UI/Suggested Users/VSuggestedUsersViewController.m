@@ -19,6 +19,7 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UIView *creatorMessageContainer;
+@property (nonatomic, weak) IBOutlet UIView *collectionContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *creatorMessageContainerHeight;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -75,7 +76,7 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
         [welf suggestedUsersDidLoad];
     }];
     
-    self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
+    self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 30.0f, 0 );
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString( @"Continue", nil )
                                                                               style:UIBarButtonItemStylePlain
@@ -101,13 +102,6 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
     
     [self.collectionView reloadData];
     
-    for ( UITableViewCell *cell in self.collectionView.visibleCells )
-    {
-        CATransform3D transform = CATransform3DIdentity;
-        transform.m34 = 1.0 / -500.0;
-        cell.layer.transform = CATransform3DMakeRotation( 20.0f * 180.0f / M_PI, 0.0f, 1.0f, 0.0f );
-    }
-    
     if ( !self.didTransitionIn )
     {
         self.didTransitionIn = YES;
@@ -119,6 +113,7 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
                             options:kNilOptions
                          animations:^
          {
+             
              self.collectionView.transform = CGAffineTransformMakeTranslation( 0, 0 );
          } completion:nil];
     }
