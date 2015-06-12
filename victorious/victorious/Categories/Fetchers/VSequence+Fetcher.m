@@ -204,6 +204,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
     VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *previewAsset = [assetFinder largestAssetFromAssets:self.previewAssets];
+    
     if (previewAsset != nil)
     {
         // Make sure we have a valid width and height
