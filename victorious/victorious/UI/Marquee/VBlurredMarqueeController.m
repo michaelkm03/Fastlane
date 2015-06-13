@@ -203,7 +203,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     }
     
     return @{
-             NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey],
+             NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
              NSForegroundColorAttributeName : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
              };
 }
@@ -272,7 +272,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 
 - (UIColor *)tintColorForCrossFadingBlurredImageView
 {
-    return [[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] colorWithAlphaComponent:0.4f];
+    return [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 - (void)renderPreviewView:(VStreamItemPreviewView *)previewView atIndex:(NSUInteger)index animated:(BOOL)animated
