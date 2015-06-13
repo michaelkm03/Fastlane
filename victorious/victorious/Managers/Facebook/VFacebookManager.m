@@ -165,10 +165,26 @@ static NSString * const kEmailPermissionKey = @"email";
     }
     else
     {
-        [self loginWithBehavior:FBSessionLoginBehaviorWithNoFallbackToWebView
-                    permissions:[[self readPermissions] arrayByAddingObjectsFromArray:[self publishPermissions]]
-                      onSuccess:successBlock
-                      onFailure:failureBlock];
+        [FBSession openActiveSessionWithPublishPermissions:[self publishPermissions]
+                                           defaultAudience:FBSessionDefaultAudienceEveryone
+                                              allowLoginUI:YES
+                                         completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
+        {
+            if ([self grantedPublishPermission])
+            {
+                if (successBlock)
+                {
+                    successBlock();
+                }
+            }
+            else
+            {
+                if (failureBlock)
+                {
+                    failureBlock(error);
+                }
+            }
+        }];
     }
 }
 
@@ -277,6 +293,11 @@ static NSString * const kEmailPermissionKey = @"email";
              }
          }];
     }
+}
+
+- (BOOL)authorizedToShare
+{
+    return [self accessToken] != nil && [self grantedPublishPermission];
 }
 
 #pragma mark - NSNotifications

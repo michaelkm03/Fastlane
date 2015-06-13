@@ -66,4 +66,6 @@
              name:(NSString *)name
        previewUrl:(NSURL *)previewUrl;
 
+@property (nonatomic, readonly) BOOL authorizedToShare;
+
 @end

@@ -23,4 +23,6 @@
 
 @property (nonatomic, strong) VPublishParameters *publishParameters; ///< Publish parameters that are to be configured by this publishViewController
 
+@property (nonatomic, readonly) BOOL authorizedToPublish;
+
 @end

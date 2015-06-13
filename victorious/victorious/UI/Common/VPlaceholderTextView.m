@@ -116,6 +116,11 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
                                                                               attributes:typingAttributes];
 }
 
+- (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
+{
+    self.placeholderTextView.textColor = placeholderTextColor;
+}
+
 - (void)setText:(NSString *)text
 {
     [super setText:text];
@@ -123,10 +128,8 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
     [self hidePlaceholderIfUserEnteredText];
 }
 
-- (void)setFont:(UIFont *)font
+- (void)setPlaceholderFont:(UIFont *)font
 {
-    [super setFont:font];
-    
     self.placeholderTextView.font = font;
 }
 

@@ -63,6 +63,11 @@ typedef NS_ENUM( NSInteger, VButtonStyle )
 @property (nonatomic) CGFloat cornerRadius;
 
 /**
+ The tint color of the activityIndicator
+ */
+@property (nonatomic) UIColor *activityIndicatorTintColor;
+
+/**
  Shoes the text and shows an activity indicator centered in the button to
  represent a loading state.
  */

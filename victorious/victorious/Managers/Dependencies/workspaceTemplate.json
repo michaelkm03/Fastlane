@@ -130,6 +130,64 @@
             "id": "2C30A9D0-F437-4872-97E9-C6D2787053BF"
         }
     },
+    "shareMenuItems" :
+    [
+        {
+            "shareType":"facebook",
+            "title":"post to facebook",
+            "icon":
+            {
+                "imageURL": "textColorIcon",
+                "tintColor":
+                {
+                    "red": 244,
+                    "alpha": 255,
+                    "blue": 35,
+                    "green": 39
+                }
+            },
+            "selectedIcon":
+            {
+                "imageURL": "textColorIcon",
+                "tintColor":
+                {
+                    "red": 244,
+                    "alpha": 255,
+                    "blue": 35,
+                    "green": 39
+                }
+            }
+        },
+     {
+     "shareType":"twitter",
+     "title":"post to twitter",
+     "icon":
+     {
+     "imageURL": "textColorIcon",
+     "tintColor":
+     {
+     "red": 244,
+     "alpha": 255,
+     "blue": 35,
+     "green": 39
+     }
+     },
+     "selectedIcon":
+     {
+     "imageURL": "textColorIcon",
+     "tintColor":
+     {
+     "red": 244,
+     "alpha": 255,
+     "blue": 35,
+     "green": 39
+     }
+     }
+     }
+    ],
+    "shareText":"Share to:",
+    "saveText":"Save to camera roll",
+    "backButtonText":"Back to edit",
     "defaultWorkspaceDestination": {
         "name": "hiddenWorkspace",
         "imageWorkspace": {

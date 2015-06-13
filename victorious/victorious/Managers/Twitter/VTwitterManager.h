@@ -16,7 +16,7 @@
 
 + (VTwitterManager *)sharedManager;
 
-- (BOOL)isLoggedIn;
+@property (nonatomic, readonly) BOOL authorizedToShare;
 
 /**
  *  Does a twitter reverse oauth and stores the information in the class properties
@@ -25,6 +25,7 @@
  *  @param completionBlock Block that will run after completing.
  */
 - (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
-                          completionBlock:(void(^)(void))completionBlock;
+                       fromViewController:(UIViewController *)viewController
+                          completionBlock:(void(^)(BOOL success))completionBlock;
 
 @end
