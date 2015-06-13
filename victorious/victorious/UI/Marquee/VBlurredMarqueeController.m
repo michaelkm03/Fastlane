@@ -272,7 +272,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 
 - (UIColor *)tintColorForCrossFadingBlurredImageView
 {
-    return [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    return [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }
 
 - (void)renderPreviewView:(VStreamItemPreviewView *)previewView atIndex:(NSUInteger)index animated:(BOOL)animated
