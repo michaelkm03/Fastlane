@@ -32,7 +32,15 @@ static CGFloat const kDesiredHeight = 43.0f;
         self.saveContentLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.saveContentLabel.text = NSLocalizedString([_dependencyManager stringForKey:kSaveTextKey], @"");
         self.contentView.backgroundColor = [_dependencyManager colorForKey:kOptionsContainerBackgroundKey];
-        self.cameraRollSwitch.on = [[_dependencyManager numberForKey:kEnableMediaSaveKey] boolValue];
+        NSNumber *autoEnableSave = [_dependencyManager numberForKey:kEnableMediaSaveKey];
+        if ( autoEnableSave != nil )
+        {
+            self.cameraRollSwitch.on = [autoEnableSave boolValue];
+        }
+        else
+        {
+            self.cameraRollSwitch.on = YES;
+        }
     }
 }
 

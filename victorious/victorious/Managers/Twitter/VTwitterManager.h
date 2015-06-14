@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^VTWitterCompletionBlock) (BOOL, NSError *);
+
 @interface VTwitterManager : NSObject
 
 @property (nonatomic, readonly) NSString *oauthToken;
@@ -26,6 +28,6 @@
  */
 - (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
                        fromViewController:(UIViewController *)viewController
-                          completionBlock:(void(^)(BOOL success))completionBlock;
+                          completionBlock:(VTWitterCompletionBlock)completionBlock;
 
 @end

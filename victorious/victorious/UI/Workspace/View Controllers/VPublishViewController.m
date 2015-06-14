@@ -574,6 +574,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)shareCollectionViewSelectedShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
 {
+    __weak VPublishViewController *weakSelf = self;
     if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook )
     {
         if ( ![VFacebookManager sharedFacebookManager].authorizedToShare )
@@ -585,6 +586,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
              }
                                                               onFailure:^(NSError *error)
              {
+                 [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
                  shareItemCell.state = VShareItemCellStateUnselected;
              }];
         }
@@ -600,9 +602,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             shareItemCell.state = VShareItemCellStateLoading;
             [[VTwitterManager sharedManager] refreshTwitterTokenWithIdentifier:[[VTwitterManager sharedManager] twitterId]
                                                             fromViewController:self
-                                                               completionBlock:^(BOOL success)
+                                                               completionBlock:^(BOOL success, NSError *error)
             {
                 shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
+                if ( !success )
+                {
+                    [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
+                }
             }];
         }
         else
@@ -611,6 +617,25 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         }
     }
 }
+
+- (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
+{
+    __weak VPublishViewController *weakSelf = self;
+    void (^retryBlock)() = ^
+    {
+        [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
+    };
+    
+#warning NEED COPY FOR THIS
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Permissions error", @"")
+                                                        message:NSLocalizedString(@"We were unable to retrieve share permissions for your account.", @"")
+                                              cancelButtonTitle:@"Cancel"
+                                                 onCancelButton:nil
+                                     otherButtonTitlesAndBlocks:@"Retry", retryBlock, nil];
+    [alertView show];
+}
+
+#pragma mark - VBackgroundContainer
 
 - (UIView *)backgroundContainerView
 {

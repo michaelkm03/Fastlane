@@ -53,7 +53,7 @@
 
 - (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
                        fromViewController:(UIViewController *)viewController
-                           completionBlock:(void(^)(BOOL success))completionBlock
+                           completionBlock:(VTWitterCompletionBlock)completionBlock
 {
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -63,7 +63,7 @@
          {
              dispatch_async(dispatch_get_main_queue(), ^(void)
                             {
-                                completionBlock(NO);
+                                completionBlock(NO, error);
                             });
          }
          else
@@ -81,7 +81,7 @@
                                     [alert show];
                                     if ( completionBlock != nil )
                                     {
-                                        completionBlock(NO);
+                                        completionBlock(NO, error);
                                     }
                                 });
              }
@@ -98,7 +98,7 @@
                           
                           if ( completionBlock != nil )
                           {
-                              completionBlock(NO);
+                              completionBlock(NO, error);
                           }
                           
                           return;
@@ -116,7 +116,7 @@
                                
                                if ( completionBlock != nil )
                                {
-                                   completionBlock(NO);
+                                   completionBlock(NO, error);
                                }
                                
                                return;
@@ -131,7 +131,7 @@
                            
                            if ( completionBlock != nil )
                            {
-                               completionBlock(YES);
+                               completionBlock(YES, error);
                            }
                        }];
                   }];
