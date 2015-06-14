@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
+#import "VDependencyManager.h"
 
 @class VPublishParameters;
 
@@ -23,6 +24,10 @@
 
 @property (nonatomic, strong) VPublishParameters *publishParameters; ///< Publish parameters that are to be configured by this publishViewController
 
-@property (nonatomic, readonly) BOOL authorizedToPublish;
+@end
+
+@interface VDependencyManager (VPublishViewController)
+
+- (VPublishViewController *)publishViewController;
 
 @end

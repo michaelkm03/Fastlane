@@ -7,12 +7,12 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VPublishViewController">
             <connections>
                 <outlet property="cancelButton" destination="92r-ti-u3W" id="foA-Pb-kG4"/>
+                <outlet property="captionContainer" destination="fY0-oQ-HQH" id="XhI-B5-WCG"/>
                 <outlet property="captionTextView" destination="k7t-Et-LrO" id="oyc-Xm-Phf"/>
                 <outlet property="cardHeightConstraint" destination="x2m-9S-R5h" id="tjK-hG-SlI"/>
                 <outlet property="collectionView" destination="YuE-zB-FA1" id="tcR-NF-T07"/>
                 <outlet property="dividerLineHeightConstraint" destination="FUZ-8x-VOD" id="dgT-9Y-wX3"/>
                 <outlet property="panGestureRecognizer" destination="n8g-k8-NP3" id="HOh-RU-ymC"/>
-                <outlet property="previewContainer" destination="fY0-oQ-HQH" id="iiL-mj-UV6"/>
                 <outlet property="previewHeightConstraint" destination="2JG-N1-hji" id="DbH-hs-d0S"/>
                 <outlet property="previewImageView" destination="izj-dr-ITJ" id="P3r-gC-KuE"/>
                 <outlet property="publishButton" destination="13Q-pZ-iXL" id="KSz-tL-MB2"/>
@@ -55,7 +55,7 @@
                                 <action selector="publish:" destination="-1" eventType="touchUpInside" id="lIW-a8-qUn"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fY0-oQ-HQH" userLabel="PreviewView">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fY0-oQ-HQH" userLabel="captionContainer">
                             <rect key="frame" x="0.0" y="0.0" width="290" height="74"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="izj-dr-ITJ" userLabel="Preview Image View">

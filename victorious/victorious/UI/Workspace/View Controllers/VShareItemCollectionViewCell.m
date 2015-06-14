@@ -27,6 +27,7 @@
     self.state = VShareItemCellStateUnselected;
     [self.button setImage:[menuItem.icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     [self.button setImage:[menuItem.selectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateSelected];
+    self.button.tintColor = [UIColor clearColor];
     self.button.activityIndicatorTintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
 }
 

@@ -4843,17 +4843,7 @@
 			children = (
 				A7ECC1D11AD6178F0003E00A /* VBaseWorkspaceViewController.h */,
 				A7ECC1D21AD6178F0003E00A /* VBaseWorkspaceViewController.m */,
-				A7ECC1D31AD6178F0003E00A /* VPublishViewController.h */,
-				A7ECC1D41AD6178F0003E00A /* VPublishViewController.m */,
-				F0F04AE31B29E12B00F6F401 /* VPublishShareCollectionViewCell.h */,
-				F0F04AE41B29E12B00F6F401 /* VPublishShareCollectionViewCell.m */,
-				F0F04AE91B29E14800F6F401 /* VPublishShareCollectionViewCell.xib */,
-				F0F04AED1B29E69D00F6F401 /* VShareItemCollectionViewCell.h */,
-				F0F04AEE1B29E69D00F6F401 /* VShareItemCollectionViewCell.m */,
-				F0F04AF01B29E6AC00F6F401 /* VShareItemCollectionViewCell.xib */,
-				F0F04AE61B29E13800F6F401 /* VPublishSaveCollectionViewCell.h */,
-				F0F04AE71B29E13800F6F401 /* VPublishSaveCollectionViewCell.m */,
-				F0F04AEB1B29E15500F6F401 /* VPublishSaveCollectionViewCell.xib */,
+				F0F04AF81B2DE0AE00F6F401 /* Publish */,
 				A7ECC1D51AD6178F0003E00A /* VWorkspaceViewController.h */,
 				A7ECC1D61AD6178F0003E00A /* VWorkspaceViewController.m */,
 			);
@@ -6401,6 +6391,24 @@
 				F0E0F1B91AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib */,
 			);
 			name = Inset;
+			sourceTree = "<group>";
+		};
+		F0F04AF81B2DE0AE00F6F401 /* Publish */ = {
+			isa = PBXGroup;
+			children = (
+				A7ECC1D31AD6178F0003E00A /* VPublishViewController.h */,
+				A7ECC1D41AD6178F0003E00A /* VPublishViewController.m */,
+				F0F04AE31B29E12B00F6F401 /* VPublishShareCollectionViewCell.h */,
+				F0F04AE41B29E12B00F6F401 /* VPublishShareCollectionViewCell.m */,
+				F0F04AE91B29E14800F6F401 /* VPublishShareCollectionViewCell.xib */,
+				F0F04AED1B29E69D00F6F401 /* VShareItemCollectionViewCell.h */,
+				F0F04AEE1B29E69D00F6F401 /* VShareItemCollectionViewCell.m */,
+				F0F04AF01B29E6AC00F6F401 /* VShareItemCollectionViewCell.xib */,
+				F0F04AE61B29E13800F6F401 /* VPublishSaveCollectionViewCell.h */,
+				F0F04AE71B29E13800F6F401 /* VPublishSaveCollectionViewCell.m */,
+				F0F04AEB1B29E15500F6F401 /* VPublishSaveCollectionViewCell.xib */,
+			);
+			name = Publish;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

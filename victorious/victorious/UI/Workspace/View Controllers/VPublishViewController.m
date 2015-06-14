@@ -29,6 +29,8 @@
 #import "VDependencyManager+VShareMenuItem.h"
 #import "VFacebookManager.h"
 #import "VTwitterManager.h"
+#import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VKeyboardStyle.h"
 
 @import AssetsLibrary;
 
@@ -41,13 +43,17 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = { 8.0f, 9.0f, 8.0f, 9.0f }
 static NSString * const kBackButtonTitleKey = @"backButtonText";
 static NSString * const kPlaceholderTextKey = @"placeholderText";
 static NSUInteger const kMaxCaptionLength = 120;
+static NSString * const kPublishScreenKey = @"publishScreen";
+static NSString * const kShareContainerBackgroundColor = @"color.background.shareContainer";
+static NSString * const kCaptionContainerBackgroundColor = @"color.background.captionContainer";
+static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate>
+@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIView *publishPrompt;
-@property (nonatomic, weak) IBOutlet UIView *previewContainer;
+@property (nonatomic, weak) IBOutlet UIView *captionContainer;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet VPlaceholderTextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *publishButton;
@@ -106,6 +112,8 @@ static NSUInteger const kMaxCaptionLength = 120;
 {
     [super viewDidLoad];
     
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
     self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.publishButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey]
                              forState:UIControlStateNormal];
@@ -146,6 +154,10 @@ static NSUInteger const kMaxCaptionLength = 120;
 {
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
+    self.captionContainer.backgroundColor = [self.dependencyManager colorForKey:kCaptionContainerBackgroundColor];
+    
+    self.captionTextView.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
+    
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kAccessoryViewHeight)];
     self.captionTextView.backgroundColor = [UIColor clearColor];
     inputAccessoryView.textInputView = self.captionTextView;
@@ -177,6 +189,7 @@ static NSUInteger const kMaxCaptionLength = 120;
 {
     self.collectionView.scrollEnabled = NO;
     self.collectionView.delegate = self;
+    self.collectionView.backgroundColor = [self.dependencyManager colorForKey:kShareContainerBackgroundColor];
     self.hasShareCell = [self.dependencyManager shareMenuItems].count != 0;
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     flowLayout.sectionInset = kCollectionViewEdgeInsets;
@@ -597,6 +610,20 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             shareItemCell.state = VShareItemCellStateSelected;
         }
     }
+}
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
+}
+
+@end
+
+@implementation VDependencyManager (VPublishViewController)
+
+- (VPublishViewController *)publishViewController
+{
+    return (VPublishViewController *)[self viewControllerForKey:kPublishScreenKey];
 }
 
 @end
