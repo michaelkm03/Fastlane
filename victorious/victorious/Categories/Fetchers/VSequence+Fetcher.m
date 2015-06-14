@@ -30,8 +30,11 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     VSequencePermissionOptionsVoteCount   = 1 << 2,
     VSequencePermissionOptionsComment     = 1 << 3,
     VSequencePermissionOptionsRepost      = 1 << 4,
-    VSequencePermissionOptionsGif         = 1 << 7,
-    VSequencePermissionOptionsMeme        = 1 << 8,
+    VSequencePermissionOptionsEditComment = 1 << 5,
+    VSequencePermissionOptionsDeleteComment = 1 << 6,
+    VSequencePermissionOptionsCanFlag     = 1 << 7,
+    VSequencePermissionOptionsGif         = 1 << 8,
+    VSequencePermissionOptionsMeme        = 1 << 9,
 };
 
 @implementation VSequence (Fetcher)
@@ -206,6 +209,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
     VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *previewAsset = [assetFinder largestAssetFromAssets:self.previewAssets];
+    
     if (previewAsset != nil)
     {
         // Make sure we have a valid width and height
@@ -284,7 +288,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)canDelete
 {
-    if (self.permissions)
+    if ( self.permissions != nil )
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsDelete);
@@ -318,7 +322,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)canGif
 {
-    if (self.permissions && [self canRemix])
+    if ( self.permissions != nil && [self canRemix] )
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsGif);
@@ -329,7 +333,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)canMeme
 {
-    if (self.permissions && [self canRemix])
+    if ( self.permissions != nil && [self canRemix])
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsMeme);
@@ -340,7 +344,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)canComment
 {
-    if (self.permissions)
+    if ( self.permissions != nil )
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsComment);
@@ -351,7 +355,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)canRepost
 {
-    if (self.permissions)
+    if ( self.permissions != nil )
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsRepost);
@@ -362,10 +366,40 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 
 - (BOOL)isVoteCountVisible
 {
-    if (self.permissions)
+    if ( self.permissions != nil )
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsVoteCount);
+    }
+    return NO;
+}
+
+- (BOOL)canEditComment
+{
+    if ( self.permissions != nil )
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsEditComment);
+    }
+    return NO;
+}
+
+- (BOOL)canDeleteComment
+{
+    if ( self.permissions != nil )
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsDeleteComment);
+    }
+    return NO;
+}
+
+- (BOOL)canFlagContent
+{
+    if ( self.permissions != nil )
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsCanFlag);
     }
     return NO;
 }

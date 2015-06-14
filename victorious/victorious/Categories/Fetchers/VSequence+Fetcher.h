@@ -29,6 +29,9 @@
 - (BOOL)canComment;
 - (BOOL)canRepost;
 - (BOOL)isVoteCountVisible;
+- (BOOL)canEditComment;
+- (BOOL)canDeleteComment;
+- (BOOL)canFlagContent;
 - (BOOL)isGIFVideo;
 - (BOOL)isText;
 

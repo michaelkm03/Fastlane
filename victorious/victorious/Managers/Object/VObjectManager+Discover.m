@@ -125,16 +125,24 @@
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail
 {
+    hashtag = hashtag.lowercaseString;
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    
+    if ([self doesSet:mainUser.hashtags containString:hashtag])
+    {
+        success(nil, nil, nil);
+        return nil;
+    }
+    
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
-        
         // Create a new VHashtag object and assign it to the currently logged in user.
         // Then save it to Core Data.
         VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
                                                                        subclass:[VHashtag class]];
         newTag.tag = hashtag;
+        
+        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
         
         [hashtagSet addObject:newTag];
         mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
@@ -176,15 +184,23 @@
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
+    hashtag = hashtag.lowercaseString;
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    
+    if (![self doesSet:mainUser.hashtags containString:hashtag])
+    {
+        success(nil, nil, nil);
+        return nil;
+    }
+    
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSOrderedSet *enumerationSet = [mainUser.hashtags mutableCopy];
-        for (VHashtag *aTag in enumerationSet)
+        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+
+        for (VHashtag *aTag in hashtagSet)
         {
             if ([aTag.tag isEqualToString:hashtag])
             {
-                NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
                 [hashtagSet removeObject:aTag];
                 mainUser.hashtags = [NSOrderedSet orderedSetWithOrderedSet:hashtagSet];
                 [mainUser.managedObjectContext saveToPersistentStore:nil];
@@ -280,6 +296,18 @@
     }
     //Different count of hashtags, need to update
     return YES;
+}
+
+- (BOOL)doesSet:(NSOrderedSet *)orderedSet containString:(NSString *)string
+{
+    for (VHashtag *tag in orderedSet)
+    {
+        if ([tag.tag isEqualToString:string])
+        {
+            return  YES;
+        }
+    }
+    return NO;
 }
 
 @end

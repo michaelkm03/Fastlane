@@ -32,9 +32,4 @@ static const CGFloat kScaleDivisor = 6.0f;
     return layoutAttributes;
 }
 
-- (UIEdgeInsets)sectionInset
-{
-    return UIEdgeInsetsZero;
-}
-
 @end
