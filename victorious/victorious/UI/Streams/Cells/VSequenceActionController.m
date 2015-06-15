@@ -342,12 +342,27 @@
      {
          VLog(@"Failed to flag sequence %@", sequence);
          
-         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                message:NSLocalizedString(@"ErrorOccured", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-         [alert show];
+         // user already flagged this piece of content
+         if ( error.code == 1005 )
+         {
+             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                    message:NSLocalizedString(@"ReportContentMessage", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                          otherButtonTitles:nil];
+             [alert show];
+             
+         }
+         else
+         {
+             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
+                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                          otherButtonTitles:nil];
+             [alert show];
+             
+         }
      }];
 }
 
