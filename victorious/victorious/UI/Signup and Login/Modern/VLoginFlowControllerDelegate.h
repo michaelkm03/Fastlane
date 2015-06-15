@@ -10,12 +10,25 @@
 
 @protocol VLoginFlowControllerDelegate;
 
+/**
+ * Protocol adopted by the individual screens (usually UIViewControllers) that represent
+ * the flow managed by a login flow controller.
+ */
 @protocol VLoginFlowScreen <NSObject>
 
+/**
+ * Delegate to which VLoginFlowScreens report events to keep the login
+ * flow moving throuhg its various screens.
+ */
 @property (nonatomic, weak) id<VLoginFlowControllerDelegate> delegate;
 
 @optional
 
+/**
+ * When using VLoginFlowControllerDelegate to configure navigation items through
+ * `configureFlowNavigationItemWithScreen:`, this method provides the action for
+ * right bar buttons that navigate through the flow ("Next" or "Done").
+ */
 - (void)onContinue:(id)sender;
 
 @end
