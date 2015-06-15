@@ -447,12 +447,12 @@
 
 "Report/Flag" = "Denunciar/Sinalizar";
 "CreatedBy" = "CRIADO POR";
-"remixes" = "remixagens";
+"remixes" = "remixes";
 "Remix" = "Remix";
 "RemixVerb" = "Remixar";
 "reposts" = "repostagens";
 "REPOSTS" = "Repostagens";
-"REMIXES" = "Remixagens";
+"REMIXES" = "Remixes";
 "Repost" = "Repostar";
 "Reposted" = "Repostado";
 "RepostContentView" = " REPOSTAR";
