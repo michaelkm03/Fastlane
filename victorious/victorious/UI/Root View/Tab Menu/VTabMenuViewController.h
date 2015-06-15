@@ -9,6 +9,9 @@
 #import "VScaffoldViewController.h"
 #import "VTabMenuContainedViewControllerNavigation.h"
 
+static NSString * const kHideTabBarNotification = @"v_hideTabBar";
+static NSString * const kShowTabBarNotification = @"v_showTabBar";
+
 /**
  *  VTabMenuViewController is a scaffold subclass that wraps the native 
  *  UITabBarController container view controller

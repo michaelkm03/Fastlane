@@ -33,6 +33,8 @@
 
 NSString * const kMenuKey = @"menu";
 
+static const CGFloat kTabBarAnimationTimeInterval = 0.3;
+
 @interface VTabMenuViewController () <UITabBarControllerDelegate, VCoachmarkDisplayResponder>
 
 @property (nonatomic, strong) UITabBarController *internalTabBarViewController;
@@ -97,6 +99,11 @@ NSString * const kMenuKey = @"menu";
         }
         [self displayResultOfNavigation:initialVC animated:YES];
     }
+    
+    // Subscribe to notifications for showing and hiding tab bar
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideNotification:) name:kHideTabBarNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotification:) name:kShowTabBarNotification object:nil];
+
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -117,6 +124,11 @@ NSString * const kMenuKey = @"menu";
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
     return [self.tabBarController.selectedViewController preferredStatusBarUpdateAnimation];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - VScaffoldViewController
@@ -252,6 +264,34 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     {
         [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
     }
+}
+
+#pragma mark - Notifications
+
+- (void)hideNotification:(NSNotification *)notification
+{
+    [self hideTabBarAnimated:YES];
+}
+
+- (void)showNotification:(NSNotification *)notification
+{
+    [self showTabBarAnimated:YES];
+}
+
+#pragma mark - Animations
+
+- (void)showTabBarAnimated:(BOOL)animated
+{
+    [UIView animateWithDuration:animated ? kTabBarAnimationTimeInterval : 0 animations:^{
+        self.internalTabBarViewController.tabBar.transform = CGAffineTransformIdentity;
+    }];
+}
+
+- (void)hideTabBarAnimated:(BOOL)animated
+{
+    [UIView animateWithDuration:animated ? kTabBarAnimationTimeInterval : 0 animations:^{
+        self.internalTabBarViewController.tabBar.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.internalTabBarViewController.tabBar.bounds));
+    }];
 }
 
 @end

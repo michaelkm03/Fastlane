@@ -10,12 +10,13 @@
 #import "VCreateSheetPresentationController.h"
 #import "VCreateSheetViewController.h"
 #import "VDependencyManager.h"
+#import "VTabMenuViewController.h"
 
 static const NSTimeInterval kCellPresentTime = 0.8;
 static const NSTimeInterval kCellPresentDelay = 0.1;
 static const NSTimeInterval kDismissTotalTime = 0.4;
 static const NSTimeInterval kButtonUpTime = 0.7;
-static const NSTimeInterval kButtonUpDelay = 0.4;
+static const NSTimeInterval kButtonUpDelay = 0.3;
 
 @implementation VCreateSheetAnimator
 
@@ -42,7 +43,7 @@ static const NSTimeInterval kButtonUpDelay = 0.4;
         
         [containerView addSubview:animatingViewController.view];
 
-        CGFloat yTransition = CGRectGetHeight(collectionView.bounds);
+        CGFloat yTransition = CGRectGetHeight(animatingViewController.view.bounds);
         CGAffineTransform transitionTransform = CGAffineTransformMakeTranslation(0, self.fromTop ? -yTransition : yTransition);
         
         // Sort our array of visible index paths so that the animation is always in order
@@ -73,6 +74,9 @@ static const NSTimeInterval kButtonUpDelay = 0.4;
         UIButton *dismissButton = animatingViewController.dismissButton;
         dismissButton.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(dismissButton.bounds) + kShadowOffset);
         
+        // Hide tab bar
+        [[NSNotificationCenter defaultCenter] postNotificationName:kHideTabBarNotification object:nil];
+        
         // Animate button from bottom
         [UIView animateWithDuration:kButtonUpTime
                               delay:kButtonUpDelay
@@ -89,6 +93,8 @@ static const NSTimeInterval kButtonUpDelay = 0.4;
     else
     {
         UIView *animatingView = animatingViewController.view;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kShowTabBarNotification object:nil];
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0.0f

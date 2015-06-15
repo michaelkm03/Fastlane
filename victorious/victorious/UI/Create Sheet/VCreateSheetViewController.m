@@ -67,6 +67,9 @@ static const CGFloat kLineSpacing = 20.0f;
     // Make cells respond immediately to touch
     self.collectionView.delaysContentTouches = NO;
     
+    // So cells don't get cut off while animating
+    self.collectionView.clipsToBounds = NO;
+    
     // Setup dismiss button
     [self.dismissButton setTitle:NSLocalizedString([self.dependencyManager stringForKey:kDismissButtonTitle], @"") forState:UIControlStateNormal];
     [self.dismissButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
