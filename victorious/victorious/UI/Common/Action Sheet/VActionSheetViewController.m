@@ -329,7 +329,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
      _dependencyManager = dependencyManager;
      if (dependencyManager != nil)
      {
-         NSLog(@"dep getting set from Action sheet controller");
          [self.titleTextView setDependencyManager:dependencyManager];
      }
  }
