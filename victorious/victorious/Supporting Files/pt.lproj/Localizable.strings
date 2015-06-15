@@ -463,7 +463,7 @@
 "doubleRepostedByFormat" = "Repostado por %@ + 1 outro";
 "multipleRepostedByFormat" = "Repostado por %@ + %lu outros";
 "+ %lu others" = "'+ %lu outros";
-"remixedFromFormat" = "Remixar de %@";
+"remixedFromFormat" = "Remixado de %@";
 "giffedFromFormat" = "GIF de %@";
 
 "leaveACommentFormat" = "Deixe um comentário em %@";
