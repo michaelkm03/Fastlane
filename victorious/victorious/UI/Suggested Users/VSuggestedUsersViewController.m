@@ -76,7 +76,7 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
         [welf suggestedUsersDidLoad];
     }];
     
-    self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 30.0f, 0 );
+    self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString( @"Continue", nil )
                                                                               style:UIBarButtonItemStylePlain

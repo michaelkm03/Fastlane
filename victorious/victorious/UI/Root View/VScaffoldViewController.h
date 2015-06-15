@@ -118,4 +118,6 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  */
 - (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated;
 
+- (void)showWebBrowserWithURL:(NSURL *)URL;
+
 @end

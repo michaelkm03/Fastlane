@@ -95,16 +95,16 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 
 - (IBAction)followButtonPressed:(VFollowUserControl *)sender
 {
-    [self v_logResponderChain];
-    
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                       withSender:nil];
+    
     NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
     sender.enabled = NO;
     if ( sender.following )
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
+             sender.following = userActedOn.isFollowedByMainUser;
              sender.enabled = YES;
          }];
     }
@@ -112,6 +112,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
+             sender.following = userActedOn.isFollowedByMainUser;
              sender.enabled = YES;
          }];
     }
