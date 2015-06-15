@@ -161,27 +161,21 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
             strongSelf.retryInterval *= 2.0;
             [strongSelf.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
              {
-#if V_NO_SWITCH_ENVIRONMENTS
+                 // `downloadDidFinishWithData` will fail with nil data, so don't worry about checking it here
                  [weakSelf downloadDidFinishWithData:templateData];
-#else
-                 if ( error == nil )
+                 
+                 // If a retry failed and we're using a user environment, then we should switch back to the default
+                 VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
+                 const BOOL shouldReverToPreviousEnvironment = currentEnvironment.isUserEnvironment && templateData == nil;
+                 if ( shouldReverToPreviousEnvironment )
                  {
-                     [weakSelf downloadDidFinishWithData:templateData];
+                     [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
+                     NSDictionary *userInfo = @{ VEnvironmentErrorKey : error };
+                     [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
+                                                                         object:weakSelf
+                                                                       userInfo:userInfo];
                  }
-                 else
-                 {
-                     // If a retry failed and we're using a user environment, then we should switch back to the default
-                     VEnvironmentManager *manager = [VEnvironmentManager sharedInstance];
-                     VEnvironment *currentEnvironment = [manager currentEnvironment];
-                     if ( currentEnvironment.isUserEnvironment && [manager revertToPreviousEnvironment] )
-                     {
-                         NSDictionary *userInfo = @{ VEnvironmentErrorKey : error };
-                         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
-                                                                             object:weakSelf
-                                                                           userInfo:userInfo];
-                     }
-                 }
-#endif
+                     
             }];
         }
     });
