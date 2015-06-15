@@ -626,9 +626,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
     };
     
-#warning NEED COPY FOR THIS
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Permissions error", @"")
-                                                        message:NSLocalizedString(@"We were unable to retrieve share permissions for your account.", @"")
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
                                               cancelButtonTitle:@"Cancel"
                                                  onCancelButton:nil
                                      otherButtonTitlesAndBlocks:@"Retry", retryBlock, nil];

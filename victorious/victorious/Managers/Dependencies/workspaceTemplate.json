@@ -310,10 +310,7 @@
             "blue": 255,
             "green": 255
         },
-        "keyboardStyle":
-        {
-            "style":"light"
-        },
+        "keyboardStyle":"light",
         "autoEnableMediaSave":true
     },
         "defaultWorkspaceDestination": {
