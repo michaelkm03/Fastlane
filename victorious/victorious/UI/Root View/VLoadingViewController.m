@@ -216,11 +216,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSParameterAssert( [templateDecorator setComponentWithFilename:@"suggestedUsers" forKeyPath:@"scaffold/suggestedUsers"] );
+        NSLog( @"%@", [templateDecorator keyPathsForKey:@"registrationScreens"] );
         
-        NSLog( @"%@", [templateDecorator keyPathsForValue:@"modernLoginAndRegistration.flow"] );
-        
-        //NSParameterAssert( [templateDecorator setTemplateValue:@"standard.loginAndRegistrationView" forKeyPath:@"scaffold/loginAndRegistrationView/name"] );
+        NSParameterAssert( [templateDecorator setComponentWithFilename:@"suggestedUsers"
+                                                            forKeyPath:@"scaffold/loginAndRegistrationView/registrationScreens/10"] );
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

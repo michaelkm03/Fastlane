@@ -2370,7 +2370,7 @@
 		D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLoginAndRegistrationFlowViewController.m; sourceTree = "<group>"; };
 		D85B708D1B0ECC6D0038CA5B /* VModernLandingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernLandingViewController.h; sourceTree = "<group>"; };
 		D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLandingViewController.m; sourceTree = "<group>"; };
-		D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginFlowControllerResponder.h; sourceTree = "<group>"; };
+		D85B70921B0EE7670038CA5B /* VLoginFlowControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginFlowControllerDelegate.h; sourceTree = "<group>"; };
 		D85B70961B0EED0D0038CA5B /* VModernLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernLoginViewController.h; sourceTree = "<group>"; };
 		D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VModernLoginViewController.m; sourceTree = "<group>"; };
 		D85B70991B0EF0520038CA5B /* VModernRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VModernRegisterViewController.h; sourceTree = "<group>"; };
@@ -5628,7 +5628,7 @@
 				D839D6901B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.h */,
 				D839D6911B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m */,
 				D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */,
-				D85B70921B0EE7670038CA5B /* VLoginFlowControllerResponder.h */,
+				D85B70921B0EE7670038CA5B /* VLoginFlowControllerDelegate.h */,
 				D8D8129F1B13CB9300E93B37 /* VModernEnterNameViewController.h */,
 				D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */,
 				D858E0D51B1FC32300437DDE /* VModernEnterNameViewController.storyboard */,

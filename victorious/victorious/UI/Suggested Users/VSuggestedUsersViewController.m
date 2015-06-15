@@ -12,10 +12,11 @@
 #import "VSuggestedUsersResponder.h"
 #import "VCreatorMessageViewController.h"
 #import "UIView+AutoLayout.h"
+#import "VLoginFlowControllerDelegate.h"
 
 static NSString * const kBarButtonTintColorKey = @"color.text.label3";
 
-@interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout>
+@interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UIView *creatorMessageContainer;
@@ -28,6 +29,7 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
 @property (nonatomic, strong) VCreatorMessageViewController *creatorMessageViewController;
 
 @property (nonatomic, assign) BOOL didTransitionIn;
+@property (nonatomic, readonly) BOOL isFinalRegistrationScreen;
 
 @end
 
@@ -76,13 +78,9 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
         [welf suggestedUsersDidLoad];
     }];
     
-    self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
+    self.activityIndicator.color = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString( @"Continue", nil )
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(continueButtonTapped:)];
-    self.navigationController.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarButtonTintColorKey];
+    self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
     
     self.automaticallyAdjustsScrollViewInsets = YES;
     
@@ -94,6 +92,9 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     
     self.collectionView.transform = CGAffineTransformMakeTranslation( 0, CGRectGetHeight(self.collectionView.frame));
+    
+    [self.delegate configureFlowNavigationItemWithScreen:self];
+    self.navigationItem.hidesBackButton = YES;
 }
 
 - (void)suggestedUsersDidLoad
@@ -119,9 +120,13 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
     }
 }
 
-- (void)continueButtonTapped:(id)sender
+#pragma mark - VLoginFlowScreen
+
+@synthesize delegate = _delegate;
+
+- (void)onContinue:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.delegate continueRegistrationFlow];
 }
 
 #pragma mark - VBackgroundContainer

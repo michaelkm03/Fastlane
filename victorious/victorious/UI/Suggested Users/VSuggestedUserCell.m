@@ -77,6 +77,8 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     {
         [self.userProfileImage setProfileImageURL:[NSURL URLWithString:_user.pictureUrl]];
     }
+    
+    self.followButton.following = self.user.isFollowedByMainUser.boolValue;
 }
 
 - (void)applyStyle
@@ -100,11 +102,12 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     
     NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
     sender.enabled = NO;
-    if ( sender.following )
+    
+    if ( self.user.isFollowedByMainUser.boolValue )
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             sender.following = userActedOn.isFollowedByMainUser;
+             sender.following = self.user.isFollowedByMainUser.boolValue;
              sender.enabled = YES;
          }];
     }
@@ -112,7 +115,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             sender.following = userActedOn.isFollowedByMainUser;
+             sender.following = self.user.isFollowedByMainUser.boolValue;
              sender.enabled = YES;
          }];
     }

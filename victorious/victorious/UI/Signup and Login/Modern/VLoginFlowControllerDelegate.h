@@ -1,5 +1,5 @@
 //
-//  VLoginFlowControllerResponder.h
+//  VLoginFlowControllerDelegate.h
 //  victorious
 //
 //  Created by Michael Sena on 5/21/15.
@@ -8,7 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol VLoginFlowControllerResponder <NSObject>
+@protocol VLoginFlowControllerDelegate;
+
+@protocol VLoginFlowScreen <NSObject>
+
+@property (nonatomic, weak) id<VLoginFlowControllerDelegate> delegate;
+
+@optional
+
+- (void)onContinue:(id)sender;
+
+@end
+
+@protocol VLoginFlowControllerDelegate <NSObject>
 
 /**
  * The login flow should cancel and dismiss.
@@ -91,5 +103,10 @@
  *  The user has requested to continue along the registration flow.
  */
 - (void)continueRegistrationFlow;
+
+/**
+ * Adds the proper navigation bar items for navigation throw the login flow.
+ */
+- (void)configureFlowNavigationItemWithScreen:(UIViewController <VLoginFlowScreen> *)loginFlowScreen;
 
 @end

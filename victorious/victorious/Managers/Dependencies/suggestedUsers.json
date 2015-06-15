@@ -1,41 +1,53 @@
 {
     "prompt" : "Thanks for joining the community.  Follow some of these awesome fans.",
-	"name" : "suggestedUsers.screen",
-	"background": {
-		"name": "solidColor.background",
-		"color": {
-			"red": 248,
-			"green": 248,
-			"blue": 248,
-			"alpha": 1
-		}
-	},
-	"background.detail": {
-		"name": "solidColor.background",
-		"color": {
-			"red": 255,
-			"green": 255,
-			"blue": 255,
-			"alpha": 1
-		}
+    "name" : "suggestedUsers.screen",
+    "background": {
+        "name": "solidColor.background",
+        "color": {
+            "red": 218,
+            "green": 95,
+            "blue": 95,
+            "alpha": 130
+        }
+    },
+    "background.detail": {
+        "name": "solidColor.background",
+        "color": {
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 25
+        }
     },
     "color.accent": {
-        "red": 176,
-        "green": 176,
-        "blue": 176,
-        "alpha": 1
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 128
     },
     "color.text": {
-        "red": 54,
-        "green": 54,
-        "blue": 54,
-        "alpha": 1
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+    },
+    "color.link": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+    },
+    "color.link.secondary": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "alpha": 255
     },
     "color.text.secondary": {
-        "red": 54,
-        "green": 54,
-        "blue": 54,
-        "alpha": 1
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 130
     },
     "font.header": {
         "fontName": "Roboto-Medium",
@@ -43,6 +55,6 @@
     },
     "font.heading1": {
         "fontName": "Roboto-Medium",
-        "fontSize": 13
+        "fontSize": 17
     }
 }

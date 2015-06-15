@@ -23,8 +23,7 @@
 #import "VPrivacyPoliciesViewController.h"
 #import "VEnterProfilePictureCameraViewController.h"
 
-// Responder Chain
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
@@ -33,7 +32,7 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 static NSString * const kForceRegistrationKey = @"forceRegistration";
 
-@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerResponder, VBackgroundContainer, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
+@interface VModernLoginAndRegistrationFlowViewController () <VLoginFlowControllerDelegate, VBackgroundContainer, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) VModernFlowControllerAnimationController *animator;
 @property (nonatomic, strong) UIPercentDrivenInteractiveTransition *percentDrivenInteraction;
@@ -43,7 +42,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 @property (nonatomic, strong) VLoginFlowCompletionBlock completionBlock;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, strong) UIViewController *landingScreen;
+@property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
 @property (nonatomic, strong) NSArray *registrationScreens;
 @property (nonatomic, strong) NSArray *loginScreens;
 
@@ -66,6 +65,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         // Landing
         _landingScreen = [dependencyManager templateValueOfType:[UIViewController class]
                                                          forKey:kLandingScreen];
+        [self setDelegateForScreensInArray:@[_landingScreen]];
         [self setViewControllers:@[_landingScreen]];
         
         NSNumber *shouldForce = [dependencyManager numberForKey:kForceRegistrationKey];
@@ -78,10 +78,14 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         }
         
         // Login + Registration
-        _registrationScreens = [dependencyManager arrayOfValuesOfType:[UIViewController class]
-                                                               forKey:kRegistrationScreens];
-        _loginScreens = [dependencyManager arrayOfValuesOfType:[UIViewController class]
-                                                        forKey:kLoginScreens];
+        _registrationScreens = [dependencyManager arrayOfValuesConformingToProtocol:@protocol(VLoginFlowScreen)
+                                                                             forKey:kRegistrationScreens];
+        [self setDelegateForScreensInArray:_registrationScreens];
+        
+        _loginScreens = [dependencyManager arrayOfValuesConformingToProtocol:@protocol(VLoginFlowScreen)
+                                                                      forKey:kLoginScreens];
+        [self setDelegateForScreensInArray:_loginScreens];
+        
         _loginFlowHelper = [[VLoginFlowAPIHelper alloc] initWithViewControllerToPresentOn:self
                                                                         dependencyManager:dependencyManager];
         
@@ -146,6 +150,17 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (void)setDelegateForScreensInArray:(NSArray *)array
+{
+    for ( id<VLoginFlowScreen> screen in array )
+    {
+        if ( [screen conformsToProtocol:@protocol(VLoginFlowScreen)] )
+        {
+            screen.delegate = self;
+        }
+    }
+}
+
 #pragma mark - Gesture Target
 
 - (void)pannedFromLeftSideOfScreen:(UIScreenEdgePanGestureRecognizer *)gestureRecognizer
@@ -182,7 +197,12 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     }
 }
 
-#pragma mark - VLoginFlowControllerResponder
+#pragma mark - VLoginFlowControllerDelegate
+
+- (BOOL)isFinalRegistrationScreen:(UIViewController *)viewController
+{
+    return [[self.registrationScreens lastObject] isEqual:viewController];
+}
 
 - (void)cancelLoginAndRegistration
 {
@@ -492,6 +512,17 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         return [array objectAtIndex:currentIndex+1];
     }
     return [array objectAtIndex:currentIndex];
+}
+
+- (void)configureFlowNavigationItemWithScreen:(UIViewController <VLoginFlowScreen> *)loginFlowScreen
+{
+    const BOOL isFinal = [self isFinalRegistrationScreen:loginFlowScreen];
+    UIBarButtonItemStyle style = isFinal ? UIBarButtonItemStyleDone : UIBarButtonItemStylePlain;
+    NSString *title = isFinal ? NSLocalizedString(@"Done", @"") : NSLocalizedString(@"Next", @"");
+    loginFlowScreen.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title
+                                                                              style:style
+                                                                             target:loginFlowScreen
+                                                                             action:@selector(onContinue:)];
 }
 
 #pragma mark - VBackgroundContainer
