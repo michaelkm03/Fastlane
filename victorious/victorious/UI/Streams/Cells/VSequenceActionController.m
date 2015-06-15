@@ -352,8 +352,8 @@
 }
 
 #pragma mark - Helpers
-//TODO: this is a duplicate of the action item class.  That class should eventually be refactored to utilize a VSequenceActionController, and should clean up the duplicate method.
 
+//TODO: this is a duplicate of the action item class.  That class should eventually be refactored to utilize a VSequenceActionController, and should clean up the duplicate method.
 - (NSString *)shareTextForSequence:(VSequence *)sequence
 {
     NSString *shareText = @"";
