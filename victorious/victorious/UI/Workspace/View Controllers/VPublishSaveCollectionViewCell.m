@@ -30,7 +30,8 @@ static CGFloat const kDesiredHeight = 43.0f;
     {
         self.saveContentLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
         self.saveContentLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.saveContentLabel.text = NSLocalizedString([_dependencyManager stringForKey:kSaveTextKey], @"");
+        NSString *saveText = [_dependencyManager stringForKey:kSaveTextKey];
+        self.saveContentLabel.text = NSLocalizedString(saveText, @"");
         self.contentView.backgroundColor = [_dependencyManager colorForKey:kOptionsContainerBackgroundKey];
         NSNumber *autoEnableSave = [_dependencyManager numberForKey:kEnableMediaSaveKey];
         if ( autoEnableSave != nil )

@@ -40,13 +40,12 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 static const CGFloat kAccessoryViewHeight = 44.0f;
 static const CGFloat kCollectionViewVerticalSpace = 8.0f;
 static const UIEdgeInsets kCollectionViewEdgeInsets = { 8.0f, 9.0f, 8.0f, 9.0f };
+static NSUInteger const kMaxCaptionLength = 120;
 static NSString * const kBackButtonTitleKey = @"backButtonText";
 static NSString * const kPlaceholderTextKey = @"placeholderText";
-static NSUInteger const kMaxCaptionLength = 120;
-static NSString * const kPublishScreenKey = @"publishScreen";
 static NSString * const kShareContainerBackgroundColor = @"color.background.shareContainer";
 static NSString * const kCaptionContainerBackgroundColor = @"color.background.captionContainer";
-static NSString *kKeyboardStyleKey = @"keyboardStyle";
+static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer>
 
@@ -139,7 +138,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     {
         attributes[NSFontAttributeName] = cancelButtonFont;
     }
-    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
+    NSString *cancelButtonText = [self.dependencyManager stringForKey:kBackButtonTitleKey];
+    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(cancelButtonText, @"")
                                                                                   attributes:attributes];
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     [self.cancelButton setTitleColor:textColor ?: [UIColor whiteColor]
@@ -152,24 +152,21 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)setupCaptionTextView
 {
-    self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    
     self.captionContainer.backgroundColor = [self.dependencyManager colorForKey:kCaptionContainerBackgroundColor];
     
-    self.captionTextView.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
-    
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kAccessoryViewHeight)];
-    self.captionTextView.backgroundColor = [UIColor clearColor];
     inputAccessoryView.textInputView = self.captionTextView;
     inputAccessoryView.maxCharacterLength = kMaxCaptionLength;
     inputAccessoryView.delegate = self;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.captionTextView.inputAccessoryView = inputAccessoryView;
     
+    self.captionTextView.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
+    self.captionTextView.backgroundColor = [UIColor clearColor];
+    self.captionTextView.inputAccessoryView = inputAccessoryView;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     [self.captionTextView setPlaceholderTextColor:[self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey]];
     self.captionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    [self.cancelButton setTitle:[self.dependencyManager stringForKey:kBackButtonTitleKey] forState:UIControlStateNormal];
+    
     NSString *placeholderText = [self.dependencyManager stringForKey:kPlaceholderTextKey];
     self.captionTextView.placeholderText = NSLocalizedString(placeholderText, @"Caption entry placeholder text");
     UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
@@ -190,13 +187,14 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.collectionView.scrollEnabled = NO;
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:kShareContainerBackgroundColor];
-    self.hasShareCell = [self.dependencyManager shareMenuItems].count != 0;
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     flowLayout.sectionInset = kCollectionViewEdgeInsets;
     flowLayout.minimumLineSpacing = kCollectionViewVerticalSpace;
     
     [self.collectionView registerNib:[VPublishSaveCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VPublishSaveCollectionViewCell suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VPublishShareCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VPublishShareCollectionViewCell suggestedReuseIdentifier]];
+    
+    self.hasShareCell = [self.dependencyManager shareMenuItems].count != 0;
     
     CGFloat staticHeights = self.publishButtonHeightConstraint.constant + self.previewHeightConstraint.constant + self.dividerLineHeightConstraint.constant;
     CGSize shareSize = [VPublishShareCollectionViewCell desiredSizeForCollectionWithBounds:self.collectionView.bounds sectionInsets:flowLayout.sectionInset andDependencyManager:self.dependencyManager];
@@ -241,7 +239,9 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     self.publishParameters.caption = self.captionTextView.text;
     self.publishParameters.captionType = VCaptionTypeNormal;
+    
     self.publishParameters.shouldSaveToCameraRoll = self.saveContentCell.cameraRollSwitch.on;
+    
     NSIndexSet *shareParams = self.shareContentCell.selectedShareTypes;
     self.publishParameters.shareToFacebook = [shareParams containsIndex:VShareTypeFacebook];
     self.publishParameters.shareToTwitter = [shareParams containsIndex:VShareTypeTwitter];
@@ -628,9 +628,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                         message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
-                                              cancelButtonTitle:@"Cancel"
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                  onCancelButton:nil
-                                     otherButtonTitlesAndBlocks:@"Retry", retryBlock, nil];
+                                     otherButtonTitlesAndBlocks:NSLocalizedString(@"Retry",@""), retryBlock, nil];
     [alertView show];
 }
 
@@ -642,6 +642,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 }
 
 @end
+
+static NSString * const kPublishScreenKey = @"publishScreen";
 
 @implementation VDependencyManager (VPublishViewController)
 
