@@ -14,7 +14,7 @@
 static const NSTimeInterval kCellPresentTime = 0.8;
 static const NSTimeInterval kCellPresentDelay = 0.1;
 static const NSTimeInterval kDismissTotalTime = 0.4;
-static const NSTimeInterval kButtonUpTime = 0.3;
+static const NSTimeInterval kButtonUpTime = 0.7;
 static const NSTimeInterval kButtonUpDelay = 0.4;
 
 @implementation VCreateSheetAnimator
@@ -73,13 +73,18 @@ static const NSTimeInterval kButtonUpDelay = 0.4;
         UIButton *dismissButton = animatingViewController.dismissButton;
         dismissButton.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(dismissButton.bounds) + kShadowOffset);
         
-        // Animate button from bottom without spring
-        [UIView animateWithDuration:kButtonUpTime delay:kButtonUpDelay options:UIViewAnimationOptionCurveEaseOut animations:^
-        {
-            dismissButton.transform = CGAffineTransformIdentity;
-        } completion:^(BOOL finished) {
-            [transitionContext completeTransition:YES];
-        }];
+        // Animate button from bottom
+        [UIView animateWithDuration:kButtonUpTime
+                              delay:kButtonUpDelay
+             usingSpringWithDamping:0.9f
+              initialSpringVelocity:0
+                            options:0
+                         animations:^
+         {
+             dismissButton.transform = CGAffineTransformIdentity;
+         } completion:^(BOOL finished) {
+             [transitionContext completeTransition:YES];
+         }];
     }
     else
     {
