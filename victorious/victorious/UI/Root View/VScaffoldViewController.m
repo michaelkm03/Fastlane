@@ -32,6 +32,7 @@
 #import "VRootViewController.h"
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
+#import "VHashtagHelper.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -44,11 +45,12 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 @interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
 
-@property (nonatomic) BOOL pushNotificationsRegistered;
-@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
+@property (nonatomic, assign) BOOL isForcedRegistrationComplete;
 
+@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
 @property (nonatomic, strong) VFollowingHelper *followHelper;
+@property (nonatomic, strong) VHashtagHelper *hashtagHelper;
 @property (nonatomic, readonly) VDependencyManager *firstTimeContentDependency;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 
@@ -66,8 +68,14 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
         _coachmarkManager.allowCoachmarks = [self hasShownFirstTimeUserExperience];
         _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
                                                   viewControllerToPresentOn:self];
+        _hashtagHelper = [[VHashtagHelper alloc] init];
     }
     return self;
+}
+
+- (BOOL)shouldForceRegistration
+{
+    return [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
 }
 
 #pragma mark - Lifecyle Methods
@@ -76,12 +84,15 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 {
     [super viewWillAppear:animated];
     
-    BOOL shouldShowLogin = [[self.dependencyManager numberForKey:kShouldAutoShowLoginKey] boolValue];
-    if (shouldShowLogin && !self.hasBeenShown )
+    if ( self.shouldForceRegistration && !self.hasBeenShown )
     {
         [self.authorizedAction prepareInViewController:self
                                                context:VAuthorizationContextDefault
-                                            completion:^(BOOL authorized) {}];
+                                            completion:^(BOOL authorized)
+         {
+             self.isForcedRegistrationComplete = YES;
+             [self askForPushNotificationsPermission];
+         }];
     }
 }
 
@@ -98,7 +109,20 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
         didShowFirstTimeUserExperience = [self showFirstTimeUserExperience];
     }
     
-    if ( !didShowFirstTimeUserExperience && ![[VPushNotificationManager sharedPushNotificationManager] started] )
+    if ( !didShowFirstTimeUserExperience )
+    {
+        [self askForPushNotificationsPermission];
+    }
+}
+
+- (void)askForPushNotificationsPermission
+{
+    // If conditions are correct, ask for push notifications permission
+    const BOOL hasAskedForPushNotificationsPermission = [[VPushNotificationManager sharedPushNotificationManager] started];
+    const BOOL forceRegistrationNotRequired = !self.shouldForceRegistration;
+    const BOOL forceRegistrationComplete = self.shouldForceRegistration && self.isForcedRegistrationComplete;
+    
+    if ( !hasAskedForPushNotificationsPermission && (forceRegistrationComplete || forceRegistrationNotRequired) )
     {
         [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     }
@@ -349,6 +373,18 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 {
     [self.followHelper unfollowUser:user
                      withCompletion:completion];
+}
+
+#pragma mark - VHashtag
+
+- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
+{
+    [self.hashtagHelper followHashtag:hashtag successBlock:success failureBlock:failure];
+}
+
+- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
+{
+    [self.hashtagHelper unfollowHashtag:hashtag successBlock:success failureBlock:failure];
 }
 
 #pragma mark - VURLSelectionResponder

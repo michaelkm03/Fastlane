@@ -12,6 +12,7 @@
 #import "VSequence+Fetcher.h"
 
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VHighlightContainer.h"
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VTileOverlayCollectionCell.h"
 
@@ -82,6 +83,7 @@
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
+    [self.dependencyManager addHighlightViewToHost:cell];
     
     return cell;
 }

@@ -195,6 +195,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 {
     VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *previewAsset = [assetFinder largestAssetFromAssets:self.previewAssets];
+    
     if (previewAsset != nil)
     {
         // Make sure we have a valid width and height

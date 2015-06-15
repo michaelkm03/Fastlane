@@ -11,6 +11,7 @@
 #import "VSequence+Fetcher.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VNoContentCollectionViewCellFactory.h"
+#import "VDependencyManager+VHighlightContainer.h"
 
 @interface VSleekStreamCellFactory ()
 
@@ -85,6 +86,7 @@
     cell.sequence = sequence;
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     [self.dependencyManager addBackgroundToBackgroundHost:cell];
+    [self.dependencyManager addHighlightViewToHost:cell];
     
     return cell;
 }

@@ -18,6 +18,7 @@
 @dynamic videoComplete50;
 @dynamic videoComplete75;
 @dynamic videoComplete100;
+@dynamic viewStop;
 @dynamic videoError;
 @dynamic videoSkip;
 @dynamic videoStall;

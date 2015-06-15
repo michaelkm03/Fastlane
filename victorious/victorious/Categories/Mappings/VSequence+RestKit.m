@@ -62,6 +62,7 @@
     RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
                                                                                               toKeyPath:VSelectorName(previewAssets)
                                                                                             withMapping:[VImageAsset entityMapping]];
+    
     [mapping addPropertyMapping:previewAssetsMapping];
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];

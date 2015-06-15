@@ -20,6 +20,7 @@
 {
     NSDictionary *propertyMap = @{
                                   @"view-start"             :   VSelectorName(viewStart),
+                                  @"view-stop"              :   VSelectorName(viewStop),
                                   @"view-25-complete"       :   VSelectorName(videoComplete25),
                                   @"view-50-complete"       :   VSelectorName(videoComplete50),
                                   @"view-75-complete"       :   VSelectorName(videoComplete75),
