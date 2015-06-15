@@ -173,6 +173,8 @@
 "OwnerShareImageFormat" = "Confira esta foto por %@!";
 /* Check out this post by <creator>! <URL> */
 "OwnerShareTextFormat" = "Confira esta postagem de \"%@\"";
+/* Check this out */
+"OwnerShareLinkFormat"   =    "Olha isso!";
 /* Check out this poll! <URL> */
 "UGCSharePollFormat" = "Confira esta enquete!";
 /* Check out this video! <URL> */
@@ -183,6 +185,8 @@
 "UGCShareImageFormat" = "Confira esta foto!";
 /* Check out this post! <URL> */
 "UGCShareTextFormat" = "Confira esta postagem!";
+/* Check this out */
+"UGCShareLinkFormat"   =    "Olha isso!";
 /* Check out this post from the <creator name> app! */
 "EmailShareSubjectFormat" = "Confira esta postagem do aplicativo %@!";
 

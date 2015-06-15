@@ -352,10 +352,7 @@
 }
 
 #pragma mark - Helpers
-
 //TODO: this is a duplicate of the action item class.  That class should eventually be refactored to utilize a VSequenceActionController, and should clean up the duplicate method.
-
-// will default to "Check this out!"
 
 - (NSString *)shareTextForSequence:(VSequence *)sequence
 {
