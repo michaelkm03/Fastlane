@@ -251,6 +251,8 @@ extern NSString * const VTrackingKeySequenceId; //< Backend mapping: %%SEQUENCE_
 extern NSString * const VTrackingKeyVoteCount; //< The number of votes (emotive ballistic/experience enhancer throws) that occurred; Backend mapping: %%COUNT%%
 extern NSString * const VTrackingKeyUrls; //< An array of 1 or more URLs with replaceable macros receied from the server
 extern NSString * const VTrackingKeyShareDestination; //< "An identifier for a share action, usually provided by the system (Facebook, Twitter, Email, SMS, etc.); Backend mapping: %%SHARE_DEST%%",
+extern NSString * const VTrackingKeySharedToFacebook; //< "An identifier for a share to Facebook not through the action sheet. Backend mapping: %%FACEBOOK_SHARE%%",
+extern NSString * const VTrackingKeySharedToTwitter;//< "An identifier for a share to Twitter not through the action sheet. Backend mapping: %%TWITTER_SHARE%%",
 extern NSString * const VTrackingKeySequenceCategory; //< A string representing the 'category' property of a sequence
 extern NSString * const VTrackingKeyNotificationId; //< The ID of the push notification that spawned the process in which the tracking event has occurred; Backend mapping: %%NOTIF_ID%%
 extern NSString * const VTrackingKeySessionTime; //< An integer value representing milliseconds of an activity's duration; Backend mapping: %%SESSION_TIME%%

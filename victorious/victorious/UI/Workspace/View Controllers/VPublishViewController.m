@@ -298,6 +298,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         params[ VTrackingKeyTextLength ] = @(publishParameters.embeddedText.length);
     }
     
+    params[ VTrackingKeySharedToFacebook ] = @( publishParameters.shareToFacebook );
+    params[ VTrackingKeySharedToTwitter ] = @( publishParameters.shareToTwitter );
+    
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent
                                        parameters:[NSDictionary dictionaryWithDictionary:params]];
 }
