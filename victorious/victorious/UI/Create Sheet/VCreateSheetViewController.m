@@ -49,9 +49,9 @@ static const CGFloat kLineSpacing = 20.0f;
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        self.modalPresentationStyle = UIModalPresentationCustom;
+        [self setModalPresentationStyle:UIModalPresentationCustom];
         _transitionDelegate = [[VCreateSheetTransitionDelegate alloc] init];
-        self.transitioningDelegate = _transitionDelegate;
+        [self setTransitioningDelegate:_transitionDelegate];
     }
     return self;
 }
