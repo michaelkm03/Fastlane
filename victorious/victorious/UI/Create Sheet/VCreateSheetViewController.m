@@ -86,14 +86,16 @@ static const CGFloat kLineSpacing = 20.0f;
     // Set line height and item size for flow layout
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     layout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), [VCreateSheetCollectionViewCell cellHeight]);
-    [(UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout setMinimumLineSpacing:kLineSpacing];
+    [layout setMinimumLineSpacing:kLineSpacing];
     
-    // Tap gesture for dismissal
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedBackground:)];
+    // Collection view background
     UIView *collectionViewBackground = [UIView new];
     collectionViewBackground.backgroundColor = [UIColor clearColor];
     [self.collectionView setBackgroundView:collectionViewBackground];
     [self.collectionView.backgroundView setUserInteractionEnabled:YES];
+    
+    // Tap gesture for dismissal
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedBackground:)];
     [self.collectionView.backgroundView addGestureRecognizer:tapGesture];
 }
 
