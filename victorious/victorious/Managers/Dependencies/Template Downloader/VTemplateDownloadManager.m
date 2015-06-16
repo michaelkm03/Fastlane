@@ -166,8 +166,8 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
                  
                  // If a retry failed and we're using a user environment, then we should switch back to the default
                  VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
-                 const BOOL shouldReverToPreviousEnvironment = currentEnvironment.isUserEnvironment && templateData == nil;
-                 if ( shouldReverToPreviousEnvironment )
+                 const BOOL shouldRevertToPreviousEnvironment = currentEnvironment.isUserEnvironment && templateData == nil;
+                 if ( shouldRevertToPreviousEnvironment )
                  {
                      [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
                      NSDictionary *userInfo = @{ VEnvironmentErrorKey : error };
