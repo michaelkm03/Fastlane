@@ -30,6 +30,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VTagSensitiveTextView.h"
 
+#import "VSequence+Fetcher.h"
+
 static const UIEdgeInsets kTextInsets        = { 32.0f, 56.0f, 11.0f, 55.0f };
 
 static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
@@ -211,7 +213,9 @@ static NSCache *_sharedImageCache = nil;
     
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
                                                                                          cellView:self
-                                                                                         delegate:self];
+                                                                                         delegate:self
+                                                                                          canEdit:self.sequence.permissions.canEditComments
+                                                                                        canDelete:self.sequence.permissions.canDeleteComments];
     self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 

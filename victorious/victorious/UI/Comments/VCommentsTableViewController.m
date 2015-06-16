@@ -303,7 +303,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     // Setup required for swipe-to-reveal utility buttons
-    cell.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:comment cellView:cell delegate:cell];
+    cell.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:comment cellView:cell delegate:cell canEdit:self.sequence.permissions.canEditComments canDelete:self.sequence.permissions.canDeleteComments];
     cell.swipeViewController.cellDelegate = cell.commentCellUtilitiesController;
     cell.swipeViewController.controllerDelegate = self;
     cell.commentsUtilitiesDelegate = self;

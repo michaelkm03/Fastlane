@@ -24,6 +24,8 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 @property (nonatomic, strong) VComment *comment;
 @property (nonatomic, weak) UIView *cellView;
 @property (nonatomic, weak) id<VCommentCellUtilitiesDelegate> delegate;
+@property (nonatomic, assign) BOOL canEdit;
+@property (nonatomic, assign) BOOL canDelete;
 
 @end
 
@@ -32,6 +34,8 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 - (instancetype)initWithComment:(VComment *)comment
                        cellView:(UIView *)cellView
                        delegate:(id<VCommentCellUtilitiesDelegate>)delegate
+                        canEdit:(BOOL)canEdit
+                      canDelete:(BOOL)canDelete
 {
     self = [super init];
     if (self)
@@ -39,6 +43,10 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
         _cellView = cellView;
         _comment = comment;
         _delegate = delegate;
+        _canEdit = canEdit;
+        _canDelete = canDelete;
+        
+        NSLog(@"bools: %d , %d", canEdit, canDelete);
         
         [self setupButtonConfigurations];
     }
@@ -148,30 +156,14 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
 - (BOOL)commentIsEditable:(VComment *)comment
 {
-    // User must be logged in and this must be his or her comment
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    VUser *mainUser = objectManager.mainUser;
-    if ( objectManager.mainUserLoggedIn && [comment.userId isEqualToNumber:mainUser.remoteId] )
-    {
-        return YES;
-    }
-    return NO;
+    // User's ability to delete a comment from permissions
+    return self.canEdit;
 }
 
 - (BOOL)commentIsDeletable:(VComment *)comment
 {
-    // User must be logged in and this must be his or her comment
-    // Or user is owner
-    VObjectManager *objectManager = [VObjectManager sharedManager];
-    VUser *mainUser = objectManager.mainUser;
-    if ( objectManager.mainUserLoggedIn )
-    {
-        if ( [comment.userId isEqualToNumber:mainUser.remoteId] || mainUser.isOwner )
-        {
-            return YES;
-        }
-    }
-    return NO;
+    // User's ability to delete a comment from permissions
+    return self.canDelete;
 }
 
 #pragma mark - VSwipeViewCellDelegate

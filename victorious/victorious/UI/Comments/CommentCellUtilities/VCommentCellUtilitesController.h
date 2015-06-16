@@ -21,6 +21,8 @@
 
 - (instancetype)initWithComment:(VComment *)comment
                        cellView:(UIView *)cellView
-                       delegate:(id<VCommentCellUtilitiesDelegate>)delegate;
+                       delegate:(id<VCommentCellUtilitiesDelegate>)delegate
+                        canEdit:(BOOL)canEdit
+                      canDelete:(BOOL)canDelete;
 
 @end
