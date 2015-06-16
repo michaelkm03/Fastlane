@@ -1,5 +1,5 @@
 //
-//  VExpressionButton.m
+//  VBinaryExpressionControl.m
 //  victorious
 //
 //  Created by Patrick Lynch on 6/16/15.
@@ -60,6 +60,12 @@ static const CGFloat kMargin = 10.0f;
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
+- (void)didMoveToSuperview
+{
+    [self setSizeConstraints];
+    [self setTitle:@"0" forState:UIControlStateNormal];
+}
+
 - (void)setSizeConstraints
 {
     NSDictionary *views = @{ @"button" : self };
@@ -93,13 +99,15 @@ static const CGFloat kMargin = 10.0f;
     return _numberFormatter;
 }
 
-#pragma mark - VExpressionButton
+#pragma mark - VBinaryExpressionControl
 
 - (void)setActive:(BOOL)active
 {
     UIImage *image = active ? self.selectedImage : self.unselectedImage;
     [self setImage:image forState:UIControlStateNormal];
 }
+
+#pragma mark - VBinaryExpressionCountDisplay
 
 - (void)setCount:(NSUInteger)count
 {

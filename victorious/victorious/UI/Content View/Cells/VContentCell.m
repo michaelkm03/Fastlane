@@ -15,12 +15,11 @@
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
+@property (nonatomic, strong) VLikeButton *likeButton;
 
 @end
 
 @implementation VContentCell
-
-@synthesize likeButton = _likeButton;
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
@@ -75,7 +74,6 @@
 {
     VLikeButton *likeButton = [[VLikeButton alloc] init];
     [self addSubview:likeButton];
-    [likeButton setSizeConstraints];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-12.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottomMargin multiplier:1.0 constant:-3.0f]];
     
@@ -249,6 +247,18 @@
 - (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
 {
     [self.endCardDelegate actionCellSelected:actionCell atIndex:index];
+}
+
+#pragma mark - VLikeUIProvider
+
+- (id<VBinaryExpressionControl>)control
+{
+    return self.likeButton;
+}
+
+- (id<VBinaryExpressionCountDisplay>)countDisplay
+{
+    return self.likeButton;
 }
 
 @end
