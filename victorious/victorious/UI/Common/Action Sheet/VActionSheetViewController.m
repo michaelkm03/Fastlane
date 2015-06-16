@@ -107,7 +107,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     self.profileImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    [self.titleTextView setDependencyManager:self.dependencyManager];
+    self.titleTextView.dependencyManager = self.dependencyManager;
     [self reloadData];
 }
 
