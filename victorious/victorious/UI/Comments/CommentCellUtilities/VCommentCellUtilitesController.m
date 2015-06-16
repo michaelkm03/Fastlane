@@ -45,9 +45,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
         _delegate = delegate;
         _canEdit = canEdit;
         _canDelete = canDelete;
-        
-        NSLog(@"bools: %d , %d", canEdit, canDelete);
-        
+                
         [self setupButtonConfigurations];
     }
     return self;
