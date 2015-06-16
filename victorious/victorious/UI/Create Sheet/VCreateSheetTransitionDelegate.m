@@ -55,6 +55,9 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
     
     if (isPresentation)
     {
+        // Hide tab bar
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCreationSheetWillShow object:nil];
+        
         // Layout collection view so we can animate cells
         UICollectionView *collectionView = animatingViewController.collectionView;
         [collectionView layoutIfNeeded];
@@ -92,9 +95,6 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
         UIButton *dismissButton = animatingViewController.dismissButton;
         dismissButton.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(dismissButton.bounds) + kShadowOffset);
         
-        // Hide tab bar
-        [[NSNotificationCenter defaultCenter] postNotificationName:kHideTabBarNotification object:nil];
-        
         // Animate button from bottom
         [UIView animateWithDuration:kButtonUpTime
                               delay:kButtonUpDelay
@@ -110,9 +110,9 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
     }
     else
     {
-        UIView *animatingView = animatingViewController.view;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCreationSheetWillHide object:nil];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kShowTabBarNotification object:nil];
+        UIView *animatingView = animatingViewController.view;
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0.0f

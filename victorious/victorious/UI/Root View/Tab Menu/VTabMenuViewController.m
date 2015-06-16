@@ -31,6 +31,8 @@
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkDisplayResponder.h"
 
+#import "VCreateSheetViewController.h"
+
 NSString * const kMenuKey = @"menu";
 
 static const CGFloat kTabBarAnimationTimeInterval = 0.3;
@@ -101,8 +103,8 @@ static const CGFloat kTabBarAnimationTimeInterval = 0.3;
     }
     
     // Subscribe to notifications for showing and hiding tab bar
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideNotification:) name:kHideTabBarNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotification:) name:kShowTabBarNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideNotification:) name:kCreationSheetWillShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotification:) name:kCreationSheetWillHide object:nil];
 
 }
 

@@ -10,6 +10,9 @@
 
 #import "VHasManagedDependencies.h"
 
+static NSString * const kCreationSheetWillShow = @"v_creationSheetWillShow";
+static NSString * const kCreationSheetWillHide = @"v_creationSheetWillHide";
+
 static const CGFloat kShadowOffset = 3.0f;
 static NSString * const kAnimateFromTopKey = @"animateFromTop";
 
