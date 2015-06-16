@@ -52,10 +52,10 @@
     [mapping addPropertyMapping:previewAssetsMapping];
     
     
-    RKRelationshipMapping *postedSequencesMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"posted_sequences"
-                                                                                              toKeyPath:VSelectorName(postedSequences)
+    RKRelationshipMapping *recentSequencesMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_sequences"
+                                                                                              toKeyPath:VSelectorName(recentSequences)
                                                                                             withMapping:[VSequence smallEntityMapping]];
-    [mapping addPropertyMapping:postedSequencesMapping];
+    [mapping addPropertyMapping:recentSequencesMapping];
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
     [mapping addConnectionForRelationship:@"conversation" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];

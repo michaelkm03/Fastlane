@@ -36,7 +36,7 @@
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) VNotification *notifications;
 @property (nonatomic, retain) NSSet *pollResults;
-@property (nonatomic, retain) NSOrderedSet *postedSequences;
+@property (nonatomic, retain) NSOrderedSet *recentSequences;
 @property (nonatomic, retain) NSSet *remixedSequences;
 @property (nonatomic, retain) NSSet *repostedSequences;
 @property (nonatomic, retain) NSSet *previewAssets;
@@ -84,10 +84,10 @@
 - (void)addPollResults:(NSSet *)values;
 - (void)removePollResults:(NSSet *)values;
 
-- (void)addPostedSequencesObject:(VSequence *)value;
-- (void)removePostedSequencesObject:(VSequence *)value;
-- (void)addPostedSequences:(NSOrderedSet *)values;
-- (void)removePostedSequences:(NSOrderedSet *)values;
+- (void)addRecentSequencesObject:(VSequence *)value;
+- (void)removeRecentSequencesObject:(VSequence *)value;
+- (void)addRecentSequences:(NSOrderedSet *)values;
+- (void)removeRecentSequences:(NSOrderedSet *)values;
 
 - (void)addRemixedSequencesObject:(VSequence *)value;
 - (void)removeRemixedSequencesObject:(VSequence *)value;

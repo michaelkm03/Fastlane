@@ -42,7 +42,7 @@
 @dynamic messages;
 @dynamic notifications;
 @dynamic pollResults;
-@dynamic postedSequences;
+@dynamic recentSequences;
 @dynamic remixedSequences;
 @dynamic repostedSequences;
 @dynamic previewAssets;
