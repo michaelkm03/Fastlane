@@ -50,5 +50,7 @@
 @dynamic parentEndCard;
 @dynamic hasReposted;
 @dynamic previewAssets;
+@dynamic likeCount;
+@dynamic isLikedByMainUser;
 
 @end

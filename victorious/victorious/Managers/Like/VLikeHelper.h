@@ -18,8 +18,6 @@
 
 @interface VLikeHelper : NSObject
 
-- (void)likeSequence:(VSequence *)sequence completion:(void(^)(VSequence *sequence))completion;
-
-- (void)unlikeSequence:(VSequence *)sequence completion:(void(^)(VSequence *sequence))completion;
+- (void)toggleLikeWithSequence:(VSequence *)sequence completion:(void(^)(VSequence *sequence))completion;
 
 @end

@@ -11,13 +11,18 @@
 
 @implementation VLikeHelper
 
-- (void)likeSequence:(VSequence *)sequence completion:(void(^)(VSequence *sequence))completion
+- (void)toggleLikeWithSequence:(VSequence *)sequence completion:(void(^)(VSequence *sequence))completion
 {
-    completion( sequence );
-}
-
-- (void)unlikeSequence:(VSequence *)sequence completion:(void(^)(VSequence *sequence))completion
-{
+    if ( sequence.isLikedByMainUser.boolValue )
+    {
+        sequence.isLikedByMainUser = @NO;
+        sequence.likeCount = @(sequence.likeCount.integerValue - 1);
+    }
+    else
+    {
+        sequence.isLikedByMainUser = @YES;
+        sequence.likeCount = @(sequence.likeCount.integerValue + 1);
+    }
     completion( sequence );
 }
 

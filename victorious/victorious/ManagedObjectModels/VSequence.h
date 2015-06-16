@@ -47,6 +47,8 @@
 @property (nonatomic, retain) NSSet *voteResults;
 @property (nonatomic, retain) NSNumber *hasReposted;
 @property (nonatomic, retain) NSSet *previewAssets;
+@property (nonatomic, retain) NSNumber * likeCount;
+@property (nonatomic, retain) NSNumber * isLikedByMainUser;
 
 @end
 

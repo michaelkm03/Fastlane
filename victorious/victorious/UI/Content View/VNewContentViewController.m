@@ -106,6 +106,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VLikeHelper.h"
+#import <KVOController/FBKVOController.h>
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -201,6 +202,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self stopObservingLikes];
 }
 
 #pragma mark - VContentViewViewModelDelegate
@@ -949,6 +952,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                     forControlEvents:UIControlEventTouchUpInside];
                 [buttonProvider.likeButton setTitle:[NSString stringWithFormat:@"%@", @(arc4random() % 1000)]
                                            forState:UIControlStateNormal];
+                
+                [self startObservingLikes];
             }
             
             return cell;
@@ -1900,16 +1905,53 @@ referenceSizeForHeaderInSection:(NSInteger)section
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
+#pragma mark - Like button
+
+- (void)startObservingLikes
+{
+    [self stopObservingLikes];
+    
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:self.viewModel.sequence keyPath:NSStringFromSelector(@selector(likeCount))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateLikeButton];
+     }];
+    
+    [self.KVOController observe:self.viewModel.sequence keyPath:NSStringFromSelector(@selector(isLikedByMainUser))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateLikeButton];
+     }];
+}
+
+- (void)updateLikeButton
+{
+    if ( self.contentCell != nil && [self.contentCell conformsToProtocol:@protocol(VExpressionButtonProvider)] )
+    {
+        id<VExpressionButton> likeButton = ((id<VExpressionButtonProvider>)self.contentCell).likeButton;
+        
+        BOOL isLiked = self.viewModel.sequence.isLikedByMainUser.boolValue;
+        [likeButton setActive:isLiked];
+        
+        NSInteger count = self.viewModel.sequence.likeCount.integerValue;
+        [likeButton setCount:count];
+    }
+}
+
+- (void)stopObservingLikes
+{
+    [self.KVOController unobserve:self.viewModel.sequence];
+}
+
 - (void)onLikeButtonSelected:(id<VExpressionButton>)sender
 {
     id <VLikeResponder> responder = [self.nextResponder targetForAction:@selector(likeHelper) withSender:self];
     VLikeHelper *likeHelper = responder.likeHelper;
     NSAssert( likeHelper != nil && responder != nil, @"Could not find a responder to provide VLikeHelper instance." );
-    
-    [likeHelper likeSequence:self.viewModel.sequence completion:^(VSequence *sequence) {
-        [sender setActive:YES];
-        [sender setCount:self.viewModel.sequence.repostCount.integerValue];
-    }];
+    [likeHelper toggleLikeWithSequence:self.viewModel.sequence completion:^(VSequence *sequence) {}];
 }
 
 @end
