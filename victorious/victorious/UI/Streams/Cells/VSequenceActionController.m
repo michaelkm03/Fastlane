@@ -341,7 +341,6 @@
                                        failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed to flag sequence %@", sequence);
-         
          // user already flagged this piece of content
          if ( error.code == 1005 )
          {
