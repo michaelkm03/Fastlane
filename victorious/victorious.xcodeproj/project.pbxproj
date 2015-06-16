@@ -661,7 +661,7 @@
 		C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35265FA1B28EA09001F093F /* CreateSheet.storyboard */; };
 		C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35265FD1B28F167001F093F /* VCreateSheetViewController.m */; };
 		C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */; };
-		C35266041B2A05EA001F093F /* VCreateSheetAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266031B2A05EA001F093F /* VCreateSheetAnimator.m */; };
+		C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266031B2A05EA001F093F /* VCreateSheetTransitionDelegate.m */; };
 		C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
@@ -2193,8 +2193,8 @@
 		C35265FD1B28F167001F093F /* VCreateSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetViewController.m; path = "Create Sheet/VCreateSheetViewController.m"; sourceTree = "<group>"; };
 		C35265FF1B28F1B6001F093F /* VCreateSheetCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetCollectionViewCell.h; path = "Create Sheet/VCreateSheetCollectionViewCell.h"; sourceTree = "<group>"; };
 		C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetCollectionViewCell.m; path = "Create Sheet/VCreateSheetCollectionViewCell.m"; sourceTree = "<group>"; };
-		C35266021B2A05EA001F093F /* VCreateSheetAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetAnimator.h; path = "Create Sheet/VCreateSheetAnimator.h"; sourceTree = "<group>"; };
-		C35266031B2A05EA001F093F /* VCreateSheetAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetAnimator.m; path = "Create Sheet/VCreateSheetAnimator.m"; sourceTree = "<group>"; };
+		C35266021B2A05EA001F093F /* VCreateSheetTransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetTransitionDelegate.h; path = "Create Sheet/VCreateSheetTransitionDelegate.h"; sourceTree = "<group>"; };
+		C35266031B2A05EA001F093F /* VCreateSheetTransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetTransitionDelegate.m; path = "Create Sheet/VCreateSheetTransitionDelegate.m"; sourceTree = "<group>"; };
 		C35266051B2A0907001F093F /* VCreateSheetPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetPresentationController.h; path = "Create Sheet/VCreateSheetPresentationController.h"; sourceTree = "<group>"; };
 		C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetPresentationController.m; path = "Create Sheet/VCreateSheetPresentationController.m"; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
@@ -5506,8 +5506,8 @@
 			isa = PBXGroup;
 			children = (
 				C35265FA1B28EA09001F093F /* CreateSheet.storyboard */,
-				C35266021B2A05EA001F093F /* VCreateSheetAnimator.h */,
-				C35266031B2A05EA001F093F /* VCreateSheetAnimator.m */,
+				C35266021B2A05EA001F093F /* VCreateSheetTransitionDelegate.h */,
+				C35266031B2A05EA001F093F /* VCreateSheetTransitionDelegate.m */,
 				C35265FF1B28F1B6001F093F /* VCreateSheetCollectionViewCell.h */,
 				C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */,
 				C35266051B2A0907001F093F /* VCreateSheetPresentationController.h */,
@@ -7375,7 +7375,7 @@
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				D8E39BDC19CB7C80007FD86A /* VContentPollCell.m in Sources */,
 				D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */,
-				C35266041B2A05EA001F093F /* VCreateSheetAnimator.m in Sources */,
+				C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
 				A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,

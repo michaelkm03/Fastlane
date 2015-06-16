@@ -11,7 +11,7 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VNavigationMenuItem.h"
-#import "VCreateSheetAnimator.h"
+#import "VCreateSheetTransitionDelegate.h"
 #import "VDependencyManager+VStatusBarStyle.h"
 
 static NSString * const kCreateImageIdentifier = @"Create Image";

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VCreateSheetAnimator.h"
+#import "VCreateSheetTransitionDelegate.h"
 #import "VCreateSheetPresentationController.h"
 #import "VCreateSheetViewController.h"
 #import "VDependencyManager.h"
@@ -18,10 +18,28 @@ static const NSTimeInterval kDismissTotalTime = 0.4;
 static const NSTimeInterval kButtonUpTime = 0.7;
 static const NSTimeInterval kButtonUpDelay = 0.3;
 
+/**
+ The animator object that conforms to UIViewControllerAnimatedTransitioning
+ to be returned in the UIViewControllerTransitioningDelegate protocol methods
+ */
+@interface VCreateSheetAnimator : NSObject <UIViewControllerAnimatedTransitioning>
+
+/**
+ If the animation is presenting or dismissing
+ */
+@property (nonatomic, assign, getter=isPresentation) BOOL presentation;
+
+/**
+ Determines whether or not the presentation animation should start from the top
+ */
+@property (nonatomic, assign) BOOL fromTop;
+
+@end
+
 @implementation VCreateSheetAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
-{    
+{
     return [self isPresentation] ? kButtonUpTime + kButtonUpDelay : kDismissTotalTime;
 }
 
@@ -42,7 +60,7 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
         [collectionView layoutIfNeeded];
         
         [containerView addSubview:animatingViewController.view];
-
+        
         CGFloat yTransition = CGRectGetHeight(animatingViewController.view.bounds);
         CGAffineTransform transitionTransform = CGAffineTransformMakeTranslation(0, self.fromTop ? -yTransition : yTransition);
         
@@ -50,7 +68,7 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"item" ascending:YES];
         NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         NSArray *sortedArray = [collectionView.indexPathsForVisibleItems sortedArrayUsingDescriptors:sortDescriptors];
-
+        
         // Animate each cell seperately with small delay
         for (NSUInteger x = 0; x < collectionView.indexPathsForVisibleItems.count; x++)
         {

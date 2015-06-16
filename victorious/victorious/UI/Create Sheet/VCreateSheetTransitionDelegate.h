@@ -1,5 +1,5 @@
 //
-//  VCreateSheetAnimator.h
+//  VCreateSheetTransitionDelegate.h
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 6/11/15.
@@ -9,14 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "VHasManagedDependencies.h"
 
-@interface VCreateSheetAnimator : NSObject <UIViewControllerAnimatedTransitioning>
-
-@property (nonatomic, assign, getter=isPresentation) BOOL presentation;
-
-@property (nonatomic, assign) BOOL fromTop;
-
-@end
-
+/**
+ An object that conforms to UIViewControllerTransitioningDelegate to be used to enable
+ custom presentation of VCreateSheetViewController
+ */
 @interface VCreateSheetTransitionDelegate : NSObject <UIViewControllerTransitioningDelegate, VHasManagedDependencies>
 
 /**
