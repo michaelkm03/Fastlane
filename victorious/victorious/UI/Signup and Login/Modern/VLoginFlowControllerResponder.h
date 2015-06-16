@@ -47,7 +47,7 @@
  */
 - (void)registerWithEmail:(NSString *)email
                  password:(NSString *)password
-               completion:(void(^)(BOOL success, NSError *error))completion;
+               completion:(void(^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion;
 
 /**
  *  The user has entered an appropriate username.
