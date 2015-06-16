@@ -49,10 +49,10 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 {
     [super viewDidLoad];
     
-    self.gradientView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    self.gradientView.layer.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f].CGColor;
     self.gradientView.colors = @[ [UIColor clearColor], [UIColor blackColor] ];
     self.gradientView.locations = @[ @0.5f, @1.0f ];
-    self.gradientView.alpha = 0.8f;
+    self.gradientView.alpha = 0.65f;
     
     
     self.primaryActionButtonStartTop = self.primaryActionButtonTopConstraint.constant;
