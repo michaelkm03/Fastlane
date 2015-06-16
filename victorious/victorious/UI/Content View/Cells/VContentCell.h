@@ -9,8 +9,9 @@
 #import "VBaseCollectionViewCell.h"
 #import "VEndCardViewController.h"
 #import "VBackgroundContainer.h"
+#import "VExpressions.h"
 
-@interface VContentCell : VBaseCollectionViewCell
+@interface VContentCell : VBaseCollectionViewCell <VExpressionButtonProvider>
 
 /**
  *  An array of UIImages to use for the animation.

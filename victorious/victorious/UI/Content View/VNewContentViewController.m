@@ -105,6 +105,7 @@
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
+#import "VLikeHelper.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -932,104 +933,25 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
         case VContentViewSectionContent:
-            switch (self.viewModel.type)
         {
-            case VContentViewTypeInvalid:
-                return nil;
-            case VContentViewTypeImage:
+            UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
+            
+            if ( [cell conformsToProtocol:@protocol(VExpressionButtonProvider)] )
             {
-                VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
-                                                                                         forIndexPath:indexPath];
-                [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
-                                              placeholderImage:self.placeholderImage?:nil];
-                self.contentCell = imageCell;
-                self.contentCell.endCardDelegate = self;
-                return imageCell;
+                id<VExpressionButtonProvider> buttonProvider = (id<VExpressionButtonProvider>)cell;
+                [buttonProvider.likeButton addTarget:self
+                                              action:@selector(onLikeButtonSelected:)
+                                    forControlEvents:UIControlEventTouchUpInside];
+                [buttonProvider.likeButton setTitle:[NSString stringWithFormat:@"%@", @(arc4random() % 1000)]
+                                           forState:UIControlStateNormal];
             }
-            case VContentViewTypeGIFVideo:
-            case VContentViewTypeVideo:
-            {
-                if (self.videoCell)
-                {
-                    return self.videoCell;
-                }
-
-                VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
-                                                                                         forIndexPath:indexPath];
-                videoCell.tracking = self.viewModel.sequence.tracking;
-                videoCell.delegate = self;
-                videoCell.speed = self.viewModel.speed;
-                videoCell.loop = self.viewModel.loop;
-                videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
-                videoCell.audioMuted = self.viewModel.audioMuted;
-                self.videoCell = videoCell;
-                self.contentCell = videoCell;
-                __weak typeof(self) welf = self;
-                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
-                {
-                    const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
-                    welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
-                    welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-                }];
-                videoCell.endCardDelegate = self;
-                videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
-                return videoCell;
-            }
-            case VContentViewTypeText:
-            {
-                VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
-                                                                                       forIndexPath:indexPath];
-                textCell.dependencyManager = self.dependencyManager;
-                [textCell setTextContent:self.viewModel.textContent
-                         backgroundColor:self.viewModel.textBackgroundColor
-                      backgroundImageURL:self.viewModel.textBackgroundImageURL];
-                self.contentCell = textCell;
-                return textCell;
-            }
-            case VContentViewTypePoll:
-            {
-                VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
-                                                                                       forIndexPath:indexPath];
-                pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
-                if (self.viewModel.answerAIsVideo)
-                {
-                    [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
-                }
-                pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
-                if (self.viewModel.answerBIsVideo)
-                {
-                    [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
-                }
-                __weak typeof(pollCell) weakPollCell = pollCell;
-                __weak typeof(self) welf = self;
-                pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
-                {
-                    NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
-                    
-                    [welf showLightBoxWithMediaURL:mediaURL
-                                      previewImage:weakPollCell.answerAPreviewImage
-                                           isVideo:isVideo
-                                        sourceView:weakPollCell.answerAContainer];
-                };
-                pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
-                {
-                    NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
-                    
-                    [welf showLightBoxWithMediaURL:mediaURL
-                                      previewImage:weakPollCell.answerBPreviewImage
-                                           isVideo:isVideo
-                                        sourceView:weakPollCell.answerBContainer];
-                };
-                
-                self.pollCell = pollCell;
-                return pollCell;
-            }
+            
+            return cell;
         }
         case VContentViewSectionHistogramOrQuestion:
         {
@@ -1318,6 +1240,105 @@ referenceSizeForHeaderInSection:(NSInteger)section
     if ( !self.rotationHelper.isLandscape && isContentSection )
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];
+    }
+}
+
+- (UICollectionViewCell *)contentCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
+{
+    switch (self.viewModel.type)
+    {
+        case VContentViewTypeInvalid:
+            return nil;
+        case VContentViewTypeImage:
+        {
+            VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
+                                                                                     forIndexPath:indexPath];
+            [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
+                                          placeholderImage:self.placeholderImage?:nil];
+            self.contentCell = imageCell;
+            self.contentCell.endCardDelegate = self;
+            return imageCell;
+        }
+        case VContentViewTypeGIFVideo:
+        case VContentViewTypeVideo:
+        {
+            if (self.videoCell)
+            {
+                return self.videoCell;
+            }
+            
+            VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
+                                                                                     forIndexPath:indexPath];
+            videoCell.tracking = self.viewModel.sequence.tracking;
+            videoCell.delegate = self;
+            videoCell.speed = self.viewModel.speed;
+            videoCell.loop = self.viewModel.loop;
+            videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
+            videoCell.audioMuted = self.viewModel.audioMuted;
+            self.videoCell = videoCell;
+            self.contentCell = videoCell;
+            __weak typeof(self) welf = self;
+            [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
+             {
+                 const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
+                 welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
+                 welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
+             }];
+            videoCell.endCardDelegate = self;
+            videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
+            return videoCell;
+        }
+        case VContentViewTypeText:
+        {
+            VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
+                                                                                   forIndexPath:indexPath];
+            textCell.dependencyManager = self.dependencyManager;
+            [textCell setTextContent:self.viewModel.textContent
+                     backgroundColor:self.viewModel.textBackgroundColor
+                  backgroundImageURL:self.viewModel.textBackgroundImageURL];
+            self.contentCell = textCell;
+            return textCell;
+        }
+        case VContentViewTypePoll:
+        {
+            VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
+                                                                                   forIndexPath:indexPath];
+            pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
+            if (self.viewModel.answerAIsVideo)
+            {
+                [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
+            }
+            pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
+            if (self.viewModel.answerBIsVideo)
+            {
+                [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
+            }
+            __weak typeof(pollCell) weakPollCell = pollCell;
+            __weak typeof(self) welf = self;
+            pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
+            {
+                NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                
+                [welf showLightBoxWithMediaURL:mediaURL
+                                  previewImage:weakPollCell.answerAPreviewImage
+                                       isVideo:isVideo
+                                    sourceView:weakPollCell.answerAContainer];
+            };
+            pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
+            {
+                NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                
+                [welf showLightBoxWithMediaURL:mediaURL
+                                  previewImage:weakPollCell.answerBPreviewImage
+                                       isVideo:isVideo
+                                    sourceView:weakPollCell.answerBContainer];
+            };
+            
+            self.pollCell = pollCell;
+            return pollCell;
+        }
     }
 }
 
@@ -1877,6 +1898,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (NSString *)screenIdentifier
 {
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+- (void)onLikeButtonSelected:(id<VExpressionButton>)sender
+{
+    id <VLikeResponder> responder = [self.nextResponder targetForAction:@selector(likeHelper) withSender:self];
+    VLikeHelper *likeHelper = responder.likeHelper;
+    NSAssert( likeHelper != nil && responder != nil, @"Could not find a responder to provide VLikeHelper instance." );
+    
+    [likeHelper likeSequence:self.viewModel.sequence completion:^(VSequence *sequence) {
+        [sender setActive:YES];
+        [sender setCount:self.viewModel.sequence.repostCount.integerValue];
+    }];
 }
 
 @end

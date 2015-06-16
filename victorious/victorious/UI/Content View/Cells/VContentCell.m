@@ -9,6 +9,7 @@
 #import "VContentCell.h"
 #import "UIView+Autolayout.h"
 #import <QuartzCore/QuartzCore.h>
+#import "VLikeButton.h"
 
 @interface VContentCell () <VEndCardViewControllerDelegate>
 
@@ -19,6 +20,8 @@
 
 @implementation VContentCell
 
+@synthesize likeButton = _likeButton;
+
 #pragma mark - VSharedCollectionReusableViewMethods
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -27,13 +30,6 @@
 }
 
 #pragma mark - Initialization
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    [self setup];
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -71,6 +67,21 @@
     self.minSize = CGSizeMake( self.frame.size.width, 0.0f );
     
     self.repeatCount = 1;
+    
+    [self setupLikeButton];
+}
+
+- (void)setupLikeButton
+{
+    VLikeButton *likeButton = [[VLikeButton alloc] init];
+    [self addSubview:likeButton];
+    [likeButton setSizeConstraints];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-12.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottomMargin multiplier:1.0 constant:-3.0f]];
+    
+    [self layoutIfNeeded];
+    
+    self.likeButton = likeButton;
 }
 
 - (void)prepareForReuse
