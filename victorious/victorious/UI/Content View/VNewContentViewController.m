@@ -409,7 +409,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    if (self.viewModel.sequence.canComment)
+    if (self.viewModel.sequence.permissions.canComment )
     {
         VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -1729,6 +1729,19 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                             andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
                                                 defaultVideoEdit:VDefaultVideoEditGIF
+                                                      completion:^(BOOL finished)
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
+    }
+    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierMeme] )
+    {
+        [self.sequenceActionController showRemixOnViewController:self.navigationController
+                                                    withSequence:self.viewModel.sequence
+                                            andDependencyManager:self.dependencyManager
+                                                  preloadedImage:nil
+                                                defaultVideoEdit:VDefaultVideoEditSnapshot
                                                       completion:^(BOOL finished)
          {
              [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
