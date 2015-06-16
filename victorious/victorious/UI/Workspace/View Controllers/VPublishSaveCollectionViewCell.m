@@ -12,6 +12,7 @@
 static NSString * const kSaveTextKey = @"saveText";
 static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 static NSString * const kOptionsContainerBackgroundKey = @"color.background.optionsContainer";
+static NSString * const kSaveSwitchTintColor = @"color.switch";
 
 static CGFloat const kDesiredHeight = 43.0f;
 
@@ -33,6 +34,7 @@ static CGFloat const kDesiredHeight = 43.0f;
         NSString *saveText = [_dependencyManager stringForKey:kSaveTextKey];
         self.saveContentLabel.text = NSLocalizedString(saveText, @"");
         self.contentView.backgroundColor = [_dependencyManager colorForKey:kOptionsContainerBackgroundKey];
+        self.cameraRollSwitch.onTintColor = [_dependencyManager colorForKey:kSaveSwitchTintColor];
         NSNumber *autoEnableSave = [_dependencyManager numberForKey:kEnableMediaSaveKey];
         if ( autoEnableSave != nil )
         {

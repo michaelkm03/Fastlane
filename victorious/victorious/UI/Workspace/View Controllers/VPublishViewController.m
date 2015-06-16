@@ -45,6 +45,7 @@ static NSString * const kBackButtonTitleKey = @"backButtonText";
 static NSString * const kPlaceholderTextKey = @"placeholderText";
 static NSString * const kShareContainerBackgroundColor = @"color.background.shareContainer";
 static NSString * const kCaptionContainerBackgroundColor = @"color.background.captionContainer";
+static NSString * const kCaptionSeparatorColor = @"color.caption.separator";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer>
@@ -53,6 +54,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @property (nonatomic, weak) IBOutlet UIView *publishPrompt;
 @property (nonatomic, weak) IBOutlet UIView *captionContainer;
+@property (nonatomic, weak) IBOutlet UIView *captionSeparator;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet VPlaceholderTextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *publishButton;
@@ -131,6 +133,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     };
     
     [self setupCaptionTextView];
+    
+    self.captionSeparator.backgroundColor = [self.dependencyManager colorForKey:kCaptionSeparatorColor];
     
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     UIFont *cancelButtonFont = [self.dependencyManager fontForKey:VDependencyManagerButton2FontKey];

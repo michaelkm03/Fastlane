@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="cancelButton" destination="92r-ti-u3W" id="foA-Pb-kG4"/>
                 <outlet property="captionContainer" destination="fY0-oQ-HQH" id="XhI-B5-WCG"/>
+                <outlet property="captionSeparator" destination="eai-Zh-nhI" id="GMn-jT-clc"/>
                 <outlet property="captionTextView" destination="k7t-Et-LrO" id="oyc-Xm-Phf"/>
                 <outlet property="cardHeightConstraint" destination="x2m-9S-R5h" id="tjK-hG-SlI"/>
                 <outlet property="collectionView" destination="YuE-zB-FA1" id="tcR-NF-T07"/>

@@ -224,6 +224,20 @@
             "blue": 237,
             "green": 233
         },
+        "color.caption.separator":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 0
+        },
+        "color.switch":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 255
+        },
         "color.text.placeholder":
         {
             "red": 102,
