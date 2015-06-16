@@ -15,6 +15,5 @@
 @interface VHashTagTextView : CCHLinkTextView
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, assign) BOOL test;
 
 @end
