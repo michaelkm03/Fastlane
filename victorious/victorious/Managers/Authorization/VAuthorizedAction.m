@@ -101,19 +101,35 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
     UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
                                                                                                                        forKey:kLoginAndRegistrationViewKey];
     
-    UIView *replicant = [loginFlowController.view snapshotViewAfterScreenUpdates:YES];
-    [presentingViewController.view addSubview:replicant];
-    [presentingViewController.view v_addFitToParentConstraintsToSubview:replicant];
-    
-    if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
+    if ( loginFlowController != nil )
     {
-        [loginFlowController setAuthorizationContext:authorizationContext];
+        UIView *replicant = [loginFlowController.view snapshotViewAfterScreenUpdates:YES];
+        [presentingViewController.view addSubview:replicant];
+        [presentingViewController.view v_addFitToParentConstraintsToSubview:replicant];
+        
+        if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
+        {
+            [loginFlowController setAuthorizationContext:authorizationContext];
+        }
+        [loginFlowController setCompletionBlock:completionActionBlock];
+        
+        self.presentingController = presentingViewController;
+        self.loginController = loginFlowController;
+        self.replicantView = replicant;
     }
-    [loginFlowController setCompletionBlock:completionActionBlock];
-
-    self.presentingController = presentingViewController;
-    self.loginController = loginFlowController;
-    self.replicantView = replicant;
+    else
+    {
+        //Login flow was nil for some reason, show an alert to notify the user
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:NSLocalizedString(@"GenericFailMessage", @"")
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        [presentingViewController presentViewController:alertController
+                                               animated:YES
+                                             completion:nil];
+    }
     
     return NO;
 }
