@@ -183,7 +183,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             publishParameters.parentNodeID = [sequenceToRemix firstNode].remoteId;
         }
         
-        VPublishViewController *publishViewController = [self.dependencyManager publishViewController];
+        VPublishViewController *publishViewController = [self.dependencyManager newPublishViewController];
         publishViewController.publishParameters = publishParameters;
         __weak typeof(VPublishViewController) *weakPublishViewController = publishViewController;
         publishViewController.completion = ^void(BOOL published)

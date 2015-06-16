@@ -8,8 +8,6 @@
 
 #import "VPlaceholderTextView.h"
 
-#import <AudioToolbox/AudioToolbox.h>
-
 static const CGFloat kPlaceholderAlphaNoText = 0.5f;
 static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
 

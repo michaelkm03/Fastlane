@@ -14,6 +14,9 @@
 
 @import Accounts;
 
+NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
+static CGFloat const kTwitterManagerErrorCode = 1;
+
 @interface VTwitterManager()
 
 @property (nonatomic, strong) NSString *oauthToken;
@@ -73,15 +76,11 @@
              {
                  dispatch_async(dispatch_get_main_queue(), ^(void)
                                 {
-                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
-                                                                                    message:NSLocalizedString(@"NoTwitterMessage", @"")
-                                                                                   delegate:nil
-                                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                                          otherButtonTitles:nil];
-                                    [alert show];
+                                    NSString *errorMessage = NSLocalizedString(@"NoTwitterMessage", @"");
+                                    NSError *noTwitterError = [NSError errorWithDomain:VTwitterManagerErrorDomain code:kTwitterManagerErrorCode userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
                                     if ( completionBlock != nil )
                                     {
-                                        completionBlock(NO, error);
+                                        completionBlock(NO, noTwitterError);
                                     }
                                 });
              }

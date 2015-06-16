@@ -14,73 +14,30 @@
 static CGFloat const kPreferredRowHeight = 31.0f;
 static CGFloat const kInterItemSpace = 5.0f;
 static NSUInteger const kNumberOfColumns = 2;
-static UIEdgeInsets const kDefaultSectionEdgeInsets = { 4, 10, 12, 10 };
+static UIEdgeInsets const kDefaultContentInsets = { 4, 10, 12, 10 };
 static CGFloat const kShareLabelHeight = 31.0f;
 static NSString * const kShareTextKey = @"shareText";
-static NSString * const kOptionsContainerBackgroundKey = @"color.background.optionsContainer";
+static NSString * const kOptionsContainerBackgroundKey = @"color.optionsContainer";
 
 @interface VPublishShareCollectionViewCell () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, weak) IBOutlet UILabel *shareLabel;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *shareMenuItems;
-@property (nonatomic, assign) UIEdgeInsets sectionEdgeInsets;
 
 @end
 
 @implementation VPublishShareCollectionViewCell
-
-- (instancetype)init
-{
-    self = [super init];
-    if ( self != nil )
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if ( self != nil )
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if ( self != nil )
-    {
-        [self sharedInit];
-    }
-    return self;
-}
-
-- (void)sharedInit
-{
-    _sectionEdgeInsets = kDefaultSectionEdgeInsets;
-}
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     [self.collectionView registerNib:[VShareItemCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VShareItemCollectionViewCell suggestedReuseIdentifier]];
     self.collectionView.scrollEnabled = NO;
+    self.collectionView.contentInset = kDefaultContentInsets;
 }
 
-- (void)setHorizontalInset:(CGFloat)horizontalInset
-{
-    UIEdgeInsets updatedInsets = self.sectionEdgeInsets;
-    updatedInsets.left = horizontalInset;
-    updatedInsets.right = horizontalInset;
-    self.sectionEdgeInsets = updatedInsets;
-}
-
-+ (CGSize)desiredSizeForCollectionWithBounds:(CGRect)bounds sectionInsets:(UIEdgeInsets)insets andDependencyManager:(VDependencyManager *)dependencyManager
++ (CGSize)desiredSizeInCollectionView:(UICollectionView *)collectionView andDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSArray *shareMenuItems = [dependencyManager shareMenuItems];
     NSUInteger count = shareMenuItems.count;
@@ -89,12 +46,23 @@ static NSString * const kOptionsContainerBackgroundKey = @"color.background.opti
         return CGSizeZero;
     }
     
+    CGRect bounds = collectionView.bounds;
+    UIEdgeInsets insets = collectionView.contentInset;
+    if ( [collectionView.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]] )
+    {
+        UIEdgeInsets sectionInset = ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset;
+        insets.right += sectionInset.right;
+        insets.left += sectionInset.left;
+    }
+    
     CGSize size = bounds.size;
     CGFloat contentHeight = kPreferredRowHeight * ((count + 1) / 2);
-    size.height = contentHeight + kShareLabelHeight + kDefaultSectionEdgeInsets.top + kDefaultSectionEdgeInsets.bottom;
+    size.height = contentHeight + kShareLabelHeight + kDefaultContentInsets.top + kDefaultContentInsets.bottom;
     size.width -= insets.left + insets.right;
     return size;
 }
+
+#pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -113,24 +81,12 @@ static NSString * const kOptionsContainerBackgroundKey = @"color.background.opti
     return shareItemCell;
 }
 
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    if ( dependencyManager != nil )
-    {
-        self.shareMenuItems = [dependencyManager shareMenuItems];
-        NSString *shareText = [dependencyManager stringForKey:kShareTextKey];
-        self.shareLabel.text = NSLocalizedString(shareText, @"");
-        self.shareLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.shareLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
-        self.contentView.backgroundColor = [dependencyManager colorForKey:kOptionsContainerBackgroundKey];
-    }
-}
+#pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = CGRectGetWidth(collectionView.bounds);
-    width -= kInterItemSpace + self.sectionEdgeInsets.right + self.sectionEdgeInsets.left;
+    width -= kInterItemSpace + kDefaultContentInsets.right + kDefaultContentInsets.left;
     width /= kNumberOfColumns;
     return CGSizeMake(width, kPreferredRowHeight);
 }
@@ -147,26 +103,24 @@ static NSString * const kOptionsContainerBackgroundKey = @"color.background.opti
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return self.sectionEdgeInsets;
+    return UIEdgeInsetsZero;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( self.delegate != nil )
     {
-        NSUInteger cellIndex = [collectionView.visibleCells indexOfObjectPassingTest:^BOOL(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
+        VShareItemCollectionViewCell *shareItemCell = nil;
+        for ( VShareItemCollectionViewCell *cell in collectionView.visibleCells )
         {
-           
             BOOL foundCell = [[collectionView indexPathForCell:cell] isEqual:indexPath];
             if ( foundCell )
             {
-                *stop = YES;
-                return YES;
+                shareItemCell = cell;
+                break;
             }
-            return NO;
-        }];
+        }
         
-        VShareItemCollectionViewCell *shareItemCell = [[collectionView visibleCells] objectAtIndex:cellIndex];
         if ( shareItemCell.state == VShareItemCellStateUnselected )
         {
             [self.delegate shareCollectionViewSelectedShareItemCell:shareItemCell];
@@ -174,6 +128,26 @@ static NSString * const kOptionsContainerBackgroundKey = @"color.background.opti
         else if ( shareItemCell.state == VShareItemCellStateSelected )
         {
             shareItemCell.state = VShareItemCellStateUnselected;
+        }
+    }
+}
+
+#pragma mark - Setters and getters
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.shareMenuItems = [dependencyManager shareMenuItems];
+        NSString *shareText = [dependencyManager stringForKey:kShareTextKey];
+        self.shareLabel.text = NSLocalizedString(shareText, @"");
+        self.shareLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.shareLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+        self.contentView.backgroundColor = [dependencyManager colorForKey:kOptionsContainerBackgroundKey];
+        for ( VShareItemCollectionViewCell *cell in self.collectionView.visibleCells )
+        {
+            cell.dependencyManager = dependencyManager;
         }
     }
 }

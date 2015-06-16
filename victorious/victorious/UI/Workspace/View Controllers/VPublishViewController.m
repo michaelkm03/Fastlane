@@ -43,8 +43,8 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = { 8.0f, 9.0f, 8.0f, 9.0f }
 static NSUInteger const kMaxCaptionLength = 120;
 static NSString * const kBackButtonTitleKey = @"backButtonText";
 static NSString * const kPlaceholderTextKey = @"placeholderText";
-static NSString * const kShareContainerBackgroundColor = @"color.background.shareContainer";
-static NSString * const kCaptionContainerBackgroundColor = @"color.background.captionContainer";
+static NSString * const kShareContainerBackgroundColor = @"color.shareContainer";
+static NSString * const kCaptionContainerBackgroundColor = @"color.captionContainer";
 static NSString * const kCaptionSeparatorColor = @"color.caption.separator";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
@@ -201,12 +201,12 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.hasShareCell = [self.dependencyManager shareMenuItems].count != 0;
     
     CGFloat staticHeights = self.publishButtonHeightConstraint.constant + self.previewHeightConstraint.constant + self.dividerLineHeightConstraint.constant;
-    CGSize shareSize = [VPublishShareCollectionViewCell desiredSizeForCollectionWithBounds:self.collectionView.bounds sectionInsets:flowLayout.sectionInset andDependencyManager:self.dependencyManager];
+    CGSize shareSize = [VPublishShareCollectionViewCell desiredSizeInCollectionView:self.collectionView andDependencyManager:self.dependencyManager];
     if ( shareSize.height != 0 )
     {
         shareSize.height += kCollectionViewVerticalSpace;
     }
-    CGFloat collectionViewHeight = [VPublishSaveCollectionViewCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds andSectionInsets:flowLayout.sectionInset].height + shareSize.height + kCollectionViewVerticalSpace * 2;
+    CGFloat collectionViewHeight = [VPublishSaveCollectionViewCell desiredSizeInCollectionView:self.collectionView].height + shareSize.height + kCollectionViewVerticalSpace * 2;
     self.cardHeightConstraint.constant = staticHeights + collectionViewHeight;
 }
 
@@ -521,6 +521,86 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     [self.animator addBehavior:collision];
 }
 
+- (BOOL)isSaveCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    //The save cell should ALWAYS be the last cell in the table
+    return indexPath.row == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
+}
+
+- (void)shareCollectionViewSelectedShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
+{
+    __weak VPublishViewController *weakSelf = self;
+    if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook )
+    {
+        if ( ![VFacebookManager sharedFacebookManager].authorizedToShare )
+        {
+            shareItemCell.state = VShareItemCellStateLoading;
+            [[VFacebookManager sharedFacebookManager] requestPublishPermissionsOnSuccess:^
+             {
+                 shareItemCell.state = VShareItemCellStateSelected;
+             }
+                                                                               onFailure:^(NSError *error)
+             {
+                 [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
+                 shareItemCell.state = VShareItemCellStateUnselected;
+             }];
+        }
+        else
+        {
+            shareItemCell.state = VShareItemCellStateSelected;
+        }
+    }
+    else if ( shareItemCell.shareMenuItem.shareType == VShareTypeTwitter )
+    {
+        if ( ![VTwitterManager sharedManager].authorizedToShare )
+        {
+            shareItemCell.state = VShareItemCellStateLoading;
+            [[VTwitterManager sharedManager] refreshTwitterTokenWithIdentifier:[[VTwitterManager sharedManager] twitterId]
+                                                            fromViewController:self
+                                                               completionBlock:^(BOOL success, NSError *error)
+             {
+                 shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
+                 if ( !success )
+                 {
+                     [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
+                 }
+             }];
+        }
+        else
+        {
+            shareItemCell.state = VShareItemCellStateSelected;
+        }
+    }
+}
+
+- (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
+{
+    __weak VPublishViewController *weakSelf = self;
+    void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
+    {
+        [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
+    };
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
+    {
+        //No accounts were found
+        alertController.message = error.localizedDescription;
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleCancel handler:nil]];
+    }
+    else
+    {
+        //We encountered a twitter API error
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock]];
+    }
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -564,81 +644,15 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     return cell;
 }
 
+#pragma mark - Layout methods
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [self isSaveCellAtIndexPath:indexPath] )
     {
-        return [VPublishSaveCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds andSectionInsets:((UICollectionViewFlowLayout *)collectionViewLayout).sectionInset];
+        return [VPublishSaveCollectionViewCell desiredSizeInCollectionView:collectionView];
     }
-    return [VPublishShareCollectionViewCell desiredSizeForCollectionWithBounds:collectionView.bounds sectionInsets:((UICollectionViewFlowLayout *)collectionViewLayout).sectionInset andDependencyManager:self.dependencyManager];
-}
-
-- (BOOL)isSaveCellAtIndexPath:(NSIndexPath *)indexPath
-{
-    //The save cell should ALWAYS be the last cell in the table
-    return indexPath.row == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
-}
-
-- (void)shareCollectionViewSelectedShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
-{
-    __weak VPublishViewController *weakSelf = self;
-    if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook )
-    {
-        if ( ![VFacebookManager sharedFacebookManager].authorizedToShare )
-        {
-            shareItemCell.state = VShareItemCellStateLoading;
-            [[VFacebookManager sharedFacebookManager] requestPublishPermissionsOnSuccess:^
-             {
-                 shareItemCell.state = VShareItemCellStateSelected;
-             }
-                                                              onFailure:^(NSError *error)
-             {
-                 [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
-                 shareItemCell.state = VShareItemCellStateUnselected;
-             }];
-        }
-        else
-        {
-            shareItemCell.state = VShareItemCellStateSelected;
-        }
-    }
-    else if ( shareItemCell.shareMenuItem.shareType == VShareTypeTwitter )
-    {
-        if ( ![VTwitterManager sharedManager].authorizedToShare )
-        {
-            shareItemCell.state = VShareItemCellStateLoading;
-            [[VTwitterManager sharedManager] refreshTwitterTokenWithIdentifier:[[VTwitterManager sharedManager] twitterId]
-                                                            fromViewController:self
-                                                               completionBlock:^(BOOL success, NSError *error)
-            {
-                shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
-                if ( !success )
-                {
-                    [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
-                }
-            }];
-        }
-        else
-        {
-            shareItemCell.state = VShareItemCellStateSelected;
-        }
-    }
-}
-
-- (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
-{
-    __weak VPublishViewController *weakSelf = self;
-    void (^retryBlock)() = ^
-    {
-        [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
-    };
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                 onCancelButton:nil
-                                     otherButtonTitlesAndBlocks:NSLocalizedString(@"Retry",@""), retryBlock, nil];
-    [alertView show];
+    return [VPublishShareCollectionViewCell desiredSizeInCollectionView:collectionView andDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - VBackgroundContainer
@@ -654,7 +668,7 @@ static NSString * const kPublishScreenKey = @"publishScreen";
 
 @implementation VDependencyManager (VPublishViewController)
 
-- (VPublishViewController *)publishViewController
+- (VPublishViewController *)newPublishViewController
 {
     return (VPublishViewController *)[self viewControllerForKey:kPublishScreenKey];
 }

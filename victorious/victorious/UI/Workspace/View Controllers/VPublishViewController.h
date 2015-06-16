@@ -28,6 +28,9 @@
 
 @interface VDependencyManager (VPublishViewController)
 
-- (VPublishViewController *)publishViewController;
+/**
+    Creates and returns a new publish view controller based on the contents of this dependency manager.
+ */
+- (VPublishViewController *)newPublishViewController;
 
 @end

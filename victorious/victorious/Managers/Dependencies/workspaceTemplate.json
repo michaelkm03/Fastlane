@@ -203,21 +203,21 @@
                 "green": 0
             }
         },
-        "color.background.captionContainer":
+        "color.captionContainer":
         {
             "red": 241,
             "alpha": 255,
             "blue": 241,
             "green": 241
         },
-        "color.background.optionsContainer":
+        "color.optionsContainer":
         {
             "red": 255,
             "alpha": 255,
             "blue": 255,
             "green": 255
         },
-        "color.background.shareContainer":
+        "color.shareContainer":
         {
             "red": 230,
             "alpha": 255,

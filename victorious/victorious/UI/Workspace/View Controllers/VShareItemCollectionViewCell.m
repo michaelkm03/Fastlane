@@ -20,6 +20,15 @@
 
 @implementation VShareItemCollectionViewCell
 
+#pragma mark - Cell setup methods
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.button.layer.borderWidth = 1.0f;
+    self.button.tintColor = [UIColor clearColor];
+}
+
 - (void)populateWithShareMenuItem:(VShareMenuItem *)menuItem andDependencyManager:(VDependencyManager *)dependencyManager
 {
     self.dependencyManager = dependencyManager;
@@ -27,9 +36,10 @@
     self.state = VShareItemCellStateUnselected;
     [self.button setImage:[menuItem.icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     [self.button setImage:[menuItem.selectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateSelected];
-    self.button.tintColor = [UIColor clearColor];
     self.button.activityIndicatorTintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
 }
+
+#pragma mark - Setters
 
 - (void)setState:(VShareItemCellState)state
 {
@@ -49,16 +59,12 @@
     [self updateBorderColor];
 }
 
+#pragma mark - Private methods
+
 - (void)updateBorderColor
 {
     UIColor *borderColor = self.state == VShareItemCellStateSelected ? [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey] : [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
-    [self setBorderColor:borderColor];
-}
-
-- (void)setBorderColor:(UIColor *)borderColor
-{
     self.button.layer.borderColor = borderColor.CGColor;
-    self.button.layer.borderWidth = 1.0f;
 }
 
 @end

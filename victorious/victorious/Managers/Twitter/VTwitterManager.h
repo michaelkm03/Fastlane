@@ -8,7 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^VTWitterCompletionBlock) (BOOL, NSError *);
+/**
+ *  Describes the completion block of the refreshTwitterTokenWithIdentifier:fromViewController:completionBlock:.
+ *
+ *  @param success Whether or not the twitter authorization was successful.
+ *  @param error The error returned from the api call.
+ */
+typedef void (^VTWitterCompletionBlock) (BOOL success, NSError *error);
+
+/**
+ *  Error domain
+ */
+extern NSString * const VTwitterManagerErrorDomain;
 
 @interface VTwitterManager : NSObject
 
@@ -18,6 +29,9 @@ typedef void (^VTWitterCompletionBlock) (BOOL, NSError *);
 
 + (VTwitterManager *)sharedManager;
 
+/**
+ *  Returns YES when the oauth token, secret, and twitterId are valid.
+ */
 @property (nonatomic, readonly) BOOL authorizedToShare;
 
 /**

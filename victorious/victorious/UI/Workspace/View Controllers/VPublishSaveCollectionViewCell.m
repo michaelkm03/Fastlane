@@ -11,7 +11,7 @@
 
 static NSString * const kSaveTextKey = @"saveText";
 static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
-static NSString * const kOptionsContainerBackgroundKey = @"color.background.optionsContainer";
+static NSString * const kOptionsContainerBackgroundKey = @"color.optionsContainer";
 static NSString * const kSaveSwitchTintColor = @"color.switch";
 
 static CGFloat const kDesiredHeight = 43.0f;
@@ -47,8 +47,17 @@ static CGFloat const kDesiredHeight = 43.0f;
     }
 }
 
-+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds andSectionInsets:(UIEdgeInsets)insets
++ (CGSize)desiredSizeInCollectionView:(UICollectionView *)collectionView
 {
+    CGRect bounds = collectionView.bounds;
+    UIEdgeInsets insets = collectionView.contentInset;
+    if ( [collectionView.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]] )
+    {
+        UIEdgeInsets sectionInset = ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset;
+        insets.right = sectionInset.right;
+        insets.left = sectionInset.left;
+    }
+    
     CGSize size = bounds.size;
     size.height = kDesiredHeight;
     size.width -= insets.left + insets.right;
