@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VDependencyManager.h"
+#import "VNavigationMenuItem.h"
+
 @interface VCreateSheetCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *itemLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
-
-+ (CGFloat)cellHeight;
 
 @end

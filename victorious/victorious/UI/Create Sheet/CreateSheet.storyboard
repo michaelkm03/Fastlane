@@ -43,7 +43,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSm-HQ-Pwi">
-                                                    <rect key="frame" x="280" y="8" width="312" height="73"/>
+                                                    <rect key="frame" x="280" y="0.0" width="312" height="89"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -54,10 +54,10 @@
                                         <constraints>
                                             <constraint firstItem="sSm-HQ-Pwi" firstAttribute="leading" secondItem="Bv6-Lo-Kp4" secondAttribute="centerXWithinMargins" constant="-20" id="8I0-dd-emG"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="sSm-HQ-Pwi" secondAttribute="trailing" id="F4M-8Q-iCf"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="sSm-HQ-Pwi" secondAttribute="bottom" id="GP2-R4-cvJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="sSm-HQ-Pwi" secondAttribute="bottom" id="GP2-R4-cvJ"/>
                                             <constraint firstAttribute="centerY" secondItem="rtN-lc-kWX" secondAttribute="centerY" constant="-0.5" id="SZb-cu-cRv"/>
                                             <constraint firstItem="sSm-HQ-Pwi" firstAttribute="leading" secondItem="rtN-lc-kWX" secondAttribute="trailing" constant="20" id="k24-yn-jOJ"/>
-                                            <constraint firstItem="sSm-HQ-Pwi" firstAttribute="top" secondItem="Bv6-Lo-Kp4" secondAttribute="topMargin" id="xWX-Vc-MQR"/>
+                                            <constraint firstItem="sSm-HQ-Pwi" firstAttribute="top" secondItem="Bv6-Lo-Kp4" secondAttribute="top" id="xWX-Vc-MQR"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="iconImageView" destination="rtN-lc-kWX" id="sW5-MI-7jl"/>

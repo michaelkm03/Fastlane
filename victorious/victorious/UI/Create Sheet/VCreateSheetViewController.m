@@ -24,7 +24,7 @@ static NSString * const kStoryboardName = @"CreateSheet";
 static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 static NSString * const kDismissButtonTitle = @"title.button1";
 
-static const CGFloat kLineSpacing = 20.0f;
+static const CGFloat kLineSpacing = 40.0f;
 
 @interface VCreateSheetViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -85,7 +85,6 @@ static const CGFloat kLineSpacing = 20.0f;
     
     // Set line height and item size for flow layout
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    layout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), [VCreateSheetCollectionViewCell cellHeight]);
     [layout setMinimumLineSpacing:kLineSpacing];
     
     // Collection view background
@@ -198,11 +197,33 @@ static const CGFloat kLineSpacing = 20.0f;
 
 #pragma mark - Flow Layout Delegate
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    VNavigationMenuItem *menuItem = self.menuItems[indexPath.row];
+    return CGSizeMake(CGRectGetWidth(self.view.bounds) - 80, [self heightForMenuItemTitle:menuItem.title]);
+}
+
+- (CGFloat)heightForMenuItemTitle:(NSString *)text
+{
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(CGRectGetHeight(self.view.bounds), CGFLOAT_MAX)
+                                             options:NSStringDrawingUsesLineFragmentOrigin
+                                          attributes:@{ NSFontAttributeName : font }
+                                             context:nil];
+    return VCEIL(CGRectGetHeight(minimumFrame));
+}
+
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     NSInteger numberOfCells = [self.menuItems count];
     
-    CGFloat contentHeight = numberOfCells * [VCreateSheetCollectionViewCell cellHeight] + (numberOfCells - 1) * kLineSpacing;
+    CGFloat totalCellHeight = 0;
+    for (VNavigationMenuItem *item in self.menuItems)
+    {
+        totalCellHeight += [self heightForMenuItemTitle:item.title];
+    }
+    
+    CGFloat contentHeight = totalCellHeight + (numberOfCells - 1) * kLineSpacing;
     
     if (contentHeight >= CGRectGetHeight(collectionView.frame))
     {
@@ -211,7 +232,8 @@ static const CGFloat kLineSpacing = 20.0f;
     }
     
     // Center content in middle of collection view
-    NSInteger verticalInset = (CGRectGetHeight(collectionView.frame) - contentHeight) / 2;
+    CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
+    NSInteger verticalInset = (CGRectGetHeight(collectionView.bounds) - contentHeight - statusBarHeight) / 2;
     return UIEdgeInsetsMake(verticalInset, 0, verticalInset, 0);
 }
 

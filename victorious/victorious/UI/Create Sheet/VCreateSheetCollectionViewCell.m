@@ -8,14 +8,9 @@
 
 #import "VCreateSheetCollectionViewCell.h"
 
-static const CGFloat kCreateSheetCellHeight = 60.0f;
-
 @implementation VCreateSheetCollectionViewCell
 
-+ (CGFloat)cellHeight
-{
-    return kCreateSheetCellHeight;
-}
+#pragma mark - Helpers
 
 - (void)setHighlighted:(BOOL)highlighted
 {

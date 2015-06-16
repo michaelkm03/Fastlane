@@ -277,7 +277,7 @@
         "name": "standard.createSheet",
         "title.button1": "Nevermind",
         "font.heading1": {
-            "fontSize": 24,
+            "fontSize": 28,
             "fontName": "Lato-Bold"
         },
         "color.text": {
@@ -312,22 +312,8 @@
             }
         },
         "items": [{
-                  "identifier": "Create Image",
-                  "title": "IMAGE",
-                  "icon": {
-                  "imageURL": "PostCamera",
-                  "scale": 2
-                  }
-                  }, {
-                  "identifier": "Create Video",
-                  "title": "VIDEO",
-                  "icon": {
-                  "imageURL": "PostCamera",
-                  "scale": 2
-                  }
-                  }, {
-                  "identifier": "Create Poll",
-                  "title": "POLL",
+                  "identifier": "Create GIF",
+                  "title": "GIF",
                   "icon": {
                   "imageURL": "PostCamera",
                   "scale": 2
@@ -340,8 +326,22 @@
                   "scale": 2
                   }
                   }, {
-                  "identifier": "Create GIF",
-                  "title": "GIF",
+                  "identifier": "Create Poll",
+                  "title": "POLL",
+                  "icon": {
+                  "imageURL": "PostCamera",
+                  "scale": 2
+                  }
+                  }, {
+                  "identifier": "Create Video",
+                  "title": "VIDEO",
+                  "icon": {
+                  "imageURL": "PostCamera",
+                  "scale": 2
+                  }
+                  }, {
+                  "identifier": "Create Image",
+                  "title": "IMAGE",
                   "icon": {
                   "imageURL": "PostCamera",
                   "scale": 2
