@@ -38,9 +38,4 @@
  */
 - (void)setLoading:(BOOL)loading forItem:(VActionItem *)item;
 
-/**
- sets the dependency manager for the actionsheet view controller
- */
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager;
-
 @end
