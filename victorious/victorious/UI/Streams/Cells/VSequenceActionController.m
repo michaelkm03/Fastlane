@@ -353,16 +353,10 @@
 - (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancelAction = [UIAlertAction
-                                   actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
-                                   style:UIAlertActionStyleCancel
-                                   handler:nil];
-    
     UIAlertAction *okAction = [UIAlertAction
                                actionWithTitle:NSLocalizedString(@"OK", @"OK action")
                                style:UIAlertActionStyleDefault
                                handler:nil];
-    [alert addAction:cancelAction];
     [alert addAction:okAction];
     return alert;
 }
