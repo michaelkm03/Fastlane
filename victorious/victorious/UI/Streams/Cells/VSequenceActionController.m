@@ -320,47 +320,57 @@
                                                   onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Report/Flag", nil),  ^(void)
                                   {
-                                      [self flagActionForSequence:sequence];
+                                      [self flagActionForSequence:sequence fromViewController:viewController];
                                   }, nil];
     [actionSheet showInView:viewController.view];
 }
 
-- (void)flagActionForSequence:(VSequence *)sequence
+- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
 {
     [[VObjectManager sharedManager] flagSequence:sequence
                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-         [alert show];
+         UIAlertController *alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"")];
          
+         [viewController presentViewController:alert animated:YES completion:nil];
      }
                                        failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed to flag sequence %@", sequence);
-         // user already flagged this piece of content
+         UIAlertController *alert;
          if ( error.code == kVCommentAlreadyFlaggedError )
          {
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                    message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
+             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"")];
          }
          else
          {
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
+             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"WereSorry", @"") message:NSLocalizedString(@"ErrorOccured", @"")];
          }
+         [viewController presentViewController:alert animated:YES completion:nil];
      }];
+}
+
+- (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
+                                   style:UIAlertActionStyleCancel
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                       NSLog(@"Cancel action");
+                                   }];
+    
+    UIAlertAction *okAction = [UIAlertAction
+                               actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action)
+                               {
+                                   NSLog(@"OK action");
+                               }];
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    return alert;
 }
 
 #pragma mark - Helpers
