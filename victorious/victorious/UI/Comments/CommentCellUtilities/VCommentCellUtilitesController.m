@@ -26,8 +26,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 @property (nonatomic, strong) VComment *comment;
 @property (nonatomic, weak) UIView *cellView;
 @property (nonatomic, weak) id<VCommentCellUtilitiesDelegate> delegate;
-@property (nonatomic, assign) BOOL canEdit;
-@property (nonatomic, assign) BOOL canDelete;
 @property (nonatomic, strong) VSequencePermissions *permissions;
 
 @end
