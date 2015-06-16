@@ -241,7 +241,10 @@
         [actionItems addObject:deleteItem];
     }
     
-    if ((![[[VObjectManager sharedManager] mainUser] isOwner])&&(self.viewModel.sequence.permissions.canFlagSequence))
+    BOOL isOwner = [[[VObjectManager sharedManager] mainUser] isOwner];
+    BOOL canFlag = self.viewModel.sequence.permissions.canFlagSequence;
+    
+    if ( !isOwner && canFlag )
     {
         VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
                                                              actionIcon:[UIImage imageNamed:@"icon_flag"]

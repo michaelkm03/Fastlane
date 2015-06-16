@@ -31,6 +31,7 @@
 #import "VTagSensitiveTextView.h"
 
 #import "VSequence+Fetcher.h"
+#import "VSequencePermissions.h"
 
 static const UIEdgeInsets kTextInsets        = { 32.0f, 56.0f, 11.0f, 55.0f };
 
@@ -214,7 +215,7 @@ static NSCache *_sharedImageCache = nil;
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
                                                                                          cellView:self
                                                                                          delegate:self
-                                                                                          permissions:self.sequence.permissions];
+                                                                                          permissions:self.sequencePermissions];
     self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 

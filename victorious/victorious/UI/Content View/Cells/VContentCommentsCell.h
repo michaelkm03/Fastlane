@@ -8,7 +8,7 @@
 
 #import "VSwipeCollectionViewCell.h"
 
-@class VComment, VCommentTextAndMediaView, VDependencyManager, VSequence;
+@class VComment, VCommentTextAndMediaView, VDependencyManager, VSequencePermissions;
 
 /**
  *  UICollectionViewCell for representing a general comment on an item.
@@ -18,7 +18,7 @@
 @property (nonatomic, strong) VComment *comment;
 @property (nonatomic, readonly) NSURL *mediaURL;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VSequence *sequence;
+@property (nonatomic, strong) VSequencePermissions *sequencePermissions;
 
 @property (nonatomic, copy) void (^onMediaTapped)();
 @property (nonatomic, copy) void (^onUserProfileTapped)();
