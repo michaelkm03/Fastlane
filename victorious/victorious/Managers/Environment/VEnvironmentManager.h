@@ -1,5 +1,5 @@
 //
-//  VEnvironmentManager+Environment.h
+//  VEnvironmentManager.h
 //  victorious
 //
 //  Created by Josh Hinman on 5/5/14.
@@ -22,6 +22,6 @@
 
 - (BOOL)addEnvironment:(VEnvironment *)currentEnvironment;
 
-- (BOOL)revertToPreviousEnvironment;
+- (void)revertToPreviousEnvironment;
 
 @end
