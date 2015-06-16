@@ -342,7 +342,7 @@
      {
          VLog(@"Failed to flag sequence %@", sequence);
          // user already flagged this piece of content
-         if ( error.code == 1005 )
+         if ( error.code == kVCommentAlreadyFlaggedError )
          {
              UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
                                                                     message:NSLocalizedString(@"ReportContentMessage", @"")
@@ -350,7 +350,6 @@
                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                           otherButtonTitles:nil];
              [alert show];
-             
          }
          else
          {
@@ -360,7 +359,6 @@
                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                           otherButtonTitles:nil];
              [alert show];
-             
          }
      }];
 }
