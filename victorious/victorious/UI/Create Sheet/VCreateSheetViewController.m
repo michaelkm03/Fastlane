@@ -88,7 +88,7 @@ static const CGFloat kLineSpacing = 20.0f;
     layout.itemSize = CGSizeMake(CGRectGetWidth(self.view.bounds), [VCreateSheetCollectionViewCell cellHeight]);
     [(UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout setMinimumLineSpacing:kLineSpacing];
     
-    // Tap gesture foir dismissal
+    // Tap gesture for dismissal
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedBackground:)];
     UIView *collectionViewBackground = [UIView new];
     collectionViewBackground.backgroundColor = [UIColor clearColor];

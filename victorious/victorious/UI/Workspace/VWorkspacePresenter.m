@@ -25,6 +25,8 @@
 // Tracking
 #import "VTrackingManager.h"
 
+static NSString * const kCreateSheetKey = @"createSheet";
+
 @interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -44,8 +46,8 @@
 
 - (void)present
 {
-    NSDictionary *addedDependencies = @{kAnimateFromTopKey : @NO};
-    VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:@"createSheet" withAddedDependencies:addedDependencies];
+    NSDictionary *addedDependencies = @{kAnimateFromTopKey : @(self.showsCreationSheetFromTop)};
+    VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:kCreateSheetKey withAddedDependencies:addedDependencies];
     [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreateSheetItemIdentifier chosenItemIdentifier)
      {
          [createSheetViewController dismissViewControllerAnimated:YES completion:^
