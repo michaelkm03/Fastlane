@@ -156,24 +156,43 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 - (IBAction)loginWithTwitter:(id)sender
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedTwitterAuthorization)
+    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedTwitterAuthorizationWithCompletion:)
                                                                            withSender:self];
     if (flowControllerResponder == nil)
     {
         NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
     }
-    [flowControllerResponder selectedTwitterAuthorization];
+    [flowControllerResponder selectedTwitterAuthorizationWithCompletion:nil];
 }
 
 - (IBAction)loginWithFacebook:(id)sender
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedFacebookAuthorization)
+    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedFacebookAuthorizationWithCompletion:)
                                                                            withSender:self];
     if (flowControllerResponder == nil)
     {
         NSAssert(false, @"We need a flow controller in teh respodner chain for facebook.");
     }
-    [flowControllerResponder selectedFacebookAuthorization];
+    [flowControllerResponder selectedFacebookAuthorizationWithCompletion:^(BOOL success)
+    {
+        if (!success)
+        {
+            NSString *message = NSLocalizedString(@"FacebookLoginFailed", @"");
+            [self showErrorWithMessage:message];
+        }
+    }];
+}
+
+#pragma mark - Helpers
+
+- (void)showErrorWithMessage:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - VBackgroundContainer
