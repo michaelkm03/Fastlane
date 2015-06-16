@@ -210,12 +210,11 @@ static NSCache *_sharedImageCache = nil;
         self.mediaPreviewURL = comment.previewImageURL;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
     }
-    
+
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
                                                                                          cellView:self
                                                                                          delegate:self
-                                                                                          canEdit:self.sequence.permissions.canEditComments
-                                                                                        canDelete:self.sequence.permissions.canDeleteComments];
+                                                                                          permissions:self.sequence.permissions];
     self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 

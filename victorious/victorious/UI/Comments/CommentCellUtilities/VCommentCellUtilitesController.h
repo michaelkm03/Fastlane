@@ -17,12 +17,13 @@
  is necessary to allow the user to input new text, so the request to edit
  will be forwarded to calling code through VCommentCellUtilitiesDelegate.
  */
+@class VSequencePermissions;
+
 @interface VCommentCellUtilitesController : NSObject <VSwipeViewCellDelegate>
 
 - (instancetype)initWithComment:(VComment *)comment
                        cellView:(UIView *)cellView
                        delegate:(id<VCommentCellUtilitiesDelegate>)delegate
-                        canEdit:(BOOL)canEdit
-                      canDelete:(BOOL)canDelete;
+                    permissions:(VSequencePermissions *)permissions;
 
 @end

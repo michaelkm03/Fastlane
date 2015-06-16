@@ -15,6 +15,8 @@
 #import "VObjectManager+Login.h"
 #import "VUser+Fetcher.h"
 #import "VConstants.h"
+#import "VSequence.h"
+#import "VSequencePermissions.h"
 
 static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
@@ -26,6 +28,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 @property (nonatomic, weak) id<VCommentCellUtilitiesDelegate> delegate;
 @property (nonatomic, assign) BOOL canEdit;
 @property (nonatomic, assign) BOOL canDelete;
+@property (nonatomic, strong) VSequencePermissions *permissions;
 
 @end
 
@@ -34,8 +37,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 - (instancetype)initWithComment:(VComment *)comment
                        cellView:(UIView *)cellView
                        delegate:(id<VCommentCellUtilitiesDelegate>)delegate
-                        canEdit:(BOOL)canEdit
-                      canDelete:(BOOL)canDelete
+                    permissions:(VSequencePermissions *)permissions
 {
     self = [super init];
     if (self)
@@ -43,8 +45,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
         _cellView = cellView;
         _comment = comment;
         _delegate = delegate;
-        _canEdit = canEdit;
-        _canDelete = canDelete;
+        _permissions = permissions;
                 
         [self setupButtonConfigurations];
     }
@@ -55,15 +56,15 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 {
     VCommentsUtilityButtonConfiguration *sharedConfig = [VCommentsUtilityButtonConfiguration sharedInstance];
     
-    if ( [self commentIsEditable:self.comment] && [self commentIsDeletable:self.comment] )
+    if ( self.permissions.canEditComments && self.permissions.canDeleteComments )
     {
         self.buttonConfigs = @[ sharedConfig.editButtonConfig, sharedConfig.deleteButtonConfig ];
     }
-    else if ( [self commentIsEditable:self.comment] )
+    else if ( self.permissions.canEditComments )
     {
         self.buttonConfigs = @[ sharedConfig.editButtonConfig ];
     }
-    else if ( [self commentIsDeletable:self.comment]  )
+    else if ( self.permissions.canDeleteComments )
     {
         self.buttonConfigs = @[ sharedConfig.deleteButtonConfig ];
     }
@@ -142,7 +143,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 {
     // User doesn't need to be logged in (will show login prompt when tapped)
     // But a logged in user can't flag their own content
-    
     VObjectManager *objectManager = [VObjectManager sharedManager];
     VUser *mainUser = objectManager.mainUser;
     if ( objectManager.mainUserLoggedIn )
@@ -150,18 +150,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
         return ![comment.userId isEqualToNumber:mainUser.remoteId];
     }
     return YES;
-}
-
-- (BOOL)commentIsEditable:(VComment *)comment
-{
-    // User's ability to delete a comment from permissions
-    return self.canEdit;
-}
-
-- (BOOL)commentIsDeletable:(VComment *)comment
-{
-    // User's ability to delete a comment from permissions
-    return self.canDelete;
 }
 
 #pragma mark - VSwipeViewCellDelegate
