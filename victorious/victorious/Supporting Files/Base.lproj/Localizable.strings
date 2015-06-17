@@ -91,6 +91,7 @@
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
 "GenericFailMessage"    =   "Oops! Something has gone wrong.";
+"FacebookLoginFailed"   =   "Oops! Facebook login failed. Please try again.";
 "NotLoggedInMessage"    =   "Oops! It looks like you're not logged in.";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";

@@ -28,12 +28,12 @@
 /**
  *  The user wants to authorize with their twitter account.
  */
-- (void)selectedTwitterAuthorization;
+- (void)selectedTwitterAuthorizationWithCompletion:(void(^)(BOOL success))completion;
 
 /**
  *  The user wants to authorize with their facebook account.
  */
-- (void)selectedFacebookAuthorization;
+- (void)selectedFacebookAuthorizationWithCompletion:(void(^)(BOOL success))completion;
 
 /**
  *  The user has entered an email and password and wants to login.

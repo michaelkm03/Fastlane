@@ -227,7 +227,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
-- (void)selectedTwitterAuthorization
+- (void)selectedTwitterAuthorizationWithCompletion:(void(^)(BOOL success))completion
 {
     if (self.actionsDisabled)
     {
@@ -238,6 +238,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success)
     {
+        if (completion != nil)
+        {
+            completion(success);
+        }
+        
         self.actionsDisabled = NO;
         if (success)
         {
@@ -249,7 +254,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
-- (void)selectedFacebookAuthorization
+- (void)selectedFacebookAuthorizationWithCompletion:(void(^)(BOOL success))completion
 {
     if (self.actionsDisabled)
     {
@@ -260,6 +265,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success)
     {
+        if (completion != nil)
+        {
+            completion(success);
+        }
+        
         self.actionsDisabled = NO;
         if (success)
         {
