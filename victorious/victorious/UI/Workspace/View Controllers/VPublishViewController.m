@@ -604,9 +604,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                                                                              message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-        //We encountered a twitter API error
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock]];
+    //We encountered a twitter API error
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock]];
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -668,7 +668,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         size.height = [VPublishShareCollectionViewCell desiredHeightForDependencyManager:self.dependencyManager];
     }
     size.width = self.cellWidth;
-    NSLog(@"size is %@", NSStringFromCGSize(size));
     return size;
 }
 
