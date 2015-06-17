@@ -306,7 +306,7 @@
             "name": "solidColor.background",
             "color": {
                 "red": 105,
-                "alpha": 229,
+                "alpha": 240,
                 "blue": 64,
                 "green": 12
             }
@@ -315,35 +315,35 @@
                   "identifier": "Create GIF",
                   "title": "GIF",
                   "icon": {
-                  "imageURL": "PostCamera",
+                  "imageURL": "createGIFIcon",
                   "scale": 2
                   }
                   }, {
                   "identifier": "Create Text",
                   "title": "TEXT",
                   "icon": {
-                  "imageURL": "PostCamera",
+                  "imageURL": "createTextIcon",
                   "scale": 2
                   }
                   }, {
                   "identifier": "Create Poll",
                   "title": "POLL",
                   "icon": {
-                  "imageURL": "PostCamera",
+                  "imageURL": "createPollIcon",
                   "scale": 2
                   }
                   }, {
                   "identifier": "Create Video",
                   "title": "VIDEO",
                   "icon": {
-                  "imageURL": "PostCamera",
+                  "imageURL": "createVideoIcon",
                   "scale": 2
                   }
                   }, {
                   "identifier": "Create Image",
                   "title": "IMAGE",
                   "icon": {
-                  "imageURL": "PostCamera",
+                  "imageURL": "createImageIcon",
                   "scale": 2
                   }
                   }]
