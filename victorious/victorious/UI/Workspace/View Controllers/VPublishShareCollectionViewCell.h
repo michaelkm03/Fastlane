@@ -27,15 +27,14 @@
 @interface VPublishShareCollectionViewCell : VBaseCollectionViewCell
 
 /**
-    The optimal size for this cell given the collection view that will house it
-    and the dependency manager containing the share items that this cell will display.
+    The optimal height for this cell given the dependency manager
+    containing the share items that this cell will display.
  
-    @param collectionView The collectionView that will house this cell.
     @param dependencyManager A dependency manager containing share menu items that this cell will display.
  
-    @return The optimal size for this cell.
+    @return The optimal height for this cell.
  */
-+ (CGSize)desiredSizeInCollectionView:(UICollectionView *)collectionView andDependencyManager:(VDependencyManager *)dependencyManager;
++ (CGFloat)desiredHeightForDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
     A dependency manager containing share menu items.

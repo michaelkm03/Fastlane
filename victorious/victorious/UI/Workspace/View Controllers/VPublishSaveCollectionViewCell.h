@@ -16,13 +16,9 @@
 @interface VPublishSaveCollectionViewCell : VBaseCollectionViewCell
 
 /**
-    The size that would best fit this cell, given the collection view that will house it.
- 
-    @param collectionView The collection view that will house this cell
- 
-    @return The optimal size for this cell.
+    The optimal height of this cell.
  */
-+ (CGSize)desiredSizeInCollectionView:(UICollectionView *)collectionView;
++ (CGFloat)desiredHeight;
 
 @property (nonatomic, weak) IBOutlet UISwitch *cameraRollSwitch; ///< The switch displayed by this cell.
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependency manager used to style this cell.

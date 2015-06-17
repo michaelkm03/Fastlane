@@ -47,21 +47,9 @@ static CGFloat const kDesiredHeight = 43.0f;
     }
 }
 
-+ (CGSize)desiredSizeInCollectionView:(UICollectionView *)collectionView
++ (CGFloat)desiredHeight
 {
-    CGRect bounds = collectionView.bounds;
-    UIEdgeInsets insets = collectionView.contentInset;
-    if ( [collectionView.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]] )
-    {
-        UIEdgeInsets sectionInset = ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset;
-        insets.right = sectionInset.right;
-        insets.left = sectionInset.left;
-    }
-    
-    CGSize size = bounds.size;
-    size.height = kDesiredHeight;
-    size.width -= insets.left + insets.right;
-    return size;
+    return kDesiredHeight;
 }
 
 @end
