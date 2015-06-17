@@ -461,7 +461,6 @@
 		A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */; };
 		A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */; };
 		A77B43D01B2129050016F47B /* VSequencePermissionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77B43CF1B2129050016F47B /* VSequencePermissionsTests.m */; };
-		A77B43CE1B1FA6980016F47B /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		A77FB9231A897201003E9AA2 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */; };
 		A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED4C1A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m */; };
 		A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = A780ED4D1A933D9300A8CD5D /* filters.xml */; };
@@ -6783,7 +6782,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\n#BUILD_NUMBER=$(git rev-list HEAD --count)\n#TARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n#/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
+			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
 			showEnvVarsInLog = 0;
 		};
 		589F0499A2CD6F9EB3A82CC5 /* Check Pods Manifest.lock */ = {
