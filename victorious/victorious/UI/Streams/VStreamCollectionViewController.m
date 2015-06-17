@@ -81,6 +81,7 @@
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
+#import "VLikeResponder.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -98,7 +99,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VLikeResponder>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -553,6 +554,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell = [self.streamCellFactory collectionView:self.collectionView
                                                       cellForStreamItem:sequence atIndexPath:indexPath];
+    
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
@@ -936,6 +938,21 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         return YES;
     }
     return NO;
+}
+
+#pragma mark - VLikeResponder
+
+- (void)toggleLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
+{
+    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         completion( YES );
+         
+     } failBlock:^(NSOperation *operation, NSError *error)
+     {
+         completion( NO );
+     }];
 }
 
 #pragma mark - VCoachmarkDisplayer

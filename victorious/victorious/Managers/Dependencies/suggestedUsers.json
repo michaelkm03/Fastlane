@@ -1,0 +1,950 @@
+{
+    "error": 0,
+    "message": "",
+    "api_version": "1.2-1",
+    "host": "dev.getvictorious.com",
+    "app_id": 1,
+    "user_id": null,
+    "login_id": null,
+    "page_number": 1,
+    "total_pages": 1,
+    "stream_id": "stream:10018",
+    "ugc_post_allowed": false,
+    "payload": {
+        "marquee": [],
+        "content": [{
+            "count": 1,
+            "id": "10525",
+            "name": "Bug Test Stream of Steams",
+            "preview_image": "",
+            "preview": {
+                "type": "media",
+                "data": ""
+            },
+            "stream_content_type": "stream",
+            "stream_url": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream\/10525\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+            "stream_items": [{
+                "count": 1,
+                "id": "10526",
+                "name": "Bug Sub Stream 1",
+                "preview_image": "",
+                "preview": {
+                    "type": "media",
+                    "data": ""
+                },
+                "stream_content_type": "stream",
+                "stream_url": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream\/10526\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+                "ugc_post_allowed": false
+            }],
+            "ugc_post_allowed": false,
+            "display_order": 1
+        }, {
+            "count": 11,
+            "id": "10481",
+            "name": "joker2",
+            "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/81b8674b7422b1a42cb52aa64766d7bb\/640x640.jpg",
+            "preview": {
+                "type": "media",
+                "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/81b8674b7422b1a42cb52aa64766d7bb\/640x640.jpg"
+            },
+            "stream_content_type": "stream",
+            "stream_url": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream\/10481\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+            "stream_items": [{
+                "count": 5,
+                "id": "10417",
+                "name": "login",
+                "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/adeac360ae4ef8756084605d9c5a2194\/640x640.png",
+                "preview": {
+                    "type": "media",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/adeac360ae4ef8756084605d9c5a2194\/640x640.png"
+                },
+                "stream_content_type": "content",
+                "ugc_post_allowed": false
+            }, {
+                "count": 2,
+                "id": "10019",
+                "name": "My Sub Stream",
+                "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/9a30c35ace662a2d6ee8391ccec39c74\/thumbnail-00001.jpg",
+                "preview": {
+                    "type": "media",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/9a30c35ace662a2d6ee8391ccec39c74\/thumbnail-00001.jpg"
+                },
+                "stream_content_type": "stream",
+                "stream_url": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream\/10019\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+                "ugc_post_allowed": false
+            }, {
+                "count": 4,
+                "id": "10020",
+                "name": "fancy guy one two three four five six seven eight",
+                "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/6e891a72bc7de4311f999a4af7f40da0\/640x640.jpg",
+                "preview": {
+                    "type": "media",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/6e891a72bc7de4311f999a4af7f40da0\/640x640.jpg"
+                },
+                "stream_content_type": "content",
+                "ugc_post_allowed": false
+            }, {
+                "count": 2,
+                "id": "12060",
+                "name": "Stream 4",
+                "preview_image": "",
+                "preview": {
+                    "type": "media",
+                    "data": ""
+                },
+                "stream_content_type": "content",
+                "ugc_post_allowed": false
+            }, {
+                "count": 0,
+                "id": "12061",
+                "name": "Stream 5",
+                "preview_image": "",
+                "preview": {
+                    "type": "media",
+                    "data": ""
+                },
+                "stream_content_type": "content",
+                "ugc_post_allowed": false
+            }],
+            "ugc_post_allowed": false,
+            "display_order": 2
+        }, {
+            "count": 7,
+            "id": "10416",
+            "name": "IMG_4228",
+            "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/470c0f2a8595b8b2f45a6eafe65b097a\/640x640.jpg",
+            "preview": {
+                "type": "media",
+                "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/470c0f2a8595b8b2f45a6eafe65b097a\/640x640.jpg"
+            },
+            "stream_content_type": "content",
+            "stream_items": [{
+                "id": "12020",
+                "created_by": "97",
+                "name": "testing vine announcement",
+                "description": "testing vine announcement",
+                "permissions": 128,
+                "preview": {
+                    "type": "media",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/31f9367f617ddfcf438008430c3dcede\/640x640.jpeg",
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/31f9367f617ddfcf438008430c3dcede\/640x640.jpeg",
+                        "type": "image\/jpeg",
+                        "width": 640,
+                        "height": 640
+                    }]
+                },
+                "status": "public",
+                "category": "owner_announcement",
+                "name_embedded_in_content": false,
+                "is_remix": false,
+                "is_repost": false,
+                "has_reposted": false,
+                "released_at": "2015-02-25 16:08:33",
+                "display_order": 1,
+                "expires_at": "",
+                "sequence_counts": {
+                    "comments": 0,
+                    "remixes": 0,
+                    "reposts": 0,
+                    "gifs": 0,
+                    "memes": 0,
+                    "quotes": 0,
+                    "reposted_by_following": 0
+                },
+                "engagements": [],
+                "created_at": "2015-02-25 16:09:23",
+                "is_paid": false,
+                "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/31f9367f617ddfcf438008430c3dcede\/640x640.jpeg",
+                "user": {
+                    "id": "97",
+                    "name": "Daily Grace",
+                    "status": "complete",
+                    "am_following": false,
+                    "is_direct_message_disabled": true,
+                    "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8014f65c49262c46848877f3679cddbb\/80x80.jpg",
+                    "profile_location": "Los Angeles, CA",
+                    "profile_tagline": "",
+                    "preview": {
+                        "assets": [{
+                            "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8014f65c49262c46848877f3679cddbb\/80x80.jpg",
+                            "type": "image\/jpeg",
+                            "width": 80,
+                            "height": 80
+                        }]
+                    },
+                    "recent_sequences": [],
+                    "ballistic_counts": {
+                        "6": 10,
+                        "7": 4,
+                        "9": 5,
+                        "13": 0,
+                        "30": 8,
+                        "34": 1,
+                        "35": 10,
+                        "37": 7
+                    }
+                },
+                "tracking": {
+                    "view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/video_start\/?stream_id=%%STREAM_ID%%&sequence_id=12020"],
+                    "cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=12020"],
+                    "cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=12020"],
+                    "cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=12020"],
+                    "share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=12020&share_dest=%%SHARE_DEST%%"]
+                },
+                "nodes": [{
+                    "node_id": "4090",
+                    "display_order": 0,
+                    "assets": [{
+                        "node_id": "4090",
+                        "asset_id": "3819",
+                        "display_order": 0,
+                        "type": "url",
+                        "data": "https:\/\/vine.co\/v\/MjZFlij2ULT"
+                    }],
+                    "interactions": [],
+                    "share_url": "https:\/\/vine.co\/v\/MjZFlij2ULT"
+                }],
+                "entry_label": "video q"
+            }, {
+                "id": "11966",
+                "created_by": "260",
+                "name": "Who is a better bass player?",
+                "description": "<none>",
+                "permissions": 136,
+                "preview": {
+                    "type": "",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/35c8f250240c9fbe6720f3d931028560.jpg",
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/35c8f250240c9fbe6720f3d931028560.jpg",
+                        "type": "image\/jpeg",
+                        "width": 640,
+                        "height": 640
+                    }]
+                },
+                "status": "public",
+                "category": "owner_poll",
+                "name_embedded_in_content": false,
+                "is_remix": false,
+                "is_repost": false,
+                "has_reposted": false,
+                "released_at": "2015-02-23 17:03:52",
+                "display_order": 2,
+                "expires_at": "",
+                "sequence_counts": {
+                    "comments": 5,
+                    "remixes": 0,
+                    "reposts": 0,
+                    "pollresponses": [{
+                        "id": "545",
+                        "count": 2
+                    }, {
+                        "id": "546",
+                        "count": 3
+                    }],
+                    "gifs": 0,
+                    "memes": 0,
+                    "quotes": 0,
+                    "reposted_by_following": 0
+                },
+                "engagements": ["comments", "pollresponses"],
+                "created_at": "2015-02-23 17:03:52",
+                "is_paid": false,
+                "preview_image": "",
+                "user": {
+                    "id": "260",
+                    "name": "Carl Brutananadilewski",
+                    "status": "complete",
+                    "am_following": false,
+                    "is_direct_message_disabled": false,
+                    "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b53856e78c7147b26bbb900cf03f2681\/80x80.jpg",
+                    "profile_location": "Santa Monica, CA",
+                    "profile_tagline": "Stay out of my pool!",
+                    "preview": {
+                        "assets": [{
+                            "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b53856e78c7147b26bbb900cf03f2681\/80x80.jpg",
+                            "type": "image\/jpeg",
+                            "width": 80,
+                            "height": 80
+                        }]
+                    },
+                    "recent_sequences": [],
+                    "ballistic_counts": {
+                        "6": 6,
+                        "7": 9,
+                        "9": 0,
+                        "13": 7,
+                        "30": 0,
+                        "34": 4,
+                        "35": 8,
+                        "37": 6
+                    }
+                },
+                "tracking": {
+                    "view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11966&percentage=0"],
+                    "cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=11966"],
+                    "cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=11966"],
+                    "cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=11966"],
+                    "share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=11966&share_dest=%%SHARE_DEST%%"]
+                },
+                "nodes": [{
+                    "node_id": "4036",
+                    "display_order": 0,
+                    "assets": [],
+                    "interactions": [{
+                        "node_id": "4036",
+                        "display_order": 0,
+                        "start_time": "-1",
+                        "type": "query",
+                        "interaction_id": "271",
+                        "question": "Who is a better bass player?",
+                        "answers": [{
+                            "label": "Marcus Miller",
+                            "label_media_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/3c89eb95b541711190074b0872e373ca\/original.jpg",
+                            "label_thumbnail_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/3c89eb95b541711190074b0872e373ca\/640x640.jpg",
+                            "display_order": 0,
+                            "answer_id": "545",
+                            "is_correct": "0",
+                            "points": "0",
+                            "currency": "0",
+                            "answer_action": {
+                                "goto_node": "0"
+                            }
+                        }, {
+                            "label": "Nathan East",
+                            "label_media_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/cfad87025e554b283be8cb61c00fe63d\/original.jpg",
+                            "label_thumbnail_url": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/cfad87025e554b283be8cb61c00fe63d\/640x640.jpg",
+                            "display_order": 1,
+                            "answer_id": "546",
+                            "is_correct": "0",
+                            "points": "0",
+                            "currency": "0",
+                            "answer_action": {
+                                "goto_node": "0"
+                            }
+                        }],
+                        "timeout": "0"
+                    }],
+                    "share_url": "http:\/\/share-dev.victorious.com\/#shares\/358fc53fd09dbbf0e1bb8f96f732e8bb"
+                }]
+            }],
+            "ugc_post_allowed": false,
+            "display_order": 3
+        }, {
+            "count": 4,
+            "id": "12058",
+            "name": "TOP 10 BESTIE BESTIES!",
+            "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/998aa68609ec5dba4a0d2d6fa11a7175\/640x640.jpeg",
+            "preview": {
+                "type": "media",
+                "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/998aa68609ec5dba4a0d2d6fa11a7175\/640x640.jpeg"
+            },
+            "stream_content_type": "content",
+            "stream_items": [{
+                "id": "11166",
+                "created_by": "97",
+                "name": "HD Film Countdown (pink)",
+                "description": "HD Film Countdown (pink)",
+                "permissions": 1946,
+                "preview": {
+                    "type": "media",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/c60940d3310f11ae29e86cfe06061f9c\/thumbnail-00001.jpg",
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/c60940d3310f11ae29e86cfe06061f9c\/thumbnail-00001.jpg",
+                        "type": "image\/jpeg",
+                        "width": 640,
+                        "height": 640
+                    }]
+                },
+                "status": "public",
+                "category": "owner_video",
+                "name_embedded_in_content": false,
+                "is_remix": false,
+                "is_repost": false,
+                "has_reposted": false,
+                "released_at": "2015-01-15 11:15:57",
+                "display_order": 1,
+                "expires_at": "",
+                "sequence_counts": {
+                    "comments": 4,
+                    "remixes": 0,
+                    "reposts": 0,
+                    "votetypes": [{
+                        "id": "5",
+                        "count": 1
+                    }, {
+                        "id": "6",
+                        "count": 1
+                    }, {
+                        "id": "8",
+                        "count": 2
+                    }, {
+                        "id": "9",
+                        "count": 2
+                    }, {
+                        "id": "11",
+                        "count": 6
+                    }, {
+                        "id": "12",
+                        "count": 2
+                    }, {
+                        "id": "13",
+                        "count": 2
+                    }, {
+                        "id": "17",
+                        "count": 2
+                    }],
+                    "gifs": 0,
+                    "memes": 0,
+                    "quotes": 0,
+                    "reposted_by_following": 0
+                },
+                "engagements": [],
+                "created_at": "2015-01-15 11:15:57",
+                "is_paid": false,
+                "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/c60940d3310f11ae29e86cfe06061f9c\/thumbnail-00001.jpg",
+                "user": {
+                    "id": "97",
+                    "name": "Daily Grace",
+                    "status": "complete",
+                    "am_following": false,
+                    "is_direct_message_disabled": true,
+                    "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8014f65c49262c46848877f3679cddbb\/80x80.jpg",
+                    "profile_location": "Los Angeles, CA",
+                    "profile_tagline": "",
+                    "preview": {
+                        "assets": [{
+                            "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/8014f65c49262c46848877f3679cddbb\/80x80.jpg",
+                            "type": "image\/jpeg",
+                            "width": 80,
+                            "height": 80
+                        }]
+                    },
+                    "recent_sequences": [],
+                    "ballistic_counts": {
+                        "6": 7,
+                        "7": 9,
+                        "9": 2,
+                        "13": 10,
+                        "30": 4,
+                        "34": 3,
+                        "35": 3,
+                        "37": 10
+                    }
+                },
+                "tracking": {
+                    "view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/video_start\/?stream_id=%%STREAM_ID%%&sequence_id=11166&load_time=%%LOAD_TIME%%"],
+                    "view-stop": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_stop\/?stream_id=%%STREAM_ID%%&sequence_id=11166&load_time=%%LOAD_TIME%%&view_time=%%TIME_CURRENT%%"],
+                    "view-25-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11166&percentage=25"],
+                    "view-50-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11166&percentage=50"],
+                    "view-75-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11166&percentage=75"],
+                    "view-100-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11166&percentage=100"],
+                    "view-error": [],
+                    "view-stall": [],
+                    "view-skip": [],
+                    "cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=11166"],
+                    "cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=11166"],
+                    "cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=11166"],
+                    "share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=11166&share_dest=%%SHARE_DEST%%"]
+                },
+                "nodes": [{
+                    "node_id": "3242",
+                    "display_order": 0,
+                    "assets": [{
+                        "audio_muted": false,
+                        "node_id": "3242",
+                        "asset_id": "3024",
+                        "display_order": 0,
+                        "type": "path",
+                        "duration": "12",
+                        "loop": 0,
+                        "mime_type": "application\/x-mpegURL",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/c60940d3310f11ae29e86cfe06061f9c\/playlist.m3u8"
+                    }, {
+                        "audio_muted": false,
+                        "node_id": "3242",
+                        "asset_id": "3024",
+                        "display_order": 1,
+                        "type": "path",
+                        "duration": "12",
+                        "loop": 0,
+                        "mime_type": "video\/mp4",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "bitrate": 720,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/c60940d3310f11ae29e86cfe06061f9c\/720\/video.mp4"
+                    }, {
+                        "audio_muted": false,
+                        "node_id": "3242",
+                        "asset_id": "3024",
+                        "display_order": 2,
+                        "type": "path",
+                        "duration": "12",
+                        "loop": 0,
+                        "mime_type": "video\/mp4",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "bitrate": 480,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/c60940d3310f11ae29e86cfe06061f9c\/480\/video.mp4"
+                    }],
+                    "interactions": [],
+                    "share_url": "http:\/\/share-dev.victorious.com\/#shares\/7b769bf73337c400b184838f95d45c4f"
+                }]
+            }, {
+                "id": "1671",
+                "created_by": "98",
+                "name": "She's all about that bass no TROUBLE",
+                "description": "She's all about that bass no TROUBLE",
+                "permissions": 1946,
+                "preview": {
+                    "type": "media",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/4abecdb0571a815df25dd22a2b73254a\/thumbnail-00001.jpg",
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/4abecdb0571a815df25dd22a2b73254a\/thumbnail-00001.jpg",
+                        "type": "image\/jpeg",
+                        "width": 640,
+                        "height": 640
+                    }]
+                },
+                "status": "public",
+                "category": "owner_video",
+                "name_embedded_in_content": false,
+                "is_remix": false,
+                "is_repost": false,
+                "has_reposted": false,
+                "released_at": "2014-10-02 11:27:18",
+                "display_order": 2,
+                "expires_at": "",
+                "sequence_counts": {
+                    "comments": 0,
+                    "remixes": 0,
+                    "reposts": 0,
+                    "votetypes": [{
+                        "id": "9",
+                        "count": 4
+                    }, {
+                        "id": "17",
+                        "count": 4
+                    }, {
+                        "id": "6",
+                        "count": 5
+                    }, {
+                        "id": "8",
+                        "count": 3
+                    }, {
+                        "id": "12",
+                        "count": 2
+                    }, {
+                        "id": "18",
+                        "count": 1
+                    }, {
+                        "id": "10",
+                        "count": 1
+                    }],
+                    "gifs": 0,
+                    "memes": 0,
+                    "quotes": 0,
+                    "reposted_by_following": 0
+                },
+                "engagements": [],
+                "created_at": "2014-10-02 11:27:18",
+                "is_paid": false,
+                "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/4abecdb0571a815df25dd22a2b73254a\/thumbnail-00001.jpg",
+                "user": {
+                    "id": "98",
+                    "name": "blow.me.away",
+                    "status": "complete",
+                    "am_following": false,
+                    "is_direct_message_disabled": false,
+                    "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/0cf3102f53ebc10de328d11181a0331f\/80x80.jpg",
+                    "profile_location": "",
+                    "profile_tagline": "",
+                    "preview": {
+                        "assets": [{
+                            "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/0cf3102f53ebc10de328d11181a0331f\/80x80.jpg",
+                            "type": "image\/jpeg",
+                            "width": 80,
+                            "height": 80
+                        }]
+                    },
+                    "recent_sequences": [],
+                    "ballistic_counts": {
+                        "6": 4,
+                        "7": 7,
+                        "9": 1,
+                        "13": 5,
+                        "30": 7,
+                        "34": 10,
+                        "35": 9,
+                        "37": 6
+                    }
+                },
+                "tracking": {
+                    "view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/video_start\/?stream_id=%%STREAM_ID%%&sequence_id=1671&load_time=%%LOAD_TIME%%"],
+                    "view-stop": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_stop\/?stream_id=%%STREAM_ID%%&sequence_id=1671&load_time=%%LOAD_TIME%%&view_time=%%TIME_CURRENT%%"],
+                    "view-25-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=1671&percentage=25"],
+                    "view-50-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=1671&percentage=50"],
+                    "view-75-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=1671&percentage=75"],
+                    "view-100-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=1671&percentage=100"],
+                    "view-error": [],
+                    "view-stall": [],
+                    "view-skip": [],
+                    "cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=1671"],
+                    "cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=1671"],
+                    "cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=1671"],
+                    "share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=1671&share_dest=%%SHARE_DEST%%"]
+                },
+                "nodes": [{
+                    "node_id": "1672",
+                    "display_order": 0,
+                    "assets": [{
+                        "audio_muted": false,
+                        "node_id": "1672",
+                        "asset_id": "1545",
+                        "display_order": 0,
+                        "type": "path",
+                        "duration": null,
+                        "loop": 1,
+                        "mime_type": "application\/x-mpegURL",
+                        "player_controls_disabled": true,
+                        "stream_autoplay": true,
+                        "speed": 1,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/4abecdb0571a815df25dd22a2b73254a\/playlist.m3u8"
+                    }, {
+                        "audio_muted": false,
+                        "node_id": "1672",
+                        "asset_id": "1545",
+                        "display_order": 1,
+                        "type": "path",
+                        "duration": null,
+                        "loop": 1,
+                        "mime_type": "video\/mp4",
+                        "player_controls_disabled": true,
+                        "stream_autoplay": true,
+                        "speed": 1,
+                        "bitrate": 720,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/4abecdb0571a815df25dd22a2b73254a\/720\/video.mp4"
+                    }, {
+                        "audio_muted": false,
+                        "node_id": "1672",
+                        "asset_id": "1545",
+                        "display_order": 2,
+                        "type": "path",
+                        "duration": null,
+                        "loop": 1,
+                        "mime_type": "video\/mp4",
+                        "player_controls_disabled": true,
+                        "stream_autoplay": true,
+                        "speed": 1,
+                        "bitrate": 480,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/4abecdb0571a815df25dd22a2b73254a\/480\/video.mp4"
+                    }],
+                    "interactions": [],
+                    "share_url": ""
+                }]
+            }, {
+                "id": "10276",
+                "created_by": "306",
+                "name": "BikeMessengerAptThriller",
+                "description": "BikeMessengerAptThriller",
+                "permissions": 1946,
+                "preview": {
+                    "type": "media",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/40522b74312b005177d5494a54c9c566\/thumbnail-00001.jpg",
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/40522b74312b005177d5494a54c9c566\/thumbnail-00001.jpg",
+                        "type": "image\/jpeg",
+                        "width": 640,
+                        "height": 640
+                    }]
+                },
+                "status": "public",
+                "category": "owner_video",
+                "name_embedded_in_content": false,
+                "is_remix": false,
+                "is_repost": false,
+                "has_reposted": false,
+                "released_at": "2014-11-11 15:46:50",
+                "display_order": 3,
+                "expires_at": "",
+                "sequence_counts": {
+                    "comments": 4,
+                    "remixes": 0,
+                    "reposts": 0,
+                    "votetypes": [{
+                        "id": "17",
+                        "count": 2
+                    }],
+                    "gifs": 0,
+                    "memes": 0,
+                    "quotes": 0,
+                    "reposted_by_following": 0
+                },
+                "engagements": [],
+                "created_at": "2014-11-11 15:46:50",
+                "is_paid": false,
+                "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/40522b74312b005177d5494a54c9c566\/thumbnail-00001.jpg",
+                "user": {
+                    "id": "306",
+                    "name": "TESTERZZZ",
+                    "status": "complete",
+                    "am_following": false,
+                    "is_direct_message_disabled": false,
+                    "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/0d239c5b9ee45a81cdafd7e7d4d61052\/80x80.jpg",
+                    "profile_location": "Santa Monica, Canada",
+                    "profile_tagline": "??",
+                    "preview": {
+                        "assets": [{
+                            "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/0d239c5b9ee45a81cdafd7e7d4d61052\/80x80.jpg",
+                            "type": "image\/jpeg",
+                            "width": 80,
+                            "height": 80
+                        }]
+                    },
+                    "recent_sequences": [],
+                    "ballistic_counts": {
+                        "6": 3,
+                        "7": 4,
+                        "9": 7,
+                        "13": 0,
+                        "30": 5,
+                        "34": 6,
+                        "35": 8,
+                        "37": 1
+                    }
+                },
+                "tracking": {
+                    "view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/video_start\/?stream_id=%%STREAM_ID%%&sequence_id=10276&load_time=%%LOAD_TIME%%"],
+                    "view-stop": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_stop\/?stream_id=%%STREAM_ID%%&sequence_id=10276&load_time=%%LOAD_TIME%%&view_time=%%TIME_CURRENT%%"],
+                    "view-25-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=10276&percentage=25"],
+                    "view-50-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=10276&percentage=50"],
+                    "view-75-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=10276&percentage=75"],
+                    "view-100-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=10276&percentage=100"],
+                    "view-error": [],
+                    "view-stall": [],
+                    "view-skip": [],
+                    "cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=10276"],
+                    "cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=10276"],
+                    "cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=10276"],
+                    "share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=10276&share_dest=%%SHARE_DEST%%"]
+                },
+                "nodes": [{
+                    "node_id": "2370",
+                    "display_order": 0,
+                    "assets": [{
+                        "audio_muted": false,
+                        "node_id": "2370",
+                        "asset_id": "2195",
+                        "display_order": 0,
+                        "type": "path",
+                        "duration": null,
+                        "loop": 0,
+                        "mime_type": "application\/x-mpegURL",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/40522b74312b005177d5494a54c9c566\/playlist.m3u8"
+                    }, {
+                        "audio_muted": false,
+                        "node_id": "2370",
+                        "asset_id": "2195",
+                        "display_order": 1,
+                        "type": "path",
+                        "duration": null,
+                        "loop": 0,
+                        "mime_type": "video\/mp4",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "bitrate": 720,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/40522b74312b005177d5494a54c9c566\/720\/video.mp4"
+                    }, {
+                        "audio_muted": false,
+                        "node_id": "2370",
+                        "asset_id": "2195",
+                        "display_order": 2,
+                        "type": "path",
+                        "duration": null,
+                        "loop": 0,
+                        "mime_type": "video\/mp4",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "bitrate": 480,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/40522b74312b005177d5494a54c9c566\/480\/video.mp4"
+                    }],
+                    "interactions": [],
+                    "share_url": "http:\/\/share-dev.victorious.com\/#shares\/d110d87887281ba1ebd71194c054f478"
+                }]
+            }, {
+                "id": "11132",
+                "created_by": "260",
+                "name": "JoshUpInDisSpikeLeeJoynt",
+                "description": "JoshUpInDisSpikeLeeJoynt",
+                "permissions": 1946,
+                "preview": {
+                    "type": "media",
+                    "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/be49b557202922c1175017c5ef7072be\/thumbnail-00001.jpg",
+                    "assets": [{
+                        "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/be49b557202922c1175017c5ef7072be\/thumbnail-00001.jpg",
+                        "type": "image\/jpeg",
+                        "width": 640,
+                        "height": 640
+                    }]
+                },
+                "status": "public",
+                "category": "owner_video",
+                "name_embedded_in_content": false,
+                "is_remix": false,
+                "is_repost": false,
+                "has_reposted": false,
+                "released_at": "2015-01-09 16:10:46",
+                "display_order": 4,
+                "expires_at": "",
+                "sequence_counts": {
+                    "comments": 2,
+                    "remixes": 0,
+                    "reposts": 0,
+                    "votetypes": [{
+                        "id": "5",
+                        "count": 21
+                    }, {
+                        "id": "6",
+                        "count": 24
+                    }, {
+                        "id": "7",
+                        "count": 12
+                    }, {
+                        "id": "8",
+                        "count": 11
+                    }, {
+                        "id": "9",
+                        "count": 14
+                    }, {
+                        "id": "10",
+                        "count": 6
+                    }, {
+                        "id": "11",
+                        "count": 4
+                    }, {
+                        "id": "12",
+                        "count": 12
+                    }, {
+                        "id": "13",
+                        "count": 9
+                    }, {
+                        "id": "14",
+                        "count": 7
+                    }],
+                    "gifs": 0,
+                    "memes": 0,
+                    "quotes": 0,
+                    "reposted_by_following": 0
+                },
+                "engagements": [],
+                "created_at": "2015-01-09 16:10:46",
+                "is_paid": false,
+                "preview_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/be49b557202922c1175017c5ef7072be\/thumbnail-00001.jpg",
+                "user": {
+                    "id": "260",
+                    "name": "Carl Brutananadilewski",
+                    "status": "complete",
+                    "am_following": false,
+                    "is_direct_message_disabled": false,
+                    "profile_image": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b53856e78c7147b26bbb900cf03f2681\/80x80.jpg",
+                    "profile_location": "Santa Monica, CA",
+                    "profile_tagline": "Stay out of my pool!",
+                    "preview": {
+                        "assets": [{
+                            "imageURL": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/b53856e78c7147b26bbb900cf03f2681\/80x80.jpg",
+                            "type": "image\/jpeg",
+                            "width": 80,
+                            "height": 80
+                        }]
+                    },
+                    "recent_sequences": [],
+                    "ballistic_counts": {
+                        "6": 5,
+                        "7": 9,
+                        "9": 8,
+                        "13": 5,
+                        "30": 3,
+                        "34": 6,
+                        "35": 1,
+                        "37": 10
+                    }
+                },
+                "tracking": {
+                    "view-start": ["http:\/\/dev.getvictorious.com\/api\/tracking\/video_start\/?stream_id=%%STREAM_ID%%&sequence_id=11132&load_time=%%LOAD_TIME%%"],
+                    "view-stop": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_stop\/?stream_id=%%STREAM_ID%%&sequence_id=11132&load_time=%%LOAD_TIME%%&view_time=%%TIME_CURRENT%%"],
+                    "view-25-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11132&percentage=25"],
+                    "view-50-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11132&percentage=50"],
+                    "view-75-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11132&percentage=75"],
+                    "view-100-complete": ["http:\/\/dev.getvictorious.com\/api\/tracking\/view_progress\/?stream_id=%%STREAM_ID%%&sequence_id=11132&percentage=100"],
+                    "view-error": [],
+                    "view-stall": [],
+                    "view-skip": [],
+                    "cell-view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_view\/?stream_id=%%STREAM_ID%%&sequence_id=11132"],
+                    "cell-click": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_click\/?stream_id=%%STREAM_ID%%&sequence_id=11132"],
+                    "cell-load": ["http:\/\/dev.getvictorious.com\/api\/tracking\/cell_load\/?stream_id=%%STREAM_ID%%&sequence_id=11132"],
+                    "share": ["http:\/\/dev.getvictorious.com\/api\/tracking\/share\/?stream_id=%%STREAM_ID%%&sequence_id=11132&share_dest=%%SHARE_DEST%%"]
+                },
+                "nodes": [{
+                    "node_id": "3208",
+                    "display_order": 0,
+                    "assets": [{
+                        "audio_muted": false,
+                        "node_id": "3208",
+                        "asset_id": "2991",
+                        "display_order": 0,
+                        "type": "path",
+                        "duration": "4",
+                        "loop": 0,
+                        "mime_type": "application\/x-mpegURL",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/be49b557202922c1175017c5ef7072be\/playlist.m3u8"
+                    }, {
+                        "audio_muted": false,
+                        "node_id": "3208",
+                        "asset_id": "2991",
+                        "display_order": 1,
+                        "type": "path",
+                        "duration": "4",
+                        "loop": 0,
+                        "mime_type": "video\/mp4",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "bitrate": 720,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/be49b557202922c1175017c5ef7072be\/720\/video.mp4"
+                    }, {
+                        "audio_muted": false,
+                        "node_id": "3208",
+                        "asset_id": "2991",
+                        "display_order": 2,
+                        "type": "path",
+                        "duration": "4",
+                        "loop": 0,
+                        "mime_type": "video\/mp4",
+                        "player_controls_disabled": false,
+                        "stream_autoplay": false,
+                        "speed": 1,
+                        "bitrate": 480,
+                        "data": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/be49b557202922c1175017c5ef7072be\/480\/video.mp4"
+                    }],
+                    "interactions": [],
+                    "share_url": "http:\/\/share-dev.victorious.com\/#shares\/90dd061659b97fd6b11b72d40241c743"
+                }]
+            }],
+            "ugc_post_allowed": true,
+            "display_order": 4
+        }]
+    }
+}

@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VLikeButton.h"
+#import "VContentLikeButton.h"
 #import "VLargeNumberFormatter.h"
 
 static const CGFloat kMargin = 10.0f;
 
-@interface VLikeButton()
+@interface VContentLikeButton()
 
 @property (nonatomic, strong) UIImage *unselectedImage;
 @property (nonatomic, strong) UIImage *selectedImage;
@@ -21,7 +21,7 @@ static const CGFloat kMargin = 10.0f;
 
 @end
 
-@implementation VLikeButton
+@implementation VContentLikeButton
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -99,15 +99,11 @@ static const CGFloat kMargin = 10.0f;
     return _numberFormatter;
 }
 
-#pragma mark - VBinaryExpressionControl
-
 - (void)setActive:(BOOL)active
 {
     UIImage *image = active ? self.selectedImage : self.unselectedImage;
     [self setImage:image forState:UIControlStateNormal];
 }
-
-#pragma mark - VBinaryExpressionCountDisplay
 
 - (void)setCount:(NSUInteger)count
 {

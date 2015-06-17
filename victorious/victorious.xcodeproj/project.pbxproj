@@ -217,7 +217,6 @@
 		0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086D19F39F9900FD7EDF /* VMessageCell.xib */; };
 		0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */; };
 		0390087419F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087319F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib */; };
-		0390087619F3A11A00FD7EDF /* VFollowerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087519F3A11A00FD7EDF /* VFollowerTableViewCell.xib */; };
 		0394203C1AB7A4F20087ADFA /* VInsetStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394203B1AB7A4F20087ADFA /* VInsetStreamCellFactory.m */; };
 		039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */; };
 		039420481AB88A450087ADFA /* image-template.json in Resources */ = {isa = PBXBuildFile; fileRef = 039420471AB88A450087ADFA /* image-template.json */; };
@@ -437,9 +436,11 @@
 		A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */; };
 		A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */; };
 		A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */; };
-		A76D92FB1B30DBEC007A150D /* VLikeController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D92F81B30DBEC007A150D /* VLikeController.m */; };
-		A76D92FC1B30DBEC007A150D /* VLikeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D92FA1B30DBEC007A150D /* VLikeHelper.m */; };
-		A76D93001B30DC21007A150D /* VLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D92FF1B30DC21007A150D /* VLikeButton.m */; };
+		A76D93831B31F54C007A150D /* VObjectManager+Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0A619B4698800FA363C /* VObjectManager+Sequence.m */; };
+		A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */; };
+		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
+		A76D93931B32151B007A150D /* VStreamLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D93911B32151B007A150D /* VStreamLikeButton.m */; };
+		A76D93951B3215A9007A150D /* VFollowerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A76D93941B3215A9007A150D /* VFollowerTableViewCell.xib */; };
 		A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
 		A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */; };
 		A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B031A4A35DF008EA973 /* VTransitionDelegate.m */; };
@@ -1384,7 +1385,6 @@
 		0390086D19F39F9900FD7EDF /* VMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMessageCell.xib; sourceTree = "<group>"; };
 		0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotificationCell.xib; sourceTree = "<group>"; };
 		0390087319F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFullscreenMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
-		0390087519F3A11A00FD7EDF /* VFollowerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFollowerTableViewCell.xib; sourceTree = "<group>"; };
 		0390087719F3A14500FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Profile.storyboard; sourceTree = "<group>"; };
 		0390087819F3A14E00FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Profile.strings; sourceTree = "<group>"; };
 		0390087D19F3A4A900FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/settings.storyboard; sourceTree = "<group>"; };
@@ -1754,15 +1754,15 @@
 		A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTrackingSettingsViewController.m; path = "Tracking Settings/VTrackingSettingsViewController.m"; sourceTree = "<group>"; };
 		A769FE491ABD051A00888ED8 /* VTrackingEventLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEventLog.h; sourceTree = "<group>"; };
 		A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEventLog.m; sourceTree = "<group>"; };
-		A76D92F31B30D904007A150D /* VBinaryExpressionControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBinaryExpressionControl.h; sourceTree = "<group>"; };
-		A76D92F41B30D9EE007A150D /* VBinaryExpressionCountDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBinaryExpressionCountDisplay.h; sourceTree = "<group>"; };
-		A76D92F61B30DBEC007A150D /* VLIkeUIProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLIkeUIProvider.h; sourceTree = "<group>"; };
-		A76D92F71B30DBEC007A150D /* VLikeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikeController.h; sourceTree = "<group>"; };
-		A76D92F81B30DBEC007A150D /* VLikeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikeController.m; sourceTree = "<group>"; };
-		A76D92F91B30DBEC007A150D /* VLikeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikeHelper.h; sourceTree = "<group>"; };
-		A76D92FA1B30DBEC007A150D /* VLikeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikeHelper.m; sourceTree = "<group>"; };
-		A76D92FE1B30DC21007A150D /* VLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikeButton.h; sourceTree = "<group>"; };
-		A76D92FF1B30DC21007A150D /* VLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikeButton.m; sourceTree = "<group>"; };
+		A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceExpressionsObserver.m; sourceTree = "<group>"; };
+		A76D93881B320DD0007A150D /* VLikeResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikeResponder.h; sourceTree = "<group>"; };
+		A76D938B1B320E02007A150D /* VSequenceExpressionsObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceExpressionsObserver.h; sourceTree = "<group>"; };
+		A76D938C1B320E63007A150D /* VContentLikeButtonProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VContentLikeButtonProvider.h; sourceTree = "<group>"; };
+		A76D938E1B32151B007A150D /* VContentLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentLikeButton.h; sourceTree = "<group>"; };
+		A76D938F1B32151B007A150D /* VContentLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentLikeButton.m; sourceTree = "<group>"; };
+		A76D93901B32151B007A150D /* VStreamLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamLikeButton.h; sourceTree = "<group>"; };
+		A76D93911B32151B007A150D /* VStreamLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamLikeButton.m; sourceTree = "<group>"; };
+		A76D93941B3215A9007A150D /* VFollowerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFollowerTableViewCell.xib; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
 		A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSimpleModalTransition.h; sourceTree = "<group>"; };
 		A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSimpleModalTransition.m; sourceTree = "<group>"; };
@@ -3009,6 +3009,7 @@
 				D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */,
 				0314D3AE19B46B5E00FA363C /* Lightbox */,
 				03C92D121ABB96030057D30E /* Lightweight Content View */,
+				A76D938D1B32151B007A150D /* Like */,
 				DB2A490119DF429700CB687B /* Main.storyboard */,
 				BE9C261F19D48A3B00E43AFE /* Marquee */,
 				DBAD775B19F711D900B6A939 /* Monetization */,
@@ -3069,7 +3070,6 @@
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
 				F05AA97D1A83F6E3002F8917 /* Inline Search */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
-				A76D92FD1B30DC21007A150D /* Like Button */,
 				D86528F01AE82AAC003832AC /* PollView */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				F0C83A591B161C0100A6EC1A /* StreamItemPreviewView */,
@@ -3325,7 +3325,6 @@
 				A7F711EB1AE1D5A00086F729 /* Headers */,
 				A7F711F21AE1D5A00086F729 /* Not Authorized */,
 				DB2A493D19DF449400CB687B /* Profile.storyboard */,
-				0390087519F3A11A00FD7EDF /* VFollowerTableViewCell.xib */,
 				037D2D571A196B9800947A22 /* VUserProfileNavigationDestination.h */,
 				037D2D581A196B9800947A22 /* VUserProfileNavigationDestination.m */,
 				0314D3CE19B46B5E00FA363C /* VUserProfileViewController.h */,
@@ -4489,35 +4488,25 @@
 			name = "Tracking Settings";
 			sourceTree = "<group>";
 		};
-		A76D92EB1B30CFB3007A150D /* Binary Expression */ = {
+		A76D93741B31E8C0007A150D /* Expression */ = {
 			isa = PBXGroup;
 			children = (
-				A76D92F51B30DBEC007A150D /* Like */,
-				A76D92F31B30D904007A150D /* VBinaryExpressionControl.h */,
-				A76D92F41B30D9EE007A150D /* VBinaryExpressionCountDisplay.h */,
+				A76D938B1B320E02007A150D /* VSequenceExpressionsObserver.h */,
+				A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */,
+				A76D93881B320DD0007A150D /* VLikeResponder.h */,
 			);
-			path = "Binary Expression";
+			path = Expression;
 			sourceTree = "<group>";
 		};
-		A76D92F51B30DBEC007A150D /* Like */ = {
+		A76D938D1B32151B007A150D /* Like */ = {
 			isa = PBXGroup;
 			children = (
-				A76D92F61B30DBEC007A150D /* VLIkeUIProvider.h */,
-				A76D92F71B30DBEC007A150D /* VLikeController.h */,
-				A76D92F81B30DBEC007A150D /* VLikeController.m */,
-				A76D92F91B30DBEC007A150D /* VLikeHelper.h */,
-				A76D92FA1B30DBEC007A150D /* VLikeHelper.m */,
+				A76D938E1B32151B007A150D /* VContentLikeButton.h */,
+				A76D938F1B32151B007A150D /* VContentLikeButton.m */,
+				A76D93901B32151B007A150D /* VStreamLikeButton.h */,
+				A76D93911B32151B007A150D /* VStreamLikeButton.m */,
 			);
 			path = Like;
-			sourceTree = "<group>";
-		};
-		A76D92FD1B30DC21007A150D /* Like Button */ = {
-			isa = PBXGroup;
-			children = (
-				A76D92FE1B30DC21007A150D /* VLikeButton.h */,
-				A76D92FF1B30DC21007A150D /* VLikeButton.m */,
-			);
-			path = "Like Button";
 			sourceTree = "<group>";
 		};
 		A7738AFE1A4A35DF008EA973 /* Transitions */ = {
@@ -4913,6 +4902,7 @@
 			children = (
 				A7F711E11AE1D5A00086F729 /* VFollowerTableViewCell.h */,
 				A7F711E21AE1D5A00086F729 /* VFollowerTableViewCell.m */,
+				A76D93941B3215A9007A150D /* VFollowerTableViewCell.xib */,
 				A7F711E31AE1D5A00086F729 /* VFollowerTableViewController.h */,
 				A7F711E41AE1D5A00086F729 /* VFollowerTableViewController.m */,
 				A7F711E51AE1D5A00086F729 /* VFollowingTableViewController.h */,
@@ -5331,12 +5321,12 @@
 			isa = PBXGroup;
 			children = (
 				A7299E9C1AA699EE00B6BC1F /* Authorization */,
-				A76D92EB1B30CFB3007A150D /* Binary Expression */,
 				A79869DF1AD7124D00F2564A /* Deep Links */,
 				039D02A71A1043D300DB9236 /* Dependencies */,
 				03CE66FD19B640CD0011BB9E /* Device Info */,
 				D87AD2A51AD46A2E00C481D0 /* Download */,
 				A77951141B28AB6700D9DB0A /* Environment */,
+				A76D93741B31E8C0007A150D /* Expression */,
 				03CE66F019B47B590011BB9E /* Facebook */,
 				A743E7DA1A08160300339CB3 /* FileCache */,
 				A7672B921A1BF6B40063AF46 /* First Install */,
@@ -6057,6 +6047,7 @@
 				D8E39BC819CB7C80007FD86A /* VContentImageCell.h */,
 				D8E39BC919CB7C80007FD86A /* VContentImageCell.m */,
 				D8E39BCA19CB7C80007FD86A /* VContentImageCell.xib */,
+				A76D938C1B320E63007A150D /* VContentLikeButtonProvider.h */,
 				D82E76E119F5C06100FFB722 /* VContentPollBallotCell.h */,
 				D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */,
 				D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */,
@@ -6605,6 +6596,7 @@
 				03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */,
 				A7D378441AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib in Resources */,
 				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
+				A76D93951B3215A9007A150D /* VFollowerTableViewCell.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
 				D8B44CD31ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib in Resources */,
 				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
@@ -6658,7 +6650,6 @@
 				03803DE11B0C270300B63F05 /* Purchases.storyboard in Resources */,
 				0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */,
 				A75ED0D71AB79EB500C35063 /* VTextCanvasToolViewController.xib in Resources */,
-				0390087619F3A11A00FD7EDF /* VFollowerTableViewCell.xib in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
@@ -6982,7 +6973,6 @@
 				03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */,
 				039ED28C19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m in Sources */,
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
-				A76D92FC1B30DBEC007A150D /* VLikeHelper.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
@@ -7220,7 +7210,6 @@
 				F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */,
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
 				0314D06119B4666A00FA363C /* NSManagedObject+RestKit.m in Sources */,
-				A76D92FB1B30DBEC007A150D /* VLikeController.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				BE80780519D778E500EECDEB /* VFullscreenMarqueeController.m in Sources */,
 				D8D3B7181AB20E6600CF966C /* VTrimLoopingPlayerViewController.m in Sources */,
@@ -7235,6 +7224,7 @@
 				D8758D1F1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m in Sources */,
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
+				A76D93931B32151B007A150D /* VStreamLikeButton.m in Sources */,
 				D85B70751B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.m in Sources */,
 				03A058BF1AEF44D600CF39D1 /* VTemplateDownloadManager.m in Sources */,
 				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
@@ -7331,11 +7321,11 @@
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
 				C30AA4DA1B0517170010CEFE /* VPermissionAlertViewController.m in Sources */,
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
+				A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */,
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
 				DBDBE6EE1A16736C00DA1BB2 /* VAdBreak.m in Sources */,
-				A76D93001B30DC21007A150D /* VLikeButton.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */,
 				A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */,
 				039D02B41A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m in Sources */,
@@ -7452,6 +7442,7 @@
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A7F711FA1AE1D5A00086F729 /* VFollowerTableViewCell.m in Sources */,
 				D8C5CFE81A68835100EC819F /* VAsset+Fetcher.m in Sources */,
+				A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */,
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */,
 				F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */,
@@ -7646,6 +7637,7 @@
 				F0C83A331B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m in Sources */,
 				A72005401A03073B00285A9C /* VSuggestedPeopleTests.m in Sources */,
 				A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */,
+				A76D93831B31F54C007A150D /* VObjectManager+Sequence.m in Sources */,
 				0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */,
 				F0D3CFB71A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m in Sources */,
 				A75ED0E91AB8CC0A00C35063 /* VStreamContentPermissionsTests.m in Sources */,

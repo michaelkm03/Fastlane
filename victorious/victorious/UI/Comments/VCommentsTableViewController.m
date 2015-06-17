@@ -64,6 +64,8 @@
 
 @end
 
+#warning This class uses an X to go back, but isn't presented anywhere anymore
+
 @implementation VCommentsTableViewController
 
 #pragma mark - VHasManagedDependencies conforming factory method

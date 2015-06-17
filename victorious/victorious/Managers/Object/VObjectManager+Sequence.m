@@ -23,6 +23,46 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Sequences
 
+- (RKManagedObjectRequestOperation *)toggleLikeWithSequence:(VSequence *)sequence
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
+{
+    NSString *apiPath = sequence.isLikedByMainUser.boolValue ? @"/api/sequence/unlike" : @"/api/sequence/like";
+    
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        if ( sequence.isLikedByMainUser.boolValue )
+        {
+            sequence.isLikedByMainUser = @NO;
+            sequence.likeCount = @(sequence.likeCount.integerValue - 1);
+        }
+        else
+        {
+            sequence.isLikedByMainUser = @YES;
+            sequence.likeCount = @(sequence.likeCount.integerValue + 1);
+        }
+        
+        if ( success != nil )
+        {
+            success( operation, result, resultObjects );
+        }
+    };
+    
+#warning Testing only
+    NSTimeInterval randomDelay = (NSTimeInterval)(arc4random() % 100) / 100.0f;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(randomDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog( @"%@", apiPath );
+        fullSuccess( nil, nil, nil );
+    });
+    return nil;
+    
+    return [self POST:apiPath
+               object:nil
+           parameters:@{ @"sequence_id":  sequence.remoteId }
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
 - (RKManagedObjectRequestOperation *)removeSequence:(VSequence *)sequence
                                        successBlock:(VSuccessBlock)success
                                           failBlock:(VFailBlock)fail

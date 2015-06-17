@@ -105,7 +105,8 @@
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
-#import "VLikeController.h"
+#import "VSequenceExpressionsObserver.h"
+#import "VLikeResponder.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -167,7 +168,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @property (nonatomic, assign) BOOL hasBeenPresented;
 
-@property (nonatomic, strong) VLikeController *likeController;
+@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
 @end
 
@@ -749,6 +750,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)selectedLikeButton:(UIButton *)likeButton
+{
+    UIResponder<VLikeResponder> *responder = [self targetForAction:@selector(toggleLikeSequence:completion:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for liking.");
+    likeButton.enabled = NO;
+    [responder toggleLikeSequence:self.viewModel.sequence completion:^(BOOL success)
+     {
+         likeButton.enabled = YES;
+     }];
+}
+
 #pragma mark - Private Mehods
 
 - (void)removeCollectionViewFromContainer
@@ -944,13 +956,21 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
             
             // If the content cell provides like button and count controls, set it up
-            if ( [cell conformsToProtocol:@protocol(VLikeUIProvider)] )
+            if ( [cell conformsToProtocol:@protocol(VContentLikeButtonProvider)] )
             {
-                id<VLikeUIProvider> provider = (id<VLikeUIProvider>)cell;
-                self.likeController = [[VLikeController alloc] init];
-                [self.likeController startObservingWithSequence:self.viewModel.sequence
-                                                        control:provider.control
-                                                   countDisplay:provider.countDisplay];
+                VSequence *sequence = self.viewModel.sequence;
+                
+                id<VContentLikeButtonProvider> provider = (id<VContentLikeButtonProvider>)cell;
+                VContentLikeButton *likeButton = provider.likeButton;
+                
+                [provider.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+                
+                self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+                [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
+                {
+                    [likeButton setActive:sequence.isLikedByMainUser.boolValue];
+                    [likeButton setCount:sequence.likeCount.integerValue];
+                }];
             }
             
             return cell;
@@ -1812,6 +1832,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
     [self.navigationController pushViewController:contentViewController animated:YES];
+}
+
+#pragma mark - VSequenceActionsDelegate
+
+- (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
+{
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
 }
 
 #pragma mark - UINavigationControllerDelegate

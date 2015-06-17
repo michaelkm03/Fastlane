@@ -9,13 +9,13 @@
 #import "VContentCell.h"
 #import "UIView+Autolayout.h"
 #import <QuartzCore/QuartzCore.h>
-#import "VLikeButton.h"
+#import "VContentLikeButton.h"
 
 @interface VContentCell () <VEndCardViewControllerDelegate>
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
-@property (nonatomic, strong) VLikeButton *likeButton;
+@property (nonatomic, strong) VContentLikeButton *likeButton;
 
 @end
 
@@ -72,7 +72,7 @@
 
 - (void)setupLikeButton
 {
-    VLikeButton *likeButton = [[VLikeButton alloc] init];
+    VContentLikeButton *likeButton = [[VContentLikeButton alloc] init];
     [self addSubview:likeButton];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-12.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottomMargin multiplier:1.0 constant:-3.0f]];
@@ -249,16 +249,8 @@
     [self.endCardDelegate actionCellSelected:actionCell atIndex:index];
 }
 
-#pragma mark - VLikeUIProvider
+#pragma mark - VContentLikeButtonProvider
 
-- (id<VBinaryExpressionControl>)control
-{
-    return self.likeButton;
-}
-
-- (id<VBinaryExpressionCountDisplay>)countDisplay
-{
-    return self.likeButton;
-}
+@synthesize likeButton = _likeButton;
 
 @end

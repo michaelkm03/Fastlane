@@ -29,7 +29,6 @@
 #import "VUploadManager.h"
 #import "VApplicationTracking.h"
 #import "VEnvironment.h"
-#import "VLikeHelper.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -46,7 +45,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
-@interface VRootViewController () <VLoadingViewControllerDelegate, VLikeResponder>
+@interface VRootViewController () <VLoadingViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -61,7 +60,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
 @property (nonatomic, strong) VDeeplinkReceiver *deepLinkReceiver;
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
-@property (nonatomic, strong) VLikeHelper *likeHelper;
 
 @end
 
@@ -494,17 +492,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         self.launchState = VAppLaunchStateLaunching;
         [self startAppWithDependencyManager:dependencyManager];
     }
-}
-
-#pragma mark - VLikeResponder
-
-- (VLikeHelper *)likeHelper
-{
-    if ( _likeHelper == nil )
-    {
-        _likeHelper = [[VLikeHelper alloc] init];
-    }
-    return _likeHelper;
 }
 
 @end

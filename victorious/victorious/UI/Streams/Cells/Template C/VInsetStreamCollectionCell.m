@@ -9,7 +9,6 @@
 #import "VInsetStreamCollectionCell.h"
 
 // Libraries
-#import <FBKVOController.h>
 #import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 
 // Stream Support
