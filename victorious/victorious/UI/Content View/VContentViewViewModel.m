@@ -27,7 +27,7 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VComment+Fetcher.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 #import "VPaginationManager.h"
 #import "VAsset+VCachedData.h"
 
@@ -629,65 +629,29 @@
     return self.sequence.user.name;
 }
 
-- (BOOL)isCurrentUserOwner
-{
-    return [self.sequence.user isOwner];
-}
-
 - (NSString *)shareText
 {
     NSString *shareText;
     
-    if ([self isCurrentUserOwner])
+    switch (self.type)
     {
-        switch (self.type)
-        {
-            case VContentViewTypePoll:
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), self.sequence.user.name];
-                break;
-            case VContentViewTypeImage:
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name];
-                break;
-            case VContentViewTypeGIFVideo:
-            case VContentViewTypeVideo:
-                if (self.sequence.name.length > 0)
-                {
-                    shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
-                }
-                else
-                {
-                    shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), self.sequence.user.name];
-                }
-                break;
-            case VContentViewTypeText:
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareTextFormat", nil), self.sequence.name, self.sequence.user.name];
-                break;
-            case VContentViewTypeInvalid:
-                break;
-        }
-    }
-    else
-    {
-        switch (self.type)
-        {
-            case VContentViewTypePoll:
-                shareText = NSLocalizedString(@"UGCSharePollFormat", nil);
-                break;
-            case VContentViewTypeImage:
-                shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
-                break;
-            case VContentViewTypeGIFVideo:
-                shareText = NSLocalizedString(@"UGCShareGIFFormat", nil);
-                break;
-            case VContentViewTypeVideo:
-                shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
-                break;
-            case VContentViewTypeText:
-                shareText = NSLocalizedString(@"UGCShareTextFormat", nil);
-                break;
-            case VContentViewTypeInvalid:
-                break;
-        }
+        case VContentViewTypePoll:
+            shareText = NSLocalizedString(@"UGCSharePollFormat", nil);
+            break;
+        case VContentViewTypeImage:
+            shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
+            break;
+        case VContentViewTypeGIFVideo:
+            shareText = NSLocalizedString(@"UGCShareGIFFormat", nil);
+            break;
+        case VContentViewTypeVideo:
+            shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
+            break;
+        case VContentViewTypeText:
+            shareText = NSLocalizedString(@"UGCShareTextFormat", nil);
+            break;
+        case VContentViewTypeInvalid:
+            break;
     }
     
     return shareText;

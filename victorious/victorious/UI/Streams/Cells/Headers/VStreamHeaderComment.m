@@ -16,7 +16,7 @@
 
 // Models
 #import "VSequence+Fetcher.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 
 // Views + Helpers
 #import "VSequenceActionsDelegate.h"
