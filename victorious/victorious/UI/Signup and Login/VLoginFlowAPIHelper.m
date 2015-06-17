@@ -21,7 +21,9 @@
 // API
 #import "VTwitterAccountsHelper.h"
 #import "VUserManager.h"
+#import "VUser.h"
 #import "VObjectManager+Login.h"
+#import "VConstants.h"
 
 // Validator
 #import "VEmailValidator.h"
@@ -156,7 +158,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)registerWithEmail:(NSString *)email
                  password:(NSString *)password
-               completion:(void (^)(BOOL, NSError *))completion
+               completion:(void (^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
@@ -170,7 +172,8 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          dispatch_async(dispatch_get_main_queue(), ^
                         {
                             [hud hide:YES];
-                            completion(YES, nil);
+                            BOOL completeProfile = [user.status isEqualToString:kUserStatusComplete];
+                            completion(YES, completeProfile, nil);
                         });
      }
                                               onError:^(NSError *error, BOOL thirdPartyAPIFailure)
@@ -178,7 +181,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          dispatch_async(dispatch_get_main_queue(), ^
                         {
                             [hud hide:YES];
-                            completion(NO, error);
+                            completion(NO, nil, error);
                         });
      }];
 }

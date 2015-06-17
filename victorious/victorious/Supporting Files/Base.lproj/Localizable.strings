@@ -110,6 +110,7 @@
 "Profile load failed!"  =   "Profile load failed!";
 
 "User already exists"   =   "User already exists";
+"User already exists but the password is incorrect" = "User already exists but the password is incorrect";
 "Invalid email address or password" = "Invalid email address or password";
 "Sorry, I can't display that right now" = "Sorry, I can't display that right now";
 
