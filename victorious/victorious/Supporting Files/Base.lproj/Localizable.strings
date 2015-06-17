@@ -286,6 +286,9 @@
 
 "PublishDescriptionMinCharacters" = "Please enter a longer description.";
 
+"Sorry, we were having some trouble on our end. Please retry." = "Sorry, we were having some trouble on our end. Please retry.";
+"Retry"                 =   "Retry";
+
 "ReplaceVideo"          =   "Replace Video";
 
 "VideoPlayFailed"       =   "Video loading failed.";

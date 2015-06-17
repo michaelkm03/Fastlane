@@ -142,5 +142,7 @@
 	<string>VPermissionAlertViewController</string>
 	<key>standard.createSheet</key>
 	<string>VCreateSheetViewController</string>
+	<key>publish.screen</key>
+	<string>VPublishViewController</string>
 </dict>
 </plist>

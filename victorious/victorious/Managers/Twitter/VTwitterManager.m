@@ -10,17 +10,33 @@
 
 #import "TWAPIManager.h"
 
+#import "VTwitterAccountsHelper.h"
+
 @import Accounts;
+
+NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
+static CGFloat const kTwitterManagerErrorCode = 1;
 
 @interface VTwitterManager()
 
 @property (nonatomic, strong) NSString *oauthToken;
 @property (nonatomic, strong) NSString *secret;
 @property (nonatomic, strong) NSString *twitterId;
+@property (nonatomic, strong) VTwitterAccountsHelper *accountsHelper;
 
 @end
 
 @implementation VTwitterManager
+
+- (instancetype)init
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _accountsHelper = [[VTwitterAccountsHelper alloc] init];
+    }
+    return self;
+}
 
 + (VTwitterManager *)sharedManager
 {
@@ -33,13 +49,14 @@
     return sharedManager;
 }
 
-- (BOOL)isLoggedIn
+- (BOOL)authorizedToShare
 {
     return self.secret && self.oauthToken && self.twitterId;
 }
 
 - (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
-                           completionBlock:(void(^)(void))completionBlock
+                       fromViewController:(UIViewController *)viewController
+                           completionBlock:(VTWitterCompletionBlock)completionBlock
 {
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -49,87 +66,73 @@
          {
              dispatch_async(dispatch_get_main_queue(), ^(void)
                             {
-                                completionBlock();
+                                completionBlock(NO, error);
                             });
          }
          else
          {
              NSArray *twitterAccounts = [account accountsWithAccountType:accountType];
-             if (!twitterAccounts.count)
+             if ( twitterAccounts.count == 0 )
              {
                  dispatch_async(dispatch_get_main_queue(), ^(void)
                                 {
-                                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
-                                                                                    message:NSLocalizedString(@"NoTwitterMessage", @"")
-                                                                                   delegate:nil
-                                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                                          otherButtonTitles:nil];
-                                    [alert show];
-                                    if (completionBlock)
+                                    NSString *errorMessage = NSLocalizedString(@"NoTwitterMessage", @"");
+                                    NSError *noTwitterError = [NSError errorWithDomain:VTwitterManagerErrorDomain code:kTwitterManagerErrorCode userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
+                                    if ( completionBlock != nil )
                                     {
-                                        completionBlock();
+                                        completionBlock(NO, noTwitterError);
                                     }
                                 });
              }
              else
              {
-                 ACAccountStore *account = [[ACAccountStore alloc] init];
-                 ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-                 
-                 ACAccount *twitterAccount;
-                 if (identifier)
-                 {
-                     twitterAccount = [account accountWithIdentifier:identifier];
-                 }
-                 else
-                 {
-                     NSArray *accounts = [account accountsWithAccountType:accountType];
-                     twitterAccount = [accounts lastObject];
-                 }
-                 
-                 if (!twitterAccount)
-                 {
-                     self.oauthToken = nil;
-                     self.secret = nil;
-                     self.twitterId = nil;
-                     
-                     if (completionBlock)
-                     {
-                         completionBlock();
-                     }
-                     
-                     return;
-                 }
-                 
-                 TWAPIManager *twitterApiManager = [[TWAPIManager alloc] init];
-                 [twitterApiManager performReverseAuthForAccount:twitterAccount
-                                                     withHandler:^(NSData *responseData, NSError *error)
+                 [_accountsHelper selectTwitterAccountWithViewControler:viewController
+                                                             completion:^(ACAccount *twitterAccount)
                   {
-                      if (error)
+                      if ( twitterAccount == nil )
                       {
                           self.oauthToken = nil;
                           self.secret = nil;
                           self.twitterId = nil;
                           
-                          if (completionBlock)
+                          if ( completionBlock != nil )
                           {
-                              completionBlock();
+                              completionBlock(NO, error);
                           }
                           
                           return;
                       }
                       
-                      NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                      NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
-                      
-                      self.oauthToken = [parsedData objectForKey:@"oauth_token"];
-                      self.secret = [parsedData objectForKey:@"oauth_token_secret"];
-                      self.twitterId = [parsedData objectForKey:@"user_id"];
-                      
-                      if (completionBlock)
-                      {
-                          completionBlock();
-                      }
+                      TWAPIManager *twitterApiManager = [[TWAPIManager alloc] init];
+                      [twitterApiManager performReverseAuthForAccount:twitterAccount
+                                                          withHandler:^(NSData *responseData, NSError *error)
+                       {
+                           if ( error != nil )
+                           {
+                               self.oauthToken = nil;
+                               self.secret = nil;
+                               self.twitterId = nil;
+                               
+                               if ( completionBlock != nil )
+                               {
+                                   completionBlock(NO, error);
+                               }
+                               
+                               return;
+                           }
+                           
+                           NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                           NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
+                           
+                           self.oauthToken = [parsedData objectForKey:@"oauth_token"];
+                           self.secret = [parsedData objectForKey:@"oauth_token_secret"];
+                           self.twitterId = [parsedData objectForKey:@"user_id"];
+                           
+                           if ( completionBlock != nil )
+                           {
+                               completionBlock(YES, error);
+                           }
+                       }];
                   }];
              }
          }
