@@ -76,12 +76,22 @@ static const CGFloat kLineSpacing = 40.0f;
     [self.dismissButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
     [self.dismissButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
     
-    // Shadow
-    self.dismissButton.layer.masksToBounds = YES;
-    self.dismissButton.layer.shadowOffset = CGSizeMake(0, -kShadowOffset);
-    self.dismissButton.layer.shadowRadius = 1;
-    self.dismissButton.layer.shadowOpacity = 0.4f;
-    self.dismissButton.layer.masksToBounds = NO;
+    // Top line for dismiss button
+    UIView *line = [UIView new];
+    [line setBackgroundColor:[UIColor blackColor]];
+    [line setAlpha:0.25f];
+    line.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.dismissButton addSubview:line];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[line(1)]"
+                                                                           options:0
+                                                                           metrics:nil
+                                                                             views:NSDictionaryOfVariableBindings(line)];
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|[line]|"
+                                                                             options:0
+                                                                             metrics:nil
+                                                                               views:NSDictionaryOfVariableBindings(line)];
+    [self.dismissButton addConstraints:verticalConstraints];
+    [self.dismissButton addConstraints:horizontalConstraints];
     
     // Set line height and item size for flow layout
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;

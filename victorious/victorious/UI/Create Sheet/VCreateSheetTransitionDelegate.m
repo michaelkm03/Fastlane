@@ -93,7 +93,7 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
         }
         
         UIButton *dismissButton = animatingViewController.dismissButton;
-        dismissButton.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(dismissButton.bounds) + kShadowOffset);
+        dismissButton.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(dismissButton.bounds));
         
         // Animate button from bottom
         [UIView animateWithDuration:kButtonUpTime

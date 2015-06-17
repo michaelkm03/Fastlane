@@ -277,7 +277,7 @@
         "name": "standard.createSheet",
         "title.button1": "Nevermind",
         "font.heading1": {
-            "fontSize": 28,
+            "fontSize": 36,
             "fontName": "Lato-Bold"
         },
         "color.text": {
