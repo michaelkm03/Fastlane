@@ -203,16 +203,6 @@ static const CGFloat kLineSpacing = 40.0f;
     return CGSizeMake(CGRectGetWidth(self.view.bounds) - 80, [self heightForMenuItemTitle:menuItem.title]);
 }
 
-- (CGFloat)heightForMenuItemTitle:(NSString *)text
-{
-    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
-    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(CGRectGetHeight(self.view.bounds), CGFLOAT_MAX)
-                                             options:NSStringDrawingUsesLineFragmentOrigin
-                                          attributes:@{ NSFontAttributeName : font }
-                                             context:nil];
-    return VCEIL(CGRectGetHeight(minimumFrame));
-}
-
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     NSInteger numberOfCells = [self.menuItems count];
@@ -235,6 +225,18 @@ static const CGFloat kLineSpacing = 40.0f;
     CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
     NSInteger verticalInset = (CGRectGetHeight(collectionView.bounds) - contentHeight - statusBarHeight) / 2;
     return UIEdgeInsetsMake(verticalInset, 0, verticalInset, 0);
+}
+
+#pragma mark - Helpers
+
+- (CGFloat)heightForMenuItemTitle:(NSString *)text
+{
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(CGRectGetHeight(self.view.bounds), CGFLOAT_MAX)
+                                             options:NSStringDrawingUsesLineFragmentOrigin
+                                          attributes:@{ NSFontAttributeName : font }
+                                             context:nil];
+    return VCEIL(CGRectGetHeight(minimumFrame));
 }
 
 @end
