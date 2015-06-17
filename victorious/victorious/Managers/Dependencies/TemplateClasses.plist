@@ -20,7 +20,7 @@
 	<string>VModernLoginAndRegistrationFlowViewController</string>
 	<key>standard.loginAndRegistrationView</key>
 	<string>VStandardLoginFlowViewController</string>
-	<key>hiddenWorkspace</key>
+	<key>standard.workspaceFlow</key>
 	<string>VWorkspaceFlowController</string>
 	<key>translucent.background</key>
 	<string>VTranslucentBackground</string>

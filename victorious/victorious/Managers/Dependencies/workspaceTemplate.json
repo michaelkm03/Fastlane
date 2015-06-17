@@ -1,334 +1,212 @@
 {
-    "workspaceText": {
-        "name": "workspaceText",
-        "defaultText": "Type your text here!",
-        "characterLimit" : 140,
-        "editTextWorkspace": {
-            "name": "workspace.screen",
-            "tools": [
-                {
-                    "filterIndex": 0,
-                    "picker": {
-                      "name": "vertical.multiplePicker",
-                    },
-                    "title": "hashtag",
-                    "icon": {
-                        "imageURL": "hashtagIcon"
-                    },
-                    "name": "hashtag.tool",
-                    "selectedIcon": {
-                        "imageURL": "hashtagIcon_selected"
-                    }
-                },
-                {
-                    "selectedIcon": {
-                        "imageURL": "textColorIcon_selected"
-                    },
-                      "picker": {
-                      "name": "vertical.picker"
-                    },
-                    "filterIndex": 1,
-                    "colorOptions": [
-                        {
-                            "title": "Red",
-                            "color": {
-                                "red": 181,
-                                "alpha": 1,
-                                "blue": 48,
-                                "green": 35
-                            }
-                        },
-                        {
-                            "title": "Magenta",
-                            "color": {
-                                "red": 233,
-                                "alpha": 1,
-                                "blue": 106,
-                                "green": 89
-                            }
-                        },
-                        {
-                            "title": "Orange",
-                            "color": {
-                                "red": 233,
-                                "alpha": 1,
-                                "blue": 71,
-                                "green": 112
-                            }
-                        },
-                        {
-                            "title": "Peach",
-                            "color": {
-                                "red": 247,
-                                "alpha": 1,
-                                "blue": 99,
-                                "green": 200
-                            }
-                        },
-                        {
-                            "title": "Yellow",
-                            "color": {
-                                "red": 233,
-                                "alpha": 1,
-                                "blue": 33,
-                                "green": 167
-                            }
-                        },
-                        {
-                            "title": "Green",
-                            "color": {
-                                "red": 134,
-                                "alpha": 1,
-                                "blue": 121,
-                                "green": 199
-                            }
-                        },
-                        {
-                            "title": "Teal",
-                            "color": {
-                                "red": 22,
-                                "alpha": 1,
-                                "blue": 160,
-                                "green": 160
-                            }
-                        },
-                        {
-                            "title": "Blue",
-                            "color": {
-                                "red": 60,
-                                "alpha": 1,
-                                "blue": 195,
-                                "green": 129
-                            }
-                        },
-                        {
-                            "title": "Purple",
-                            "color": {
-                                "red": 102,
-                                "alpha": 1,
-                                "blue": 156,
-                                "green": 71
-                            }
-                        },
-                        {
-                            "title": "Black",
-                            "color": {
-                                "red": 44,
-                                "alpha": 1,
-                                "blue": 35,
-                                "green": 39
-                            }
-                        }
-                    ],
-                    "title": "color",
-                    "name": "textColor.tool",
-                    "icon": {
-                        "imageURL": "textColorIcon"
-                    }
-                }
-            ],
-            "id": "2C30A9D0-F437-4872-97E9-C6D2787053BF"
-        }
-    },
-    "publishScreen" :
-    {
-        "name":"publish.screen",
-        "shareMenuItems" :
-        [
-            {
-                "shareType":"facebook",
-                "title":"post to facebook",
-                "icon":
-                {
-                    "imageURL": "inviteFacebook",
-                    "tintColor":
-                    {
-                        "red": 102,
-                        "alpha": 255,
-                        "blue": 102,
-                        "green": 102
-                    }
-                },
-                "selectedIcon":
-                {
-                    "imageURL": "inviteFacebook",
-                    "tintColor":
-                    {
-                        "red": 244,
-                        "alpha": 255,
-                        "blue": 35,
-                        "green": 39
-                    }
+    "workspaceFlow": {
+        "createSheet": {
+            "name": "standard.createSheet",
+            "title.button1": "Nevermind",
+            "font.heading1": {
+                "fontSize": 28,
+                "fontName": "Lato-Bold"
+            },
+            "color.text": {
+                "red": 255,
+                "alpha": 1,
+                "blue": 255,
+                "green": 255
+            },
+            "font.heading4": {
+                "fontSize": 15,
+                "fontName": "Lato"
+            },
+            "color.link": {
+                "red": 255,
+                "alpha": 1,
+                "blue": 255,
+                "green": 255
+            },
+            "color.accent": {
+                "red": 105,
+                "alpha": 255,
+                "blue": 64,
+                "green": 12
+            },
+            "background": {
+                "name": "solidColor.background",
+                "color": {
+                    "red": 105,
+                    "alpha": 229,
+                    "blue": 64,
+                    "green": 12
                 }
             },
-            {
-                "shareType":"twitter",
-                "title":"post to twitter",
-                "icon":
-                {
-                    "imageURL": "inviteTwitter",
-                    "tintColor":
-                    {
-                        "red": 102,
-                        "alpha": 255,
-                        "blue": 102,
-                        "green": 102
-                    }
-                },
-                "selectedIcon":
-                {
-                    "imageURL": "inviteTwitter",
-                    "tintColor":
-                    {
-                        "red": 244,
-                        "alpha": 255,
-                        "blue": 35,
-                        "green": 39
-                    }
-                }
+            "items": [{
+                      "identifier": "Create GIF",
+                      "title": "GIF",
+                      "icon": {
+                      "imageURL": "PostCamera",
+                      "scale": 2
+                      }
+                      }, {
+                      "identifier": "Create Text",
+                      "title": "TEXT",
+                      "icon": {
+                      "imageURL": "PostCamera",
+                      "scale": 2
+                      }
+                      }, {
+                      "identifier": "Create Poll",
+                      "title": "POLL",
+                      "icon": {
+                      "imageURL": "PostCamera",
+                      "scale": 2
+                      }
+                      }, {
+                      "identifier": "Create Video",
+                      "title": "VIDEO",
+                      "icon": {
+                      "imageURL": "PostCamera",
+                      "scale": 2
+                      }
+                      }, {
+                      "identifier": "Create Image",
+                      "title": "IMAGE",
+                      "icon": {
+                      "imageURL": "PostCamera",
+                      "scale": 2
+                      }
+                      }]
+        },
+        "name": "standard.workspaceFlow",
+        "workspaceText": {
+            "name": "workspaceText",
+            "defaultText": "Type your text here!",
+            "characterLimit" : 140,
+            "editTextWorkspace": {
+                "name": "workspace.screen",
+                "tools": [
+                          {
+                          "filterIndex": 0,
+                          "picker": {
+                          "name": "vertical.multiplePicker",
+                          },
+                          "title": "hashtag",
+                          "icon": {
+                          "imageURL": "hashtagIcon"
+                          },
+                          "name": "hashtag.tool",
+                          "selectedIcon": {
+                          "imageURL": "hashtagIcon_selected"
+                          }
+                          },
+                          {
+                          "selectedIcon": {
+                          "imageURL": "textColorIcon_selected"
+                          },
+                          "picker": {
+                          "name": "vertical.picker"
+                          },
+                          "filterIndex": 1,
+                          "colorOptions": [
+                                           {
+                                           "title": "Red",
+                                           "color": {
+                                           "red": 181,
+                                           "alpha": 1,
+                                           "blue": 48,
+                                           "green": 35
+                                           }
+                                           },
+                                           {
+                                           "title": "Magenta",
+                                           "color": {
+                                           "red": 233,
+                                           "alpha": 1,
+                                           "blue": 106,
+                                           "green": 89
+                                           }
+                                           },
+                                           {
+                                           "title": "Orange",
+                                           "color": {
+                                           "red": 233,
+                                           "alpha": 1,
+                                           "blue": 71,
+                                           "green": 112
+                                           }
+                                           },
+                                           {
+                                           "title": "Peach",
+                                           "color": {
+                                           "red": 247,
+                                           "alpha": 1,
+                                           "blue": 99,
+                                           "green": 200
+                                           }
+                                           },
+                                           {
+                                           "title": "Yellow",
+                                           "color": {
+                                           "red": 233,
+                                           "alpha": 1,
+                                           "blue": 33,
+                                           "green": 167
+                                           }
+                                           },
+                                           {
+                                           "title": "Green",
+                                           "color": {
+                                           "red": 134,
+                                           "alpha": 1,
+                                           "blue": 121,
+                                           "green": 199
+                                           }
+                                           },
+                                           {
+                                           "title": "Teal",
+                                           "color": {
+                                           "red": 22,
+                                           "alpha": 1,
+                                           "blue": 160,
+                                           "green": 160
+                                           }
+                                           },
+                                           {
+                                           "title": "Blue",
+                                           "color": {
+                                           "red": 60,
+                                           "alpha": 1,
+                                           "blue": 195,
+                                           "green": 129
+                                           }
+                                           },
+                                           {
+                                           "title": "Purple",
+                                           "color": {
+                                           "red": 102,
+                                           "alpha": 1,
+                                           "blue": 156,
+                                           "green": 71
+                                           }
+                                           },
+                                           {
+                                           "title": "Black",
+                                           "color": {
+                                           "red": 44,
+                                           "alpha": 1,
+                                           "blue": 35,
+                                           "green": 39
+                                           }
+                                           }
+                                           ],
+                          "title": "color",
+                          "name": "textColor.tool",
+                          "icon": {
+                          "imageURL": "textColorIcon"
+                          }
+                          }
+                          ],
+                "id": "2C30A9D0-F437-4872-97E9-C6D2787053BF"
             }
-        ],
-        "shareText":"Share to:",
-        "saveText":"Save to camera roll",
-        "backButtonText":"Back to edit",
-        "placeholderText":"Please add a caption",
-        "background":
-        {
-            "name":"solidColor.background",
-            "color":
-            {
-                "red": 0,
-                "alpha": 76,
-                "blue": 0,
-                "green": 0
-            }
         },
-        "color.captionContainer":
-        {
-            "red": 241,
-            "alpha": 255,
-            "blue": 241,
-            "green": 241
-        },
-        "color.optionsContainer":
-        {
-            "red": 255,
-            "alpha": 255,
-            "blue": 255,
-            "green": 255
-        },
-        "color.shareContainer":
-        {
-            "red": 230,
-            "alpha": 255,
-            "blue": 237,
-            "green": 233
-        },
-        "color.caption.separator":
-        {
-            "red": 0,
-            "alpha": 255,
-            "blue": 0,
-            "green": 0
-        },
-        "color.switch":
-        {
-            "red": 0,
-            "alpha": 255,
-            "blue": 0,
-            "green": 255
-        },
-        "color.text.placeholder":
-        {
-            "red": 102,
-            "alpha": 255,
-            "blue": 102,
-            "green": 102
-        },
-        "color.text":
-        {
-            "red": 252,
-            "alpha": 255,
-            "blue": 102,
-            "green": 102
-        },
-        "font.label1":
-        {
-            "fontSize": 14,
-            "fontName": "Helvetica"
-        },
-        "font.paragraph":
-        {
-            "fontSize": 16,
-            "fontName": "Helvetica"
-        },
-        "font.heading1":
-        {
-            "fontSize": 14,
-            "fontName": "Helvetica"
-        },
-        "font.heading2":
-        {
-            "fontSize": 16,
-            "fontName": "Helvetica"
-        },
-        "color.text.content":
-        {
-            "red": 102,
-            "alpha": 255,
-            "blue": 102,
-            "green": 102
-        },
-        "color.link":
-        {
-            "red": 29,
-            "alpha": 255,
-            "blue": 236,
-            "green": 174
-        },
-        "color.link.secondary":
-        {
-            "red": 255,
-            "alpha": 255,
-            "blue": 255,
-            "green": 255
-        },
-        "font.button1":
-        {
-            "fontSize": 18,
-            "fontName": "Helvetica"
-        },
-        "font.button2":
-        {
-            "fontSize": 18,
-            "fontName": "Helvetica"
-        },
-        "color.accent":
-        {
-            "red": 244,
-            "alpha": 255,
-            "blue": 35,
-            "green": 39
-        },
-        "color.accent.secondary":
-        {
-            "red": 102,
-            "alpha": 255,
-            "blue": 102,
-            "green": 102
-        },
-        "color.text.secondary":
-        {
-            "red": 255,
-            "alpha": 255,
-            "blue": 255,
-            "green": 255
-        },
-        "keyboardStyle":"light",
-        "autoEnableMediaSave":true
-    },
-        "defaultWorkspaceDestination": {
-        "name": "hiddenWorkspace",
         "imageWorkspace": {
             "name": "workspace.screen",
             "tools": [
@@ -468,81 +346,202 @@
                 }
             ],
             "videoMinDuration": 3
+        },
+        "publishScreen" :{
+            "name":"publish.screen",
+            "shareMenuItems" :
+            [
+             {
+             "shareType":"facebook",
+             "title":"post to facebook",
+             "icon":
+             {
+             "imageURL": "inviteFacebook",
+             "tintColor":
+             {
+             "red": 102,
+             "alpha": 255,
+             "blue": 102,
+             "green": 102
+             }
+             },
+             "selectedIcon":
+             {
+             "imageURL": "inviteFacebook",
+             "tintColor":
+             {
+             "red": 244,
+             "alpha": 255,
+             "blue": 35,
+             "green": 39
+             }
+             }
+             },
+             {
+             "shareType":"twitter",
+             "title":"post to twitter",
+             "icon":
+             {
+             "imageURL": "inviteTwitter",
+             "tintColor":
+             {
+             "red": 102,
+             "alpha": 255,
+             "blue": 102,
+             "green": 102
+             }
+             },
+             "selectedIcon":
+             {
+             "imageURL": "inviteTwitter",
+             "tintColor":
+             {
+             "red": 244,
+             "alpha": 255,
+             "blue": 35,
+             "green": 39
+             }
+             }
+             }
+             ],
+            "shareText":"Share to:",
+            "saveText":"Save to camera roll",
+            "backButtonText":"Back to edit",
+            "placeholderText":"Please add a caption",
+            "background":
+            {
+                "name":"solidColor.background",
+                "color":
+                {
+                    "red": 0,
+                    "alpha": 76,
+                    "blue": 0,
+                    "green": 0
+                }
+            },
+            "color.captionContainer":
+            {
+                "red": 241,
+                "alpha": 255,
+                "blue": 241,
+                "green": 241
+            },
+            "color.optionsContainer":
+            {
+                "red": 255,
+                "alpha": 255,
+                "blue": 255,
+                "green": 255
+            },
+            "color.shareContainer":
+            {
+                "red": 230,
+                "alpha": 255,
+                "blue": 237,
+                "green": 233
+            },
+            "color.caption.separator":
+            {
+                "red": 0,
+                "alpha": 255,
+                "blue": 0,
+                "green": 0
+            },
+            "color.switch":
+            {
+                "red": 0,
+                "alpha": 255,
+                "blue": 0,
+                "green": 255
+            },
+            "color.text.placeholder":
+            {
+                "red": 102,
+                "alpha": 255,
+                "blue": 102,
+                "green": 102
+            },
+            "color.text":
+            {
+                "red": 252,
+                "alpha": 255,
+                "blue": 102,
+                "green": 102
+            },
+            "font.label1":
+            {
+                "fontSize": 14,
+                "fontName": "Helvetica"
+            },
+            "font.paragraph":
+            {
+                "fontSize": 16,
+                "fontName": "Helvetica"
+            },
+            "font.heading1":
+            {
+                "fontSize": 14,
+                "fontName": "Helvetica"
+            },
+            "font.heading2":
+            {
+                "fontSize": 16,
+                "fontName": "Helvetica"
+            },
+            "color.text.content":
+            {
+                "red": 102,
+                "alpha": 255,
+                "blue": 102,
+                "green": 102
+            },
+            "color.link":
+            {
+                "red": 29,
+                "alpha": 255,
+                "blue": 236,
+                "green": 174
+            },
+            "color.link.secondary":
+            {
+                "red": 255,
+                "alpha": 255,
+                "blue": 255,
+                "green": 255
+            },
+            "font.button1":
+            {
+                "fontSize": 18,
+                "fontName": "Helvetica"
+            },
+            "font.button2":
+            {
+                "fontSize": 18,
+                "fontName": "Helvetica"
+            },
+            "color.accent":
+            {
+                "red": 244,
+                "alpha": 255,
+                "blue": 35,
+                "green": 39
+            },
+            "color.accent.secondary":
+            {
+                "red": 102,
+                "alpha": 255,
+                "blue": 102,
+                "green": 102
+            },
+            "color.text.secondary":
+            {
+                "red": 255,
+                "alpha": 255,
+                "blue": 255,
+                "green": 255
+            },
+            "keyboardStyle":"light",
+            "autoEnableMediaSave":true
         }
     },
-    "createSheet": {
-        "name": "standard.createSheet",
-        "title.button1": "Nevermind",
-        "font.heading1": {
-            "fontSize": 28,
-            "fontName": "Lato-Bold"
-        },
-        "color.text": {
-            "red": 255,
-            "alpha": 1,
-            "blue": 255,
-            "green": 255
-        },
-        "font.heading4": {
-            "fontSize": 15,
-            "fontName": "Lato"
-        },
-        "color.link": {
-            "red": 255,
-            "alpha": 1,
-            "blue": 255,
-            "green": 255
-        },
-        "color.accent": {
-            "red": 105,
-            "alpha": 255,
-            "blue": 64,
-            "green": 12
-        },
-        "background": {
-            "name": "solidColor.background",
-            "color": {
-                "red": 105,
-                "alpha": 229,
-                "blue": 64,
-                "green": 12
-            }
-        },
-        "items": [{
-                  "identifier": "Create GIF",
-                  "title": "GIF",
-                  "icon": {
-                  "imageURL": "PostCamera",
-                  "scale": 2
-                  }
-                  }, {
-                  "identifier": "Create Text",
-                  "title": "TEXT",
-                  "icon": {
-                  "imageURL": "PostCamera",
-                  "scale": 2
-                  }
-                  }, {
-                  "identifier": "Create Poll",
-                  "title": "POLL",
-                  "icon": {
-                  "imageURL": "PostCamera",
-                  "scale": 2
-                  }
-                  }, {
-                  "identifier": "Create Video",
-                  "title": "VIDEO",
-                  "icon": {
-                  "imageURL": "PostCamera",
-                  "scale": 2
-                  }
-                  }, {
-                  "identifier": "Create Image",
-                  "title": "IMAGE",
-                  "icon": {
-                  "imageURL": "PostCamera",
-                  "scale": 2
-                  }
-                  }]
-    }
 }
