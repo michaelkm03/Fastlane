@@ -33,9 +33,7 @@
 @dynamic memeCount;
 @dynamic nameEmbeddedInContent;
 @dynamic parentUserId;
-@dynamic permissions;
-@dynamic previewData;
-@dynamic previewType;
+@dynamic permissionsMask;
 @dynamic releasedAt;
 @dynamic repostCount;
 @dynamic sequenceDescription;

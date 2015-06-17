@@ -1,5 +1,5 @@
 //
-//  VEnvironmentManager+Environment.m
+//  VEnvironmentManager.m
 //  victorious
 //
 //  Created by Josh Hinman on 5/5/14.
@@ -72,7 +72,7 @@ static NSString * const kPlist = @"plist";
     }
 }
 
-- (BOOL)revertToPreviousEnvironment
+- (void)revertToPreviousEnvironment
 {
     NSString *previousEnvironmentName = [[NSUserDefaults standardUserDefaults] stringForKey:kPreviousEnvironmentKey];
     if ( previousEnvironmentName != nil )
@@ -80,11 +80,7 @@ static NSString * const kPlist = @"plist";
         [self setCurrentEnvironment:[self environmentWithName:previousEnvironmentName]];
         [[NSUserDefaults standardUserDefaults] setObject:previousEnvironmentName forKey:kCurrentEnvironmentKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        return YES;
     }
-    
-    return NO;
 }
 
 - (BOOL)addEnvironment:(VEnvironment *)environment

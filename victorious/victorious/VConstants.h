@@ -59,6 +59,7 @@ static NSUInteger const kVHashTagSubscriptionDoesNotExistError = 5000;
 static NSUInteger const kVHashTagSubscriptionAlreadyExistsError = 1001;
 
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
+static NSUInteger const kVPasswordInvalidForExistingUser = 1006;
 static NSUInteger const kVUserBannedError               = 1007;
 static NSUInteger const kVUserOrPasswordInvalidError    = 1010;
 

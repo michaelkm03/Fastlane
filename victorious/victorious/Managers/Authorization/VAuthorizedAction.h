@@ -12,6 +12,8 @@
 
 @class VObjectManager, VDependencyManager;
 
+typedef void (^VAuthorizedActionCompletion)(BOOL authorized);
+
 @interface VAuthorizedAction : NSObject
 
 /**
@@ -39,14 +41,14 @@
  */
 - (BOOL)performFromViewController:(UIViewController *)presentingViewController
                           context:(VAuthorizationContext)authorizationContext
-                       completion:(void(^)(BOOL authorized))completionActionBlock;
+                       completion:(VAuthorizedActionCompletion)completionActionBlock;
 
 /**
  *  Use this for forced registration. Takes a snapshot and adds it to the presentingViewControllers view hierarchy and removes after "-execute" is called. Execute must be called after the viewController hierarchy is prepared.
  */
 - (BOOL)prepareInViewController:(UIViewController *)presentingViewController
                         context:(VAuthorizationContext)authorizationContext
-                     completion:(void(^)(BOOL authorized))completionActionBlock;
+                     completion:(VAuthorizedActionCompletion)completionActionBlock;
 /**
  *  Finishes the preparation work done in "-prepareInViewController:context:completion:"
  */

@@ -227,7 +227,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
-- (void)selectedTwitterAuthorization
+- (void)selectedTwitterAuthorizationWithCompletion:(void(^)(BOOL success))completion
 {
     if (self.actionsDisabled)
     {
@@ -238,6 +238,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success)
     {
+        if (completion != nil)
+        {
+            completion(success);
+        }
+        
         self.actionsDisabled = NO;
         if (success)
         {
@@ -249,7 +254,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
-- (void)selectedFacebookAuthorization
+- (void)selectedFacebookAuthorizationWithCompletion:(void(^)(BOOL success))completion
 {
     if (self.actionsDisabled)
     {
@@ -260,6 +265,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success)
     {
+        if (completion != nil)
+        {
+            completion(success);
+        }
+        
         self.actionsDisabled = NO;
         if (success)
         {
@@ -295,7 +305,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 
 - (void)registerWithEmail:(NSString *)email
                  password:(NSString *)password
-               completion:(void (^)(BOOL, NSError *))completion
+               completion:(void (^)(BOOL success, BOOL alreadyRegistered,  NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     if (self.actionsDisabled)
@@ -305,12 +315,19 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     [self.loginFlowHelper registerWithEmail:email
                                    password:password
-                                 completion:^(BOOL success, NSError *error)
+                                 completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
      {
-         completion(success, error);
+         completion(success, alreadyRegistered, error);
          if (success)
          {
-             [self continueRegistrationFlow];
+             if (alreadyRegistered)
+             {
+                 [self onAuthenticationFinishedWithSuccess:YES];
+             }
+             else
+             {
+                 [self continueRegistrationFlow];
+             }
          }
      }];
     

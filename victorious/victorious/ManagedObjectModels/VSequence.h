@@ -27,7 +27,7 @@
 @property (nonatomic, retain) NSNumber * memeCount;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
-@property (nonatomic, retain) NSNumber * permissions;
+@property (nonatomic, retain) NSNumber * permissionsMask;
 @property (nonatomic, retain) id previewData;
 @property (nonatomic, retain) NSString * previewType;
 @property (nonatomic, retain) NSDate * releasedAt;

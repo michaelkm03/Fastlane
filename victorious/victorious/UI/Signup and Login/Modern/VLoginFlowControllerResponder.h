@@ -28,12 +28,12 @@
 /**
  *  The user wants to authorize with their twitter account.
  */
-- (void)selectedTwitterAuthorization;
+- (void)selectedTwitterAuthorizationWithCompletion:(void(^)(BOOL success))completion;
 
 /**
  *  The user wants to authorize with their facebook account.
  */
-- (void)selectedFacebookAuthorization;
+- (void)selectedFacebookAuthorizationWithCompletion:(void(^)(BOOL success))completion;
 
 /**
  *  The user has entered an email and password and wants to login.
@@ -47,7 +47,7 @@
  */
 - (void)registerWithEmail:(NSString *)email
                  password:(NSString *)password
-               completion:(void(^)(BOOL success, NSError *error))completion;
+               completion:(void(^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion;
 
 /**
  *  The user has entered an appropriate username.

@@ -15,27 +15,13 @@
 #import "VUser.h"
 #import "VAsset.h"
 #import "VAsset+Fetcher.h"
+#import "VSequencePermissions.h"
 #import "NSURL+MediaType.h"
 #import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
 
 static const CGFloat kMinimumAspectRatio = 0.5f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
-
-typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
-{
-    VSequencePermissionOptionsNone        = 0,
-    VSequencePermissionOptionsDelete      = 1 << 0,
-    VSequencePermissionOptionsRemix       = 1 << 1,
-    VSequencePermissionOptionsVoteCount   = 1 << 2,
-    VSequencePermissionOptionsComment     = 1 << 3,
-    VSequencePermissionOptionsRepost      = 1 << 4,
-    VSequencePermissionOptionsEditComment = 1 << 5,
-    VSequencePermissionOptionsDeleteComment = 1 << 6,
-    VSequencePermissionOptionsCanFlag     = 1 << 7,
-    VSequencePermissionOptionsGif         = 1 << 8,
-    VSequencePermissionOptionsMeme        = 1 << 9,
-};
 
 @implementation VSequence (Fetcher)
 
@@ -286,17 +272,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return @(0);
 }
 
-- (BOOL)canDelete
-{
-    if ( self.permissions != nil )
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsDelete);
-    }
-    return NO;
-}
-
-- (BOOL)canRemix
+- (BOOL)isRemixableType
 {
     if ( [self isPoll] )
     {
@@ -320,88 +296,9 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return YES;
 }
 
-- (BOOL)canGif
+- (VSequencePermissions *)permissions
 {
-    if ( self.permissions != nil && [self canRemix] )
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsGif);
-    }
-    
-    return NO;
-}
-
-- (BOOL)canMeme
-{
-    if ( self.permissions != nil && [self canRemix])
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsMeme);
-    }
-    
-    return NO;
-}
-
-- (BOOL)canComment
-{
-    if ( self.permissions != nil )
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsComment);
-    }
-    
-    return YES;
-}
-
-- (BOOL)canRepost
-{
-    if ( self.permissions != nil )
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsRepost);
-    }
-    
-    return YES;
-}
-
-- (BOOL)isVoteCountVisible
-{
-    if ( self.permissions != nil )
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsVoteCount);
-    }
-    return NO;
-}
-
-- (BOOL)canEditComment
-{
-    if ( self.permissions != nil )
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsEditComment);
-    }
-    return NO;
-}
-
-- (BOOL)canDeleteComment
-{
-    if ( self.permissions != nil )
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsDeleteComment);
-    }
-    return NO;
-}
-
-- (BOOL)canFlagContent
-{
-    if ( self.permissions != nil )
-    {
-        NSInteger permissionsMask = [self.permissions integerValue];
-        return (permissionsMask & VSequencePermissionOptionsCanFlag);
-    }
-    return NO;
+    return [VSequencePermissions permissionsWithNumber:self.permissionsMask];
 }
 
 - (VUser *)displayOriginalPoster

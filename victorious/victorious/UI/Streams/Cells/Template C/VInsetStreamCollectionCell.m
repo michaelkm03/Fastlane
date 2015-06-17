@@ -240,6 +240,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     {
         [self.header setDependencyManager:dependencyManager];
     }
+    if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.captionTextView setDependencyManager:dependencyManager];
+    }
+
 }
 
 #pragma mark - Property Accessors
@@ -355,7 +360,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     NSNumber *commentCount = [sequence commentCount];
     NSString *commentsString = nil;
     NSInteger cCount = [commentCount integerValue];
-    if ( [sequence canComment] )
+    if ( sequence.permissions.canComment )
     {
         //Users can comment on this sequence, return a string based on comment count
         if (cCount == 0)

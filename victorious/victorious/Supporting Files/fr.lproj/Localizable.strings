@@ -181,6 +181,8 @@
 "OwnerShareImageFormat" = "Découvrez cette photo de %@ !";
 /* Check out this post by <creator>! <URL> */
 "OwnerShareTextFormat" = "Découvrez cette publication de « %@ » !";
+/* Check this out */
+"OwnerShareLinkFormat"   =    "Regarde ça!";
 /* Check out this poll! <URL> */
 "UGCSharePollFormat" = "Ce sondage pourrait vous intéresser !";
 /* Check out this video! <URL> */
@@ -191,6 +193,8 @@
 "UGCShareImageFormat" = "Cette photo pourrait vous intéresser !";
 /* Check out this post! <URL> */
 "UGCShareTextFormat" = "Découvrez cette publication !";
+/* Check this out */
+"UGCShareLinkFormat"   =    "Regarde ça!";
 /* Check out this post from the <creator name> app! */
 "EmailShareSubjectFormat" = "Découvrez cette publication de l'application %@ !";
 

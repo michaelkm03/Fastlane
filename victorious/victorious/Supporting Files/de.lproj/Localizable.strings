@@ -181,6 +181,8 @@
 "OwnerShareImageFormat" = "Sieh dir dieses Foto von %@ an!";
 /* Check out this post by <creator>! <URL> */
 "OwnerShareTextFormat" = "Sieh dir diesen Beitrag von \"%@\" an";
+/* Check this out */
+"OwnerShareLinkFormat"   =    "Schau mal!";
 /* Check out this poll! <URL> */
 "UGCSharePollFormat" = "Sieh dir diese Umfrage an!";
 /* Check out this video! <URL> */
@@ -191,6 +193,8 @@
 "UGCShareImageFormat" = "Sieh dir dieses Foto an!";
 /* Check out this post! <URL> */
 "UGCShareTextFormat" = "Sieh dir diesen Beitrag an!";
+/* Check this out */
+"UGCShareLinkFormat"   =    "Schau mal!";
 /* Check out this post from the <creator name> app! */
 "EmailShareSubjectFormat" = "Sieh dir diesen Beitrag von der %@-App an!";
 

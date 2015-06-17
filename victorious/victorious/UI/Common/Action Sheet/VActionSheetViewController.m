@@ -26,6 +26,10 @@
 
 // Gesture Recognizers
 #import "CCHLinkGestureRecognizer.h"
+#import "VHashTagTextView.h"
+
+#import "VDependencyManager.h"
+
 
 @interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, CCHLinkTextViewDelegate, UIGestureRecognizerDelegate>
 
@@ -43,7 +47,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *gradientContainer;
-@property (weak, nonatomic) IBOutlet CCHLinkTextView *titleTextView;
+@property (weak, nonatomic) IBOutlet VHashTagTextView *titleTextView;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapAwayGestureRecognizer;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
@@ -91,6 +95,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     self.profileImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
+    self.titleTextView.dependencyManager = self.dependencyManager;
     [self reloadData];
 }
 
@@ -330,5 +335,14 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         self.descriptionItem.hashTagSelectionHandler(value);
     }
 }
+     
+ - (void)setDependencyManager:(VDependencyManager *)dependencyManager
+ {
+     _dependencyManager = dependencyManager;
+     if (dependencyManager != nil)
+     {
+         [self.titleTextView setDependencyManager:dependencyManager];
+     }
+ }
 
 @end
