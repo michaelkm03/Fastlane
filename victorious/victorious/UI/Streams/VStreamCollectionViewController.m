@@ -991,6 +991,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     gifStream.currentStream.name = NSLocalizedString(@"Gifs", nil);
     
     VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
+    if ( [noGifView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        noGifView.dependencyManager = self;
+    }
     noGifView.title = NSLocalizedString(@"NoGiffersTitle", @"");
     noGifView.message = NSLocalizedString(@"NoGiffersMessage", @"");
     noGifView.icon = [UIImage imageNamed:@"noGifIcon"];
