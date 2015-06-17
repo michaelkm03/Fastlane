@@ -165,13 +165,7 @@
 "NoRemixersTitle"       =   "BE THE 1ST TO REMIX!";
 "NoRemixersMessage"     =   "Make this content your own by adding commentary, additional video clips, and more!";
 
-"OwnerSharePollFormat"  =   "Check out this poll by %@!"; //Check out this poll by <creator>! <URL>
-"OwnerShareVideoFormat" =   "Check out \"%@\" by %@!";    //Check out "<video name>" by <creator>! <URL>
-"OwnerShareVideoFormatNoVideoName" = "Check out this video by %@!"; // Check out this videy by <creator>! <URL>
-"OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
-"OwnerShareTextFormat" =    "Check out this post from \"%@\""; //Check out this post by <creator>! <URL>
-"OwnerShareLinkFormat"   =    "Check this out!";
-
+// strings for both UGC and creator
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
 "UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
