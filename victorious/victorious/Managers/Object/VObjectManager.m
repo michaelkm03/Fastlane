@@ -198,6 +198,7 @@
         }
         else if (!error.errorCode && successBlock)
         {
+            //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
             NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData
                                                                          options:0
                                                                            error:nil] mutableCopy];
