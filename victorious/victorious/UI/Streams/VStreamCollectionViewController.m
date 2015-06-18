@@ -929,9 +929,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     VStreamCollectionViewController *controller = (VStreamCollectionViewController *) source;
-    if (controller.isRemixView == YES)
+    if ((controller.isRemixView) && ([menuItem.position isEqualToString:VDependencyManagerPositionLeft]))
     {
-        return NO;
+        return self.navigationController.viewControllers.count <= 1;
     }
 
     return YES;
