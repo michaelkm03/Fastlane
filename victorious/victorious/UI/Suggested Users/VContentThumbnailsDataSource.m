@@ -22,6 +22,7 @@
 
 - (instancetype)initWithSequences:(NSArray *)sequences
 {
+    NSParameterAssert( sequences != nil );
     self = [super init];
     if ( self != nil )
     {

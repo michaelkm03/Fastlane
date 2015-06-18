@@ -9,7 +9,6 @@
 #import "VSuggestedUsersViewController.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VSuggestedUsersDataSource.h"
-#import "VSuggestedUsersResponder.h"
 #import "VCreatorMessageViewController.h"
 #import "UIView+AutoLayout.h"
 #import "VLoginFlowControllerDelegate.h"

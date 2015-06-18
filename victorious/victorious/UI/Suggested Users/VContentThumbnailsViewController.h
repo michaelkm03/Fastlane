@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ A very generic view controller designed to display a collection view with simple
+ horizontal scrolling, publicly exposed to allow a data source to be plugged in.
+ */
 @interface VContentThumbnailsViewController : UIViewController
 
 @property (nonatomic, strong) UICollectionView *collectionView;

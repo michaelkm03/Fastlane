@@ -12,6 +12,10 @@
 
 @class VUser;
 
+/**
+ Collection cell designed to show some user info and a child collection view of
+ sequences thumbnails as part of a suggested users screen.
+ */
 @interface VSuggestedUserCell : UICollectionViewCell <VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

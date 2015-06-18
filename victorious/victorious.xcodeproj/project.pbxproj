@@ -1803,7 +1803,6 @@
 		A77951211B28C95E00D9DB0A /* VCreatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreatorMessageViewController.h; path = "Creator Message/VCreatorMessageViewController.h"; sourceTree = "<group>"; };
 		A77951221B28C95E00D9DB0A /* VCreatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreatorMessageViewController.m; path = "Creator Message/VCreatorMessageViewController.m"; sourceTree = "<group>"; };
 		A77951231B28C95E00D9DB0A /* VCreatorMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VCreatorMessageViewController.xib; path = "Creator Message/VCreatorMessageViewController.xib"; sourceTree = "<group>"; };
-		A779512B1B28DCFB00D9DB0A /* VSuggestedUsersResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUsersResponder.h; path = "victorious/UI/Suggested Users/VSuggestedUsersResponder.h"; sourceTree = SOURCE_ROOT; };
 		A779512C1B28F61C00D9DB0A /* VContentThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentThumbnailsViewController.h; path = "victorious/UI/Suggested Users/VContentThumbnailsViewController.h"; sourceTree = SOURCE_ROOT; };
 		A779512D1B28F61C00D9DB0A /* VContentThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentThumbnailsViewController.m; path = "victorious/UI/Suggested Users/VContentThumbnailsViewController.m"; sourceTree = SOURCE_ROOT; };
 		A779512F1B28F7F400D9DB0A /* VContentThumbnailsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentThumbnailsDataSource.h; path = "victorious/UI/Suggested Users/VContentThumbnailsDataSource.h"; sourceTree = SOURCE_ROOT; };
@@ -4579,7 +4578,6 @@
 				A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */,
 				A779510C1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.h */,
 				A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */,
-				A779512B1B28DCFB00D9DB0A /* VSuggestedUsersResponder.h */,
 				A77951041B27D22D00D9DB0A /* VSuggestedUsersViewController.h */,
 				A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */,
 				A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */,
