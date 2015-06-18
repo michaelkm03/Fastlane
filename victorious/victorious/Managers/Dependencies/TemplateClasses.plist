@@ -50,7 +50,7 @@
 	<string>VMemeTool</string>
 	<key>crop.tool</key>
 	<string>VCropTool</string>
-	<key>text.tool</key>
+	<key>textOverlay.tool</key>
 	<string>VTextTool</string>
 	<key>textType.tool</key>
 	<string>VTextTypeTool</string>
