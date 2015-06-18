@@ -270,7 +270,7 @@
                             "name": "textType.tool"
                         }
                     ],
-                    "name": "text.tool",
+                    "name": "textOverlay.tool",
                     "icon": {
                         "imageURL": "text"
                     }
