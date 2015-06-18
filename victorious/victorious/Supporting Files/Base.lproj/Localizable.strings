@@ -618,3 +618,9 @@
 
 "Nice!" = "Nice!";
 "Edit photo" = "Edit photo";
+
+"TEXT" = "TEXT";
+"POLL" = "POLL";
+"VIDEO" = "VIDEO";
+"IMAGE" = "IMAGE";
+"Nevermind" = "Nevermind";
