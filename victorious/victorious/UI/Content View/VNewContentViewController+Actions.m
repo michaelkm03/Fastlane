@@ -46,7 +46,6 @@
 #import "VAsset+Fetcher.h"
 #import "VAsset+VCachedData.h"
 #import "VAsset+VAssetCache.h"
-#import "VLikeResponder.h"
 
 @interface VNewContentViewController ()
 
@@ -327,21 +326,6 @@
         };
         [actionItems addObject:remixItem];
     }
-}
-
-#pragma mark - VLikeResponder
-
-- (void)toggleLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
-{
-    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         completion( YES );
-         
-     } failBlock:^(NSOperation *operation, NSError *error)
-     {
-         completion( NO );
-     }];
 }
 
 @end

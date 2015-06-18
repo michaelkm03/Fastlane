@@ -106,7 +106,6 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VSequenceExpressionsObserver.h"
-#import "VLikeResponder.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -752,13 +751,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
-    UIResponder<VLikeResponder> *responder = [self targetForAction:@selector(toggleLikeSequence:completion:) withSender:self];
-    NSAssert( responder != nil, @"We need an object in the responder chain for liking.");
     likeButton.enabled = NO;
-    [responder toggleLikeSequence:self.viewModel.sequence completion:^(BOOL success)
-     {
-         likeButton.enabled = YES;
-     }];
+    [self.sequenceActionController likeSequence:self.viewModel.sequence completion:^(BOOL success)
+    {
+        likeButton.enabled = YES;
+    }];
 }
 
 #pragma mark - Private Mehods

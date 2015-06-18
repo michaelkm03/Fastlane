@@ -49,6 +49,7 @@
 @property (nonatomic, retain) NSSet *previewAssets;
 @property (nonatomic, retain) NSNumber * likeCount;
 @property (nonatomic, retain) NSNumber * isLikedByMainUser;
+@property (nonatomic, retain) NSSet *likers;
 
 @end
 
@@ -108,5 +109,10 @@
 - (void)removePreviewAssetsObject:(VImageAsset *)values;
 - (void)addPreviewAssets:(NSSet *)values;
 - (void)removePreviewAssets:(NSSet *)values;
+
+- (void)addLikersObject:(VUser *)value;
+- (void)removeLikersObject:(VUser *)value;
+- (void)addLikers:(NSSet *)values;
+- (void)removeLikers:(NSSet *)values;
 
 @end

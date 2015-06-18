@@ -52,5 +52,6 @@
 @dynamic previewAssets;
 @dynamic likeCount;
 @dynamic isLikedByMainUser;
+@dynamic likers;
 
 @end

@@ -592,11 +592,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)followerHandler
 {
-#warning load with template
     VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
     usersViewController.title = NSLocalizedString( @"Followers", nil );
-    [self.navigationController pushViewController:usersViewController animated:YES];
     usersViewController.usersDataSource = [[VFollowersDataSource alloc] initWithUser:self.user];
+    
+    [self.navigationController pushViewController:usersViewController animated:YES];
 }
 
 - (void)followingHandler
@@ -607,11 +607,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     else
     {
-#warning load with template
         VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
         usersViewController.title = NSLocalizedString( @"Followers", nil );
-        [self.navigationController pushViewController:usersViewController animated:YES];
         usersViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:self.user];
+        
+        [self.navigationController pushViewController:usersViewController animated:YES];
     }
 }
 

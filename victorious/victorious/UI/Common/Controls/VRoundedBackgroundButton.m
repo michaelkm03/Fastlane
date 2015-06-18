@@ -58,6 +58,20 @@ static const CGFloat kHighlightedScale = 0.8f;
     self.circleLayer.affineTransform = highlighted ? CGAffineTransformMakeScale(kHighlightedScale, kHighlightedScale) : CGAffineTransformIdentity;
 }
 
+- (void)setActive:(BOOL)active
+{
+    _active = active;
+    
+    UIImage *image = active ? self.inactiveImage : self.activeImage;
+    [self setImage:image forState:UIControlStateNormal];
+}
+
+- (void)setInactiveImage:(UIImage *)inactiveImage
+{
+    _inactiveImage = inactiveImage;
+    [self setImage:_inactiveImage forState:UIControlStateNormal];
+}
+
 #pragma mark - Property Accessors
 
 - (void)setSelectedColor:(UIColor *)selectedColor

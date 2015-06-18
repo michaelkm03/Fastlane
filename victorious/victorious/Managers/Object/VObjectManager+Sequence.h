@@ -16,6 +16,10 @@ extern NSString * const kPollResultsLoaded;
 
 @interface VObjectManager (Sequence)
 
+- (RKManagedObjectRequestOperation *)likersForSequence:(VSequence *)sequence
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)toggleLikeWithSequence:(VSequence *)sequence
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;

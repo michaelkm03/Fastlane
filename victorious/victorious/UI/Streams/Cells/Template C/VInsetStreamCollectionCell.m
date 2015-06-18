@@ -184,11 +184,21 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
 {
-    UIResponder<VSequenceActionsDelegate> *targetForCommentLabelSelection = [self targetForAction:@selector(willCommentOnSequence:fromView:)
-                                                                                       withSender:self];
-    NSAssert(targetForCommentLabelSelection != nil, @"We need an object in the responder chain for hash tag selection.!");
-    
-    [targetForCommentLabelSelection willCommentOnSequence:self.sequence fromView:self];
+    [self showComments];
+}
+
+- (void)showComments
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for commenting or showing comments.");
+    [responder willCommentOnSequence:self.sequence fromView:self];
+}
+
+- (void)showLikers
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for showing likers.");
+    [responder willShowLikersForSequence:self.sequence fromView:self];
 }
 
 #pragma mark - UIView

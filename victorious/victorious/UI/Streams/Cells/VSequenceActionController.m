@@ -49,6 +49,8 @@
 
 #import "VAppInfo.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VUsersViewController.h"
+#import "VLikersDataSource.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -175,6 +177,22 @@
     [navigationController pushViewController:remixStream animated:YES];
 }
 
+- (void)likeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion
+{
+#warning Add like/unlike tracking event (and clean up traking you fucker)
+    //    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
+    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         completion( YES );
+         
+     } failBlock:^(NSOperation *operation, NSError *error)
+     {
+         completion( NO );
+     }];
+}
+
 #pragma mark - Repost
 
 - (BOOL)canRespost
@@ -251,6 +269,15 @@
     VReposterTableViewController *vc = [[VReposterTableViewController alloc] initWithDependencyManager:self.dependencyManager];
     vc.sequence = sequence;
     [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)showLikersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+{
+    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    usersViewController.title = NSLocalizedString( @"Likers", nil );
+    usersViewController.usersDataSource = [[VLikersDataSource alloc] initWithUser:sequence];
+    
+    [viewController.navigationController pushViewController:usersViewController animated:YES];
 }
 
 #pragma mark - Share

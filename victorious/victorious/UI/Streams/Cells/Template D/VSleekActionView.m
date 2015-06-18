@@ -38,6 +38,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
 @property (nonatomic, strong) VRoundedBackgroundButton *repostButton;
 @property (nonatomic, strong) VRoundedBackgroundButton *memeButton;
 @property (nonatomic, strong) VRoundedBackgroundButton *gifButton;
+@property (nonatomic, strong) VRoundedBackgroundButton *likeButton;
 @property (nonatomic, strong) NSArray *actionButtons;
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
@@ -162,6 +163,17 @@ static CGFloat const kActionButtonHeight = 31.0f;
     return _gifButton;
 }
 
+- (VRoundedBackgroundButton *)likeButton
+{
+    if (_likeButton == nil)
+    {
+        UIImage *image = [UIImage imageNamed:@"D_like"];
+        UIImage *activeImage = [UIImage imageNamed:@"D_liked"];
+        _likeButton = [self actionButtonWithImage:image activeImage:activeImage action:@selector(like:)];
+    }
+    return _likeButton;
+}
+
 #pragma mark - VHasManagedDependencies
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -202,6 +214,9 @@ static CGFloat const kActionButtonHeight = 31.0f;
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
+    
+    [actionItems addObject:self.likeButton];
+    [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     
     if ( sequence.permissions.canComment )
     {
@@ -257,7 +272,13 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 #pragma mark - Button Factory
 
+- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)actionImage action:(SEL)action
+{
+    return [self actionButtonWithImage:actionImage activeImage:nil action:action];
+}
+
 - (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)actionImage
+                                        activeImage:(UIImage *)actionImageActive
                                              action:(SEL)action
 {
     VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
@@ -266,8 +287,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
     actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     actionButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    [actionButton setImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                  forState:UIControlStateNormal];
+    actionButton.inactiveImage = [actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    actionButton.activeImage = [actionImageActive imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [actionButton v_addWidthConstraint:kActionButtonHeight];
     [actionButton v_addHeightConstraint:kActionButtonHeight];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];

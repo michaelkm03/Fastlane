@@ -6,10 +6,11 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "VUser.h"
-#import "VPageType.h"
+@import UIKit;
+
 #import "VUsersDataSource.h"
+
+@class VUser;
 
 @interface VUserIsFollowingDataSource : NSObject <VUsersDataSource>
 

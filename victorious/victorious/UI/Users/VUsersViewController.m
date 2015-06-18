@@ -78,7 +78,6 @@
     
     [self setInitialNoContentAnimationState];
     
-    [refreshControl beginRefreshing];
     [self refershControlAction:refreshControl];
 }
 

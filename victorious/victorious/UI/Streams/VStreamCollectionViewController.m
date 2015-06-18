@@ -81,7 +81,6 @@
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
-#import "VLikeResponder.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -99,7 +98,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VLikeResponder>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -597,6 +596,22 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                                   completion:nil];
 }
 
+- (void)willLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion
+{
+#warning Add like tracking event (and clean up traking you fucker)
+//    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
+    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         completion( YES );
+         
+     } failBlock:^(NSOperation *operation, NSError *error)
+     {
+         completion( NO );
+     }];
+}
+
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController shareFromViewController:self sequence:sequence node:[sequence firstNode]];
@@ -639,6 +654,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)showRepostersForSequence:(VSequence *)sequence
 {
     [self.sequenceActionController showRepostersFromViewController:self sequence:sequence];
+}
+
+- (void)willShowLikersForSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    [self.sequenceActionController showLikersFromViewController:self sequence:sequence];
 }
 
 #pragma mark - Actions
@@ -938,21 +958,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         return YES;
     }
     return NO;
-}
-
-#pragma mark - VLikeResponder
-
-- (void)toggleLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
-{
-    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         completion( YES );
-         
-     } failBlock:^(NSOperation *operation, NSError *error)
-     {
-         completion( NO );
-     }];
 }
 
 #pragma mark - VCoachmarkDisplayer

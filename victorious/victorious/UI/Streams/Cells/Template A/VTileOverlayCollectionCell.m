@@ -26,9 +26,9 @@
 #import "VLinearGradientView.h"
 #import "VHashTagTextView.h"
 #import <CCHLinkTextViewDelegate.h>
-#import "VStreamLikeButton.h"
 #import "VSequenceExpressionsObserver.h"
-#import "VLikeResponder.h"
+
+#import "VActionButton.h"
 
 static const CGFloat kHeaderHeight = 74.0f;
 static const CGFloat kGradientAlpha = 0.3f;
@@ -56,10 +56,11 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
 @property (nonatomic, strong) VStreamHeaderComment *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
-@property (nonatomic, strong) VStreamLikeButton *likeButton;
-@property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) CCHLinkTextView *countsTextView;
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
+
+@property (nonatomic, strong) VActionButton *likeButton;
+@property (nonatomic, strong) VActionButton *commentButton;
 
 @end
 
@@ -170,7 +171,10 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:15.0f]];
     
     // Like button
-    _likeButton = [[VStreamLikeButton alloc] init];
+    
+    UIImage *likeInactiveImage = [[UIImage imageNamed:@"A_like"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *likeActiveImage = [[UIImage imageNamed:@"A_liked"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _likeButton = [VActionButton actionButtonWithImage:likeInactiveImage activeImage:likeActiveImage];
     [_overlayContainer addSubview:_likeButton];
     _likeButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_likeButton v_addWidthConstraint:kButtonWidth];
@@ -181,13 +185,10 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     [_likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // Comments button
-    _commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *commentImage = [[UIImage imageNamed:@"A_comment"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _commentButton = [VActionButton actionButtonWithImage:commentImage activeImage:nil];
     [_overlayContainer addSubview:_commentButton];
     _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [_commentButton setImage:[[UIImage imageNamed:@"StreamComments"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                    forState:UIControlStateNormal];
-    _commentButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -kButtonBuffer);
-    _commentButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [_commentButton v_addWidthConstraint:kButtonWidth];
     [_commentButton v_addHeightConstraint:kButtonHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_commentButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_likeButton attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0f]];
@@ -213,6 +214,7 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     __weak typeof(self) welf = self;
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
     {
+        [welf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
         [welf updateCountText];
     }];
 }
@@ -223,7 +225,6 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     {
         return;
     }
-    
     
     UIFont *countsFont = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     UIColor *countsTextColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
@@ -267,10 +268,12 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
-    UIResponder<VLikeResponder> *responder = [self targetForAction:@selector(toggleLikeSequence:completion:) withSender:self];
-    NSAssert( responder != nil, @"We need an object in the responder chain for liking.");
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:completion:)
+                                                                  withSender:self];
+    
+    NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
     likeButton.enabled = NO;
-    [responder toggleLikeSequence:self.sequence completion:^(BOOL success)
+    [responder willLikeSequence:self.sequence completion:^(BOOL success)
      {
          likeButton.enabled = YES;
      }];
@@ -284,13 +287,15 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
 - (void)showComments
 {
     UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
-    NSAssert( responder != nil, @"We need an object in the responder chain for commenting.");
+    NSAssert( responder != nil, @"We need an object in the responder chain for commenting or showing comments.");
     [responder willCommentOnSequence:self.sequence fromView:self];
 }
 
 - (void)showLikers
 {
-    
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for showing likers.");
+    [responder willShowLikersForSequence:self.sequence fromView:self];
 }
 
 #pragma mark - Internal Methods

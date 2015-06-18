@@ -7,11 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "StreamComments@2x.png"
+      "filename" : "C_likeIconSelected@2x.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "C_likeIconSelected@3x.png"
     }
   ],
   "info" : {

@@ -14,6 +14,7 @@
 #import "VAnswer.h"
 #import "VAsset.h"
 #import "VPollResult.h"
+#import "VPageType.h"
 
 #import "NSCharacterSet+VURLParts.h"
 
@@ -22,6 +23,17 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 @implementation VObjectManager (Sequence)
 
 #pragma mark - Sequences
+
+- (RKManagedObjectRequestOperation *)likersForSequence:(VSequence *)sequence
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
+{
+#warning Implement this, perhaps using pagination?
+    
+    success( nil, nil, @[] );
+    
+    return nil;
+}
 
 - (RKManagedObjectRequestOperation *)toggleLikeWithSequence:(VSequence *)sequence
                                                successBlock:(VSuccessBlock)success
@@ -33,11 +45,13 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
     {
         if ( sequence.isLikedByMainUser.boolValue )
         {
+            [sequence removeLikersObject:self.mainUser];
             sequence.isLikedByMainUser = @NO;
             sequence.likeCount = @(sequence.likeCount.integerValue - 1);
         }
         else
         {
+            [sequence addLikersObject:self.mainUser];
             sequence.isLikedByMainUser = @YES;
             sequence.likeCount = @(sequence.likeCount.integerValue + 1);
         }

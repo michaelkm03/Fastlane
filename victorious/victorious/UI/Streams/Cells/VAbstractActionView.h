@@ -68,6 +68,11 @@
  */
 - (void)gif:(id)sender;
 
+/**
+ *  Dispatch the sequence like message to the current sequence actions delegate.
+ */
+- (void)like:(id)sender;
+
 @end
 
 /**

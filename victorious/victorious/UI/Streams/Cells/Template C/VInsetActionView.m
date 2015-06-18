@@ -28,6 +28,8 @@
 #import "VLargeNumberFormatter.h"
 #import "VRepostButtonController.h"
 
+#import "VActionButton.h"
+
 static const CGFloat kActionButtonWidth = 44.0f;
 
 @interface VInsetActionView ()
@@ -36,6 +38,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 @property (nonatomic, strong) UIButton *gifButton;
 @property (nonatomic, strong) UIButton *memeButton;
 @property (nonatomic, strong) UIButton *repostButton;
+@property (nonatomic, strong) UIButton *likeButton;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VRepostButtonController *repostButtonController;
@@ -93,6 +96,17 @@ static const CGFloat kActionButtonWidth = 44.0f;
                                              action:@selector(repost:)];
     }
     return _repostButton;
+}
+
+- (UIButton *)likeButton
+{
+    if (_likeButton == nil)
+    {
+        UIImage *image = [[UIImage imageNamed:@"C_like"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage *activeImage = [[UIImage imageNamed:@"C_liked"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _likeButton = [self actionButtonWithImage:image activeImage:activeImage action:@selector(like:)];
+    }
+    return _likeButton;
 }
 
 #pragma mark - VUpdateHooks
@@ -200,13 +214,16 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 #pragma mark - Button Factory
 
-- (UIButton *)actionButtonWithImage:(UIImage *)actionImage
-                             action:(SEL)action
+- (UIButton *)actionButtonWithImage:(UIImage *)actionImage action:(SEL)action
 {
-    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    return [self actionButtonWithImage:actionImage activeImage:nil action:action];
+}
+
+- (UIButton *)actionButtonWithImage:(UIImage *)actionImage activeImage:(UIImage *)actionImageActive action:(SEL)action
+{
+    VActionButton *actionButton = [VActionButton actionButtonWithImage:actionImage activeImage:actionImageActive];
     
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [actionButton setImage:actionImage forState:UIControlStateNormal];
     actionButton.tintColor = [UIColor blackColor];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [actionButton v_addWidthConstraint:kActionButtonWidth];
