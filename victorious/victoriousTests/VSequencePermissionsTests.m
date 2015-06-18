@@ -47,8 +47,8 @@
                                 VSelectorName( canEditComments ),
                                 VSelectorName( canDeleteComments ),
                                 VSelectorName( canFlagSequence ),
-                                VSelectorName( canMeme ),
                                 VSelectorName( canGIF ),
+                                VSelectorName( canMeme ),
                                 VSelectorName( canQuote ) ];
     
     // This loop sets one permission, then iterates throguh all permissions and makes sure that
