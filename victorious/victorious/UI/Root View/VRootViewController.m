@@ -30,6 +30,8 @@
 #import "VApplicationTracking.h"
 #import "VEnvironment.h"
 #import "VFollowingHelper.h"
+#import "VHashtagHelper.h"
+#import "VHashtagResponder.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
 
@@ -48,7 +50,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
-@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, VFollowResponder>
+@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, VFollowResponder, VHashtagResponder>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -64,6 +66,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) VDeeplinkReceiver *deepLinkReceiver;
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, strong) VFollowingHelper *followHelper;
+@property (nonatomic, strong) VHashtagHelper *hashtagHelper;
 
 @end
 
@@ -235,8 +238,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.dependencyManager = dependencyManager;
     self.applicationTracking.dependencyManager = dependencyManager;
     
-    self.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager
-                                                  viewControllerToPresentOn:self];
+    self.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
+    self.hashtagHelper = [[VHashtagHelper alloc] init];
     
     NSDictionary *scaffoldConfig = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
     self.deepLinkReceiver.dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
@@ -503,18 +506,26 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - VFollowing
 
-- (void)followUser:(VUser *)user
-    withCompletion:(VFollowEventCompletion)completion
+- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
 {
-    [self.followHelper followUser:user
-                   withCompletion:completion];
+    [self.followHelper followUser:user withCompletion:completion];
 }
 
-- (void)unfollowUser:(VUser *)user
-      withCompletion:(VFollowEventCompletion)completion
+- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
 {
-    [self.followHelper unfollowUser:user
-                     withCompletion:completion];
+    [self.followHelper unfollowUser:user withCompletion:completion];
+}
+
+#pragma mark - VHashtag
+
+- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
+{
+    [self.hashtagHelper followHashtag:hashtag successBlock:success failureBlock:failure];
+}
+
+- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
+{
+    [self.hashtagHelper unfollowHashtag:hashtag successBlock:success failureBlock:failure];
 }
 
 #pragma mark - VURLSelectionResponder
