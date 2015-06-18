@@ -140,7 +140,7 @@
                 "title":"post to facebook",
                 "icon":
                 {
-                    "imageURL": "inviteFacebook",
+                    "imageURL": "share_facebook",
                     "tintColor":
                     {
                         "red": 102,
@@ -151,7 +151,7 @@
                 },
                 "selectedIcon":
                 {
-                    "imageURL": "inviteFacebook",
+                    "imageURL": "share_facebook",
                     "tintColor":
                     {
                         "red": 244,
@@ -166,7 +166,7 @@
                 "title":"post to twitter",
                 "icon":
                 {
-                    "imageURL": "inviteTwitter",
+                    "imageURL": "share_twitter",
                     "tintColor":
                     {
                         "red": 102,
@@ -177,7 +177,7 @@
                 },
                 "selectedIcon":
                 {
-                    "imageURL": "inviteTwitter",
+                    "imageURL": "share_twitter",
                     "tintColor":
                     {
                         "red": 244,
