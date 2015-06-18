@@ -229,9 +229,8 @@
             ]
         },
         "videoWorkspace": {
-            "name": "workspace.screen",
             "videoMaxDuration": 15,
-            "videoMinDuration": 3,
+            "name": "workspace.screen",
             "tools": [
                 {
                     "selectedIcon": {
@@ -270,7 +269,8 @@
                         "imageURL": "memeSelected"
                     }
                 }
-            ]
+            ],
+            "videoMinDuration": 3
         }
     }
 }
