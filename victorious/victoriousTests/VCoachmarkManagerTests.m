@@ -303,7 +303,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     {
         CoachmarkDisplayerViewController *viewController = [[CoachmarkDisplayerViewController alloc] init];
         viewController.view.frame = CGRectMake(0, 0, kScreenHeight, kScreenHeight);
-        NSString *screenIdentifier = [NSString stringWithFormat:@"%ld", i];
+        NSString *screenIdentifier = [NSString stringWithFormat:@"%ld", (long)i];
         viewController.screenIdentifier = screenIdentifier;
         [self.coachmarkManager displayCoachmarkViewInViewController:viewController];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
