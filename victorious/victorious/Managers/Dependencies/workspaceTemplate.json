@@ -86,7 +86,7 @@
                           {
                           "filterIndex": 0,
                           "picker": {
-                          "name": "vertical.multiplePicker",
+                          "name": "multipleVertical.picker",
                           },
                           "title": "hashtag",
                           "icon": {
