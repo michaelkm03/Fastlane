@@ -82,15 +82,19 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.passwordTextField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.passwordTextField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter a new Password", nil)
+    self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter a new Password", nil)
                                                                                    attributes:placeholderTextFieldAttributes];
+    self.passwordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter a new Password", nil)
+                                                                                 attributes:placeholderTextFieldAttributes];
     self.passwordTextField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     self.confirmPasswordTextField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.confirmPasswordTextField.font = textFieldAttributes[NSFontAttributeName];
     self.confirmPasswordTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Confirm your new password", nil)
+    self.confirmPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Confirm your new password", nil)
                                                                                    attributes:textFieldAttributes];
+    self.confirmPasswordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Confirm your new password", nil)
+                                                                                        attributes:textFieldAttributes];
     self.confirmPasswordTextField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
