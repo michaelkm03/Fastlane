@@ -29,9 +29,7 @@
 #import "VRootViewController.h"
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
-
-#warning REMOVE
-#import "VSuggestedUsersViewController.h"
+#import "VHashtagHelper.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";

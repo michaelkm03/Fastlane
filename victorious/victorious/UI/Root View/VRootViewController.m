@@ -28,6 +28,7 @@
 #import "VAppInfo.h"
 #import "VUploadManager.h"
 #import "VApplicationTracking.h"
+#import "VEnvironment.h"
 #import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
@@ -427,10 +428,26 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
-    if ( self.launchState != VAppLaunchStateLaunched )
+    if ( self.launchState == VAppLaunchStateLaunching )
     {
         return;
     }
+    
+#if !V_NO_SWITCH_ENVIRONMENTS
+    NSError *environmentError = notification.userInfo[ VEnvironmentErrorKey ];
+    if ( environmentError != nil )
+    {
+        NSString *message = [NSString stringWithFormat:@"%@\nReverting back to default environment.", environmentError.localizedDescription];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Environment Error" message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [self presentViewController:alert animated:YES completion:nil];
+                       });
+    }
+#endif
     
     if ( self.queuedNotificationID != nil )
     {

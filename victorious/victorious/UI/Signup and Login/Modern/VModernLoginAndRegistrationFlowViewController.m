@@ -247,7 +247,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
-- (void)selectedTwitterAuthorization
+- (void)selectedTwitterAuthorizationn
 {
     if (self.actionsDisabled)
     {
@@ -262,6 +262,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         if (success)
         {
             [self onAuthenticationFinishedWithSuccess:success];
+        }
+        else
+        {
+            NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
+            [self showErrorWithMessage:message];
         }
     }];
     
@@ -285,10 +290,25 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         {
             [self onAuthenticationFinishedWithSuccess:success];
         }
+        else
+        {
+            NSString *message = NSLocalizedString(@"FacebookLoginFailed", @"");
+            [self showErrorWithMessage:message];
+        }
     }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
+}
+
+- (void)showErrorWithMessage:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)loginWithEmail:(NSString *)email
@@ -310,12 +330,17 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
          {
              [self onAuthenticationFinishedWithSuccess:YES];
          }
+         else
+         {
+             NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
+             [self showErrorWithMessage:message];
+         }
      }];;
 }
 
 - (void)registerWithEmail:(NSString *)email
                  password:(NSString *)password
-               completion:(void (^)(BOOL, NSError *))completion
+               completion:(void (^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     if (self.actionsDisabled)
@@ -325,12 +350,19 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     [self.loginFlowHelper registerWithEmail:email
                                    password:password
-                                 completion:^(BOOL success, NSError *error)
+                                 completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
      {
-         completion(success, error);
+         completion(success, alreadyRegistered, error);
          if (success)
          {
-             [self continueRegistrationFlow];
+             if (alreadyRegistered)
+             {
+                 [self onAuthenticationFinishedWithSuccess:YES];
+             }
+             else
+             {
+                 [self continueRegistrationFlow];
+             }
          }
      }];
     

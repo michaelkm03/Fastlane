@@ -7,10 +7,10 @@
 //
 
 #import "VEnvironment.h"
-#import "VObjectManager+Environment.h"
 #import "VServerEnvironmentTableViewController.h"
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
+#import "VEnvironmentManager.h"
 
 @interface VServerEnvironmentTableViewController ()
 
@@ -23,7 +23,7 @@
 
 - (void)awakeFromNib
 {
-    self.serverEnvironments = [VObjectManager allEnvironments];
+    self.serverEnvironments = [[VEnvironmentManager sharedInstance] allEnvironments];
 }
 
 - (void)viewDidLoad
@@ -32,13 +32,22 @@
     
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    self.startingEnvironment = [VObjectManager currentEnvironment];
+    self.automaticallyAdjustsScrollViewInsets = YES;
+    self.startingEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.serverEnvironments = [[VEnvironmentManager sharedInstance] allEnvironments];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    if (![self.startingEnvironment isEqual:[VObjectManager currentEnvironment]])
+    if (![self.startingEnvironment isEqual:[[VEnvironmentManager sharedInstance] currentEnvironment]])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
     }
@@ -78,7 +87,7 @@
     cell.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     cell.textLabel.text = [(VEnvironment *)self.serverEnvironments[indexPath.row] name];
     
-    VEnvironment *environment = [VObjectManager currentEnvironment];
+    VEnvironment *environment = [[VEnvironmentManager sharedInstance] currentEnvironment];
     if ([environment isEqual:self.serverEnvironments[indexPath.row]])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -101,7 +110,7 @@
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    [VObjectManager setCurrentEnvironment:self.serverEnvironments[indexPath.row]];
+    [VEnvironmentManager sharedInstance].currentEnvironment = self.serverEnvironments[indexPath.row];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

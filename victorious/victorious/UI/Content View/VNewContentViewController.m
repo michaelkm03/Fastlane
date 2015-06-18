@@ -409,7 +409,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    if (self.viewModel.sequence.canComment)
+    if (self.viewModel.sequence.permissions.canComment )
     {
         VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -574,7 +574,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 #endif
     
-    if ( !self.hasBeenPresented )
+    if ( !self.hasBeenPresented && self.videoCell == nil )
     {
         self.hasBeenPresented = YES;
         
@@ -591,6 +591,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillDisappear:animated];
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+    
+    if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
+    {
+        Float64 currentTimeSeconds = CMTimeGetSeconds(self.videoCell.currentTime);
+        NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
+                                  VTrackingKeyTimeCurrent : @( (NSUInteger)(currentTimeSeconds * 1000) ) };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
+    }
 
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
     
@@ -1171,6 +1179,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         {
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
                                                                                           forIndexPath:indexPath];
+            commentCell.sequencePermissions = self.viewModel.sequence.permissions;
             [self configureCommentCell:commentCell withIndex:indexPath.row];
             return commentCell;
         }
@@ -1721,6 +1730,19 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                             andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
                                                 defaultVideoEdit:VDefaultVideoEditGIF
+                                                      completion:^(BOOL finished)
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
+    }
+    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierMeme] )
+    {
+        [self.sequenceActionController showRemixOnViewController:self.navigationController
+                                                    withSequence:self.viewModel.sequence
+                                            andDependencyManager:self.dependencyManager
+                                                  preloadedImage:nil
+                                                defaultVideoEdit:VDefaultVideoEditSnapshot
                                                       completion:^(BOOL finished)
          {
              [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView

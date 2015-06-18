@@ -34,7 +34,7 @@
              @"is_remix"       :   VSelectorName(isRemix),
              @"is_repost"      :   VSelectorName(isRepost),
              @"game_status"    :   VSelectorName(gameStatus),
-             @"permissions"    :   VSelectorName(permissions),
+             @"permissions"    :   VSelectorName(permissionsMask),
              @"parent_user_id" :   VSelectorName(parentUserId),
              @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
              @"sequence_counts.comments"   : VSelectorName(commentCount),
@@ -105,6 +105,7 @@
     RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
                                                                                               toKeyPath:VSelectorName(previewAssets)
                                                                                             withMapping:[VImageAsset entityMapping]];
+    
     [mapping addPropertyMapping:previewAssetsMapping];
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];

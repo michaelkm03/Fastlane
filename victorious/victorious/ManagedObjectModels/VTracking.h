@@ -19,6 +19,7 @@
 @property (nonatomic, retain) id videoComplete50;
 @property (nonatomic, retain) id videoComplete75;
 @property (nonatomic, retain) id videoComplete100;
+@property (nonatomic, retain) id viewStop;
 @property (nonatomic, retain) id videoError;
 @property (nonatomic, retain) id videoSkip;
 @property (nonatomic, retain) id videoStall;

@@ -168,7 +168,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         [self.delegate registerWithEmail:self.emailField.text
                                 password:self.passwordField.text
-                              completion:^(BOOL success, NSError *error)
+                              completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
          {
              if (!success)
              {
@@ -292,6 +292,22 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     return shouldSignup;
 }
 
+- (void)signup
+{
+    if ([self shouldSignUp])
+    {
+        [self.delegate registerWithEmail:self.emailField.text
+                                          password:self.passwordField.text
+                                        completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
+         {
+             if (!success)
+             {
+                 [self failedWithError:error];
+             }
+         }];
+    }
+}
+
 - (void)failedWithError:(NSError *)error
 {
     NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
@@ -302,6 +318,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     if ( error.code == kVAccountAlreadyExistsError)
     {
         message = NSLocalizedString(@"User already exists", @"");
+    }
+    else if ( error.code == kVPasswordInvalidForExistingUser )
+    {
+        message = NSLocalizedString(@"User already exists but the password is incorrect", @"");
     }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
                                                     message:message

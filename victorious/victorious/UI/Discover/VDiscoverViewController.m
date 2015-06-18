@@ -33,6 +33,7 @@
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
 #import "UIViewController+VLayoutInsets.h"
+#import "VHashtagResponder.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
@@ -473,50 +474,40 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueTrendingHashtags forSessionParameterWithKey:VTrackingKeyContext];
     
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        // Add tag to user tags object
-        [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        [self showFailureHUD];
-    };
-    
     // Backend Call to Subscribe to Hashtag
-    [[VObjectManager sharedManager] subscribeToHashtagUsingVHashtagObject:hashtag
-                                                             successBlock:successBlock
-                                                                failBlock:failureBlock];
+    
+    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
+    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
+    [responder followHashtag:hashtag.tag successBlock:^(NSArray *success)
+     {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
+     }
+                  failureBlock:^(NSError *error)
+     {
+         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+         self.failureHud.mode = MBProgressHUDModeText;
+         self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
+         [self.failureHud hide:YES afterDelay:3.0f];
+     }];
 }
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueTrendingHashtags forSessionParameterWithKey:VTrackingKeyContext];
     
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        // Remove tag to user tags object
-        [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        [self showFailureHUD];
-    };
-    
-    // Backend Call to Unsubscribe to Hashtag
-    [[VObjectManager sharedManager] unsubscribeToHashtagUsingVHashtagObject:hashtag
-                                                               successBlock:successBlock
-                                                                  failBlock:failureBlock];
-}
-
-- (void)showFailureHUD
-{
-    self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    self.failureHud.mode = MBProgressHUDModeText;
-    self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
-    [self.failureHud hide:YES afterDelay:3.0f];
+    id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
+    NSAssert(responder != nil, @"responder is nil, when touching a hashtag");
+    [responder unfollowHashtag:hashtag.tag successBlock:^(NSArray *success)
+     {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
+     }
+            failureBlock:^(NSError *error)
+     {
+         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+         self.failureHud.mode = MBProgressHUDModeText;
+         self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+         [self.failureHud hide:YES afterDelay:3.0f];
+     }];
 }
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond

@@ -466,6 +466,126 @@
             </objects>
             <point key="canvasLocation" x="-4802" y="-1345.5"/>
         </scene>
+        <!--New Environment-->
+        <scene sceneID="WT7-1V-Wdy">
+            <objects>
+                <viewController id="weE-Ki-5IQ" customClass="VAddServerEnvironmentViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3x5-8a-Khh"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ggd-Qm-83w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4R9-jt-EeJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="725"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="T6U-i1-p3F" customClass="VInlineValidationTextField">
+                                <rect key="frame" x="16" y="82" width="284" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="KpL-WW-vxY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9tC-Cp-OD5" userLabel="Separator">
+                                <rect key="frame" x="18" y="131" width="284" height="1"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="faV-Dt-bGE"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Base URL" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="EhD-iU-YcX" customClass="VInlineValidationTextField">
+                                <rect key="frame" x="16" y="131" width="284" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="uIk-Wi-anZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gxr-az-l7p" userLabel="Separator">
+                                <rect key="frame" x="18" y="180" width="284" height="1"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="exO-h2-cZW"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sgT-oS-cdk" customClass="VButton">
+                                <rect key="frame" x="20" y="252" width="280" height="41"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="0.48999999999999999" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="Oor-qb-B7u"/>
+                                    <constraint firstAttribute="height" constant="41" id="eEt-fM-kyx"/>
+                                </constraints>
+                                <state key="normal" title="Save">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="save:" destination="weE-Ki-5IQ" eventType="touchUpInside" id="YZ1-wY-Bhp"/>
+                                    <action selector="saveChanges:" destination="Tch-Qc-dzd" eventType="touchUpInside" id="cXF-Fe-L6y"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="App ID" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="J9J-EQ-egU" customClass="VInlineValidationTextField">
+                                <rect key="frame" x="18" y="180" width="284" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="g6X-oh-cGr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lf1-Rh-T96" userLabel="Separator">
+                                <rect key="frame" x="20" y="229" width="284" height="1"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="je2-5I-5jo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Gxr-az-l7p" firstAttribute="top" secondItem="EhD-iU-YcX" secondAttribute="bottom" constant="-1" id="0i9-bQ-xOI"/>
+                            <constraint firstItem="Gxr-az-l7p" firstAttribute="leading" secondItem="4R9-jt-EeJ" secondAttribute="leading" constant="18" id="5Bz-Iz-auT"/>
+                            <constraint firstAttribute="trailing" secondItem="sgT-oS-cdk" secondAttribute="trailing" constant="20" id="9tY-6u-Dlp"/>
+                            <constraint firstItem="EhD-iU-YcX" firstAttribute="leading" secondItem="4R9-jt-EeJ" secondAttribute="leading" constant="16" id="AKh-oW-o0i"/>
+                            <constraint firstAttribute="trailing" secondItem="Gxr-az-l7p" secondAttribute="trailing" constant="18" id="Dpq-Cg-Vv4"/>
+                            <constraint firstAttribute="trailing" secondItem="lf1-Rh-T96" secondAttribute="trailing" constant="16" id="EXk-b9-3AI"/>
+                            <constraint firstItem="EhD-iU-YcX" firstAttribute="top" secondItem="9tC-Cp-OD5" secondAttribute="bottom" constant="-1" id="FiB-iw-CCM"/>
+                            <constraint firstItem="lf1-Rh-T96" firstAttribute="leading" secondItem="4R9-jt-EeJ" secondAttribute="leading" constant="20" id="LHL-AU-GgC"/>
+                            <constraint firstItem="lf1-Rh-T96" firstAttribute="top" secondItem="J9J-EQ-egU" secondAttribute="bottom" constant="-1" id="MgE-Dv-xJe"/>
+                            <constraint firstItem="T6U-i1-p3F" firstAttribute="leading" secondItem="4R9-jt-EeJ" secondAttribute="leading" constant="16" id="Tih-2v-WNs"/>
+                            <constraint firstItem="T6U-i1-p3F" firstAttribute="top" secondItem="3x5-8a-Khh" secondAttribute="bottom" constant="18" id="UqN-90-q9b"/>
+                            <constraint firstItem="J9J-EQ-egU" firstAttribute="leading" secondItem="4R9-jt-EeJ" secondAttribute="leading" constant="18" id="VGe-y5-DiK"/>
+                            <constraint firstItem="sgT-oS-cdk" firstAttribute="leading" secondItem="4R9-jt-EeJ" secondAttribute="leading" constant="20" id="VoH-o9-OLt"/>
+                            <constraint firstAttribute="trailing" secondItem="J9J-EQ-egU" secondAttribute="trailing" constant="18" id="VyJ-8D-WHE"/>
+                            <constraint firstItem="sgT-oS-cdk" firstAttribute="top" secondItem="lf1-Rh-T96" secondAttribute="bottom" constant="22" id="Yg6-Na-f2J"/>
+                            <constraint firstItem="9tC-Cp-OD5" firstAttribute="top" secondItem="T6U-i1-p3F" secondAttribute="bottom" constant="-1" id="Z1o-S5-dHK"/>
+                            <constraint firstItem="9tC-Cp-OD5" firstAttribute="leading" secondItem="4R9-jt-EeJ" secondAttribute="leading" constant="18" id="eh2-rD-1Yq"/>
+                            <constraint firstItem="J9J-EQ-egU" firstAttribute="top" secondItem="Gxr-az-l7p" secondAttribute="bottom" constant="-1" id="fz6-Ea-OeB"/>
+                            <constraint firstAttribute="trailing" secondItem="T6U-i1-p3F" secondAttribute="trailing" constant="20" id="mg9-y5-XDk"/>
+                            <constraint firstAttribute="trailing" secondItem="EhD-iU-YcX" secondAttribute="trailing" constant="20" id="xSv-2v-f5O"/>
+                            <constraint firstAttribute="trailing" secondItem="9tC-Cp-OD5" secondAttribute="trailing" constant="18" id="yxu-w2-TxI"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="New Environment" id="ab7-E6-f3T"/>
+                    <connections>
+                        <outlet property="appIDTextField" destination="J9J-EQ-egU" id="SSF-n1-ODy"/>
+                        <outlet property="nameTextField" destination="T6U-i1-p3F" id="9b3-BR-Ekt"/>
+                        <outlet property="urlTextField" destination="EhD-iU-YcX" id="3B6-3U-WQz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wg2-rQ-jp8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3661" y="-438.5"/>
+        </scene>
         <!--Change Password-->
         <scene sceneID="jgg-OK-3hB">
             <objects>
@@ -630,7 +750,13 @@
                             <outlet property="delegate" destination="6fa-Sd-wUR" id="MaJ-oN-pAE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Server Environment" id="Pog-vT-DdP"/>
+                    <navigationItem key="navigationItem" title="Server Environment" id="Pog-vT-DdP">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="aKy-FP-SPS">
+                            <connections>
+                                <segue destination="weE-Ki-5IQ" kind="push" id="xIr-VI-cmI"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Imd-KZ-Wo5" userLabel="First Responder" sceneMemberID="firstResponder"/>

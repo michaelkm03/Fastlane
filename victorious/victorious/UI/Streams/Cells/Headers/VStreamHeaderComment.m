@@ -199,6 +199,7 @@ static const CGFloat kCommentButtonHeight = 44.0f;
 
 - (void)updateCommentButtonForSequence:(VSequence *)sequence
 {
+    [self.commentButton setHidden:!sequence.permissions.canComment];
     NSString *commentCount = self.sequence.commentCount.integerValue ? [self.numberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
 }
