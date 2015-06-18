@@ -629,34 +629,6 @@
     return self.sequence.user.name;
 }
 
-- (NSString *)shareText
-{
-    NSString *shareText;
-    
-    switch (self.type)
-    {
-        case VContentViewTypePoll:
-            shareText = NSLocalizedString(@"UGCSharePollFormat", nil);
-            break;
-        case VContentViewTypeImage:
-            shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
-            break;
-        case VContentViewTypeGIFVideo:
-            shareText = NSLocalizedString(@"UGCShareGIFFormat", nil);
-            break;
-        case VContentViewTypeVideo:
-            shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
-            break;
-        case VContentViewTypeText:
-            shareText = NSLocalizedString(@"UGCShareTextFormat", nil);
-            break;
-        case VContentViewTypeInvalid:
-            break;
-    }
-    
-    return shareText;
-}
-
 - (NSString *)analyticsContentTypeText
 {
     return self.sequence.category;
