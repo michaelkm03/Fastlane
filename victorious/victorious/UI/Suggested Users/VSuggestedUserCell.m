@@ -16,6 +16,7 @@
 #import "VDefaultProfileImageView.h"
 #import "VContentThumbnailsViewController.h"
 #import "VContentThumbnailsDataSource.h"
+#import "VSequence.h"
 
 static NSString * const kTextTitleColorKey = @"color.text.label1";
 static NSString * const kTextBodyColorKey = @"color.text.label2";
@@ -69,7 +70,14 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     self.usernameTextView.text = _user.name;
     self.userTagLingTextView.text = _user.tagline;
     
-    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithUser:user];
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
+                              {
+                                  NSURL *url = [NSURL URLWithString:sequence.previewData];
+                                  return url != nil && url.absoluteString.length > 0;
+                              }];
+    NSArray *recentSequences = [user.recentSequences.array filteredArrayUsingPredicate:predicate];
+    
+    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:recentSequences];
     self.thumbnailsViewController.collectionView.dataSource = self.thumbnailsDataSource;
     [self.thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
 
@@ -90,6 +98,9 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
     
     self.userTagLingTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+    self.userTagLingTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
+    
+    self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
     self.userTagLingTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self forKey:@"background.detail"];

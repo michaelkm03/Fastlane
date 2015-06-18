@@ -13,10 +13,10 @@
     "background.detail": {
         "name": "solidColor.background",
         "color": {
-            "red": 255,
-            "green": 255,
-            "blue": 255,
-            "alpha": 25
+            "red": 0,
+            "green": 0,
+            "blue": 0,
+            "alpha": 80
         }
     },
     "color.accent": {
@@ -30,6 +30,24 @@
         "green": 255,
         "blue": 255,
         "alpha": 255
+    },
+    "color.text": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+    },
+    "color.text.label1": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+    },
+    "color.text.label2": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 130
     },
     "color.link": {
         "red": 255,
@@ -56,5 +74,13 @@
     "font.heading1": {
         "fontName": "Roboto-Medium",
         "fontSize": 17
+    },
+    "font.label1": {
+        "fontName": "Roboto-Medium",
+        "fontSize": 12
+    },
+    "font.label2": {
+        "fontName": "Roboto-Medium",
+        "fontSize": 10
     }
 }

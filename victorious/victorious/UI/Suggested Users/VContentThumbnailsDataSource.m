@@ -9,11 +9,10 @@
 #import "VContentThumbnailsDataSource.h"
 #import "VSequence+Fetcher.h"
 #import "VContentThumbnailCell.h"
-#import "VUser.h"
 
 @interface VContentThumbnailsDataSource()
 
-@property (nonatomic, strong) VUser *user;
+@property (nonatomic, strong) NSArray *sequences;
 
 @end
 
@@ -21,12 +20,12 @@
 
 #pragma mark - UICollectionViewDataSource
 
-- (instancetype)initWithUser:(VUser *)user
+- (instancetype)initWithSequences:(NSArray *)sequences
 {
     self = [super init];
     if ( self != nil )
     {
-        _user = user;
+        _sequences = sequences;
     }
     return self;
 }
@@ -44,7 +43,7 @@
     VContentThumbnailCell *cell = (VContentThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if ( cell != nil )
     {
-        VSequence *sequence = self.user.recentSequences.array[ indexPath.row ];
+        VSequence *sequence = self.sequences[ indexPath.row ];
         NSURL *previewURL = [NSURL URLWithString:sequence.previewData];
         [cell setImageURL:previewURL];
         return cell;
@@ -54,7 +53,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.user.recentSequences.count;
+    return self.sequences.count;
 }
 
 @end

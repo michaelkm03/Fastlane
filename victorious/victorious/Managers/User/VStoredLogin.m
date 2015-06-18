@@ -65,9 +65,6 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
 
 - (BOOL)saveLoggedInUserToDisk:(VUser *)user loginType:(VLoginType)loginType
 {
-#warning FIX:
-    return NO;
-    
     if ( user.remoteId == nil || user.remoteId.integerValue == 0 ||
          user.token == nil || user.token.length == 0 )
     {

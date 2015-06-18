@@ -107,7 +107,6 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     {
         [self askForPushNotificationsPermission];
     }
-    
 }
 
 - (void)askForPushNotificationsPermission
