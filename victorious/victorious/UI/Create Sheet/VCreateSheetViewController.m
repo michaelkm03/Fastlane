@@ -161,9 +161,10 @@ static const CGFloat kLineSpacing = 40.0f;
     cell.itemLabel.text = NSLocalizedString(menuItem.title, @"");
     cell.itemLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     cell.itemLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    [cell.iconImageView setImage:[menuItem.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    UIImage *img = menuItem.icon;
+    [cell.iconImageView setImage:img];
     cell.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    
+        
     return cell;
 }
 

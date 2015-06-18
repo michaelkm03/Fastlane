@@ -316,35 +316,35 @@
                   "title": "GIF",
                   "icon": {
                   "imageURL": "createGIFIcon",
-                  "scale": 2
+                  "scale": 3
                   }
                   }, {
                   "identifier": "Create Text",
                   "title": "TEXT",
                   "icon": {
                   "imageURL": "createTextIcon",
-                  "scale": 2
+                  "scale": 3
                   }
                   }, {
                   "identifier": "Create Poll",
                   "title": "POLL",
                   "icon": {
                   "imageURL": "createPollIcon",
-                  "scale": 2
+                  "scale": 3
                   }
                   }, {
                   "identifier": "Create Video",
                   "title": "VIDEO",
                   "icon": {
                   "imageURL": "createVideoIcon",
-                  "scale": 2
+                  "scale": 3
                   }
                   }, {
                   "identifier": "Create Image",
                   "title": "IMAGE",
                   "icon": {
                   "imageURL": "createImageIcon",
-                  "scale": 2
+                  "scale": 3
                   }
                   }]
     }
